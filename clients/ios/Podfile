@@ -1,0 +1,48 @@
+# Uncomment the next line to define a global platform for your project
+# platform :ios, '9.0'
+
+target 'proj' do
+  # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
+  # use_frameworks!
+
+  # Pods for proj
+  pod 'AppCenter/Crashes', '~> 1.6.1'
+  pod 'AppCenter/Analytics', '~> 1.6.1'
+  pod 'AppCenterReactNativeShared', '~> 1.5.1'
+  pod 'React', :path => '../node_modules/react-native', :subspecs => [
+     'Core',
+     'RCTText',
+     'RCTImage',
+     'RCTNetwork',
+     'RCTSettings',
+     'DevSupport',
+     'RCTAnimation',
+     'RCTWebSocket', # needed for localhost testing of your app
+   ]
+  pod "yoga", :path => "../node_modules/react-native/ReactCommon/yoga"
+
+
+
+  platform :ios, '9.0'
+  
+  pod 'CodePush', :path => '../node_modules/react-native-code-push'
+
+  target 'projTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+end
+
+target 'proj-tvOS' do
+  # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
+  # use_frameworks!
+
+  # Pods for proj-tvOS
+
+  target 'proj-tvOSTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+end
