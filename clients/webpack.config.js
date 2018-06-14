@@ -5,44 +5,22 @@ const autoprefixer = require('autoprefixer');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const WebpackShellPlugin = require('webpack-shell-plugin');
 
-console.log(path.resolve(__dirname, 'client.js'),process.env.NODE_ENV)
-var plugin = [
+let plugin = [
     new webpack.NoEmitOnErrorsPlugin(),
     new webpack.optimize.OccurrenceOrderPlugin(),
 ]
-var devtool = "source-map"
+
+let devtool = "source-map"
 process.env.NODE_ENV = "development"
-// if(process.env.NODE_ENV == "development" ){
-//   plugin.push(new webpack.HotModuleReplacementPlugin())
-//   entry["bundle"].push('webpack-hot-middleware/client')
-//   devtool = "source-map";
-// }else if(process.env.NODE_ENV == "test" ){
-//   devtool = "source-map";
-//   process.env.NODE_ENV = "development"
-// }else{
-//   process.env.NODE_ENV = "production";
-  
-//   // plugin.push(new webpack.optimize.UglifyJsPlugin({ minimize: true }))
-//   plugin.push(new webpack.optimize.OccurrenceOrderPlugin())
-//   plugin.push(new webpack.optimize.DedupePlugin())
-//     plugin.push(new webpack.LoaderOptionsPlugin({
-//     options: {
-//       postcss: function () {
-//         return [autoprefixer];
-//       },
-//     }
-//   }))
 
-//   plugin.push(new webpack.optimize.UglifyJsPlugin())
-// }
-
-console.log("build mode : ",process.env.NODE_ENV)
+console.log("build mode : ", process.env.NODE_ENV)
 
 plugin.push(new webpack.DefinePlugin({
   'process.env': {
     'NODE_ENV': JSON.stringify(process.env.NODE_ENV),
   }
 }))
+
 let defaults = {
   context: __dirname,
   devtool: devtool,
@@ -76,12 +54,15 @@ let defaults = {
   plugins: plugin
 };
 
-//web config
-let web_bundle = path.join(__dirname, "app", "web", 'bin',"bundle.js");
-let desktop_bundle = path.join(__dirname ,"app", "desktop", 'bin',"bundle.js");
-let script_plugin = new WebpackShellPlugin({});
-if(fs.existsSync(web_bundle)){
-  script_plugin = new WebpackShellPlugin({
+//////////////////////
+//////web-config//////
+let desktop_public_dir = path.join(__dirname, "app", "desktop", "public");
+let desktop_bin_dir = path.join(__dirname, "app", "desktop", "bin");
+let web_bundle = path.join(__dirname, "app", "web", "bin","bundle.js");
+let desktop_bundle = path.join(desktop_bin_dir, "bundle.js");
+let web_bundle_copy_script_plugin = new WebpackShellPlugin({});
+if( fs.existsSync(web_bundle) ){
+  web_bundle_copy_script_plugin = new WebpackShellPlugin({
     onBuildStart:['echo "Webpack Start"'], 
     onBuildExit:[`cp ${web_bundle} ${desktop_bundle}`]
   })
@@ -97,7 +78,7 @@ module.exports = [{
   },
   plugins: [
     ...plugin,
-    script_plugin
+    web_bundle_copy_script_plugin
   ]
 },{
   ...defaults,
@@ -108,6 +89,13 @@ module.exports = [{
     filename: '[name].js',
     publicPath: "/"
   },
+  plugins:[
+    ...plugin,
+    new WebpackShellPlugin({
+      onBuildStart:['echo "Webpack electron-main Start"'], 
+      onBuildExit:[`cp -r ${path.join(desktop_public_dir,"/")} ${path.join(desktop_bin_dir,"/")}`]
+    })
+  ],
   node: {
     __dirname: false,
     __filename: false

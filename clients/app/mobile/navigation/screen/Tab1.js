@@ -1,8 +1,6 @@
 import {connect} from "react-redux"
 import React from 'react';
-import codePush from "react-native-code-push";
-import { StyleSheet, Text, View, ListView } from 'react-native';
-import * as action from "../../../common/actions/test"
+import { Text, View, ListView } from 'react-native';
 
 let mapStateToProps = function(state){
 	return {

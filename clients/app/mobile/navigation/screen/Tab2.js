@@ -1,6 +1,6 @@
 import {connect} from "react-redux"
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 import * as action from "../../../common/actions/test"
 
 let mapStateToProps = function(state){
