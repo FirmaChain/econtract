@@ -51,9 +51,11 @@ $screen-width: 800px;
             border-radius: 7px;
             padding: 15px;
             background-color: #fff;
-            flex-direction: column;
+            flex-direction: row;
+            display: flex;
 
             >div.column{
+                width: 300px;
             }
             
             div.form-layout{
@@ -64,20 +66,35 @@ $screen-width: 800px;
 
                 div.form-input{
                     border-bottom: 1px solid #E0E0E0;
-                    padding: 10px;
+                    padding: 10px 0 10px 10px;
                     margin-bottom: 20px;
+                    display: flex;
+
                     >input{
                         border:0;
                         font-size: 12px;
-                        width: 300px;
+                        flex:1;
+                    }
+
+                    >button{
+                        border:0;
+                        background-color: #fff;
+                        font-weight: bold;
+                        cursor: pointer;
                     }
                 }
 
                 div.form-textarea{
-                    width: 300px;
                     height: 100px;
                     border: 1px solid #E0E0E0;
                     margin: 10px 0 20px 0;
+                }
+                
+                div.form-warning{
+                    font-size: 10px;
+                    margin-bottom: 20px;
+                    transform: translateY(-10px);
+                    color: #989898;
                 }
 
                 div.form-submit{
@@ -130,6 +147,63 @@ $screen-width: 800px;
         >i{
             color: #ABB7C0;
         }
+    }
+
+    .masterkey-list{
+        font-size: 12px;
+        justify-content: center;
+        align-items: center;
+        display: flex;
+        flex-wrap: wrap;
+        align-content: center;
+        position: relative;
+
+        >.masterkey-item{
+            margin: 3px;
+        }
+
+        >.copy{
+            position: absolute;
+            right: 5px;
+            bottom: 5px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    }
+
+    .masterkey-selection-list{
+        font-size: 12px;
+        display: flex;
+        padding: 10px;
+        justify-content: flex-start;
+        align-items: flex-start;
+        flex-wrap: wrap;
+
+        >.item{
+            margin: 3px;
+            padding: 5px 10px;
+            color: #3D4B5A;
+            border: 1px solid #3D4B5A;
+            border-radius: 5px;
+            cursor: pointer;
+
+            &:hover{
+                background-color: #97A4AF;
+                color: #000;
+            }
+        }
+
+        .selected{
+            background-color: #3D4B5A;
+            color: #fff;
+        }
+
+    }
+
+    .right-desc{
+        color: #BEBEC3;
+        font-size: 12px;
+        margin: 0 0 20px 20px
     }
 }
 
