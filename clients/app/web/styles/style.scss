@@ -8,7 +8,6 @@ $screen-width: 800px;
 
 .default-page{
     display:flex;
-    // justify-content: center;
     align-items: center;
     flex-direction: column;
 
@@ -54,8 +53,16 @@ $screen-width: 800px;
             flex-direction: row;
             display: flex;
 
-            >div.column{
+            >div.column-300{
                 width: 300px;
+            }
+
+            >div.column-200{
+                width: 200px;
+            }
+
+            >div.column-600{
+                width: 600px;
             }
             
             div.form-layout{
@@ -207,6 +214,107 @@ $screen-width: 800px;
     }
 }
 
+.display-flex{
+    display: flex;
+}
+
+table.table{
+    width: 100%;
+    font-weight: 100;
+    border-collapse: collapse;
+
+    th{
+        border-bottom: 2px solid #000;
+        font-weight: bold;
+        color: #BEBEC3;
+        font-size: 12px;
+        padding: 10px 0 10px 20px;
+    }
+    td{
+        border-bottom: 1px solid #c0c0c0;
+        font-weight: bold;
+        color: #7F7F7F;
+        font-size: 10px;
+        text-align: left;
+        padding: 15px 0 15px 20px;
+    }
+
+    .date-cell{
+        padding: 15px 0 15px 20px;
+        text-align: center;
+        width: 130px;
+    }
+}
+
+
+.contract-list-page{
+    margin-top: 20px;
+    ul.left-menu{
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        flex:1;
+        >li.item{
+            margin: 5px 0;
+            font-size: 13px;
+            font-weight: bold;
+            color: #BEBEBE;
+            letter-spacing: 1px;
+            cursor: pointer;
+
+            &:first-child{
+                margin-top: 0;
+            }
+
+            &:hover{
+                color: #999;
+            }
+
+            >i{
+                margin-right: 5px;
+            }
+        }
+        >li.spacer{
+            flex:1;
+        }
+        >li.selected{
+            color: #000;
+        }
+    }
+
+    .page-contents{
+        >h1{
+            font-weight: bold;
+            margin: 0;
+            padding: 0;
+            font-size: 18px;
+            letter-spacing: 3px;
+        }
+    }
+
+    .right-align{
+        margin-top: 20px;
+        text-align: right;
+
+        >button{
+            border:1px solid #E0E0E0;
+            padding: 7px 10px;
+            background-color: #fff;
+            border-radius: 5px;
+            margin-left: 10px;
+            color: #210201;
+            font-weight: bold;
+            cursor: pointer;
+
+            &:hover{
+                background-color: #EEE;
+            }
+        }
+    }
+}
+
 .index-page{
     .header-section{
         background-color: rgba(0,0,0,0.5);
@@ -312,4 +420,11 @@ $screen-width: 800px;
             letter-spacing:6px;
         }
     }
+}
+
+.text-left{
+    text-align: left;
+}
+.text-center{
+    text-align: center !important;
 }

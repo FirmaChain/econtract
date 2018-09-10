@@ -18,7 +18,7 @@ export default class extends React.Component {
 	constructor(){
 		super();
 		this.state={
-            step:5
+            step:0
         };
 	}
 
