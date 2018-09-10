@@ -2,6 +2,8 @@ import React from "react"
 import ReactDOM from "react-dom"
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom'
+import ContractMenu from "./contract-menu"
+import UserStatusBar from "./user-state-bar"
 
 let mapStateToProps = (state)=>{
 	return {
@@ -27,21 +29,9 @@ export default class extends React.Component {
 		return (<div className="default-page contract-list-page">
             <div className="container">
                 <h1>내 계약</h1>
+                <UserStatusBar />
                 <div className="page">
-                    <div className="column-200 display-flex">
-                        <ul className="left-menu">
-                            <li className="item selected">
-                                <i className="fas fa-plus-circle" /> 최근 사용
-                            </li>
-                            <li className="item">
-                                <i className="fas fa-folder" /> 폴더순으로
-                            </li>
-                            <li className="spacer" />
-                            <li className="item">
-                                <i className="fas fa-file-alt" /> 내 템플릿
-                            </li>
-                        </ul>
-                    </div>
+                    <ContractMenu />
                     <div className="column-600 page-contents">
                         <h1>최근 사용한 계약</h1>
                         <table className="table" style={{marginTop:"20px"}}>
