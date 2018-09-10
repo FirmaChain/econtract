@@ -13,9 +13,72 @@
 #import "JWTAlgorithmFactory.h"
 #import <Availability.h>
 
-#define Check_That_IOS_IS_GREATER_THAN_10 (TARGET_OS_MAC && TARGET_OS_IPHONE && (__IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_10_0))
-#define Check_That_MACOS_IS_GREATER_THAN_10 (TARGET_OS_MAC && !TARGET_OS_IPHONE && (__MAC_OS_X_VERSION_MAX_ALLOWED >= __MAC_10_12))
-#define Check_That_Security_API_IS_AVAILABLE (Check_That_IOS_IS_GREATER_THAN_10 || Check_That_MACOS_IS_GREATER_THAN_10)
+#ifndef IPHONE_SDK_VERSION_GREATER_THAN_10
+#define IPHONE_SDK_VERSION_GREATER_THAN_10 (__IPHONE_OS_VERSION_MAX_ALLOWED && __IPHONE_OS_VERSION_MAX_ALLOWED >= 100000)
+#endif
+
+#ifndef MAC_OS_SDK_VERSION_GREATER_THAN_10_12
+#define MAC_OS_SDK_VERSION_GREATER_THAN_10_12 (__MAC_OS_X_VERSION_MAX_ALLOWED && __MAC_OS_X_VERSION_MAX_ALLOWED >= 101200)
+#endif
+
+// Abilities
+#ifndef JWT_CRYPTO_MODERN_API_IS_ALLOWED
+#define JWT_CRYPTO_MODERN_API_IS_ALLOWED ((IPHONE_SDK_VERSION_GREATER_THAN_10) || (MAC_OS_SDK_VERSION_GREATER_THAN_10_12))
+#endif
+
+// #ifndef IPHONE_OS_VERSION_GREATER_THAN_10
+// #define IPHONE_OS_VERSION_GREATER_THAN_10 (defined(__IPHONE_OS_VERSION_MIN_REQUIRED) && __IPHONE_OS_VERSION_MIN_REQUIRED >= 100000)
+// #endif
+
+// #ifndef MAC_OS_VERSION_GREATER_THAN_10
+// #define MAC_OS_VERSION_GREATER_THAN_10 (defined(__MAC_OS_X_VERSION_MIN_REQUIRED) && __MAC_OS_X_VERSION_MIN_REQUIRED >= 101200)
+// #endif
+
+// // Requirements
+// #ifndef JWT_CRYPTO_MODERN_API_IS_REQUIRED
+// #define JWT_CRYPTO_MODERN_API_IS_REQUIRED ((IPHONE_OS_VERSION_GREATER_THAN_10) || (MAC_OS_VERSION_GREATER_THAN_10))
+// #endif
+
+// TODO:
+// Rewrite errors presentation.
+NSString *const JWTAlgorithmAsymmetricFamilyErrorDomain = @"io.jwt.jwa.asymmetric";
+
+@implementation JWTAlgorithmAsymmetricFamilyErrorDescription
+// Subclass
++ (NSString *)errorDomain {
+    return JWTAlgorithmAsymmetricFamilyErrorDomain;
+}
++ (NSInteger)defaultErrorCode {
+    return JWTAlgorithmAsymmetricFamilyErrorUnexpected;
+}
++ (NSInteger)externalErrorCode {
+    return JWTAlgorithmAsymmetricFamilyErrorInternalSecurityAPI;
+}
++ (NSDictionary *)codesAndUserDescriptions {
+    static NSDictionary *dictionary = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        dictionary = @{
+                       @(JWTAlgorithmAsymmetricFamilyErrorAlgorithmIsNotSupported) : @"Algorithm is not supported!",
+                       @(JWTAlgorithmAsymmetricFamilyErrorInternalSecurityAPI) : @"algorithm internal security framework error!",
+                       @(JWTAlgorithmAsymmetricFamilyErrorUnexpected) : @"Asymmetric algorithm unexpected error!"
+                       };
+    });
+    return dictionary;
+}
++ (NSDictionary *)codesAndDescriptions {
+    static NSDictionary *dictionary = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        dictionary = @{
+                       @(JWTAlgorithmAsymmetricFamilyErrorAlgorithmIsNotSupported) : @"JWTAlgorithmAsymmetricFamilyErrorAlgorithmIsNotSupported",
+                       @(JWTAlgorithmAsymmetricFamilyErrorInternalSecurityAPI) : @"JWTAlgorithmAsymmetricFamilyErrorInternalSecurityAPI",
+                       @(JWTAlgorithmAsymmetricFamilyErrorUnexpected) : @"JWTAlgorithmAsymmetricFamilyErrorUnexpected"
+                       };
+    });
+    return dictionary;
+}
+@end
 
 typedef NS_ENUM(NSInteger, JWTAlgorithmAsymmetricBase__AlgorithmType) {
     JWTAlgorithmAsymmetricBase__AlgorithmType__RS,
@@ -119,56 +182,65 @@ typedef NS_ENUM(NSInteger, JWTAlgorithmAsymmetricBase__AlgorithmNumber) {
 
 #import <Security/Security.h>
 
-#if Check_That_Security_API_IS_AVAILABLE
-@interface JWTAlgorithmAsymmetricBase__After10 : JWTAlgorithmAsymmetricBase
+#if JWT_CRYPTO_MODERN_API_IS_ALLOWED
+#ifdef NS_AVAILABLE
+NS_AVAILABLE(10_12, 10_0)
+#endif
+@interface JWTAlgorithmAsymmetricBase__After10
+: JWTAlgorithmAsymmetricBase
 @property (assign, nonatomic, readonly) SecKeyAlgorithm algorithm;
 @end
 @implementation JWTAlgorithmAsymmetricBase__After10
 - (SecKeyAlgorithm)chooseAlgorithmByType:(NSNumber *)type number:(NSNumber *)number {
-    SecKeyAlgorithm result = NULL;
-    switch ((JWTAlgorithmAsymmetricBase__AlgorithmType)type.integerValue) {
-        case JWTAlgorithmAsymmetricBase__AlgorithmType__RS: {
-            switch ((JWTAlgorithmAsymmetricBase__AlgorithmNumber)number.integerValue) {
-                case JWTAlgorithmAsymmetricBase__AlgorithmNumber__256: {
-                    result = kSecKeyAlgorithmRSASignatureMessagePKCS1v15SHA256;
-                    break;
-                }
-                case JWTAlgorithmAsymmetricBase__AlgorithmNumber__384: {
-                    result = kSecKeyAlgorithmRSASignatureMessagePKCS1v15SHA384;
-                    break;
-                }
-                case JWTAlgorithmAsymmetricBase__AlgorithmNumber__512: {
-                    result = kSecKeyAlgorithmRSASignatureMessagePKCS1v15SHA512;
-                    break;
-                }
-                default:
-                    break;
-            }
-            break;
-        }
-        case JWTAlgorithmAsymmetricBase__AlgorithmType__ES: {
-            switch ((JWTAlgorithmAsymmetricBase__AlgorithmNumber)number.integerValue) {
-                case JWTAlgorithmAsymmetricBase__AlgorithmNumber__256: {
-                    result = kSecKeyAlgorithmECDSASignatureMessageX962SHA256;
-                    break;
-                }
-                case JWTAlgorithmAsymmetricBase__AlgorithmNumber__384: {
-                    result = kSecKeyAlgorithmECDSASignatureMessageX962SHA384;
-                    break;
-                }
-                case JWTAlgorithmAsymmetricBase__AlgorithmNumber__512: {
-                    result = kSecKeyAlgorithmECDSASignatureMessageX962SHA512;
-                    break;
-                }
-                default:
-                    break;
-            }
-            break;
-        }
-        default:
-            break;
+    if (SecKeyIsAlgorithmSupported == NULL) {
+        return NULL;
     }
-    return result;
+    else {
+        SecKeyAlgorithm result = NULL;
+        switch ((JWTAlgorithmAsymmetricBase__AlgorithmType)type.integerValue) {
+            case JWTAlgorithmAsymmetricBase__AlgorithmType__RS: {
+                switch ((JWTAlgorithmAsymmetricBase__AlgorithmNumber)number.integerValue) {
+                    case JWTAlgorithmAsymmetricBase__AlgorithmNumber__256: {
+                        result = kSecKeyAlgorithmRSASignatureMessagePKCS1v15SHA256;
+                        break;
+                    }
+                    case JWTAlgorithmAsymmetricBase__AlgorithmNumber__384: {
+                        result = kSecKeyAlgorithmRSASignatureMessagePKCS1v15SHA384;
+                        break;
+                    }
+                    case JWTAlgorithmAsymmetricBase__AlgorithmNumber__512: {
+                        result = kSecKeyAlgorithmRSASignatureMessagePKCS1v15SHA512;
+                        break;
+                    }
+                    default:
+                        break;
+                }
+                break;
+            }
+            case JWTAlgorithmAsymmetricBase__AlgorithmType__ES: {
+                switch ((JWTAlgorithmAsymmetricBase__AlgorithmNumber)number.integerValue) {
+                    case JWTAlgorithmAsymmetricBase__AlgorithmNumber__256: {
+                        result = kSecKeyAlgorithmECDSASignatureMessageX962SHA256;
+                        break;
+                    }
+                    case JWTAlgorithmAsymmetricBase__AlgorithmNumber__384: {
+                        result = kSecKeyAlgorithmECDSASignatureMessageX962SHA384;
+                        break;
+                    }
+                    case JWTAlgorithmAsymmetricBase__AlgorithmNumber__512: {
+                        result = kSecKeyAlgorithmECDSASignatureMessageX962SHA512;
+                        break;
+                    }
+                    default:
+                        break;
+                }
+                break;
+            }
+            default:
+                break;
+        }
+        return result;
+    }
 }
 
 - (SecKeyAlgorithm)algorithm {
@@ -178,24 +250,36 @@ typedef NS_ENUM(NSInteger, JWTAlgorithmAsymmetricBase__AlgorithmNumber) {
 
 @implementation JWTAlgorithmAsymmetricBase__After10 (SignAndVerify)
 - (NSData *)signData:(NSData *)plainData key:(SecKeyRef)privateKey error:(NSError *__autoreleasing *)error {
-    CFErrorRef theError = NULL;
-    NSData *result = (__bridge NSData *)SecKeyCreateSignature(privateKey, self.algorithm, (__bridge CFDataRef)plainData, &theError);
-    if (theError) {
+    if (SecKeyIsAlgorithmSupported == NULL) {
         if (error) {
+            *error = [JWTAlgorithmAsymmetricFamilyErrorDescription errorWithCode:JWTAlgorithmAsymmetricFamilyErrorAlgorithmIsNotSupported];
+        }
+        return nil;
+    }
+    else {
+        CFErrorRef theError = NULL;
+        NSData *result = (NSData *)CFBridgingRelease(SecKeyCreateSignature(privateKey, self.algorithm, (__bridge CFDataRef)plainData, &theError));
+        if (error && theError) {
             *error = (__bridge NSError *)(theError);
         }
+        return result;
     }
-    return result;
 }
 - (BOOL)verifyData:(NSData *)plainData signature:(NSData *)signature key:(SecKeyRef)publicKey error:(NSError *__autoreleasing *)error {
-    CFErrorRef theError = NULL;
-    BOOL result = SecKeyVerifySignature(publicKey, self.algorithm, (__bridge CFDataRef)plainData, (__bridge CFDataRef)signature, &theError);
-    if (theError) {
+    if (SecKeyIsAlgorithmSupported == NULL) {
         if (error) {
+            *error = [JWTAlgorithmAsymmetricFamilyErrorDescription errorWithCode:JWTAlgorithmAsymmetricFamilyErrorAlgorithmIsNotSupported];
+        }
+        return NO;
+    }
+    else {
+        CFErrorRef theError = NULL;
+        BOOL result = SecKeyVerifySignature(publicKey, self.algorithm, (__bridge CFDataRef)plainData, (__bridge CFDataRef)signature, &theError);
+        if (error && theError) {
             *error = (__bridge NSError *)(theError);
         }
+        return result;
     }
-    return result;
 }
 @end
 
@@ -213,116 +297,60 @@ typedef NS_ENUM(NSInteger, JWTAlgorithmAsymmetricBase__AlgorithmNumber) {
     mutableDictionary[[JWTCryptoKeyExtractor parametersKeyCertificatePassphrase]] = self.privateKeyCertificatePassphrase ?: [NSNull null];
     return [mutableDictionary copy];
 }
-- (NSData *)signHash:(NSData *)hash key:(NSData *)key error:(NSError *__autoreleasing *)error {
-    NSData *result = nil;
-    if (self.signKey || self.keyExtractor) {
-        NSError *extractKeyError = nil;
-        id <JWTCryptoKeyProtocol> keyItem = self.signKey ?: [self.keyExtractor keyFromData:key parameters:[self signKeyExtractorParameters] error:&extractKeyError];
-        
-        if (extractKeyError || keyItem == nil) {
-            // tell about error
-            if (extractKeyError && error) {
-                *error = extractKeyError;
-            }
-            NSError *removeError = nil;
-            [JWTCryptoSecurity removeKeyByTag:keyItem.tag error:&removeError];
-            if (removeError && error) {
-                *error = removeError;
-            }
+
+- (void)removeKeyItem:(id<JWTCryptoKeyProtocol>)item error:(NSError *__autoreleasing *)error {
+    NSError *theError = nil;
+    [JWTCryptoSecurity removeKeyByTag:item.tag error:&theError];
+    if (theError && error) {
+        *error = theError;
+    }
+}
+
+- (NSData *)signHash:(NSData *)hash key:(NSData *)key error:(NSError *__autoreleasing *)error {    
+    id<JWTCryptoKeyExtractorProtocol> theExtractor = self.keyExtractor ?: [JWTCryptoKeyExtractor privateKeyInP12];
+    NSError *extractKeyError = nil;
+    id <JWTCryptoKeyProtocol> keyItem = self.signKey ?: [theExtractor keyFromData:key parameters:[self signKeyExtractorParameters] error:&extractKeyError];
+    
+    if (extractKeyError || keyItem == nil) {
+        // tell about error
+        if (extractKeyError && error) {
+            *error = extractKeyError;
         }
-        else {
-            NSError *signError = nil;
-            result = [self signData:hash key:keyItem.key error:&signError];
-            if (signError && error) {
-                *error = signError;
-            }
-        }
+        NSError *removeError = nil;
+        [self removeKeyItem:keyItem error:&removeError];
+        return nil;
     }
     else {
-        SecIdentityRef identity = nil;
-        SecTrustRef trust = nil;
-        
-        //        [JWTCryptoSecurity extractIdentityAndTrustFromPKCS12:inPKCS12Data password:keyPassword identity:outIdentity trust:outTrust];
-        [JWTCryptoSecurity extractIdentityAndTrustFromPKCS12:(__bridge CFDataRef)(key) password: (__bridge CFStringRef)(self.privateKeyCertificatePassphrase) identity:&identity trust:&trust];
-        
-        if (identity && trust) {
-            SecKeyRef privateKey;
-            SecIdentityCopyPrivateKey(identity, &privateKey);
-            
-            NSError *signError = nil;
-            result = [self signData:hash key:privateKey error:&signError];
-            if (signError && error) {
-                *error = signError;
-            }
-            
-            if (privateKey) {
-                CFRelease(privateKey);
-            }
+        NSError *signError = nil;
+        NSData *result = [self signData:hash key:keyItem.key error:&signError];
+        if (signError && error) {
+            *error = signError;
         }
-        
-        if (identity) {
-            CFRelease(identity);
-        }
-        
-        if (trust) {
-            CFRelease(trust);
-        }
+        return result;
     }
-    return result;
 }
 - (BOOL)verifyHash:(NSData *)hash signature:(NSData *)signature key:(NSData *)key error:(NSError *__autoreleasing *)error {
-    if (self.verifyKey || self.keyExtractor) {
-        NSError *extractKeyError = nil;
-        id<JWTCryptoKeyProtocol> keyItem = self.verifyKey ?: [self.keyExtractor keyFromData:key parameters:[self verifyKeyExtractorParameters] error:&extractKeyError];
-        BOOL verified = NO;
-        
-        if (extractKeyError || keyItem == nil) {
-            // error while getting key.
-            // cleanup.
-            // tell about error
-            if (extractKeyError && error) {
-                *error = extractKeyError;
-            }
-            NSError *removeError = nil;
-            [JWTCryptoSecurity removeKeyByTag:keyItem.tag error:&removeError];
-            if (removeError && error) {
-                //???
-                *error = removeError;
-            }
-            return verified;
+    id<JWTCryptoKeyExtractorProtocol> theExtractor = self.keyExtractor ?: [JWTCryptoKeyExtractor publicKeyWithCertificate];
+    NSError *extractKeyError = nil;
+    id<JWTCryptoKeyProtocol> keyItem = self.verifyKey ?: [theExtractor keyFromData:key parameters:[self verifyKeyExtractorParameters] error:&extractKeyError];
+    if (extractKeyError || keyItem == nil) {
+        if (extractKeyError && error) {
+            *error = extractKeyError;
         }
-        else {
-            NSError *verifyError = nil;
-            verified = [self verifyData:hash signature:signature key:keyItem.key error:&verifyError];
-            if (verifyError && error) {
-                *error = verifyError;
-            }
-        }
-        
         NSError *removeError = nil;
-        [JWTCryptoSecurity removeKeyByTag:keyItem.tag error:&removeError];
-        
-        if (error && removeError) {
-            *error = removeError;
-        }
-        
-        return verified;
+        [self removeKeyItem:keyItem error:&removeError];
+        return NO;
     }
     else {
-        SecKeyRef publicKey = [JWTCryptoSecurity publicKeyFromCertificate:key];
-        // TODO: special error handling here.
-        // add error handling later?
-        if (publicKey != NULL) {
-            NSError *verifyError = nil;
-            BOOL verified = [self verifyData:hash signature:signature key:publicKey error:&verifyError];
-            if (verifyError && error) {
-                *error = verifyError;
-            }
-            CFRelease(publicKey);
-            return verified;
+        NSError *verifyError = nil;
+        BOOL verified = [self verifyData:hash signature:signature key:keyItem.key error:&verifyError];
+        if (verifyError && error) {
+            *error = verifyError;
         }
+        NSError *removeError = nil;
+        [self removeKeyItem:keyItem error:&removeError];
+        return verified;
     }
-    return NO;
 }
 
 - (NSData *)encodePayload:(NSString *)theString withSecret:(NSString *)theSecret {
@@ -349,7 +377,7 @@ typedef NS_ENUM(NSInteger, JWTAlgorithmAsymmetricBase__AlgorithmNumber) {
 //#endif
 // (TARGET_OS_IPHONE && __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_10_0) ||
 @interface JWTAlgorithmAsymmetricBase__FamilyMember :
-#if Check_That_Security_API_IS_AVAILABLE
+#if JWT_CRYPTO_MODERN_API_IS_ALLOWED
 JWTAlgorithmAsymmetricBase__After10
 #else
 JWTAlgorithmAsymmetricBase__Prior10

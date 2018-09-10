@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux';
-import test from "./test"
-import room from "./room"
+import user from "./user"
+import document from "./document"
 
 export default function createStore(reducers){
     return combineReducers({
-        test,
-        room,
+        user,
+        document,
         ...reducers
     })
 }

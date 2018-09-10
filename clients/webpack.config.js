@@ -33,7 +33,6 @@ let defaults = {
   },
   module: {
     rules: [
-      {test: /\.json$/, use: ["json-loader"]},
       {
         test: /(\.js|\.jsx)$/,
         exclude: /(node_modules)/,

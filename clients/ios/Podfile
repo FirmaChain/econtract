@@ -9,40 +9,54 @@ target 'proj' do
   pod 'AppCenter/Crashes', '~> 1.6.1'
   pod 'AppCenter/Analytics', '~> 1.6.1'
   pod 'AppCenterReactNativeShared', '~> 1.5.1'
+  pod 'Google/SignIn'
   pod 'React', :path => '../node_modules/react-native', :subspecs => [
-     'Core',
-     'RCTText',
-     'RCTImage',
-     'RCTNetwork',
-     'RCTSettings',
-     'DevSupport',
-     'RCTAnimation',
-     'RCTWebSocket', # needed for localhost testing of your app
-   ]
+    'Core',
+    'CxxBridge',
+    'DevSupport',
+    'RCTText',
+    'RCTImage',
+    'RCTNetwork',
+    'RCTSettings',
+    'DevSupport',
+    'RCTAnimation',
+    'RCTWebSocket', # needed for localhost testing of your app
+  ]
   pod "yoga", :path => "../node_modules/react-native/ReactCommon/yoga"
-
-
 
   platform :ios, '9.0'
   
   pod 'CodePush', :path => '../node_modules/react-native-code-push'
+  pod 'Picker', :path => '../node_modules/react-native-picker'
+  pod 'react-native-document-picker', :path => '../node_modules/react-native-document-picker'
+  pod 'RNFS', :path => '../node_modules/react-native-fs'
 
-  target 'projTests' do
-    inherit! :search_paths
-    # Pods for testing
-  end
+  pod 'react-native-orientation', :path => '../node_modules/react-native-orientation'
 
+  pod 'react-native-fetch-blob', :path => '../node_modules/react-native-fetch-blob'
+
+  pod 'react-native-pdf', :path => '../node_modules/react-native-pdf'
+
+  pod 'react-native-randombytes', :path => '../node_modules/react-native-randombytes'
 end
 
-target 'proj-tvOS' do
-  # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
-  # use_frameworks!
-
-  # Pods for proj-tvOS
-
-  target 'proj-tvOSTests' do
-    inherit! :search_paths
-    # Pods for testing
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    if target.name == "React"
+      target.remove_from_project
+    end
   end
-
 end
+
+# target 'proj-tvOS' do
+#   # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
+#   # use_frameworks!
+
+#   # Pods for proj-tvOS
+
+#   target 'proj-tvOSTests' do
+#     inherit! :search_paths
+#     # Pods for testing
+#   end
+
+# end

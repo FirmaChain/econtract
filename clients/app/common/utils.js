@@ -18,3 +18,5 @@ try{
 export function current_platform(){
     return platform;
 }
+
+current_platform();

@@ -7,7 +7,6 @@ function forInitial(props) {
 
     const focused = navigation.state.index === scene.index;
     const opacity = focused ? 1 : 0;
-    // If not focused, move the scene far away.
     const translate = focused ? 0 : 1000000;
     return {
         opacity,
@@ -16,39 +15,37 @@ function forInitial(props) {
 }
 
 function fromRight(props){
+    let t = Date.now()
     const { layout, position, scene } = props;
-
     if (!layout.isMeasured) {
         return forInitial(props);
     }
     const interpolate = getSceneIndicesForInterpolationInputRange(props);
-
     if (!interpolate) return { opacity: 0 };
 
     const { first, last } = interpolate;
     const index = scene.index;
     const opacity = position.interpolate({
-        inputRange: [first, first + 0.01, index, last - 0.01, last],
-        outputRange: [0, 1, 1, 0.85, 0],
+        inputRange: [first, (first+index)/2, index, last -0.01 ,last],
+        outputRange: [0, 0.5, 1, 0.5, 0],
     });
 
+    
     const scale = position.interpolate({
-        inputRange: [first, first+0.01, index, last/2, last],
-        outputRange: [0, 1, 1, 0.97, 0.97],
+        inputRange: [first, first+0.01, index, (index+last)/2, last],
+        outputRange: [0, 1, 1, 0.98, 0.98],
     });
-
     const width = layout.initWidth;
     const translateX = position.interpolate({
         inputRange: [first, index, last],
-        outputRange: I18nManager.isRTL
-        ? [-width, 0, width * 0.3]
-        : [width, 0, width * -0.3],
+        outputRange: [width * 0.06, 0, -width*0.06]
+        // : [ width * 0.03, 0, width*-0.03],
     });
     const translateY = 0;
-
+    //{ translateX }, { translateY }, {scale}
     return {
         opacity,
-        transform: [{ translateX }, { translateY },{scale}],
+        transform: [ ],
     };
 }
 
@@ -82,24 +79,26 @@ function fromBottom(props){
         : [height, 0, height * -0.3],
     });
     const translateX = 0;
-
+    //{ translateX }, { translateY }, { scale }
     return {
         opacity,
-        transform: [{ translateX }, { translateY }, { scale }],
+        transform: [],
     };
 }
 
-export function CustomTransition(duration = 300) {
+export function CustomTransition(sceneProps,duration = 300) {
     return {
         transitionSpec: {
             duration,
             easing: Easing.out(Easing.poly(4)),
             timing: Animated.timing,
-            useNativeDriver: true,
+            // useNativeDriver: true,
         },
         screenInterpolator: (props) => {
-            console.log(props.scene.route.routeName)
-            if(props.scene.route.routeName == "Login")
+            let routes = sceneProps.scenes.map((r)=>r.route.routeName)
+            let routeName = routes[routes.length - 1]
+
+            if( routeName == "RegDoc" )
                 return fromBottom(props);
 
             return fromRight(props);

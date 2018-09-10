@@ -3,11 +3,19 @@ import Tab1 from './screen/Tab1';
 import Tab2 from './screen/Tab2';
 import Tab3 from './screen/Tab3';
 import Tab4 from './screen/Tab4';
-import Modal from './screen/Modal';
 import Login from "./screen/Login"
-import { createStackNavigator, createBottomTabNavigator ,createMaterialTopTabNavigator } from 'react-navigation';
-// import { Ionicons } from '@expo/vector-icons';
+import DocumentDetail from "./screen/DocumentDetail"
+import DocumentViewer from "./screen/DocumentViewer"
+import ImportDocument from "./screen/ImportDocument"
+import Regist from "./screen/Regist"
+import { createStackNavigator, createSwitchNavigator, createBottomTabNavigator ,createMaterialTopTabNavigator } from 'react-navigation';
 import { CustomTransition } from "./RoutesTransition"
+import RegistDocument from './screen/RegistDocument';
+import RegistDocumentInfo from './screen/RegistDocumentInfo';
+import CreateSignature from './screen/CreateSignature';
+import AddCounterparty from './screen/AddCounterparty';
+import EditCounterparty from './screen/EditCounterparty';
+import SelectCounterparty from "./screen/SelectCounterparty";
 
 function createCustomBottomTabNavigator(array,opt){
     let screens = {}
@@ -30,48 +38,32 @@ function createTabScreen(title, comp, icon, opts={} ){
     }
 }
 
-let b = createMaterialTopTabNavigator({
-    t1 : { screen:()=>{return <Tab1 />} },
-    t2 : { screen:()=>{return <Tab1 />} },
-    t3 : { screen:()=>{return <Tab1 />} },
-    t4 : { screen:()=>{return <Tab1 />} },
-})
-
-export default createStackNavigator({
-    Main: { 
-        screen: createCustomBottomTabNavigator([
-            createTabScreen("타이틀", b, "md-arrow-round-down"),
-            createTabScreen("가나다", Tab2, "md-arrow-round-down"),
-            createTabScreen("ㅅㅁㅁ", Tab3, "md-arrow-round-down"),
-            createTabScreen("ㅈㄷㅈ", Tab4, "md-arrow-round-down"),
-        ],{
-            tabBarOptions: { },
-        }),
-        navigationOptions:({navigation})=>{
-            console.log("???")
-            return ({
-                title: navigation.state.routes[navigation.state.index].key
-            })
-        }
-    },
-    Modal: { screen: Modal },
+export default createSwitchNavigator({
     Login: { screen: Login },
-},{
-    transitionConfig: () => CustomTransition(400),
-    navigationOptions:({navigation})=>{
-        try{
-            if(navigation.state.routes[navigation.state.index].key == "타이틀"){
-                return ({
-                    header:null
-                })
-            }
-        }catch(err){
-            console.log(navigation)
-        }
+    Regist: { screen: Regist },
 
-        let title = navigation.state.params ? navigation.state.params.title || "" : navigation.state.routeName
-        return {
-            title:title
-        }
-    }
+    App: createStackNavigator({
+        Main: { screen: Tab1 },
+        MyAgreement: { screen: Tab2 },
+        Counterparty: { screen: Tab3 },
+        MyWallet: { screen: Tab4 },
+        RegDoc: {screen: RegistDocument},
+        RegDocInfo: {screen: RegistDocumentInfo},
+        CreateSignature: {screen: CreateSignature},
+        AddCounterparty: {screen: AddCounterparty},
+        EditCounterparty: {screen: EditCounterparty},
+        SelectCounterparty: {screen: SelectCounterparty},
+        DocumentDetail: {screen: DocumentDetail},
+        DocumentViewer: {screen: DocumentViewer},
+        ImportDocument: {screen: ImportDocument},
+    },{
+        initialRouteName: "Main",
+        navigationOptions: { 
+            header:null
+        },
+        transitionConfig: (conf)=>CustomTransition(conf,400),
+    })
+
+},{
+    initialRouteName: "Login"
 });

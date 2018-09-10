@@ -1,24 +1,21 @@
 import "./styles/style.scss"
 
+import translate from "../common/translate"
 import React from "react"
 import ReactDOM from "react-dom"
 import { Router, Route, Switch } from "react-router-dom"
 import { createStore , applyMiddleware } from 'redux';
 import { Provider  } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
-import { createLogger } from 'redux-logger';
-import RouteHook from './components/route.comp';
 import createReducer from '../common/reducers';
 import history from './history';
-import PageTransition from "react-router-page-transition";
 
 import Template from "./components/template.comp"
 import IndexPage from "./components/index.page"
-import ChatPage from "./components/chat.page"
-
+import LoginPage from "./components/login.page"
+import RegistPage from "./components/regist.page"
 
 import {current_platform} from "../common/utils"
-import handshake_network from "../common/ChatSocket"
 
 const store = createStore(
 	createReducer({}),
@@ -28,11 +25,6 @@ const store = createStore(
 function resolver(props){
 	if(props.auth){
 		return new Promise(async (r,e)=>{
-			// let user = await API.user()
-			// if(!user.code){
-			// 	return e("/login")
-			// }
-			// return r({ auth : user})
 			r()
 		})
 	}
@@ -41,22 +33,18 @@ function resolver(props){
 }
 
 window.addEventListener("load",()=>{
-	handshake_network().then(()=>{
-		ReactDOM.render(
-			<Router history={history}>
-				<Provider store={store}>
-					<Template>
-					<Route render={({ location }) => (<PageTransition timeout={500}>
-							<Switch location={location}>
-								<Route onEnter={resolver} exact path="/" component={IndexPage} />
-								<Route onEnter={resolver} path="/chat/:chat" component={ChatPage} />
-							</Switch>
-						</PageTransition>)}
-					/>
-					</Template>
-				</Provider>
-			</Router>,
-			document.getElementsByClassName("root-container")[0]
-		);
-	})
+	ReactDOM.render(
+		<Router history={history}>
+			<Provider store={store}>
+				<Template>
+					<Route onEnter={resolver} exact path="/" component={IndexPage} />
+					<Route onEnter={resolver} exact path="/login" component={LoginPage} />
+					<Route onEnter={resolver} exact path="/regist" component={RegistPage} />
+				</Template>
+			</Provider>
+		</Router>,
+		document.getElementsByClassName("root-container")[0]
+	);
 })
+
+console.log(translate)

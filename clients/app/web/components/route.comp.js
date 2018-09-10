@@ -115,7 +115,6 @@ RouteHook.propTypes = {
   ]).isRequired,
   exact: PropTypes.bool,
   strict: PropTypes.bool,
-
 };
 
 RouteHook.defaultProps = {

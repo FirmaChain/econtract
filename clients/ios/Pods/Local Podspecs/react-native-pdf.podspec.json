@@ -1,0 +1,21 @@
+{
+  "name": "react-native-pdf",
+  "version": "3.0.17",
+  "summary": "A react native PDF view component",
+  "authors": "Wonday",
+  "license": "MIT",
+  "requires_arc": true,
+  "homepage": "https://github.com/wonday/react-native-pdf",
+  "source": {
+    "git": "https://github.com/wonday/react-native-pdf.git"
+  },
+  "platforms": {
+    "ios": "8.0"
+  },
+  "source_files": "ios/**/*.{h,m}",
+  "dependencies": {
+    "React": [
+
+    ]
+  }
+}
