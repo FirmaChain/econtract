@@ -1,19 +1,26 @@
 import React from "react"
 import ReactDOM from "react-dom"
+import { Link } from "react-router-dom";
 
-export default function(){
+export default function(props){
     return (<div className="column-200 display-flex">
         <ul className="left-menu">
-            <li className="item selected">
-                <i className="fas fa-plus-circle" /> 최근 사용
-            </li>
-            <li className="item">
-                <i className="fas fa-folder" /> 폴더순으로
-            </li>
+            <Link to="contracts">
+                <li className={`item ${props.page == "recent" ? 'selected' : ''}`}>
+                    <i className="fas fa-plus-circle" /> 최근 사용
+                </li>
+            </Link>
+            <Link to="folder">
+                <li className={`item ${props.page == "folder" ? 'selected' : ''}`}>
+                    <i className="fas fa-folder" /> 폴더순으로
+                </li>
+            </Link>
             <li className="spacer" />
-            <li className="item">
-                <i className="fas fa-file-alt" /> 내 템플릿
-            </li>
+            <Link to="template">
+                <li className={`item ${props.page == "template" ? 'selected' : ''}`}>
+                    <i className="fas fa-file-alt" /> 내 템플릿
+                </li>
+            </Link>
         </ul>
     </div>)
 }

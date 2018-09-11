@@ -336,7 +336,7 @@ table.table{
         display: flex;
         flex-direction: column;
         flex:1;
-        >li.item{
+        li.item{
             margin: 5px 0;
             font-size: 13px;
             font-weight: bold;
@@ -356,10 +356,10 @@ table.table{
                 margin-right: 5px;
             }
         }
-        >li.spacer{
+        li.spacer{
             flex:1;
         }
-        >li.selected{
+        li.selected{
             color: #000;
         }
     }
@@ -367,10 +367,10 @@ table.table{
     .page-contents{
         >h1{
             font-weight: bold;
-            margin: 0;
             padding: 0;
             font-size: 18px;
             letter-spacing: 3px;
+            margin:10px 0;
         }
     }
 

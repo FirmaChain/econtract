@@ -17,7 +17,7 @@ export default function(){
         <div className="profile">
             <div className="info">
                 <div className="top">윤대현의 초대코드</div>
-                <div className="bottom">ㅉㅉㅈ</div>
+                <div className="bottom">afaffa</div>
             </div>
             <div className="pic"></div>
         </div>
