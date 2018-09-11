@@ -336,6 +336,29 @@ table.table{
         display: flex;
         flex-direction: column;
         flex:1;
+
+        a{
+            &:link {
+                color: red;
+            }
+            
+            /* visited link */
+            &:visited {
+                color: green;
+            }
+            
+            /* mouse over link */
+            &:hover {
+                color: hotpink;
+            }
+            
+            /* selected link */
+            &:active {
+                color: blue;
+            }
+        }
+        
+
         li.item{
             margin: 5px 0;
             font-size: 13px;
