@@ -14,7 +14,9 @@ $screen-width: 800px;
     background-color: #F8F8F8;
     height: 100%;
     width: 100%;
-    
+
+    padding-top: 30px;
+
     >div.back-key{
         width: 100%;
         padding: 10px 10px 0 10px;
@@ -42,10 +44,11 @@ $screen-width: 800px;
             font-size: 17px;
             margin: 0;
             margin-left: 10px;
+            display: inline-block;
         }
 
         >div.page{
-            margin-top: 15px;
+            margin-top: 30px;
             border:1px solid #E0E0E0;
             border-radius: 7px;
             padding: 15px;
@@ -232,9 +235,9 @@ table.table{
     }
     td{
         border-bottom: 1px solid #c0c0c0;
-        font-weight: bold;
+        font-weight: 400;
         color: #7F7F7F;
-        font-size: 10px;
+        font-size: 11px;
         text-align: left;
         padding: 15px 0 15px 20px;
     }
@@ -247,11 +250,85 @@ table.table{
 }
 
 .user-state-bar{
-    
+    float:right;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: translateY(-7px);
+
+    >.login-time-bar{
+        display: flex;
+        border: 2px solid #3D4B5A;
+        border-radius: 3px;
+        font-size: 10px;
+        padding: 2px 6px;
+        font-weight: bold;
+        margin-right: 40px;
+
+        >div{
+            margin-left:10px;
+            &:first-child{
+                margin-left:0;
+            }
+        }
+    }
+
+    >.searchbar{
+        padding: 5px 10px;
+        border:1px solid #E0E0E0;
+        border-radius: 5px;
+        color: #E0E0E0;
+        margin-right: 40px;
+
+        >input{
+            border:0;
+            background-color: transparent;
+            margin-left: 10px;
+        }
+    }
+
+    >.profile{
+        display: flex;
+        margin-right: 40px;
+
+        >.info{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-end;
+            margin-right: 10px;
+
+            >.top{
+                font-size: 10px;
+                color: #8C8880;
+            }
+
+            >.bottom{
+                margin-top: 3px;
+                font-size: 13px;
+                font-weight: bold;
+            }
+        }
+
+        >.pic{
+            width: 30px;
+            height: 30px;
+            border:2px solid #3D4B5A;
+            border-radius: 5px;
+        }
+    }
+
+    >.add-button{
+        background-color: #3D4B5A;
+        padding: 7px 20px;
+        font-size: 13px;
+        color: #fff;
+        border-radius: 8px;
+    }
 }
 
 .contract-list-page{
-    padding-top: 20px;
+
     ul.left-menu{
         list-style: none;
         padding: 0;
