@@ -28,6 +28,7 @@ function render_li(cur, max, onClick){
 
     for(let i=start; i < target; i++ ){
         list.push(<li 
+            key={i}
             className={cur == i ? `slot active` : `slot`} 
             onClick={()=>{onClick(i)}}
         >{i}</li>)

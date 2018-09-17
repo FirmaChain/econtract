@@ -5,6 +5,21 @@ body{
     margin: 0;
 }
 $screen-width: 800px;
+a{
+    text-decoration: none;
+    &:link {
+        color: inherit;
+    }
+    &:visited {
+        color: inherit;
+    }
+    &:hover {
+        color: inherit;
+    }
+    &:active {
+        color: inherit;
+    }
+}
 
 .default-page{
     display:flex;
@@ -341,7 +356,6 @@ table.table{
         flex:1;
 
         a{
-            text-decoration: none;
             margin: 8px 0;
             &:first-child{
                 margin-top: 0;
@@ -349,25 +363,6 @@ table.table{
 
             &:last-child{
                 margin-bottom: 0;
-            }
-
-            &:link {
-                color: inherit;
-            }
-            
-            /* visited link */
-            &:visited {
-                color: inherit;
-            }
-            
-            /* mouse over link */
-            &:hover {
-                color: inherit;
-            }
-            
-            /* selected link */
-            &:active {
-                color: inherit;
             }
         }
         
@@ -428,6 +423,10 @@ table.table{
             &:hover{
                 background-color: #EEE;
             }
+        }
+        >button.danger{
+            background-color: RGB(47, 58, 70);
+            color: #fff;
         }
     }
 }
@@ -546,6 +545,23 @@ table.table{
     text-align: center !important;
 }
 
+.modal-manager{
+    >div.modal-container{
+        z-index: 100000;
+        position: fixed;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        left:0;
+        right: 0;
+        bottom: 0;
+        top: 0;
+        background-color: rgba(0,0,0,0.3);
+        opacity: 0;
+        transition: all 500ms;
+    }
+}
+
 div.pager-comp{
     display: flex;
     justify-content: center;
@@ -596,7 +612,18 @@ div.pager-comp{
         }
     }
 }
-
+div.checkbox2-comp{
+    cursor: pointer;
+    border:2px solid #000;
+    border-radius: 3px;
+    height: 12px;
+    width: 12px;
+    overflow: hidden;
+    >i{
+        font-size: 13px;
+        color: #000;
+    }
+}
 div.checkbox-comp{
     display: inline-flex;
     cursor: pointer;
@@ -692,6 +719,85 @@ div.checkbox-comp{
                         border-radius: 10px;
                     }
                 }
+            }
+        }
+    }
+}
+
+.default-modal{
+    background-color: #fff;
+    border-radius: 5px;
+    min-width: 400px;
+
+    >div.contents{
+        padding: 10px 30px;
+
+        >div.title{
+            text-align: center;
+            font-weight: bold;
+            font-size: 13px;
+            padding: 10px 0;
+        }
+
+        >div.msg{
+            margin: 15px 0;
+            text-align: center;
+            font-size: 13px;
+            word-break: break-all;
+            width: 400px;
+            line-height: 1.6;
+        }
+
+        >div.select{
+            text-align: center;
+            select{
+                width: 200px;
+                font-size: 15px;
+                padding: 15px;
+
+                background-color: #fff;
+            }
+        }
+
+        >div.form-label{
+            color: RGB(105, 105, 105);
+            font-size: 11px;
+            margin: 20px 0 5px 0;
+        }
+
+        >div.form-input{
+            padding: 10px;
+            padding-left: 20px;
+            margin-bottom: 20px;
+            border-bottom:1px solid rgb(200,200,200);
+
+            >input{
+                font-size: 13px;
+                border:0;
+            }
+        }
+    }
+
+    >div.buttons{
+        display: flex;
+
+        >button{
+            flex:1;
+            height: 50px;
+            border:0;
+            background-color: #fff;
+            font-weight: bold;
+            font-size: 14px;
+            cursor: pointer;
+
+            &:hover{
+                background-color: rgb(220,220,220);
+            }
+            &:first-child{
+                border-bottom-left-radius: 5px;
+            }
+            &:last-child{
+                border-bottom-right-radius: 5px;
             }
         }
     }

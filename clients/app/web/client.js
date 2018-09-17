@@ -16,6 +16,8 @@ import LoginPage from "./components/login.page"
 import RegistPage from "./components/regist.page"
 import ContractListPage from "./components/contract-list.page"
 import TemplatePage from "./components/contract-template.page"
+import FolderPage from "./components/contract-folder-list.page"
+import InFolderPage from "./components/contract-list.page"
 
 import {current_platform} from "../common/utils"
 
@@ -43,7 +45,9 @@ window.addEventListener("load",()=>{
 					<Route onEnter={resolver} exact path="/login" component={LoginPage} />
 					<Route onEnter={resolver} exact path="/regist" component={RegistPage} />
 					<Route onEnter={resolver} exact path="/contracts" component={ContractListPage} />
+					<Route onEnter={resolver} exact path="/folder" component={FolderPage} />
 					<Route onEnter={resolver} exact path="/template" component={TemplatePage} />
+					<Route onEnter={resolver} exact path="/folder/:id" component={InFolderPage} />
 				</Template>
 			</Provider>
 		</Router>,
