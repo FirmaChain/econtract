@@ -38,7 +38,10 @@ $screen-width: 800px;
             }
         }
     }
+
     >div.container{
+        position: relative;
+
         >h1{
             letter-spacing:4px;
             font-size: 17px;
@@ -338,38 +341,43 @@ table.table{
         flex:1;
 
         a{
+            text-decoration: none;
+            margin: 8px 0;
+            &:first-child{
+                margin-top: 0;
+            }
+
+            &:last-child{
+                margin-bottom: 0;
+            }
+
             &:link {
-                color: red;
+                color: inherit;
             }
             
             /* visited link */
             &:visited {
-                color: green;
+                color: inherit;
             }
             
             /* mouse over link */
             &:hover {
-                color: hotpink;
+                color: inherit;
             }
             
             /* selected link */
             &:active {
-                color: blue;
+                color: inherit;
             }
         }
         
 
         li.item{
-            margin: 5px 0;
             font-size: 13px;
             font-weight: bold;
             color: #BEBEBE;
             letter-spacing: 1px;
             cursor: pointer;
-
-            &:first-child{
-                margin-top: 0;
-            }
 
             &:hover{
                 color: #999;
@@ -394,6 +402,12 @@ table.table{
             font-size: 18px;
             letter-spacing: 3px;
             margin:10px 0;
+        }
+
+        .filter-checkbox{
+            display: flex;
+            align-items: center;
+            margin-top: 30px;
         }
     }
 
@@ -530,4 +544,155 @@ table.table{
 }
 .text-center{
     text-align: center !important;
+}
+
+div.pager-comp{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    >ul{
+        display: flex;
+        padding: 0;
+        margin: 10px 0;
+        >li{
+            width: 15px;
+            height: 15px;
+            margin: 5px;
+            padding: 5px;
+            list-style: none;
+        }
+        >li.slot{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            list-style: none;
+            font-weight: bold;
+            border-radius: 7px;
+            font-size: 10px;
+            cursor: pointer;
+
+            color: RGB(41, 58, 73);
+            &:hover{
+                background-color: RGBA(41, 58, 73, 0.5);
+            }
+            &:active{
+                background-color: RGB(41, 58, 73);
+                color: #fff;
+            }
+
+            >i{
+                font-size: 13px;
+            }
+        }
+
+        >li.active{
+            background-color: RGB(41, 58, 73);
+            color: #fff;
+        }
+
+        >li.chevron{
+            color: RGB(173, 173, 173);
+        }
+    }
+}
+
+div.checkbox-comp{
+    display: inline-flex;
+    cursor: pointer;
+    margin-right: 20px;
+    >.radius{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        border:1px solid RGB(105, 105, 114);
+        border-radius: 50%;
+        width: 10px;
+        height: 10px;
+        margin-right: 5px;
+
+        >div{
+            transition: all 200ms;
+            background-color: RGB(105, 105, 114);
+            border-radius: 50%;
+            width: 0px;
+            height: 0px;
+        }
+
+        >div.active{
+            width: 8px;
+            height: 8px;
+        }
+    }
+    >.label{
+        color: RGB(105, 105, 114);
+        font-size: 12px;
+    }
+}
+
+.transaction-background-work-comp{
+    position: fixed;
+    right: 10px;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+
+    >div.header{
+        background-color: RGB(41, 58, 73);
+        border-top-right-radius: 5px;
+        border-top-left-radius: 5px;
+        padding: 15px;
+        display: flex;
+        justify-content: space-between;
+        color: #fff;
+        align-items: center;
+        font-size: 12px;
+        cursor: pointer;
+    }
+
+    >div.content{
+        padding: 5px;
+        border-left: 1px solid RGBA(41, 58, 73, 0.6);
+        border-right: 1px solid RGBA(41, 58, 73, 0.6);
+        font-size: 14px;
+        >div{
+            transition: all 500ms;
+            overflow: hidden;
+
+            >div.slot{
+                display: flex;
+                padding: 10px;
+                justify-content: space-between;
+                align-items: center;
+
+                >div.slot-info{
+                    
+                    >div.title{
+                        font-weight: bold;
+                        font-size: 12px;
+                        color: RGB(41, 58, 73)
+                    }
+                    >div.desc{
+                        font-size: 10px;
+                        color: RGB(170, 170, 170);
+                        margin-top: 5px;
+                    }
+                }
+
+                >div.progress{
+                    display: flex;
+                    background-color: RGB(215, 214, 215);
+                    border-radius: 10px;
+                    width: 70px;
+                    >div{
+                        height: 7px;
+                        background-color: RGB(41, 58, 73);
+                        border-radius: 10px;
+                    }
+                }
+            }
+        }
+    }
 }

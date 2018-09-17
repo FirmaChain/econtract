@@ -35,7 +35,7 @@ export default class extends React.Component {
     
     render_term(){
         return (<div className="page">
-            <div className="column">
+            <div className="column-300">
                 <div className="form-layout">
                     <div className="form-label"> 서비스 이용약관 </div>
                     <div className="form-textarea">
@@ -55,7 +55,7 @@ export default class extends React.Component {
     
     render_email(){
         return (<div className="page">
-            <div className="column">
+            <div className="column-300">
                 <div className="form-layout">
                     <div className="form-label"> 이메일 인증 </div>
                     <div className="form-input">
@@ -72,7 +72,7 @@ export default class extends React.Component {
 
     render_account(){
         return (<div className="page">
-            <div className="column">
+            <div className="column-300">
                 <div className="form-layout">
                     <div className="form-label"> ID </div>
                     <div className="form-input">
@@ -99,7 +99,7 @@ export default class extends React.Component {
 
     render_personal(){
         return (<div className="page">
-            <div className="column">
+            <div className="column-300">
                 <div className="form-layout">
                     <div className="form-label"> 이메일 </div>
                     <div className="form-input">
@@ -149,7 +149,7 @@ export default class extends React.Component {
 
     render_masterkey(){
         return (<div className="page">
-            <div className="column">
+            <div className="column-300">
                 <div className="form-layout">
                     <div className="form-label"> 마스터 키워드 </div>
                     <div className="form-textarea masterkey-list">
@@ -173,7 +173,7 @@ export default class extends React.Component {
                     </div>
                 </div>
             </div>
-            <div className="column">
+            <div className="column-300">
                 <div className="right-desc">
                     * 전체 계약 잠금 해제시에 필요한 마스터 키워드입니다. 브라우저 및 기기 변경시 보안을 위해 접속하신 기기에서는 잠금 상태로 계약이 로드됩니다. 이전 해제 기록이 있는 계약이라면 해당 키워드를 사용해 일괄 해제 가능합니다.
                 </div>
@@ -186,7 +186,7 @@ export default class extends React.Component {
 
     render_confirm_masterkey(){
         return (<div className="page">
-            <div className="column">
+            <div className="column-300">
                 <div className="form-layout">
                     <div className="form-label"> 마스터 키워드 확인 </div>
                     <div className="form-textarea masterkey-selection-list">
@@ -215,7 +215,7 @@ export default class extends React.Component {
                     </div>
                 </div>
             </div>
-            <div className="column">
+            <div className="column-300">
                 <div className="right-desc">
                     * 앞서 저장해둔 마스터 키워드를 차례대로 배치해 주세요
                 </div>
@@ -246,13 +246,13 @@ export default class extends React.Component {
                 <div className="round-btn"><i className="fas fa-arrow-left"></i></div>
                 <div className="step-indicator">
                     <div className={`item ${this.state.step == 0 ? "enable": ""}`}>약관동의</div>
-                    <i class="fas fa-ellipsis-h"></i>
+                    <i className="fas fa-ellipsis-h"></i>
                     <div className={`item ${this.state.step == 1 ? "enable": ""}`}>이메일 인증</div>
-                    <i class="fas fa-ellipsis-h"></i>
+                    <i className="fas fa-ellipsis-h"></i>
                     <div className={`item ${this.state.step == 2 ? "enable": ""}`}>개인정보 입력</div>
-                    <i class="fas fa-ellipsis-h"></i>
+                    <i className="fas fa-ellipsis-h"></i>
                     <div className={`item ${this.state.step == 3 ? "enable": ""}`}>회원정보 입력</div>
-                    <i class="fas fa-ellipsis-h"></i>
+                    <i className="fas fa-ellipsis-h"></i>
                     <div className={`item ${this.state.step == 4 || this.state.step == 5 ? "enable": ""}`}>마스터 키워드 발급</div>
                 </div>
             </div>

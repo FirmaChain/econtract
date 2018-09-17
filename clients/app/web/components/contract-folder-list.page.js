@@ -6,7 +6,6 @@ import ContractMenu from "./contract-menu"
 import UserStatusBar from "./user-state-bar"
 import Pager from "./pager"
 import CheckBox from "./checkbox"
-import TransactionBackgroundWork from "./transaction_background_work"
 
 let mapStateToProps = (state)=>{
 	return {
@@ -89,7 +88,6 @@ export default class extends React.Component {
 
                     </div>
                 </div>
-                <TransactionBackgroundWork />
             </div>
 		</div>);
 	}
