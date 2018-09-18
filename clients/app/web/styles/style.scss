@@ -27,8 +27,9 @@ a{
         position: fixed;
         left: 10px;
         top: 10px;
-        z-index: 3;
+        z-index: 15;
         box-sizing: border-box;
+
         >div.round-btn{
             border:1px solid #333;
             background-color: #000;
@@ -82,6 +83,7 @@ a{
         overflow-y: auto;
         height: 100%;
         flex-direction: column;
+        z-index: 10;
 
         >.img-slot{
             padding: 20px;
@@ -114,12 +116,11 @@ a{
         display: flex;
         flex-direction: column;
 
-        width: 800px;
         height: 100%;
-        margin: 0 auto;
 
         .header-toolkit{
-            width: 100%;
+            width: 800px;
+            margin: 0 auto;
             background-color: rgba(0,0,0,0.4);
             margin-bottom: 20px;
             border-bottom-left-radius: 10px;
@@ -159,15 +160,16 @@ a{
             flex:1;
             overflow: auto;
 
-            // -webkit-user-select: none;  /* Chrome all / Safari all */
-            // -moz-user-select: none;     /* Firefox all */
-            // -ms-user-select: none;      /* IE 10+ */
-            // user-select: none;          /* Likely future */      
+            -webkit-user-select: none;  /* Chrome all / Safari all */
+            -moz-user-select: none;     /* Firefox all */
+            -ms-user-select: none;      /* IE 10+ */
+            user-select: none;          /* Likely future */      
 
             padding-bottom: 30px;
             >img{
                 border-radius: 5px;
             }
+
             .draggable-div{
                 position: absolute;
                 z-index: 2;
@@ -175,25 +177,42 @@ a{
                 // right: 0;
 
                 .content{
+                    position: relative;
                     display: inline-block;
-                    padding: 5px 10px;
+                    padding: 0;
                     border: 2px dashed #000;
                     min-width: 30px;
+
+                    .extend{
+                        position: absolute;
+                        right: 0;
+                        bottom: 0;
+                        background-color: RGBA(41, 58, 73, 0.5);
+                        padding: 10px;
+                        color: #fff;
+
+                        border-top-left-radius: 10px;
+                    }
                 }
 
                 .handle{
-                    display: inline-block;
+                    z-index: 1;
+                    display: inline-flex;
+                    justify-content: center;
+                    align-items: center;
                     position: absolute;
                     background-color: RGBA(41, 58, 73, 0.5);
                     border:1px solid RGB(173, 173, 173);
-                    // width: 20px;
+                    width: 20px;
                     height: 20px;
-                    top: -25px;
-                    left: 0;
-                    right: 0;
+                    top: -10px;
+                    left: -10px;
+                    // right: 0;
+                    border-radius: 50%;
                     color: RGB(255,255,255);
-                    padding: 3px 0;
+                    // padding: 3px 3px;
                 }
+
             }
         }
     }
@@ -1006,6 +1025,14 @@ div.checkbox-comp{
     }
 }
 
+.draw-sign-modal{
+    canvas{
+        width: 300px;
+        height: 150px;
+        border:1px solid #3D4B5A;
+    }
+}
+
 .default-modal{
     background-color: #fff;
     border-radius: 5px;
@@ -1013,7 +1040,7 @@ div.checkbox-comp{
 
     >div.contents{
         padding: 10px 30px;
-
+        text-align: center;
         >div.title{
             text-align: center;
             font-weight: bold;

@@ -7,6 +7,46 @@ import history from '../history';
 import pdfjsLib from "pdfjs-dist"
 import Draggable from 'react-draggable';
 
+class Item extends React.Component{
+    content(){
+        let props = this.props
+        if(props.type == "text"){
+            return <div 
+                className="content" 
+                contentEditable={true} 
+                onBlur={(e)=>props.onUpdate("text",e.target.innerHTML)} 
+                dangerouslySetInnerHTML={{__html:props.text}}>
+            </div>
+        }else if(props.type == "checkbox"){
+            return <div className="content"> <input type="checkbox" /> </div>
+        }else if(props.type == "img"){
+            return <div className="content">
+                <img src={props.data} style={{
+                    width:props.width,
+                    height:props.height
+                }} />
+                <div 
+                    className="extend"
+                    onMouseDown={(e)=>this.click=true}
+                    onMouseMove={(e)=>{if(this.click)props.onUpdate("resize",{ dx:e.movementX, dy:e.movementY, })}}
+                    onMouseUp={(e)=>this.click=false}
+                    onMouseLeave={(e)=>this.click=false}
+                > <i className="fas fa-expand"></i> </div>
+            </div>
+        }
+    }
+
+    render(){
+        let props = this.props
+        return <Draggable handle=".handle" defaultPosition={{x:props.x,y:props.y}} onStop={(e,n)=>props.onUpdate("pos", {x:n.x, y:n.y})} >
+            <div className="draggable-div">
+                <div className="handle"><i className="fas fa-arrows-alt" /></div>
+                {this.content()}
+            </div>
+        </Draggable>
+    }
+}
+
 let mapStateToProps = (state)=>{
 	return {
 	}
@@ -41,11 +81,19 @@ export default class extends React.Component {
     }
 
     onClickAddLabel = async(props)=>{
-        this.addObject({type:"text"})
+        this.addObject({
+            type:"text",
+            x:250,
+            y:50
+        })
     }
 
     onClickAddCheckbox = async()=>{
-        this.addObject({type:"checkbox"})
+        this.addObject({
+            type:"checkbox",
+            x:250,
+            y:50
+        })
     }
 
     onClickAddImg = async()=>{
@@ -57,10 +105,59 @@ export default class extends React.Component {
             let reader = new FileReader();
             reader.readAsDataURL(file)
             reader.onload = ()=>{
-                this.addObject({type:"img", data:reader.result})
+                let img = new Image();
+                img.onload = ()=>{
+                    this.addObject({
+                        type:"img", 
+                        data:reader.result,
+                        x:250,
+                        y:50,
+                        width:img.width,
+                        height:img.height,
+                    })
+                };
+                img.src = reader.result 
             }
         }
         input.click()
+    }
+
+    onClickAddSign = async()=>{
+        await new Promise(r=>{ window.openModal("DrawSign",{
+                onFinish : (base64)=>{
+                    if(base64){
+                        this.addObject({
+                            type:"img", 
+                            data:base64,
+                            x:250,
+                            y:50,
+                            width:300,
+                            height:150,
+                        })
+                    }
+                    r();
+                }
+            })
+        })
+    }
+
+    onUpdateItem = (i, type, data)=>{
+        let _ = `page${this.state.page}`
+        if(type == "pos"){
+            console.log(i, type, data)
+            this.state[_][i].x = data.x
+            this.state[_][i].y = data.y
+        }else if(type == "text"){
+            this.state[_][i].text = data
+        }else if(type == "resize"){
+            console.log(i, type, data)
+            this.state[_][i].width += data.dx
+            this.state[_][i].height += data.dy
+        }
+
+        this.setState({
+            [_]:[...this.state[_]]
+        })
     }
 
     onClickNext = async ()=>{
@@ -99,7 +196,7 @@ export default class extends React.Component {
 	render() {
 		return (<div className="editor-page">
             <div className="back-key">
-                <div className="round-btn"><i className="fas fa-arrow-left"></i></div>
+                <div className="round-btn"><i className="fas fa-arrow-left" /></div>
             </div>
 
             <div className="left-menu">
@@ -113,52 +210,44 @@ export default class extends React.Component {
 
             <div className="contents">
                 <div className="header-toolkit">
-                    <div className="toolkit" onClick={this.onClickAddLabel}>
-                        <i className="fab fa-asymmetrik"></i>
+                    <div className="toolkit" onClick={this.onClickAddSign}>
+                        <i className="fab fa-asymmetrik" />
                         서명 그리기
                     </div>
                     <div className="toolkit" onClick={this.onClickAddImg}>
-                        <i className="fab fa-asymmetrik"></i>
+                        <i className="fab fa-asymmetrik" />
                         서명,도장 업로드
                     </div>
                     <div className="toolkit" onClick={this.onClickAddLabel}>
-                        <i className="fab fa-asymmetrik"></i>
+                        <i className="fab fa-asymmetrik" />
                         텍스트 입력
                     </div>
                     <div className="toolkit" onClick={this.onClickAddCheckbox}>
-                        <i className="fab fa-asymmetrik"></i>
+                        <i className="fab fa-asymmetrik" />
                         체크박스 추가
                     </div>
 
                     <div className="line" />
 
                     <div className="toolkit">
-                        <i className="fas fa-search-plus"></i>
+                        <i className="fas fa-search-plus" />
                         확대
                     </div>
                     <div className="toolkit">
-                        <i className="fas fa-search-minus"></i>
+                        <i className="fas fa-search-minus" />
                         축소
                     </div>
                 </div>
                 <div className="edit-box">
                     {(this.state[`page${this.state.page}`] || []).map((e,k)=>{
-                        return <Draggable key={k} handle=".handle" defaultPosition={{x:50,y:50}} >
-                            <div className="draggable-div">
-                                <div className="handle"><i className="fas fa-arrows-alt"></i></div>
-                                {e.type =="text" ? <div className="content" contentEditable={true}></div> : <div className="content">
-                                    {e.type == "checkbox" ? <input type="checkbox" /> : null}
-                                    {e.type == "img" ? <img src={e.data} /> : null}
-                                </div> }
-                            </div>
-                        </Draggable>
+                        return <Item key={k} {...e} onUpdate={this.onUpdateItem.bind(this, k)}/>
                     })}
                     <img className="edit-target" src={this.state.imgs[this.state.page]} />
                 </div>
             </div>
 
             <div className="confirm-box">
-                <i className="fas fa-check"></i>
+                <i className="fas fa-check" />
                 입력 완료
             </div>
 

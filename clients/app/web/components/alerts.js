@@ -27,6 +27,58 @@ class AddFolder extends React.Component{
 }
 
 @modal
+class DrawSign extends React.Component{
+    componentDidMount(){
+    }
+
+    finishDraw = ()=>{
+        this.props.onFinish(this.refs.canvas.toDataURL("image/png"))
+        window.closeModal(this.props.modalId)
+    }
+
+    closeSelf = ()=>{
+        this.props.onFinish(null)
+        window.closeModal(this.props.modalId)
+    }
+    
+    onmousedown = (e)=>{
+        let ctx = this.refs.canvas.getContext('2d');
+
+        this.isDrawing = true;
+        ctx.moveTo(e.clientX - e.target.offsetLeft, e.clientY - e.target.offsetTop);
+    }
+
+    onmousemove = (e)=>{
+        let ctx = this.refs.canvas.getContext('2d');
+        if (this.isDrawing) {
+            ctx.lineTo(e.clientX - e.target.offsetLeft, e.clientY - e.target.offsetTop);
+            ctx.stroke();
+        }
+    }
+
+    onmouseup = ()=>{
+        this.isDrawing = false;
+    }
+
+    render(){
+        return <div className="default-modal draw-sign-modal">
+            <div className="contents">
+                <div className="title">서명 그리기</div>
+                
+                <canvas ref="canvas" 
+                    onMouseDown={this.onmousedown} 
+                    onMouseMove={this.onmousemove} 
+                    onMouseUp={this.onmouseup} />
+            </div>
+            <div className="buttons">
+                <button onClick={this.finishDraw}>완료</button>
+                <button onClick={this.closeSelf}>취소</button>
+            </div>
+        </div>
+    }
+}
+
+@modal
 class MoveToFolder extends React.Component{
 
     closeSelf = ()=>{
