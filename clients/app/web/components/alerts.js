@@ -88,8 +88,8 @@ class Alert extends React.Component{
     }
 }
 
-window._alert = window.alert;
-window.alert = (title, msg, left, right)=>{
+window._confirm = window.confirm;
+window.confirm = (title, msg, left, right)=>{
     return new Promise(r=>{
         window.openModal("Alert",{
             title:title, 

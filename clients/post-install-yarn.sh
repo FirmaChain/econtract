@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-cd ios
-pod install
+# cd ios
+# pod install
 
 cd ..

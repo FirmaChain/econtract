@@ -18,6 +18,7 @@ import ContractListPage from "./components/contract-list.page"
 import TemplatePage from "./components/contract-template.page"
 import FolderPage from "./components/contract-folder-list.page"
 import InFolderPage from "./components/contract-list.page"
+import AddTemplatePage from "./components/add-template.page"
 
 import {current_platform} from "../common/utils"
 
@@ -47,6 +48,7 @@ window.addEventListener("load",()=>{
 					<Route onEnter={resolver} exact path="/contracts" component={ContractListPage} />
 					<Route onEnter={resolver} exact path="/folder" component={FolderPage} />
 					<Route onEnter={resolver} exact path="/template" component={TemplatePage} />
+					<Route onEnter={resolver} exact path="/add-template" component={AddTemplatePage} />
 					<Route onEnter={resolver} exact path="/folder/:id" component={InFolderPage} />
 				</Template>
 			</Provider>

@@ -69,7 +69,10 @@ if( fs.existsSync(web_bundle) ){
 
 module.exports = [{
   ...defaults,
-  entry: { "bundle":['babel-polyfill', './app/web/client.js'] },
+  entry: { 
+    "bundle":['babel-polyfill', './app/web/client.js'],
+    'pdf.worker': 'pdfjs-dist/build/pdf.worker.entry'
+  },
   output: { 
     path: path.join(__dirname, "app", "web", 'bin'),
     filename: '[name].js',

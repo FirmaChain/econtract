@@ -44,8 +44,7 @@ export default class extends React.Component {
     }
 
     onClickDelete = async ()=>{
-        if( await window.alert("폴더 삭제", "정말 삭제하시겠습니까?") ){
-
+        if( await window.confirm("폴더 삭제", "정말 삭제하시겠습니까?") ){
         }
     }
 

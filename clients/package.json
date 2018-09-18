@@ -74,6 +74,7 @@
     "json-loader": "^0.5.7",
     "node-libs-browser": "2.1.0",
     "node-sass": "^4.9.0",
+    "pdfjs-dist": "^2.0.489",
     "process": "^0.11.10",
     "react": "16.3.1",
     "react-dom": "^16.4.0",

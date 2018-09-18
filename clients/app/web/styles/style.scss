@@ -30,8 +30,6 @@ a{
     height: 100%;
     width: 100%;
 
-    padding-top: 30px;
-
     >div.back-key{
         width: 100%;
         padding: 10px 10px 0 10px;
@@ -125,6 +123,22 @@ a{
                     color: #989898;
                 }
 
+                div.form-button{
+                    margin: 10px 0 20px 10px;
+                    >button{
+                        border:1px solid #3D4B5A;
+                        padding: 5px 10px;
+                        border-radius: 5px;
+                        background-color: #fff;
+                        font-size: 12px;
+                        margin: 0 0 0 5px;
+                        cursor: pointer;
+                        &:hover{
+                            background-color: E0E0E0;
+                        }
+                    }
+                }
+
                 div.form-submit{
                     display: flex;
                     justify-content: flex-end;
@@ -151,6 +165,32 @@ a{
                 }
             }
         }
+    }
+}
+
+.add-template-page{
+    .form-button{
+        .filename{
+            margin: 10px;
+            font-size: 12px;
+        }
+
+        .del-btn{
+            display: inline-block;
+            margin-left: 10px;
+            padding: 0 5px;
+            border-radius: 4px;
+            cursor: pointer;
+            &:hover{
+                background-color: #aaa;
+            }
+        }
+    }
+
+    .right-desc{
+        margin-top: 90px;
+        font-size: 12px;
+        color: #7F7F7F;
     }
 }
 
@@ -346,6 +386,7 @@ table.table{
 }
 
 .contract-list-page{
+    padding-top: 30px;
 
     ul.left-menu{
         list-style: none;

@@ -26,14 +26,12 @@ export default class extends React.Component {
 	render() {
 		return (<div className="default-page login-page">
             <div className="back-key">
-                <div>
-                    <i className="fas fa-arrow-left"></i>
-                </div>
+                <div className="round-btn"><i className="fas fa-arrow-left"></i></div>
             </div>
             <div className="container">
                 <h1>로그인</h1>
                 <div className="page">
-                    <div className="column">
+                    <div className="column-300">
                         <div className="form-layout">
                             <div className="form-label"> ID </div>
                             <div className="form-input">
