@@ -2,6 +2,7 @@ import React from "react"
 import ReactDOM from "react-dom"
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom'
+import history from '../history';
 
 let mapStateToProps = (state)=>{
 	return {
@@ -23,6 +24,16 @@ export default class extends React.Component {
 	}
 
 	componentDidMount(){
+    }
+
+    goBack = ()=>{
+        if(this.state.step == 0){
+            history.goBack()
+        }else{
+            this.setState({
+                step: this.state.step -1
+            })
+        }
     }
 
     next_term = ()=>{
@@ -242,7 +253,7 @@ export default class extends React.Component {
 
 	render() {
 		return (<div className="default-page regist-page">
-            <div className="back-key">
+            <div className="back-key" onClick={this.goBack}>
                 <div className="round-btn"><i className="fas fa-arrow-left"></i></div>
                 <div className="step-indicator">
                     <div className={`item ${this.state.step == 0 ? "enable": ""}`}>약관동의</div>

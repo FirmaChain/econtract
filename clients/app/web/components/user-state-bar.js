@@ -1,5 +1,10 @@
 import React from "react"
 import ReactDOM from "react-dom"
+import history from '../history';
+
+function onClickAddContract(){
+    history.push("/add-contract")
+}
 
 export default function(){
     return (<div className="user-state-bar">
@@ -22,7 +27,7 @@ export default function(){
             <div className="pic"></div>
         </div>
 
-        <div className="add-button">
+        <div onClick={onClickAddContract} className="add-button">
             + 계약 등록
         </div>
     </div>)

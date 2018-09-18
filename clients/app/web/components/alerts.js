@@ -58,7 +58,17 @@ class MoveToFolder extends React.Component{
 }
 
 @modal
-class Alert extends React.Component{
+class Loading extends React.Component{
+    render(){
+        return <div style={{color:"#fff",textAlign:"center"}}>
+            <div className="loader"></div>
+            <div style={{marginTop:"20px"}}>{this.props.text || "로딩 중"}</div>
+        </div>
+    }
+}
+
+@modal
+class Confirm extends React.Component{
 
     clickOk = ()=>{
         this.props.resolve && this.props.resolve(true)
@@ -91,7 +101,7 @@ class Alert extends React.Component{
 window._confirm = window.confirm;
 window.confirm = (title, msg, left, right)=>{
     return new Promise(r=>{
-        window.openModal("Alert",{
+        window.openModal("Confirm",{
             title:title, 
             msg:msg, 
             left_btn:left, 
@@ -99,4 +109,19 @@ window.confirm = (title, msg, left, right)=>{
             resolve:r
         })
     })
+}
+
+let indicator_idx = 0;
+window.showIndicator = async (text)=>{
+    if(indicator_idx)
+        return;
+
+    indicator_idx = await window.openModal("Loading",{
+        text:text
+    })
+}
+
+window.hideIndicator = ()=>{
+    window.closeModal(indicator_idx)
+    indicator_idx = null
 }

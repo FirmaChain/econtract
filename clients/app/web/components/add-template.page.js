@@ -3,7 +3,7 @@ import ReactDOM from "react-dom"
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom'
 import pdfjsLib from "pdfjs-dist"
-pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.js';
+import history from '../history';
   
 let mapStateToProps = (state)=>{
 	return {
@@ -26,20 +26,20 @@ export default class extends React.Component {
         console.log(pdfjsLib)
     }
 
+    onClickNext = async ()=>{
+        
+    }
+
     onClickUploadFile = async (e)=>{
         let file = e.target.files[0];
         var reader = new FileReader();
         reader.readAsBinaryString(file)
-        console.log(file)
 
-        reader.onload = (buff)=>{
+        reader.onload = ()=>{
             var loadingTask = pdfjsLib.getDocument({data: reader.result});
             loadingTask.promise.then((pdf)=>{
                 var pageNumber = 1;
                 pdf.getPage(pageNumber).then((page)=>{
-                    console.log('Page loaded');
-                    console.log(page)
-
                     this.setState({
                         file:file
                     })
@@ -52,7 +52,7 @@ export default class extends React.Component {
 
 	render() {
 		return (<div className="default-page add-template-page">
-            <div className="back-key">
+            <div className="back-key" onClick={()=>history.goBack()}>
                 <div className="round-btn"><i className="fas fa-arrow-left"></i></div>
             </div>
             <div className="container">
@@ -70,7 +70,7 @@ export default class extends React.Component {
                             <div className="form-button">
                                 {this.state.file ? <div className="filename">
                                     {this.state.file.name}
-                                    <div className="del-btn" onClick={()=>this.setState({file:null})}>X</div>
+                                    <div className="del-btn" onClick={()=>this.setState({file:null})}>삭제</div>
                                 </div> : null}
                                 <button onClick={()=>this.refs.file.click()}> 파일 업로드 </button>
                             </div>
@@ -78,7 +78,7 @@ export default class extends React.Component {
                             <input ref="file" type="file" onChange={this.onClickUploadFile} style={{display:"none"}}/>
 
                             <div className="form-submit">
-                                <button className="border"> 다음 </button>
+                                <button className="border" onClick={this.onClickNext}> 다음 </button>
                             </div>
                         </div>
                     </div>

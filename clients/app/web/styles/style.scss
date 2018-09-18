@@ -21,13 +21,191 @@ a{
     }
 }
 
+.editor-page{
+
+    >div.back-key{
+        position: fixed;
+        left: 10px;
+        top: 10px;
+        z-index: 3;
+        box-sizing: border-box;
+        >div.round-btn{
+            border:1px solid #333;
+            background-color: #000;
+            width: 35px;
+            height: 35px;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            color: #fff;
+            cursor: pointer;
+
+            &:hover{
+                background-color: #555;
+            }
+        }
+    }
+
+    >div.confirm-box{
+        position: fixed;
+        background-color: #fff;
+        padding: 15px 30px;
+        right: 10px;
+        bottom: 10px;
+
+        font-size: 15px;
+        font-weight: bold;
+        border-radius: 10px;
+        
+        letter-spacing:3px;
+        cursor: pointer;
+
+        >i{
+            margin-right: 10px;
+        }
+
+        &:hover{
+            background-color: rgba(255,255,255,0.7);
+        }
+    }
+
+    background-color: RGB(116, 116, 116); 
+    width: 100%;
+    min-height: 100%;
+    
+    >.left-menu{
+        display: flex;
+        position: fixed;
+        background-color: RGBA(49, 49, 49, 0.8);
+        padding-top: 60px;
+        overflow-y: auto;
+        height: 100%;
+        flex-direction: column;
+
+        >.img-slot{
+            padding: 20px;
+            cursor: pointer;
+            
+            >img{
+                width: 120px;
+                border-radius: 10px;
+            }
+
+            >div{
+                display: inline-block;
+                color: #fff;
+                font-weight: bold;
+                margin-right: 10px;
+                font-size: 12px;
+                padding-bottom: 5px; 
+            }
+
+            &:hover{
+                background-color: #3F3F3F;
+            }
+        }
+        >.active{
+            background-color: RGBA(105, 105, 105,0.8);
+        }
+    }
+
+    >.contents{
+        display: flex;
+        flex-direction: column;
+
+        width: 800px;
+        height: 100%;
+        margin: 0 auto;
+
+        .header-toolkit{
+            width: 100%;
+            background-color: rgba(0,0,0,0.4);
+            margin-bottom: 20px;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+            color: #fff;
+            display: flex;
+            padding: 0 20px;
+            box-sizing: border-box;
+            justify-content: space-between;
+
+            >.toolkit{
+                display: flex;
+                font-size: 12px;
+                font-weight: bold;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+                padding: 10px;
+                >i{
+                    margin-right: 8px;
+                    font-size: 18px;
+                }
+
+                &:hover{
+                    background-color: rgba(0,0,0,0.4);
+                }
+            }
+
+            >.line{
+                margin: 12px 0;
+                border-right: 2px solid #fff;
+            }
+        }
+        .edit-box{
+            position: relative;
+            text-align: center;
+            flex:1;
+            overflow: auto;
+
+            // -webkit-user-select: none;  /* Chrome all / Safari all */
+            // -moz-user-select: none;     /* Firefox all */
+            // -ms-user-select: none;      /* IE 10+ */
+            // user-select: none;          /* Likely future */      
+
+            padding-bottom: 30px;
+            >img{
+                border-radius: 5px;
+            }
+            .draggable-div{
+                position: absolute;
+                z-index: 2;
+                // left: 0;
+                // right: 0;
+
+                .content{
+                    display: inline-block;
+                    padding: 5px 10px;
+                    border: 2px dashed #000;
+                    min-width: 30px;
+                }
+
+                .handle{
+                    display: inline-block;
+                    position: absolute;
+                    background-color: RGBA(41, 58, 73, 0.5);
+                    border:1px solid RGB(173, 173, 173);
+                    // width: 20px;
+                    height: 20px;
+                    top: -25px;
+                    left: 0;
+                    right: 0;
+                    color: RGB(255,255,255);
+                    padding: 3px 0;
+                }
+            }
+        }
+    }
+}
+
 .default-page{
     display:flex;
     align-items: center;
     flex-direction: column;
 
     background-color: #F8F8F8;
-    height: 100%;
+    min-height: 100%;
     width: 100%;
 
     >div.back-key{
@@ -125,6 +303,7 @@ a{
 
                 div.form-button{
                     margin: 10px 0 20px 10px;
+
                     >button{
                         border:1px solid #3D4B5A;
                         padding: 5px 10px;
@@ -181,8 +360,9 @@ a{
             padding: 0 5px;
             border-radius: 4px;
             cursor: pointer;
+            font-weight: bold;
             &:hover{
-                background-color: #aaa;
+                background-color: #eee;
             }
         }
     }
@@ -271,7 +451,7 @@ a{
     .right-desc{
         color: #BEBEC3;
         font-size: 12px;
-        margin: 0 0 20px 20px
+        margin: 0 0 20px 20px;
     }
 }
 
@@ -382,6 +562,7 @@ table.table{
         font-size: 13px;
         color: #fff;
         border-radius: 8px;
+        cursor: pointer;
     }
 }
 
@@ -470,6 +651,66 @@ table.table{
             color: #fff;
         }
     }
+}
+
+.add-contract-page{
+    .upload-form{
+        display: flex;
+        align-items: center;
+
+        >.or{
+            font-size: 12px;
+            margin: 0 20px;
+            color: #8C8880;
+        }
+
+        select{
+            height: 30px;
+            width: 150px;
+        }
+    }
+    .right-desc{
+        margin-top: 90px;
+        font-size: 11px;
+        color: #7F7F7F;
+        padding-left: 20px;
+        >div{
+            margin: 10px 0;
+        }
+    }
+
+    .add-button{
+        background-color: #3D4B5A;
+        padding: 7px 20px;
+        font-size: 13px;
+        color: #fff;
+        border-radius: 8px;
+        cursor: pointer;
+
+        >i{
+            margin-right: 10px;
+        }
+    }
+
+    .selected-file{
+        margin: 10px 0;
+        font-size: 12px;
+        display: flex;
+        // font-weight: bold;
+
+        .filename{
+
+        }
+
+        .del-btn{
+            display: inline-block;
+            margin-left: 20px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    }
+
+
 }
 
 .index-page{
@@ -842,4 +1083,65 @@ div.checkbox-comp{
             }
         }
     }
+}
+
+.signer-slot-comp{
+    border: 1px solid RGB(215, 214, 215);
+    border-radius: 10px;
+    padding: 10px;
+    background-color: RGB(246, 246, 246);
+    margin: 10px 0;
+
+    .delete-btn{
+        text-align: right;
+        font-weight: bold;
+        font-size: 11px;
+        cursor: pointer;
+    }
+
+    .info{
+        display: flex;
+        margin-bottom: 10px;
+
+        >.profile{
+            width: 40px;
+            height: 40px;
+            background-color: #fff;
+            border-radius: 5px;
+            flex-shrink: 0;
+            margin-right: 10px;
+        }
+
+        >.info-text{
+            font-size: 11px;
+            color: #8C8880;
+            overflow: hidden;
+
+            >.name{
+                color: #000;
+                font-weight: bold;
+
+                >div{
+                    display: inline-block;
+                    color: #7F7F7F;
+                    margin-left: 5px;
+                }
+            }
+        }
+    }
+}
+
+.loader {
+    border: 7px solid #f3f3f3; /* Light grey */
+    border-top: 7px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    animation: spin 2s linear infinite;
+    margin: 10px auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }

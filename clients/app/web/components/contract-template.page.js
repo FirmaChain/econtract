@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import ContractMenu from "./contract-menu"
 import UserStatusBar from "./user-state-bar"
 import CheckBox2 from "./checkbox2"
+import history from '../history';
 
 let mapStateToProps = (state)=>{
 	return {
@@ -93,7 +94,7 @@ export default class extends React.Component {
                             <button className="danger" onClick={this.onClickDelete}>선택 삭제</button>
                         </div> : <div className="right-align">
                             <button onClick={this.onClickDeleteMode}>템플릿 삭제</button>
-                            <button onClick={()=>{}} >템플릿 추가</button>
+                            <button onClick={()=>history.push("add-template")} >템플릿 추가</button>
                         </div>}
 
                     </div>

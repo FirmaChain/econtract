@@ -9,6 +9,8 @@ import { Provider  } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
 import createReducer from '../common/reducers';
 import history from './history';
+import pdfjsLib from "pdfjs-dist"
+pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.js';
 
 import Template from "./components/template.comp"
 import IndexPage from "./components/index.page"
@@ -19,6 +21,8 @@ import TemplatePage from "./components/contract-template.page"
 import FolderPage from "./components/contract-folder-list.page"
 import InFolderPage from "./components/contract-list.page"
 import AddTemplatePage from "./components/add-template.page"
+import AddContractPage from "./components/add-contract.page"
+import ContractEditorPage from "./components/contract-editor.page"
 
 import {current_platform} from "../common/utils"
 
@@ -49,7 +53,10 @@ window.addEventListener("load",()=>{
 					<Route onEnter={resolver} exact path="/folder" component={FolderPage} />
 					<Route onEnter={resolver} exact path="/template" component={TemplatePage} />
 					<Route onEnter={resolver} exact path="/add-template" component={AddTemplatePage} />
+					<Route onEnter={resolver} exact path="/add-contract" component={AddContractPage} />
 					<Route onEnter={resolver} exact path="/folder/:id" component={InFolderPage} />
+					<Route onEnter={resolver} exact path="/contract-editor" component={ContractEditorPage} />
+					
 				</Template>
 			</Provider>
 		</Router>,

@@ -2,6 +2,7 @@ import React from "react"
 import ReactDOM from "react-dom"
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom'
+import history from '../history';
 
 let mapStateToProps = (state)=>{
 	return {
@@ -25,7 +26,7 @@ export default class extends React.Component {
 
 	render() {
 		return (<div className="default-page login-page">
-            <div className="back-key">
+            <div className="back-key" onClick={()=>history.goBack()}>
                 <div className="round-btn"><i className="fas fa-arrow-left"></i></div>
             </div>
             <div className="container">

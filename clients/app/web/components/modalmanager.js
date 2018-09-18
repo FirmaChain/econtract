@@ -3,8 +3,8 @@ import ReactDOM from "react-dom"
 import { connect } from 'react-redux';
 
 let ModalStore = {}
-export function modal(k,v){
-    ModalStore[k.name] = k
+export function modal(classes){
+    ModalStore[classes.name] = classes
 }
 
 export class ModalManager extends React.Component {
