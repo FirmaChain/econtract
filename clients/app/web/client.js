@@ -70,17 +70,11 @@ fs.init().then(async()=>{
 	await fs.write("test",{ test:"test" })
 	console.log(await fs.read("test"))
 
-	worker.addWorker("1",function(data){
+	worker.addWorker("upload-ipfs",function(data){
 		console.log("worker 1 ",data)
-	}).addWorker("2",function(data){
+	}).addWorker("transaction-eth",function(data){
 		console.log("worker 2 ",data)
-	}).addWorker("3",function(data){
+	}).addWorker("test",function(data){
 		console.log("worker 3 ",data)
 	}).start()
-
-	// for(let i=0;i<100;i++){
-	// 	worker.add("1", {
-	// 		data:i
-	// 	})
-	// }
 })
