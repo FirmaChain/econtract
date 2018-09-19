@@ -1,6 +1,7 @@
 import React from "react"
 import ReactDOM from "react-dom"
 import {modal} from "./modalmanager"
+import SignerSlot from "./signer-slot"
 
 @modal
 class AddFolder extends React.Component{
@@ -16,6 +17,53 @@ class AddFolder extends React.Component{
                 <div className="form-label">폴더 이름</div>
                 <div className="form-input">
                     <input type="text" placeholder="폴더이름을 입력해주세요" />
+                </div>
+            </div>
+            <div className="buttons">
+                <button onClick={this.closeSelf}>확인</button>
+                <button onClick={this.closeSelf}>취소</button>
+            </div>
+        </div>
+    }
+}
+
+@modal
+class RegistContract extends React.Component{
+    closeSelf = ()=>{
+        window.closeModal(this.props.modalId)
+    }
+    
+    render(){
+        return <div className="default-modal regist-contract-modal">
+            <div className="contents">
+                <div className="title">계약 등록</div>
+                <div className="form-content">
+                    <div>
+                        <div className="label">계약명</div>
+                        <div className="info">홍길동_근로계약서</div>
+
+                        <div className="label">계약파일</div>
+                        <div className="info">test.pdf</div>
+
+                        <div className="label">계약 PIN</div>
+                        <div className="info">
+                            <div className="pin-box">
+                                316783
+                            </div>
+                        </div>
+                        
+                        <div className="checkbox">
+                            <input type="checkbox" /> PIN 번호 저장하기
+                        </div>
+
+                        <div className="desc"> * 해당 PIN번호는 암호화되어 저장되어 본인만 열람이 가능합니다.</div>
+
+                    </div>
+                    <div>
+                        <div className="label">서명자</div>
+                        <SignerSlot />
+                        <SignerSlot />
+                    </div>
                 </div>
             </div>
             <div className="buttons">

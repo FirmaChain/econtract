@@ -2,7 +2,6 @@ import React from "react"
 import ReactDOM from "react-dom"
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom'
-import SignerSlot from "./signer-slot"
 import history from '../history';
 import pdfjsLib from "pdfjs-dist"
 import Draggable from 'react-draggable';
@@ -246,7 +245,7 @@ export default class extends React.Component {
                 </div>
             </div>
 
-            <div className="confirm-box">
+            <div className="confirm-box" onClick={()=>window.openModal("RegistContract")}>
                 <i className="fas fa-check" />
                 입력 완료
             </div>

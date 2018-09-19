@@ -1033,6 +1033,57 @@ div.checkbox-comp{
     }
 }
 
+.regist-contract-modal{
+    width: 700px;
+    .form-content{
+        display: flex;
+        text-align: left;
+        >div{
+            flex:1;
+            &:last-child{
+                margin-left: 20px;
+            }
+        }
+        .label{
+            margin-top: 20px;
+            font-size: 11px;
+            color: RGB(112, 112, 112);
+            &:first-child{
+                margin-top: 0px;
+            }
+        }
+
+        .info{
+            margin: 5px 0;
+            font-size: 14px;
+            color: #000;
+            
+            .pin-box{
+                display: flex;
+                letter-spacing: 5px;
+                font-weight: bold;
+                font-size: 18px;
+                width: 150px;
+                height: 50px;
+                border: 1px solid RGB(215, 214, 215);
+                justify-content: center;
+                align-items: center;
+            }
+        }
+
+        .checkbox{
+            color: RGB(106, 106, 106);
+            font-size: 12px;
+        }
+        .desc{
+            margin: 10px 0 0 0;
+            color: RGB(106, 106, 106);
+            font-size: 12px;
+        }
+
+    }
+}
+
 .default-modal{
     background-color: #fff;
     border-radius: 5px;
