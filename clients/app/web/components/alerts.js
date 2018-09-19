@@ -32,7 +32,7 @@ class RegistContract extends React.Component{
     closeSelf = ()=>{
         window.closeModal(this.props.modalId)
     }
-    
+
     render(){
         return <div className="default-modal regist-contract-modal">
             <div className="contents">
