@@ -45,7 +45,7 @@ export default class extends React.Component {
                             </div>
 
                             <div className="form-submit">
-                                <button> 다른 계정으로 로그인 </button>
+                                <button onClick={()=>history.push("/regist")}> 회원가입 </button>
                                 <button className="border"> 로그인 </button>
                             </div>
                         </div>

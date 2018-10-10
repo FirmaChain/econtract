@@ -3,15 +3,17 @@ import ReactDOM from "react-dom"
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom'
 import history from '../history';
+import {
+    request_email_verification_code
+} from "../../common/actions"
 
 let mapStateToProps = (state)=>{
 	return {
 	}
 }
 
-let mapDispatchToProps = (dispatch) => {
-    return {
-    }
+let mapDispatchToProps = {
+	request_email_verification_code
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -19,7 +21,8 @@ export default class extends React.Component {
 	constructor(){
 		super();
 		this.state={
-            step:0
+            step:0,
+            step1:0
         };
 	}
 
@@ -40,6 +43,22 @@ export default class extends React.Component {
         this.setState({
             step: this.state.step+1
         })
+    }
+
+    onClickRequestEmail =  async()=>{
+        await window.showIndicator();
+        let resp = await this.props.request_email_verification_code(this.state.email)
+        if(resp == 1){
+            alert("이메일이 발송되었습니다!")
+            this.setState({
+                step1:1
+            })
+        }else if(resp == -1){
+            alert("이미 가입 된 이메일입니다!")
+        }else if(resp == -2){
+            alert("이메일 전송에 문제가 생겼습니다!")
+        }
+        await window.hideIndicator();
     }
 
     finish = ()=>{}
@@ -70,11 +89,21 @@ export default class extends React.Component {
                 <div className="form-layout">
                     <div className="form-label"> 이메일 인증 </div>
                     <div className="form-input">
-                        <input placeholder="이메일을 입력해주세요." />
+                        <input placeholder="이메일을 입력해주세요." value={this.state.email || ""} onChange={e=>this.setState({email:e.target.value})} />
                     </div>
 
+                    {this.state.step1 == 1 ? [
+                        <div key={0} className="form-label"> 이메일 인증번호 </div>,
+                        <div className="form-input" key={1}>
+                            <input placeholder="이메일로 발송된 인증번호를 적어주세요." />
+                        </div>
+                    ] : null }
+
                     <div className="form-submit">
-                        <button className="border" onClick={this.next_term}> 인증 메일 보내기 </button>
+                        { this.state.step1 == 1 ?
+                            <button className="border" onClick={this.onClickRequestEmail}> 확인 </button> : 
+                            <button className="border" onClick={this.onClickRequestEmail}> 인증 메일 보내기 </button>
+                        }
                     </div>
                 </div>
             </div>
@@ -99,6 +128,7 @@ export default class extends React.Component {
                     <div className="form-input">
                         <input placeholder="입력하신 비밀번호를 다시 입력해주세요." />
                     </div>
+
 
                     <div className="form-submit">
                         <button className="border" onClick={this.next_term}> 다음 </button>

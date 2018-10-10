@@ -1,16 +1,15 @@
 import React from "react"
 import ReactDOM from "react-dom"
-import { connect } from 'react-redux';
+import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
+import history from '../history'
 
 let mapStateToProps = (state)=>{
 	return {
 	}
 }
 
-let mapDispatchToProps = (dispatch) => {
-    return {
-    }
+let mapDispatchToProps = {
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -33,7 +32,7 @@ export default class extends React.Component {
 							<div className="language"> KOR </div>
 							<div className="buttons">
 								<div className="whatis">FirmaChain 이란</div>
-								<div className="login-btn">로그인 / 회원가입</div>
+								<div className="login-btn" onClick={()=>history.push("/login")} >로그인 / 회원가입</div>
 							</div>
 						</div>
 					</div>

@@ -27,7 +27,7 @@ import AddTemplatePage from "./components/add-template.page"
 import AddContractPage from "./components/add-contract.page"
 import ContractEditorPage from "./components/contract-editor.page"
 
-import {current_platform} from "../common/utils"
+import { current_platform } from "../common/utils"
 
 const store = createStore(
 	createReducer({}),
