@@ -8,10 +8,58 @@ import {post, get} from './Network.js';
 export async function api_test(){
     return await get("/test", {
         
+    },{
+        session:window.getCookie("session")
     });
 }
 export async function api_request_email_verification(email){
     return await get("/request_email_verification", {
         email
+    },{
+        session:window.getCookie("session")
+    });
+}
+export async function api_check_email_verification_code(email,code){
+    return await get("/check_email_verification_code", {
+        email,
+		code
+    },{
+        session:window.getCookie("session")
+    });
+}
+export async function api_request_phone_verification_code(phone){
+    return await get("/request_phone_verification_code", {
+        phone
+    },{
+        session:window.getCookie("session")
+    });
+}
+export async function api_check_phone_verification_code(phone,code){
+    return await get("/check_phone_verification_code", {
+        phone,
+		code
+    },{
+        session:window.getCookie("session")
+    });
+}
+export async function api_regist_account(publicbk,publicms,info,auth,eems,email){
+    return await get("/regist_account", {
+        publicbk,
+		publicms,
+		info,
+		auth,
+		eems,
+		email
+    },{
+        session:window.getCookie("session")
+    });
+}
+export async function api_login_account(publicbk,nonce,sign){
+    return await get("/login_account", {
+        publicbk,
+		nonce,
+		sign
+    },{
+        session:window.getCookie("session")
     });
 }

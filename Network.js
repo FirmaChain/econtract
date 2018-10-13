@@ -1,10 +1,13 @@
 let HOST = "http://127.0.0.1:6544";
 
-export async function get(path,param={}){
+export async function get(path,param={},headers={}){
     param = Object.keys(param).map(i=>`${encodeURIComponent(i)}=${encodeURIComponent(param[i])}`)
     try{
         let resp = await fetch(`${HOST}${path}${param.length > 0 ? `?${param.join("&")}` : ''}`,{
-            method:"GET"
+            method:"GET",
+            headers:{
+                ...headers
+            }
         })
         let blob = await resp.text()
 
@@ -19,7 +22,7 @@ export async function get(path,param={}){
     return null
 }
 
-export async function post(path,param={}){
+export async function post(path,param={},headers={}){
     try{
         let isFormdata = param instanceof FormData
         console.log(path,param,isFormdata)
@@ -27,7 +30,8 @@ export async function post(path,param={}){
             method:"POST",
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': isFormdata ? 'multipart/form-data' : 'application/json'
+                'Content-Type': isFormdata ? 'multipart/form-data' : 'application/json',
+                ...headers
             },
             body:param ? ( isFormdata ? param : JSON.stringify(param)) : null
         })
