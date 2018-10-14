@@ -122,3 +122,26 @@ export function new_account(id, pw){
 		browserKey:browserKey
 	}
 }
+
+export function getUserEntropy(auth, eems){
+	let bk = getBrowserKey();
+	let eems_buffer = Buffer.from(eems, "base64").toString("hex");
+	let encryptedUserEntropy = dkaes_decrypt(bk, "m/0'/0'", eems_buffer);
+	let userEntropy = aes_decrypt(encryptedUserEntropy, auth);
+
+	return userEntropy;
+}
+
+export function decrypt_user_info(entropy, encrypted_info){
+	let mnemonic = bip39.entropyToMnemonic(entropy);
+	let seed = bip39.mnemonicToSeed(mnemonic);
+	let masterKey = hmac_sha512("FirmaChain master seed", seed);
+	let masterKeyPublic = get256bitDerivedPublicKey(masterKey, "m/0'/0'");
+	let result = aes_decrypt(encrypted_info, masterKeyPublic);
+
+	try{
+		return JSON.parse(result)
+	}catch(err){
+		return result
+	}
+}

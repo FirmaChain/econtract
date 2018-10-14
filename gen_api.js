@@ -63,3 +63,10 @@ export async function api_login_account(publicbk,nonce,sign){
         session:window.getCookie("session")
     });
 }
+export async function api_encrypted_user_info(){
+    return await get("/encrypted_user_info", {
+        
+    },{
+        session:window.getCookie("session")
+    });
+}

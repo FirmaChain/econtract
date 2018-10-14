@@ -5,9 +5,44 @@ import {
     api_check_phone_verification_code,
     api_regist_account,
     api_login_account,
+    api_encrypted_user_info,
 } from "../../../gen_api"
 
+import {
+    getUserEntropy,
+    makeAuth,
+    makeSignData,
+    decrypt_user_info,
+} from "../../common/crypto_test"
+
 // export const REQUEST_EMAIL ="";
+export const RELOAD_USERINFO = "RELOAD_USERINFO"
+export const SUCCESS_LOGIN = "SUCCESS_LOGIN"
+
+export function fetch_user_info(){
+    return async function(dispatch){
+        let entropy = sessionStorage.getItem("entropy")
+        if(entropy){
+            let resp = await api_encrypted_user_info()
+            if(resp.payload){
+                let user_info = decrypt_user_info(entropy, new Buffer(resp.payload.data) )
+
+                dispatch({
+                    type:RELOAD_USERINFO,
+                    payload:user_info
+                })
+
+                return true;
+            }
+        }
+
+        dispatch({
+            type:RELOAD_USERINFO,
+            payload:false
+        })
+        return false;
+    }
+}
 
 export function request_email_verification_code(email){
     return async function(dispatch){
@@ -50,12 +85,34 @@ export function regist_new_account(account, info, email){
     }
 }
 
-export function login_account(publicbk,nonce,sign){
+export function login_account(user_id, password){
     return async function(dispatch){
-        return (await api_login_account(
-            publicbk.toString('hex'),
+
+        let nonce = Date.now();
+        let auth = makeAuth(user_id, password);
+        let sign = makeSignData("FirmaChain Login", auth, nonce);
+
+        let resp = (await api_login_account(
+            sign.publicKey.toString('hex'),
             nonce,
-            sign
+            sign.payload
         )).payload
+
+        if(resp.eems){
+            window.setCookie("session", resp.session, 365)
+
+            let entropy = getUserEntropy(auth, resp.eems)
+            sessionStorage.setItem("entropy", entropy)
+
+            dispatch({
+                type:SUCCESS_LOGIN,
+                paylaod:{
+                    session: resp.session,
+                    entropy: entropy
+                }
+            })
+        }
+
+        return resp;
     }
 }

@@ -1,34 +1,19 @@
 import {
-    SET_GOOGLE_ACCESSTOKEN,
-    SET_USERINFO,
-    UPDATE_USERINFO,
-    UPDATE_FRIENDINFO
+    SUCCESS_LOGIN,
+    RELOAD_USERINFO
 } from '../actions';
 
-export default function loading(state={}, action){
+export default function (state={}, action){
         switch (action.type) {
-            case SET_GOOGLE_ACCESSTOKEN:
+            case SUCCESS_LOGIN:
                 return {
                     ...state,
-                    platform: "google",
-                    access_token : action.payload
-                };
-            case SET_USERINFO:
-                return {
-                    ...state,
-                    name:action.payload.name,
-                    email:action.payload.email,
+                    login: action.payload
                 }
-            case UPDATE_USERINFO:
+            case RELOAD_USERINFO:
                 return {
                     ...state,
-                    phone: action.payload.phone || state.phone
-                }
-
-            case UPDATE_FRIENDINFO:
-                return {
-                    ...state,
-                    friend: action.payload.list
+                    info: action.payload
                 }
           default:
               return state;

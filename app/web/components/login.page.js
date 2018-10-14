@@ -4,29 +4,19 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom'
 import history from '../history';
 import {
-    login_account
+    login_account,
+    fetch_user_info
 } from "../../common/actions"
-
-import {
-    makeAuth,
-    makeMnemonic,
-    showMnemonic,
-    mnemonicToSeed,
-    SeedToMasterKeyPublic,
-    BrowserKeyBIP32,
-    makeSignData,
-    aes_encrypt,
-    ecdsa_verify,
-    new_account
-} from "../../common/crypto_test"
 
 let mapStateToProps = (state)=>{
 	return {
+        user_info: state.user.info
 	}
 }
 
 let mapDispatchToProps = {
-    login_account
+    login_account,
+    fetch_user_info
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -37,29 +27,42 @@ export default class extends React.Component {
 	}
 
 	componentDidMount(){
+        (async()=>{
+            await window.showIndicator()
+            await this.props.fetch_user_info()
+            await window.hideIndicator()
+        })()
+    }
+
+    componentWillReceiveProps(props){
+        if(!!props.user_info){
+            console.log(props.user_info)
+            return history.push("/contracts")
+        }
     }
     
     onClickLogin = async()=>{
         await window.showIndicator()
         
-        let nonce = Date.now();
-        let auth = makeAuth(this.state.user_id || "", this.state.password || "");
-        let sign = makeSignData("FirmaChain Login", auth, nonce);
-
-        let resp = await this.props.login_account(sign.publicKey,nonce,sign.payload)
+        let resp = await this.props.login_account(this.state.user_id || "", this.state.password || "")
         if(resp == -2){
             alert("회원가입 되어 있지 않은 브라우저입니다.")
         }else if(resp == -1){
             alert("아이디 혹은 패스워드가 다릅니다.")
-        }else{
-            window.setCookie("session", resp.session, 365)
+        }else if(resp.eems){
             history.push("/contracts")
+        }else{
+            alert("login error;")
         }
 
         await window.hideIndicator()
     }
 
 	render() {
+        if(this.props.user_info === null){
+            return <div />
+        }
+
 		return (<div className="default-page login-page">
             <div className="back-key" onClick={()=>history.goBack()}>
                 <div className="round-btn"><i className="fas fa-arrow-left"></i></div>
