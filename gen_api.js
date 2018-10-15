@@ -9,11 +9,11 @@ export async function api_new_contract(subject,imgs,counterparties){
     let data = new FormData();
 
     data.append('subject', subject);
-	for(let k of imgs){
+	for(let k in imgs){
         data.append('imgs:'+k,imgs[k])
     }
     data.append('imgs',imgs.length);
-	for(let k of counterparties){
+	for(let k in counterparties){
         data.append('counterparties:'+k,counterparties[k])
     }
     data.append('counterparties',counterparties.length)

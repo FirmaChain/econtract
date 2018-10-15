@@ -29,12 +29,14 @@ export async function post(path,param={},headers={}){
         let resp = await fetch(`${HOST}${path}`,{
             method:"POST",
             headers: {
-                'Access-Control-Allow-Origin':'*',
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Credentials': 'true',
+                'Access-Control-Allow-Methods': 'GET,HEAD,OPTIONS,POST,PUT',
                 'Accept': 'application/json',
-                'Content-Type': isFormdata ? 'multipart/form-data' : 'application/json',
+                // 'Content-Type': isFormdata ? 'multipart/form-data; boundary=----WebKitFormBoundaryyEmKNDsBKjB7QEqu' : 'application/json',
                 ...headers
             },
-            // body:param ? ( isFormdata ? param : JSON.stringify(param)) : null
+            body:param ? ( isFormdata ? param : JSON.stringify(param)) : null
         })
 
         let blob = await resp.text()
