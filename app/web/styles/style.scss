@@ -521,6 +521,11 @@ table.table{
         padding: 2px 6px;
         font-weight: bold;
         margin-right: 40px;
+        cursor: pointer;
+
+        &:hover{
+            background-color: rgba(0,0,0,0.1);
+        }
 
         >div{
             margin-left:10px;
@@ -572,6 +577,8 @@ table.table{
             height: 30px;
             border:2px solid #3D4B5A;
             border-radius: 5px;
+            background-size: contain;
+            background-color: #fff;
         }
     }
 
@@ -1188,6 +1195,7 @@ div.checkbox-comp{
             border-radius: 5px;
             flex-shrink: 0;
             margin-right: 10px;
+            background-size: contain;
         }
 
         >.info-text{

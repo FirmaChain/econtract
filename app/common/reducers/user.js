@@ -3,7 +3,11 @@ import {
     RELOAD_USERINFO
 } from '../actions';
 
-export default function (state={}, action){
+let _ = {
+    user_info:null
+}
+
+export default function (state=_, action){
         switch (action.type) {
             case SUCCESS_LOGIN:
                 return {

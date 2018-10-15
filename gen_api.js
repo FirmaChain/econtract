@@ -42,14 +42,16 @@ export async function api_check_phone_verification_code(phone,code){
         session:window.getCookie("session")
     });
 }
-export async function api_regist_account(publicbk,publicms,info,auth,eems,email){
+export async function api_regist_account(publicbk,publicms,info,auth,eems,email,name,eth){
     return await get("/regist_account", {
         publicbk,
 		publicms,
 		info,
 		auth,
 		eems,
-		email
+		email,
+		name,
+		eth
     },{
         session:window.getCookie("session")
     });
@@ -66,6 +68,13 @@ export async function api_login_account(publicbk,nonce,sign){
 export async function api_encrypted_user_info(){
     return await get("/encrypted_user_info", {
         
+    },{
+        session:window.getCookie("session")
+    });
+}
+export async function api_find_user_with_code(code){
+    return await get("/find_user_with_code", {
+        code
     },{
         session:window.getCookie("session")
     });

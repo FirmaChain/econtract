@@ -6,6 +6,7 @@ import {
     api_regist_account,
     api_login_account,
     api_encrypted_user_info,
+    api_find_user_with_code
 } from "../../../gen_api"
 
 import {
@@ -14,6 +15,8 @@ import {
     makeSignData,
     decrypt_user_info,
 } from "../../common/crypto_test"
+
+import Web3 from "../Web3"
 
 // export const REQUEST_EMAIL ="";
 export const RELOAD_USERINFO = "RELOAD_USERINFO"
@@ -25,11 +28,15 @@ export function fetch_user_info(){
         if(entropy){
             let resp = await api_encrypted_user_info()
             if(resp.payload){
-                let user_info = decrypt_user_info(entropy, new Buffer(resp.payload.data) )
-
+                let user_info = decrypt_user_info(entropy, new Buffer(resp.payload.info.data) )
+                let wallet = Web3.walletWithPK(user_info.eth_pk)
                 dispatch({
                     type:RELOAD_USERINFO,
-                    payload:user_info
+                    payload:{
+                        ...user_info,
+                        code: resp.payload.code,
+                        eth_address: wallet.address,
+                    }
                 })
 
                 return true;
@@ -72,7 +79,7 @@ export function check_phone_verification_code(phone, code){
     }
 }
 
-export function regist_new_account(account, info, email){
+export function regist_new_account(account, info, email, name, eth){
     return async function(dispatch){
         return (await api_regist_account(
             account.browserKey.publicKey.toString('hex'),
@@ -80,7 +87,9 @@ export function regist_new_account(account, info, email){
             info,
             account.auth.toString('hex'),
             account.encryptedMasterSeed,
-            email
+            email, 
+            name, 
+            eth
         )).payload
     }
 }
@@ -99,7 +108,8 @@ export function login_account(user_id, password){
         )).payload
 
         if(resp.eems){
-            window.setCookie("session", resp.session, 365)
+            window.setCookie("session", resp.session, 1)
+            window.setCookie("session_update", Date.now(), 1)
 
             let entropy = getUserEntropy(auth, resp.eems)
             sessionStorage.setItem("entropy", entropy)
@@ -114,5 +124,11 @@ export function login_account(user_id, password){
         }
 
         return resp;
+    }
+}
+
+export function find_user_with_code(code){
+    return async function(){
+        return (await api_find_user_with_code(code)).payload
     }
 }

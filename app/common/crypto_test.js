@@ -22,7 +22,6 @@ export {
 } from "./CryptoUtil";
 
 let serverDB = {};
-
 export function generateMnemonic() {
 	let mnemonic = bip39.generateMnemonic();
 	//let mnemonic = bip39.entropyToMnemonic('000102030405060708090a0b0c0d0e0f');

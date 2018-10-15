@@ -5,29 +5,51 @@ import { Link } from 'react-router-dom'
 import SignerSlot from "./signer-slot"
 import history from '../history';
 import pdfjsLib from "pdfjs-dist"
+import {
+    find_user_with_code,
+    fetch_user_info
+} from "../../common/actions"
 
 let mapStateToProps = (state)=>{
 	return {
+        user_info: state.user.info
 	}
 }
 
-let mapDispatchToProps = (dispatch) => {
-    return {
-    }
+let mapDispatchToProps = {
+    find_user_with_code,
+    fetch_user_info
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
 export default class extends React.Component {
 	constructor(){
 		super();
-		this.state={};
+		this.state={
+            counterparties:[]
+        };
 	}
 
 	componentDidMount(){
+        if(!this.props.user_info){
+            (async()=>{
+                await window.showIndicator()
+                await this.props.fetch_user_info()
+                await window.hideIndicator()
+            })()
+        }
+    }
+
+    componentWillReceiveProps(props){
+        if(props.user_info === false){
+            history.replace("/login")
+        }
     }
 
     onClickNext = async ()=>{
-        history.push("contract-editor")
+        // history.push("contract-editor")
+        let counterparties = this.state.counterparties
+        this.props.regist_new_contract();
     }
 
     onClickUploadFile = async (e)=>{
@@ -35,23 +57,91 @@ export default class extends React.Component {
         let reader = new FileReader();
         reader.readAsBinaryString(file)
 
-        reader.onload = ()=>{
-            let loadingTask = pdfjsLib.getDocument({data: reader.result});
-            loadingTask.promise.then((pdf)=>{
-                let pageNumber = 1;
-                pdf.getPage(pageNumber).then((page)=>{
-                    this.setState({
-                        file:file
-                    })
+        reader.onload = async()=>{
+            await window.showIndicator()
+            try{
+                let pdf = await pdfjsLib.getDocument({data: reader.result}).promise;
+                let imgs = []
+                for(let i=1; i <= pdf.numPages;i++){
+                    let page = await pdf.getPage(i)
+                    let viewport = page.getViewport(1.3);
+        
+                    let canvas = document.createElement('canvas');
+                    let context = canvas.getContext('2d');
+                    canvas.height = viewport.height;
+                    canvas.width = viewport.width;
+        
+                    let renderContext = {
+                        canvasContext: context,
+                        viewport: viewport
+                    };
+        
+                    await page.render(renderContext);
+                    imgs.push(canvas.toDataURL("image/png"));
+                }
+
+                this.setState({
+                    file: file,
+                    imgs: imgs
                 })
-            }).catch(()=>{
+            }catch(err){
+                console.log(err)
                 window.alert("PDF 형식이 아닙니다.")
+            }
+            await window.hideIndicator()
+        }
+    }
+
+    onClickAddCounterparty = async _=>{
+        let email = this.state.counterparty_email;
+        let code = this.state.counterparty_code;
+        if(!code)
+            return alert("초대 코드를 입력해주세요.")
+        if(!email)
+            return alert("메일을 입력해주세요.")
+        if(this.state.counterparties.findIndex(e=>code==e.code) >= 0)
+            return alert("이미 추가된 서명자입니다.")
+        if(this.props.user_info.code == code)
+            return alert("본인의 초대코드입니다.")
+    
+        await window.showIndicator()
+        let user = await this.props.find_user_with_code(code);
+        await window.hideIndicator()
+
+        if(user){
+            this.setState({
+                email:"",
+                code:"",
+                counterparties:[
+                    ...this.state.counterparties,
+                    {
+                        code,
+                        email,
+                        ...user
+                    }
+                ]
+            })
+        }else{
+            alert("존재하지 않는 유저입니다.")
+        }
+    }
+
+    onClickDeleteCounterparty = (code)=>{
+        let counterparties = [...this.state.counterparties]
+        let idx = this.state.counterparties.findIndex(e=>code==e.code);
+        if(idx >= 0){
+            counterparties.splice(idx,1)
+            this.setState({
+                counterparties:counterparties
             })
         }
     }
 
 	render() {
-		return (<div className="default-page add-contract-page">
+        if(!this.props.user_info)
+            return <div/>
+
+        return (<div className="default-page add-contract-page">
             <div className="back-key" onClick={()=>history.goBack()}>
                 <div className="round-btn"><i className="fas fa-arrow-left"></i></div>
             </div>
@@ -62,13 +152,13 @@ export default class extends React.Component {
                         <div className="form-layout">
                             <div className="form-label"> 계약명 </div>
                             <div className="form-input">
-                                <input placeholder="계약서의 이름을 작성해주세요." />
+                                <input placeholder="계약서의 이름을 작성해주세요." value={this.state.contract_name || ""} onChange={e=>this.setState({contract_name:e.target.value})} />
                             </div>
                             
                             <div className="form-label"> 계약 파일 업로드 </div>
                             {this.state.file ? <div className="selected-file">
                                 <div className="filename">{this.state.file.name}</div>
-                                <div className="del-btn" onClick={()=>this.setState({file:null})}>삭제</div>
+                                <div className="del-btn" onClick={()=>this.setState({file:null,imgs:[]})}>삭제</div>
                             </div> : <div className="form-button upload-form">
                                 <button onClick={()=>this.refs.file.click()}> 파일 업로드 </button>
                                 <div className="or"> OR </div>
@@ -80,19 +170,28 @@ export default class extends React.Component {
 
 
                             <div className="form-label"> 서명자 </div>
-                            <SignerSlot />
+                            <SignerSlot 
+                                code={this.props.user_info.code}
+                                name={this.props.user_info.username}
+                                email={this.props.user_info.email}
+                                eth_address={this.props.user_info.eth_address} 
+                            />
+                            {this.state.counterparties.map((e,k)=>{
+                                return <SignerSlot key={k} onDelete={this.onClickDeleteCounterparty} {...e} />
+                            })}
 
+                            <div style={{height:20}} />
                             <div className="form-label"> 서명자 이메일 </div>
                             <div className="form-input">
-                                <input placeholder="서명하실 분의 이메일을 입력해주세요." />
+                                <input placeholder="서명하실 분의 이메일을 입력해주세요." value={this.state.counterparty_email || ""} onChange={e=>this.setState({counterparty_email:e.target.value})} />
                             </div>
 
-                            <div className="form-label"> 서명차 초대코드 </div>
+                            <div className="form-label"> 서명자 초대코드 </div>
                             <div className="form-input">
-                                <input placeholder="서명하실분에게 초대코드를 요청하여 입력하세요." />
+                                <input placeholder="서명하실분에게 초대코드를 요청하여 입력하세요." value={this.state.counterparty_code || ""} onChange={e=>this.setState({counterparty_code:e.target.value})} />
                             </div>
 
-                            <button className="add-button">
+                            <button className="add-button" onClick={this.onClickAddCounterparty}>
                                 <i className="fas fa-user"></i>
                                 서명자 추가
                             </button>

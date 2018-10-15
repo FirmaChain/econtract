@@ -36,7 +36,6 @@ export default class extends React.Component {
 
     componentWillReceiveProps(props){
         if(!!props.user_info){
-            console.log(props.user_info)
             return history.push("/contracts")
         }
     }

@@ -253,10 +253,12 @@ export default class extends React.Component {
             useraddress: this.state.useraddress,
             eth_pk: this.state.user_eth_pk
         }
+        let wallet = Web3.walletWithPK(this.state.user_eth_pk)
+        console.log(wallet)
         let encryptedInfo = aes_encrypt(JSON.stringify(info), this.state.account.masterKeyPublic);
         
         await window.showIndicator()
-        let resp = await this.props.regist_new_account(this.state.account, encryptedInfo, this.state.email)
+        let resp = await this.props.regist_new_account(this.state.account, encryptedInfo, this.state.email, this.state.username, wallet.address)
         await window.hideIndicator()
 
         if(resp.code == 1){
