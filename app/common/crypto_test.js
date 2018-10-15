@@ -18,6 +18,7 @@ import {
 
 export { 
 	aes_encrypt,
+	aes_decrypt,
 	ecdsa_verify
 } from "./CryptoUtil";
 

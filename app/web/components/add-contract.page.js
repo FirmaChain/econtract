@@ -49,18 +49,23 @@ export default class extends React.Component {
     }
 
     onClickNext = async ()=>{
-        // history.push("contract-editor")
         let counterparties = this.state.counterparties
         let imgs = this.state.imgs
         let subject= this.state.contract_name
         if(!subject){
             return alert("제목을 입력해주세요")
         }
-        // if(imgs.length == 0){
-        //     return alert("파일 혹은 템플릿을 선택해주세요.")
-        // }
-        
-        await this.props.new_contract( subject, imgs || [], counterparties || [] );
+        if(imgs == null || imgs.length == 0){
+            return alert("파일 혹은 템플릿을 선택해주세요.")
+        }
+        await window.showIndicator()
+        let resp = await this.props.new_contract( subject, imgs, (counterparties || []).map(e=>e.code) );
+        if(resp){
+            history.replace(`/contract-editor/${resp}`)
+        }else{
+            alert("계약서 생성에 문제가 발생했습니다!")
+        }
+        await window.hideIndicator();
     }
 
     onClickUploadFile = async (e)=>{

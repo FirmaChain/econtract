@@ -58,7 +58,7 @@ window.addEventListener("load",()=>{
 					<Route onEnter={resolver} exact path="/add-template" component={AddTemplatePage} />
 					<Route onEnter={resolver} exact path="/add-contract" component={AddContractPage} />
 					<Route onEnter={resolver} exact path="/folder/:id" component={InFolderPage} />
-					<Route onEnter={resolver} exact path="/contract-editor" component={ContractEditorPage} />
+					<Route onEnter={resolver} exact path="/contract-editor/:id" component={ContractEditorPage} />
 				</Template>
 			</Provider>
 		</Router>,

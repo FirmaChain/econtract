@@ -22,6 +22,13 @@ export async function api_new_contract(subject,imgs,counterparties){
         session:window.getCookie("session")
     });
 }
+export async function api_load_contract(contract_id){
+    return await get("/load_contract", {
+        contract_id
+    },{
+        session:window.getCookie("session")
+    });
+}
 export async function api_test(){
     return await get("/test", {
         

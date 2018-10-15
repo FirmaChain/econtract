@@ -5,6 +5,10 @@ import { Link } from 'react-router-dom'
 import history from '../history';
 import pdfjsLib from "pdfjs-dist"
 import Draggable from 'react-draggable';
+import {
+    load_contract
+} from "../../common/actions"
+
 
 class Item extends React.Component{
     content(){
@@ -51,9 +55,8 @@ let mapStateToProps = (state)=>{
 	}
 }
 
-let mapDispatchToProps = (dispatch) => {
-    return {
-    }
+let mapDispatchToProps = {
+    load_contract
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -67,7 +70,18 @@ export default class extends React.Component {
 	}
 
 	componentDidMount(){
-        this.loadTestPDF("/test.pdf");
+        (async()=>{
+            await window.showIndicator()
+            let contract = await this.props.load_contract(this.props.match.params.id)
+            if(contract.contract_id){
+                this.setState({
+                    ...contract
+                })
+            }else{
+                alert("정상적으로 불러오지 못했습니다.")
+            }
+            await window.hideIndicator()
+        })()
     }
 
     addObject = async(props)=>{
