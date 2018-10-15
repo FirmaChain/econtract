@@ -40,15 +40,15 @@ class RegistContract extends React.Component{
                 <div className="form-content">
                     <div>
                         <div className="label">계약명</div>
-                        <div className="info">홍길동_근로계약서</div>
+                        <div className="info">{this.props.subject}</div>
 
-                        <div className="label">계약파일</div>
-                        <div className="info">test.pdf</div>
+                        {/* <div className="label">계약파일</div>
+                        <div className="info">test.pdf</div> */}
 
                         <div className="label">계약 PIN</div>
                         <div className="info">
                             <div className="pin-box">
-                                316783
+                                {this.props.pin}
                             </div>
                         </div>
                         

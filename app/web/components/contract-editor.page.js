@@ -90,7 +90,6 @@ export default class extends React.Component {
         this.setState({
             [_]:[...toolkit,props]
         })
-        console.log(this.state)
     }
 
     onClickAddLabel = async(props)=>{
@@ -157,13 +156,11 @@ export default class extends React.Component {
     onUpdateItem = (i, type, data)=>{
         let _ = `page${this.state.page}`
         if(type == "pos"){
-            console.log(i, type, data)
             this.state[_][i].x = data.x
             this.state[_][i].y = data.y
         }else if(type == "text"){
             this.state[_][i].text = data
         }else if(type == "resize"){
-            console.log(i, type, data)
             this.state[_][i].width += data.dx
             this.state[_][i].height += data.dy
         }
@@ -259,7 +256,10 @@ export default class extends React.Component {
                 </div>
             </div>
 
-            <div className="confirm-box" onClick={()=>window.openModal("RegistContract")}>
+            <div className="confirm-box" onClick={()=>window.openModal("RegistContract",{
+                subject:this.props.name,
+                pin:this.props.pin,
+            })}>
                 <i className="fas fa-check" />
                 입력 완료
             </div>
