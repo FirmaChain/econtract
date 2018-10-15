@@ -5,6 +5,23 @@
 
 import {post, get} from './Network.js';
 
+export async function api_new_contract(subject,imgs,counterparties){
+    let data = new FormData();
+
+    data.append('subject', subject);
+	for(let k of imgs){
+        data.append('imgs:'+k,imgs[k])
+    }
+    data.append('imgs',imgs.length);
+	for(let k of counterparties){
+        data.append('counterparties:'+k,counterparties[k])
+    }
+    data.append('counterparties',counterparties.length)
+
+    return await post("/new_contract", data,{
+        session:window.getCookie("session")
+    });
+}
 export async function api_test(){
     return await get("/test", {
         

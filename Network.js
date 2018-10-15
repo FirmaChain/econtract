@@ -6,6 +6,7 @@ export async function get(path,param={},headers={}){
         let resp = await fetch(`${HOST}${path}${param.length > 0 ? `?${param.join("&")}` : ''}`,{
             method:"GET",
             headers:{
+                'Access-Control-Allow-Origin':'*',
                 ...headers
             }
         })
@@ -25,15 +26,15 @@ export async function get(path,param={},headers={}){
 export async function post(path,param={},headers={}){
     try{
         let isFormdata = param instanceof FormData
-        console.log(path,param,isFormdata)
         let resp = await fetch(`${HOST}${path}`,{
             method:"POST",
             headers: {
+                'Access-Control-Allow-Origin':'*',
                 'Accept': 'application/json',
                 'Content-Type': isFormdata ? 'multipart/form-data' : 'application/json',
                 ...headers
             },
-            body:param ? ( isFormdata ? param : JSON.stringify(param)) : null
+            // body:param ? ( isFormdata ? param : JSON.stringify(param)) : null
         })
 
         let blob = await resp.text()

@@ -7,7 +7,8 @@ import history from '../history';
 import pdfjsLib from "pdfjs-dist"
 import {
     find_user_with_code,
-    fetch_user_info
+    fetch_user_info,
+    new_contract
 } from "../../common/actions"
 
 let mapStateToProps = (state)=>{
@@ -18,7 +19,8 @@ let mapStateToProps = (state)=>{
 
 let mapDispatchToProps = {
     find_user_with_code,
-    fetch_user_info
+    fetch_user_info,
+    new_contract
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -49,7 +51,16 @@ export default class extends React.Component {
     onClickNext = async ()=>{
         // history.push("contract-editor")
         let counterparties = this.state.counterparties
-        this.props.regist_new_contract();
+        let imgs = this.state.imgs
+        let subject= this.state.contract_name
+        if(!subject){
+            return alert("제목을 입력해주세요")
+        }
+        // if(imgs.length == 0){
+        //     return alert("파일 혹은 템플릿을 선택해주세요.")
+        // }
+        
+        await this.props.new_contract( subject, imgs || [], counterparties || [] );
     }
 
     onClickUploadFile = async (e)=>{
