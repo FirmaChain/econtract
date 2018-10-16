@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 export default function(props){
     return (<div className="column-200 display-flex">
         <ul className="left-menu">
-            <Link to="/contracts">
+            <Link to="/recently">
                 <li className={`item ${props.page == "recent" ? 'selected' : ''}`}>
                     <i className="fas fa-plus-circle" /> 최근 사용
                 </li>

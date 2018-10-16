@@ -8,15 +8,18 @@ import Pager from "./pager"
 import CheckBox from "./checkbox"
 import TransactionBackgroundWork from "./transaction_background_work"
 import CheckBox2 from "./checkbox2"
+import {
+    recently_contracts
+} from "../../common/actions"
 
 let mapStateToProps = (state)=>{
 	return {
+        recently:state.contract.recently
 	}
 }
 
-let mapDispatchToProps = (dispatch) => {
-    return {
-    }
+let mapDispatchToProps = {
+    recently_contracts
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -30,12 +33,28 @@ export default class extends React.Component {
 	}
 
 	componentDidMount(){
-        let params = this.props.match.params;
-        if(params.id){
-            this.setState({
-                title: params.id
-            })
-        }
+        (async()=>{
+            let params = this.props.match.params;
+            if(params.id){
+                this.setState({
+                    title: params.id,
+                })
+                await this.props.load__;
+            }else{
+                await this.props.recently_contracts();
+                this.updateData(this.props)
+            }
+        })()
+    }
+
+    componentWillReceiveProps(props){
+        this.updateData(props)    
+    }
+
+    updateData(props){
+        this.setState({
+            list: !this.state.title ? this.props.recently : this.props.list
+        })
     }
     
     onClickMove = async ()=>{
@@ -54,6 +73,7 @@ export default class extends React.Component {
     }
 
 	render() {
+        console.log(this.state.list)
 		return (<div className="default-page contract-list-page">
             <div className="container">
                 <h1>내 계약</h1>

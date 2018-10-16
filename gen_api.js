@@ -29,8 +29,15 @@ export async function api_load_contract(contract_id){
         session:window.getCookie("session")
     });
 }
-export async function api_my_contract_list(){
-    return await get("/my_contract_list", {
+export async function api_recently_contracts(){
+    return await get("/recently_contracts", {
+        
+    },{
+        session:window.getCookie("session")
+    });
+}
+export async function api_folder_list(){
+    return await get("/folder_list", {
         
     },{
         session:window.getCookie("session")

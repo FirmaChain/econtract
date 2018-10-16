@@ -36,7 +36,7 @@ export default class extends React.Component {
 
     componentWillReceiveProps(props){
         if(!!props.user_info){
-            return history.push("/contracts")
+            return history.push("/recently")
         }
     }
     
@@ -49,7 +49,7 @@ export default class extends React.Component {
         }else if(resp == -1){
             alert("아이디 혹은 패스워드가 다릅니다.")
         }else if(resp.eems){
-            history.push("/contracts")
+            history.push("/recently")
         }else{
             alert("login error;")
         }

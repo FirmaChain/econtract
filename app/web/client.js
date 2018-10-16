@@ -52,7 +52,7 @@ window.addEventListener("load",()=>{
 					<Route onEnter={resolver} exact path="/" component={IndexPage} />
 					<Route onEnter={resolver} exact path="/login" component={LoginPage} />
 					<Route onEnter={resolver} exact path="/regist" component={RegistPage} />
-					<Route onEnter={resolver} exact path="/contracts" component={ContractListPage} />
+					<Route onEnter={resolver} exact path="/recently" component={ContractListPage} />
 					<Route onEnter={resolver} exact path="/folder" component={FolderPage} />
 					<Route onEnter={resolver} exact path="/template" component={TemplatePage} />
 					<Route onEnter={resolver} exact path="/add-template" component={AddTemplatePage} />

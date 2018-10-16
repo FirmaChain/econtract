@@ -139,8 +139,8 @@ export default class extends React.Component {
 
         if(user){
             this.setState({
-                email:"",
-                code:"",
+                counterparty_email:"",
+                counterparty_code:"",
                 counterparties:[
                     ...this.state.counterparties,
                     {
