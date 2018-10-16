@@ -36,6 +36,7 @@ export function fetch_user_info(){
                         ...user_info,
                         code: resp.payload.code,
                         eth_address: wallet.address,
+                        account_id: resp.payload.account_id,
                     }
                 })
 

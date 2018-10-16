@@ -33,7 +33,14 @@ class RegistContract extends React.Component{
         window.closeModal(this.props.modalId)
     }
 
+    onClickOK = ()=>{
+        this.props.onOK && this.props.onOK()
+        this.closeSelf()
+    }
+
     render(){
+        let author = this.props.author
+        let user_code = this.props.login_user_code
         return <div className="default-modal regist-contract-modal">
             <div className="contents">
                 <div className="title">계약 등록</div>
@@ -41,9 +48,6 @@ class RegistContract extends React.Component{
                     <div>
                         <div className="label">계약명</div>
                         <div className="info">{this.props.subject}</div>
-
-                        {/* <div className="label">계약파일</div>
-                        <div className="info">test.pdf</div> */}
 
                         <div className="label">계약 PIN</div>
                         <div className="info">
@@ -57,17 +61,24 @@ class RegistContract extends React.Component{
                         </div>
 
                         <div className="desc"> * 해당 PIN번호는 암호화되어 저장되어 본인만 열람이 가능합니다.</div>
-
                     </div>
                     <div>
                         <div className="label">서명자</div>
-                        <SignerSlot />
-                        <SignerSlot />
+                        <SignerSlot me={user_code == author.code} code={author.code} name={author.name} eth_address={author.eth_address}  />
+                        {this.props.counterparties.map((e,k)=>{
+                            return <SignerSlot 
+                                key={k}
+                                me={user_code == e.code} 
+                                code={e.code}
+                                name={e.name}
+                                eth_address={e.eth_address}  />
+                        })}
+                        
                     </div>
                 </div>
             </div>
             <div className="buttons">
-                <button onClick={this.closeSelf}>확인</button>
+                <button onClick={this.onClickOK}>확인</button>
                 <button onClick={this.closeSelf}>취소</button>
             </div>
         </div>

@@ -6,7 +6,8 @@ import history from '../history';
 import pdfjsLib from "pdfjs-dist"
 import Draggable from 'react-draggable';
 import {
-    load_contract
+    load_contract,
+    fetch_user_info
 } from "../../common/actions"
 
 
@@ -52,11 +53,13 @@ class Item extends React.Component{
 
 let mapStateToProps = (state)=>{
 	return {
+        user:state.user.info
 	}
 }
 
 let mapDispatchToProps = {
-    load_contract
+    load_contract,
+    fetch_user_info
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -72,6 +75,7 @@ export default class extends React.Component {
 	componentDidMount(){
         (async()=>{
             await window.showIndicator()
+            await this.props.fetch_user_info()
             let contract = await this.props.load_contract(this.props.match.params.id)
             if(contract.contract_id){
                 this.setState({
@@ -188,6 +192,25 @@ export default class extends React.Component {
 
     onClickNext = async ()=>{
     }
+
+    onClickFinishEdit = ()=>{
+        console.log()
+        window.openModal("RegistContract",{
+            subject:this.state.name,
+            pin:this.state.pin,
+            account_id: this.state.account_id,
+            counterparties: this.state.counterparties,
+            login_user_code:this.props.user.code,
+            author:{
+                name:this.state.author_name,
+                code:this.state.author_code,
+                eth_address:this.state.author_eth_address,
+            },
+            onOK:(save)=>{
+
+            }
+        })
+    }
     
 	render() {
 		return (<div className="editor-page">
@@ -242,10 +265,7 @@ export default class extends React.Component {
                 </div>
             </div>
 
-            <div className="confirm-box" onClick={()=>window.openModal("RegistContract",{
-                subject:this.props.name,
-                pin:this.props.pin,
-            })}>
+            <div className="confirm-box" onClick={this.onClickFinishEdit}>
                 <i className="fas fa-check" />
                 입력 완료
             </div>

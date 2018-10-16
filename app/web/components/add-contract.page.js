@@ -200,6 +200,7 @@ export default class extends React.Component {
 
                             <div className="form-label"> 서명자 </div>
                             <SignerSlot 
+                                me={true}
                                 code={this.props.user_info.code}
                                 name={this.props.user_info.username}
                                 email={this.props.user_info.email}

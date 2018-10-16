@@ -9,9 +9,9 @@ export default function(props){
             <div className="profile" style={{backgroundImage:`url(https://identicon-api.herokuapp.com/${props.code}/70?format=png)`}} />
             <div className="info-text">
                 <div className="name">
-                    {props.name} {props.onDelete ? null : <div className="gray">(본인)</div> }
+                    {props.name} {props.me == true ? <div className="gray">(본인)</div> : null }
                 </div>
-                <div className="email">{props.email}</div>
+                <div className="email">{props.email || props.code}</div>
                 <div className="account">{props.eth_address}</div>
             </div>
         </div>

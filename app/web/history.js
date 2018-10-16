@@ -7,5 +7,4 @@ let history = createBrowserHistory({
 
   // getUserConfirmation: (message, callback) => callback(window.confirm(message))
 })
-console.log(history)
 export default history

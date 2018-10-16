@@ -6,6 +6,7 @@ import history from "../history"
 let ModalStore = {}
 export function modal(classes){
     ModalStore[classes.name] = classes
+    return classes
 }
 
 export class ModalManager extends React.Component {
