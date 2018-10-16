@@ -1,7 +1,7 @@
 import React from "react"
 import ReactDOM from "react-dom"
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom'
+import { Link, Prompt } from 'react-router-dom'
 import SignerSlot from "./signer-slot"
 import history from '../history';
 import pdfjsLib from "pdfjs-dist"
@@ -40,6 +40,18 @@ export default class extends React.Component {
                 await window.hideIndicator()
             })()
         }
+
+        this.unblock = history.block(targetLocation => {
+            if(window._confirm("계약작성을 중단하고 현재 페이지를 나가시겠습니까?")){
+                return true;
+            }else{
+                return false;
+            }
+       })
+    }
+
+    componentWillUnmount(){
+        this.unblock();
     }
 
     componentWillReceiveProps(props){
@@ -61,6 +73,7 @@ export default class extends React.Component {
         await window.showIndicator()
         let resp = await this.props.new_contract( subject, imgs, (counterparties || []).map(e=>e.code) );
         if(resp){
+            this.unblock();
             history.replace(`/contract-editor/${resp}`)
         }else{
             alert("계약서 생성에 문제가 발생했습니다!")

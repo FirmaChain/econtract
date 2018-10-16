@@ -1,6 +1,7 @@
 import React from "react"
 import ReactDOM from "react-dom"
 import { connect } from 'react-redux';
+import history from "../history"
 
 let ModalStore = {}
 export function modal(classes){
@@ -19,6 +20,14 @@ export class ModalManager extends React.Component {
 	componentDidMount(){
         window.openModal = this.openModal
         window.closeModal = this.closeModal
+
+        history.listen(this.onChangeURL)
+    }
+
+    onChangeURL = (e,a)=>{
+        console.log(e,a)
+        this.setState({ modals:[] })
+        return false
     }
     
     openModal = async (name, props={})=>{

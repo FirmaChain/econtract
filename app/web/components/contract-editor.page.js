@@ -82,6 +82,18 @@ export default class extends React.Component {
             }
             await window.hideIndicator()
         })()
+
+        this.unblock = history.block(targetLocation => {
+            if(window._confirm("계약작성을 중단하고 현재 페이지를 나가시겠습니까?")){
+                return true;
+            }else{
+                return false;
+            }
+       })
+    }
+
+    componentWillUnmount(){
+        this.unblock();
     }
 
     addObject = async(props)=>{
@@ -172,37 +184,7 @@ export default class extends React.Component {
 
     onClickNext = async ()=>{
     }
-
-    loadTestPDF = async (file)=>{
-        await window.showIndicator("pdf를 로딩하고 있습니다.")
-
-        let imgs = []
-        let pdf = await pdfjsLib.getDocument(file).promise;
-        for(let i=1; i <= pdf.numPages;i++){
-            let page = await pdf.getPage(i)
-            let viewport = page.getViewport(1.3);
-
-            let canvas = document.createElement('canvas');
-            let context = canvas.getContext('2d');
-            canvas.height = viewport.height;
-            canvas.width = viewport.width;
-
-            let renderContext = {
-                canvasContext: context,
-                viewport: viewport
-            };
-
-            await page.render(renderContext);
-            imgs.push(canvas.toDataURL("image/png"));
-        }
-
-        this.setState({
-            imgs:imgs
-        })
-
-        await window.hideIndicator()
-    }
-
+    
 	render() {
 		return (<div className="editor-page">
             <div className="back-key">
