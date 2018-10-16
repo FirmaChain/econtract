@@ -29,9 +29,9 @@ export async function api_load_contract(contract_id){
         session:window.getCookie("session")
     });
 }
-export async function api_recently_contracts(){
+export async function api_recently_contracts(page){
     return await get("/recently_contracts", {
-        
+        page
     },{
         session:window.getCookie("session")
     });

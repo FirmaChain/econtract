@@ -96,6 +96,10 @@ export default class extends React.Component {
         this.unblock();
     }
 
+    onClickBack = ()=>{
+        history.goBack();
+    }
+
     addObject = async(props)=>{
         let _ = `page${this.state.page}`
         let toolkit = this.state[_] || []
@@ -188,7 +192,7 @@ export default class extends React.Component {
 	render() {
 		return (<div className="editor-page">
             <div className="back-key">
-                <div className="round-btn"><i className="fas fa-arrow-left" /></div>
+                <div className="round-btn" onClick={this.onClickBack}><i className="fas fa-arrow-left" /></div>
             </div>
 
             <div className="left-menu">

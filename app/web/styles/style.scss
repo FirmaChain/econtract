@@ -483,6 +483,13 @@ table.table{
     font-weight: 100;
     border-collapse: collapse;
 
+    tr.clickable{
+        cursor: pointer;
+        &:hover{
+            background-color: rgba(0,0,0,0.1);
+        }
+    }
+
     th{
         border-bottom: 2px solid #000;
         font-weight: bold;

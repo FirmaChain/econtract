@@ -8,6 +8,8 @@ import Pager from "./pager"
 import CheckBox from "./checkbox"
 import TransactionBackgroundWork from "./transaction_background_work"
 import CheckBox2 from "./checkbox2"
+import history from '../history';
+import moment from "moment"
 import {
     recently_contracts
 } from "../../common/actions"
@@ -28,7 +30,8 @@ export default class extends React.Component {
 		super();
 		this.state={
             filter:1,
-            moveMode:false
+            moveMode:false,
+            board:{}
         };
 	}
 
@@ -53,7 +56,7 @@ export default class extends React.Component {
 
     updateData(props){
         this.setState({
-            list: !this.state.title ? this.props.recently : this.props.list
+            board: !this.state.title ? props.recently : props.list
         })
     }
     
@@ -71,9 +74,35 @@ export default class extends React.Component {
             moveMode:false
         })
     }
+    onClickContract=(contract_id)=>{
+        history.push(`/contract-editor/${contract_id}`)
+    }
+
+    render_board_slot(e,k){
+        let status_text = (status)=>{
+            if(status == 0){
+                return "배포 전"
+            }else if(status == 1){
+                return "서명 전"
+            }else if(status == 2){
+                return "서명 완료"
+            }else if(status == 3){
+                return "서명 완료"
+            }
+        }
+        let mm = this.state.moveMode;
+        return <tr key={k} className={mm ? "" : "clickable"} onClick={mm ? null : this.onClickContract.bind(this,e.contract_id)}>
+            {mm ? <td><CheckBox2 /></td> : null}
+            <td style={{width:"40px"}} className="text-center">{status_text(e.status)}</td>
+            <td style={{width:"20px"}} className="text-center"><i className="fas fa-lock"></i></td>
+            <td className="text-left">{e.name}</td>
+            <td style={{width:"60px"}} className="text-center">{e.username}{e.counterpartyCnt > 0 ?" 외 2명":""}</td>
+            <td className="date-cell">{moment(e.updatedAt).format("YYYY-MM-DD HH:mm:ss")}</td>
+        </tr>
+    }
 
 	render() {
-        console.log(this.state.list)
+        let board_list = this.state.board.list||[];
 		return (<div className="default-page contract-list-page">
             <div className="container">
                 <h1>내 계약</h1>
@@ -98,38 +127,9 @@ export default class extends React.Component {
                                     <th>서명자</th>
                                     <th>일자</th>
                                 </tr>
-                                <tr>
-                                    {this.state.moveMode ? <td><CheckBox2 /></td> : null}
-                                    <td style={{width:"40px"}} className="text-center">서명 전</td>
-                                    <td style={{width:"20px"}} className="text-center"><i className="fas fa-lock"></i></td>
-                                    <td className="text-left">공간 활용 계약</td>
-                                    <td style={{width:"60px"}} className="text-center">홍길동 외 2명</td>
-                                    <td className="date-cell">2018.09.02 02:16:00</td>
-                                </tr>
-                                <tr>
-                                    {this.state.moveMode ? <td><CheckBox2 /></td> : null}
-                                    <td style={{width:"40px"}} className="text-center">서명 전</td>
-                                    <td style={{width:"20px"}} className="text-center"><i className="fas fa-lock"></i></td>
-                                    <td className="text-left">공간 활용 계약</td>
-                                    <td style={{width:"60px"}} className="text-center">홍길동 외 2명</td>
-                                    <td className="date-cell">2018.09.02 02:16:00</td>
-                                </tr>
-                                <tr>
-                                    {this.state.moveMode ? <td><CheckBox2 /></td> : null}
-                                    <td style={{width:"40px"}} className="text-center">서명 전</td>
-                                    <td style={{width:"20px"}} className="text-center"><i className="fas fa-lock"></i></td>
-                                    <td className="text-left">공간 활용 계약</td>
-                                    <td style={{width:"60px"}} className="text-center">홍길동 외 2명</td>
-                                    <td className="date-cell">2018.09.02 02:16:00</td>
-                                </tr>
-                                <tr>
-                                    {this.state.moveMode ? <td><CheckBox2 /></td> : null}
-                                    <td style={{width:"40px"}} className="text-center">서명 전</td>
-                                    <td style={{width:"20px"}} className="text-center"><i className="fas fa-lock"></i></td>
-                                    <td className="text-left">공간 활용 계약</td>
-                                    <td style={{width:"60px"}} className="text-center">홍길동 외 2명</td>
-                                    <td className="date-cell">2018.09.02 02:16:00</td>
-                                </tr>
+                                {board_list.map((e,k)=>{
+                                    return this.render_board_slot(e,k)
+                                })}
                             </tbody>
                         </table>
 

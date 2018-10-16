@@ -53,9 +53,9 @@ export function folder_list(contract_id){
     }
 }
 
-export function recently_contracts(contract_id){
+export function recently_contracts(page=0){
     return async function(dispatch){
-        let list = (await api_recently_contracts(contract_id)).payload
+        let list = (await api_recently_contracts(page)).payload
         dispatch({
             type:LOAD_RECENTLY_CONTRACTS,
             payload:list
