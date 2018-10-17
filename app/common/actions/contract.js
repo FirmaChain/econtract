@@ -3,7 +3,10 @@ import {
     api_load_contract,
     api_folder_list,
     api_recently_contracts,
-    api_edit_contract
+    api_edit_contract,
+    api_send_chat,
+    api_fetch_chat,
+    api_confirm_contract
 } from "../../../gen_api"
 
 import {
@@ -159,5 +162,36 @@ export function edit_contract(contract_id, pin, edit){
 
         let encrypt_edit = aes_encrypt(JSON.stringify(edit), pin)
         return (await api_edit_contract(contract_id, encrypt_data, encrypt_edit)).payload
+    }
+}
+
+export function send_chat(contract_id, msg){
+    return async function(dispatch){
+        let pin = localStorage.getItem(`contract:${contract_id}`);
+        if(pin){
+            let encrypt_msg = aes_encrypt(msg || "  ", pin)
+            let resp = (await api_send_chat(contract_id, encrypt_msg)).payload
+            if(resp){
+                return true
+            }
+        }
+        return false
+    }
+}
+
+export function fetch_chat(contract_id, cursor=0){
+    return async function(dispatch){
+        let pin = localStorage.getItem(`contract:${contract_id}`);
+        if(pin){
+            let resp = (await api_fetch_chat(contract_id, cursor)).payload
+            return resp
+        }
+        return null
+    }
+}
+
+export function confirm_contract(contract_id){
+    return async function(dispatch){
+        return (await api_confirm_contract(contract_id)).payload
     }
 }
