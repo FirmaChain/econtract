@@ -11,12 +11,25 @@ import {
     makeSignData,
     decrypt_user_info,
     aes_decrypt,
+    aes_encrypt,
 } from "../../common/crypto_test"
 
 import Web3 from "../Web3"
 
+export const NEW_CONTRACT = "NEW_CONTRACT"
 export const LOAD_FODLERS = "LOAD_FODLERS"
 export const LOAD_RECENTLY_CONTRACTS = "LOAD_RECENTLY_CONTRACTS"
+
+
+function genPIN(digit=6) {
+    let text = "";
+    let possible = "0123456789";
+  
+    for (let i = 0; i < digit; i++)
+      text += possible.charAt(Math.floor(Math.random() * possible.length));
+  
+    return text;
+}
 
 async function fetch_img(name, pin){
     let resp = await fetch(`${window.HOST}/${name}`,{encoding:null})
@@ -25,17 +38,41 @@ async function fetch_img(name, pin){
 }
 
 export function new_contract( subject, imgs, counterparties ){
-    return async function(){
-        return (await api_new_contract( subject, imgs, counterparties )).payload
+    return async function(dispatch){
+        let pin = genPIN();
+        for(let k in imgs){
+            await new Promise(r=>setTimeout(r,500))
+            imgs[k] = aes_encrypt(imgs[k], pin)
+        }
+        let resp = (await api_new_contract( subject, imgs, counterparties )).payload
+        if(resp){
+            localStorage.setItem(`contract:${resp}`, pin)
+            dispatch({
+                type:NEW_CONTRACT,
+                payload:{
+                    subject, 
+                    imgs, 
+                    counterparties,
+                    pin
+                }
+            })
+        }
+        return resp
     }
 }
 
-export function load_contract(contract_id){
+export function get_pin_from_storage(contract_id){
+    return async function(){
+        return localStorage.getItem(`contract:${contract_id}`) 
+    }
+}
+
+export function load_contract(contract_id, pin){
     return async function(){
         let contract = (await api_load_contract(contract_id)).payload
         let img_base64 = []
         for(let img of contract.imgs ){
-            img_base64.push(await fetch_img(img, contract.pin))
+            img_base64.push(await fetch_img(img, pin))
         }
         contract.imgs = img_base64;
         return contract

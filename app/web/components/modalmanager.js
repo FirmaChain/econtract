@@ -6,7 +6,6 @@ import history from "../history"
 let ModalStore = {}
 export function modal(classes){
     ModalStore[classes.name] = classes
-    return classes
 }
 
 export class ModalManager extends React.Component {
@@ -60,7 +59,9 @@ export class ModalManager extends React.Component {
             }}>
                 {this.state.modals.map((e,k)=>{
                     let Modal = ModalStore[e.name]
-                    return <Modal key={`${e}_${k}`} {...e.props} modalId={e.idx} />
+                    return <div key={`${e}_${k}`} className="modal-content-container">
+                        <Modal {...e.props} modalId={e.idx} />
+                    </div>
                 })}
             </div>
 		</div>);

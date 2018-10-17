@@ -7,7 +7,8 @@ import pdfjsLib from "pdfjs-dist"
 import Draggable from 'react-draggable';
 import {
     load_contract,
-    fetch_user_info
+    fetch_user_info,
+    get_pin_from_storage
 } from "../../common/actions"
 
 
@@ -59,7 +60,8 @@ let mapStateToProps = (state)=>{
 
 let mapDispatchToProps = {
     load_contract,
-    fetch_user_info
+    fetch_user_info,
+    get_pin_from_storage
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -74,16 +76,25 @@ export default class extends React.Component {
 
 	componentDidMount(){
         (async()=>{
+            let contract_id = this.props.match.params.id;
             await window.showIndicator()
             await this.props.fetch_user_info()
-            let contract = await this.props.load_contract(this.props.match.params.id)
-            if(contract.contract_id){
-                this.setState({
-                    ...contract
-                })
+
+            let pin = await this.props.get_pin_from_storage(contract_id)
+            if( pin ){
+                await this.load_contract(contract_id, pin)
             }else{
-                alert("정상적으로 불러오지 못했습니다.")
+                pin = await new Promise(r=>window.openModal("TypingPin",{
+                    onFinish:(pin)=>{
+                        r(pin)
+                    }
+                }))
+                if( pin == null ){
+                    history.goBack();
+                }
+                await this.load_contract(contract_id, pin)
             }
+            
             await window.hideIndicator()
         })()
 
@@ -98,6 +109,17 @@ export default class extends React.Component {
 
     componentWillUnmount(){
         this.unblock();
+    }
+
+    async load_contract(contract_id, pin){
+        let contract = await this.props.load_contract(contract_id,pin)
+        if(contract.contract_id){
+            this.setState({
+                ...contract
+            })
+        }else{
+            alert("정상적으로 불러오지 못했습니다.")
+        }
     }
 
     onClickBack = ()=>{
@@ -194,7 +216,6 @@ export default class extends React.Component {
     }
 
     onClickFinishEdit = ()=>{
-        console.log()
         window.openModal("RegistContract",{
             subject:this.state.name,
             pin:this.state.pin,

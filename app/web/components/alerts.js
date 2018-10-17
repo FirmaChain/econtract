@@ -86,6 +86,64 @@ class RegistContract extends React.Component{
 }
 
 @modal
+class TypingPin extends React.Component{
+    constructor(){
+        super()
+        this.state = { value : ""}
+    }
+    closeSelf = ()=>{
+        window.closeModal(this.props.modalId)
+    }
+
+    onClickOK = ()=>{
+        if(this.state.value.length == 6){
+            this.props.onFinish && this.props.onFinish(this.state.value)
+            this.closeSelf()
+        } else {
+            alert("핀번호는 6자리입니다.")
+        }
+    }
+
+    keydown = (e)=>{
+        if(e.key == "Backspace"){
+            this.setState({
+                value: this.state.value.slice(0,this.state.value.length-1)
+            })
+        }
+        let key = Number(e.key)
+        if( 0 <= key && key <= 9 ){
+            if(this.state.value.length < 6){
+                this.setState({
+                    value: this.state.value + "" + key
+                })
+            }
+        }
+    }
+
+    componentDidMount(){
+        document.addEventListener("keydown", this.keydown);
+    }
+
+    componentWillUnmount(){
+        document.removeEventListener("keydown", this.keydown);
+    }
+
+    render(){
+        return <div className="default-modal type-pin-modal">
+            <div className="contents">
+                <div className="title">PIN을 입력해주세요</div>
+                <div className="pin-box">
+                    {this.state.value}
+                </div>
+            </div>
+            <div className="buttons">
+                <button onClick={this.onClickOK}>확인</button>
+            </div>
+        </div>
+    }
+}
+
+@modal
 class DrawSign extends React.Component{
     componentDidMount(){
     }
