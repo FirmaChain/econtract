@@ -144,3 +144,18 @@ window.getCookie = function(name) {
 window.eraseCookie = function(name) {   
   document.cookie = name+'=; Max-Age=-99999999;';  
 }
+
+window.clone_object = function (obj) {
+  if (obj === null || typeof(obj) !== 'object')
+  return obj;
+
+  var copy = obj.constructor();
+
+  for (var attr in obj) {
+    if (obj.hasOwnProperty(attr)) {
+      copy[attr] = window.clone_object(obj[attr]);
+    }
+  }
+
+  return copy;
+}

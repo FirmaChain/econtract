@@ -2,7 +2,8 @@ import {
     api_new_contract,
     api_load_contract,
     api_folder_list,
-    api_recently_contracts
+    api_recently_contracts,
+    api_edit_contract
 } from "../../../gen_api"
 
 import {
@@ -41,7 +42,7 @@ export function new_contract( subject, imgs, counterparties ){
     return async function(dispatch){
         let pin = genPIN();
         for(let k in imgs){
-            await new Promise(r=>setTimeout(r,500))
+            await new Promise(r=>setTimeout(r,100))
             imgs[k] = aes_encrypt(imgs[k], pin)
         }
         let resp = (await api_new_contract( subject, imgs, counterparties )).payload
@@ -98,5 +99,24 @@ export function recently_contracts(page=0){
             payload:list
         })
         return list
+    }
+}
+
+export function edit_contract(contract_id, pin, edit){
+    return async function(dispatch){
+        let encrypt_data = []
+        for(let page of edit){
+            for(let k in page){
+                let obj = page[k]
+                if(obj.type == "img"){
+                    await new Promise(r=>setTimeout(r,100))
+                    encrypt_data.push(aes_encrypt(obj.data, pin))
+                    obj.data = encrypt_data.length - 1
+                }
+            }
+        }
+
+        let encrypt_edit = aes_encrypt(JSON.stringify(edit), pin)
+        return (await api_edit_contract(contract_id, encrypt_data, encrypt_edit)).payload
     }
 }

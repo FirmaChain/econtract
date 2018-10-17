@@ -3,12 +3,12 @@ import ReactDOM from "react-dom"
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom'
 import history from '../history';
-import pdfjsLib from "pdfjs-dist"
 import Draggable from 'react-draggable';
 import {
     load_contract,
     fetch_user_info,
-    get_pin_from_storage
+    get_pin_from_storage,
+    edit_contract,
 } from "../../common/actions"
 
 
@@ -61,7 +61,8 @@ let mapStateToProps = (state)=>{
 let mapDispatchToProps = {
     load_contract,
     fetch_user_info,
-    get_pin_from_storage
+    get_pin_from_storage,
+    edit_contract
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -69,8 +70,9 @@ export default class extends React.Component {
 	constructor(){
 		super();
 		this.state={
-            imgs : [],
-            page : 0
+            imgs: [],
+            page: 0,
+            edit_page:[]
         };
 	}
 
@@ -115,7 +117,8 @@ export default class extends React.Component {
         let contract = await this.props.load_contract(contract_id,pin)
         if(contract.contract_id){
             this.setState({
-                ...contract
+                ...contract,
+                pin:pin
             })
         }else{
             alert("정상적으로 불러오지 못했습니다.")
@@ -127,10 +130,11 @@ export default class extends React.Component {
     }
 
     addObject = async(props)=>{
-        let _ = `page${this.state.page}`
-        let toolkit = this.state[_] || []
+        let edit_page = [...this.state.edit_page]
+        edit_page[this.state.page] = [...(edit_page[this.state.page]||[]), props]
+
         this.setState({
-            [_]:[...toolkit,props]
+            edit_page: edit_page
         })
     }
 
@@ -196,19 +200,19 @@ export default class extends React.Component {
     }
 
     onUpdateItem = (i, type, data)=>{
-        let _ = `page${this.state.page}`
+        let edit_page = [...this.state.edit_page]
         if(type == "pos"){
-            this.state[_][i].x = data.x
-            this.state[_][i].y = data.y
+            edit_page[this.state.page][i].x = data.x
+            edit_page[this.state.page][i].y = data.y
         }else if(type == "text"){
-            this.state[_][i].text = data
+            edit_page[this.state.page][i].text = data
         }else if(type == "resize"){
-            this.state[_][i].width += data.dx
-            this.state[_][i].height += data.dy
+            edit_page[this.state.page][i].width += data.dx
+            edit_page[this.state.page][i].height += data.dy
         }
 
         this.setState({
-            [_]:[...this.state[_]]
+            edit_page:edit_page
         })
     }
 
@@ -216,21 +220,31 @@ export default class extends React.Component {
     }
 
     onClickFinishEdit = ()=>{
-        window.openModal("RegistContract",{
-            subject:this.state.name,
-            pin:this.state.pin,
-            account_id: this.state.account_id,
-            counterparties: this.state.counterparties,
-            login_user_code:this.props.user.code,
-            author:{
-                name:this.state.author_name,
-                code:this.state.author_code,
-                eth_address:this.state.author_eth_address,
-            },
-            onOK:(save)=>{
-
-            }
-        })
+        if(_confirm("정말로 현재 상태로 계약서를 발행하시겠습니까?")){
+            window.openModal("RegistContract",{
+                subject:this.state.name,
+                pin:this.state.pin,
+                account_id: this.state.account_id,
+                counterparties: this.state.counterparties,
+                login_user_code:this.props.user.code,
+                author:{
+                    name:this.state.author_name,
+                    code:this.state.author_code,
+                    eth_address:this.state.author_eth_address,
+                },
+                onOK:async()=>{
+                    await window.showIndicator()
+                    let resp = await this.props.edit_contract(this.state.contract_id, this.state.pin, window.clone_object(this.state.edit_page))
+                    if(resp){
+                        alert("성공적으로 저장했습니다.")
+                        history.replace("/recently")
+                    }else{
+                        alert("저장에 문제가 발생했습니다.")
+                    }
+                    await window.hideIndicator()
+                }
+            })
+        }
     }
     
 	render() {
@@ -279,7 +293,7 @@ export default class extends React.Component {
                     </div>
                 </div>
                 <div className="edit-box">
-                    {(this.state[`page${this.state.page}`] || []).map((e,k)=>{
+                    {(this.state.edit_page[this.state.page] || []).map((e,k)=>{
                         return <Item key={k} {...e} onUpdate={this.onUpdateItem.bind(this, k)}/>
                     })}
                     <img className="edit-target" src={this.state.imgs[this.state.page]} />

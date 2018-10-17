@@ -66,15 +66,15 @@ window.addEventListener("load",()=>{
 	);
 })
 
-fs.init().then(async()=>{
-	await fs.write("test",{ test:"test" })
-	console.log(await fs.read("test"))
+// fs.init().then(async()=>{
+// 	await fs.write("test",{ test:"test" })
+// 	console.log(await fs.read("test"))
 
-	worker.addWorker("upload-ipfs",function(data){
-		console.log("worker 1 ",data)
-	}).addWorker("transaction-eth",function(data){
-		console.log("worker 2 ",data)
-	}).addWorker("test",function(data){
-		console.log("worker 3 ",data)
-	}).start()
-})
+// 	worker.addWorker("upload-ipfs",function(data){
+// 		console.log("worker 1 ",data)
+// 	}).addWorker("transaction-eth",function(data){
+// 		console.log("worker 2 ",data)
+// 	}).addWorker("test",function(data){
+// 		console.log("worker 3 ",data)
+// 	}).start()
+// })

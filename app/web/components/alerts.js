@@ -34,6 +34,15 @@ class RegistContract extends React.Component{
     }
 
     onClickOK = ()=>{
+        if(this.refs.pin_save.checked){
+            let blob = new Blob([`[e-contract] ${this.props.subject}\n\npin : ${this.props.pin}`], { type: 'text/plain' })
+            let anchor = document.createElement('a');
+    
+            anchor.download = `[pin]${this.props.subject}.txt`;
+            anchor.href = (window.webkitURL || window.URL).createObjectURL(blob);
+            anchor.dataset.downloadurl = ['text/plain', anchor.download, anchor.href].join(':');
+            anchor.click();
+        }
         this.props.onOK && this.props.onOK()
         this.closeSelf()
     }
@@ -57,7 +66,7 @@ class RegistContract extends React.Component{
                         </div>
                         
                         <div className="checkbox">
-                            <input type="checkbox" /> PIN 번호 저장하기
+                            <input ref="pin_save" type="checkbox" /> PIN 번호 저장하기
                         </div>
 
                         <div className="desc"> * 해당 PIN번호는 암호화되어 저장되어 본인만 열람이 가능합니다.</div>

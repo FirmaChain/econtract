@@ -43,6 +43,20 @@ export async function api_folder_list(){
         session:window.getCookie("session")
     });
 }
+export async function api_edit_contract(contract_id,encrypt_data,edit){
+    let data = new FormData();
+
+    data.append('contract_id', contract_id);
+	for(let k in encrypt_data){
+        data.append('encrypt_data:'+k,encrypt_data[k])
+    }
+    data.append('encrypt_data',encrypt_data.length);
+	data.append('edit', edit)
+
+    return await post("/edit_contract", data,{
+        session:window.getCookie("session")
+    });
+}
 export async function api_test(){
     return await get("/test", {
         
