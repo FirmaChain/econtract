@@ -21,7 +21,6 @@ export const NEW_CONTRACT = "NEW_CONTRACT"
 export const LOAD_FODLERS = "LOAD_FODLERS"
 export const LOAD_RECENTLY_CONTRACTS = "LOAD_RECENTLY_CONTRACTS"
 
-
 function genPIN(digit=6) {
     let text = "";
     let possible = "0123456789";
@@ -30,6 +29,26 @@ function genPIN(digit=6) {
       text += possible.charAt(Math.floor(Math.random() * possible.length));
   
     return text;
+}
+
+async function parse_html(account, contract_id, html, pin){
+    try{
+        html = aes_decrypt(html, pin)
+        html = JSON.parse(html)
+        for(let page of html){
+            for(let k in page){
+                let obj = page[k]
+                let resp = await fetch(`${window.HOST}/${contract_id}-${account.id}-${obj.data}`,{encoding:null})
+                obj.data = aes_decrypt(await resp.text() , pin)
+                obj.account_id = account.id
+                obj.code = account.code
+            }
+        }
+
+        return html
+    }catch(err){
+        
+    }
 }
 
 async function fetch_img(name, pin){
@@ -45,6 +64,7 @@ export function new_contract( subject, imgs, counterparties ){
             await new Promise(r=>setTimeout(r,100))
             imgs[k] = aes_encrypt(imgs[k], pin)
         }
+
         let resp = (await api_new_contract( subject, imgs, counterparties )).payload
         if(resp){
             localStorage.setItem(`contract:${resp}`, pin)
@@ -71,10 +91,26 @@ export function get_pin_from_storage(contract_id){
 export function load_contract(contract_id, pin){
     return async function(){
         let contract = (await api_load_contract(contract_id)).payload
+        console.log(contract)
+        // parse html
+
+        contract.html = await parse_html({
+            id:contract.account_id,
+            code:contract.author_code
+        }, contract_id, contract.html, pin)
+        
+        for(let counterparty of contract.counterparties){
+            counterparty.html = await parse_html({
+                id:counterparty.account_id,
+                code:counterparty.code
+            }, contract_id, counterparty.html, pin)
+        }
+
         let img_base64 = []
         for(let img of contract.imgs ){
             img_base64.push(await fetch_img(img, pin))
         }
+
         contract.imgs = img_base64;
         return contract
     }

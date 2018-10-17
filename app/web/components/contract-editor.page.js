@@ -236,6 +236,7 @@ export default class extends React.Component {
                     await window.showIndicator()
                     let resp = await this.props.edit_contract(this.state.contract_id, this.state.pin, window.clone_object(this.state.edit_page))
                     if(resp){
+                        this.unblock()
                         alert("성공적으로 저장했습니다.")
                         history.replace("/recently")
                     }else{
@@ -245,6 +246,23 @@ export default class extends React.Component {
                 }
             })
         }
+    }
+
+    onClickFinishSign = ()=>{
+
+    }
+
+    render_finish_button(){
+        if(this.state.status == 0)
+            return <div className="confirm-box" onClick={this.onClickFinishEdit}>
+                <i className="fas fa-check" />
+                입력 완료
+            </div>
+        if(this.state.status == 1)
+            return <div className="confirm-box" onClick={this.onClickFinishSign}>
+                <i className="fas fa-check" />
+                서명 완료
+            </div>
     }
     
 	render() {
@@ -263,15 +281,23 @@ export default class extends React.Component {
             </div>
 
             <div className="contents">
-                <div className="header-toolkit">
-                    <div className="toolkit" onClick={this.onClickAddSign}>
-                        <i className="fab fa-asymmetrik" />
-                        서명 그리기
-                    </div>
+                {this.state.status <= 1 ? <div className="header-toolkit">
+                    {this.state.status == 1 ?[
+                        <div key={0} className="toolkit" onClick={this.onClickAddSign}>
+                            <i className="fab fa-asymmetrik" />
+                            서명 그리기
+                        </div>,
+                        <div key={1} className="toolkit" onClick={this.onClickAddImg}>
+                            <i className="fab fa-asymmetrik" />
+                            서명,도장 업로드
+                        </div>
+                    ] : null}
+
                     <div className="toolkit" onClick={this.onClickAddImg}>
                         <i className="fab fa-asymmetrik" />
-                        서명,도장 업로드
+                        이미지 업로드
                     </div>
+
                     <div className="toolkit" onClick={this.onClickAddLabel}>
                         <i className="fab fa-asymmetrik" />
                         텍스트 입력
@@ -291,7 +317,7 @@ export default class extends React.Component {
                         <i className="fas fa-search-minus" />
                         축소
                     </div>
-                </div>
+                </div> : null}
                 <div className="edit-box">
                     {(this.state.edit_page[this.state.page] || []).map((e,k)=>{
                         return <Item key={k} {...e} onUpdate={this.onUpdateItem.bind(this, k)}/>
@@ -299,11 +325,9 @@ export default class extends React.Component {
                     <img className="edit-target" src={this.state.imgs[this.state.page]} />
                 </div>
             </div>
-
-            <div className="confirm-box" onClick={this.onClickFinishEdit}>
-                <i className="fas fa-check" />
-                입력 완료
-            </div>
+            
+            {this.render_finish_button()}
+            
 
 		</div>);
 	}
