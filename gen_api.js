@@ -57,6 +57,36 @@ export async function api_edit_contract(contract_id,encrypt_data,edit){
         session:window.getCookie("session")
     });
 }
+export async function api_send_chat(contract_id,msg){
+    let data = new FormData();
+
+    data.append('contract_id', contract_id);
+	data.append('msg', msg)
+
+    return await post("/send_chat", data,{
+        session:window.getCookie("session")
+    });
+}
+export async function api_fetch_chat(contract_id,cursor){
+    let data = new FormData();
+
+    data.append('contract_id', contract_id);
+	data.append('cursor', cursor)
+
+    return await post("/fetch_chat", data,{
+        session:window.getCookie("session")
+    });
+}
+export async function api_confirm_contract(contract_id,cursor){
+    let data = new FormData();
+
+    data.append('contract_id', contract_id);
+	data.append('cursor', cursor)
+
+    return await post("/confirm_contract", data,{
+        session:window.getCookie("session")
+    });
+}
 export async function api_test(){
     return await get("/test", {
         
