@@ -10,10 +10,11 @@ import {
     get_pin_from_storage,
     edit_contract,
 } from "../../common/actions"
+import Chatting from "./chatting"
 
-
+@connect((state)=>{return {user:state.user.info}}, {} )
 class Item extends React.Component{
-    content(){
+    content(isMine){
         let props = this.props
         if(props.type == "text"){
             return <div 
@@ -30,23 +31,25 @@ class Item extends React.Component{
                     width:props.width,
                     height:props.height
                 }} />
-                <div 
+                {isMine ? <div 
                     className="extend"
                     onMouseDown={(e)=>this.click=true}
                     onMouseMove={(e)=>{if(this.click)props.onUpdate("resize",{ dx:e.movementX, dy:e.movementY, })}}
                     onMouseUp={(e)=>this.click=false}
                     onMouseLeave={(e)=>this.click=false}
-                > <i className="fas fa-expand"></i> </div>
+                > <i className="fas fa-expand"></i> </div> : null}
             </div>
         }
     }
 
     render(){
         let props = this.props
+        let isMine = props.code == null || props.code == this.props.user.code
         return <Draggable handle=".handle" defaultPosition={{x:props.x,y:props.y}} onStop={(e,n)=>props.onUpdate("pos", {x:n.x, y:n.y})} >
             <div className="draggable-div">
-                <div className="handle"><i className="fas fa-arrows-alt" /></div>
-                {this.content()}
+                {isMine ? <div className="handle"><i className="fas fa-arrows-alt" /></div> : null }
+                {props.code ? <div className="name-container">{props.code}</div> : null}
+                {this.content(isMine)}
             </div>
         </Draggable>
     }
@@ -86,15 +89,22 @@ export default class extends React.Component {
             if( pin ){
                 await this.load_contract(contract_id, pin)
             }else{
-                pin = await new Promise(r=>window.openModal("TypingPin",{
-                    onFinish:(pin)=>{
-                        r(pin)
+                while(1){
+                    try{
+                        pin = await new Promise(r=>window.openModal("TypingPin",{
+                            onFinish:(pin)=>{
+                                r(pin)
+                            }
+                        }))
+                        if( pin == null ){
+                            history.goBack();
+                        }
+                        await this.load_contract(contract_id, pin)
+                        break;
+                    }catch(err){
+                        alert("PIN 번호가 잘못되었습니다.")
                     }
-                }))
-                if( pin == null ){
-                    history.goBack();
                 }
-                await this.load_contract(contract_id, pin)
             }
             
             await window.hideIndicator()
@@ -116,9 +126,15 @@ export default class extends React.Component {
     async load_contract(contract_id, pin){
         let contract = await this.props.load_contract(contract_id,pin)
         if(contract.contract_id){
+
+            let objects = []
+            for(let k in contract.html){
+                objects[k] = (objects[k] || []).concat(contract.html[k])
+            }
             this.setState({
                 ...contract,
-                pin:pin
+                pin:pin,
+                edit_page:objects,
             })
         }else{
             alert("정상적으로 불러오지 못했습니다.")
@@ -259,13 +275,14 @@ export default class extends React.Component {
                 입력 완료
             </div>
         if(this.state.status == 1)
-            return <div className="confirm-box" onClick={this.onClickFinishSign}>
-                <i className="fas fa-check" />
-                서명 완료
-            </div>
+            return <Chatting />
     }
     
 	render() {
+        if(this.state.pin == null)
+            return <div />
+
+        let objects = this.state.edit_page[this.state.page] || [];
 		return (<div className="editor-page">
             <div className="back-key">
                 <div className="round-btn" onClick={this.onClickBack}><i className="fas fa-arrow-left" /></div>
@@ -319,7 +336,7 @@ export default class extends React.Component {
                     </div>
                 </div> : null}
                 <div className="edit-box">
-                    {(this.state.edit_page[this.state.page] || []).map((e,k)=>{
+                    {(objects).map((e,k)=>{
                         return <Item key={k} {...e} onUpdate={this.onUpdateItem.bind(this, k)}/>
                     })}
                     <img className="edit-target" src={this.state.imgs[this.state.page]} />
@@ -327,8 +344,6 @@ export default class extends React.Component {
             </div>
             
             {this.render_finish_button()}
-            
-
 		</div>);
 	}
 }

@@ -49,6 +49,8 @@ async function parse_html(account, contract_id, html, pin){
     }catch(err){
         
     }
+
+    return []
 }
 
 async function fetch_img(name, pin){
@@ -90,29 +92,32 @@ export function get_pin_from_storage(contract_id){
 
 export function load_contract(contract_id, pin){
     return async function(){
-        let contract = (await api_load_contract(contract_id)).payload
-        console.log(contract)
-        // parse html
+        try{
+            let contract = (await api_load_contract(contract_id)).payload
+            contract.html = await parse_html({
+                id:contract.account_id,
+                code:contract.author_code
+            }, contract_id, contract.html, pin)
+            
+            for(let counterparty of contract.counterparties){
+                counterparty.html = await parse_html({
+                    id:counterparty.account_id,
+                    code:counterparty.code
+                }, contract_id, counterparty.html, pin)
+            }
 
-        contract.html = await parse_html({
-            id:contract.account_id,
-            code:contract.author_code
-        }, contract_id, contract.html, pin)
-        
-        for(let counterparty of contract.counterparties){
-            counterparty.html = await parse_html({
-                id:counterparty.account_id,
-                code:counterparty.code
-            }, contract_id, counterparty.html, pin)
+            let img_base64 = []
+            for(let img of contract.imgs ){
+                img_base64.push(await fetch_img(img, pin))
+            }
+
+            contract.imgs = img_base64;
+            localStorage.setItem(`contract:${contract_id}`, pin)
+            return contract
+        }catch(err){
+            
         }
-
-        let img_base64 = []
-        for(let img of contract.imgs ){
-            img_base64.push(await fetch_img(img, pin))
-        }
-
-        contract.imgs = img_base64;
-        return contract
+        return null;
     }
 }
 

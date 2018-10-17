@@ -194,7 +194,16 @@ a{
                         border-top-left-radius: 10px;
                     }
                 }
-
+                .name-container{
+                    position: absolute;
+                    right: 0;
+                    top: 0;
+                    padding: 4px;
+                    border-bottom-left-radius: 10px;
+                    background-color: rgba(0,0,0,0.6);
+                    color: #fff;
+                    z-index: 1;
+                }
                 .handle{
                     z-index: 1;
                     display: inline-flex;
@@ -1041,6 +1050,52 @@ div.checkbox-comp{
                         border-radius: 10px;
                     }
                 }
+            }
+        }
+    }
+}
+
+
+.chatting-comp{
+    position: fixed;
+    right: 10px;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    width: 500px;
+
+    >div.header{
+        background-color: RGB(41, 58, 73);
+        border-top-right-radius: 5px;
+        border-top-left-radius: 5px;
+        padding: 15px;
+        display: flex;
+        justify-content: space-between;
+        color: #fff;
+        align-items: center;
+        font-size: 12px;
+        cursor: pointer;
+    }
+
+    >div.content{
+        padding: 5px;
+        border-left: 1px solid RGBA(41, 58, 73, 0.6);
+        border-right: 1px solid RGBA(41, 58, 73, 0.6);
+        font-size: 14px;
+        background-color: #fff;
+        >div{
+            transition: all 500ms;
+            overflow: hidden;
+            display: flex;
+
+            >div.chatting{
+                flex:2;
+                background-color: #f00;
+            }
+
+            >div.counterparties{
+                flex:1;
+                background-color: #0f0;
             }
         }
     }

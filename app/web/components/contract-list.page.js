@@ -130,6 +130,7 @@ export default class extends React.Component {
                                 {board_list.map((e,k)=>{
                                     return this.render_board_slot(e,k)
                                 })}
+                                {board_list.length == 0 ? <tr> <td colSpan="6" style={{textAlign:"center"}}>계약서가 없습니다.</td> </tr> : null}
                             </tbody>
                         </table>
 
