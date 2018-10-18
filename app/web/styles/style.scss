@@ -156,7 +156,8 @@ a{
         }
         .edit-box{
             position: relative;
-            text-align: center;
+            // text-align: center;
+            margin: 0 auto;
             flex:1;
             overflow: auto;
 
@@ -1062,40 +1063,101 @@ div.checkbox-comp{
     bottom: 0;
     display: flex;
     flex-direction: column;
-    width: 500px;
+    width: 400px;
+    border-top: 1px solid #E0E0E0;
+    border-left: 1px solid #E0E0E0;
 
     >div.header{
-        background-color: RGB(41, 58, 73);
-        border-top-right-radius: 5px;
-        border-top-left-radius: 5px;
+        border-right: 1px solid #E0E0E0;
+        background-color: #F8F8F8;
         padding: 15px;
         display: flex;
         justify-content: space-between;
-        color: #fff;
         align-items: center;
         font-size: 12px;
         cursor: pointer;
+        border-bottom: 1px solid #E0E0E0;
+        >.icon{
+            font-size: 20px;
+        }
+        >.title{
+            flex:1;
+            margin-left: 10px;
+            >.subject{
+                color: #333;
+                font-weight: bold;
+            }
+            >.counterparties{
+                color: #9A9A9A;
+            }
+        }
     }
 
     >div.content{
-        padding: 5px;
-        border-left: 1px solid RGBA(41, 58, 73, 0.6);
-        border-right: 1px solid RGBA(41, 58, 73, 0.6);
         font-size: 14px;
         background-color: #fff;
         >div{
             transition: all 500ms;
             overflow: hidden;
             display: flex;
+            flex-direction: column;
 
-            >div.chatting{
-                flex:2;
-                background-color: #f00;
+            >div.chat-text-container{
+                border-bottom: 1px solid #E0E0E0;
+                padding: 5px;
+                min-height: 200px;
+                max-height: 200px;
+                border-right: 1px solid #E0E0E0;
+            }
+            >div.confirm-container{
+                background-color: #F8F8F8;
+                border-right: 1px solid #E0E0E0;
+                border-bottom: 1px solid #E0E0E0;
+                padding: 10px;
+                display: flex;
+                >.confirm-text{
+                    color: #979797;
+                    font-size: 12px;
+                }
+                >.confirm-counterparties{
+                    color: #444;
+                    font-weight: bold;
+                    margin-left: 10px;
+                    flex:1;
+                    overflow: auto;
+                    font-size: 12px;
+                }
             }
 
-            >div.counterparties{
+            >div.input-container{
                 flex:1;
-                background-color: #0f0;
+                display: flex;
+                >.input{
+                    flex:1;
+                    display: flex;
+                    border-right: 1px solid #394B5B;
+                    input{
+                        flex:1;
+                        padding:10px;
+                        border: 0;
+                        background-color: #fff;
+                    }
+                    button{
+                        border:0;
+                        background-color: #fff;
+                        color: #808496;
+                    }
+                }
+                >.next-btn{
+                    padding: 10px;
+                    border: 1px solid #394B5B;
+                    font-size: 13px;
+                    font-weight: bold;
+
+                    >i{
+                        margin-right: 10px;
+                    }
+                }
             }
         }
     }

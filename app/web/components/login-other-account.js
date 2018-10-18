@@ -2,7 +2,6 @@ import React from "react"
 import ReactDOM from "react-dom"
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom'
-import history from '../history'
 import {
     login_account,
     fetch_user_info

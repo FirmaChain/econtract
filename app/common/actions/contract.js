@@ -97,6 +97,7 @@ export function load_contract(contract_id, pin){
     return async function(){
         try{
             let contract = (await api_load_contract(contract_id)).payload
+            
             contract.html = await parse_html({
                 id:contract.account_id,
                 code:contract.author_code
@@ -118,7 +119,7 @@ export function load_contract(contract_id, pin){
             localStorage.setItem(`contract:${contract_id}`, pin)
             return contract
         }catch(err){
-            
+            console.log(err)
         }
         return null;
     }

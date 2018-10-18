@@ -9,6 +9,8 @@ import {
     fetch_user_info,
     get_pin_from_storage,
     edit_contract,
+    send_chat,
+    fetch_chat
 } from "../../common/actions"
 import Chatting from "./chatting"
 
@@ -65,7 +67,9 @@ let mapDispatchToProps = {
     load_contract,
     fetch_user_info,
     get_pin_from_storage,
-    edit_contract
+    edit_contract,
+    send_chat,
+    fetch_chat
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -268,6 +272,10 @@ export default class extends React.Component {
 
     }
 
+    onChat = (msg)=>{
+        this.props.send_chat(this.state.contract_id, msg)
+    }
+
     render_finish_button(){
         if(this.state.status == 0)
             return <div className="confirm-box" onClick={this.onClickFinishEdit}>
@@ -275,7 +283,7 @@ export default class extends React.Component {
                 입력 완료
             </div>
         if(this.state.status == 1)
-            return <Chatting />
+            return <Chatting onChat={this.onChat} />
     }
     
 	render() {
