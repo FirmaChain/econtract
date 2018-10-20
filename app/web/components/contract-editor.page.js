@@ -141,6 +141,12 @@ export default class extends React.Component {
             for(let k in contract.html){
                 objects[k] = (objects[k] || []).concat(contract.html[k])
             }
+            for(let c of contract.counterparties){
+                console.log(c)
+                for(let k in c.html || []){
+                    objects[k] = (objects[k] || []).concat(c.html[k])
+                }
+            }
             this.setState({
                 ...contract,
                 pin:pin,
@@ -321,6 +327,7 @@ export default class extends React.Component {
                 name: this.state.author_name,
                 code: this.state.author_code,
                 account_id: this.state.account_id,
+                confirm:this.state.author_confirm,
             }} counterparties={this.state.counterparties}
             contract_name={this.state.name} />
     }

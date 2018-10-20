@@ -126,7 +126,7 @@ export default class extends React.Component {
     render_chat_slot(e){
         let user = this.userInfo(e.account_id);
         if(typeof e.msg == "object"){
-            return <div className="notice">
+            return <div key={e.id} className="notice">
                 {this.render_type_string(user, e.msg.type)}
             </div>
         }else{
@@ -142,6 +142,7 @@ export default class extends React.Component {
     }
 
     render(){
+        let allower = this.props.counterparties.filter(e=>e.confirm==1);
         return (<div className="chatting-comp">
             <div className="header" onClick={this.onClickFold}>
                 <div className="icon">
@@ -166,8 +167,8 @@ export default class extends React.Component {
                     <div className="confirm-container">
                         <div className="confirm-text">컨펌 완료</div>
                         <div className="confirm-counterparties">
-                            {this.props.author.confirm == 1 ? this.props.author.name : null}
-                            {this.props.counterparties.filter(e=>e.confirm==1).map(e=>e.name).join(" ")}
+                            {this.props.author.confirm == 1 ? this.props.author.name + (allower.length == 0 ? "" :", ") : null}
+                            {allower.map(e=>e.name).join(", ")}
                         </div>
                     </div>
                     <div className="input-container">

@@ -103,8 +103,7 @@ export function load_contract(contract_id, pin){
             contract.html = await parse_html({
                 id:contract.account_id,
                 code:contract.author_code,
-                name:contract.author_name,
-                confirm:contract.author_confirm
+                name:contract.author_name
             }, contract_id, contract.html, pin)
 
             try{ contract.author_msg = aes_decrypt(contract.author_msg, pin) }catch(err){}
