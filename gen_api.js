@@ -77,13 +77,22 @@ export async function api_fetch_chat(contract_id,cursor){
         session:window.getCookie("session")
     });
 }
-export async function api_confirm_contract(contract_id,cursor){
+export async function api_confirm_contract(contract_id){
+    let data = new FormData();
+
+    data.append('contract_id', contract_id)
+
+    return await post("/confirm_contract", data,{
+        session:window.getCookie("session")
+    });
+}
+export async function api_reject_contract(contract_id,msg){
     let data = new FormData();
 
     data.append('contract_id', contract_id);
-	data.append('cursor', cursor)
+	data.append('msg', msg)
 
-    return await post("/confirm_contract", data,{
+    return await post("/reject_contract", data,{
         session:window.getCookie("session")
     });
 }

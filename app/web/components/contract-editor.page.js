@@ -343,7 +343,7 @@ export default class extends React.Component {
     
 	render() {
         if(this.state.pin == null)
-            return <div />
+            return <div className="default-page"><div className="container"><h1>로딩중..</h1></div></div>
 
         let objects = this.state.edit_page[this.state.page] || [];
 		return (<div className="editor-page">

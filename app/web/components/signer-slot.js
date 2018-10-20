@@ -14,6 +14,10 @@ export default function(props){
                 <div className="email">{props.email || props.code}</div>
                 <div className="account">{props.eth_address}</div>
             </div>
+            {props.confirm ? <div className="confirm-icon"><i className="fas fa-fingerprint"/></div> : null}
+            {props.reject ? <div className="reject-icon"><i className="fas fa-exclamation-circle"/></div> : null}
         </div>
+        {props.confirm ? <div className="additional-text"> 승락하였습니다. </div> : null}
+        {props.reject ? <div className="additional-text"> [<b>{props.reject}</b>]의 이유로 거절하였습니다. </div> : null}
     </div>)
 }

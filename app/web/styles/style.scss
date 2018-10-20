@@ -1,4 +1,4 @@
-@import url("https://use.fontawesome.com/releases/v5.0.13/css/all.css");
+@import url("https://use.fontawesome.com/releases/v5.1.0/css/all.css");
 
 body{
     padding:0;
@@ -302,6 +302,7 @@ a{
                 div.form-info{
                     padding: 5px 0 20px 0;
                     font-size: 13px;
+                    color: #1B1B1B;
                 }
 
                 div.form-input{
@@ -384,7 +385,32 @@ a{
 }
 
 .confirm-contract-page{
-    
+    .pin-box{
+        display: flex;
+        letter-spacing: 5px;
+        font-weight: bold;
+        font-size: 18px;
+        width: 150px;
+        height: 50px;
+        border: 1px solid RGB(215, 214, 215);
+        justify-content: center;
+        align-items: center;
+        // padding:0 20px;
+    }
+    .bold{
+        font-weight: bold;
+    }
+
+    .confirm-btn{
+        flex:1;
+        margin-top: 10px !important;
+    }
+
+    .reject-btn{
+        flex:1;
+        margin-top: 10px !important;
+        margin-right: 10px !important;
+    }
 }
 
 .add-template-page{
@@ -1120,6 +1146,15 @@ div.checkbox-comp{
                 max-height: 200px;
                 border-right: 1px solid #E0E0E0;
                 overflow: auto;
+
+                .notice{
+                    padding:5px;
+                    margin:10px 5px;
+                    border-radius: 5px;
+                    text-align: center;
+                    border: 1px solid #ccc;
+
+                }
                 >.left{
                     .msg-text{
                         background-color: #fff;
@@ -1390,7 +1425,8 @@ div.checkbox-comp{
 
     .info{
         display: flex;
-        margin-bottom: 10px;
+        // margin-bottom: 10px;
+        align-items: center;
 
         >.profile{
             width: 40px;
@@ -1403,6 +1439,7 @@ div.checkbox-comp{
         }
 
         >.info-text{
+            flex:1;
             font-size: 11px;
             color: #8C8880;
             overflow: hidden;
@@ -1418,6 +1455,26 @@ div.checkbox-comp{
                 }
             }
         }
+
+        .confirm-icon{
+            margin-left: 10px;
+            font-size: 20px;
+            color: #77BD73;
+        }
+
+        .reject-icon{
+            margin-left: 10px;
+            font-size: 20px;
+            color: #FF952C;
+        }
+    }
+
+    .additional-text{
+        border: 1px solid RGB(215, 214, 215);
+        margin-top: 5px;
+        padding: 5px;
+        border-radius: 5px;
+        background-color: #fff;
     }
 }
 

@@ -6,7 +6,8 @@ import {
     api_edit_contract,
     api_send_chat,
     api_fetch_chat,
-    api_confirm_contract
+    api_confirm_contract,
+    api_reject_contract,
 } from "../../../gen_api"
 
 import {
@@ -102,8 +103,11 @@ export function load_contract(contract_id, pin){
             contract.html = await parse_html({
                 id:contract.account_id,
                 code:contract.author_code,
-                name:contract.author_name
+                name:contract.author_name,
+                confirm:contract.author_confirm
             }, contract_id, contract.html, pin)
+
+            try{ contract.author_msg = aes_decrypt(contract.author_msg, pin) }catch(err){}
             
             for(let counterparty of contract.counterparties){
                 counterparty.html = await parse_html({
@@ -111,6 +115,8 @@ export function load_contract(contract_id, pin){
                     code:counterparty.code,
                     name:counterparty.name
                 }, contract_id, counterparty.html, pin)
+                
+                try{ counterparty.reject = aes_decrypt(counterparty.reject, pin) }catch(err){}
             }
 
             let img_base64 = []
@@ -190,7 +196,15 @@ export function fetch_chat(contract_id, cursor=0){
         if(pin){
             let resp = (await api_fetch_chat(contract_id, cursor)).payload
             for(let chat of resp){
-                chat.msg = aes_decrypt(chat.msg, pin)
+                try{
+                    if(Number(chat.msg) == chat.msg){
+                        chat.msg = {
+                            type:Number(chat.msg)
+                        }
+                    }else{
+                        chat.msg = aes_decrypt(chat.msg, pin)
+                    }
+                }catch(err){}
             }
             return resp
         }
@@ -201,5 +215,14 @@ export function fetch_chat(contract_id, cursor=0){
 export function confirm_contract(contract_id){
     return async function(dispatch){
         return (await api_confirm_contract(contract_id)).payload
+    }
+}
+
+export function reject_contract(contract_id, msg){
+    return async function(dispatch){
+        let pin = localStorage.getItem(`contract:${contract_id}`) 
+        msg = aes_encrypt(msg, pin)
+
+        return (await api_reject_contract(contract_id, msg)).payload
     }
 }

@@ -113,16 +113,32 @@ export default class extends React.Component {
         }
     }
 
+    render_type_string(user, type){
+        if(type == 1){
+            return <div>[<b>{user.name}</b>]님께서 계약서를 갱신하여 모든 서명자의 서명이 취소되었습니다. 검토 후 다시 승인해주세요.</div>
+        }else if(type == 2){
+            return <div>[<b>{user.name}</b>]님께서 계약서를 승인했습니다.</div>
+        }else if(type == 3){
+            return <div>[<b>{user.name}</b>]님께서 계약서를 거절하였습니다.</div>
+        }
+    }
+
     render_chat_slot(e){
         let user = this.userInfo(e.account_id);
-        let isMine = this.props.user.account_id == e.account_id
-        return <div className={isMine? "chat-slot right" : "chat-slot left"}>
-            <img className="profile" src={`https://identicon-api.herokuapp.com/${user.code}/70?format=png`}/>
-            <div>
-                <div className="name">{user.name}</div>
-                <div className="msg-text">{e.msg}</div>
+        if(typeof e.msg == "object"){
+            return <div className="notice">
+                {this.render_type_string(user, e.msg.type)}
             </div>
-        </div>
+        }else{
+            let isMine = this.props.user.account_id == e.account_id
+            return <div key={e.id} className={isMine? "chat-slot right" : "chat-slot left"}>
+                <img className="profile" src={`https://identicon-api.herokuapp.com/${user.code}/70?format=png`}/>
+                <div>
+                    <div className="name">{user.name}</div>
+                    <div className="msg-text">{e.msg}</div>
+                </div>
+            </div>
+        }
     }
 
     render(){
@@ -149,7 +165,10 @@ export default class extends React.Component {
                     </div>
                     <div className="confirm-container">
                         <div className="confirm-text">컨펌 완료</div>
-                        <div className="confirm-counterparties">{"?"}</div>
+                        <div className="confirm-counterparties">
+                            {this.props.author.confirm == 1 ? this.props.author.name : null}
+                            {this.props.counterparties.filter(e=>e.confirm==1).map(e=>e.name).join(" ")}
+                        </div>
                     </div>
                     <div className="input-container">
                         <div className="input">

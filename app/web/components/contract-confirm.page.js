@@ -4,7 +4,14 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom'
 import history from '../history';
 import {
+    confirm_contract,
+    reject_contract,
+    load_contract,
+    fetch_user_info,
+    get_pin_from_storage,
 } from "../../common/actions"
+import SignerSlot from "./signer-slot"
+import moment from "moment"
 
 let mapStateToProps = (state)=>{
 	return {
@@ -13,6 +20,11 @@ let mapStateToProps = (state)=>{
 }
 
 let mapDispatchToProps = {
+    confirm_contract,
+    reject_contract,
+    load_contract,
+    fetch_user_info,
+    get_pin_from_storage,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -24,12 +36,59 @@ export default class extends React.Component {
 	}
 
 	componentDidMount(){
+        let contract_id = this.props.match.params.id;
+        (async()=>{
+            await window.showIndicator()
+            await this.props.fetch_user_info()
+
+            let pin = await this.props.get_pin_from_storage(contract_id)
+            if( pin ){
+                await this.load_contract(contract_id, pin)
+            }else{
+                history.replace(`/contract-editor/${contract_id}`)
+            }
+            await window.hideIndicator()
+        })()
     }
 
     componentWillUnmount(){
     }
 
+    async load_contract(contract_id, pin){
+        let contract = await this.props.load_contract(contract_id,pin)
+        if(contract.contract_id){
+            this.setState({
+                ...contract,
+                pin:pin,
+            })
+        }else{
+            alert("정상적으로 불러오지 못했습니다.")
+        }
+    }
+
+    onClickConfirm = async()=>{
+        if(await confirm("승인하기","계약서를 승인하시겠습니까?")){
+            let resp = await this.props.confirm_contract(this.state.contract_id)
+            location.reload()
+        }
+    }
+
+    onClickReject = async()=>{
+        if(await confirm("승인하기","계약서를 거절하시겠습니까?")){
+            let str = prompt("거절 이유를 작성해주세요.")
+            if( str ){
+                await this.props.reject_contract(this.state.contract_id, str)
+                location.reload()
+            }else{
+                alert("이유룰 작성해주세요.")
+            }
+        }
+    }
+
 	render() {
+        if(!this.state.contract_id || !this.props.user)
+            return <div className="default-page"><div className="container"><h1>로딩중..</h1></div></div>
+
         return (<div className="default-page confirm-contract-page">
             <div className="back-key" onClick={()=>history.goBack()}>
                 <div className="round-btn"><i className="fas fa-arrow-left"></i></div>
@@ -41,47 +100,54 @@ export default class extends React.Component {
                         <div className="form-layout">
                             <div className="form-label"> 계약명 </div>
                             <div className="form-info">
-                                ㅁㅁㄴㅁㄴㅇㅁㄴㅇ
+                                {this.state.name}
                             </div>
 
                             <div className="form-label"> 계약 상태 </div>
                             <div className="form-info">
-                                ㅁㅁㄴㅁㄴㅇㅁㄴㅇ
+                                서명 전
                             </div>
 
                             <div className="form-label"> 계약 등록일자 </div>
                             <div className="form-info">
-                                ㅁㅁㄴㅁㄴㅇㅁㄴㅇ
+                                {moment(this.state.addedAt).format("YYYY-MM-DD HH:mm:ss")}
                             </div>
 
                             <div className="form-label"> 계약 PIN </div>
                             <div className="form-info">
-                                ㅁㅁㄴㅁㄴㅇㅁㄴㅇ
+                                <div className="pin-box"> {this.state.pin} </div>
                             </div>
-                        </div>
-                    </div>
-                    <div className="column-300">
-                        <div className="form-layout">
 
-                            <div className="form-label"> 계약명 </div>
-                            <div className="form-info">
-                                ㅁㅁㄴㅁㄴㅇㅁㄴㅇ
-                            </div>
-                            <div className="form-label"> 계약명 </div>
-                            <div className="form-info">
-                                ㅁㅁㄴㅁㄴㅇㅁㄴㅇ
-                            </div>
-                            <div className="form-label"> 계약명 </div>
-                            <div className="form-info">
-                                ㅁㅁㄴㅁㄴㅇㅁㄴㅇ
+                            <div className="form-label bold"> 확인하기 </div>
+                            <div className="form-submit">
+                                <button className="border confirm-btn" onClick={this.onClickConfirm}>승인</button>
+                                <button className="border reject-btn" onClick={this.onClickReject}>거절</button>
                             </div>
                         </div>
                     </div>
                     <div className="column-300">
                         <div className="form-layout">
-                            <div className="form-label"> 계약명 </div>
+                            <div className="form-label"> 서명자 </div>
                             <div className="form-info">
-                                ㅁㅁㄴㅁㄴㅇㅁㄴㅇ
+                                <SignerSlot 
+                                    code={this.state.author_code}
+                                    name={this.state.author_name}
+                                    eth_address={this.state.author_eth_address}
+                                    reject={this.state.author_confirm == 1 ? null : this.state.author_msg}
+                                    confirm={this.state.author_confirm == 1}
+                                    me={this.state.author_code == this.props.user.code}
+                                />
+                                {this.state.counterparties.map((e,k)=>{
+                                    return <SignerSlot 
+                                        key={k}
+                                        code={e.code}
+                                        name={e.name}
+                                        eth_address={e.eth_address}
+                                        me={e.code == this.props.user.code}
+                                        confirm={e.confirm == 1}
+                                        reject={e.confirm == 1 ? null : e.reject}
+                                    />
+                                })}
                             </div>
                         </div>
                     </div>
