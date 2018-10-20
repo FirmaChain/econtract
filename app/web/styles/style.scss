@@ -299,6 +299,11 @@ a{
                     font-size: 10px;
                 }
 
+                div.form-info{
+                    padding: 5px 0 20px 0;
+                    font-size: 13px;
+                }
+
                 div.form-input{
                     border-bottom: 1px solid #E0E0E0;
                     padding: 10px 0 10px 10px;
@@ -376,6 +381,10 @@ a{
             }
         }
     }
+}
+
+.confirm-contract-page{
+    
 }
 
 .add-template-page{
@@ -1193,6 +1202,7 @@ div.checkbox-comp{
                     border: 1px solid #394B5B;
                     font-size: 13px;
                     font-weight: bold;
+                    cursor: pointer;
                     &:hover{
                         background-color: rgba(0,0,0,0.1);
                     }
