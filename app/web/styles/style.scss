@@ -183,17 +183,19 @@ a{
                     padding: 0;
                     border: 2px dashed #000;
                     min-width: 30px;
-
-                    .extend{
-                        position: absolute;
-                        right: 0;
-                        bottom: 0;
-                        background-color: RGBA(41, 58, 73, 0.5);
-                        padding: 10px;
-                        color: #fff;
-
-                        border-top-left-radius: 10px;
-                    }
+                    
+                }
+                .trash{
+                    position: absolute;
+                    right: 5px;
+                    bottom: 5px;
+                    background-color: RGBA(41, 58, 73, 0.5);
+                    padding: 10px;
+                    color: #fff;
+                    border-radius: 50%;
+                    width: 15px;
+                    height: 15px;
+                    cursor: pointer;
                 }
                 .name-container{
                     position: absolute;
@@ -1108,6 +1110,45 @@ div.checkbox-comp{
                 min-height: 200px;
                 max-height: 200px;
                 border-right: 1px solid #E0E0E0;
+                overflow: auto;
+                >.left{
+                    .msg-text{
+                        background-color: #fff;
+                    }
+                }
+                >.right{
+                    flex-direction: row-reverse;
+                    .msg-text{
+                        background-color: #394B5B;
+                        color: #fff;
+                    }
+                    .name{  
+                        display: none;
+                    }
+                    .profile{
+                        display: none;
+                    }
+                }
+                >.chat-slot{
+                    display: flex;
+                    margin: 15px 0;
+                    .profile{
+                        width: 30px;
+                        height: 30px;
+                    }
+                    .name{
+                        margin:5px;
+                        font-size: 13px;
+                    }
+                    .msg-text{
+                        padding: 6px;
+                        border-radius: 5px;
+                        box-shadow: 0 0 4px #999;
+                        min-width: 200px;
+                        word-break: break-all;
+                        margin: 0 5px;
+                    }
+                }
             }
             >div.confirm-container{
                 background-color: #F8F8F8;
@@ -1135,7 +1176,6 @@ div.checkbox-comp{
                 >.input{
                     flex:1;
                     display: flex;
-                    border-right: 1px solid #394B5B;
                     input{
                         flex:1;
                         padding:10px;
@@ -1153,7 +1193,9 @@ div.checkbox-comp{
                     border: 1px solid #394B5B;
                     font-size: 13px;
                     font-weight: bold;
-
+                    &:hover{
+                        background-color: rgba(0,0,0,0.1);
+                    }
                     >i{
                         margin-right: 10px;
                     }

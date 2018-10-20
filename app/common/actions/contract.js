@@ -44,6 +44,7 @@ async function parse_html(account, contract_id, html, pin){
                 let resp = await fetch(`${window.HOST}/${contract_id}-${account.id}-${obj.data}`,{encoding:null})
                 obj.data = aes_decrypt(await resp.text() , pin)
                 obj.account_id = account.id
+                obj.name = account.name
                 obj.code = account.code
             }
         }
@@ -100,13 +101,15 @@ export function load_contract(contract_id, pin){
             
             contract.html = await parse_html({
                 id:contract.account_id,
-                code:contract.author_code
+                code:contract.author_code,
+                name:contract.author_name
             }, contract_id, contract.html, pin)
             
             for(let counterparty of contract.counterparties){
                 counterparty.html = await parse_html({
                     id:counterparty.account_id,
-                    code:counterparty.code
+                    code:counterparty.code,
+                    name:counterparty.name
                 }, contract_id, counterparty.html, pin)
             }
 
@@ -117,6 +120,7 @@ export function load_contract(contract_id, pin){
 
             contract.imgs = img_base64;
             localStorage.setItem(`contract:${contract_id}`, pin)
+            console.log("contract",contract)
             return contract
         }catch(err){
             console.log(err)
@@ -185,6 +189,9 @@ export function fetch_chat(contract_id, cursor=0){
         let pin = localStorage.getItem(`contract:${contract_id}`);
         if(pin){
             let resp = (await api_fetch_chat(contract_id, cursor)).payload
+            for(let chat of resp){
+                chat.msg = aes_decrypt(chat.msg, pin)
+            }
             return resp
         }
         return null

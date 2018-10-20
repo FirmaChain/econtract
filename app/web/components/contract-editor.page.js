@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom'
 import history from '../history';
 import Draggable from 'react-draggable';
+import Resizable from "re-resizable";
 import {
     load_contract,
     fetch_user_info,
@@ -30,16 +31,9 @@ class Item extends React.Component{
         }else if(props.type == "img"){
             return <div className="content">
                 <img src={props.data} style={{
-                    width:props.width,
-                    height:props.height
+                    width:"100%",
+                    height:"100%"
                 }} />
-                {isMine ? <div 
-                    className="extend"
-                    onMouseDown={(e)=>this.click=true}
-                    onMouseMove={(e)=>{if(this.click)props.onUpdate("resize",{ dx:e.movementX, dy:e.movementY, })}}
-                    onMouseUp={(e)=>this.click=false}
-                    onMouseLeave={(e)=>this.click=false}
-                > <i className="fas fa-expand"></i> </div> : null}
             </div>
         }
     }
@@ -48,11 +42,23 @@ class Item extends React.Component{
         let props = this.props
         let isMine = props.code == null || props.code == this.props.user.code
         return <Draggable handle=".handle" defaultPosition={{x:props.x,y:props.y}} onStop={(e,n)=>props.onUpdate("pos", {x:n.x, y:n.y})} >
-            <div className="draggable-div">
-                {isMine ? <div className="handle"><i className="fas fa-arrows-alt" /></div> : null }
-                {props.code ? <div className="name-container">{props.code}</div> : null}
-                {this.content(isMine)}
-            </div>
+            <Resizable 
+                style={{position:"absolute"}} 
+                defaultSize={{ width: props.width, height: props.height }}
+                onResizeStop={(e, direction, ref, d) => {
+                    props.onUpdate("resize",{ dx:ref.clientWidth, dy:ref.clientHeight, })
+                }}
+                onResizeStart={(e, direction, ref, d) => {
+                    props.onUpdate("resize",{ dx:ref.clientWidth, dy:ref.clientHeight, })
+                }}
+            >
+                <div className="draggable-div">
+                    {isMine ? <div className="handle"><i className="fas fa-arrows-alt" /></div> : null }
+                    {props.name ? <div className="name-container">{props.name}</div> : null}
+                    {isMine ? <div className="trash" onClick={this.props.removeItem}><i className="fas fa-trash" /></div> : null }
+                    {this.content(isMine)}
+                </div>
+            </Resizable>
         </Draggable>
     }
 }
@@ -219,6 +225,16 @@ export default class extends React.Component {
         })
     }
 
+    onRemoveItem = async(i)=>{
+        if(await confirm("정말로 삭제하시겠습니까?")){
+            let edit_page = [...this.state.edit_page]
+            edit_page[this.state.page].splice(i,1)
+            this.setState({
+                edit_page:edit_page
+            })
+        }
+    }
+        
     onUpdateItem = (i, type, data)=>{
         let edit_page = [...this.state.edit_page]
         if(type == "pos"){
@@ -227,8 +243,8 @@ export default class extends React.Component {
         }else if(type == "text"){
             edit_page[this.state.page][i].text = data
         }else if(type == "resize"){
-            edit_page[this.state.page][i].width += data.dx
-            edit_page[this.state.page][i].height += data.dy
+            edit_page[this.state.page][i].width = data.dx
+            edit_page[this.state.page][i].height = data.dy
         }
 
         this.setState({
@@ -268,12 +284,30 @@ export default class extends React.Component {
         }
     }
 
-    onClickFinishSign = ()=>{
-
+    onClickRefresh = async()=>{
+        if(await confirm("초기화","수정사항을 저장하지 않고 모두 되돌리겠습니까?")){
+            location.reload()
+        }
     }
 
-    onChat = (msg)=>{
-        this.props.send_chat(this.state.contract_id, msg)
+    onClickSave = async()=>{
+        if(await confirm("저장","계약서를 수정사항을 적용하시겠습니까?")){
+            let myObject = this.state.edit_page.map(e=>{
+                return e.filter(o=>{
+                    return o.code == null || o.code == this.props.user.code
+                })
+            })
+
+            await window.showIndicator()
+            let resp = await this.props.edit_contract(this.state.contract_id, this.state.pin, window.clone_object(myObject))
+            await window.hideIndicator();
+
+            if(resp){
+                alert("성공적으로 저장하였습니다.")
+            }else{
+                alert("저장하는데 문제가 발생했습니다. 관리자에게 문의해주세요.")
+            }
+        }
     }
 
     render_finish_button(){
@@ -283,7 +317,28 @@ export default class extends React.Component {
                 입력 완료
             </div>
         if(this.state.status == 1)
-            return <Chatting onChat={this.onChat} />
+            return <Chatting contract_id={this.state.contract_id} author={{
+                name: this.state.author_name,
+                code: this.state.author_code,
+                account_id: this.state.account_id,
+            }} counterparties={this.state.counterparties}
+            contract_name={this.state.name} />
+    }
+
+    render_save_recover_btn(){
+        if(this.state.status == 1){
+            return [
+                <div key={0} className="line" />,
+                <div key={1} className="toolkit" onClick={this.onClickRefresh}>
+                    <i className="fas fa-undo"></i>
+                    초기화
+                </div>,
+                <div key={2} className="toolkit" onClick={this.onClickSave}>
+                    <i className="fas fa-save"></i>
+                    저장
+                </div>
+            ]
+        }
     }
     
 	render() {
@@ -331,21 +386,16 @@ export default class extends React.Component {
                         <i className="fab fa-asymmetrik" />
                         체크박스 추가
                     </div>
-
-                    <div className="line" />
-
-                    <div className="toolkit">
-                        <i className="fas fa-search-plus" />
-                        확대
-                    </div>
-                    <div className="toolkit">
-                        <i className="fas fa-search-minus" />
-                        축소
-                    </div>
+                    
+                    {this.render_save_recover_btn()}
+                    
                 </div> : null}
                 <div className="edit-box">
                     {(objects).map((e,k)=>{
-                        return <Item key={k} {...e} onUpdate={this.onUpdateItem.bind(this, k)}/>
+                        return <Item key={`${k}:${e.type}:${e.x}:${e.y}`} {...e} 
+                            onUpdate={this.onUpdateItem.bind(this, k)}
+                            removeItem={this.onRemoveItem.bind(this, k)}
+                        />
                     })}
                     <img className="edit-target" src={this.state.imgs[this.state.page]} />
                 </div>

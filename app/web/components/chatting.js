@@ -1,13 +1,66 @@
 import React from "react"
 import ReactDOM from "react-dom"
 import { Link } from "react-router-dom";
+import { connect } from 'react-redux';
+import history from "../history"
+import {
+    send_chat,
+    fetch_chat
+} from "../../common/actions"
 
+let mapStateToProps = (state)=>{
+	return {
+        user:state.user.info,
+        // chat:state.contract.chat
+	}
+}
+
+let mapDispatchToProps = {
+    send_chat,
+    fetch_chat
+}
+
+@connect(mapStateToProps, mapDispatchToProps )
 export default class extends React.Component {
     constructor(){
         super()
         this.state = {
-            chat_text:""
+            chat_text:"",
+            list:[]
         }
+    }
+
+    componentDidMount(){
+        (async ()=>{
+            let list = await this.props.fetch_chat(this.props.contract_id);
+            await this.addList(list)
+
+            this.refs.bottom.scrollIntoView({ behavior: "smooth" });
+        })()
+    }
+
+    componentWillUnmount(){
+    }
+
+    addList(newlist){
+        return new Promise(r=>{
+            let list = [...this.state.list,...newlist]
+
+            let s = {}
+            let _ = []
+            for(let o of list){
+                if(s[o.id] == null){
+                    s[o.id] = true
+                    _.push(o)
+                }
+            }
+
+            _.sort((a,b)=>a.id-b.id)
+            
+            this.setState({
+                list:_
+            },r)
+        })
     }
     
     onClickFold = ()=>{
@@ -16,19 +69,23 @@ export default class extends React.Component {
         })
     }
 
-    send_chat = async(msg)=>{
-        this.props.onChat && this.props.onChat(msg)
+    async send(){
+        await this.props.send_chat(this.props.contract_id, this.state.chat_text)
+        this.setState({
+            chat_text:""
+        })
+
+        let list = await this.props.fetch_chat(this.props.contract_id);
+        await this.addList(list)
+
+        this.refs.bottom.scrollIntoView({ behavior: "smooth" });
     }
 
     onKeyDownChat = async(e)=>{
         if(e.key == "Enter"){
             if(this.state.chat_text.length == 0)
                 return ;
-
-            await this.send_chat(this.state.chat_text);
-            this.setState({
-                chat_text:""
-            })
+            await this.send()
         }
     }
 
@@ -36,11 +93,36 @@ export default class extends React.Component {
         if(this.state.chat_text.length == 0)
             return alert("메세지를 입력해주세요");
 
+        await this.send()
+    }
 
-        await this.send_chat(this.state.chat_text);
-        this.setState({
-            chat_text:""
-        })
+    onClickNext = async()=>{
+        if(await confirm("다음으로","저장할 내용이 있다면 저장을 먼저 해주세요! 다음으로 넘어가시겠습니까?")){
+            history.push(`/contract-confirm/${this.props.contract_id}`)
+        }
+    }
+
+    userInfo(account_id){
+        for(let c of this.props.counterparties){
+            if(c.account_id == account_id)
+                return c
+        }
+
+        if(this.props.author.account_id == account_id){
+            return this.props.author
+        }
+    }
+
+    render_chat_slot(e){
+        let user = this.userInfo(e.account_id);
+        let isMine = this.props.user.account_id == e.account_id
+        return <div className={isMine? "chat-slot right" : "chat-slot left"}>
+            <img className="profile" src={`https://identicon-api.herokuapp.com/${user.code}/70?format=png`}/>
+            <div>
+                <div className="name">{user.name}</div>
+                <div className="msg-text">{e.msg}</div>
+            </div>
+        </div>
     }
 
     render(){
@@ -50,8 +132,8 @@ export default class extends React.Component {
                     <i className="fas fa-comment-alt"></i>
                 </div>
                 <div className="title">
-                    <div className="subject">근로계약서</div>
-                    <div className="counterparties">박불이세, 박불이세, 박불이세, 박불이세</div>
+                    <div className="subject">{this.props.contract_name}</div>
+                    <div className="counterparties">{this.props.author.name}{this.props.counterparties.map(e=>`, ${e.name}`).join("")}</div>
                 </div>
                 {/* <div style={{flex:1}}/> */}
                 <div> <i className={this.state.fold?`fas fa-chevron-up` : `fas fa-chevron-down`} />  </div>
@@ -59,10 +141,15 @@ export default class extends React.Component {
             <div className="content">
                 <div style={this.state.fold ? {} : {height:0}}>
                     <div className="chat-text-container">
+                        <div style={{ float:"left", clear: "both" }} ref="top" />
+                        {this.state.list.map(e=>{
+                            return this.render_chat_slot(e)
+                        })}
+                        <div style={{ float:"left", clear: "both" }} ref="bottom" />
                     </div>
                     <div className="confirm-container">
                         <div className="confirm-text">컨펌 완료</div>
-                        <div className="confirm-counterparties">박불이세, 박불이세</div>
+                        <div className="confirm-counterparties">{"?"}</div>
                     </div>
                     <div className="input-container">
                         <div className="input">
@@ -71,7 +158,7 @@ export default class extends React.Component {
                                 <i className="fas fa-comment"></i>
                             </button>
                         </div>
-                        <div className="next-btn">
+                        <div className="next-btn" onClick={this.onClickNext}>
                             <i className="fas fa-check"></i>
                             컨펌하기
                         </div>
