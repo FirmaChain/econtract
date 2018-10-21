@@ -43,6 +43,27 @@ export async function api_folder_list(){
         session:window.getCookie("session")
     });
 }
+export async function api_new_folder(name){
+    return await get("/new_folder", {
+        name
+    },{
+        session:window.getCookie("session")
+    });
+}
+export async function api_remove_folder(){
+    return await get("/remove_folder", {
+        
+    },{
+        session:window.getCookie("session")
+    });
+}
+export async function api_move_to_folder(){
+    return await get("/move_to_folder", {
+        
+    },{
+        session:window.getCookie("session")
+    });
+}
 export async function api_edit_contract(contract_id,encrypt_data,edit){
     let data = new FormData();
 

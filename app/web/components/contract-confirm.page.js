@@ -85,6 +85,16 @@ export default class extends React.Component {
         }
     }
 
+    render_status_text(){
+        if(this.state.status == 0){
+            return "배포 전"
+        }else if(this.state.status == 1){
+            return "서명 전"
+        }else if(this.state.status == 2){
+            return "서명 완료"
+        }
+    }
+
 	render() {
         if(!this.state.contract_id || !this.props.user)
             return <div className="default-page"><div className="container"><h1>로딩중..</h1></div></div>
@@ -105,7 +115,7 @@ export default class extends React.Component {
 
                             <div className="form-label"> 계약 상태 </div>
                             <div className="form-info">
-                                서명 전
+                                {this.render_status_text()}
                             </div>
 
                             <div className="form-label"> 계약 등록일자 </div>
@@ -117,12 +127,13 @@ export default class extends React.Component {
                             <div className="form-info">
                                 <div className="pin-box"> {this.state.pin} </div>
                             </div>
-
-                            <div className="form-label bold"> 확인하기 </div>
-                            <div className="form-submit">
-                                <button className="border confirm-btn" onClick={this.onClickConfirm}>승인</button>
-                                <button className="border reject-btn" onClick={this.onClickReject}>거절</button>
-                            </div>
+                            {this.state.status == 2 ? null : [
+                                <div key={1} className="form-label bold"> 확인하기 </div>,
+                                <div key={2} className="form-submit">
+                                    <button className="border confirm-btn" onClick={this.onClickConfirm}>승인</button>
+                                    <button className="border reject-btn" onClick={this.onClickReject}>거절</button>
+                                </div>
+                            ]}
                         </div>
                     </div>
                     <div className="column-300">

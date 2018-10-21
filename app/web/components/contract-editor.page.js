@@ -40,7 +40,7 @@ class Item extends React.Component{
 
     render(){
         let props = this.props
-        let isMine = props.code == null || props.code == this.props.user.code
+        let isMine = props.editable == true && (props.code == null || props.code == this.props.user.code)
         return <Draggable handle=".handle" defaultPosition={{x:props.x,y:props.y}} onStop={(e,n)=>props.onUpdate("pos", {x:n.x, y:n.y})} >
             <Resizable 
                 style={{position:"absolute"}} 
@@ -152,6 +152,9 @@ export default class extends React.Component {
                 pin:pin,
                 edit_page:objects,
             })
+
+            if(contract.status == 2)
+                this.unblock()
         }else{
             alert("정상적으로 불러오지 못했습니다.")
         }
@@ -322,14 +325,17 @@ export default class extends React.Component {
                 <i className="fas fa-check" />
                 입력 완료
             </div>
-        if(this.state.status == 1)
-            return <Chatting contract_id={this.state.contract_id} author={{
+        return <Chatting 
+            contract_id={this.state.contract_id} 
+            author={{
                 name: this.state.author_name,
                 code: this.state.author_code,
                 account_id: this.state.account_id,
                 confirm:this.state.author_confirm,
-            }} counterparties={this.state.counterparties}
-            contract_name={this.state.name} />
+            }} 
+            counterparties={this.state.counterparties}
+            contract_name={this.state.name}
+            contract_status={this.state.status} />
     }
 
     render_save_recover_btn(){
@@ -402,6 +408,7 @@ export default class extends React.Component {
                         return <Item key={`${k}:${e.type}:${e.x}:${e.y}`} {...e} 
                             onUpdate={this.onUpdateItem.bind(this, k)}
                             removeItem={this.onRemoveItem.bind(this, k)}
+                            editable={this.state.status < 2}
                         />
                     })}
                     <img className="edit-target" src={this.state.imgs[this.state.page]} />

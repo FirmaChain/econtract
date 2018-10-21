@@ -86,14 +86,12 @@ export default class extends React.Component {
                 return "서명 전"
             }else if(status == 2){
                 return "서명 완료"
-            }else if(status == 3){
-                return "서명 완료"
             }
         }
         let mm = this.state.moveMode;
         return <tr key={k} className={mm ? "" : "clickable"} onClick={mm ? null : this.onClickContract.bind(this,e.contract_id)}>
             {mm ? <td><CheckBox2 /></td> : null}
-            <td style={{width:"40px"}} className="text-center">{status_text(e.status)}</td>
+            <td style={{width:"50px"}} className="text-center">{status_text(e.status)}</td>
             <td style={{width:"20px"}} className="text-center"><i className="fas fa-lock"></i></td>
             <td className="text-left">{e.name}</td>
             <td style={{width:"60px"}} className="text-center">{e.username}{e.counterpartyCnt > 0 ?" 외 2명":""}</td>

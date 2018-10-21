@@ -1153,7 +1153,7 @@ div.checkbox-comp{
                     border-radius: 5px;
                     text-align: center;
                     border: 1px solid #ccc;
-
+                    font-size: 11px;
                 }
                 >.left{
                     .msg-text{
@@ -1380,6 +1380,7 @@ div.checkbox-comp{
             >input{
                 font-size: 13px;
                 border:0;
+                width: 100%;
             }
         }
     }

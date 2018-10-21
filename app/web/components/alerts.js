@@ -5,9 +5,20 @@ import SignerSlot from "./signer-slot"
 
 @modal
 class AddFolder extends React.Component{
-
+    constructor(){
+        super()
+        this.state = {}
+    }
     closeSelf = ()=>{
         window.closeModal(this.props.modalId)
+    }
+
+    onClick = ()=>{
+        if(!this.state.name)
+            return alert("폴더 이름을 입력해주세요!")
+
+        this.props.onClick && this.props.onClick( this.state.name )
+        this.closeSelf()
     }
 
     render(){
@@ -16,11 +27,11 @@ class AddFolder extends React.Component{
                 <div className="title">폴더 추가</div>
                 <div className="form-label">폴더 이름</div>
                 <div className="form-input">
-                    <input type="text" placeholder="폴더이름을 입력해주세요" />
+                    <input type="text" placeholder="폴더이름을 입력해주세요" value={this.state.name || ""} onChange={e=>this.setState({name:e.target.value})} />
                 </div>
             </div>
             <div className="buttons">
-                <button onClick={this.closeSelf}>확인</button>
+                <button onClick={this.onClick}>확인</button>
                 <button onClick={this.closeSelf}>취소</button>
             </div>
         </div>

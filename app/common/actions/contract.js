@@ -8,6 +8,9 @@ import {
     api_fetch_chat,
     api_confirm_contract,
     api_reject_contract,
+    api_new_folder,
+    api_remove_folder,
+    api_move_to_folder,
 } from "../../../gen_api"
 
 import {
@@ -223,5 +226,24 @@ export function reject_contract(contract_id, msg){
         msg = aes_encrypt(msg, pin)
 
         return (await api_reject_contract(contract_id, msg)).payload
+    }
+}
+
+
+export function new_folder(name){
+    return async function(dispatch){
+        return (await api_new_folder(name)).payload
+    }
+}
+
+export function remove_folder(folder_id){
+    return async function(dispatch){
+        return (await api_remove_folder(folder_id)).payload
+    }
+}
+
+export function move_to_folder(contract_id, folder_id){
+    return async function(dispatch){
+        return (await api_move_to_folder(contract_id, folder_id)).payload
     }
 }

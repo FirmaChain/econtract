@@ -89,10 +89,10 @@ export default class extends React.Component{
         let info = this.props.user_info
 
         return (<div className="user-state-bar">
-            <div className="searchbar">
+            {/* <div className="searchbar">
                 <i className="fas fa-search" />
                 <input type="text" placeholder="검색어를 입력해주세요" />
-            </div>
+            </div> */}
 
             <div className="login-time-bar" onClick={this.onClickUpdateLogin}>
                 <div>로그인</div>
