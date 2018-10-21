@@ -1,6 +1,6 @@
 import {
     LOAD_FODLERS,
-    LOAD_RECENTLY_CONTRACTS
+    LOAD_CONTRACT_LIST
 } from '../actions';
 
 let _ = {
@@ -13,10 +13,10 @@ export default function (state=_, action){
                     ...state,
                     folders: action.payload
                 }
-            case LOAD_RECENTLY_CONTRACTS:
+            case LOAD_CONTRACT_LIST:
                 return {
                     ...state,
-                    recently: action.payload
+                    board: action.payload
                 }
           default:
               return state;

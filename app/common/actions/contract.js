@@ -11,6 +11,7 @@ import {
     api_new_folder,
     api_remove_folder,
     api_move_to_folder,
+    api_folder_in_contracts
 } from "../../../gen_api"
 
 import {
@@ -26,7 +27,7 @@ import Web3 from "../Web3"
 
 export const NEW_CONTRACT = "NEW_CONTRACT"
 export const LOAD_FODLERS = "LOAD_FODLERS"
-export const LOAD_RECENTLY_CONTRACTS = "LOAD_RECENTLY_CONTRACTS"
+export const LOAD_CONTRACT_LIST = "LOAD_CONTRACT_LIST"
 
 function genPIN(digit=6) {
     let text = "";
@@ -137,9 +138,9 @@ export function load_contract(contract_id, pin){
     }
 }
 
-export function folder_list(contract_id){
+export function folder_list(page=0){
     return async function(dispatch){
-        let list = (await api_folder_list(contract_id)).payload
+        let list = (await api_folder_list(page)).payload
         dispatch({
             type:LOAD_FODLERS,
             payload:list
@@ -148,11 +149,22 @@ export function folder_list(contract_id){
     }
 }
 
+export function folder_in_contracts(folder_id,page=0){
+    return async function(dispatch){
+        let folder = (await api_folder_in_contracts(folder_id,page)).payload
+        dispatch({
+            type:LOAD_CONTRACT_LIST,
+            payload:folder
+        })
+        return folder
+    }
+}
+
 export function recently_contracts(page=0){
     return async function(dispatch){
         let list = (await api_recently_contracts(page)).payload
         dispatch({
-            type:LOAD_RECENTLY_CONTRACTS,
+            type:LOAD_CONTRACT_LIST,
             payload:list
         })
         return list

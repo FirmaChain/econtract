@@ -73,9 +73,9 @@ export default class extends React.Component {
     }
 
 	render() {
+        console.log(this.props.folders)
         if(!this.props.folders)
             return <div />
-
 		return (<div className="default-page contract-list-page">
             <div className="container">
                 <h1>내 계약</h1>
@@ -90,11 +90,10 @@ export default class extends React.Component {
                                     {this.state.deleteMode ? <th><CheckBox2 /></th> : null}
                                     <th></th>
                                     <th className="text-left">폴더</th>
-                                    <th>계약 (미완료)</th>
+                                    <th>계약건</th>
                                     <th>생성일자</th>
                                 </tr>
-                                {this.props.folders.map((e,k)=>{
-                                    //
+                                {this.props.folders.list.map((e,k)=>{
                                     let subject = e.subject || "분류되지 않은 계약"
                                     let folder_id = e.folder_id || 0
                                     let addedAt = e.addedAt ? moment(e.addedAt).format("YYYY-MM-DD HH:mm:ss") : "-"

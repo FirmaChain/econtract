@@ -11,17 +11,19 @@ import CheckBox2 from "./checkbox2"
 import history from '../history';
 import moment from "moment"
 import {
-    recently_contracts
+    recently_contracts,
+    folder_in_contracts
 } from "../../common/actions"
 
 let mapStateToProps = (state)=>{
 	return {
-        recently:state.contract.recently
+        board:state.contract.board
 	}
 }
 
 let mapDispatchToProps = {
-    recently_contracts
+    recently_contracts,
+    folder_in_contracts
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -39,27 +41,19 @@ export default class extends React.Component {
         (async()=>{
             let params = this.props.match.params;
             if(params.id){
+                await window.showIndicator()
                 this.setState({
-                    title: params.id,
+                    folder_id: params.id,
                 })
-                await this.props.load__;
+                await this.props.folder_in_contracts(params.id);
+
+                await window.hideIndicator();
             }else{
                 await this.props.recently_contracts();
-                this.updateData(this.props)
             }
         })()
     }
 
-    componentWillReceiveProps(props){
-        this.updateData(props)    
-    }
-
-    updateData(props){
-        this.setState({
-            board: !this.state.title ? props.recently : props.list
-        })
-    }
-    
     onClickMove = async ()=>{
         await window.openModal("MoveToFolder")
     }
@@ -100,15 +94,16 @@ export default class extends React.Component {
     }
 
 	render() {
-        let board_list = this.state.board.list||[];
+        let board = this.props.board || { list:[] };
+        console.log(board)
 		return (<div className="default-page contract-list-page">
             <div className="container">
                 <h1>내 계약</h1>
                 <UserStatusBar />
                 <div className="page">
-                    <ContractMenu page={this.state.title ? "folder" : "recent"} />
+                    <ContractMenu page={this.state.folder_id != null ? "folder" : "recent"} />
                     <div className="column-600 page-contents">
-                        <h1>{this.state.title || "최근 사용한 계약"}</h1>
+                        <h1>{this.state.folder_id == 0? "분류되지 않은 계약" : (board.subject || "최근 사용한 계약")}</h1>
                         <div className="filter-checkbox">
                             <CheckBox text="요청받은 계약" on={this.state.filter==1} onClick={(b)=>b ? this.setState({filter:1}): null} />
                             <CheckBox text="요청한 계약" on={this.state.filter==2} onClick={(b)=>b ? this.setState({filter:2}): null} />
@@ -125,10 +120,10 @@ export default class extends React.Component {
                                     <th>서명자</th>
                                     <th>일자</th>
                                 </tr>
-                                {board_list.map((e,k)=>{
+                                {board.list.map((e,k)=>{
                                     return this.render_board_slot(e,k)
                                 })}
-                                {board_list.length == 0 ? <tr> <td colSpan="6" style={{textAlign:"center"}}>계약서가 없습니다.</td> </tr> : null}
+                                {board.list.length == 0 ? <tr> <td colSpan="6" style={{textAlign:"center"}}>계약서가 없습니다.</td> </tr> : null}
                             </tbody>
                         </table>
 

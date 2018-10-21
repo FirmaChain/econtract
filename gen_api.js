@@ -36,9 +36,9 @@ export async function api_recently_contracts(page){
         session:window.getCookie("session")
     });
 }
-export async function api_folder_list(){
+export async function api_folder_list(page){
     return await get("/folder_list", {
-        
+        page
     },{
         session:window.getCookie("session")
     });
@@ -60,6 +60,14 @@ export async function api_remove_folder(){
 export async function api_move_to_folder(){
     return await get("/move_to_folder", {
         
+    },{
+        session:window.getCookie("session")
+    });
+}
+export async function api_folder_in_contracts(folder_id,page){
+    return await get("/folder_in_contracts", {
+        folder_id,
+		page
     },{
         session:window.getCookie("session")
     });
