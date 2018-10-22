@@ -36,9 +36,38 @@ export async function api_recently_contracts(page){
         session:window.getCookie("session")
     });
 }
-export async function api_folder_list(){
+export async function api_folder_list(page){
     return await get("/folder_list", {
+        page
+    },{
+        session:window.getCookie("session")
+    });
+}
+export async function api_new_folder(name){
+    return await get("/new_folder", {
+        name
+    },{
+        session:window.getCookie("session")
+    });
+}
+export async function api_remove_folder(){
+    return await get("/remove_folder", {
         
+    },{
+        session:window.getCookie("session")
+    });
+}
+export async function api_move_to_folder(){
+    return await get("/move_to_folder", {
+        
+    },{
+        session:window.getCookie("session")
+    });
+}
+export async function api_folder_in_contracts(folder_id,page){
+    return await get("/folder_in_contracts", {
+        folder_id,
+		page
     },{
         session:window.getCookie("session")
     });
@@ -77,13 +106,22 @@ export async function api_fetch_chat(contract_id,cursor){
         session:window.getCookie("session")
     });
 }
-export async function api_confirm_contract(contract_id,cursor){
+export async function api_confirm_contract(contract_id){
+    let data = new FormData();
+
+    data.append('contract_id', contract_id)
+
+    return await post("/confirm_contract", data,{
+        session:window.getCookie("session")
+    });
+}
+export async function api_reject_contract(contract_id,msg){
     let data = new FormData();
 
     data.append('contract_id', contract_id);
-	data.append('cursor', cursor)
+	data.append('msg', msg)
 
-    return await post("/confirm_contract", data,{
+    return await post("/reject_contract", data,{
         session:window.getCookie("session")
     });
 }
