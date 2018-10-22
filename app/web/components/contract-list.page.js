@@ -12,18 +12,22 @@ import history from '../history';
 import moment from "moment"
 import {
     recently_contracts,
-    folder_in_contracts
+    folder_in_contracts,
+    all_folders,
+    move_to_folder,
 } from "../../common/actions"
 
 let mapStateToProps = (state)=>{
 	return {
-        board:state.contract.board
+        board:state.contract.board,
 	}
 }
 
 let mapDispatchToProps = {
     recently_contracts,
-    folder_in_contracts
+    folder_in_contracts,
+    all_folders,
+    move_to_folder,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -54,24 +58,66 @@ export default class extends React.Component {
         })()
     }
 
+    onClickPage = async(page)=>{
+        if(this.state.folder_id == null){
+            await this.props.recently_contracts(page-1);
+        }else{
+            await this.props.folder_in_contracts(this.state.folder_id,page-1);
+        }
+        this.setState({
+            cur_page:page
+        })
+    }
+
     onClickMove = async ()=>{
-        await window.openModal("MoveToFolder")
+        let move = this.state.move_select.map((e,k)=>e?this.props.board.list[k].contract_id : null).filter(e=>e);
+        if(move.length == 0)
+            return alert("이동시킬 계약을 선택해주세요.")
+
+        await window.showIndicator();
+        let list = await this.props.all_folders();
+        await window.hideIndicator();
+        if(list.length == 0){
+            return alert("생성된 폴더가 없습니다.")
+        }
+
+        await window.openModal("MoveToFolder",{
+            move_select:move,
+            list:list,
+            onClickMove:async(folder_id)=>{
+                await window.showIndicator();
+                await this.props.move_to_folder(folder_id, move)
+                await window.hideIndicator();
+
+                await this.props.folder_in_contracts(this.state.folder_id);
+                this.onClickNormalMode()
+                return true;
+            }
+        })
     }
 
     onClickMoveMode=()=>{
         this.setState({
-            moveMode:true
+            moveMode:true,
+            move_select:[]
         })
     }
     onClickNormalMode=()=>{
         this.setState({
-            moveMode:false
+            moveMode:false,
+            move_select:[]
         })
     }
     onClickContract=(contract_id)=>{
         history.push(`/contract-editor/${contract_id}`)
     }
-
+    onClickMoveSel=(k)=>{
+        let move_select = [...this.state.move_select]
+        move_select[k] = !move_select[k]
+        this.setState({
+            move_select
+        })
+    }
     render_board_slot(e,k){
         let status_text = (status)=>{
             if(status == 0){
@@ -84,7 +130,7 @@ export default class extends React.Component {
         }
         let mm = this.state.moveMode;
         return <tr key={k} className={mm ? "" : "clickable"} onClick={mm ? null : this.onClickContract.bind(this,e.contract_id)}>
-            {mm ? <td><CheckBox2 /></td> : null}
+            {mm ? <td><CheckBox2 on={this.state.move_select[k]} onClick={this.onClickMoveSel.bind(this,k)} /></td> : null}
             <td style={{width:"50px"}} className="text-center">{status_text(e.status)}</td>
             <td style={{width:"20px"}} className="text-center"><i className="fas fa-lock"></i></td>
             <td className="text-left">{e.name}</td>
@@ -95,7 +141,8 @@ export default class extends React.Component {
 
 	render() {
         let board = this.props.board || { list:[] };
-        console.log(board)
+        let total_cnt = board.total_cnt
+        let page_num = board.page_num
 		return (<div className="default-page contract-list-page">
             <div className="container">
                 <h1>내 계약</h1>
@@ -113,7 +160,7 @@ export default class extends React.Component {
                         <table className="table" style={{marginTop:"20px"}}>
                             <tbody>
                                 <tr>
-                                    {this.state.moveMode ? <th><CheckBox2 /></th> : null}
+                                    {this.state.moveMode ? <th>-</th> : null}
                                     <th>상태</th>
                                     <th>잠금</th>
                                     <th className="text-left">계약명</th>
@@ -127,14 +174,14 @@ export default class extends React.Component {
                             </tbody>
                         </table>
 
-                        {this.state.title ?(this.state.moveMode ? <div className="right-align">
+                        {this.state.folder_id ?(this.state.moveMode ? <div className="right-align">
                             <button onClick={this.onClickNormalMode}>취소</button>
                             <button className="danger" onClick={this.onClickMove}>선택 이동</button>
                         </div> : <div className="right-align">
                             <button onClick={this.onClickMoveMode}>선택 이동</button>
                         </div>): null}
 
-                        <Pager max={20} cur={this.state.cur_page||1} onClick={(i)=>this.setState({cur_page:i})} />
+                        <Pager max={Math.ceil(total_cnt/page_num)} cur={this.state.cur_page||1} onClick={this.onClickPage} />
 
                     </div>
                 </div>

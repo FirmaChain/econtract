@@ -25,8 +25,9 @@ function render_li(cur, max, onClick){
     
     let target = Math.min(max , start + display_count)
     start = target - display_count
+    start = start < 0 ? 1 : start
 
-    for(let i=start; i < target; i++ ){
+    for(let i=start; i <= target; i++ ){
         list.push(<li 
             key={i}
             className={cur == i ? `slot active` : `slot`} 

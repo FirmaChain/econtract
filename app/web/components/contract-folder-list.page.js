@@ -46,7 +46,8 @@ export default class extends React.Component {
     
     onClickDeleteMode = ()=>{
         this.setState({
-            deleteMode:true
+            deleteMode:true,
+            del_select:[]
         })
     }
 
@@ -63,19 +64,42 @@ export default class extends React.Component {
                 await this.props.new_folder(name)
                 await this.props.folder_list()
                 await window.hideIndicator()
+
+                this.onClickNormalMode()
             }
         })
     }
 
     onClickDelete = async ()=>{
         if( await window.confirm("폴더 삭제", "정말 삭제하시겠습니까?") ){
+            await this.props.remove_folder(this.state.del_select.map((e,k)=>{
+                if(e)
+                    return this.props.folders.list[k].folder_id
+            }).filter(e=>e))
+            await this.props.folder_list()
         }
     }
 
+    onClickDelRadio = (k)=>{
+        let del_select = [...this.state.del_select]
+        del_select[k] = !del_select[k]; 
+        this.setState({
+            del_select
+        })
+    }
+
+    onClickPaging = async(page)=>{
+        await this.props.folder_list(page-1)
+        this.setState({cur_page:page})
+    }
+
 	render() {
-        console.log(this.props.folders)
         if(!this.props.folders)
             return <div />
+
+        let total_cnt = this.props.folders.total_cnt 
+        let page_num = this.props.folders.page_num 
+
 		return (<div className="default-page contract-list-page">
             <div className="container">
                 <h1>내 계약</h1>
@@ -87,7 +111,7 @@ export default class extends React.Component {
                         <table className="table" style={{marginTop:"20px"}}>
                             <tbody>
                                 <tr>
-                                    {this.state.deleteMode ? <th><CheckBox2 /></th> : null}
+                                    {this.state.deleteMode ? <th className="text-left"></th> : null}
                                     <th></th>
                                     <th className="text-left">폴더</th>
                                     <th>계약건</th>
@@ -98,7 +122,7 @@ export default class extends React.Component {
                                     let folder_id = e.folder_id || 0
                                     let addedAt = e.addedAt ? moment(e.addedAt).format("YYYY-MM-DD HH:mm:ss") : "-"
                                     return <tr key={k}>
-                                        {this.state.deleteMode ? <td><CheckBox2 /></td> : null}
+                                        {this.state.deleteMode ? <td>{folder_id == 0 ? "" : <CheckBox2 on={this.state.del_select[k]} onClick={this.onClickDelRadio.bind(this,k)} />}</td> : null}
                                         <td style={{width:"20px"}}><i className={`fas ${folder_id == 0 ? "fa-thumbtack":"fa-folder"}`} /></td>
                                         <td className="text-left"><Link to={encodeURI(`/folder/${folder_id}`)}>{subject}</Link></td>
                                         <td className="date-cell">{e.contract_cnt}</td>
@@ -116,7 +140,7 @@ export default class extends React.Component {
                             <button onClick={this.onClickNewFolder} >폴더 추가</button>
                         </div>}
 
-                        <Pager max={20} cur={this.state.cur_page||1} onClick={(i)=>this.setState({cur_page:i})} />
+                        <Pager max={Math.ceil(total_cnt/page_num)} cur={this.state.cur_page||1} onClick={this.onClickPaging} />
 
                     </div>
                 </div>

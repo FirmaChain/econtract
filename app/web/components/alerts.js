@@ -222,24 +222,30 @@ class MoveToFolder extends React.Component{
         window.closeModal(this.props.modalId)
     }
 
+    onClickMove = ()=>{
+        let folder_id = this.refs.sel.value
+        
+        this.props.onClickMove && this.props.onClickMove(folder_id)
+        this.closeSelf()
+    }
+
     render(){
         return <div className="default-modal">
             <div className="contents">
                 <div className="title">폴더 선택 이동</div>
                 
                 <div className="select">
-                    <select>
-                        <option>공문서</option>
-                        <option>공문서</option>
-                        <option>공문서</option>
-                        <option>공문서</option>
+                    <select ref="sel">
+                        {this.props.list.map((e,k)=>{
+                            return <option key={k} value={e.folder_id}>{e.subject}</option>
+                        })}
                     </select>
                 </div>
 
-                <div className="msg"><b>n</b>건의 계약이 선택하신 폴더로 이동합니다.</div>
+                <div className="msg"><b>{this.props.move_select.length}</b>건의 계약이 선택하신 폴더로 이동합니다.</div>
             </div>
             <div className="buttons">
-                <button onClick={this.closeSelf}>확인</button>
+                <button onClick={this.onClickMove}>확인</button>
                 <button onClick={this.closeSelf}>취소</button>
             </div>
         </div>

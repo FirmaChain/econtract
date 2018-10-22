@@ -11,7 +11,8 @@ import {
     api_new_folder,
     api_remove_folder,
     api_move_to_folder,
-    api_folder_in_contracts
+    api_folder_in_contracts,
+    api_all_folders
 } from "../../../gen_api"
 
 import {
@@ -138,6 +139,12 @@ export function load_contract(contract_id, pin){
     }
 }
 
+export function all_folders(){
+    return async function(dispatch){
+        return (await api_all_folders()).payload
+    }
+}
+
 export function folder_list(page=0){
     return async function(dispatch){
         let list = (await api_folder_list(page)).payload
@@ -248,14 +255,16 @@ export function new_folder(name){
     }
 }
 
-export function remove_folder(folder_id){
+export function remove_folder(folder_ids){
     return async function(dispatch){
-        return (await api_remove_folder(folder_id)).payload
+        console.log(folder_ids)
+        return (await api_remove_folder(folder_ids)).payload
     }
 }
 
-export function move_to_folder(contract_id, folder_id){
+export function move_to_folder(folder_id,contract_ids){
     return async function(dispatch){
-        return (await api_move_to_folder(contract_id, folder_id)).payload
+        console.log(folder_id,contract_ids)
+        return (await api_move_to_folder(folder_id,contract_ids)).payload
     }
 }

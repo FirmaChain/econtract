@@ -36,6 +36,13 @@ export async function api_recently_contracts(page){
         session:window.getCookie("session")
     });
 }
+export async function api_all_folders(page){
+    return await get("/all_folders", {
+        page
+    },{
+        session:window.getCookie("session")
+    });
+}
 export async function api_folder_list(page){
     return await get("/folder_list", {
         page
@@ -50,17 +57,28 @@ export async function api_new_folder(name){
         session:window.getCookie("session")
     });
 }
-export async function api_remove_folder(){
-    return await get("/remove_folder", {
-        
-    },{
+export async function api_remove_folder(idx){
+    let data = new FormData();
+
+    for(let k in idx){
+        data.append('idx:'+k,idx[k])
+    }
+    data.append('idx',idx.length)
+
+    return await post("/remove_folder", data,{
         session:window.getCookie("session")
     });
 }
-export async function api_move_to_folder(){
-    return await get("/move_to_folder", {
-        
-    },{
+export async function api_move_to_folder(folder_id,contract_ids){
+    let data = new FormData();
+
+    data.append('folder_id', folder_id);
+	for(let k in contract_ids){
+        data.append('contract_ids:'+k,contract_ids[k])
+    }
+    data.append('contract_ids',contract_ids.length)
+
+    return await post("/move_to_folder", data,{
         session:window.getCookie("session")
     });
 }
