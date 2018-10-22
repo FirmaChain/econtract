@@ -6,7 +6,12 @@ import {
     api_edit_contract,
     api_send_chat,
     api_fetch_chat,
-    api_confirm_contract
+    api_confirm_contract,
+    api_reject_contract,
+    api_new_folder,
+    api_remove_folder,
+    api_move_to_folder,
+    api_folder_in_contracts
 } from "../../../gen_api"
 
 import {
@@ -22,7 +27,7 @@ import Web3 from "../Web3"
 
 export const NEW_CONTRACT = "NEW_CONTRACT"
 export const LOAD_FODLERS = "LOAD_FODLERS"
-export const LOAD_RECENTLY_CONTRACTS = "LOAD_RECENTLY_CONTRACTS"
+export const LOAD_CONTRACT_LIST = "LOAD_CONTRACT_LIST"
 
 function genPIN(digit=6) {
     let text = "";
@@ -44,6 +49,7 @@ async function parse_html(account, contract_id, html, pin){
                 let resp = await fetch(`${window.HOST}/${contract_id}-${account.id}-${obj.data}`,{encoding:null})
                 obj.data = aes_decrypt(await resp.text() , pin)
                 obj.account_id = account.id
+                obj.name = account.name
                 obj.code = account.code
             }
         }
@@ -100,14 +106,20 @@ export function load_contract(contract_id, pin){
             
             contract.html = await parse_html({
                 id:contract.account_id,
-                code:contract.author_code
+                code:contract.author_code,
+                name:contract.author_name
             }, contract_id, contract.html, pin)
+
+            try{ contract.author_msg = aes_decrypt(contract.author_msg, pin) }catch(err){}
             
             for(let counterparty of contract.counterparties){
                 counterparty.html = await parse_html({
                     id:counterparty.account_id,
-                    code:counterparty.code
+                    code:counterparty.code,
+                    name:counterparty.name
                 }, contract_id, counterparty.html, pin)
+                
+                try{ counterparty.reject = aes_decrypt(counterparty.reject, pin) }catch(err){}
             }
 
             let img_base64 = []
@@ -117,6 +129,7 @@ export function load_contract(contract_id, pin){
 
             contract.imgs = img_base64;
             localStorage.setItem(`contract:${contract_id}`, pin)
+            console.log("contract",contract)
             return contract
         }catch(err){
             console.log(err)
@@ -125,9 +138,9 @@ export function load_contract(contract_id, pin){
     }
 }
 
-export function folder_list(contract_id){
+export function folder_list(page=0){
     return async function(dispatch){
-        let list = (await api_folder_list(contract_id)).payload
+        let list = (await api_folder_list(page)).payload
         dispatch({
             type:LOAD_FODLERS,
             payload:list
@@ -136,11 +149,22 @@ export function folder_list(contract_id){
     }
 }
 
+export function folder_in_contracts(folder_id,page=0){
+    return async function(dispatch){
+        let folder = (await api_folder_in_contracts(folder_id,page)).payload
+        dispatch({
+            type:LOAD_CONTRACT_LIST,
+            payload:folder
+        })
+        return folder
+    }
+}
+
 export function recently_contracts(page=0){
     return async function(dispatch){
         let list = (await api_recently_contracts(page)).payload
         dispatch({
-            type:LOAD_RECENTLY_CONTRACTS,
+            type:LOAD_CONTRACT_LIST,
             payload:list
         })
         return list
@@ -185,6 +209,17 @@ export function fetch_chat(contract_id, cursor=0){
         let pin = localStorage.getItem(`contract:${contract_id}`);
         if(pin){
             let resp = (await api_fetch_chat(contract_id, cursor)).payload
+            for(let chat of resp){
+                try{
+                    if(Number(chat.msg) == chat.msg){
+                        chat.msg = {
+                            type:Number(chat.msg)
+                        }
+                    }else{
+                        chat.msg = aes_decrypt(chat.msg, pin)
+                    }
+                }catch(err){}
+            }
             return resp
         }
         return null
@@ -194,5 +229,33 @@ export function fetch_chat(contract_id, cursor=0){
 export function confirm_contract(contract_id){
     return async function(dispatch){
         return (await api_confirm_contract(contract_id)).payload
+    }
+}
+
+export function reject_contract(contract_id, msg){
+    return async function(dispatch){
+        let pin = localStorage.getItem(`contract:${contract_id}`) 
+        msg = aes_encrypt(msg, pin)
+
+        return (await api_reject_contract(contract_id, msg)).payload
+    }
+}
+
+
+export function new_folder(name){
+    return async function(dispatch){
+        return (await api_new_folder(name)).payload
+    }
+}
+
+export function remove_folder(folder_id){
+    return async function(dispatch){
+        return (await api_remove_folder(folder_id)).payload
+    }
+}
+
+export function move_to_folder(contract_id, folder_id){
+    return async function(dispatch){
+        return (await api_move_to_folder(contract_id, folder_id)).payload
     }
 }

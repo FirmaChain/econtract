@@ -7,15 +7,25 @@ import UserStatusBar from "./user-state-bar"
 import Pager from "./pager"
 import CheckBox from "./checkbox"
 import CheckBox2 from "./checkbox2"
+import moment from "moment"
+import {
+    folder_list,
+    new_folder,
+    remove_folder,
+    move_to_folder,
+} from "../../common/actions"
 
 let mapStateToProps = (state)=>{
 	return {
+        folders:state.contract.folders
 	}
 }
 
-let mapDispatchToProps = (dispatch) => {
-    return {
-    }
+let mapDispatchToProps = {
+    folder_list,
+    new_folder,
+    remove_folder,
+    move_to_folder,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -29,6 +39,9 @@ export default class extends React.Component {
 	}
 
 	componentDidMount(){
+        (async()=>{
+            await this.props.folder_list()
+        })()
     }
     
     onClickDeleteMode = ()=>{
@@ -43,12 +56,26 @@ export default class extends React.Component {
         })
     }
 
+    onClickNewFolder = async()=>{
+        window.openModal("AddFolder",{
+            onClick:async(name)=>{
+                await window.showIndicator()
+                await this.props.new_folder(name)
+                await this.props.folder_list()
+                await window.hideIndicator()
+            }
+        })
+    }
+
     onClickDelete = async ()=>{
         if( await window.confirm("폴더 삭제", "정말 삭제하시겠습니까?") ){
         }
     }
 
 	render() {
+        console.log(this.props.folders)
+        if(!this.props.folders)
+            return <div />
 		return (<div className="default-page contract-list-page">
             <div className="container">
                 <h1>내 계약</h1>
@@ -63,37 +90,21 @@ export default class extends React.Component {
                                     {this.state.deleteMode ? <th><CheckBox2 /></th> : null}
                                     <th></th>
                                     <th className="text-left">폴더</th>
-                                    <th>계약 (미완료)</th>
+                                    <th>계약건</th>
                                     <th>생성일자</th>
                                 </tr>
-                                <tr>
-                                    {this.state.deleteMode ? <td><CheckBox2 /></td> : null}
-                                    <td style={{width:"20px"}}><i className="fas fa-thumbtack" /></td>
-                                    <td className="text-left"><Link to={encodeURI("/folder/분류되지 않은 계약")}>분류되지 않은 계약</Link></td>
-                                    <td className="date-cell">3건 (1건)</td>
-                                    <td className="date-cell">2018.09.02 02:16:00</td>
-                                </tr>
-                                <tr>
-                                    {this.state.deleteMode ? <td><CheckBox2 /></td> : null}
-                                    <td style={{width:"20px"}}><i className="fas fa-folder"></i></td>
-                                    <td className="text-left"><Link to={encodeURI("/folder/계약 폴더1")}>계약 폴더1</Link></td>
-                                    <td className="date-cell">3건 (1건)</td>
-                                    <td className="date-cell">2018.09.02 02:16:00</td>
-                                </tr>
-                                <tr>
-                                    {this.state.deleteMode ? <td><CheckBox2 on={true} /></td> : null}
-                                    <td style={{width:"20px"}}><i className="fas fa-folder"></i></td>
-                                    <td className="text-left"><Link to={encodeURI("/folder/계약 폴더2")}>계약 폴더2</Link></td>
-                                    <td className="date-cell">3건 (1건)</td>
-                                    <td className="date-cell">2018.09.02 02:16:00</td>
-                                </tr>
-                                <tr>
-                                    {this.state.deleteMode ? <td><CheckBox2 /></td> : null}
-                                    <td style={{width:"20px"}}><i className="fas fa-folder"></i></td>
-                                    <td className="text-left"><Link to={encodeURI("/folder/계약 폴더3")}>계약 폴더3</Link></td>
-                                    <td className="date-cell">3건 (1건)</td>
-                                    <td className="date-cell">2018.09.02 02:16:00</td>
-                                </tr>
+                                {this.props.folders.list.map((e,k)=>{
+                                    let subject = e.subject || "분류되지 않은 계약"
+                                    let folder_id = e.folder_id || 0
+                                    let addedAt = e.addedAt ? moment(e.addedAt).format("YYYY-MM-DD HH:mm:ss") : "-"
+                                    return <tr key={k}>
+                                        {this.state.deleteMode ? <td><CheckBox2 /></td> : null}
+                                        <td style={{width:"20px"}}><i className={`fas ${folder_id == 0 ? "fa-thumbtack":"fa-folder"}`} /></td>
+                                        <td className="text-left"><Link to={encodeURI(`/folder/${folder_id}`)}>{subject}</Link></td>
+                                        <td className="date-cell">{e.contract_cnt}</td>
+                                        <td className="date-cell">{addedAt}</td>
+                                    </tr>
+                                })}
                             </tbody>
                         </table>
 
@@ -102,7 +113,7 @@ export default class extends React.Component {
                             <button className="danger" onClick={this.onClickDelete}>폴더 삭제</button>
                         </div> : <div className="right-align">
                             <button onClick={this.onClickDeleteMode}>폴더 삭제</button>
-                            <button onClick={()=>window.openModal("AddFolder")} >폴더 추가</button>
+                            <button onClick={this.onClickNewFolder} >폴더 추가</button>
                         </div>}
 
                         <Pager max={20} cur={this.state.cur_page||1} onClick={(i)=>this.setState({cur_page:i})} />
