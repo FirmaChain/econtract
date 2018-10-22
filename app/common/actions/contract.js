@@ -66,6 +66,7 @@ async function parse_html(account, contract_id, html, pin){
 async function fetch_img(name, pin){
     let resp = await fetch(`${window.HOST}/${name}`,{encoding:null})
     let text = await resp.text();
+    console.log(text.length, pin)
     return aes_decrypt(text , pin)
 }
 

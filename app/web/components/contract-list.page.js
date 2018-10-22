@@ -151,12 +151,12 @@ export default class extends React.Component {
                     <ContractMenu page={this.state.folder_id != null ? "folder" : "recent"} />
                     <div className="column-600 page-contents">
                         <h1>{this.state.folder_id == 0? "분류되지 않은 계약" : (board.subject || "최근 사용한 계약")}</h1>
-                        <div className="filter-checkbox">
+                        {/* <div className="filter-checkbox">
                             <CheckBox text="요청받은 계약" on={this.state.filter==1} onClick={(b)=>b ? this.setState({filter:1}): null} />
                             <CheckBox text="요청한 계약" on={this.state.filter==2} onClick={(b)=>b ? this.setState({filter:2}): null} />
                             <CheckBox text="완료된 계약" on={this.state.filter==3} onClick={(b)=>b ? this.setState({filter:3}): null} />
                             <CheckBox text="거절된 계약" on={this.state.filter==4} onClick={(b)=>b ? this.setState({filter:4}): null} />
-                        </div>
+                        </div> */}
                         <table className="table" style={{marginTop:"20px"}}>
                             <tbody>
                                 <tr>

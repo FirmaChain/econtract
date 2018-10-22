@@ -93,7 +93,7 @@ export default class extends React.Component {
                 let imgs = []
                 for(let i=1; i <= pdf.numPages;i++){
                     let page = await pdf.getPage(i)
-                    let viewport = page.getViewport(1.3);
+                    let viewport = page.getViewport(0.7);
         
                     let canvas = document.createElement('canvas');
                     let context = canvas.getContext('2d');
