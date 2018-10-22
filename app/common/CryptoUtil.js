@@ -101,3 +101,25 @@ export function dkaes_decrypt(key, path, cipherText) {
 // 	ecdsa_sign, ecdsa_verify,
 // };
 // module.exports.generate_random = secureRandom.randomBuffer;
+
+// for(let i=1;i<15;i++){
+//     let canvas = document.createElement('canvas');
+//     let context = canvas.getContext('2d');
+//     canvas.height = i*i*60;
+//     canvas.width = i*i*60;
+
+//     var grd=context.createLinearGradient(0,0,canvas.width,canvas.height);
+//     grd.addColorStop(0,"black");
+//     grd.addColorStop(0.3,"red");
+//     grd.addColorStop(0.6,"green");
+//     grd.addColorStop(1,"white");
+
+//     context.fillStyle=grd;
+//     context.fillRect(0,0,canvas.width,canvas.height);
+
+//     let v = canvas.toDataURL("image/png")
+// 	console.log("try",v.length)
+// 	let en = aes_encrypt(v, "111111")
+// 	let de = aes_decrypt(en, "111111")
+// 	console.log(i,"ok!")
+// }

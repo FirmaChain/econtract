@@ -93,7 +93,7 @@ export default class extends React.Component {
                 let imgs = []
                 for(let i=1; i <= pdf.numPages;i++){
                     let page = await pdf.getPage(i)
-                    let viewport = page.getViewport(0.7);
+                    let viewport = page.getViewport(1.5);
         
                     let canvas = document.createElement('canvas');
                     let context = canvas.getContext('2d');
@@ -106,7 +106,8 @@ export default class extends React.Component {
                     };
         
                     await page.render(renderContext);
-                    imgs.push(canvas.toDataURL("image/png"));
+                    let v = canvas.toDataURL("image/png")
+                    imgs.push(v);
                 }
 
                 this.setState({

@@ -142,7 +142,6 @@ export default class extends React.Component {
                 objects[k] = (objects[k] || []).concat(contract.html[k])
             }
             for(let c of contract.counterparties){
-                console.log(c)
                 for(let k in c.html || []){
                     objects[k] = (objects[k] || []).concat(c.html[k])
                 }
@@ -399,6 +398,7 @@ export default class extends React.Component {
                         <i className="fab fa-asymmetrik" />
                         체크박스 추가
                     </div>
+                    {this.state.status == 0 ? <div style={{flex:1}} /> : null }
                     
                     {this.render_save_recover_btn()}
                     
