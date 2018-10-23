@@ -4,7 +4,7 @@ let bip32 = require('bip32');
 let bip39 = require('bip39');
 let EC = require('elliptic').ec;
 let ec = new EC('curve25519');
-let ecdsa = new EC('secp256k1'); //ec for ecdsa
+let ecdsa = new EC('secp256k1'); //ec for ecdsa or compatible with HD keys
 
 export function ecdsa_sign(msgHash, privateKey) {
 	var key = ecdsa.keyFromPrivate(privateKey);
@@ -16,19 +16,43 @@ export function ecdsa_verify(msgHash, publicKey, signature) {
 	return key.verify(msgHash, signature);
 }
 
-export function ecaes_encrypt(m, keyPair) {
-	var tempKey = ec.genKeyPair();
-	var thisTime = tempKey.derive(keyPair.getPublic()).toBuffer('be', 32);
+// curve_type
+// 0 : curve25519
+// 1 : secp256k1
+function get_ec(curve_type) {
+	let curve;
+	if (curve_type == 0) {
+		curve = ec;
+	} else if (curve_type == 1) {
+		curve = ecdsa;
+	}
+	return curve;
+}
+
+export function ec_key_from_private(privateKey, enc, curve_type=0) {
+	const curve = get_ec(curve_type);
+	return curve.keyFromPrivate(privateKey, enc);
+}
+
+export function ec_key_from_public(publicKey, enc, curve_type=0) {
+	const curve = get_ec(curve_type);
+	return curve.keyFromPublic(publicKey, enc);
+}
+
+export function ecaes_encrypt(m, keyPair, curve_type=0) {
+	const curve = get_ec(curve_type);
+	var tempKey = curve.genKeyPair();
+	var thisTime = tempKey.derive(keyPair.getPublic()).toArrayLike(Buffer, 'be', 32);
 	var cipherText = aes_encrypt(m, thisTime);
 	return {encrypted_message: cipherText, temp_key_public: tempKey.getPublic()};
 }
 
-export function ecaes_decrypt(c, keyPair) {
+export function ecaes_decrypt(c, keyPair, output_buffer=false) {
 	var tempKeyPublic = c.temp_key_public;
 	var encryptedMessage = c.encrypted_message;
 	//var thisTime = tempKeyPublic.mul(keyPair.getPrivate()).getX().toBuffer('be', 32);
-	var thisTime = keyPair.derive(tempKeyPublic).toBuffer('be', 32);
-	var plainText = aes_decrypt(encryptedMessage, thisTime);
+	var thisTime = keyPair.derive(tempKeyPublic).toArrayLike(Buffer, 'be', 32);
+	var plainText = aes_decrypt(encryptedMessage, thisTime, output_buffer);
 	return plainText;
 }
 
@@ -43,8 +67,7 @@ export function aes_decrypt(c, k, output_buffer=false) {
 	const decipher = crypto.createDecipher('aes-256-cbc', k);
 	let m;
 	if (output_buffer) {
-		m = decipher.update(c, 'hex');
-		m += decipher.final();
+		m = Buffer.concat([decipher.update(c, 'hex'), decipher.final()]);
 	} else {
 		m = decipher.update(c, 'hex', 'utf8');
 		m += decipher.final('utf8');
@@ -85,9 +108,9 @@ export function dkaes_encrypt(key, path, plainText) {
 	return aes_encrypt(plainText, derivedKey);
 }
 
-export function dkaes_decrypt(key, path, cipherText) {
+export function dkaes_decrypt(key, path, cipherText, output_buffer=false) {
 	var derivedKey = get256bitDerivedPrivateKey(key, path);
-	return aes_decrypt(cipherText, derivedKey);
+	return aes_decrypt(cipherText, derivedKey, output_buffer);
 }
 
 // module.exports = {
