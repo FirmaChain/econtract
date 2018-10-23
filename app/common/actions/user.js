@@ -85,6 +85,7 @@ export function regist_new_account(account, info, email, name, eth){
         return (await api_regist_account(
             account.browserKey.publicKey.toString('hex'),
             account.masterKeyPublic.toString('hex'),
+            account.masterKeyPublicContract.toString('hex'),
             info,
             account.auth.toString('hex'),
             account.encryptedMasterSeed,

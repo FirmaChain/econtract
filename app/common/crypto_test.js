@@ -84,6 +84,11 @@ export function SeedToMasterKeyPublic(seed){
 	return get256bitDerivedPublicKey(masterKey, "m/0'/0'");
 }
 
+export function SeedToMasterKeyPublicContract(seed){
+	let masterKey = hmac_sha512("FirmaChain master seed", seed);
+	return bip32_from_512bit(masterKey).derivePath("m/2'/0'").publicKey;
+}
+
 export function BrowserKeyBIP32(){
 	let browserKey = getBrowserKey();
 	return {
@@ -111,6 +116,7 @@ export function new_account(id, pw){
 	let rawMnemonic = showMnemonic(auth);
 	let seed = mnemonicToSeed(rawMnemonic)
 	let masterKeyPublic = SeedToMasterKeyPublic(seed)
+	let masterKeyPublicContract = SeedToMasterKeyPublicContract(seed)
 	let browserKey = BrowserKeyBIP32();
 
 	return {
@@ -119,6 +125,7 @@ export function new_account(id, pw){
 		rawMnemonic:rawMnemonic,
 		seed:seed,
 		masterKeyPublic:masterKeyPublic,
+		masterKeyPublicContract:masterKeyPublicContract,
 		browserKey:browserKey
 	}
 }

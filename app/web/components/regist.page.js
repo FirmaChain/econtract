@@ -18,6 +18,7 @@ import {
     showMnemonic,
     mnemonicToSeed,
     SeedToMasterKeyPublic,
+    SeedToMasterKeyPublicContract,
     BrowserKeyBIP32,
     makeSignData,
     aes_encrypt,
