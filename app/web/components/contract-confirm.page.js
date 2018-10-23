@@ -69,7 +69,8 @@ export default class extends React.Component {
     onClickConfirm = async()=>{
         if(await confirm("승인하기","계약서를 승인하시겠습니까?")){
             let resp = await this.props.confirm_contract(this.state.contract_id)
-            location.reload()
+            //location.reload()
+            history.replace('/recently')
         }
     }
 
@@ -78,9 +79,10 @@ export default class extends React.Component {
             let str = prompt("거절 이유를 작성해주세요.")
             if( str ){
                 await this.props.reject_contract(this.state.contract_id, str)
-                location.reload()
+                //location.reload()
+                history.replace('/recently')
             }else{
-                alert("이유룰 작성해주세요.")
+                alert("거절하시는 이유를 작성해주세요.")
             }
         }
     }
