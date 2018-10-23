@@ -47,8 +47,10 @@ async function parse_html(account, contract_id, html, pin){
         for(let page of html){
             for(let k in page){
                 let obj = page[k]
-                let resp = await fetch(`${window.HOST}/${contract_id}-${account.id}-${obj.data}`,{encoding:null})
-                obj.data = aes_decrypt(await resp.text() , pin)
+                if (obj.type == "img") {
+                    let resp = await fetch(`${window.HOST}/${contract_id}-${account.id}-${obj.data}`,{encoding:null})
+                    obj.data = aes_decrypt(await resp.text() , pin)
+                }
                 obj.account_id = account.id
                 obj.name = account.name
                 obj.code = account.code
