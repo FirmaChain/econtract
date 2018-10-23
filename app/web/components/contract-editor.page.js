@@ -402,10 +402,10 @@ export default class extends React.Component {
                         <i className="fab fa-asymmetrik" />
                         텍스트 입력
                     </div>
-                    <div className="toolkit" onClick={this.onClickAddCheckbox}>
+                    {/*<div className="toolkit" onClick={this.onClickAddCheckbox}>
                         <i className="fab fa-asymmetrik" />
                         체크박스 추가
-                    </div>
+                    </div>*/}
                     {this.state.status == 0 ? <div style={{flex:1}} /> : null }
                     
                     {this.render_save_recover_btn()}
