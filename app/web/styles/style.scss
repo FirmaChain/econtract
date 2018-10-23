@@ -177,6 +177,7 @@ button:focus { outline: none; }
             .draggable-div{
                 position: absolute;
                 z-index: 2;
+                padding:10px;
                 // left: 0;
                 // right: 0;
 
@@ -247,7 +248,7 @@ button:focus { outline: none; }
         padding: 10px 10px 0 10px;
         box-sizing: border-box;
         margin-bottom:30px;
-        
+
         >div.round-btn{
             border:1px solid #E0E0E0;
             background-color: #fff;
