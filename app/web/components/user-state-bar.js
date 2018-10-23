@@ -95,7 +95,7 @@ export default class extends React.Component{
             </div> */}
 
             <div className="login-time-bar" onClick={this.onClickUpdateLogin}>
-                <div>로그인</div>
+                <div>로그인 세션</div>
                 <div>{this.state.left_hour||"00"}:{this.state.left_min||"00"}</div>
                 <div>연장</div>
             </div>
