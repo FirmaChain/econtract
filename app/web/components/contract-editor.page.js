@@ -122,7 +122,7 @@ export default class extends React.Component {
         })()
 
         this.unblock = history.block(targetLocation => {
-            if(this.state.blockFlag && window._confirm("계약작성을 중단하고 현재 페이지를 나가시겠습니까?")){
+            if(window._confirm("계약작성을 중단하고 현재 페이지를 나가시겠습니까?")){
                 return true;
             }else{
                 return false;
@@ -135,7 +135,9 @@ export default class extends React.Component {
     }
 
     componentWillUnmount(){
-        this.unblock();
+        if(this.state.blockFlag) {
+            this.unblock();
+        }
     }
 
     async load_contract(contract_id, pin){
