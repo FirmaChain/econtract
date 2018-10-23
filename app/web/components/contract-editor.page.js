@@ -136,7 +136,7 @@ export default class extends React.Component {
 
     componentWillUnmount(){
         if(this.blockFlag) {
-            this.unblock();
+            //this.unblock();
         }
     }
 

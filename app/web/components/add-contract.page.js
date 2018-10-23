@@ -47,11 +47,11 @@ export default class extends React.Component {
             }else{
                 return false;
             }
-       })
+        })
     }
 
     componentWillUnmount(){
-        this.unblock();
+       // this.unblock();
     }
 
     componentWillReceiveProps(props){

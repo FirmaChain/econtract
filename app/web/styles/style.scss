@@ -186,18 +186,19 @@ button:focus { outline: none; }
                     padding: 0;
                     border: 2px dashed #000;
                     min-width: 30px;
-                    
+                    padding:10px;
+
                 }
                 .trash{
                     position: absolute;
-                    right: 5px;
-                    bottom: 5px;
+                    right: -15px;
+                    bottom: -15px;
                     background-color: RGBA(41, 58, 73, 0.5);
                     padding: 10px;
                     color: #fff;
                     border-radius: 50%;
-                    width: 15px;
-                    height: 15px;
+                    width: 13px;
+                    height: 13px;
                     cursor: pointer;
                 }
                 .name-container{
@@ -247,7 +248,7 @@ button:focus { outline: none; }
         padding: 10px 10px 0 10px;
         box-sizing: border-box;
         margin-bottom:30px;
-        
+
         >div.round-btn{
             border:1px solid #E0E0E0;
             background-color: #fff;
