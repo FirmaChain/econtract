@@ -219,7 +219,7 @@ export default class extends React.Component {
 
                             <div className="form-label"> 서명자 초대코드 </div>
                             <div className="form-input">
-                                <input placeholder="서명하실분에게 초대코드를 요청하여 입력하세요." value={this.state.counterparty_code || ""} onChange={e=>this.setState({counterparty_code:e.target.value})} />
+                                <input placeholder="서명하실 분에게 초대코드를 요청하여 입력하세요." value={this.state.counterparty_code || ""} onChange={e=>this.setState({counterparty_code:e.target.value})} />
                             </div>
 
                             <button className="add-button" onClick={this.onClickAddCounterparty}>

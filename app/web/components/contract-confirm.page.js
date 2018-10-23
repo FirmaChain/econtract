@@ -97,7 +97,7 @@ export default class extends React.Component {
 
 	render() {
         if(!this.state.contract_id || !this.props.user)
-            return <div className="default-page"><div className="container"><h1>로딩중..</h1></div></div>
+            return <div className="default-page"><div className="container">{/*<h1>로딩중..</h1>*/}</div></div>
 
         return (<div className="default-page confirm-contract-page">
             <div className="back-key">

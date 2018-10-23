@@ -85,7 +85,8 @@ export default class extends React.Component {
 		this.state={
             imgs: [],
             page: 0,
-            edit_page:[]
+            edit_page:[],
+            blockFlag: true
         };
 	}
 
@@ -121,12 +122,16 @@ export default class extends React.Component {
         })()
 
         this.unblock = history.block(targetLocation => {
-            if(window._confirm("계약작성을 중단하고 현재 페이지를 나가시겠습니까?")){
+            if(this.state.blockFlag && window._confirm("계약작성을 중단하고 현재 페이지를 나가시겠습니까?")){
                 return true;
             }else{
                 return false;
             }
        })
+    }
+
+    unblockFunction = async() => {
+        this.setState({blockFlag:false})
     }
 
     componentWillUnmount(){
@@ -334,7 +339,8 @@ export default class extends React.Component {
             }} 
             counterparties={this.state.counterparties}
             contract_name={this.state.name}
-            contract_status={this.state.status} />
+            contract_status={this.state.status} 
+            unblockFunction={this.unblockFunction}/>
     }
 
     render_save_recover_btn(){
@@ -355,7 +361,7 @@ export default class extends React.Component {
     
 	render() {
         if(this.state.pin == null)
-            return <div className="default-page"><div className="container"><h1>로딩중..</h1></div></div>
+            return <div className="default-page"><div className="container">{/*<h1>로딩중..</h1>*/}</div></div>
 
         let objects = this.state.edit_page[this.state.page] || [];
 		return (<div className="editor-page">
