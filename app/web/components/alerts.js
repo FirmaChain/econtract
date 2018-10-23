@@ -2,6 +2,7 @@ import React from "react"
 import ReactDOM from "react-dom"
 import {modal} from "./modalmanager"
 import SignerSlot from "./signer-slot"
+import history from '../history';
 
 @modal
 class AddFolder extends React.Component{
@@ -124,6 +125,11 @@ class TypingPin extends React.Component{
         }
     }
 
+    onClickCancel = () => {
+        this.closeSelf()
+        history.goBack()
+    }
+
     keydown = (e)=>{
         if(e.key == "Backspace"){
             this.setState({
@@ -157,6 +163,7 @@ class TypingPin extends React.Component{
                 </div>
             </div>
             <div className="buttons">
+                <button onClick={this.onClickCancel}>취소</button>
                 <button onClick={this.onClickOK}>확인</button>
             </div>
         </div>
