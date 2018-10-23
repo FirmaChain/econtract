@@ -69,8 +69,8 @@ export default class extends React.Component {
         }
 
 		return (<div className="default-page login-page">
-            <div className="back-key" onClick={()=>history.goBack()}>
-                <div className="round-btn"><i className="fas fa-arrow-left"></i></div>
+            <div className="back-key">
+                <div className="round-btn" onClick={()=>history.goBack()}><i className="fas fa-arrow-left"></i></div>
             </div>
             <div className="container">
                 <h1>로그인</h1>

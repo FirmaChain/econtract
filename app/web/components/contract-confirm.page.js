@@ -100,8 +100,8 @@ export default class extends React.Component {
             return <div className="default-page"><div className="container"><h1>로딩중..</h1></div></div>
 
         return (<div className="default-page confirm-contract-page">
-            <div className="back-key" onClick={()=>history.goBack()}>
-                <div className="round-btn"><i className="fas fa-arrow-left"></i></div>
+            <div className="back-key">
+                <div className="round-btn" onClick={()=>history.goBack()}><i className="fas fa-arrow-left"></i></div>
             </div>
             <div className="container">
                 <h1>계약 상세보기</h1>

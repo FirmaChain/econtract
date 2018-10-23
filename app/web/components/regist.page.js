@@ -501,8 +501,8 @@ export default class extends React.Component {
 
 	render() {
 		return (<div className="default-page regist-page">
-            <div className="back-key" onClick={this.goBack}>
-                <div className="round-btn"><i className="fas fa-arrow-left"></i></div>
+            <div className="back-key">
+                <div className="round-btn" onClick={this.goBack}><i className="fas fa-arrow-left"></i></div>
                 <div className="step-indicator">
                     <div className={`item ${this.state.step == 0 ? "enable": ""}`}>약관동의</div>
                     <i className="fas fa-ellipsis-h"></i>

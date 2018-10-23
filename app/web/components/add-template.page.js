@@ -52,8 +52,8 @@ export default class extends React.Component {
 
 	render() {
 		return (<div className="default-page add-template-page">
-            <div className="back-key" onClick={()=>history.goBack()}>
-                <div className="round-btn"><i className="fas fa-arrow-left"></i></div>
+            <div className="back-key">
+                <div className="round-btn" onClick={()=>history.goBack()}><i className="fas fa-arrow-left"></i></div>
             </div>
             <div className="container">
                 <h1>템플릿 추가</h1>
