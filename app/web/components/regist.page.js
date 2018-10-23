@@ -268,6 +268,19 @@ export default class extends React.Component {
             return alert(resp.error)
         }
     }
+
+   keyPress = async(type, e) => {
+      if(e.keyCode == 13){
+        switch(type) {
+            case 0:
+                this.onClickVerificateEmail()
+                break;
+            case 1:
+                this.onClickNextBtnAccountInfo()
+                break;
+        }
+      }
+   }
     
     render_term(){
         return (<div className="page">
@@ -306,6 +319,7 @@ export default class extends React.Component {
                         <div className="form-input" key={1}>
                             <input placeholder="이메일로 발송된 인증번호를 적어주세요." 
                                    value={this.state.verification_code || ""}
+                                   onKeyDown={this.keyPress.bind(this, 0)}
                                    onChange={e=>this.setState({verification_code:e.target.value})} />
                         </div>
                     ] : null }
@@ -337,7 +351,7 @@ export default class extends React.Component {
 
                     <div className="form-label"> 비밀번호 확인 </div>
                     <div className="form-input">
-                        <input type="password" placeholder="입력하신 비밀번호를 다시 입력해주세요." value={this.state.password2 || ""} onChange={e=>this.setState({password2:e.target.value})}  />
+                        <input type="password" placeholder="입력하신 비밀번호를 다시 입력해주세요." value={this.state.password2 || ""} onChange={e=>this.setState({password2:e.target.value})} onKeyDown={this.keyPress.bind(this, 1)} />
                     </div>
 
                     <div className="form-submit">

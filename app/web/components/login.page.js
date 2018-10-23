@@ -57,6 +57,12 @@ export default class extends React.Component {
         await window.hideIndicator()
     }
 
+   keyPress = async(e) => {
+      if(e.keyCode == 13){
+        this.onClickLogin()
+      }
+   }
+
 	render() {
         if(this.props.user_info === null){
             return <div />
@@ -78,7 +84,7 @@ export default class extends React.Component {
                             
                             <div className="form-label"> 비밀번호 </div>
                             <div className="form-input">
-                                <input type="password" placeholder="비밀번호를 입력해주세요." value={this.state.password || ""} onChange={e=>this.setState({password:e.target.value})} />
+                                <input type="password" placeholder="비밀번호를 입력해주세요." value={this.state.password || ""} onKeyDown={this.keyPress} onChange={e=>this.setState({password:e.target.value})} />
                             </div>
 
                             <div className="form-submit">
