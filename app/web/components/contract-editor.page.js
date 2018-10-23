@@ -85,9 +85,9 @@ export default class extends React.Component {
 		this.state={
             imgs: [],
             page: 0,
-            edit_page:[],
-            blockFlag: true
+            edit_page:[]
         };
+        this.blockFlag = true;
 	}
 
 	componentDidMount(){
@@ -131,11 +131,11 @@ export default class extends React.Component {
     }
 
     unblockFunction = async() => {
-        this.setState({blockFlag:false})
+        this.blockFlag = false;
     }
 
     componentWillUnmount(){
-        if(this.state.blockFlag) {
+        if(this.blockFlag) {
             this.unblock();
         }
     }
