@@ -3,6 +3,8 @@ import bip39 from 'bip39'
 import {
 	ecdsa_sign,
 	ecdsa_verify,
+	ec_key_from_private,
+	ec_key_from_public,
 	ecaes_encrypt,
 	ecaes_decrypt,
 	aes_encrypt,
