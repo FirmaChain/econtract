@@ -91,6 +91,7 @@ export default class extends React.Component {
             edit_page:[]
         };
         this.blockFlag = true;
+        this.keyMap = {};
 	}
 
 	componentDidMount(){
@@ -129,6 +130,7 @@ export default class extends React.Component {
                     }
                 }
                 document.addEventListener("keydown", this.keydown);
+                document.addEventListener("keyup", this.keyup);
             } else {
                 alert("This contract is not allowed to you.");
             }
@@ -155,12 +157,18 @@ export default class extends React.Component {
 
     componentWillUnmount(){
         document.removeEventListener("keydown", this.keydown);
+        document.removeEventListener("keyup", this.keyup);
         this.unblock();
     }
 
     keydown = (e) => {
+        this.keyMap[e.keyCode] = true;
+
         let moveFlag = 0;
         let pageElement = document.getElementById(`page-${this.state.page}`);
+
+        if(Object.keys(this.keyMap).length > 1)
+            return
 
         if(e.keyCode == 37 || e.keyCode == 38) {
             if(0 < this.state.page) {
@@ -177,6 +185,10 @@ export default class extends React.Component {
             let topPos = pageElement.offsetTop;
             this.left_menu.scrollTop = topPos - (moveFlag == 1 ? 400 : 532);
         }
+    }
+
+    keyup = (e) => {
+        delete this.keyMap[e.keyCode];
     }
 
     async load_contract(contract_id, pin, listener){
