@@ -54,9 +54,8 @@ async function getTheKey(contract_id, pin) {
     return the_key;
 }
 
-async function parse_html(account, contract_id, html, pin){
+async function parse_html(account, contract_id, html, the_key){
     try{
-        let the_key = await getTheKey(contract_id, pin);
         html = aes_decrypt(html, the_key)
         html = JSON.parse(html)
         for(let page of html){
