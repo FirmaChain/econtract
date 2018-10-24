@@ -177,7 +177,7 @@ export default class extends React.Component {
             </div>
             <div className="container">
                 <h1>계약 등록</h1>
-                <div className="page">
+                <div className="page bottom-no-border">
                     <div className="column-300">
                         <div className="form-layout">
                             <div className="form-label"> 계약명 </div>
@@ -189,8 +189,8 @@ export default class extends React.Component {
                             {this.state.file ? <div className="selected-file">
                                 <div className="filename">{this.state.file.name}</div>
                                 <div className="del-btn" onClick={()=>this.setState({file:null,imgs:[]})}>삭제</div>
-                            </div> : <div className="form-button upload-form">
-                                <button onClick={()=>this.refs.file.click()}> 파일 업로드 </button>
+                            </div> : <div className="upload-form">
+                                <button className="file-upload-btn" onClick={()=>this.refs.file.click()}> <i class="fas fa-file-archive"></i> 파일 업로드 </button>
                                 <div className="or"> OR </div>
                                 <select>
                                     <option>템플릿 선택</option>
@@ -198,7 +198,7 @@ export default class extends React.Component {
                                 <input ref="file" type="file" onChange={this.onClickUploadFile} style={{display:"none"}}/>
                             </div>}
 
-
+                            <div style={{height:20}} />
                             <div className="form-label"> 서명자 </div>
                             <SignerSlot 
                                 me={true}
@@ -226,10 +226,6 @@ export default class extends React.Component {
                                 <i className="fas fa-user"></i>
                                 서명자 추가
                             </button>
-
-                            <div className="form-submit">
-                                <button className="border" onClick={this.onClickNext}> 다음 </button>
-                            </div>
                         </div>
                     </div>
                     <div className="column-300">
@@ -239,10 +235,11 @@ export default class extends React.Component {
 
                             <div style={{marginTop:"110px",color:"red"}}>* 한번 계약을 등록한 경우, 서명자를 변경하실 수 없습니다.<br/>등록 전에 서명자의 정보가 맞는지 확인해주세요.</div>
 
-                            <div>* 서명자가 서비스에 가입되어있지 않더라도 [서명자 추가] 기능을 통해 서비스에 초대하실 수 있습니다.</div>
+                            <div>* 계약 당사자들의 초대 코드와 이메일을 받아 입력한 뒤 [서명자 추가] 기능을 통해 서비스에 초대하실 수 있습니다.</div>
                         </div>
                     </div>
                 </div>
+                <button className="big-friendly-button top-no-border" onClick={this.onClickNext}> 다음 단계로 </button>
             </div>
 		</div>);
 	}
