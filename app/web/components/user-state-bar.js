@@ -74,8 +74,8 @@ export default class extends React.Component{
     onClickUpdateLogin = ()=>{
         let session = window.getCookie("session");
         if(session){
-            window.setCookie("session", session, 1)
-            window.setCookie("session_update", Date.now(), 1)
+            window.setCookie("session", session, 0.125)
+            window.setCookie("session_update", Date.now(), 0.125)
 
             alert("정상적으로 연장되었습니다.")
         }

@@ -110,8 +110,8 @@ export function login_account(user_id, password){
         )).payload
 
         if(resp.eems){
-            window.setCookie("session", resp.session, 1)
-            window.setCookie("session_update", Date.now(), 1)
+            window.setCookie("session", resp.session, 0.125)
+            window.setCookie("session_update", Date.now(), 0.125)
 
             let entropy = getUserEntropy(auth, resp.eems)
             sessionStorage.setItem("entropy", entropy)
