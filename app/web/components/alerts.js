@@ -293,8 +293,8 @@ class Confirm extends React.Component{
                 <div className="msg">{this.props.msg || "메세지"}</div>
             </div>
             <div className="buttons">
-                <button onClick={this.clickOk}>{this.props.left_btn ||"확인"}</button>
-                <button onClick={this.clickNo}>{this.props.left_btn ||"취소"}</button>
+                <button class="" onClick={this.clickOk}>{this.props.left_btn ||"확인"}</button>
+                <button onClick={this.clickNo}>{this.props.right_btn ||"취소"}</button>
             </div>
         </div>
     }
@@ -307,7 +307,7 @@ window.confirm = (title, msg, left, right)=>{
             title:title, 
             msg:msg, 
             left_btn:left, 
-            left_btn:right,
+            right_btn:right,
             resolve:r
         })
     })
