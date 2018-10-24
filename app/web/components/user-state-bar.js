@@ -80,6 +80,12 @@ export default class extends React.Component{
             alert("정상적으로 연장되었습니다.")
         }
     }
+
+    onLogout = () => {
+        window.eraseCookie("session")
+        window.eraseCookie("session_update")
+        window.location.href = "/login"
+    }
     
     render(){
         if(!this.props.user_info){
@@ -94,10 +100,16 @@ export default class extends React.Component{
                 <input type="text" placeholder="검색어를 입력해주세요" />
             </div> */}
 
+            <img src="/static/icon_img_upload.png"/>
+                
             <div className="login-time-bar" onClick={this.onClickUpdateLogin}>
                 <div>로그인 세션</div>
                 <div>{this.state.left_hour||"00"}:{this.state.left_min||"00"}</div>
                 <div>연장</div>
+            </div>
+
+            <div className="logout-container">
+                <button className="btn-logout" onClick={this.onLogout}>로그아웃</button>
             </div>
 
             <div className="profile">

@@ -648,28 +648,6 @@ table.table{
     align-items: center;
     transform: translateY(-7px);
 
-    >.login-time-bar{
-        display: flex;
-        border: 2px solid #324b5f;
-        border-radius: 3px;
-        font-size: 12px;
-        padding: 4px 7px;
-        font-weight: bold;
-        margin-right: 40px;
-        cursor: pointer;
-
-        &:hover{
-            background-color: rgba(0,0,0,0.1);
-        }
-
-        >div{
-            margin-left:10px;
-            &:first-child{
-                margin-left:0;
-            }
-        }
-    }
-
     >.searchbar{
         padding: 5px 10px;
         border:1px solid #E0E0E0;
@@ -683,7 +661,6 @@ table.table{
             margin-left: 10px;
         }
     }
-
     >.profile{
         display: flex;
         margin-right: 40px;
@@ -714,6 +691,47 @@ table.table{
             border-radius: 5px;
             background-size: contain;
             background-color: #fff;
+        }
+    }
+
+    >.login-time-bar{
+        display: flex;
+        border: 2px solid #324b5f;
+        border-radius: 3px;
+        font-size: 12px;
+        padding: 4px 7px;
+        font-weight: bold;
+        margin-right: 10px;
+        cursor: pointer;
+
+        &:hover{
+            background-color: rgba(0,0,0,0.1);
+        }
+
+        >div{
+            margin-left:10px;
+            &:first-child{
+                margin-left:0;
+            }
+        }
+    }
+
+    >.logout-container {
+        margin-right:40px;
+
+        .btn-logout {
+            border:1px solid #E0E0E0;
+            padding: 7px 10px;
+            background-color: #fff;
+            border-radius: 5px;
+            margin-left: 10px;
+            color: #210201;
+            font-weight: bold;
+            cursor: pointer;
+
+            &:hover {
+                background-color: #EEE;
+            }
         }
     }
 
