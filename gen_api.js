@@ -216,6 +216,13 @@ export async function api_regist_account(publicbk,publicms,publicmsc,info,auth,e
         session:window.getCookie("session")
     });
 }
+export async function api_check_join_browser(publicbk){
+    return await get("/check_join_browser", {
+        publicbk
+    },{
+        session:window.getCookie("session")
+    });
+}
 export async function api_login_account(publicbk,nonce,sign){
     return await get("/login_account", {
         publicbk,
