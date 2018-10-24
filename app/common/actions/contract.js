@@ -124,7 +124,7 @@ export function load_contract_info(contract_id){
 export function load_contract(contract_id, pin, load_listener = null, only_info_load=false){
     return async function(){
         try{
-            let contract_info = load_contract_info(contract_id);
+            let contract_info = await load_contract_info(contract_id);
             let contract = (await api_load_contract(contract_id)).payload;
             let entropy = sessionStorage.getItem("entropy");
             if (!entropy) {
