@@ -22,6 +22,7 @@ import {
     makeSignData,
     getContractKey,
     sealContractAuxKey,
+    unsealContractAuxKey,
     decrypt_user_info,
     aes_decrypt,
     aes_encrypt,
@@ -123,25 +124,31 @@ export function load_contract_info(contract_id){
 export function load_contract(contract_id, pin, load_listener = null, only_info_load=false){
     return async function(){
         try{
-            let contract = (await api_load_contract(contract_id)).payload
-            
+            let contract_info = load_contract_info(contract_id);
+            let contract = (await api_load_contract(contract_id)).payload;
+            let entropy = sessionStorage.getItem("entropy");
+            if (!entropy) {
+                return null;
+            }
+            let shared_key = unsealedContractAuxKey(entropy, contract_info.eckai);
+            let the_key = getContractKey(pin, shared_key);
 
             contract.html = await parse_html({
                 id:contract.account_id,
                 code:contract.author_code,
                 name:contract.author_name
-            }, contract_id, contract.html, pin)
+            }, contract_id, contract.html, the_key)
 
-            try{ contract.author_msg = aes_decrypt(contract.author_msg, pin) }catch(err){}
+            try{ contract.author_msg = aes_decrypt(contract.author_msg, the_key) }catch(err){}
             
             for(let counterparty of contract.counterparties){
                 counterparty.html = await parse_html({
                     id:counterparty.account_id,
                     code:counterparty.code,
                     name:counterparty.name
-                }, contract_id, counterparty.html, pin)
+                }, contract_id, counterparty.html, the_key)
                 
-                try{ counterparty.reject = aes_decrypt(counterparty.reject, pin) }catch(err){}
+                try{ counterparty.reject = aes_decrypt(counterparty.reject, the_key) }catch(err){}
             }
 
             if(!only_info_load) {
@@ -149,7 +156,7 @@ export function load_contract(contract_id, pin, load_listener = null, only_info_
                 let img_base64 = []
                 let i = 0;
                 for(let img of contract.imgs ) {
-                    img_base64.push(await fetch_img(img, pin))
+                    img_base64.push(await fetch_img(img, the_key))
                     i++;
                     if(load_listener != null)
                         load_listener(i, contract.imgs.length)
