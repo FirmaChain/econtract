@@ -179,9 +179,9 @@ export function unsealContractAuxKey(entropy, eckaiHex){
         var encrypted_message = eckai.slice(0, 32).toString('hex');
         var temp_key_public_compressed = eckai.slice(32, 65);
 
-        var temp_key_public = CryptoUtil.ec_key_from_public(temp_key_public_compressed, undefined, 1).getPublic();
+        var temp_key_public = ec_key_from_public(temp_key_public_compressed, undefined, 1).getPublic();
         var cipher_text = {'encrypted_message':encrypted_message, 'temp_key_public':temp_key_public};
-        var sharedAuxKeyDecrypted = CryptoUtil.ecaes_decrypt(cipher_text, private_key, true);
+        var sharedAuxKeyDecrypted = ecaes_decrypt(cipher_text, private_key, true);
 
         return sharedAuxKeyDecrypted;
     }catch(err){
