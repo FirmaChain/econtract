@@ -185,6 +185,7 @@ export function unsealContractAuxKey(entropy, eckaiHex){
 
         return sharedAuxKeyDecrypted;
     }catch(err){
+        console.log(err);
         return null;
     }
 }
