@@ -73,7 +73,7 @@ async function fetch_img(name, pin){
     return aes_decrypt(text , pin)
 }
 
-export function new_contract( subject, imgs, counterparties, author_publickey_contract){
+export function new_contract( subject, imgs, counterparties, publickey_contract_list){
     return async function(dispatch){
         let pin = genPIN();
         for(let k in imgs){
@@ -83,7 +83,7 @@ export function new_contract( subject, imgs, counterparties, author_publickey_co
 
         let counterparties_eckai = ['cafebabe', 'deadbeef'];
         let shared_key = generate_random(31);
-        counterparties_eckai.unshift(shared_key.toString('hex'));
+        counterparties_eckai.unshift(publickey_contract_list[0].toString('hex'));
 
         let resp = (await api_new_contract( subject, imgs, counterparties, counterparties_eckai )).payload
         if(resp){
