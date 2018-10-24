@@ -45,6 +45,15 @@ function genPIN(digit=6) {
     return text;
 }
 
+function getTheKey(contract_id, pin) {
+    let contract_info = (await api_load_contract_info(contract_id)).payload;
+    let entropy = sessionStorage.getItem("entropy");
+    if (!contract_info || !entropy) return null;
+    let shared_key = unsealContractAuxKey(entropy, contract_info.eckai);
+    let the_key = getContractKey(pin, shared_key);
+    return the_key;
+}
+
 async function parse_html(account, contract_id, html, pin){
     try{
         html = aes_decrypt(html, pin)
@@ -126,14 +135,8 @@ export function load_contract_info(contract_id){
 export function load_contract(contract_id, pin, load_listener = null, only_info_load=false){
     return async function(){
         try{
-            let contract_info = (await api_load_contract_info(contract_id)).payload;
+            let the_key = getTheKey(contract_id, pin);
             let contract = (await api_load_contract(contract_id)).payload;
-            let entropy = sessionStorage.getItem("entropy");
-            if (!entropy) {
-                return null;
-            }
-            let shared_key = unsealContractAuxKey(entropy, contract_info.eckai);
-            let the_key = getContractKey(pin, shared_key);
 
             contract.html = await parse_html({
                 id:contract.account_id,
