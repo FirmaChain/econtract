@@ -7,17 +7,20 @@ import UserStatusBar from "./user-state-bar"
 import Pager from "./pager"
 import CheckBox from "./checkbox"
 import CheckBox2 from "./checkbox2"
+import history from "../history"
 import moment from "moment"
 import {
     folder_list,
     new_folder,
     remove_folder,
     move_to_folder,
+    fetch_user_info,
 } from "../../common/actions"
 
 let mapStateToProps = (state)=>{
 	return {
-        folders:state.contract.folders
+        folders:state.contract.folders,
+        user_info: state.user.info,
 	}
 }
 
@@ -26,6 +29,7 @@ let mapDispatchToProps = {
     new_folder,
     remove_folder,
     move_to_folder,
+    fetch_user_info,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -40,8 +44,16 @@ export default class extends React.Component {
 
 	componentDidMount(){
         (async()=>{
+            await this.props.fetch_user_info()
             await this.props.folder_list()
+
         })()
+    }
+
+    componentWillReceiveProps(props){
+        if(props.user_info === false){
+            history.replace("/login")
+        }
     }
     
     onClickDeleteMode = ()=>{
