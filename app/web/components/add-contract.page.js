@@ -44,17 +44,15 @@ export default class extends React.Component {
         }
 
         this.unblock = history.block(targetLocation => {
-            if(window._confirm("계약 절차를 중단하고 현재 페이지를 나가시겠습니까?")){
+            if(this.blockFlag && window._confirm("계약 절차를 중단하고 현재 페이지를 나가시겠습니까?")){
                 return true;
-            }else{
-                return false;
             }
+            return true;
         })
     }
 
     componentWillUnmount(){
-        if(this.blockFlag)
-            this.unblock();
+        this.unblock();
     }
 
     componentWillReceiveProps(props){

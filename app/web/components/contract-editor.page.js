@@ -105,6 +105,7 @@ export default class extends React.Component {
             }else{
                 while(1){
                     try{
+                        this.blockFlag = false;
                         pin = await new Promise(r=>window.openModal("TypingPin",{
                             onFinish:(pin)=>{
                                 r(pin)
@@ -125,17 +126,15 @@ export default class extends React.Component {
         })()
 
         this.unblock = history.block(targetLocation => {
-            if(window._confirm("계약작성을 중단하고 현재 페이지를 나가시겠습니까?")){
+            if(this.blockFlag && window._confirm("계약작성을 중단하고 현재 페이지를 나가시겠습니까?")){
                 return true;
-            }else{
-                return false;
             }
+            return true;
        })
     }
 
     componentWillUnmount(){
-        if(this.blockFlag)
-            this.unblock();
+        this.unblock();
     }
 
     async load_contract(contract_id, pin){
@@ -323,9 +322,11 @@ export default class extends React.Component {
         }
     }
 
-    onClickDetail = async()=>{
-        this.blockFlag = false
-        history.push(`/contract-confirm/${this.state.contract_id}`)
+    onClickDetail = async() => {
+        if(await confirm("다음으로","변경된 내용이 있다면 먼저 저장해주세요. 다음으로 넘어가시겠습니까?")){
+            this.blockFlag = false
+            history.push(`/contract-confirm/${this.state.contract_id}`)
+        }
     }
 
     render_finish_button(){
