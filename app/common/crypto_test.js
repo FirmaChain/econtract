@@ -16,6 +16,7 @@ import {
 	get256bitDerivedPublicKey,
 	dkaes_encrypt,
 	dkaes_decrypt,
+    generate_random,
 } from "./CryptoUtil"
 
 export { 

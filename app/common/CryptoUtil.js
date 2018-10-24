@@ -113,6 +113,10 @@ export function dkaes_decrypt(key, path, cipherText, output_buffer=false) {
 	return aes_decrypt(cipherText, derivedKey, output_buffer);
 }
 
+export function generate_random(a1, a2) {
+    return secureRandom.randomBuffer(a1, a2);
+}
+
 // module.exports = {
 // 	bip32, bip39, 
 // 	hmac_sha256, hmac_sha512, 
