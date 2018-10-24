@@ -36,8 +36,8 @@ export async function api_update_epin(contract_id,epin){
         session:window.getCookie("session")
     });
 }
-export async function api_load_epin(contract_id){
-    return await get("/load_epin", {
+export async function api_load_contract_info(contract_id){
+    return await get("/load_contract_info", {
         contract_id
     },{
         session:window.getCookie("session")

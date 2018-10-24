@@ -1,6 +1,7 @@
 import {
     api_new_contract,
     api_load_contract,
+    api_load_contract_info,
     api_folder_list,
     api_recently_contracts,
     api_edit_contract,
@@ -19,6 +20,8 @@ import {
     getUserEntropy,
     makeAuth,
     makeSignData,
+    getContractKey,
+    sealContractAuxKey,
     decrypt_user_info,
     aes_decrypt,
     aes_encrypt,
@@ -83,7 +86,7 @@ export function new_contract( subject, imgs, counterparties, publickey_contract_
 
         let counterparties_eckai = [];
         let shared_key = generate_random(31);
-        for (let i = 0; i < shared_key.length; i++) {
+        for (let i = 0; i < publickey_contract_list.length; i++) {
             counterparties_eckai.push(sealContractAuxKey(publickey_contract_list[i], shared_key));
         }
 
@@ -109,6 +112,10 @@ export function get_pin_from_storage(contract_id){
     return async function(){
         return localStorage.getItem(`contract:${contract_id}`) 
     }
+}
+
+export function load_contract_info(contract_id){
+    return (await api_load_contract_info(contract_id)).payload;
 }
 
 export function load_contract(contract_id, pin, load_listener = null){
