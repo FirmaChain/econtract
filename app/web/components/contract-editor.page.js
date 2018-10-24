@@ -328,7 +328,7 @@ export default class extends React.Component {
     }
 
     onClickDetail = async()=>{
-        history.push(`/contract-confirm/${this.props.contract_id}`)
+        history.push(`/contract-confirm/${this.state.contract_id}`)
     }
 
     render_finish_button(){
