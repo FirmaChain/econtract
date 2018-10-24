@@ -119,7 +119,9 @@ export default class extends React.Component {
                             if( pin == null ){
                                 history.goBack();
                             }
-                            await this.load_contract(contract_id, pin)
+                            await this.load_contract(contract_id, pin, async(count, length) => {
+                                await window.showIndicator(`계약서 불러오는 중 (${count}/${length})`)
+                            })
                             break;
                         }catch(err){
                             alert("PIN 번호가 잘못되었습니다.")
@@ -150,7 +152,7 @@ export default class extends React.Component {
             history.replace("/login")
         }
     }
-    
+
     componentWillUnmount(){
         document.removeEventListener("keydown", this.keydown);
         this.unblock();
