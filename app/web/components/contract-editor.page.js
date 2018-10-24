@@ -98,7 +98,9 @@ export default class extends React.Component {
 
             let pin = await this.props.get_pin_from_storage(contract_id)
             if( pin ){
-                await this.load_contract(contract_id, pin)
+                await this.load_contract(contract_id, pin, async(count, length) => {
+                    await window.showIndicator(`계약서 불러오는 중 (${count}/${length})`)
+                })
             }else{
                 while(1){
                     try{

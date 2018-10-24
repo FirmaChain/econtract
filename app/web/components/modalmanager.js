@@ -10,12 +10,12 @@ export function modal(classes){
 
 export class ModalManager extends React.Component {
 	constructor(){
-        super();
+        super()
 		this.state={
             modalIdx: 0,
             modals: [],
-        };
-	}
+        }
+    }
 
 	componentDidMount(){
         window.openModal = this.openModal
@@ -24,8 +24,7 @@ export class ModalManager extends React.Component {
         history.listen(this.onChangeURL)
     }
 
-    onChangeURL = (e,a)=>{
-        console.log(e,a)
+    onChangeURL = (e,a) => {
         this.setState({ modals:[] })
         return false
     }

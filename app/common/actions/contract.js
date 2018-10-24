@@ -103,7 +103,7 @@ export function get_pin_from_storage(contract_id){
     }
 }
 
-export function load_contract(contract_id, pin){
+export function load_contract(contract_id, pin, load_listener = null){
     return async function(){
         try{
             let contract = (await api_load_contract(contract_id)).payload
@@ -127,8 +127,12 @@ export function load_contract(contract_id, pin){
             }
 
             let img_base64 = []
+            let i = 0;
             for(let img of contract.imgs ){
                 img_base64.push(await fetch_img(img, pin))
+                i++;
+                if(load_listener != null)
+                    load_listener(i, contract.imgs.length)
             }
 
             contract.imgs = img_base64;

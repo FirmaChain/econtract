@@ -327,3 +327,4 @@ window.hideIndicator = ()=>{
     window.closeModal(indicator_idx)
     indicator_idx = null
 }
+
