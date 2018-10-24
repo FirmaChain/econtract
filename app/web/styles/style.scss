@@ -159,6 +159,7 @@ button:focus { outline: none; }
             position: relative;
             margin: 0 auto;
             flex:1;
+            // display:flex;
             overflow: auto;
 
             -webkit-user-select: none;  /* Chrome all / Safari all */
@@ -168,7 +169,7 @@ button:focus { outline: none; }
 
             padding-bottom: 30px;
 
-            >img{
+            > img{
                 border-radius: 5px;
                 width:800px;
             }
@@ -178,8 +179,10 @@ button:focus { outline: none; }
             }
 
             .draggable-div{
-                position: absolute;
+                display:flex;
                 z-index: 2;
+                flex:1;
+                height:100%;
                 // left: 0;
                 // right: 0;
 
@@ -191,6 +194,7 @@ button:focus { outline: none; }
                     min-width: 30px;
                     padding:10px;
                     outline: 0;
+                    flex:1;
                 }
                 .trash{
                     position: absolute;
