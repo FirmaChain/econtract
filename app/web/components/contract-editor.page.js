@@ -359,9 +359,9 @@ export default class extends React.Component {
         if(await confirm("저장","계약서를 수정사항을 적용하시겠습니까?")){
             console.log("this.state.edit_page",this.state.edit_page)
             let myObject = this.state.edit_page.map(e => {
-                if(!e) return
+                if(!e) return []
                 return e.filter(o=>{
-                    return o.code == null || o.code == this.props.user.code
+                    if(!!o) return o.code == null || o.code == this.props.user.code
                 })
             })
             console.log("myObject",myObject)
@@ -434,6 +434,7 @@ export default class extends React.Component {
             return <div className="default-page"><div className="container">{/*<h1>로딩중..</h1>*/}</div></div>
 
         let objects = this.state.edit_page[this.state.page] || [];
+        console.log(this.state.edit_page)
 		return (<div className="editor-page">
             <div className="back-key">
                 <div className="round-btn" onClick={this.onClickBack}><i className="fas fa-arrow-left" /></div>
@@ -481,10 +482,11 @@ export default class extends React.Component {
                 </div> : null}
                 <div className="edit-box">
                     {(objects).map((e,k)=>{
-                        return <Item key={`${k}:${e.type}:${e.x}:${e.y}`} {...e} 
-                            onUpdate={this.onUpdateItem.bind(this, k)}
-                            removeItem={this.onRemoveItem.bind(this, k)}
-                            editable={this.state.status < 2}
+                        if(!!e)
+                            return <Item key={`${k}:${e.type}:${e.x}:${e.y}`} {...e} 
+                                onUpdate={this.onUpdateItem.bind(this, k)}
+                                removeItem={this.onRemoveItem.bind(this, k)}
+                                editable={this.state.status < 2}
                         />
                     })}
                     <img className="edit-target" src={this.state.imgs[this.state.page]} />
