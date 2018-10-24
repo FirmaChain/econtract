@@ -45,7 +45,7 @@ export default class extends React.Component {
 
         this.unblock = history.block( async (targetLocation) => {
             if(this.blockFlag){
-                if(window._confirm("계약 배포를 중단하고 현재 페이지를 나가시겠습니까?"))
+                if(await window._confirm("계약 배포를 중단하고 현재 페이지를 나가시겠습니까?"))
                     return true;
                 else
                     return false;
