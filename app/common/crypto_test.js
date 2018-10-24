@@ -167,3 +167,26 @@ export function sealContractAuxKey(publicKeyHex, sharedAuxKey) {
     let sharedAuxKeyEncryptedHex = Buffer.concat([Buffer.from(sharedAuxKeyEncrypted.encrypted_message, 'hex'), Buffer.from(sharedAuxKeyEncrypted.temp_key_public.encodeCompressed())]).toString('hex');
     return sharedAuxKeyEncryptedHex;
 }
+
+export function unsealContractAuxKey(entropy, eckaiHex){
+    try{
+        let mnemonic = bip39.entropyToMnemonic(entropy);
+        let seed = bip39.mnemonicToSeed(mnemonic);
+        let masterKey = hmac_sha512("FirmaChain master seed", seed);
+        let private_key = ec_key_from_private(bip32_from_512bit(masterKey).derivePath("m/2'/0'").privateKey, undefined, 1);
+
+        let eckai = Buffer.from(eckaiHex, "hex");
+        var encrypted_message = eckai.slice(0, 32).toString('hex');
+        var temp_key_public_compressed = eckai.slice(32, 65);
+
+        var temp_key_public = ec_key_from_public(temp_key_public_compressed, undefined, 1).getPublic();
+        var cipher_text = {'encrypted_message':encrypted_message, 'temp_key_public':temp_key_public};
+        var sharedAuxKeyDecrypted = ecaes_decrypt(cipher_text, private_key, true);
+
+        return sharedAuxKeyDecrypted;
+    }catch(err){
+        console.log(err);
+        return null;
+    }
+}
+
