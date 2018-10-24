@@ -99,7 +99,7 @@ export default class extends React.Component {
             await window.showIndicator("계약서 불러오는 중")
             await this.props.fetch_user_info()
 
-            let contract_info = await this.load_contract_info(contract_id);
+            let contract_info = await this.props.load_contract_info(contract_id);
             if (contract_info) {
                 let pin = await this.props.get_pin_from_storage(contract_id)
                 if( pin ){
