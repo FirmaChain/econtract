@@ -93,7 +93,7 @@ export default class extends React.Component {
 	componentDidMount(){
         (async()=>{
             let contract_id = this.props.match.params.id;
-            await window.showIndicator()
+            await window.showIndicator("계약서 불러오는 중")
             await this.props.fetch_user_info()
 
             let pin = await this.props.get_pin_from_storage(contract_id)
@@ -241,7 +241,7 @@ export default class extends React.Component {
     }
 
     onRemoveItem = async(i)=>{
-        if(await confirm("정말로 삭제하시겠습니까?")){
+        if(await confirm("삭제하기", "해당 오브젝트를 삭제하시겠습니까?")){
             let edit_page = [...this.state.edit_page]
             edit_page[this.state.page].splice(i,1)
             this.setState({
@@ -325,6 +325,10 @@ export default class extends React.Component {
         }
     }
 
+    onClickDetail = async()=>{
+        history.push(`/contract-confirm/${this.props.contract_id}`)
+    }
+
     render_finish_button(){
         if(this.state.status == 0)
             return <div className="confirm-box" onClick={this.onClickFinishEdit}>
@@ -356,6 +360,10 @@ export default class extends React.Component {
                 <div key={2} className="toolkit" onClick={this.onClickSave}>
                     <i className="fas fa-save"></i>
                     저장
+                </div>,
+                <div key={3} className="toolkit" onClick={this.onClickDetail}>
+                    <i className="fas fa-check"></i>
+                    컨펌
                 </div>
             ]
         }

@@ -190,7 +190,7 @@ export default class extends React.Component {
                                 <div className="filename">{this.state.file.name}</div>
                                 <div className="del-btn" onClick={()=>this.setState({file:null,imgs:[]})}>삭제</div>
                             </div> : <div className="upload-form">
-                                <button className="file-upload-btn" onClick={()=>this.refs.file.click()}> <i class="fas fa-file-archive"></i> 파일 업로드 </button>
+                                <button className="file-upload-btn" onClick={()=>this.refs.file.click()}> <i className="fas fa-file-archive"></i> 파일 업로드 </button>
                                 <div className="or"> OR </div>
                                 <select>
                                     <option>템플릿 선택</option>

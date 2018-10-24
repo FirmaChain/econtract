@@ -67,7 +67,7 @@ export default class extends React.Component {
     }
 
     onClickConfirm = async()=>{
-        if(await confirm("승인하기","계약서를 승인하시겠습니까?")){
+        if(await confirm("승인하기","계약을 승인하시겠습니까?")){
             let resp = await this.props.confirm_contract(this.state.contract_id)
             //location.reload()
             history.replace('/recently')
@@ -75,7 +75,7 @@ export default class extends React.Component {
     }
 
     onClickReject = async()=>{
-        if(await confirm("승인하기","계약서를 거절하시겠습니까?")){
+        if(await confirm("승인하기","계약을 거절하시겠습니까?")){
             let str = prompt("거절 이유를 작성해주세요.")
             if( str ){
                 await this.props.reject_contract(this.state.contract_id, str)
@@ -107,7 +107,7 @@ export default class extends React.Component {
             </div>
             <div className="container">
                 <h1>계약 상세보기</h1>
-                <div className="page">
+                <div className="page {{this.state.status == 2 ? null : 'bottom-no-border'}}">
                     <div className="column-300">
                         <div className="form-layout">
                             <div className="form-label"> 계약명 </div>
@@ -129,13 +129,13 @@ export default class extends React.Component {
                             <div className="form-info">
                                 <div className="pin-box"> {this.state.pin} </div>
                             </div>
-                            {this.state.status == 2 ? null : [
+                            {/*this.state.status == 2 ? null : [
                                 <div key={1} className="form-label bold"> 확인하기 </div>,
                                 <div key={2} className="form-submit">
                                     <button className="border confirm-btn" onClick={this.onClickConfirm}>승인</button>
                                     <button className="border reject-btn" onClick={this.onClickReject}>거절</button>
                                 </div>
-                            ]}
+                            ]*/}
                         </div>
                     </div>
                     <div className="column-300">
@@ -165,6 +165,8 @@ export default class extends React.Component {
                         </div>
                     </div>
                 </div>
+                <button className="left-friendly-button top-no-border" onClick={this.onClickConfirm}> 승인하기 </button>
+                <button className="right-friendly-button top-no-border" onClick={this.onClickReject}> 거절하기 </button>
             </div>
 		</div>);
 	}

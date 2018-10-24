@@ -168,9 +168,14 @@ button:focus { outline: none; }
             user-select: none;          /* Likely future */      
 
             padding-bottom: 30px;
+
             >img{
                 border-radius: 5px;
                 width:800px;
+            }
+
+            .edit-target {
+                pointer-events: none;
             }
 
             .draggable-div{
@@ -310,6 +315,44 @@ button:focus { outline: none; }
             }
         }
 
+        button.left-friendly-button {
+            width: 50%;
+
+            border:1px solid #5cb85c;
+            padding: 15px 10px;
+            border-radius: 5px;
+            border-top-right-radius: 0 !important;
+            border-bottom-right-radius: 0 !important;
+            background-color: #5cb85c;
+            color:white;
+            font-size: 15px;
+            cursor: pointer;
+
+            &:hover{
+                border:1px solid #E0E0E0;
+                background-color: #E0E0E0;
+            }
+        }
+
+        button.right-friendly-button {
+            width: 50%;
+
+            border:1px solid #b82054;
+            padding: 15px 10px;
+            border-radius: 5px;
+            border-top-left-radius: 0 !important;
+            border-bottom-left-radius: 0 !important;
+            background-color: #b82054;
+            color:white;
+            font-size: 15px;
+            cursor: pointer;
+
+            &:hover{
+                border:1px solid #E0E0E0;
+                background-color: #E0E0E0;
+            }
+        }
+
         >div.page {
             margin-top: 30px;
             border:1px solid #E0E0E0;
@@ -437,17 +480,6 @@ button:focus { outline: none; }
     }
     .bold{
         font-weight: bold;
-    }
-
-    .confirm-btn{
-        flex:1;
-        margin-top: 10px !important;
-    }
-
-    .reject-btn{
-        flex:1;
-        margin-top: 10px !important;
-        margin-right: 10px !important;
     }
 }
 
@@ -807,7 +839,7 @@ table.table{
             }
         }
     }
-    .right-desc{
+    .right-desc {
         margin-top: 90px;
         font-size: 11px;
         color: #7F7F7F;
@@ -817,22 +849,23 @@ table.table{
         }
     }
 
-    .add-button{
+    .add-button {
         background-color: #3D4B5A;
         padding: 7px 15px;
         font-size: 14px;
         color: #fff;
         border-radius: 8px;
         cursor: pointer;
-        margin-bottom:10px;
+        margin-bottom:20px;
 
-        >i{
+        >i {
             margin-right: 10px;
         }
     }
 
     .selected-file{
         margin: 10px 0;
+        margin-left: 10px;
         font-size: 12px;
         display: flex;
         // font-weight: bold;
@@ -1339,7 +1372,7 @@ div.checkbox-comp{
     canvas{
         width: 300px;
         height: 150px;
-        border:1px solid #3D4B5A;
+        border:1px solid #dadadc;
     }
 }
 
