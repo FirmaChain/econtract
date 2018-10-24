@@ -121,7 +121,7 @@ class TypingPin extends React.Component{
             this.props.onFinish && this.props.onFinish(this.state.value)
             this.closeSelf()
         } else {
-            alert("핀번호는 6자리입니다.")
+            alert("핀번호는 6자리입니다. 정확히 입력해주세요.")
         }
     }
 
@@ -131,10 +131,13 @@ class TypingPin extends React.Component{
     }
 
     keydown = (e)=>{
-        if(e.key == "Backspace"){
+        console.log("key : ", e.key)
+        if(e.key == "Backspace") {
             this.setState({
                 value: this.state.value.slice(0,this.state.value.length-1)
             })
+        } else if(e.key == "Enter" || e.key == 13) {
+            this.onClickOK()
         }
         let key = Number(e.key)
         if( 0 <= key && key <= 9 ){

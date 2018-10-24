@@ -131,10 +131,10 @@ export default class extends React.Component {
         let mm = this.state.moveMode;
         return <tr key={k} className={mm ? "" : "clickable"} onClick={mm ? null : this.onClickContract.bind(this,e.contract_id)}>
             {mm ? <td><CheckBox2 on={this.state.move_select[k]} onClick={this.onClickMoveSel.bind(this,k)} /></td> : null}
-            <td style={{width:"50px"}} className="text-center">{status_text(e.status)}</td>
-            <td style={{width:"20px"}} className="text-center"><i className="fas fa-lock"></i></td>
+            <td className="text-center">{status_text(e.status)}</td>
+            <td className="text-center"><i className="fas fa-lock"></i></td>
             <td className="text-left">{e.name}</td>
-            <td style={{width:"70px"}} className="text-center">{e.username}{e.counterpartyCnt > 0 ?` 외 ${e.counterpartyCnt}명`:""}</td>
+            <td style={{width:"85px"}} className="text-center">{e.username}{e.counterpartyCnt > 0 ?` 외 ${e.counterpartyCnt}명`:""}</td>
             <td className="date-cell">{moment(e.updatedAt).format("YYYY-MM-DD HH:mm:ss")}</td>
         </tr>
     }
@@ -149,7 +149,7 @@ export default class extends React.Component {
                 <UserStatusBar />
                 <div className="page">
                     <ContractMenu page={this.state.folder_id != null ? "folder" : "recent"} />
-                    <div className="column-600 page-contents">
+                    <div className="column-800 page-contents">
                         <h1>{this.state.folder_id == 0? "분류되지 않은 계약" : (board.subject || "최근 사용한 계약")}</h1>
                         {/* <div className="filter-checkbox">
                             <CheckBox text="요청받은 계약" on={this.state.filter==1} onClick={(b)=>b ? this.setState({filter:1}): null} />
@@ -161,8 +161,8 @@ export default class extends React.Component {
                             <tbody>
                                 <tr>
                                     {this.state.moveMode ? <th>-</th> : null}
-                                    <th>상태</th>
-                                    <th>잠금</th>
+                                    <th style={{width:"70px"}}>상태</th>
+                                    <th style={{width:"50px"}}>잠금</th>
                                     <th className="text-left">계약명</th>
                                     <th>서명자</th>
                                     <th>일자</th>
