@@ -157,8 +157,7 @@ button:focus { outline: none; }
             }
         }
         .edit-box{
-            position: relative;
-            // text-align: center;
+            position: static;
             margin: 0 auto;
             flex:1;
             overflow: auto;
