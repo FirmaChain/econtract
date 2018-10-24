@@ -56,7 +56,7 @@ class Item extends React.Component{
                 <div className="draggable-div">
                     {isMine ? <div className="handle"><i className="fas fa-arrows-alt" /></div> : null }
                     {props.name ? <div className="name-container">{props.name}</div> : null}
-                    {isMine ? <div className="trash" onClick={this.props.removeItem}><i className="fas fa-trash" /></div> : null }
+                    {isMine ? <div className="trash" onClick={this.props.removeItem}><img src="/static/trash.png"/></div> : null }
                     {this.content(isMine)}
                 </div>
             </Resizable>
@@ -176,8 +176,6 @@ export default class extends React.Component {
         if(moveFlag != 0 && !!this.left_menu) {
             let topPos = pageElement.offsetTop;
             this.left_menu.scrollTop = topPos - (moveFlag == 1 ? 400 : 532);
-            console.log("topPos : ", topPos)
-            console.log("sccc : ", this.left_menu.scrollTop)
         }
     }
 
@@ -436,26 +434,26 @@ export default class extends React.Component {
                 {this.state.status <= 1 ? <div className="header-toolkit">
                     {this.state.status == 1 ?[
                         <div key={0} className="toolkit" onClick={this.onClickAddSign}>
-                            <i className="fab fa-asymmetrik" />
+                            <img src="/static/icon_sign.png"/>
                             서명 그리기
                         </div>,
                         <div key={1} className="toolkit" onClick={this.onClickAddImg}>
-                            <i className="fab fa-asymmetrik" />
+                            <img src="/static/icon_sign_upload.png"/>
                             서명,도장 업로드
                         </div>
                     ] : null}
 
                     <div className="toolkit" onClick={this.onClickAddImg}>
-                        <i className="fab fa-asymmetrik" />
+                        <img src="/static/icon_img_upload.png"/>
                         이미지 업로드
                     </div>
 
                     <div className="toolkit" onClick={this.onClickAddLabel}>
-                        <i className="fab fa-asymmetrik" />
+                        <img src="/static/icon_textbox.png"/>
                         텍스트 입력
                     </div>
                     {/*<div className="toolkit" onClick={this.onClickAddCheckbox}>
-                        <i className="fab fa-asymmetrik" />
+                        <img src="/static/icon_checkbox.png"/>
                         체크박스 추가
                     </div>*/}
                     {this.state.status == 0 ? <div style={{flex:1}} /> : null }

@@ -99,8 +99,6 @@ export default class extends React.Component{
                 <i className="fas fa-search" />
                 <input type="text" placeholder="검색어를 입력해주세요" />
             </div> */}
-
-            <img src="/static/icon_img_upload.png"/>
                 
             <div className="login-time-bar" onClick={this.onClickUpdateLogin}>
                 <div>로그인 세션</div>

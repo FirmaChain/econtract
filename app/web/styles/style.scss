@@ -141,9 +141,16 @@ button:focus { outline: none; }
                 align-items: center;
                 cursor: pointer;
                 padding: 10px;
+
                 >i{
                     margin-right: 8px;
                     font-size: 18px;
+                }
+
+                >img{
+                    margin-right: 10px;
+                    font-size: 18px;
+                    width:20px;
                 }
 
                 &:hover{
@@ -169,6 +176,7 @@ button:focus { outline: none; }
             user-select: none;          /* Likely future */      
 
             padding-bottom: 30px;
+            overflow: visible;
 
             > img{
                 border-radius: 5px;
@@ -191,7 +199,8 @@ button:focus { outline: none; }
                     position: relative;
                     display: inline-block;
                     padding: 0;
-                    border: 2px dashed #000;
+                    border: 2px dashed #444;
+                    color:#666;
                     min-width: 30px;
                     padding:10px;
                     outline: 0;
@@ -199,15 +208,12 @@ button:focus { outline: none; }
                 }
                 .trash{
                     position: absolute;
-                    right: -15px;
-                    bottom: -15px;
-                    background-color: RGBA(41, 58, 73, 0.5);
-                    padding: 10px;
-                    color: #fff;
-                    border-radius: 50%;
+                    right: 0px;
+                    top: -15px;
                     width: 13px;
                     height: 13px;
                     cursor: pointer;
+                    z-index: 2;
                 }
                 .name-container{
                     position: absolute;
@@ -225,11 +231,10 @@ button:focus { outline: none; }
                     justify-content: center;
                     align-items: center;
                     position: absolute;
-                    background-color: RGBA(41, 58, 73, 0.5);
-                    border:1px solid RGB(173, 173, 173);
-                    width: 20px;
-                    height: 20px;
-                    top: -10px;
+                    background-color: #a3a3a3;
+                    width: 30px;
+                    height: 30px;
+                    top: -15px;
                     left: -10px;
                     // right: 0;
                     border-radius: 50%;
