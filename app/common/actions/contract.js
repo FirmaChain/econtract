@@ -81,9 +81,11 @@ export function new_contract( subject, imgs, counterparties, publickey_contract_
             imgs[k] = aes_encrypt(imgs[k], pin)
         }
 
-        let counterparties_eckai = ['cafebabe', 'deadbeef'];
+        let counterparties_eckai = [];
         let shared_key = generate_random(31);
-        counterparties_eckai.unshift(publickey_contract_list[0]);
+        for (let i = 0; i < shared_key.length; i++) {
+            counterparties_eckai.push(sealContractAuxKey(publickey_contract_list[i], shared_key));
+        }
 
         let resp = (await api_new_contract( subject, imgs, counterparties, counterparties_eckai )).payload
         if(resp){

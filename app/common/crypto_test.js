@@ -161,8 +161,8 @@ export function getContractKey(pin, sharedAuxKey) {
     return hmac_sha256("FirmaChain New Contract", Buffer.concat([Buffer.from(pin), sharedAuxKey]));
 }
 
-export function sealContractKey(publicKeyBuffer, sharedAuxKey) {
-    let publicKey = CryptoUtil.ec_key_from_public(publicKeyBuffer, undefined, 1);
+export function sealContractAuxKey(publicKeyHex, sharedAuxKey) {
+    let publicKey = CryptoUtil.ec_key_from_public(Buffer.from(publicKeyHex,'hex'), undefined, 1);
     let sharedAuxKeyEncrypted = CryptoUtil.ecaes_encrypt(sharedAuxKey, publicKey, 1);
     let sharedAuxKeyEncryptedHex = Buffer.concat([Buffer.from(sharedAuxKeyEncrypted.encrypted_message, 'hex'), Buffer.from(sharedAuxKeyEncrypted.temp_key_public.encodeCompressed())]).toString('hex');
     return sharedAuxKeyEncryptedHex;
