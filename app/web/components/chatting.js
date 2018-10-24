@@ -97,8 +97,7 @@ export default class extends React.Component {
     }
 
     onClickNext = async()=>{
-        if(await confirm("다음으로","저장할 내용이 있다면 저장을 먼저 해주세요! 다음으로 넘어가시겠습니까?")){
-            this.props.unblockFunction()
+        if(await confirm("다음으로","변경된 내용이 있다면 먼저 저장해주세요. 다음으로 넘어가시겠습니까?")){
             history.push(`/contract-confirm/${this.props.contract_id}`)
         }
     }

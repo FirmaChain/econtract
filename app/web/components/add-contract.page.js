@@ -30,9 +30,11 @@ export default class extends React.Component {
 		this.state={
             counterparties:[]
         };
+        this.blockFlag = true;
 	}
 
 	componentDidMount(){
+        this.blockFlag = true;
         if(!this.props.user_info){
             (async()=>{
                 await window.showIndicator()
@@ -42,16 +44,18 @@ export default class extends React.Component {
         }
 
         this.unblock = history.block(targetLocation => {
-            if(window._confirm("계약작성을 중단하고 현재 페이지를 나가시겠습니까?")){
-                return true;
-            }else{
-                return false;
+            if(this.blockFlag){
+                if(await window._confirm("계약 배포를 중단하고 현재 페이지를 나가시겠습니까?"))
+                    return true;
+                else
+                    return false;
             }
+            return true;
         })
     }
 
     componentWillUnmount(){
-       // this.unblock();
+        this.unblock();
     }
 
     componentWillReceiveProps(props){
@@ -73,7 +77,8 @@ export default class extends React.Component {
         await window.showIndicator()
         let resp = await this.props.new_contract( subject, imgs, (counterparties || []).map(e=>e.code), this.props.user_info.publickey_contract );
         if(resp){
-            this.unblock();
+            //this.unblock();
+            this.blockFlag = false;
             history.replace(`/contract-editor/${resp}`)
         }else{
             alert("계약서 생성에 문제가 발생했습니다!")

@@ -91,6 +91,7 @@ export default class extends React.Component {
 	}
 
 	componentDidMount(){
+        this.blockFlag = true;
         (async()=>{
             let contract_id = this.props.match.params.id;
             await window.showIndicator("계약서 불러오는 중")
@@ -104,6 +105,7 @@ export default class extends React.Component {
             }else{
                 while(1){
                     try{
+                        this.blockFlag = false;
                         pin = await new Promise(r=>window.openModal("TypingPin",{
                             onFinish:(pin)=>{
                                 r(pin)
@@ -124,22 +126,18 @@ export default class extends React.Component {
         })()
 
         this.unblock = history.block(targetLocation => {
-            if(window._confirm("계약작성을 중단하고 현재 페이지를 나가시겠습니까?")){
-                return true;
-            }else{
-                return false;
+            if(this.blockFlag){
+                if(await window._confirm("계약작성을 중단하고 현재 페이지를 나가시겠습니까?"))
+                    return true;
+                else
+                    return false;
             }
+            return true;
        })
     }
 
-    unblockFunction = async() => {
-        this.blockFlag = false;
-    }
-
     componentWillUnmount(){
-        if(this.blockFlag) {
-            //this.unblock();
-        }
+        this.unblock();
     }
 
     async load_contract(contract_id, pin){
@@ -161,8 +159,8 @@ export default class extends React.Component {
                 edit_page:objects,
             })
 
-            if(contract.status == 2)
-                this.unblock()
+            /*if(contract.status == 2)
+                this.unblock()*/
         }else{
             alert("정상적으로 불러오지 못했습니다.")
         }
@@ -289,7 +287,7 @@ export default class extends React.Component {
                     await window.showIndicator()
                     let resp = await this.props.edit_contract(this.state.contract_id, this.state.pin, window.clone_object(this.state.edit_page))
                     if(resp){
-                        this.unblock()
+                        //this.unblock()
                         alert("성공적으로 저장했습니다.")
                         history.replace("/recently")
                     }else{
@@ -327,8 +325,11 @@ export default class extends React.Component {
         }
     }
 
-    onClickDetail = async()=>{
-        history.push(`/contract-confirm/${this.state.contract_id}`)
+    onClickDetail = async() => {
+        if(await confirm("다음으로","변경된 내용이 있다면 먼저 저장해주세요. 다음으로 넘어가시겠습니까?")){
+            this.blockFlag = false
+            history.push(`/contract-confirm/${this.state.contract_id}`)
+        }
     }
 
     render_finish_button(){
@@ -347,8 +348,7 @@ export default class extends React.Component {
             }} 
             counterparties={this.state.counterparties}
             contract_name={this.state.name}
-            contract_status={this.state.status} 
-            unblockFunction={this.unblockFunction}/>
+            contract_status={this.state.status}/>
     }
 
     render_save_recover_btn(){
