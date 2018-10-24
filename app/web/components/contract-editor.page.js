@@ -87,7 +87,6 @@ export default class extends React.Component {
             page: 0,
             edit_page:[]
         };
-        this.blockFlag = true;
 	}
 
 	componentDidMount(){
@@ -132,14 +131,8 @@ export default class extends React.Component {
        })
     }
 
-    unblockFunction = async() => {
-        this.blockFlag = false;
-    }
-
     componentWillUnmount(){
-        if(this.blockFlag) {
-            //this.unblock();
-        }
+        this.unblock();
     }
 
     async load_contract(contract_id, pin){
@@ -161,8 +154,8 @@ export default class extends React.Component {
                 edit_page:objects,
             })
 
-            if(contract.status == 2)
-                this.unblock()
+            /*if(contract.status == 2)
+                this.unblock()*/
         }else{
             alert("정상적으로 불러오지 못했습니다.")
         }
@@ -289,7 +282,7 @@ export default class extends React.Component {
                     await window.showIndicator()
                     let resp = await this.props.edit_contract(this.state.contract_id, this.state.pin, window.clone_object(this.state.edit_page))
                     if(resp){
-                        this.unblock()
+                        //this.unblock()
                         alert("성공적으로 저장했습니다.")
                         history.replace("/recently")
                     }else{
@@ -347,8 +340,7 @@ export default class extends React.Component {
             }} 
             counterparties={this.state.counterparties}
             contract_name={this.state.name}
-            contract_status={this.state.status} 
-            unblockFunction={this.unblockFunction}/>
+            contract_status={this.state.status}/>
     }
 
     render_save_recover_btn(){

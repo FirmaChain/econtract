@@ -51,7 +51,7 @@ export default class extends React.Component {
     }
 
     componentWillUnmount(){
-       // this.unblock();
+        this.unblock();
     }
 
     componentWillReceiveProps(props){
@@ -73,7 +73,7 @@ export default class extends React.Component {
         await window.showIndicator()
         let resp = await this.props.new_contract( subject, imgs, (counterparties || []).map(e=>e.code) );
         if(resp){
-            this.unblock();
+            //this.unblock();
             history.replace(`/contract-editor/${resp}`)
         }else{
             alert("계약서 생성에 문제가 발생했습니다!")
