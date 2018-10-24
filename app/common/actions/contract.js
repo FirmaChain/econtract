@@ -115,7 +115,7 @@ export function get_pin_from_storage(contract_id){
 }
 
 export function load_contract_info(contract_id){
-    return (await api_load_contract_info(contract_id)).payload;
+    return async function(){return (await api_load_contract_info(contract_id)).payload;};
 }
 
 export function load_contract(contract_id, pin, load_listener = null){
