@@ -68,7 +68,6 @@ export class ModalManager extends React.Component {
                 opacity: this.state.modals.length > 0 ? 1 : 0
             }}>
                 {this.state.modals.map((e,k)=>{
-                    console.log(e,k)
                     let Modal = ModalStore[e.name]
                     return <div key={`${e}_${k}`} className="modal-content-container">
                         <Modal {...e.props} modalId={e.idx} />

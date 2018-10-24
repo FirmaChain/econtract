@@ -224,9 +224,8 @@ export default class extends React.Component {
     addObject = async(props)=>{
         let edit_page = [...this.state.edit_page]
         edit_page[this.state.page] = [...(edit_page[this.state.page]||[]), props]
-
         this.setState({
-            edit_page: edit_page
+            edit_page
         })
     }
 
@@ -314,7 +313,7 @@ export default class extends React.Component {
         }
 
         this.setState({
-            edit_page:edit_page
+            edit_page
         })
     }
 
@@ -358,14 +357,21 @@ export default class extends React.Component {
 
     onClickSave = async()=>{
         if(await confirm("저장","계약서를 수정사항을 적용하시겠습니까?")){
-            let myObject = this.state.edit_page.map(e=>{
+            console.log("this.state.edit_page",this.state.edit_page)
+            let myObject = this.state.edit_page.map(e => {
+                if(!e) return
                 return e.filter(o=>{
                     return o.code == null || o.code == this.props.user.code
                 })
             })
+            console.log("myObject",myObject)
 
             await window.showIndicator()
-            let resp = await this.props.edit_contract(this.state.contract_id, this.state.pin, window.clone_object(myObject))
+            let resp = await this.props.edit_contract(
+                this.state.contract_id,
+                this.state.pin,
+                window.clone_object(myObject))
+
             await window.hideIndicator();
 
             if(resp){
