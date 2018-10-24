@@ -85,7 +85,7 @@ export function new_contract( subject, imgs, counterparties, publickey_contract_
 
         let counterparties_eckai = [];
         let shared_key = generate_random(31);
-        for (let i = 0; i < shared_key.length; i++) {
+        for (let i = 0; i < publickey_contract_list.length; i++) {
             counterparties_eckai.push(sealContractAuxKey(publickey_contract_list[i], shared_key));
         }
 
