@@ -144,6 +144,13 @@ export default class extends React.Component {
             return true;
        })
     }
+
+    componentWillReceiveProps(props){
+        if(props.user_info === false){
+            history.replace("/login")
+        }
+    }
+    
     componentWillUnmount(){
         document.removeEventListener("keydown", this.keydown);
         this.unblock();
