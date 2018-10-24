@@ -22,6 +22,7 @@ import {
     makeSignData,
     getContractKey,
     sealContractAuxKey,
+    unsealContractAuxKey,
     decrypt_user_info,
     aes_decrypt,
     aes_encrypt,
@@ -44,16 +45,26 @@ function genPIN(digit=6) {
     return text;
 }
 
+async function getTheKey(contract_id, pin) {
+    let contract_info = (await api_load_contract_info(contract_id)).payload;
+    let entropy = sessionStorage.getItem("entropy");
+    if (!contract_info || !entropy) return null;
+    let shared_key = unsealContractAuxKey(entropy, contract_info.eckai);
+    let the_key = getContractKey(pin, shared_key);
+    return the_key;
+}
+
 async function parse_html(account, contract_id, html, pin){
     try{
-        html = aes_decrypt(html, pin)
+        let the_key = await getTheKey(contract_id, pin);
+        html = aes_decrypt(html, the_key)
         html = JSON.parse(html)
         for(let page of html){
             for(let k in page){
                 let obj = page[k]
                 if (obj.type == "img") {
                     let resp = await fetch(`${window.HOST}/${contract_id}-${account.id}-${obj.data}`,{encoding:null})
-                    obj.data = aes_decrypt(await resp.text() , pin)
+                    obj.data = aes_decrypt(await resp.text() , the_key)
                 }
                 obj.account_id = account.id
                 obj.name = account.name
@@ -69,25 +80,27 @@ async function parse_html(account, contract_id, html, pin){
     return []
 }
 
-async function fetch_img(name, pin){
+async function fetch_img(name, the_key){
     let resp = await fetch(`${window.HOST}/${name}`,{encoding:null})
     let text = await resp.text();
-    console.log(text.length, pin)
-    return aes_decrypt(text , pin)
+    console.log(text.length, the_key)
+    return aes_decrypt(text , the_key)
 }
 
 export function new_contract( subject, imgs, counterparties, publickey_contract_list){
     return async function(dispatch){
         let pin = genPIN();
-        for(let k in imgs){
-            await new Promise(r=>setTimeout(r,100))
-            imgs[k] = aes_encrypt(imgs[k], pin)
-        }
-
         let counterparties_eckai = [];
         let shared_key = generate_random(31);
+        let the_key = getContractKey(pin, shared_key);
+
         for (let i = 0; i < publickey_contract_list.length; i++) {
             counterparties_eckai.push(sealContractAuxKey(publickey_contract_list[i], shared_key));
+        }
+
+        for(let k in imgs){
+            await new Promise(r=>setTimeout(r,100))
+            imgs[k] = aes_encrypt(imgs[k], the_key)
         }
 
         let resp = (await api_new_contract( subject, imgs, counterparties, counterparties_eckai )).payload
@@ -115,31 +128,33 @@ export function get_pin_from_storage(contract_id){
 }
 
 export function load_contract_info(contract_id){
-    return async function(){return (await api_load_contract_info(contract_id)).payload;};
+    return async function(){
+        return (await api_load_contract_info(contract_id)).payload;
+    };
 }
 
 export function load_contract(contract_id, pin, load_listener = null, only_info_load=false){
     return async function(){
         try{
-            let contract = (await api_load_contract(contract_id)).payload
-            
+            let the_key = await getTheKey(contract_id, pin);
+            let contract = (await api_load_contract(contract_id)).payload;
 
             contract.html = await parse_html({
                 id:contract.account_id,
                 code:contract.author_code,
                 name:contract.author_name
-            }, contract_id, contract.html, pin)
+            }, contract_id, contract.html, the_key)
 
-            try{ contract.author_msg = aes_decrypt(contract.author_msg, pin) }catch(err){}
+            try{ contract.author_msg = aes_decrypt(contract.author_msg, the_key) }catch(err){}
             
             for(let counterparty of contract.counterparties){
                 counterparty.html = await parse_html({
                     id:counterparty.account_id,
                     code:counterparty.code,
                     name:counterparty.name
-                }, contract_id, counterparty.html, pin)
+                }, contract_id, counterparty.html, the_key)
                 
-                try{ counterparty.reject = aes_decrypt(counterparty.reject, pin) }catch(err){}
+                try{ counterparty.reject = aes_decrypt(counterparty.reject, the_key) }catch(err){}
             }
 
             if(!only_info_load) {
@@ -147,7 +162,7 @@ export function load_contract(contract_id, pin, load_listener = null, only_info_
                 let img_base64 = []
                 let i = 0;
                 for(let img of contract.imgs ) {
-                    img_base64.push(await fetch_img(img, pin))
+                    img_base64.push(await fetch_img(img, the_key))
                     i++;
                     if(load_listener != null)
                         load_listener(i, contract.imgs.length)
@@ -206,18 +221,19 @@ export function recently_contracts(page=0){
 export function edit_contract(contract_id, pin, edit){
     return async function(dispatch){
         let encrypt_data = []
+        let the_key = await getTheKey(contract_id, pin);
         for(let page of edit){
             for(let k in page){
                 let obj = page[k]
                 if(obj.type == "img"){
                     await new Promise(r=>setTimeout(r,100))
-                    encrypt_data.push(aes_encrypt(obj.data, pin))
+                    encrypt_data.push(aes_encrypt(obj.data, the_key))
                     obj.data = encrypt_data.length - 1
                 }
             }
         }
 
-        let encrypt_edit = aes_encrypt(JSON.stringify(edit), pin)
+        let encrypt_edit = aes_encrypt(JSON.stringify(edit), the_key)
         return (await api_edit_contract(contract_id, encrypt_data, encrypt_edit)).payload
     }
 }
@@ -226,7 +242,8 @@ export function send_chat(contract_id, msg){
     return async function(dispatch){
         let pin = localStorage.getItem(`contract:${contract_id}`);
         if(pin){
-            let encrypt_msg = aes_encrypt(msg || "  ", pin)
+            let the_key = await getTheKey(contract_id, pin);
+            let encrypt_msg = aes_encrypt(msg || "  ", the_key)
             let resp = (await api_send_chat(contract_id, encrypt_msg)).payload
             if(resp){
                 return true
@@ -240,6 +257,7 @@ export function fetch_chat(contract_id, cursor=0){
     return async function(dispatch){
         let pin = localStorage.getItem(`contract:${contract_id}`);
         if(pin){
+            let the_key = await getTheKey(contract_id, pin);
             let resp = (await api_fetch_chat(contract_id, cursor)).payload
             for(let chat of resp){
                 try{
@@ -248,7 +266,7 @@ export function fetch_chat(contract_id, cursor=0){
                             type:Number(chat.msg)
                         }
                     }else{
-                        chat.msg = aes_decrypt(chat.msg, pin)
+                        chat.msg = aes_decrypt(chat.msg, the_key)
                     }
                 }catch(err){}
             }
@@ -267,7 +285,8 @@ export function confirm_contract(contract_id){
 export function reject_contract(contract_id, msg){
     return async function(dispatch){
         let pin = localStorage.getItem(`contract:${contract_id}`) 
-        msg = aes_encrypt(msg, pin)
+        let the_key = await getTheKey(contract_id, pin);
+        msg = aes_encrypt(msg, the_key)
 
         return (await api_reject_contract(contract_id, msg)).payload
     }
