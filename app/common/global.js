@@ -51,7 +51,6 @@ export const request = async function(path,method="GET",body=null){
 }
 
 export const encrypt_with_pin = function(raw, p){
-  console.log("encrypt_with_pin",p)
     let pin = `${p}`
     let key_256 = new Uint8Array([
         pin[0], pin[1], pin[2], pin[3], 
