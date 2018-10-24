@@ -211,7 +211,7 @@ class DrawSign extends React.Component{
                 
                 <canvas ref="canvas" 
                     onMouseDown={this.onmousedown} 
-                    onMouseMove={this.onmousemove} 
+                    onMouseMove={this.onmousemove}
                     onMouseUp={this.onmouseup} />
             </div>
             <div className="buttons">

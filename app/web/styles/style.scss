@@ -318,19 +318,23 @@ button:focus { outline: none; }
         button.left-friendly-button {
             width: 50%;
 
-            border:1px solid #324b5f;
+            border:1px solid #dadadc;
             padding: 15px 10px;
             border-radius: 5px;
             border-top-right-radius: 0 !important;
             border-bottom-right-radius: 0 !important;
-            background-color: #324b5f;
-            color:white;
+            border-top:1px solid #dadadc !important;
+            background-color: #fff;
+            color:#4a4a4a;
             font-size: 15px;
             cursor: pointer;
 
             &:hover{
-                border:1px solid #E0E0E0;
-                background-color: #E0E0E0;
+                border:1px solid #324b5f;
+                border-top:1px solid #324b5f !important;
+                background-color: #324b5f;
+                color:white;
+                border-top: none !important;
             }
         }
 
@@ -1055,12 +1059,15 @@ div.pager-comp{
             font-size: 10px;
             cursor: pointer;
 
-            color: RGB(41, 58, 73);
+            color: #324b5f;
+
             &:hover{
-                background-color: RGBA(41, 58, 73, 0.5);
+                background-color: #324b5f;
+                opacity:0.5;
             }
+
             &:active{
-                background-color: RGB(41, 58, 73);
+                background-color: #324b5f;
                 color: #fff;
             }
 

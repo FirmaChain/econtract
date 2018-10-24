@@ -165,8 +165,8 @@ export default class extends React.Component {
                         </div>
                     </div>
                 </div>
-                <button className="left-friendly-button top-no-border" onClick={this.onClickConfirm}> 승인하기 </button>
-                <button className="right-friendly-button top-no-border" onClick={this.onClickReject}> 거절하기 </button>
+                <button className="left-friendly-button top-no-border" onClick={this.onClickConfirm}> 승 인 </button>
+                <button className="right-friendly-button top-no-border" onClick={this.onClickReject}> 거 절 </button>
             </div>
 		</div>);
 	}
