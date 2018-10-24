@@ -81,7 +81,6 @@ button:focus { outline: none; }
         display: flex;
         position: fixed;
         background-color: RGBA(49, 49, 49, 0.8);
-        padding-top: 60px;
         overflow-y: auto;
         height: 100%;
         flex-direction: column;
@@ -321,9 +320,10 @@ button:focus { outline: none; }
             border:1px solid #dadadc;
             padding: 15px 10px;
             border-radius: 5px;
-            border-top-right-radius: 0 !important;
-            border-bottom-right-radius: 0 !important;
-            border-top:1px solid #dadadc !important;
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+            border-top-left-radius: 0;
+
             background-color: #fff;
             color:#4a4a4a;
             font-size: 15px;
@@ -331,10 +331,9 @@ button:focus { outline: none; }
 
             &:hover{
                 border:1px solid #324b5f;
-                border-top:1px solid #324b5f !important;
+                border-top:1px solid #324b5f;
                 background-color: #324b5f;
                 color:white;
-                border-top: none !important;
             }
         }
 
@@ -344,9 +343,12 @@ button:focus { outline: none; }
             border:1px solid #dadadc;
             padding: 15px 10px;
             border-radius: 5px;
-            border-top-left-radius: 0 !important;
-            border-bottom-left-radius: 0 !important;
-            border-top:1px solid #dadadc !important;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+            border-bottom-left-radius: 0;
+            border-left:none;
+
+            border-top:1px solid #dadadc;
             background-color: #fff;
             color:#4a4a4a;
             font-size: 15px;
@@ -367,16 +369,20 @@ button:focus { outline: none; }
             flex-direction: row;
             display: flex;
 
-            >div.column-300{
-                width: 300px;
-            }
-
             >div.column-200{
                 width: 200px;
             }
 
+            >div.column-300{
+                width: 300px;
+            }
+
             >div.column-600{
                 width: 600px;
+            }
+
+            >div.column-800{
+                width: 800px;
             }
             
             div.form-layout{
@@ -616,14 +622,14 @@ table.table{
         border-bottom: 2px solid #000;
         font-weight: bold;
         color: #BEBEC3;
-        font-size: 12px;
+        font-size: 14px;
         padding: 10px 0 10px 20px;
     }
     td{
         border-bottom: 1px solid #c0c0c0;
         font-weight: 400;
         color: #7F7F7F;
-        font-size: 11px;
+        font-size: 12px;
         text-align: left;
         padding: 15px 0 15px 20px;
     }
@@ -646,8 +652,8 @@ table.table{
         display: flex;
         border: 2px solid #324b5f;
         border-radius: 3px;
-        font-size: 10px;
-        padding: 2px 6px;
+        font-size: 12px;
+        padding: 4px 7px;
         font-weight: bold;
         margin-right: 40px;
         cursor: pointer;

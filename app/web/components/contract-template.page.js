@@ -52,7 +52,7 @@ export default class extends React.Component {
                 <UserStatusBar />
                 <div className="page">
                     <ContractMenu page="template" />
-                    <div className="column-600 page-contents">
+                    <div className="column-800 page-contents">
                         <h1>내 탬플릿</h1>
                         <table className="table" style={{marginTop:"20px"}}>
                             <tbody>

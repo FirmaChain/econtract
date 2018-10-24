@@ -177,9 +177,9 @@ export default class extends React.Component {
                     </div>
                     {this.props.contract_status == 2 ?
                         <div className="input-container">
-                            <div className="next-btn" style={{flex:1,textAlign:"center"}} onClick={this.onClickDetail}>
+                            <div className="next-btn" style={{flex:1, textAlign:"center"}} onClick={this.onClickDetail}>
                                 <i className="fas fa-check"></i>
-                                계약상세 보기
+                                계약 상세보기
                             </div>
                         </div> : 
                         <div className="input-container">
