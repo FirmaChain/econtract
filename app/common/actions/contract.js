@@ -72,7 +72,7 @@ async function fetch_img(name, pin){
     return aes_decrypt(text , pin)
 }
 
-export function new_contract( subject, imgs, counterparties ){
+export function new_contract( subject, imgs, counterparties, counterparties_eckai=['deadbeef', 'cafebabe'] ){
     return async function(dispatch){
         let pin = genPIN();
         for(let k in imgs){
@@ -80,7 +80,7 @@ export function new_contract( subject, imgs, counterparties ){
             imgs[k] = aes_encrypt(imgs[k], pin)
         }
 
-        let resp = (await api_new_contract( subject, imgs, counterparties )).payload
+        let resp = (await api_new_contract( subject, imgs, counterparties, counterparties_eckai )).payload
         if(resp){
             localStorage.setItem(`contract:${resp}`, pin)
             dispatch({
@@ -89,6 +89,7 @@ export function new_contract( subject, imgs, counterparties ){
                     subject, 
                     imgs, 
                     counterparties,
+                    counterparties_eckai,
                     pin
                 }
             })

@@ -5,7 +5,7 @@
 
 import {post, get} from './Network.js';
 
-export async function api_new_contract(subject,imgs,counterparties){
+export async function api_new_contract(subject,imgs,counterparties,counterparties_eckai){
     let data = new FormData();
 
     data.append('subject', subject);
@@ -16,7 +16,11 @@ export async function api_new_contract(subject,imgs,counterparties){
 	for(let k in counterparties){
         data.append('counterparties:'+k,counterparties[k])
     }
-    data.append('counterparties',counterparties.length)
+    data.append('counterparties',counterparties.length);
+	for(let k in counterparties_eckai){
+        data.append('counterparties_eckai:'+k,counterparties_eckai[k])
+    }
+    data.append('counterparties_eckai',counterparties_eckai.length)
 
     return await post("/new_contract", data,{
         session:window.getCookie("session")
