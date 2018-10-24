@@ -83,7 +83,7 @@ export function new_contract( subject, imgs, counterparties, publickey_contract_
 
         let counterparties_eckai = ['cafebabe', 'deadbeef'];
         let shared_key = generate_random(31);
-        counterparties_eckai.unshift(publickey_contract_list[0].toString('hex'));
+        counterparties_eckai.unshift(publickey_contract_list[0]);
 
         let resp = (await api_new_contract( subject, imgs, counterparties, counterparties_eckai )).payload
         if(resp){
