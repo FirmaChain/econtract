@@ -45,7 +45,7 @@ function genPIN(digit=6) {
     return text;
 }
 
-function getTheKey(contract_id, pin) {
+async function getTheKey(contract_id, pin) {
     let contract_info = (await api_load_contract_info(contract_id)).payload;
     let entropy = sessionStorage.getItem("entropy");
     if (!contract_info || !entropy) return null;
@@ -135,7 +135,7 @@ export function load_contract_info(contract_id){
 export function load_contract(contract_id, pin, load_listener = null, only_info_load=false){
     return async function(){
         try{
-            let the_key = getTheKey(contract_id, pin);
+            let the_key = await getTheKey(contract_id, pin);
             let contract = (await api_load_contract(contract_id)).payload;
 
             contract.html = await parse_html({
