@@ -22,6 +22,23 @@ export async function api_new_contract(subject,imgs,counterparties){
         session:window.getCookie("session")
     });
 }
+export async function api_update_epin(contract_id,epin){
+    let data = new FormData();
+
+    data.append('contract_id', contract_id);
+	data.append('epin', epin)
+
+    return await post("/update_epin", data,{
+        session:window.getCookie("session")
+    });
+}
+export async function api_load_epin(contract_id){
+    return await get("/load_epin", {
+        contract_id
+    },{
+        session:window.getCookie("session")
+    });
+}
 export async function api_load_contract(contract_id){
     return await get("/load_contract", {
         contract_id
