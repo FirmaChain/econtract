@@ -30,11 +30,11 @@ export default class extends React.Component {
 		this.state={
             counterparties:[]
         };
-        this.blockFlag = true
+        this.blockFlag = true;
 	}
 
 	componentDidMount(){
-        this.blockFlag = true
+        this.blockFlag = true;
         if(!this.props.user_info){
             (async()=>{
                 await window.showIndicator()

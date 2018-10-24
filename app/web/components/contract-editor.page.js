@@ -87,11 +87,11 @@ export default class extends React.Component {
             page: 0,
             edit_page:[]
         };
-        this.blockFlag = true
+        this.blockFlag = true;
 	}
 
 	componentDidMount(){
-        this.blockFlag = true
+        this.blockFlag = true;
         (async()=>{
             let contract_id = this.props.match.params.id;
             await window.showIndicator("계약서 불러오는 중")
