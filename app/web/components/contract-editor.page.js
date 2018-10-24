@@ -87,9 +87,11 @@ export default class extends React.Component {
             page: 0,
             edit_page:[]
         };
+        this.blockFlag = true
 	}
 
 	componentDidMount(){
+        this.blockFlag = true
         (async()=>{
             let contract_id = this.props.match.params.id;
             await window.showIndicator("계약서 불러오는 중")
@@ -132,7 +134,8 @@ export default class extends React.Component {
     }
 
     componentWillUnmount(){
-        this.unblock();
+        if(this.blockFlag)
+            this.unblock();
     }
 
     async load_contract(contract_id, pin){
@@ -321,6 +324,7 @@ export default class extends React.Component {
     }
 
     onClickDetail = async()=>{
+        this.blockFlag = false
         history.push(`/contract-confirm/${this.state.contract_id}`)
     }
 
