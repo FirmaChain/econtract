@@ -318,8 +318,10 @@ window.confirm = (title, msg, left, right)=>{
 
 let indicator_idx = 0;
 window.showIndicator = async (text)=>{
+        console.log("SHOW indicator")
     if(indicator_idx)
         return window.updateModal(indicator_idx, {text});
+
 
     indicator_idx = await window.openModal("Loading",{
         text:text
@@ -327,6 +329,7 @@ window.showIndicator = async (text)=>{
 }
 
 window.hideIndicator = ()=>{
+    console.log("hideIndicator")
     window.closeModal(indicator_idx)
     indicator_idx = null
 }
