@@ -20,6 +20,10 @@ export default class extends React.Component {
 	}
 
 	componentDidMount(){
+		window.showIndicator()
+		setTimeout(()=>{
+			history.push("/login")
+		},1000)
 	}
 
 	render() {

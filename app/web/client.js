@@ -6,12 +6,13 @@ import critical from "./critical_section"
 import worker from "./worker"
 import React from "react"
 import ReactDOM from "react-dom"
-import { Router, Route, Switch } from "react-router-dom"
-import { createStore , applyMiddleware } from 'redux';
-import { Provider  } from 'react-redux';
-import thunkMiddleware from 'redux-thunk';
-import createReducer from '../common/reducers';
-import history from './history';
+import { Router, Switch } from "react-router-dom"
+import Route from "./components/custom_route"
+import { createStore , applyMiddleware } from 'redux'
+import { Provider  } from 'react-redux'
+import thunkMiddleware from 'redux-thunk'
+import createReducer from '../common/reducers'
+import history from './history'
 import pdfjsLib from "pdfjs-dist"
 pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.js';
 

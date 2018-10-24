@@ -30,7 +30,7 @@ export default class extends React.Component {
         (async()=>{
             await window.showIndicator()
             await this.props.fetch_user_info()
-            await window.hideIndicator()
+            setTimeout(async ()=>{await window.hideIndicator()}, 1000)
         })()
     }
 
