@@ -147,8 +147,8 @@ export default class extends React.Component {
         this.unblock();
     }
 
-    async load_contract(contract_id, pin){
-        let contract = await this.props.load_contract(contract_id,pin)
+    async load_contract(contract_id, pin, listener){
+        let contract = await this.props.load_contract(contract_id,pin,listener)
         if(contract.contract_id){
 
             let objects = []

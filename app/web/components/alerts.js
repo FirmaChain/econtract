@@ -319,7 +319,7 @@ window.confirm = (title, msg, left, right)=>{
 let indicator_idx = 0;
 window.showIndicator = async (text)=>{
     if(indicator_idx)
-        return;
+        return window.updateModal(indicator_idx, {text});
 
     indicator_idx = await window.openModal("Loading",{
         text:text

@@ -118,11 +118,12 @@ export function load_contract_info(contract_id){
     return async function(){return (await api_load_contract_info(contract_id)).payload;};
 }
 
-export function load_contract(contract_id, pin, load_listener = null){
+export function load_contract(contract_id, pin, load_listener = null, only_info_load=false){
     return async function(){
         try{
             let contract = (await api_load_contract(contract_id)).payload
             
+
             contract.html = await parse_html({
                 id:contract.account_id,
                 code:contract.author_code,
@@ -141,18 +142,20 @@ export function load_contract(contract_id, pin, load_listener = null){
                 try{ counterparty.reject = aes_decrypt(counterparty.reject, pin) }catch(err){}
             }
 
-            let img_base64 = []
-            let i = 0;
-            for(let img of contract.imgs ){
-                img_base64.push(await fetch_img(img, pin))
-                i++;
-                if(load_listener != null)
-                    load_listener(i, contract.imgs.length)
-            }
+            if(!only_info_load) {
+                
+                let img_base64 = []
+                let i = 0;
+                for(let img of contract.imgs ) {
+                    img_base64.push(await fetch_img(img, pin))
+                    i++;
+                    if(load_listener != null)
+                        load_listener(i, contract.imgs.length)
+                }
 
-            contract.imgs = img_base64;
+                contract.imgs = img_base64;
+            }
             localStorage.setItem(`contract:${contract_id}`, pin)
-            console.log("contract",contract)
             return contract
         }catch(err){
             console.log(err)

@@ -20,6 +20,7 @@ export class ModalManager extends React.Component {
 	componentDidMount(){
         window.openModal = this.openModal
         window.closeModal = this.closeModal
+        window.updateModal = this.updateModal
 
         history.listen(this.onChangeURL)
     }
@@ -42,6 +43,19 @@ export class ModalManager extends React.Component {
         })
     }
 
+    updateModal = async (idx,props)=>{
+        let index = this.state.modals.findIndex(e=>e.idx == idx)
+        let modals = [...this.state.modals]
+
+        modals[index].props = {
+            ...modals[index].props,
+            ...props
+        }
+        this.setState({
+            modals: modals
+        })
+    }
+
     closeModal = async (idx)=>{
         let index = this.state.modals.findIndex(e=>e.idx == idx)
         this.state.modals.splice(index,1)
@@ -57,6 +71,7 @@ export class ModalManager extends React.Component {
                 opacity: this.state.modals.length > 0 ? 1 : 0
             }}>
                 {this.state.modals.map((e,k)=>{
+                    console.log(e,k)
                     let Modal = ModalStore[e.name]
                     return <div key={`${e}_${k}`} className="modal-content-container">
                         <Modal {...e.props} modalId={e.idx} />

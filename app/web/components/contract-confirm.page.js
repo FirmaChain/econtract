@@ -55,7 +55,7 @@ export default class extends React.Component {
     }
 
     async load_contract(contract_id, pin){
-        let contract = await this.props.load_contract(contract_id,pin)
+        let contract = await this.props.load_contract(contract_id,pin, null, true)
         if(contract.contract_id){
             this.setState({
                 ...contract,
