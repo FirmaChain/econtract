@@ -19,6 +19,8 @@ import {
     getUserEntropy,
     makeAuth,
     makeSignData,
+    getContractKey,
+    sealContractAuxKey,
     decrypt_user_info,
     aes_decrypt,
     aes_encrypt,
