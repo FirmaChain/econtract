@@ -37,6 +37,7 @@ export function fetch_user_info(){
                         code: resp.payload.code,
                         eth_address: wallet.address,
                         account_id: resp.payload.account_id,
+                        publickey_contract: resp.payload.publickey_contract,
                     }
                 })
 

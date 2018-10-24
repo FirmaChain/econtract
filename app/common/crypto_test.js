@@ -1,27 +1,29 @@
 import bip32 from 'bip32'
 import bip39 from 'bip39'
 import {
-	ecdsa_sign,
-	ecdsa_verify,
-	ec_key_from_private,
-	ec_key_from_public,
-	ecaes_encrypt,
-	ecaes_decrypt,
-	aes_encrypt,
-	aes_decrypt,
-	bip32_from_512bit,
-	hmac_sha512,
-	hmac_sha256,
-	get256bitDerivedPrivateKey,
-	get256bitDerivedPublicKey,
-	dkaes_encrypt,
-	dkaes_decrypt,
+    ecdsa_sign,
+    ecdsa_verify,
+    ec_key_from_private,
+    ec_key_from_public,
+    ecaes_encrypt,
+    ecaes_decrypt,
+    aes_encrypt,
+    aes_decrypt,
+    bip32_from_512bit,
+    hmac_sha512,
+    hmac_sha256,
+    get256bitDerivedPrivateKey,
+    get256bitDerivedPublicKey,
+    dkaes_encrypt,
+    dkaes_decrypt,
+    generate_random,
 } from "./CryptoUtil"
 
 export { 
-	aes_encrypt,
-	aes_decrypt,
-	ecdsa_verify
+    aes_encrypt,
+    aes_decrypt,
+    ecdsa_verify,
+    generate_random,
 } from "./CryptoUtil";
 
 let serverDB = {};
@@ -153,4 +155,15 @@ export function decrypt_user_info(entropy, encrypted_info){
 	}catch(err){
 		return result
 	}
+}
+
+export function getContractKey(pin, sharedAuxKey) {
+    return hmac_sha256("FirmaChain New Contract", Buffer.concat([Buffer.from(pin), sharedAuxKey]));
+}
+
+export function sealContractKey(publicKeyBuffer, sharedAuxKey) {
+    let publicKey = CryptoUtil.ec_key_from_public(publicKeyBuffer, undefined, 1);
+    let sharedAuxKeyEncrypted = CryptoUtil.ecaes_encrypt(sharedAuxKey, publicKey, 1);
+    let sharedAuxKeyEncryptedHex = Buffer.concat([Buffer.from(sharedAuxKeyEncrypted.encrypted_message, 'hex'), Buffer.from(sharedAuxKeyEncrypted.temp_key_public.encodeCompressed())]).toString('hex');
+    return sharedAuxKeyEncryptedHex;
 }
