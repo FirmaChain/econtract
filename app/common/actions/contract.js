@@ -1,6 +1,7 @@
 import {
     api_new_contract,
     api_load_contract,
+    api_load_contract_info,
     api_folder_list,
     api_recently_contracts,
     api_edit_contract,
@@ -111,6 +112,10 @@ export function get_pin_from_storage(contract_id){
     return async function(){
         return localStorage.getItem(`contract:${contract_id}`) 
     }
+}
+
+export function load_contract_info(contract_id){
+    return (await api_load_contract_info(contract_id)).payload;
 }
 
 export function load_contract(contract_id, pin, load_listener = null){

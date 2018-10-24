@@ -7,6 +7,7 @@ import Draggable from 'react-draggable';
 import Resizable from "re-resizable";
 import {
     load_contract,
+    load_contract_info,
     fetch_user_info,
     get_pin_from_storage,
     edit_contract,
@@ -71,6 +72,7 @@ let mapStateToProps = (state)=>{
 
 let mapDispatchToProps = {
     load_contract,
+    load_contract_info,
     fetch_user_info,
     get_pin_from_storage,
     edit_contract,
@@ -97,29 +99,34 @@ export default class extends React.Component {
             await window.showIndicator("계약서 불러오는 중")
             await this.props.fetch_user_info()
 
-            let pin = await this.props.get_pin_from_storage(contract_id)
-            if( pin ){
-                await this.load_contract(contract_id, pin, async(count, length) => {
-                    await window.showIndicator(`계약서 불러오는 중 (${count}/${length})`)
-                })
-            }else{
-                while(1){
-                    try{
-                        this.blockFlag = false;
-                        pin = await new Promise(r=>window.openModal("TypingPin",{
-                            onFinish:(pin)=>{
-                                r(pin)
+            let contract_info = await this.load_contract_info(contract_id);
+            if (contract_info) {
+                let pin = await this.props.get_pin_from_storage(contract_id)
+                if( pin ){
+                    await this.load_contract(contract_id, pin, async(count, length) => {
+                        await window.showIndicator(`계약서 불러오는 중 (${count}/${length})`)
+                    })
+                }else{
+                    while(1){
+                        try{
+                            this.blockFlag = false;
+                            pin = await new Promise(r=>window.openModal("TypingPin",{
+                                onFinish:(pin)=>{
+                                    r(pin)
+                                }
+                            }))
+                            if( pin == null ){
+                                history.goBack();
                             }
-                        }))
-                        if( pin == null ){
-                            history.goBack();
+                            await this.load_contract(contract_id, pin)
+                            break;
+                        }catch(err){
+                            alert("PIN 번호가 잘못되었습니다.")
                         }
-                        await this.load_contract(contract_id, pin)
-                        break;
-                    }catch(err){
-                        alert("PIN 번호가 잘못되었습니다.")
                     }
                 }
+            } else {
+                alert("This contract is not allowed to you.");
             }
             
             await window.hideIndicator()
