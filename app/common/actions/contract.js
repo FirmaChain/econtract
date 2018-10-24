@@ -22,6 +22,7 @@ import {
     decrypt_user_info,
     aes_decrypt,
     aes_encrypt,
+    generate_random,
 } from "../../common/crypto_test"
 
 import Web3 from "../Web3"
@@ -72,13 +73,17 @@ async function fetch_img(name, pin){
     return aes_decrypt(text , pin)
 }
 
-export function new_contract( subject, imgs, counterparties, counterparties_eckai=['deadbeef', 'cafebabe'] ){
+export function new_contract( subject, imgs, counterparties, author_publickey_contract){
     return async function(dispatch){
         let pin = genPIN();
         for(let k in imgs){
             await new Promise(r=>setTimeout(r,100))
             imgs[k] = aes_encrypt(imgs[k], pin)
         }
+
+        let counterparties_eckai = ['cafebabe', 'deadbeef'];
+        let shared_key = generate_random(31);
+        counterparties_eckai.unshift(shared_key.toString('hex'));
 
         let resp = (await api_new_contract( subject, imgs, counterparties, counterparties_eckai )).payload
         if(resp){
