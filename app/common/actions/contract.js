@@ -130,7 +130,7 @@ export function load_contract(contract_id, pin, load_listener = null, only_info_
             if (!entropy) {
                 return null;
             }
-            let shared_key = unsealedContractAuxKey(entropy, contract_info.eckai);
+            let shared_key = unsealContractAuxKey(entropy, contract_info.eckai);
             let the_key = getContractKey(pin, shared_key);
 
             contract.html = await parse_html({
