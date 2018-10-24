@@ -75,7 +75,7 @@ export default class extends React.Component {
             return alert("파일 혹은 템플릿을 선택해주세요.")
         }
         await window.showIndicator()
-        let resp = await this.props.new_contract( subject, imgs, (counterparties || []).map(e=>e.code), this.props.user_info.publickey_contract );
+        let resp = await this.props.new_contract( subject, imgs, (counterparties || []).map(e=>e.code), [this.props.user_info.publickey_contract].concat((counterparties || []).map(e=>e.code)) );
         if(resp){
             //this.unblock();
             this.blockFlag = false;
