@@ -82,7 +82,8 @@ button:focus { outline: none; }
         position: fixed;
         background-color: RGBA(49, 49, 49, 0.8);
         overflow-y: auto;
-        height: 100%;
+        height: calc(100% - 50px);
+        padding-top:50px;
         flex-direction: column;
         z-index: 10;
 
@@ -92,7 +93,7 @@ button:focus { outline: none; }
             
             >img{
                 width: 120px;
-                border-radius: 10px;
+                border-radius: 5px;
             }
 
             >div{

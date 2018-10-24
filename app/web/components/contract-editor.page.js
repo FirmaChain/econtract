@@ -87,6 +87,7 @@ export default class extends React.Component {
 		this.state={
             imgs: [],
             page: 0,
+            page_count: 0,
             edit_page:[]
         };
         this.blockFlag = true;
@@ -125,6 +126,7 @@ export default class extends React.Component {
                         }
                     }
                 }
+                document.addEventListener("keydown", this.keydown);
             } else {
                 alert("This contract is not allowed to you.");
             }
@@ -142,9 +144,32 @@ export default class extends React.Component {
             return true;
        })
     }
-
     componentWillUnmount(){
+        document.removeEventListener("keydown", this.keydown);
         this.unblock();
+    }
+
+    keydown = (e) => {
+        let moveFlag = 0;
+        let pageElement = document.getElementById(`page-${this.state.page}`);
+
+        if(e.keyCode == 37 || e.keyCode == 38) {
+            if(0 < this.state.page) {
+                this.setState({page:this.state.page-1})
+                moveFlag = -1;
+            }
+        } else if(e.keyCode == 39 || e.keyCode == 40) {
+            if(this.state.imgs.length - 1 > this.state.page) {
+                this.setState({page:this.state.page+1})
+                moveFlag = 1;
+            }
+        }
+        if(moveFlag != 0 && !!this.left_menu) {
+            let topPos = pageElement.offsetTop;
+            this.left_menu.scrollTop = topPos - (moveFlag == 1 ? 400 : 532);
+            console.log("topPos : ", topPos)
+            console.log("sccc : ", this.left_menu.scrollTop)
+        }
     }
 
     async load_contract(contract_id, pin, listener){
@@ -355,7 +380,8 @@ export default class extends React.Component {
             }} 
             counterparties={this.state.counterparties}
             contract_name={this.state.name}
-            contract_status={this.state.status}/>
+            contract_status={this.state.status}
+            unblockFunction={()=>{this.blockFlag = false}}/>
     }
 
     render_save_recover_btn(){
@@ -388,9 +414,9 @@ export default class extends React.Component {
                 <div className="round-btn" onClick={this.onClickBack}><i className="fas fa-arrow-left" /></div>
             </div>
 
-            <div className="left-menu">
+            <div className="left-menu" ref={ref => this.left_menu = ref}>
                 {this.state.imgs.map((e,k)=>{
-                    return (<div key={k} onClick={()=>this.setState({page:k})} className={this.state.page == k ? `img-slot active` : `img-slot`} >
+                    return (<div key={k} id={`page-${k}`} onClick={()=>this.setState({page:k})} className={this.state.page == k ? `img-slot active` : `img-slot`} >
                         <div>{k+1}</div>
                         <img src={e} width="120px" />
                     </div>)

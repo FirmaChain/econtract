@@ -131,12 +131,11 @@ class TypingPin extends React.Component{
     }
 
     keydown = (e)=>{
-        console.log("key : ", e.key)
         if(e.key == "Backspace") {
             this.setState({
                 value: this.state.value.slice(0,this.state.value.length-1)
             })
-        } else if(e.key == "Enter" || e.key == 13) {
+        } else if(e.key == "Enter" || e.keyCode == 13) {
             this.onClickOK()
         }
         let key = Number(e.key)
@@ -318,10 +317,8 @@ window.confirm = (title, msg, left, right)=>{
 
 let indicator_idx = 0;
 window.showIndicator = async (text)=>{
-        console.log("SHOW indicator")
     if(indicator_idx)
         return window.updateModal(indicator_idx, {text});
-
 
     indicator_idx = await window.openModal("Loading",{
         text:text
@@ -329,7 +326,6 @@ window.showIndicator = async (text)=>{
 }
 
 window.hideIndicator = ()=>{
-    console.log("hideIndicator")
     window.closeModal(indicator_idx)
     indicator_idx = null
 }
