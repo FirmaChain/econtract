@@ -76,7 +76,7 @@ export default class extends React.Component {
     }
 
     onVerify = async() => {
-        
+
     }
 
 	render() {
@@ -93,15 +93,15 @@ export default class extends React.Component {
                 <div className="desc">이더리움에 올라간 계약의 해쉬값과 파일의 대조를 통한 검증 서비스를 제공합니다!</div>
                 <div className="desc-image">
                     <div>
-                        <img src="/static/pic_01.jpg" />
+                        <img src="/static/pic_01.png" />
                         <div className="img-desc">등록하신 계약의 상세보기 화면에서</div>
                     </div>
                     <div>
-                        <img src="/static/pic_02.jpg" />
+                        <img src="/static/pic_02.png" />
                         <div className="img-desc">해쉬값 혹은 트랜잭션 주소를 붙여넣으시고</div>
                     </div>
                     <div>
-                        <img src="/static/pic_03.jpg" />
+                        <img src="/static/pic_03.png" />
                         <div className="img-desc">계약서를 로드하여 검증하면 끝!</div>
                     </div>
                 </div>
