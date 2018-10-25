@@ -1769,6 +1769,12 @@ div.checkbox-comp{
                 font-size: 18px;
                 margin: 0 0 0 5px;
                 cursor: pointer;
+
+                &:hover {
+                    background-color:#cacaca;
+                    border: 1px solid #cacaca;
+                    border:none;
+                }
             }
         }
 
