@@ -57,7 +57,7 @@ class Item extends React.Component{
             >
                 <div className="draggable-div">
                     {isEditable ? <div className="handle"><i className="fas fa-arrows-alt" /></div> : null }
-                    {props.name ? <div className="name-container">{props.name}</div> : null}
+                    {( props.name && props.docStatus < 2 )? <div className="name-container">{props.name}</div> : null}
                     {isEditable ? <div className="trash" onClick={this.props.removeItem}><img src="/static/trash.png"/></div> : null }
                     {this.content(isEditable)}
                 </div>
