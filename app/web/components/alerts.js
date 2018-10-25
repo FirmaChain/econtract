@@ -118,6 +118,11 @@ class TypingPin extends React.Component{
 
     onClickOK = ()=>{
         if(this.state.value.length == 6){
+
+            if(this.refs.pin_save.checked){
+                ////핀이 체크되어있으면
+            }
+
             this.props.onFinish && this.props.onFinish(this.state.value)
             this.closeSelf()
         } else {
@@ -162,6 +167,9 @@ class TypingPin extends React.Component{
                 <div className="title">PIN을 입력해주세요</div>
                 <div className="pin-box">
                     {this.state.value}
+                </div>
+                <div className="checkbox">
+                    <input ref="pin_save" type="checkbox" /> PIN 번호 저장하기
                 </div>
             </div>
             <div className="buttons">
