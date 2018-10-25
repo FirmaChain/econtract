@@ -13,7 +13,8 @@ import {
     api_remove_folder,
     api_move_to_folder,
     api_folder_in_contracts,
-    api_all_folders
+    api_all_folders,
+    api_update_epin,
 } from "../../../gen_api"
 
 import {
@@ -319,3 +320,11 @@ export function move_to_folder(folder_id,contract_ids){
         return (await api_move_to_folder(folder_id,contract_ids)).payload
     }
 }
+
+export function update_epin(contract_id, pin){
+    return async function(){
+        let epin = encryptPIN(pin);
+        return (await api_update_epin(contract_id, epin)).payload;
+    };
+}
+
