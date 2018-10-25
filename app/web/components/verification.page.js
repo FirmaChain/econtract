@@ -4,98 +4,119 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom'
 import history from '../history'
 import {
-    login_account,
     fetch_user_info
 } from "../../common/actions"
 
 let mapStateToProps = (state)=>{
 	return {
-        user_info: state.user.info
 	}
 }
 
 let mapDispatchToProps = {
-    login_account,
-    fetch_user_info
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
 export default class extends React.Component {
 	constructor(){
 		super()
-		this.state={}
+		this.state={
+
+        }
 	}
 
 	componentDidMount(){
         (async()=>{
             await window.showIndicator()
-            await this.props.fetch_user_info()
             await window.hideIndicator()
         })()
     }
 
     componentWillReceiveProps(props){
-        if(!!props.user_info){
-            return history.push("/recently")
-        }
     }
-    
-    onClickLogin = async()=>{
-        await window.showIndicator()
+
+    onClickUploadFile = async (e)=>{
+        let file = e.target.files[0];
+        let reader = new FileReader();
+        reader.readAsBinaryString(file)
+
+        reader.onload = async()=>{
+            await window.showIndicator()
+            try{
+                /*let pdf = await pdfjsLib.getDocument({data: reader.result}).promise;
+                let imgs = []
+                for(let i=1; i <= pdf.numPages;i++){
+                    let page = await pdf.getPage(i)
+                    let viewport = page.getViewport(1.5);
         
-        let resp = await this.props.login_account(this.state.user_id || "", this.state.password || "")
-        if(resp == -2){
-            alert("회원가입 되어 있지 않은 브라우저입니다.")
-        }else if(resp == -1){
-            alert("아이디 혹은 패스워드가 다릅니다.")
-        }else if(resp.eems){
-            history.push("/recently")
-        }else{
-            alert("login error;")
+                    let canvas = document.createElement('canvas');
+                    let context = canvas.getContext('2d');
+                    canvas.height = viewport.height;
+                    canvas.width = viewport.width;
+        
+                    let renderContext = {
+                        canvasContext: context,
+                        viewport: viewport
+                    };
+        
+                    await page.render(renderContext);
+                    let v = canvas.toDataURL("image/png")
+                    imgs.push(v);
+                }*/
+
+                this.setState({
+                    file: file,
+                    // imgs: imgs
+                })
+            }catch(err){
+                console.log(err)
+                window.alert("PDF 형식이 아닙니다.")
+            }
+            await window.hideIndicator()
         }
-
-        await window.hideIndicator()
     }
-
-   keyPress = async(e) => {
-      if(e.keyCode == 13){
-        this.onClickLogin()
-      }
-   }
 
 	render() {
         if(this.props.user_info === null){
             return <div />
         }
 
-		return (<div className="default-page">
-            <div className="logo">
-                <img src="/static/logo_blue.png" onClick={()=>history.push("/")}/>
-            </div>
-            <div className="back-key">
-                <div className="round-btn" onClick={()=>history.goBack()}><i className="fas fa-arrow-left"></i></div>
-            </div>
-            <div className="container">
-                <h1>로그인</h1>
-                <div className="page">
-                    <div className="column-300">
-                        <div className="form-layout">
-                            <div className="form-label"> ID </div>
-                            <div className="form-input">
-                                <input placeholder="ID를 입력해주세요." value={this.state.user_id || ""} onChange={e=>this.setState({user_id:e.target.value})} />
-                            </div>
-                            
-                            <div className="form-label"> 비밀번호 </div>
-                            <div className="form-input">
-                                <input type="password" placeholder="비밀번호를 입력해주세요." value={this.state.password || ""} onKeyDown={this.keyPress} onChange={e=>this.setState({password:e.target.value})} />
-                            </div>
-
-                            <div className="form-submit">
-                                <button tabIndex={1} onClick={()=>history.push("/regist")}> 회원가입 </button>
-                                <button className="border" onClick={this.onClickLogin}> 로그인 </button>
-                            </div>
-                        </div>
+		return (<div className="verification-page">
+            <div className="top">
+                <div className="logo">
+                    <img src="/static/logo_blue.png" onClick={()=>history.push("/")}/>
+                </div>
+                <div className="title">문서 위 ・ 변조 검증 서비스</div>
+                <div className="desc">이더리움에 올라간 계약의 해쉬값과 파일의 대조를 통한 검증 서비스를 제공합니다!</div>
+                <div className="desc-image">
+                    <div>
+                        <img src="/static/pic_01.jpg" />
+                        <div className="img-desc">등록하신 계약의 상세보기 화면에서</div>
                     </div>
+                    <div>
+                        <img src="/static/pic_02.jpg" />
+                        <div className="img-desc">해쉬값 혹은 트랜잭션 주소를 붙여넣으시고</div>
+                    </div>
+                    <div>
+                        <img src="/static/pic_03.jpg" />
+                        <div className="img-desc">계약서를 로드하여 검증하면 끝!</div>
+                    </div>
+                </div>
+            </div>
+            <div className="bottom">
+                <div className="form-label"> 계약 해쉬값 또는 트랜잭션 </div>
+                <div className="form-input">
+                    <input placeholder="해쉬값 또는 트랜잭션 주소를 입력해주세요(etherscan.io)" value={this.state.contract_name || ""} onChange={e=>this.setState({contract_name:e.target.value})} />
+                </div>
+                <div className="form-label"> 계약명 </div>
+                {this.state.file ? <div className="selected-file">
+                    <div className="filename">{this.state.file.name}</div>
+                    <div className="del-btn" onClick={()=>this.setState({file:null,imgs:[]})}>삭제</div>
+                </div> : <div className="upload-form">
+                    <button className="file-upload-btn" onClick={()=>this.refs.file.click()}> <i className="fas fa-file-archive"></i> 파일 업로드 </button>
+                    <input ref="file" type="file" onChange={this.onClickUploadFile} style={{display:"none"}}/>
+                </div>}
+                <div className="form-button">
+                    <div className="submit-button">검증하기</div>
                 </div>
             </div>
 		</div>);
