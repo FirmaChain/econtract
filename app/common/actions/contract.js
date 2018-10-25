@@ -48,6 +48,15 @@ function genPIN(digit=6) {
     return text;
 }
 
+async function getPIN() {
+    let epin = sessionStorage.getItem(`contract:${contract_id}`);
+    if (!epin) {
+        let contract_info = (await api_load_contract_info(contract_id)).payload;
+        epin = contract_info.epin.slice(0, 32);
+    }
+    return decryptPIN(epin);
+}
+
 async function getTheKey(contract_id, pin) {
     let contract_info = (await api_load_contract_info(contract_id)).payload;
     let entropy = sessionStorage.getItem("entropy");
@@ -245,8 +254,7 @@ export function edit_contract(contract_id, pin, edit){
 
 export function send_chat(contract_id, msg){
     return async function(dispatch){
-        let pin = decryptPIN(sessionStorage.getItem(`contract:${contract_id}`));
-        //let pin = localStorage.getItem(`contract:${contract_id}`);
+        let pin = getPIN();
         if(pin){
             let the_key = await getTheKey(contract_id, pin);
             let encrypt_msg = aes_encrypt(msg || "  ", the_key)
@@ -261,8 +269,7 @@ export function send_chat(contract_id, msg){
 
 export function fetch_chat(contract_id, cursor=0){
     return async function(dispatch){
-        let pin = decryptPIN(sessionStorage.getItem(`contract:${contract_id}`));
-        //let pin = localStorage.getItem(`contract:${contract_id}`);
+        let pin = getPIN();
         if(pin){
             let the_key = await getTheKey(contract_id, pin);
             let resp = (await api_fetch_chat(contract_id, cursor)).payload
@@ -291,8 +298,7 @@ export function confirm_contract(contract_id){
 
 export function reject_contract(contract_id, msg){
     return async function(dispatch){
-        //let pin = localStorage.getItem(`contract:${contract_id}`) 
-        let pin = decryptPIN(sessionStorage.getItem(`contract:${contract_id}`));
+        let pin = getPIN();
         let the_key = await getTheKey(contract_id, pin);
         msg = aes_encrypt(msg, the_key)
 
