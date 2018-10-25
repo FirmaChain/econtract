@@ -190,3 +190,28 @@ export function unsealContractAuxKey(entropy, eckaiHex){
     }
 }
 
+export function encryptPIN(pin){
+    try{
+        let entropy = sessionStorage.getItem("entropy");
+        let mnemonic = bip39.entropyToMnemonic(entropy);
+        let seed = bip39.mnemonicToSeed(mnemonic);
+        let masterKey = hmac_sha512("FirmaChain master seed", seed);
+        return dkaes_encrypt(masterKey, "m/3'/0'", pin);
+    }catch(err){
+        console.log(err);
+        return null;
+    }
+}
+
+export function decryptPIN(epin){
+    try{
+        let entropy = sessionStorage.getItem("entropy");
+        let mnemonic = bip39.entropyToMnemonic(entropy);
+        let seed = bip39.mnemonicToSeed(mnemonic);
+        let masterKey = hmac_sha512("FirmaChain master seed", seed);
+        return dkaes_decrypt(masterKey, "m/3'/0'", epin);
+    }catch(err){
+        console.log(err);
+        return null;
+    }
+}
