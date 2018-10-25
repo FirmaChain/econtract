@@ -12,7 +12,8 @@ import {
     get_pin_from_storage,
     edit_contract,
     send_chat,
-    fetch_chat
+    fetch_chat,
+    update_epin,
 } from "../../common/actions"
 import Chatting from "./chatting"
 
@@ -79,7 +80,8 @@ let mapDispatchToProps = {
     get_pin_from_storage,
     edit_contract,
     send_chat,
-    fetch_chat
+    fetch_chat,
+    update_epin,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -335,6 +337,9 @@ export default class extends React.Component {
                     name:this.state.author_name,
                     code:this.state.author_code,
                     eth_address:this.state.author_eth_address,
+                },
+                updatePIN:async()=>{
+                    return await this.props.update_epin(this.state.contract_id, this.state.pin);
                 },
                 onOK:async()=>{
                     await window.showIndicator()

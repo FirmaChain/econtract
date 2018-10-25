@@ -13,7 +13,8 @@ import {
     api_remove_folder,
     api_move_to_folder,
     api_folder_in_contracts,
-    api_all_folders
+    api_all_folders,
+    api_update_epin,
 } from "../../../gen_api"
 
 import {
@@ -23,6 +24,8 @@ import {
     getContractKey,
     sealContractAuxKey,
     unsealContractAuxKey,
+    encryptPIN,
+    decryptPIN,
     decrypt_user_info,
     aes_decrypt,
     aes_encrypt,
@@ -43,6 +46,19 @@ function genPIN(digit=6) {
       text += possible.charAt(Math.floor(Math.random() * possible.length));
   
     return text;
+}
+
+async function getPIN() {
+    let epin = sessionStorage.getItem(`contract:${contract_id}`);
+    if (!epin) {
+        let contract_info = (await api_load_contract_info(contract_id)).payload;
+        if (contract_info.epin) {
+            epin = contract_info.epin.slice(0, 32);
+        } else {
+            return null;
+        }
+    }
+    return decryptPIN(epin);
 }
 
 async function getTheKey(contract_id, pin) {
@@ -104,7 +120,8 @@ export function new_contract( subject, imgs, counterparties, publickey_contract_
 
         let resp = (await api_new_contract( subject, imgs, counterparties, counterparties_eckai )).payload
         if(resp){
-            localStorage.setItem(`contract:${resp}`, pin)
+            sessionStorage.setItem(`contract:${resp}`, encryptPIN(pin))
+            //localStorage.setItem(`contract:${resp}`, pin)
             dispatch({
                 type:NEW_CONTRACT,
                 payload:{
@@ -122,7 +139,7 @@ export function new_contract( subject, imgs, counterparties, publickey_contract_
 
 export function get_pin_from_storage(contract_id){
     return async function(){
-        return localStorage.getItem(`contract:${contract_id}`) 
+        return getPIN();
     }
 }
 
@@ -169,7 +186,8 @@ export function load_contract(contract_id, pin, load_listener = null, only_info_
 
                 contract.imgs = img_base64;
             }
-            localStorage.setItem(`contract:${contract_id}`, pin)
+            sessionStorage.setItem(`contract:${contract_id}`, encryptPIN(pin))
+            //localStorage.setItem(`contract:${contract_id}`, pin)
             return contract
         }catch(err){
             console.log(err)
@@ -239,7 +257,7 @@ export function edit_contract(contract_id, pin, edit){
 
 export function send_chat(contract_id, msg){
     return async function(dispatch){
-        let pin = localStorage.getItem(`contract:${contract_id}`);
+        let pin = getPIN();
         if(pin){
             let the_key = await getTheKey(contract_id, pin);
             let encrypt_msg = aes_encrypt(msg || "  ", the_key)
@@ -254,7 +272,7 @@ export function send_chat(contract_id, msg){
 
 export function fetch_chat(contract_id, cursor=0){
     return async function(dispatch){
-        let pin = localStorage.getItem(`contract:${contract_id}`);
+        let pin = getPIN();
         if(pin){
             let the_key = await getTheKey(contract_id, pin);
             let resp = (await api_fetch_chat(contract_id, cursor)).payload
@@ -283,7 +301,7 @@ export function confirm_contract(contract_id){
 
 export function reject_contract(contract_id, msg){
     return async function(dispatch){
-        let pin = localStorage.getItem(`contract:${contract_id}`) 
+        let pin = getPIN();
         let the_key = await getTheKey(contract_id, pin);
         msg = aes_encrypt(msg, the_key)
 
@@ -311,3 +329,11 @@ export function move_to_folder(folder_id,contract_ids){
         return (await api_move_to_folder(folder_id,contract_ids)).payload
     }
 }
+
+export function update_epin(contract_id, pin){
+    return async function(){
+        let epin = encryptPIN(pin);
+        return (await api_update_epin(contract_id, epin)).payload;
+    };
+}
+

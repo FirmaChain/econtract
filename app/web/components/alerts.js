@@ -47,13 +47,7 @@ class RegistContract extends React.Component{
 
     onClickOK = ()=>{
         if(this.refs.pin_save.checked){
-            let blob = new Blob([`[e-contract] ${this.props.subject}\n\npin : ${this.props.pin}`], { type: 'text/plain' })
-            let anchor = document.createElement('a');
-    
-            anchor.download = `[pin]${this.props.subject}.txt`;
-            anchor.href = (window.webkitURL || window.URL).createObjectURL(blob);
-            anchor.dataset.downloadurl = ['text/plain', anchor.download, anchor.href].join(':');
-            anchor.click();
+            this.props.updatePIN(this.props.pin);
         }
         this.props.onOK && this.props.onOK()
         this.closeSelf()
