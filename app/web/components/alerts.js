@@ -48,8 +48,6 @@ class RegistContract extends React.Component{
     onClickOK = ()=>{
         if(this.refs.pin_save.checked){
             this.props.updatePIN(this.props.pin);
-        } else {
-            this.props.clearPIN();
         }
         this.props.onOK && this.props.onOK()
         this.closeSelf()
