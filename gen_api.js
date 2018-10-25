@@ -36,6 +36,15 @@ export async function api_update_epin(contract_id,epin){
         session:window.getCookie("session")
     });
 }
+export async function api_clear_epin(contract_id){
+    let data = new FormData();
+
+    data.append('contract_id', contract_id)
+
+    return await post("/clear_epin", data,{
+        session:window.getCookie("session")
+    });
+}
 export async function api_load_contract_info(contract_id){
     return await get("/load_contract_info", {
         contract_id
