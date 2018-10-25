@@ -14,6 +14,8 @@ import {
     send_chat,
     fetch_chat,
     update_epin,
+    clear_epin,
+    gen_pin,
 } from "../../common/actions"
 import Chatting from "./chatting"
 
@@ -82,6 +84,8 @@ let mapDispatchToProps = {
     send_chat,
     fetch_chat,
     update_epin,
+    clear_epin,
+    gen_pin,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -209,9 +213,10 @@ export default class extends React.Component {
                     objects[k] = (objects[k] || []).concat(c.html[k])
                 }
             }
+            let newPIN = this.props.gen_pin();
             this.setState({
                 ...contract,
-                pin:pin,
+                pin:newPIN,
                 edit_page:objects,
             })
 
@@ -337,6 +342,9 @@ export default class extends React.Component {
                     name:this.state.author_name,
                     code:this.state.author_code,
                     eth_address:this.state.author_eth_address,
+                },
+                clearPIN:async()=>{
+                    return await this.props.clear_epin(this.state.contract_id);
                 },
                 updatePIN:async()=>{
                     return await this.props.update_epin(this.state.contract_id, this.state.pin);

@@ -104,7 +104,7 @@ async function fetch_img(name, the_key){
 
 export function new_contract( subject, imgs, counterparties, publickey_contract_list){
     return async function(dispatch){
-        let pin = genPIN();
+        let pin = genPIN(); // This PIN is temporary PIN which is stored in server
         let counterparties_eckai = [];
         let shared_key = generate_random(31);
         let the_key = getContractKey(pin, shared_key);
@@ -120,8 +120,9 @@ export function new_contract( subject, imgs, counterparties, publickey_contract_
 
         let resp = (await api_new_contract( subject, imgs, counterparties, counterparties_eckai )).payload
         if(resp){
-            sessionStorage.setItem(`contract:${resp}`, encryptPIN(pin))
-            //localStorage.setItem(`contract:${resp}`, pin)
+            let epin = encryptPIN(pin);
+            await api_update_epin(resp, epin);
+            sessionStorage.setItem(`contract:${resp}`, epin);
             dispatch({
                 type:NEW_CONTRACT,
                 payload:{
@@ -334,6 +335,12 @@ export function update_epin(contract_id, pin){
     return async function(){
         let epin = encryptPIN(pin);
         return (await api_update_epin(contract_id, epin)).payload;
+    };
+}
+
+export function gen_pin(digit=6) {
+    return async function() {
+        return genPIN(digit);
     };
 }
 
