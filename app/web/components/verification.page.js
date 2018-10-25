@@ -80,10 +80,6 @@ export default class extends React.Component {
     }
 
 	render() {
-        if(this.props.user_info === null){
-            return <div />
-        }
-
 		return (<div className="verification-page">
             <div className="top">
                 <div className="logo">
