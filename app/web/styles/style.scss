@@ -24,6 +24,19 @@ input:focus { outline: none; }
 button:focus { outline: none; }
 select:focus { outline:none; }
 
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: #cacaca;
+    opacity: 1; /* Firefox */
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: #cacaca;
+}
+
+::-ms-input-placeholder { /* Microsoft Edge */
+    color: #cacaca;
+}
+
 .logo {
     padding-top:20px;
     cursor:pointer;
@@ -128,6 +141,7 @@ select:focus { outline:none; }
         flex-direction: column;
 
         height: 100%;
+        margin-left:30px;
 
         .header-toolkit{
             width: 800px;
@@ -141,6 +155,7 @@ select:focus { outline:none; }
             padding: 0 20px;
             box-sizing: border-box;
             justify-content: space-between;
+            align-items: center;
 
             >.toolkit{
                 display: flex;
@@ -151,25 +166,27 @@ select:focus { outline:none; }
                 cursor: pointer;
                 padding: 10px;
 
-                >i{
+                >i {
                     margin-right: 8px;
                     font-size: 18px;
                 }
 
-                >img{
+                >img {
                     margin-right: 10px;
                     font-size: 18px;
                     width:20px;
                 }
 
-                &:hover{
+                &:hover {
                     background-color: rgba(0,0,0,0.4);
                 }
             }
 
             >.line{
-                margin: 12px 0;
-                border-right: 2px solid #fff;
+                margin: 0 10px;
+                width:1px;
+                height:25px;
+                background-color:#dadadc;
             }
         }
         .edit-box{
@@ -185,7 +202,7 @@ select:focus { outline:none; }
             user-select: none;          /* Likely future */      
 
             padding-bottom: 30px;
-            overflow: visible;
+            overflow: auto;
 
             > img{
                 border-radius: 5px;
@@ -409,7 +426,7 @@ select:focus { outline:none; }
             div.form-layout{
                 div.form-label{
                     color: #808496;
-                    font-size: 10px;
+                    font-size: 11px;
                 }
 
                 div.form-info{
@@ -853,6 +870,7 @@ table.table{
 }
 
 .add-contract-page{
+
     .upload-form{
         display: flex;
         align-items: center;
@@ -888,6 +906,7 @@ table.table{
             }
         }
     }
+
     .right-desc {
         margin-top: 90px;
         font-size: 11px;
@@ -912,22 +931,25 @@ table.table{
         }
     }
 
+    
     .selected-file{
         margin: 10px 0;
         margin-left: 10px;
-        font-size: 12px;
+        font-size: 14px;
         display: flex;
-        // font-weight: bold;
+        align-items:center;
 
         .filename{
+            color:#333;
 
         }
 
         .del-btn{
             display: inline-block;
-            margin-left: 20px;
+            margin-left: 10px;
             font-weight: bold;
             cursor: pointer;
+            width: 40px;
         }
     }
     .next-step {
@@ -1625,6 +1647,162 @@ div.checkbox-comp{
         padding: 5px;
         border-radius: 5px;
         background-color: #fff;
+    }
+}
+
+.verification-page {
+    text-align:center;
+
+    >.top {
+        background-color:#f8f8f8;
+        padding-top:20px;
+        padding-bottom:80px;
+
+        >.title {
+            margin-top:30px;
+            color:black;
+            letter-spacing:2px;
+            font-size:18px;
+            font-weight:bold;
+        }
+
+        >.desc {
+            margin-top:30px;
+            color:#7f7f7f;
+            font-size:13px;
+        }
+
+        >.desc-image {
+            display:flex;
+            justify-content:center;
+            align-items:center;
+
+            margin-top:40px;
+
+            >div {
+                margin-right: 40px;
+
+                >img {
+                    width:180px;
+                }
+
+                >.img-desc {
+                    font-size:13px;
+                    color:#7f7f7f;
+                    margin-top:15px;
+                }
+
+                &:last-child {
+                    margin-right:0;
+                }
+            }
+        }
+
+    }
+    >.bottom {
+        width:400px;
+        max-width:100%;
+        margin:0 auto;
+        text-align:left;
+        padding-top:50px;
+
+
+        .upload-form{
+            display: flex;
+            align-items: center;
+            margin-top: 20px;
+
+            .file-upload-btn {
+                border: 1px solid #cacaca;
+                color: #333;
+                padding: 7px 15px;
+                border-radius: 5px;
+                background-color: #fff;
+                font-size: 14px;
+                margin: 0 0 0 5px;
+                cursor: pointer;
+                width:100%;
+
+                &:hover {
+                    background-color: E0E0E0;
+                }
+
+                >i {
+                    margin-right: 10px;
+                }
+            }
+        }
+
+        >div.form-label{
+            color: #808496;
+            font-size: 11px;
+            margin-bottom:10px;
+        }
+
+        >div.form-input{
+            border-bottom: 1px solid #E0E0E0;
+            padding: 10px 0 10px 10px;
+            margin-bottom: 50px;
+            display: flex;
+
+            >input{
+                border:0;
+                font-size: 12px;
+                flex:1;
+            }
+
+            >button{
+                border:0;
+                background-color: #fff;
+                font-weight: bold;
+                cursor: pointer;
+            }
+        }
+        >div.form-button {
+            text-align:center;
+            margin-top:40px;
+
+            >.submit-button {
+                display:inline-block;
+                border: 1px solid #324b5f;
+                color: white;
+                padding: 12px 35px;
+                border-radius: 5px;
+                background-color: #324b5f;
+                font-size: 18px;
+                margin: 0 0 0 5px;
+                cursor: pointer;
+
+                &:hover {
+                    background-color:#cacaca;
+                    border: 1px solid #cacaca;
+                    border:none;
+                }
+            }
+        }
+
+        .selected-file{
+            margin: 10px 0;
+            margin-top:20px;
+            margin-left: 10px;
+            font-size: 14px;
+            display: flex;
+            align-items:center;
+
+            .filename{
+                color:#333;
+
+            }
+
+            .del-btn{
+                display: inline-block;
+                margin-left: 10px;
+                font-weight: bold;
+                cursor: pointer;
+                width: 40px;
+            }
+        }
+
     }
 }
 
