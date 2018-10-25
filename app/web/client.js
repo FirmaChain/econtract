@@ -28,6 +28,7 @@ import AddTemplatePage from "./components/add-template.page"
 import AddContractPage from "./components/add-contract.page"
 import ContractEditorPage from "./components/contract-editor.page"
 import ContractConfirmPage from "./components/contract-confirm.page"
+import VerificationPage from "./components/verification.page"
 
 import { current_platform } from "../common/utils"
 
@@ -62,6 +63,8 @@ window.addEventListener("load",()=>{
 					<Route onEnter={resolver} exact path="/folder/:id" component={InFolderPage} />
 					<Route onEnter={resolver} exact path="/contract-editor/:id" component={ContractEditorPage} />
 					<Route onEnter={resolver} exact path="/contract-confirm/:id" component={ContractConfirmPage} />
+
+					<Route onEnter={resolver} exact path="/verification" component={VerificationPage} />
 				</Template>
 			</Provider>
 		</Router>,
