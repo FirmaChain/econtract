@@ -52,7 +52,11 @@ async function getPIN() {
     let epin = sessionStorage.getItem(`contract:${contract_id}`);
     if (!epin) {
         let contract_info = (await api_load_contract_info(contract_id)).payload;
-        epin = contract_info.epin.slice(0, 32);
+        if (contract_info.epin) {
+            epin = contract_info.epin.slice(0, 32);
+        } else {
+            return null;
+        }
     }
     return decryptPIN(epin);
 }
@@ -135,16 +139,7 @@ export function new_contract( subject, imgs, counterparties, publickey_contract_
 
 export function get_pin_from_storage(contract_id){
     return async function(){
-        let epin = sessionStorage.getItem(`contract:${contract_id}`);
-        if (!epin) {
-            let contract_info = (await api_load_contract_info(contract_id)).payload;
-            if (contract_info.epin) {
-                epin = contract_info.epin.slice(0, 32);
-            } else {
-                return null;
-            }
-        }
-        return decryptPIN(epin);
+        return getPIN();
     }
 }
 
