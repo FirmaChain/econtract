@@ -75,6 +75,10 @@ export default class extends React.Component {
         }
     }
 
+    onVerify = async() => {
+        
+    }
+
 	render() {
         if(this.props.user_info === null){
             return <div />
@@ -116,7 +120,7 @@ export default class extends React.Component {
                     <input ref="file" type="file" onChange={this.onClickUploadFile} style={{display:"none"}}/>
                 </div>}
                 <div className="form-button">
-                    <div className="submit-button">검증하기</div>
+                    <div className="submit-button" onClick={this.onVerify}>검증하기</div>
                 </div>
             </div>
 		</div>);

@@ -931,22 +931,25 @@ table.table{
         }
     }
 
+    
     .selected-file{
         margin: 10px 0;
         margin-left: 10px;
-        font-size: 12px;
+        font-size: 14px;
         display: flex;
-        // font-weight: bold;
+        align-items:center;
 
         .filename{
+            color:#333;
 
         }
 
         .del-btn{
             display: inline-block;
-            margin-left: 20px;
+            margin-left: 10px;
             font-weight: bold;
             cursor: pointer;
+            width: 40px;
         }
     }
     .next-step {
@@ -1775,6 +1778,28 @@ div.checkbox-comp{
                     border: 1px solid #cacaca;
                     border:none;
                 }
+            }
+        }
+
+        .selected-file{
+            margin: 10px 0;
+            margin-top:20px;
+            margin-left: 10px;
+            font-size: 14px;
+            display: flex;
+            align-items:center;
+
+            .filename{
+                color:#333;
+
+            }
+
+            .del-btn{
+                display: inline-block;
+                margin-left: 10px;
+                font-weight: bold;
+                cursor: pointer;
+                width: 40px;
             }
         }
 
