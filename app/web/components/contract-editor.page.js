@@ -213,8 +213,8 @@ export default class extends React.Component {
                 edit_page:objects,
             })
 
-            /*if(contract.status == 2)
-                this.unblock()*/
+            if(contract.status == 2)
+                this.blockFlag = false;
         }else{
             alert("정상적으로 불러오지 못했습니다.")
         }
