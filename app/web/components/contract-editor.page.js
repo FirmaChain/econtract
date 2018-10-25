@@ -80,7 +80,8 @@ let mapDispatchToProps = {
     get_pin_from_storage,
     edit_contract,
     send_chat,
-    fetch_chat
+    fetch_chat,
+    update_epin,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
