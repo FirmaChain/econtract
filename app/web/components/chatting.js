@@ -104,6 +104,7 @@ export default class extends React.Component {
     }
 
     onClickDetail = ()=>{
+        this.props.unblockFunction()
         history.push(`/contract-confirm/${this.props.contract_id}`)
     }
 

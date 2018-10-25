@@ -69,6 +69,9 @@ export default class extends React.Component {
         }
 
 		return (<div className="default-page login-page">
+            <div className="logo">
+                <img src="/static/logo_blue.png" onClick={()=>history.push("/")}/>
+            </div>
             <div className="back-key">
                 <div className="round-btn" onClick={()=>history.goBack()}><i className="fas fa-arrow-left"></i></div>
             </div>

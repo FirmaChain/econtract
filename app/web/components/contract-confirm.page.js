@@ -102,6 +102,9 @@ export default class extends React.Component {
             return <div className="default-page"><div className="container">{/*<h1>로딩중..</h1>*/}</div></div>
 
         return (<div className="default-page confirm-contract-page">
+            <div className="logo">
+                <img src="/static/logo_blue.png" onClick={()=>history.push("/")}/>
+            </div>
             <div className="back-key">
                 <div className="round-btn" onClick={()=>history.goBack()}><i className="fas fa-arrow-left"></i></div>
             </div>
@@ -165,8 +168,10 @@ export default class extends React.Component {
                         </div>
                     </div>
                 </div>
-                <button className="left-friendly-button" onClick={this.onClickConfirm}> 승 인 </button>
-                <button className="right-friendly-button" onClick={this.onClickReject}> 거 절 </button>
+                {this.state.status == 2 ? null : [
+                    <button className="left-friendly-button" onClick={this.onClickConfirm}> 승 인 </button>,
+                    <button className="right-friendly-button" onClick={this.onClickReject}> 거 절 </button>]
+                }
             </div>
 		</div>);
 	}

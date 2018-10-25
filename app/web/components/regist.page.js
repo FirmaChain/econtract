@@ -502,6 +502,9 @@ export default class extends React.Component {
 
 	render() {
 		return (<div className="default-page regist-page">
+            <div className="logo">
+                <img src="/static/logo_blue.png" onClick={()=>history.push("/")}/>
+            </div>
             <div className="back-key">
                 <div className="round-btn" onClick={this.goBack}><i className="fas fa-arrow-left"></i></div>
                 <div className="step-indicator">

@@ -22,6 +22,15 @@ a{
 }
 input:focus { outline: none; }
 button:focus { outline: none; }
+select:focus { outline:none; }
+
+.logo {
+    padding-top:20px;
+    cursor:pointer;
+    >img {
+        height:25px;
+    }
+}
 
 .editor-page{
 
@@ -257,6 +266,7 @@ button:focus { outline: none; }
     width: 100%;
 
     >div.back-key{
+
         width: 100%;
         padding: 10px 10px 0 10px;
         box-sizing: border-box;
@@ -282,6 +292,7 @@ button:focus { outline: none; }
 
     >div.container{
         position: relative;
+        padding-top: 30px;
 
         >h1{
             letter-spacing:2px;
@@ -756,7 +767,6 @@ table.table{
 }
 
 .contract-list-page{
-    padding-top: 30px;
 
     ul.left-menu{
         list-style: none;

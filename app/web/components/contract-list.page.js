@@ -144,6 +144,9 @@ export default class extends React.Component {
         let total_cnt = board.total_cnt
         let page_num = board.page_num
 		return (<div className="default-page contract-list-page">
+            <div className="logo">
+                <img src="/static/logo_blue.png" onClick={()=>history.push("/")}/>
+            </div>
             <div className="container">
                 <h1>내 계약</h1>
                 <UserStatusBar />

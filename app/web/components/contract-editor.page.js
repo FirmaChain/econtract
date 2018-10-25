@@ -18,19 +18,21 @@ import Chatting from "./chatting"
 
 @connect((state)=>{return {user:state.user.info}}, {} )
 class Item extends React.Component{
-    content(isMine){
+    content(isEditable){
         let props = this.props
-        if(props.type == "text"){
+        if(props.type == "text") {
             return <div 
-                className="content" 
+                className={"content" + props.docStatus >= 2 ? "no border" : null} 
                 contentEditable={true} 
                 onBlur={(e)=>props.onUpdate("text",e.target.innerHTML)} 
                 dangerouslySetInnerHTML={{__html:props.text}}>
             </div>
-        }else if(props.type == "checkbox"){
-            return <div className="content"> <input type="checkbox" /> </div>
-        }else if(props.type == "img"){
-            return <div className="content">
+        } else if(props.type == "checkbox") {
+            return <div className={"content" + props.docStatus >= 2 ? "no border" : null}>
+                <input type="checkbox" />
+            </div>
+        } else if(props.type == "img") {
+            return <div className={"content" + props.docStatus >= 2 ? "no border" : null}>
                 <img src={props.data} style={{
                     width:"100%",
                     height:"100%"
@@ -41,7 +43,7 @@ class Item extends React.Component{
 
     render(){
         let props = this.props
-        let isMine = props.editable == true && (props.code == null || props.code == this.props.user.code)
+        let isEditable = props.editable == true && (props.code == null || props.code == this.props.user.code)
         return <Draggable handle=".handle" defaultPosition={{x:props.x,y:props.y}} onStop={(e,n)=>props.onUpdate("pos", {x:n.x, y:n.y})} >
             <Resizable 
                 style={{position:"absolute"}} 
@@ -54,10 +56,10 @@ class Item extends React.Component{
                 }}
             >
                 <div className="draggable-div">
-                    {isMine ? <div className="handle"><i className="fas fa-arrows-alt" /></div> : null }
+                    {isEditable ? <div className="handle"><i className="fas fa-arrows-alt" /></div> : null }
                     {props.name ? <div className="name-container">{props.name}</div> : null}
-                    {isMine ? <div className="trash" onClick={this.props.removeItem}><img src="/static/trash.png"/></div> : null }
-                    {this.content(isMine)}
+                    {isEditable ? <div className="trash" onClick={this.props.removeItem}><img src="/static/trash.png"/></div> : null }
+                    {this.content(isEditable)}
                 </div>
             </Resizable>
         </Draggable>
@@ -132,7 +134,8 @@ export default class extends React.Component {
                 document.addEventListener("keydown", this.keydown);
                 document.addEventListener("keyup", this.keyup);
             } else {
-                alert("This contract is not allowed to you.");
+                alert("이 계약에 접근할 수 없습니다. 로그인 상태를 확인해주세요.");
+                history.replace("/login")
             }
             
             await window.hideIndicator()
@@ -487,6 +490,7 @@ export default class extends React.Component {
                                 onUpdate={this.onUpdateItem.bind(this, k)}
                                 removeItem={this.onRemoveItem.bind(this, k)}
                                 editable={this.state.status < 2}
+                                docStatus={this.state.status}
                         />
                     })}
                     <img className="edit-target" src={this.state.imgs[this.state.page]} />
