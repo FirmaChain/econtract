@@ -48,7 +48,7 @@ function genPIN(digit=6) {
     return text;
 }
 
-async function getPIN() {
+async function getPIN(contract_id) {
     let epin = sessionStorage.getItem(`contract:${contract_id}`);
     if (!epin) {
         let contract_info = (await api_load_contract_info(contract_id)).payload;
@@ -140,7 +140,7 @@ export function new_contract( subject, imgs, counterparties, publickey_contract_
 
 export function get_pin_from_storage(contract_id){
     return async function(){
-        return getPIN();
+        return getPIN(contract_id);
     }
 }
 
@@ -258,7 +258,7 @@ export function edit_contract(contract_id, pin, edit){
 
 export function send_chat(contract_id, msg){
     return async function(dispatch){
-        let pin = getPIN();
+        let pin = getPIN(contract_id);
         if(pin){
             let the_key = await getTheKey(contract_id, pin);
             let encrypt_msg = aes_encrypt(msg || "  ", the_key)
@@ -273,7 +273,7 @@ export function send_chat(contract_id, msg){
 
 export function fetch_chat(contract_id, cursor=0){
     return async function(dispatch){
-        let pin = getPIN();
+        let pin = getPIN(contract_id);
         if(pin){
             let the_key = await getTheKey(contract_id, pin);
             let resp = (await api_fetch_chat(contract_id, cursor)).payload
@@ -302,7 +302,7 @@ export function confirm_contract(contract_id){
 
 export function reject_contract(contract_id, msg){
     return async function(dispatch){
-        let pin = getPIN();
+        let pin = getPIN(contract_id);
         let the_key = await getTheKey(contract_id, pin);
         msg = aes_encrypt(msg, the_key)
 
