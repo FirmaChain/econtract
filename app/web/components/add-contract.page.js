@@ -30,7 +30,8 @@ export default class extends React.Component {
 	constructor(){
 		super();
 		this.state={
-            counterparties:[]
+            counterparties:[],
+            pin:this.props.gen_pin(),
         };
         this.blockFlag = true;
 	}
@@ -177,10 +178,6 @@ export default class extends React.Component {
 	render() {
         if(!this.props.user_info)
             return <div/>
-
-        this.setState({
-            pin:(async function() {return await this.props.gen_pin()})(),
-        });
 
         return (<div className="default-page add-contract-page">
             <div className="back-key">
