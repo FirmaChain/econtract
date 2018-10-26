@@ -337,3 +337,8 @@ export function update_epin(contract_id, pin){
     };
 }
 
+export function gen_pin(digit=6) {
+    return async function() {
+        return genPIN(digit);
+    };
+}

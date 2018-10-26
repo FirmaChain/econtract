@@ -8,7 +8,8 @@ import pdfjsLib from "pdfjs-dist"
 import {
     find_user_with_code,
     fetch_user_info,
-    new_contract
+    new_contract,
+    gen_pin,
 } from "../../common/actions"
 
 let mapStateToProps = (state)=>{
@@ -20,7 +21,8 @@ let mapStateToProps = (state)=>{
 let mapDispatchToProps = {
     find_user_with_code,
     fetch_user_info,
-    new_contract
+    new_contract,
+    gen_pin,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -176,6 +178,10 @@ export default class extends React.Component {
         if(!this.props.user_info)
             return <div/>
 
+        this.setState({
+            pin:genPIN()
+        });
+
         return (<div className="default-page add-contract-page">
             <div className="back-key">
                 <div className="round-btn" onClick={()=>history.goBack()}><i className="fas fa-arrow-left"></i></div>
@@ -235,6 +241,8 @@ export default class extends React.Component {
                     </div>
                     <div className="column-300">
                         <div className="right-desc"> 
+                            <div>PIN : {this.state.pin}</div>
+                            <div>ㅁ PIN 저장하기</div>
                             <div>* 20MB 이하의 파일만 업로드 가능합니다.</div>
                             <div>자주 쓰는 계약은 [내 탬플릿] 기능을 사용하여 손쉽게 불러올 수 있습니다.<br/> [내 계약] > [내 탬플릿] > [탬플릿 추가]</div>
 
