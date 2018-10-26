@@ -31,7 +31,6 @@ export default class extends React.Component {
 		super();
 		this.state={
             counterparties:[],
-            pin:this.props.gen_pin(),
         };
         this.blockFlag = true;
 	}
@@ -45,6 +44,9 @@ export default class extends React.Component {
                 await window.hideIndicator()
             })()
         }
+        (async() => {
+            this.setState({pin: this.props.gen_pin()),
+        })();
 
         this.unblock = history.block( async (targetLocation) => {
             if(this.blockFlag){
