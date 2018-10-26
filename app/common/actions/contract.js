@@ -102,9 +102,9 @@ async function fetch_img(name, the_key){
     return aes_decrypt(text , the_key)
 }
 
-export function new_contract( subject, imgs, counterparties, publickey_contract_list){
+export function new_contract( subject, imgs, counterparties, publickey_contract_list, set_pin){
     return async function(dispatch){
-        let pin = genPIN();
+        let pin = set_pin ? set_pin : genPIN();
         let counterparties_eckai = [];
         let shared_key = generate_random(31);
         let the_key = getContractKey(pin, shared_key);
