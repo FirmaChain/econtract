@@ -45,7 +45,7 @@ export default class extends React.Component {
             })()
         }
         (async() => {
-            this.setState({pin: this.props.gen_pin()),
+            this.setState({pin: this.props.gen_pin()});
         })();
 
         this.unblock = history.block( async (targetLocation) => {
