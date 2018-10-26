@@ -179,7 +179,7 @@ export default class extends React.Component {
             return <div/>
 
         this.setState({
-            pin:this.props.gen_pin(),
+            pin:await this.props.gen_pin(),
         });
 
         return (<div className="default-page add-contract-page">
