@@ -48,7 +48,7 @@ function genPIN(digit=6) {
     return text;
 }
 
-async function getPIN() {
+async function getPIN(contract_id) {
     let epin = sessionStorage.getItem(`contract:${contract_id}`);
     if (!epin) {
         let contract_info = (await api_load_contract_info(contract_id)).payload;
@@ -102,9 +102,9 @@ async function fetch_img(name, the_key){
     return aes_decrypt(text , the_key)
 }
 
-export function new_contract( subject, imgs, counterparties, publickey_contract_list){
+export function new_contract( subject, imgs, counterparties, publickey_contract_list, set_pin){
     return async function(dispatch){
-        let pin = genPIN();
+        let pin = set_pin ? set_pin : genPIN();
         let counterparties_eckai = [];
         let shared_key = generate_random(31);
         let the_key = getContractKey(pin, shared_key);
@@ -139,7 +139,7 @@ export function new_contract( subject, imgs, counterparties, publickey_contract_
 
 export function get_pin_from_storage(contract_id){
     return async function(){
-        return getPIN();
+        return getPIN(contract_id);
     }
 }
 
@@ -257,7 +257,7 @@ export function edit_contract(contract_id, pin, edit){
 
 export function send_chat(contract_id, msg){
     return async function(dispatch){
-        let pin = getPIN();
+        let pin = getPIN(contract_id);
         if(pin){
             let the_key = await getTheKey(contract_id, pin);
             let encrypt_msg = aes_encrypt(msg || "  ", the_key)
@@ -272,7 +272,7 @@ export function send_chat(contract_id, msg){
 
 export function fetch_chat(contract_id, cursor=0){
     return async function(dispatch){
-        let pin = getPIN();
+        let pin = getPIN(contract_id);
         if(pin){
             let the_key = await getTheKey(contract_id, pin);
             let resp = (await api_fetch_chat(contract_id, cursor)).payload
@@ -301,7 +301,7 @@ export function confirm_contract(contract_id){
 
 export function reject_contract(contract_id, msg){
     return async function(dispatch){
-        let pin = getPIN();
+        let pin = getPIN(contract_id);
         let the_key = await getTheKey(contract_id, pin);
         msg = aes_encrypt(msg, the_key)
 
@@ -337,3 +337,8 @@ export function update_epin(contract_id, pin){
     };
 }
 
+export function gen_pin(digit=6) {
+    return async function() {
+        return genPIN(digit);
+    };
+}

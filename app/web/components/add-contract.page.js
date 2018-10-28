@@ -8,7 +8,8 @@ import pdfjsLib from "pdfjs-dist"
 import {
     find_user_with_code,
     fetch_user_info,
-    new_contract
+    new_contract,
+    gen_pin,
 } from "../../common/actions"
 
 let mapStateToProps = (state)=>{
@@ -20,7 +21,8 @@ let mapStateToProps = (state)=>{
 let mapDispatchToProps = {
     find_user_with_code,
     fetch_user_info,
-    new_contract
+    new_contract,
+    gen_pin,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -28,7 +30,7 @@ export default class extends React.Component {
 	constructor(){
 		super();
 		this.state={
-            counterparties:[]
+            counterparties:[],
         };
         this.blockFlag = true;
 	}
@@ -42,6 +44,9 @@ export default class extends React.Component {
                 await window.hideIndicator()
             })()
         }
+        (async() => {
+            this.setState({pin: await this.props.gen_pin()});
+        })();
 
         this.unblock = history.block( async (targetLocation) => {
             if(this.blockFlag){
@@ -75,7 +80,7 @@ export default class extends React.Component {
             return alert("파일 혹은 템플릿을 선택해주세요.")
         }
         await window.showIndicator()
-        let resp = await this.props.new_contract( subject, imgs, (counterparties || []).map(e=>e.code), [this.props.user_info.publickey_contract].concat((counterparties || []).map(e=>e.publickey_contract)) );
+        let resp = await this.props.new_contract( subject, imgs, (counterparties || []).map(e=>e.code), [this.props.user_info.publickey_contract].concat((counterparties || []).map(e=>e.publickey_contract)), this.state.pin );
         if(resp){
             //this.unblock();
             this.blockFlag = false;
@@ -235,6 +240,9 @@ export default class extends React.Component {
                     </div>
                     <div className="column-300">
                         <div className="right-desc"> 
+                            <div>PIN : {this.state.pin}</div>
+                            <div>ㅁ PIN 저장하기</div>
+                            <div><strong>저장하지 않을 경우 PIN을 반드시 메모해두세요!</strong></div>
                             <div>* 20MB 이하의 파일만 업로드 가능합니다.</div>
                             <div>자주 쓰는 계약은 [내 탬플릿] 기능을 사용하여 손쉽게 불러올 수 있습니다.<br/> [내 계약] > [내 탬플릿] > [탬플릿 추가]</div>
 
