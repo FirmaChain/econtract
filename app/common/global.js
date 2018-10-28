@@ -1,5 +1,7 @@
 import aesjs from 'aes-js'
 import FormData from 'form-data';
+import jsPDF from "jspdf" 
+import pdfjsLib from "pdfjs-dist"
 import { Base64 } from 'js-base64'
 
 global.Buffer = require('buffer').Buffer;
@@ -158,3 +160,97 @@ window.clone_object = function (obj) {
 
   return copy;
 }
+
+function getImgSize(src){
+  return new Promise(r=>{
+    let img = document.createElement("img")
+    img.src = src
+    img.onload = function(){
+
+      r({w:img.width, h:img.height})
+    }
+  })
+}
+window.pdf = {
+  create:function(imgs){
+    return new Promise((r)=>{
+
+      for(let img of imgs){
+        await getImgSize(img);
+      }
+      
+      let img = document.createElement("img")
+      img.src = baseImg
+      img.onload = function(){
+        let ratio = 595.28 / img.width
+        let width = ratio * img.width;
+        let height = ratio * img.height;
+
+        let doc = new jsPDF("p","pt","a4")
+        doc.setFontSize(40);
+        doc.setDrawColor(0);
+        doc.setFillColor(255, 255, 255);
+        doc.rect(0, 0, img.width,  img.height, 'F');
+        doc.addImage(baseImg, "png", 0, 0, width, height, undefined, "none");
+
+        r(doc);
+      }
+    })
+  },
+  add:function(doc, element){
+
+  },
+  download:function(doc, name=Date.now()){
+    doc.save(`${name}.pdf`)
+  },
+}
+
+function pdf_test(){
+  let input = document.createElement("input")
+  input.type = "file"
+  input.accept=".pdf"
+
+  input.onchange = (e)=>{
+    let file = e.target.files[0];
+    let reader = new FileReader();
+    reader.readAsBinaryString(file)
+
+    reader.onload = async()=>{
+      try{
+        let pdf = await pdfjsLib.getDocument({data: reader.result}).promise;
+        let imgs = []
+        for(let i=1; i <= pdf.numPages;i++){
+            let page = await pdf.getPage(i)
+            let viewport = page.getViewport(1.5);
+
+            let canvas = document.createElement('canvas');
+            let context = canvas.getContext('2d');
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
+
+            let renderContext = {
+                canvasContext: context,
+                viewport: viewport
+            };
+
+            await page.render(renderContext);
+            let v = canvas.toDataURL("image/png")
+            imgs.push(v);
+        }
+
+        console.log(imgs)
+
+        let doc = await window.pdf.create(imgs[0]);
+        window.pdf.download(doc)
+      }catch(err){
+        console.log(err)
+        window.alert("PDF 형식이 아닙니다.")
+      }
+      await window.hideIndicator()
+    }
+  }
+  input.click()
+  document.body.append(input)
+}
+
+// pdf_test();
