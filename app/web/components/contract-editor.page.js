@@ -122,6 +122,7 @@ export default class extends React.Component {
                                 }
                             }))
                             if( pin == null ){
+                                await window.hideIndicator()
                                 history.goBack();
                             }
                             await this.load_contract(contract_id, pin, async(count, length) => {
