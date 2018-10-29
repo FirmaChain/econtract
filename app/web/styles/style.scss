@@ -275,7 +275,19 @@ select:focus { outline:none; }
         }
     }
 }
+.printable{
+    display: none;
+}
+@media print {
+    .confirm-contract-page{
+        display: none !important;
+    }
 
+    .printable{
+        display: block;
+    }
+}
+ 
 .default-page{
     display:flex;
     align-items: center;

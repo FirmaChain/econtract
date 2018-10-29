@@ -479,6 +479,7 @@ export default class extends React.Component {
                         <img src="/static/icon_textbox.png"/>
                         텍스트 입력
                     </div>
+                    
                     {/*<div className="toolkit" onClick={this.onClickAddCheckbox}>
                         <img src="/static/icon_checkbox.png"/>
                         체크박스 추가
@@ -486,7 +487,6 @@ export default class extends React.Component {
                     {this.state.status == 0 ? <div style={{flex:1}} /> : null }
                     
                     {this.render_save_recover_btn()}
-                    
                 </div> : null}
                 <div className="edit-box">
                     {(objects).map((e,k)=>{
