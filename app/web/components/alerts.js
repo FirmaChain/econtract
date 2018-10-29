@@ -75,7 +75,7 @@ class RegistContract extends React.Component{
                         </div>
                         
                         <div className="checkbox">
-                            <input ref="pin_save" type="checkbox" {this.props.is_pin_saved}/> PIN 번호 저장하기
+                            <input ref="pin_save" type="checkbox" text={this.props.is_pin_saved}/> PIN 번호 저장하기
                         </div>
 
                         <div className="desc"> * 해당 PIN번호는 암호화되어 저장되어 본인만 열람이 가능합니다.</div>
