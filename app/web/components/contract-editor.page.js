@@ -121,7 +121,7 @@ export default class extends React.Component {
                             let pin_save_checked = false;
                             let result = await new Promise(r=>window.openModal("TypingPin",{
                                 onFinish:(pin, pin_save_checked)=>{
-                                    [r(pin), r(pin_save_checked)]
+                                    r([pin, pin_save_checked])
                                 },
                                 updatePIN:async(pin_input)=>{
                                     return await this.props.update_epin(contract_id, pin_input);
