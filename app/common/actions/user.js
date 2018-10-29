@@ -6,7 +6,7 @@ import {
     api_regist_account,
     api_login_account,
     api_encrypted_user_info,
-    api_find_user_with_code,
+    api_find_user_with_code_email,
 } from "../../../gen_api"
 
 import {
