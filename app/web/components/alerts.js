@@ -109,7 +109,7 @@ class TypingPin extends React.Component{
         this.state = { value : ""}
     }
     closeSelf = ()=>{
-        window.closeModal(this.props.modalId)
+        window.hideIndicator()
     }
 
     onClickOK = ()=>{
