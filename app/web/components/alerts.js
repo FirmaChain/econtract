@@ -109,7 +109,7 @@ class TypingPin extends React.Component{
         this.state = { value : ""}
     }
     closeSelf = ()=>{
-        window.hideIndicator()
+        window.closeModal(this.props.modalId)
     }
 
     onClickOK = ()=>{
@@ -128,6 +128,7 @@ class TypingPin extends React.Component{
 
     onClickCancel = () => {
         this.closeSelf()
+        window.hideIndicator()
         history.goBack()
     }
 
