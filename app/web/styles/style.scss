@@ -455,6 +455,7 @@ select:focus { outline:none; }
                     padding: 10px 0 10px 10px;
                     margin-bottom: 20px;
                     display: flex;
+                    overflow: auto;
 
                     >input{
                         border:0;
@@ -529,6 +530,35 @@ select:focus { outline:none; }
     }
 }
 
+.profile-page{
+    .profile-info{
+        flex-direction: column;
+        img{
+            width: 50px;
+            border-radius: 5px;
+            border:2px solid #324b5f;
+        }
+        .username{
+            font-size: 13px;
+            font-weight: bold;
+            margin: 5px 0;
+
+            .phone{
+                color: #555;
+                font-size: 10px;
+                font-weight: 300;
+            }
+        }
+        .useraddress{
+            color: #555;
+            font-size: 11px;
+        }
+    }
+
+    .form-input{
+        font-size: 13px;
+    }
+}
 .confirm-contract-page{
     .pin-box{
         display: flex;
@@ -744,6 +774,10 @@ table.table{
             border-radius: 5px;
             background-size: contain;
             background-color: #fff;
+            cursor: pointer;
+            &:hover{
+                border:2px solid #718b9e;
+            }
         }
     }
 

@@ -81,6 +81,10 @@ export default class extends React.Component{
         }
     }
 
+    onClickProfilePic = ()=>{
+        history.push("/profile")
+    }
+
     onLogout = () => {
         window.eraseCookie("session")
         window.eraseCookie("session_update")
@@ -115,8 +119,7 @@ export default class extends React.Component{
                     <div className="top">{info.username}의 초대코드</div>
                     <div className="bottom">{info.code}</div>
                 </div>
-                <div className="pic" style={{backgroundImage:`url(https://identicon-api.herokuapp.com/${info.code}/70?format=png)`}}>
-                </div>
+                <div className="pic" onClick={this.onClickProfilePic} style={{backgroundImage:`url(https://identicon-api.herokuapp.com/${info.code}/70?format=png)`}} />
             </div>
 
             <div onClick={onClickAddContract} className="add-button">
