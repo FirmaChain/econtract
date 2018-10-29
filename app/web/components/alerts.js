@@ -74,7 +74,7 @@ class RegistContract extends React.Component{
                         </div>
                         
                         <div className="checkbox">
-                            <input ref="pin_save" type="checkbox" /> PIN 번호 저장하기
+                            <input ref="pin_save" type="checkbox" {this.props.is_pin_saved ? "checked" : ""} /> PIN 번호 저장하기
                         </div>
 
                         <div className="desc"> * 해당 PIN번호는 암호화되어 저장되어 본인만 열람이 가능합니다.</div>
@@ -116,10 +116,10 @@ class TypingPin extends React.Component{
         if(this.state.value.length == 6){
 
             if(this.refs.pin_save.checked){
-                ////핀이 체크되어있으면
+                this.props.updatePIN(this.state.value);
             }
 
-            this.props.onFinish && this.props.onFinish(this.state.value)
+            this.props.onFinish && this.props.onFinish(this.state.value, this.refs.pin_save.checked)
             this.closeSelf()
         } else {
             alert("핀번호는 6자리입니다. 정확히 입력해주세요.")
