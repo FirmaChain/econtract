@@ -113,7 +113,7 @@ export default class extends React.Component {
                 if( pin ){
                     await this.load_contract(contract_id, pin, async(count, length) => {
                         await window.showIndicator(`계약서 불러오는 중 (${count}/${length})`)
-                    }, true)
+                    }, contract_info.epin ? true : false)
                 }else{
                     while(1){
                         try{
