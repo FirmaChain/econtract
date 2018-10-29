@@ -130,8 +130,8 @@ export function login_account(user_id, password){
     }
 }
 
-export function find_user_with_code(code){
+export function find_user_with_code_email(code, email){
     return async function(){
-        return (await api_find_user_with_code(code)).payload
+        return (await api_find_user_with_code_email(code, email)).payload
     }
 }

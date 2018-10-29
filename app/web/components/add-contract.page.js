@@ -6,7 +6,7 @@ import SignerSlot from "./signer-slot"
 import history from '../history';
 import pdfjsLib from "pdfjs-dist"
 import {
-    find_user_with_code,
+    find_user_with_code_email,
     fetch_user_info,
     new_contract,
     gen_pin,
@@ -20,7 +20,7 @@ let mapStateToProps = (state)=>{
 }
 
 let mapDispatchToProps = {
-    find_user_with_code,
+    find_user_with_code_email,
     fetch_user_info,
     new_contract,
     gen_pin,
@@ -150,7 +150,7 @@ export default class extends React.Component {
             return alert("본인의 초대코드입니다.")
     
         await window.showIndicator()
-        let user = await this.props.find_user_with_code(code);
+        let user = await this.props.find_user_with_code_email(code, email);
         await window.hideIndicator()
 
         if(user){
@@ -254,7 +254,7 @@ export default class extends React.Component {
 
                             <div style={{marginTop:"110px",color:"red"}}>* 한번 계약을 등록한 경우, 서명자를 변경하실 수 없습니다.<br/>등록 전에 서명자의 정보가 맞는지 확인해주세요.</div>
 
-                            <div>* 계약 당사자들의 초대 코드와 이메일을 받아 입력한 뒤 [서명자 추가] 기능을 통해 서비스에 초대하실 수 있습니다.</div>
+                            <div>* 계약 당사자들의 초대 코드와 이메일을 받아 입력한 뒤 [서명자 추가] 기능을 통해 서비스에 초대하실 수 있습니다. 초대 코드와 이메일이 모두 일치하여야 하며, 이메일은 대소문자를 구분하여 입력 해주세요.</div>
                         </div>
                     </div>
                 </div>
