@@ -34,22 +34,28 @@ export default class extends React.Component {
                 await window.hideIndicator()
             })()
         }
+
+        this.update_balance(this.props)
+    }
+
+    async update_balance(props){
+        let user = props.user_info;
+        if(user){
+            let fct = await Web3.fct_balance( user.eth_address );
+            let eth = await Web3.eth_balance( user.eth_address );
+
+            this.setState({
+                fct_balance : fct,
+                eth_balance: eth
+            })
+        }
     }
 
     componentWillReceiveProps(props){
         if(props.user_info === false){
             history.replace("/login")
         }else{
-            (async()=>{
-                let user = props.user_info;
-                let fct = await Web3.fct_balance( user.eth_address );
-                let eth = await Web3.eth_balance( user.eth_address );
-
-                this.setState({
-                    fct_balance : fct,
-                    eth_balance: eth
-                })
-            })()
+            this.update_balance(props)
         }
     }
 
