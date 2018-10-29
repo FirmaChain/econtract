@@ -14,6 +14,7 @@ import {
     send_chat,
     fetch_chat,
     update_epin,
+    clear_epin,
 } from "../../common/actions"
 import Chatting from "./chatting"
 
@@ -82,6 +83,7 @@ let mapDispatchToProps = {
     send_chat,
     fetch_chat,
     update_epin,
+    clear_epin,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -111,23 +113,29 @@ export default class extends React.Component {
                 if( pin ){
                     await this.load_contract(contract_id, pin, async(count, length) => {
                         await window.showIndicator(`계약서 불러오는 중 (${count}/${length})`)
-                    })
+                    }, contract_info.epin ? true : false)
                 }else{
                     while(1){
                         try{
                             this.blockFlag = false;
-                            pin = await new Promise(r=>window.openModal("TypingPin",{
-                                onFinish:(pin)=>{
-                                    r(pin)
-                                }
+                            let pin_save_checked = false;
+                            let result = await new Promise(r=>window.openModal("TypingPin",{
+                                onFinish:(pin, pin_save_checked)=>{
+                                    [r(pin), r(pin_save_checked)]
+                                },
+                                updatePIN:async(pin_input)=>{
+                                    return await this.props.update_epin(contract_id, pin_input);
+                                },
                             }))
+                            pin = result[0];
+                            pin_save_checked = result[1];
                             if( pin == null ){
                                 await window.hideIndicator()
                                 history.goBack();
                             }
                             await this.load_contract(contract_id, pin, async(count, length) => {
                                 await window.showIndicator(`계약서 불러오는 중 (${count}/${length})`)
-                            })
+                            }, pin_save_checked)
                             break;
                         }catch(err){
                             alert("PIN 번호가 잘못되었습니다.")
@@ -197,7 +205,7 @@ export default class extends React.Component {
         delete this.keyMap[e.keyCode];
     }
 
-    async load_contract(contract_id, pin, listener){
+    async load_contract(contract_id, pin, listener, is_pin_saved){
         let contract = await this.props.load_contract(contract_id,pin,listener)
         if(contract.contract_id){
 
@@ -214,6 +222,7 @@ export default class extends React.Component {
                 ...contract,
                 pin:pin,
                 edit_page:objects,
+                is_pin_saved:is_pin_saved,
             })
 
             if(contract.status == 2)
@@ -334,6 +343,7 @@ export default class extends React.Component {
                 account_id: this.state.account_id,
                 counterparties: this.state.counterparties,
                 login_user_code:this.props.user.code,
+                is_pin_saved: this.state.is_pin_saved,
                 author:{
                     name:this.state.author_name,
                     code:this.state.author_code,
@@ -341,6 +351,9 @@ export default class extends React.Component {
                 },
                 updatePIN:async()=>{
                     return await this.props.update_epin(this.state.contract_id, this.state.pin);
+                },
+                clearPIN:async()=>{
+                    return await this.props.clear_epin(this.state.contract_id);
                 },
                 onOK:async()=>{
                     await window.showIndicator()

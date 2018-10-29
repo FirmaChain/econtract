@@ -10,6 +10,7 @@ import {
     fetch_user_info,
     new_contract,
     gen_pin,
+    update_epin,
 } from "../../common/actions"
 
 let mapStateToProps = (state)=>{
@@ -23,6 +24,7 @@ let mapDispatchToProps = {
     fetch_user_info,
     new_contract,
     gen_pin,
+    update_epin,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -82,6 +84,9 @@ export default class extends React.Component {
         await window.showIndicator()
         let resp = await this.props.new_contract( subject, imgs, (counterparties || []).map(e=>e.code), [this.props.user_info.publickey_contract].concat((counterparties || []).map(e=>e.publickey_contract)), this.state.pin );
         if(resp){
+            if(this.refs.pin_save.checked){
+                await this.props.update_epin(resp, this.state.pin);
+            }
             //this.unblock();
             this.blockFlag = false;
             history.replace(`/contract-editor/${resp}`)
@@ -241,7 +246,9 @@ export default class extends React.Component {
                     <div className="column-300">
                         <div className="right-desc"> 
                             <div>PIN : {this.state.pin}</div>
-                            <div>ㅁ PIN 저장하기</div>
+                            <div className="checkbox">
+                                <input ref="pin_save" type="checkbox" /> PIN 번호 저장하기
+                            </div>
                             <div><strong>저장하지 않을 경우 PIN을 반드시 메모해두세요!</strong></div>
                             <div>* 20MB 이하의 파일만 업로드 가능합니다.</div>
                             <div>자주 쓰는 계약은 [내 탬플릿] 기능을 사용하여 손쉽게 불러올 수 있습니다.<br/> [내 계약] > [내 탬플릿] > [탬플릿 추가]</div>
