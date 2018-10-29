@@ -146,7 +146,7 @@ export default class extends React.Component {
             return alert("메일을 입력해주세요.")
         if(this.state.counterparties.findIndex(e=>code==e.code) >= 0)
             return alert("이미 추가된 서명자입니다.")
-        if(this.props.user_info.code == code)
+        if(this.props.user_info.code.toLowerCase() == code.toLowerCase())
             return alert("본인의 초대코드입니다.")
     
         await window.showIndicator()
