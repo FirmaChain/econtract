@@ -14,6 +14,7 @@ import {
     send_chat,
     fetch_chat,
     update_epin,
+    clear_epin,
 } from "../../common/actions"
 import Chatting from "./chatting"
 
@@ -82,6 +83,7 @@ let mapDispatchToProps = {
     send_chat,
     fetch_chat,
     update_epin,
+    clear_epin,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -340,6 +342,9 @@ export default class extends React.Component {
                 },
                 updatePIN:async()=>{
                     return await this.props.update_epin(this.state.contract_id, this.state.pin);
+                },
+                clearPIN:async()=>{
+                    return await this.props.clear_epin(this.state.contract_id);
                 },
                 onOK:async()=>{
                     await window.showIndicator()
