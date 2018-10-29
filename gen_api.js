@@ -248,9 +248,10 @@ export async function api_encrypted_user_info(){
         session:window.getCookie("session")
     });
 }
-export async function api_find_user_with_code(code){
-    return await get("/find_user_with_code", {
-        code
+export async function api_find_user_with_code_email(code,email){
+    return await get("/find_user_with_code_email", {
+        code,
+		email
     },{
         session:window.getCookie("session")
     });

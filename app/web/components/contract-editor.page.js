@@ -129,10 +129,6 @@ export default class extends React.Component {
                             }))
                             pin = result[0];
                             pin_save_checked = result[1];
-                            if( pin == null ){
-                                await window.hideIndicator()
-                                history.goBack();
-                            }
                             await this.load_contract(contract_id, pin, async(count, length) => {
                                 await window.showIndicator(`계약서 불러오는 중 (${count}/${length})`)
                             }, pin_save_checked)

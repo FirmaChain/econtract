@@ -128,6 +128,7 @@ class TypingPin extends React.Component{
 
     onClickCancel = () => {
         this.closeSelf()
+        window.hideIndicator()
         history.goBack()
     }
 
