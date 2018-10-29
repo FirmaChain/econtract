@@ -160,7 +160,6 @@ export default class extends React.Component {
                 counterparties:[
                     ...this.state.counterparties,
                     {
-                        code,
                         email,
                         ...user
                     }
