@@ -342,6 +342,7 @@ export default class extends React.Component {
                 account_id: this.state.account_id,
                 counterparties: this.state.counterparties,
                 login_user_code:this.props.user.code,
+                is_pin_saved: this.state.is_pin_saved,
                 author:{
                     name:this.state.author_name,
                     code:this.state.author_code,
