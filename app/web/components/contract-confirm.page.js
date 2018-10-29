@@ -110,16 +110,19 @@ export default class extends React.Component {
                 objects = (objects || []).concat(c.html[i])
             }
             for(let o of objects){
+                let element = null 
                 if(o.type == "img"){
-                    let img = document.createElement("img")
+                    let img = element = document.createElement("img")
                     img.src = o.data
-                    img.width=o.width;
-                    img.height=o.height;
-                    img.style.left=o.x;
-                    img.style.top=o.y;
-                    img.style.position="absolute";
-                    div.appendChild(img)
                 }
+
+                element.width=o.width;
+                element.height=o.height;
+                element.style.left=o.x;
+                element.style.top=o.y;
+                element.style.position="absolute";
+                div.appendChild(element)
+
             }
 
             let canvas = await html2canvas(div)
