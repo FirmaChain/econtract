@@ -15,6 +15,7 @@ import {
     api_folder_in_contracts,
     api_all_folders,
     api_update_epin,
+    api_clear_epin,
 } from "../../../gen_api"
 
 import {
@@ -334,6 +335,12 @@ export function update_epin(contract_id, pin){
     return async function(){
         let epin = encryptPIN(pin);
         return (await api_update_epin(contract_id, epin)).payload;
+    };
+}
+
+export function clear_epin(contract_id){
+    return async function(){
+        return (await api_clear_epin(contract_id)).payload;
     };
 }
 
