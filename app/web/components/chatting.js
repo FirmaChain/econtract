@@ -28,6 +28,7 @@ export default class extends React.Component {
             chat_text:"",
             list:[]
         }
+        this.sendLock = false
     }
 
     componentDidMount(){
@@ -70,15 +71,21 @@ export default class extends React.Component {
     }
 
     async send(){
+        if(!this.sendLock)
+            return
+
+        this.sendLock = true
         await this.props.send_chat(this.props.contract_id, this.state.chat_text)
         this.setState({
             chat_text:""
+        }, () => {
+            let list = await this.props.fetch_chat(this.props.contract_id);
+            await this.addList(list)
+
+            this.refs.bottom.scrollIntoView({ behavior: "smooth" });
+            this.sendLock = false
         })
 
-        let list = await this.props.fetch_chat(this.props.contract_id);
-        await this.addList(list)
-
-        this.refs.bottom.scrollIntoView({ behavior: "smooth" });
     }
 
     onKeyDownChat = async(e)=>{
