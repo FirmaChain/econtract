@@ -17,6 +17,7 @@ import {
     clear_epin,
 } from "../../common/actions"
 import Chatting from "./chatting"
+import CancelablePromise from 'cancelable-promise';
 
 @connect((state)=>{return {user:state.user.info}}, {} )
 class Item extends React.Component{
@@ -102,7 +103,8 @@ export default class extends React.Component {
 
 	componentDidMount(){
         this.blockFlag = true;
-        (async()=>{
+        this.loading_promise = new CancelablePromise(r=>r())
+        this.loading_promise.then(async(r)=>{
             let contract_id = this.props.match.params.id;
             await window.showIndicator("계약서 불러오는 중")
             await this.props.fetch_user_info()
@@ -146,7 +148,7 @@ export default class extends React.Component {
             }
             
             await window.hideIndicator()
-        })()
+        })
 
         this.unblock = history.block( async (targetLocation) => {
             if(this.blockFlag){
@@ -166,9 +168,10 @@ export default class extends React.Component {
     }
 
     componentWillUnmount(){
+        this.unblock();
+        this.loading_promise.cancel();
         document.removeEventListener("keydown", this.keydown);
         document.removeEventListener("keyup", this.keyup);
-        this.unblock();
     }
 
     keydown = (e) => {

@@ -7,6 +7,29 @@ import {
 	fetch_user_info
 } from "../../common/actions"
 
+// async function a(){
+// 	for(let i=0;i<10;i++){
+// 		console.log("a")
+// 		await new Promise(r=>setTimeout(r,100));		
+// 		await b();
+// 	}
+// }
+// async function b(){
+// 	console.log("b")
+// 	await new Promise(r=>setTimeout(r,10));		
+// }
+
+// import CancelablePromise from 'cancelable-promise';
+// const myPromise = new CancelablePromise((resolve) => setTimeout(() => resolve('I\'m resolved'), 100));
+// myPromise.then(async(response) => {
+// 	while(1){
+// 		console.log("1")
+// 		await new Promise(r=>setTimeout(r,1000));
+// 		await a();
+// 	}
+// })
+// myPromise.cancel();
+
 let mapStateToProps = (state)=>{
 	return {
         user_info: state.user.info
