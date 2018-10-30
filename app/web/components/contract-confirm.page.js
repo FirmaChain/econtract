@@ -56,8 +56,26 @@ export default class extends React.Component {
     componentWillUnmount(){
     }
 
+    getContractRaw(){
+        let imgs = []
+        for(let i in this.state.imgs){
+            let objects = [ ...(this.state.html[i] || []) ]
+            for(let c of this.state.counterparties){
+                objects = (objects || []).concat(c.html[i])
+            }
+            imgs.push({
+                img : this.state.imgs[i],
+                objects:objects
+            })
+        }
+        return imgs
+    }
+    getCounterpartiesEth(){
+        return [this.state.author_eth_address, ...this.state.counterparties.map(e=>e.eth_address)]
+    }
+
     async load_contract(contract_id, pin){
-        let contract = await this.props.load_contract(contract_id,pin, null, false )
+        let contract = await this.props.load_contract(contract_id,pin, null, true )
         if(contract.contract_id){
             console.log(contract)
             this.setState({
@@ -71,8 +89,11 @@ export default class extends React.Component {
 
     onClickConfirm = async()=>{
         if(await confirm("승인하기","계약을 승인하시겠습니까?")){
-            let resp = await this.props.confirm_contract(this.state.contract_id)
+            await window.showIndicator()
+            let docByte = await window.pdf.gen( this.getContractRaw() )
+            let resp = await this.props.confirm_contract(this.state.contract_id, this.getCounterpartiesEth(), docByte)
             //location.reload()
+            await window.hideIndicator()
             history.replace('/recently')
         }
     }
@@ -91,20 +112,9 @@ export default class extends React.Component {
     }
 
     onClickPrint = async()=>{
-        let imgs = []
-        for(let i in this.state.imgs){
-            let objects = [ ...(this.state.html[i] || []) ]
-            for(let c of this.state.counterparties){
-                objects = (objects || []).concat(c.html[i])
-            }
-            imgs.push({
-                img : this.state.imgs[i],
-                objects:objects
-            })
-        }
+        
         
         await window.showIndicator()
-        let bytes = await window.pdf.gen( imgs )
         this.props.upload_ipfs( this.state.contract_id, bytes);
         await window.hideIndicator()
     }

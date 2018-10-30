@@ -205,10 +205,10 @@ class Web3Wrapper {
         })
     }
 
-    async signed_newContract(docId,author,counterparties,lifetime=100000,gas=500000, gasPrice=20){
+    async signed_newOrSignContract(docId,counterparties,gas=500000, gasPrice=20){
         let list = this.allAccounts()
         let account = list[0]
-        let method = this.contract_inst.methods.newContract(docId,[author, ...counterparties],lifetime);
+        let method = this.contract_inst.methods.newOrSignContract(docId,docId,counterparties);
         let tx = {
             from: account.address,
             to: poc.address,
@@ -216,9 +216,7 @@ class Web3Wrapper {
             gasPrice: gasPrice,
             data: method.encodeABI()
         }
-        console.log("tx",tx,account.privateKey)
         let signed = account.signTransaction(tx)
-        console.log("signed",signed)
         return signed
     }
 
@@ -265,10 +263,7 @@ class Web3Wrapper {
 }
 
 let _web3 = new Web3Wrapper();
-
-let account = _web3.createAccount();
-_web3.addAccount(account.privateKey)
-console.log(account)
-_web3.signed_newContract(sha256("222222"),account.address,[]).then(console.log.bind(this,"-"))
-
+// let account = _web3.createAccount();
+// _web3.addAccount(account.privateKey)
+// _web3.signed_newOrSignContract(sha256("222222"),account.address,[]).then(console.log.bind(this,"-"))
 export default _web3;

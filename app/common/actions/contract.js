@@ -33,6 +33,7 @@ import {
     generate_random,
 } from "../../common/crypto_test"
 
+import { sha256 } from 'js-sha256'
 import Web3 from "../Web3"
 
 export const NEW_CONTRACT = "NEW_CONTRACT"
@@ -294,9 +295,16 @@ export function fetch_chat(contract_id, cursor=0){
     }
 }
 
-export function confirm_contract(contract_id){
+export function confirm_contract(contract_id, counterparties, docByte){
     return async function(dispatch){
-        return (await api_confirm_contract(contract_id)).payload
+        let pin = await getPIN(contract_id);
+        let thekey = await getTheKey(contract_id, pin)
+        let encrypt = aes_encrypt(new Buffer(docByte), thekey)
+
+        let original = sha256(encrypt)
+        let signTx = await Web3.signed_newOrSignContract(original,counterparties)
+
+        return (await api_confirm_contract( contract_id, JSON.stringify(signTx) )).payload
     }
 }
 
