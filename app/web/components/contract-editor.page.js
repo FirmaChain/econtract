@@ -24,17 +24,18 @@ class Item extends React.Component{
         let props = this.props
         if(props.type == "text") {
             return <div 
-                className={"content" + (props.docStatus >= 2 ? " no border" : null)} 
+                // className={"content" + (props.docStatus >= 2 ? "no border" : null)} 
+                className="content" 
                 contentEditable={true} 
                 onBlur={(e)=>props.onUpdate("text",e.target.innerHTML)} 
                 dangerouslySetInnerHTML={{__html:props.text}}>
             </div>
         } else if(props.type == "checkbox") {
-            return <div className={"content" + (props.docStatus >= 2 ? " no border" : null)}>
+            return <div className="content">
                 <input type="checkbox" />
             </div>
         } else if(props.type == "img") {
-            return <div className={"content" + (props.docStatus >= 2 ? " no border" : null)}>
+            return <div className="content">
                 <img src={props.data} style={{
                     width:"100%",
                     height:"100%"
