@@ -155,7 +155,7 @@ export default class extends React.Component {
         } else {
             let me = this.state.counterparties.filter((e, k)=>{
                 return e.code == this.props.user.code
-            })}
+            })
             if (me.length == 0) {
                 console.log("Impossible!");
                 return "mang";
