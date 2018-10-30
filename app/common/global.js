@@ -4,6 +4,7 @@ import jsPDF from "jspdf"
 import pdfjsLib from "pdfjs-dist"
 import { Base64 } from 'js-base64'
 import CancelablePromise from 'cancelable-promise';
+import html2canvas from "html2canvas"
 
 // window.Promise = global.Promise = CancelablePromise;
 
@@ -175,6 +176,47 @@ function getImg(src){
 }
 
 window.pdf = {
+  gen:async function(imgs){
+    let pdfs = []
+    
+    for(let i in imgs){
+        let div = document.createElement("div")
+        div.style.width=800;
+        div.style.display="inline-block";
+        div.style.position="fixed";
+        div.style.left=-9999999999;
+        div.style.top=-9999999999;
+
+        document.body.append(div)
+
+        let img = document.createElement("img")
+        img.src = imgs[i].img
+        img.width=800;
+        div.appendChild(img)
+        
+        let objects = imgs[i].objects
+        for(let o of objects){
+            let element = null 
+            if(o.type == "img"){
+                let img = element = document.createElement("img")
+                img.src = o.data
+            }
+
+            element.width=o.width;
+            element.height=o.height;
+            element.style.left=o.x;
+            element.style.top=o.y;
+            element.style.position="absolute";
+            div.appendChild(element)
+        }
+
+        let canvas = await html2canvas(div)
+        pdfs.push({img:canvas.toDataURL("png")})
+        div.remove();
+    }
+
+    return await window.pdf.make( pdfs )
+  },
   make:function(imgs, name = Date.now()){
     return new Promise(async(r)=>{
 
@@ -186,21 +228,18 @@ window.pdf = {
         height = height > img.height ? height : img.height
       }
 
-      console.log(width,height)
-
-      let doc = new jsPDF("p","px",[width,height])
+      let doc = new jsPDF("p","px",[width,height],true)
       doc.deletePage(1)
       for(let info of imgs){
-        doc.addPage(width,height);
-        doc.setFontSize(40);
-        doc.setDrawColor(0);
-        doc.setFillColor(255, 255, 255);
-        doc.rect(0, 0, width,  height, 'F');
-        doc.addImage(info.img, "png", 0, 0, info.i.width, info.i.height, undefined, "none");
+        doc.addPage(width, height)
+        doc.setFontSize( 40 )
+        doc.setDrawColor( 0 )
+        doc.setFillColor( 255, 255, 255 )
+        doc.rect( 0, 0, width,  height, 'F' )
+        doc.addImage( info.img, "png", 0, 0, info.i.width, info.i.height, undefined, "FAST" )
       }
-      
-      doc.save(`${name}.pdf`)
-      r(doc);
+      // doc.save(name+".pdf")
+      r(doc.output("arraybuffer"))
     })
   }
 }

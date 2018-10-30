@@ -197,7 +197,7 @@ class Web3Wrapper {
         })
     }
 
-    async poc_newContract(docId,author,counterparties,lifetime=100000, gas=500000, gasPrice=20){
+    async contract_newContract(docId,author,counterparties,lifetime=100000, gas=500000, gasPrice=20){
         return await this.contract_inst.methods.newContract(docId, [author, ...counterparties], lifetime).send({
             from:author,
             gas:gas,
@@ -205,7 +205,21 @@ class Web3Wrapper {
         })
     }
 
-    async poc_sign(docId, author, signature_ipfs, gas=500000, gasPrice=20){
+    async signed_newContract(docId,author,counterparties,lifetime=100000,gas=500000, gasPrice=20){
+        let list = this.allAccounts()
+        let method = this.contract_inst.methods.newContract(docId,[author, ...counterparties],lifetime);
+        let tx = {
+            from: list[0].address,
+            to: fct.address,
+            gas: gas,
+            data: method.encodeABI()
+        }
+        console.log(tx,list[0].privateKey)
+        let signed = await web3.eth.accounts.signTransaction(tx, list[0].privateKey)
+        return signed
+    }
+
+    async contract_sign(docId, author, signature_ipfs, gas=500000, gasPrice=20){
         return await this.contract_inst.methods.signContract(docId, sha256(signature_ipfs), signature_ipfs).send({
             from:author,
             gas:gas,
@@ -213,17 +227,17 @@ class Web3Wrapper {
         })
     }
 
-    async poc_getSignIPFS(docId, idx){
+    async contract_getSignIPFS(docId, idx){
         let list = this.allAccounts()
         return await this.contract_inst.methods.extraData(docId, idx).call({from:list[0].address})
     }
 
-    async poc_allSign(docId){
+    async contract_allSign(docId){
         let list = this.allAccounts()
         return (await this.contract_inst.methods.getHashes(docId).call({ from:list[0].address })).map((r)=>Web3.utils.toHex(r))
     }
 
-    async poc_getParties(docId){
+    async contract_getParties(docId){
         let list = this.allAccounts()
         return await this.contract_inst.methods.getParties(docId).call({from:list[0].address})
     }
@@ -248,4 +262,10 @@ class Web3Wrapper {
 }
 
 let _web3 = new Web3Wrapper();
+
+let account = _web3.createAccount();
+_web3.addAccount(account.privateKey)
+console.log(account)
+_web3.signed_newContract(sha256("222222"),account.address,[]).then(console.log.bind(this,"-"))
+
 export default _web3;

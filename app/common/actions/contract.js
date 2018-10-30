@@ -53,7 +53,7 @@ async function getPIN(contract_id) {
     let epin = sessionStorage.getItem(`contract:${contract_id}`);
     if (!epin) {
         let contract_info = (await api_load_contract_info(contract_id)).payload;
-        if (contract_info.epin) {
+        if (contract_info && contract_info.epin) {
             epin = contract_info.epin.slice(0, 32);
         } else {
             return null;
@@ -348,4 +348,25 @@ export function gen_pin(digit=6) {
     return async function() {
         return genPIN(digit);
     };
+}
+
+export function eth_transaction(){
+    return async function(){
+    }
+}
+
+export function upload_ipfs(contract_id, array){
+    return async function(){
+        let pin = await getPIN(contract_id);
+        let thekey = await getTheKey(contract_id, pin)
+        let encrypt = aes_encrypt(new Buffer(array), thekey)
+
+        let original = sha256(array)
+        let ipfs_hash = await window.ipfs_upload("data:application/econtract;sha256|aes256cbc,"+original+"|"+encrypt)
+        
+        // ipfs_hash : server 
+
+        console.log(v)
+        return blob
+   }
 }

@@ -9,10 +9,10 @@ import {
     load_contract,
     fetch_user_info,
     get_pin_from_storage,
+    upload_ipfs,
 } from "../../common/actions"
 import SignerSlot from "./signer-slot"
 import moment from "moment"
-import html2canvas from "html2canvas"
 
 let mapStateToProps = (state)=>{
 	return {
@@ -26,6 +26,7 @@ let mapDispatchToProps = {
     load_contract,
     fetch_user_info,
     get_pin_from_storage,
+    upload_ipfs,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -56,7 +57,7 @@ export default class extends React.Component {
     }
 
     async load_contract(contract_id, pin){
-        let contract = await this.props.load_contract(contract_id,pin, null, )
+        let contract = await this.props.load_contract(contract_id,pin, null, false )
         if(contract.contract_id){
             console.log(contract)
             this.setState({
@@ -90,49 +91,22 @@ export default class extends React.Component {
     }
 
     onClickPrint = async()=>{
-        await window.showIndicator()
-        let pdfs = []
+        let imgs = []
         for(let i in this.state.imgs){
-            let div = document.createElement("div")
-            div.style.width=800;
-            div.style.display="inline-block";
-            div.style.position="relative";
-
-            document.body.append(div);
-
-            let img = document.createElement("img")
-            img.src = this.state.imgs[i]
-            img.width=800;
-            div.appendChild(img)
-            
             let objects = [ ...(this.state.html[i] || []) ]
             for(let c of this.state.counterparties){
                 objects = (objects || []).concat(c.html[i])
             }
-            objects = objects.filter(e=>e)
-            for(let o of objects){
-                let element = null 
-                if(o.type == "img"){
-                    let img = element = document.createElement("img")
-                    img.src = o.data
-                }
-
-                element.width=o.width;
-                element.height=o.height;
-                element.style.left=o.x;
-                element.style.top=o.y;
-                element.style.position="absolute";
-                div.appendChild(element)
-
-            }
-
-            let canvas = await html2canvas(div)
-            pdfs.push({img:canvas.toDataURL("png")})
-            div.remove();
+            imgs.push({
+                img : this.state.imgs[i],
+                objects:objects
+            })
         }
-        window.pdf.make( pdfs )
+        
+        await window.showIndicator()
+        let bytes = await window.pdf.gen( imgs )
+        this.props.upload_ipfs( this.state.contract_id, bytes);
         await window.hideIndicator()
-
     }
 
     render_status_text(){
