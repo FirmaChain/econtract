@@ -247,8 +247,6 @@ export default class extends React.Component {
         
         let info = {
             email: this.state.email,
-            user_id : this.state.user_id,
-            password: this.state.password,
             username: this.state.username,
             userphone: this.state.userphone,
             useraddress: this.state.useraddress,
