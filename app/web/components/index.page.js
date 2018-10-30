@@ -3,13 +3,18 @@ import ReactDOM from "react-dom"
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import history from '../history'
+import {
+	fetch_user_info
+} from "../../common/actions"
 
 let mapStateToProps = (state)=>{
 	return {
+        user_info: state.user.info
 	}
 }
 
 let mapDispatchToProps = {
+    fetch_user_info,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -20,14 +25,22 @@ export default class extends React.Component {
 	}
 
 	componentDidMount(){
+		this.props.fetch_user_info();
+	}
+	componentWillReceiveProps(props){
+		if(props === false){
+
+		}
 	}
 
 	render() {
+		let user_info = this.props.user_info
 		return (<div className="index-page">
 			<div className="header-section">
 				<div className="content">
 					<div className="top">
 						<div className="left-logo"></div>
+						{user_info ? null : 
 						<div className="right-btns">
 							<div className="language"> KOR </div>
 							<div className="buttons">
@@ -35,6 +48,7 @@ export default class extends React.Component {
 								<div className="login-btn" onClick={()=>history.push("/login")} >로그인 / 회원가입</div>
 							</div>
 						</div>
+						}
 					</div>
 					<div className="desc">
 						<div className="left">
