@@ -158,9 +158,9 @@ export default class extends React.Component {
                 alert("파일 로딩중에는 나가실 수 없습니다.")
                 return false
             }
-            
+
             if(this.blockFlag) {
-                return await window._confirm("계약작성을 중단하고 현재 페이지를 나가시겠습니까?")
+                return window._confirm("계약작성을 중단하고 현재 페이지를 나가시겠습니까?")
             }
             return true;
        })
