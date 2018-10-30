@@ -3,13 +3,18 @@ import ReactDOM from "react-dom"
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import history from '../history'
+import {
+	fetch_user_info
+} from "../../common/actions"
 
 let mapStateToProps = (state)=>{
 	return {
+        user_info: state.user.info
 	}
 }
 
 let mapDispatchToProps = {
+    fetch_user_info,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -20,14 +25,22 @@ export default class extends React.Component {
 	}
 
 	componentDidMount(){
+		this.props.fetch_user_info();
+	}
+	componentWillReceiveProps(props){
+		if(props === false){
+
+		}
 	}
 
 	render() {
+		let user_info = this.props.user_info
 		return (<div className="index-page">
 			<div className="header-section">
 				<div className="content">
 					<div className="top">
 						<div className="left-logo"></div>
+						{user_info ? null : 
 						<div className="right-btns">
 							<div className="language"> KOR </div>
 							<div className="buttons">
@@ -35,6 +48,7 @@ export default class extends React.Component {
 								<div className="login-btn" onClick={()=>history.push("/login")} >로그인 / 회원가입</div>
 							</div>
 						</div>
+						}
 					</div>
 					<div className="desc">
 						<div className="left">
@@ -52,11 +66,40 @@ export default class extends React.Component {
 				</div>
 			</div>
 
-			<div className="desc-section">
-				<div className="title"> 왜 <b>블록체인</b>을 써야할까? </div>
+			<div className="desc-section section-1">
+				<div className="text">
+					<div className="icon"></div>
+					<div className="title">해킹 위험으로 인한 불안한 일상.</div>
+					<div className="title">이젠 <b>블록체인</b>으로 벗어나세요</div>
+					<div className="desc">
+						이컨트랙트 서비스는 탈중앙화 전자계약 플랫폼으로 모든 계약 내용은 오직 계약 당사자들에게만 읽기 및 수정 권한이 부여되며,<br/> 그 외 모든 접근은 불허됩니다. 이는 개발사조차도 계약 내용 접근이 불가능하기 때문에 해킹 위험이 전혀 없습니다.
+					</div>
+				</div>
+				<div className="img"> <div className="iii"></div> </div>
 			</div>
-			<div className="desc-section">
-				<div className="title"> 왜 <b>블록체인</b>을 써야할까? </div>
+			<div className="desc-section section-2">
+				<div className="img"> <div className="iii"></div> </div>
+				<div className="text">
+					<div className="icon"></div>
+					<div className="title">해킹 위험으로 인한 불안한 일상.</div>
+					<div className="title">이젠 <b>블록체인</b>으로 벗어나세요</div>
+					<div className="desc">
+						이컨트랙트 서비스는 탈중앙화 전자계약 플랫폼으로 모든 계약 내용은 오직 계약 당사자들에게만 읽기 및 수정 권한이 부여되며,<br/> 그 외 모든 접근은 불허됩니다. 이는 개발사조차도 계약 내용 접근이 불가능하기 때문에 해킹 위험이 전혀 없습니다.
+					</div>
+				</div>
+			</div>
+			<div className="desc-section section-3">
+				<div className="text">
+					<div className="icon"></div>
+					<div className="title">해킹 위험으로 인한 불안한 일상.</div>
+					<div className="title">이젠 <b>블록체인</b>으로 벗어나세요</div>
+					<div className="desc">
+						이컨트랙트 서비스는 탈중앙화 전자계약 플랫폼으로 모든 계약 내용은 오직 계약 당사자들에게만 읽기 및 수정 권한이 부여되며,<br/> 그 외 모든 접근은 불허됩니다. 이는 개발사조차도 계약 내용 접근이 불가능하기 때문에 해킹 위험이 전혀 없습니다.
+					</div>
+				</div>
+				<div className="img"> <div className="iii"></div> </div>
+			</div>
+			<div className="bottom">
 			</div>
 		</div>);
 	}

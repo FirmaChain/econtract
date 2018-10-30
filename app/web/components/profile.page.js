@@ -46,7 +46,7 @@ export default class extends React.Component {
 
             this.setState({
                 fct_balance : fct,
-                eth_balance: eth
+                eth_balance : eth
             })
         }
     }
