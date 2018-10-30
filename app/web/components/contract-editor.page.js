@@ -154,15 +154,13 @@ export default class extends React.Component {
         })()
 
         this.unblock = history.block(  (targetLocation) => {
-            if(this.blockFlag === 1){
+            if(this.blockFlag === 1) {
                 alert("파일 로딩중에는 나가실 수 없습니다.")
                 return false
             }
-            if(this.blockFlag){
-                if(window._confirm("계약작성을 중단하고 현재 페이지를 나가시겠습니까?"))
-                    return true;
-                else
-                    return false;
+
+            if(this.blockFlag) {
+                return window._confirm("계약작성을 중단하고 현재 페이지를 나가시겠습니까?")
             }
             return true;
        })
