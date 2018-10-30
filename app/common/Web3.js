@@ -207,15 +207,18 @@ class Web3Wrapper {
 
     async signed_newContract(docId,author,counterparties,lifetime=100000,gas=500000, gasPrice=20){
         let list = this.allAccounts()
+        let account = list[0]
         let method = this.contract_inst.methods.newContract(docId,[author, ...counterparties],lifetime);
         let tx = {
-            from: list[0].address,
-            to: fct.address,
+            from: account.address,
+            to: poc.address,
             gas: gas,
+            gasPrice: gasPrice,
             data: method.encodeABI()
         }
-        console.log(tx,list[0].privateKey)
-        let signed = await web3.eth.accounts.signTransaction(tx, list[0].privateKey)
+        console.log("tx",tx,account.privateKey)
+        let signed = account.signTransaction(tx)
+        console.log("signed",signed)
         return signed
     }
 
