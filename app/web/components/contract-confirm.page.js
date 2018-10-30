@@ -174,7 +174,7 @@ export default class extends React.Component {
                 </div>
                 <div className="container">
                     <h1>계약 상세보기</h1>
-                    <div className={this.state.status == 2 ? "page" : 'page bottom-no-border'}>
+                    <div className={this.state.status == 2 || alreadySelect ? "page" : 'page bottom-no-border'}>
                         <div className="column-300">
                             <div className="form-layout">
                                 <div className="form-label"> 계약명 </div>
