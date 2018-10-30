@@ -3,6 +3,9 @@ import FormData from 'form-data';
 import jsPDF from "jspdf" 
 import pdfjsLib from "pdfjs-dist"
 import { Base64 } from 'js-base64'
+import CancelablePromise from 'cancelable-promise';
+
+// window.Promise = global.Promise = CancelablePromise;
 
 global.Buffer = require('buffer').Buffer;
 global.process = require('process');

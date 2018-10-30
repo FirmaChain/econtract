@@ -109,6 +109,7 @@ export default class extends React.Component {
             for(let c of this.state.counterparties){
                 objects = (objects || []).concat(c.html[i])
             }
+            objects = objects.filter(e=>e)
             for(let o of objects){
                 let element = null 
                 if(o.type == "img"){
