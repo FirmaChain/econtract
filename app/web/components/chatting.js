@@ -78,7 +78,7 @@ export default class extends React.Component {
         let chatText = this.state.chat_text
         this.setState({
             chat_text:""
-        }, () => {
+        }, async () => {
             await this.props.send_chat(this.props.contract_id, chatText)
 
             let list = await this.props.fetch_chat(this.props.contract_id);
