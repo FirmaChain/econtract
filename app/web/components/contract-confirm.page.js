@@ -148,6 +148,21 @@ export default class extends React.Component {
         if(!this.state.contract_id || !this.props.user)
             return <div className="default-page"><div className="container">{/*<h1>로딩중..</h1>*/}</div></div>
 
+        let alreadySelect = false;
+        if (this.state.author_code == this.props.user.code) {
+            alreadySelect = (this.state.author_confirm == 1) || (this.state.author_msg ? true : false)
+        } else {
+            let me = this.state.counterparties.filter((e, k)=>{
+                return e.code == this.props.user.code
+            })}
+            if (me.length == 0) {
+                console.log("Impossible!");
+                return "mang";
+            } else {
+                alreadySelect = (me[0].confirm == 1) || (me[0].reject ? true : false);
+            }
+        }
+
         return (<div className="">
             <div className="default-page confirm-contract-page">
                 <div className="logo">
@@ -232,7 +247,7 @@ export default class extends React.Component {
                             </div>
                         </div>
                     </div>
-                    {this.state.status == 2 ? null : [
+                    {this.state.status == 2 || alreadySelect ? null : [
                         <button className="left-friendly-button" onClick={this.onClickConfirm}> 승 인 </button>,
                         <button className="right-friendly-button" onClick={this.onClickReject}> 거 절 </button>]
                     }
