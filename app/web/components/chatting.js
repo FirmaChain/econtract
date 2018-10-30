@@ -71,7 +71,7 @@ export default class extends React.Component {
     }
 
     async send(){
-        if(!this.sendLock)
+        if(this.sendLock)
             return
 
         this.sendLock = true
