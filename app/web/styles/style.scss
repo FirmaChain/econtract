@@ -1006,13 +1006,16 @@ table.table{
 
         .border {
 
-        }   
+        } 
     }
 }
 
 .index-page{
     .header-section{
-        background-color: rgba(0,0,0,0.5);
+        // background-color: rgba(0,0,0,0.5);
+        background-image: url('/static/background.jpg');
+        background-size: cover;
+
         .content{
             width: $screen-width;
             margin:0 auto;

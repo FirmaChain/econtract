@@ -104,8 +104,7 @@ export default class extends React.Component {
 
 	componentDidMount(){
         this.blockFlag = true;
-        this.loading_promise = new CancelablePromise(r=>r())
-        this.loading_promise.then(async(r)=>{
+        (async(r)=>{
             let contract_id = this.props.match.params.id;
             await window.showIndicator("계약서 불러오는 중")
             await this.props.fetch_user_info()
@@ -114,6 +113,7 @@ export default class extends React.Component {
             if (contract_info) {
                 let pin = await this.props.get_pin_from_storage(contract_id)
                 if( pin ){
+                    this.blockFlag = 1;
                     await this.load_contract(contract_id, pin, async(count, length) => {
                         await window.showIndicator(`계약서 불러오는 중 (${count}/${length})`)
                     }, contract_info.epin ? true : false)
@@ -132,6 +132,7 @@ export default class extends React.Component {
                             }))
                             pin = result[0];
                             pin_save_checked = result[1];
+                            this.blockFlag = 1;
                             await this.load_contract(contract_id, pin, async(count, length) => {
                                 await window.showIndicator(`계약서 불러오는 중 (${count}/${length})`)
                             }, pin_save_checked)
@@ -149,10 +150,16 @@ export default class extends React.Component {
             }
             
             await window.hideIndicator()
-        })
+            this.blockFlag = true;
+        })()
 
-        this.unblock = history.block( async (targetLocation) => {
-            if(this.blockFlag){
+        this.unblock = history.block(  (targetLocation) => {
+            if(this.blockFlag === 1) {
+                alert("파일 로딩중에는 나가실 수 없습니다.")
+                return false
+            }
+            
+            if(this.blockFlag) {
                 return await window._confirm("계약작성을 중단하고 현재 페이지를 나가시겠습니까?")
             }
             return true;
@@ -167,7 +174,6 @@ export default class extends React.Component {
 
     componentWillUnmount(){
         this.unblock();
-        this.loading_promise.cancel();
         document.removeEventListener("keydown", this.keydown);
         document.removeEventListener("keyup", this.keyup);
     }
