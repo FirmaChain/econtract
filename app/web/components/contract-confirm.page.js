@@ -145,7 +145,8 @@ export default class extends React.Component {
     }
 
     onClickValidation = async()=>{
-        history.push(`/verification/${this.state.doc_hash}`)
+        window.open(`/verification/${this.state.doc_hash}`, "_blank")
+        //history.push(`/verification/${this.state.doc_hash}`)
     }
 
     render_status_text(){
