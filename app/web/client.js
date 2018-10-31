@@ -67,6 +67,7 @@ window.addEventListener("load",()=>{
 					<Route onEnter={resolver} exact path="/profile" component={UserProfilePage} />
 					
 					<Route onEnter={resolver} exact path="/verification" component={VerificationPage} />
+					<Route onEnter={resolver} exact path="/verification/:id" component={VerificationPage} />
 				</Template>
 			</Provider>
 		</Router>,

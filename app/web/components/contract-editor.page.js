@@ -212,6 +212,11 @@ export default class extends React.Component {
 
     async load_contract(contract_id, pin, listener, is_pin_saved){
         let contract = await this.props.load_contract(contract_id,pin,listener)
+        if(!contract){
+            alert("문서 로드에 실패했습니다.")
+            return history.replace('/recently') 
+        }
+        
         if(contract.contract_id){
 
             let objects = []

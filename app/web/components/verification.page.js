@@ -6,6 +6,7 @@ import history from '../history'
 import {
     fetch_user_info
 } from "../../common/actions"
+import { sha256 } from 'js-sha256'
 
 let mapStateToProps = (state)=>{
 	return {
@@ -25,10 +26,9 @@ export default class extends React.Component {
 	}
 
 	componentDidMount(){
-        (async()=>{
-            await window.showIndicator()
-            await window.hideIndicator()
-        })()
+        this.setState({
+            contract_name : this.props.match.params.id
+        })
     }
 
     componentWillReceiveProps(props){
@@ -42,30 +42,11 @@ export default class extends React.Component {
         reader.onload = async()=>{
             await window.showIndicator()
             try{
-                /*let pdf = await pdfjsLib.getDocument({data: reader.result}).promise;
-                let imgs = []
-                for(let i=1; i <= pdf.numPages;i++){
-                    let page = await pdf.getPage(i)
-                    let viewport = page.getViewport(1.5);
-        
-                    let canvas = document.createElement('canvas');
-                    let context = canvas.getContext('2d');
-                    canvas.height = viewport.height;
-                    canvas.width = viewport.width;
-        
-                    let renderContext = {
-                        canvasContext: context,
-                        viewport: viewport
-                    };
-        
-                    await page.render(renderContext);
-                    let v = canvas.toDataURL("image/png")
-                    imgs.push(v);
-                }*/
-
+                console.log(reader.result)
+                console.log("reader.result", sha256(reader.result))
+                
                 this.setState({
                     file: file,
-                    // imgs: imgs
                 })
             }catch(err){
                 console.log(err)
