@@ -494,6 +494,7 @@ E-Contract 이용약관(버전 0.0.1)
         await window.hideIndicator()
 
         if(resp.code == 1){
+            localStorage.setItem("browser_key_virgin", 0);
             history.push("/login");
             return alert("회원가입에 성공하였습니다.")
         }else{

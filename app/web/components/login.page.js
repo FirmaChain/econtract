@@ -91,7 +91,13 @@ export default class extends React.Component {
                             </div>
 
                             <div className="form-submit">
+            localStorage.setItem("browser_key_virgin", 0);
+                    {localStorage.getItem("browser_key_virgin") == 1 ? [
                                 <button tabIndex={1} onClick={()=>history.push("/regist")}> 회원가입 </button>
+                    ] : [
+                                <button tabIndex={1} onClick={()=>history.push("/recover")}> 다른 계정으로 로그인 하기 </button>
+                                <button tabIndex={2} onClick={()=>history.push("/regist")}> 회원가입 </button>
+                    ]}
                                 <button className="border" onClick={this.onClickLogin}> 로그인 </button>
                             </div>
                         </div>
