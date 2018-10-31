@@ -73,6 +73,10 @@ class FileSystem {
         return await this._read("readAsBinaryString", path)
     }
 
+    async readAsArrayBuffer(path){
+        return await this._read("readAsArrayBuffer", path)
+    }
+
     async readAsJson(path){
         let data = await this._read("readAsText", path)
         try{
@@ -92,6 +96,11 @@ class FileSystem {
 
     async writeAsJson(path, data){
         return await this._write('text/plain', path, [JSON.stringify(data)])
+    }
+
+    async writeAsBinary(path, data){
+        return await this._write('application/octet-stream', path, [data])
+        
     }
 
     async write(path, data){

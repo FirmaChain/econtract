@@ -7,6 +7,7 @@ import CancelablePromise from 'cancelable-promise';
 import html2canvas from "html2canvas"
 import { sha256 } from 'js-sha256'
 import md5 from 'md5'
+import fs from "../web/filesystem"
 
 // window.Promise = global.Promise = CancelablePromise;
 
@@ -188,6 +189,16 @@ else
 
 window.pdf = {
   gen:async function(imgs, saveAs = false){
+    let name = md5(JSON.stringify(imgs))
+    try{
+      if(saveAs == false){
+        let ret = await fs.readAsArrayBuffer(name);
+        if( ret )
+          return ret;
+      }
+    }catch(err){
+    }
+
     let pdfs = []
     
     for(let i in imgs){
@@ -235,7 +246,14 @@ window.pdf = {
 
     let fileId = md5(JSON.stringify(pdfs));
     let creatationDate = new Date(1540977124241);
-    return await window.pdf.make( fileId, creatationDate, pdfs, saveAs )
+
+    let byte = await window.pdf.make( fileId, creatationDate, pdfs, saveAs );
+    try{
+      await fs.writeAsBinary(name,byte);
+    }catch(err){
+    }
+    
+    return byte
   },
   make:function(fileId, creatationDate, imgs, saveAs){
     return new Promise(async(r)=>{

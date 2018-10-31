@@ -102,13 +102,6 @@ export default class extends React.Component {
                 this.setState({
                     doc_hash : sha256(byte)
                 })
-
-                // let qq = {}
-                // for(let v = 0;v < 100;v++){
-                //     window.scroll(0,v)
-                //     qq[v] = sha256(await window.pdf.gen( this.getContractRaw(), false ));
-                // }
-                // console.log("----------------", qq)
             }
         }else{
             alert("정상적으로 불러오지 못했습니다.")
@@ -140,11 +133,7 @@ export default class extends React.Component {
     onClickPrint = async()=>{
         await window.showIndicator()
 
-        let v = await window.pdf.gen( this.getContractRaw(), true )
-        console.log(v, sha256(v))
-
-        let int32View = new Uint8Array(v);
-        console.log(int32View,int32View.length,v.byteLegnth, sha256(int32View))
+        await window.pdf.gen( this.getContractRaw(), true )
 
         await window.hideIndicator()
     }
@@ -226,7 +215,7 @@ export default class extends React.Component {
                                             original:this.state.author_original,
                                         },...this.state.counterparties].map((e,k)=>(<div key={k}>
                                             <div className="user-name">{e.name}</div>
-                                            <div className="transaction-hash"><a href={`https://ropsten.etherscan.io/tx/${e.transaction}`} target="_blank">{e.transaction}</a></div>
+                                            {e.transaction ? <div className="transaction-hash"><a href={`https://ropsten.etherscan.io/tx/${e.transaction}`} target="_blank">{e.transaction}</a></div> : <div className="transaction-hash">Waiting...</div>}
                                         </div>))}
                                     </div>
                                 </div> : null}
