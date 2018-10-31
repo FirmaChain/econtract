@@ -192,7 +192,7 @@ export default class extends React.Component {
                 </div>
                 <div className="container">
                     <h1>계약 상세보기</h1>
-                    <div className={'page bottom-no-border'}>
+                    <div className={`page ${this.state.status < 2 || alreadySelect ? 'bottom-no-border' : ''}`}>
                         <div className="column-300">
                             <div className="form-layout">
                                 <div className="form-label"> 계약명 </div>
@@ -273,14 +273,14 @@ export default class extends React.Component {
                             </div>
                         </div>
                     </div>
-                    {this.state.status == 2 || alreadySelect ? [
-                        <button className="left-friendly-button" onClick={this.onClickPrint}> 출 력 </button>,
-                        <button className="right-friendly-button" onClick={this.onClickValidation}> 검 증 </button>
-                    ] : [
+                    {this.state.status == 2 || alreadySelect ? null : [
                         <button className="left-friendly-button" onClick={this.onClickConfirm}> 승 인 </button>,
                         <button className="right-friendly-button" onClick={this.onClickReject}> 거 절 </button>
-                    ]
-                    }
+                    ]}
+                    {this.state.status == 2 ? [
+                        <button className="left-friendly-button" onClick={this.onClickPrint}> 출 력 </button>,
+                        <button className="right-friendly-button" onClick={this.onClickValidation}> 검 증 </button>
+                    ] : null}
                 </div>
             </div>
 		</div>);
