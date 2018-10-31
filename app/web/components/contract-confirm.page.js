@@ -192,7 +192,7 @@ export default class extends React.Component {
                 </div>
                 <div className="container">
                     <h1>계약 상세보기</h1>
-                    <div className={`page ${this.state.status < 2 || alreadySelect ? 'bottom-no-border' : ''}`}>
+                    <div className={`page ${this.state.status < 2 && alreadySelect ? 'bottom-no-border' : ''}`}>
                         <div className="column-300">
                             <div className="form-layout">
                                 <div className="form-label"> 계약명 </div>
