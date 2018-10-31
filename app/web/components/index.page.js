@@ -63,15 +63,13 @@ export default class extends React.Component {
 				<div className="content">
 					<div className="top">
 						<div className="left-logo"></div>
-						{user_info ? null : 
 						<div className="right-btns">
 							<div className="language"> KOR </div>
 							<div className="buttons">
 								<div className="whatis">FirmaChain 이란</div>
-								<div className="login-btn" onClick={()=>history.push("/login")} >로그인 / 회원가입</div>
+								{user_info ? null : <div className="login-btn" onClick={()=>history.push("/login")} >로그인 / 회원가입</div>}
 							</div>
 						</div>
-						}
 					</div>
 					<div className="desc">
 						<div className="left">
@@ -80,6 +78,8 @@ export default class extends React.Component {
 								<div>이제는 <b>E-CONTRACT</b>로</div>
 								<div><b>전자서명</b>하세요</div>
 								<span>* PC, Android, iOS 언제 어디서나 사용 가능합니다.</span>
+								<br/>
+								<div className="start-btn" onClick={()=>history.push("/login")}>지금 시작하기</div>
 							</div>
 						</div>
 						<div className="right">

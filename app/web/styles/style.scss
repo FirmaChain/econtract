@@ -1011,14 +1011,16 @@ table.table{
 }
 
 .index-page{
+    width:100%;
+
     .header-section{
         // background-color: rgba(0,0,0,0.5);
         background-image: url('/static/background.jpg');
         background-size: cover;
 
         .content{
-            width: $screen-width;
             margin:0 auto;
+            padding:20px 30px;
 
             .top{
                 display: flex;
@@ -1092,6 +1094,18 @@ table.table{
                             font-size: 10px;
                             color: #fff;
                         }
+
+                        >.start-btn {
+                            display:inline-block;
+                            font-size: 18px;
+                            border-radius:5px;
+                            background-color:white;
+                            color:#324b5f;
+                            padding:15px 25px;
+                            margin-top:30px;
+                            cursor:pointer;
+                            font-weight:bold;
+                        }
                     }
                 }
                 .right{
@@ -1107,7 +1121,6 @@ table.table{
         }
     }
     .desc-section{
-        width: $screen-width;
         margin:0 auto;
         align-items: center;
 
@@ -1180,7 +1193,6 @@ table.table{
 
     .bottom{
         background-color: #404040;
-        width: $screen-width;
         margin:0 auto;
         padding: 30px;
         box-sizing: border-box;
