@@ -12,16 +12,9 @@ import Web3 from "../../common/Web3"
 import {
     makeAuth,
     makeMnemonic,
-    showMnemonic,
     mnemonicToSeed,
+    getBrowserKey,
     SeedToMasterKeyPublic,
-    SeedToMasterKeyPublicContract,
-    SeedToEthKey,
-    BrowserKeyBIP32,
-    makeSignData,
-    aes_encrypt,
-    ecdsa_verify,
-    new_account,
     validateMnemonic,
 } from "../../common/crypto_test"
 
