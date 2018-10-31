@@ -10,10 +10,10 @@ import {
     fetch_user_info,
     get_pin_from_storage,
     upload_ipfs,
+    load_contract_info,
 } from "../../common/actions"
 import SignerSlot from "./signer-slot"
 import moment from "moment"
-import { sha256 } from 'js-sha256'
 
 let mapStateToProps = (state)=>{
 	return {
@@ -28,6 +28,7 @@ let mapDispatchToProps = {
     fetch_user_info,
     get_pin_from_storage,
     upload_ipfs,
+    load_contract_info,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -44,11 +45,20 @@ export default class extends React.Component {
             await window.showIndicator()
             await this.props.fetch_user_info()
 
-            let pin = await this.props.get_pin_from_storage(contract_id)
-            if( pin ){
-                await this.load_contract(contract_id, pin)
-            }else{
-                history.replace(`/contract-editor/${contract_id}`)
+
+            let contract_info = await this.props.load_contract_info(contract_id);
+            if (contract_info) {
+
+                let pin = await this.props.get_pin_from_storage(contract_id)
+                if( pin ){
+                    await this.load_contract(contract_id, pin)
+                }else{
+                    history.replace(`/contract-editor/${contract_id}`)
+                }
+
+            } else {
+                alert("이 계약에 접근할 수 없습니다. 로그인 상태를 확인해주세요.");
+                history.replace("/login")
             }
             await window.hideIndicator()
         })()
@@ -78,7 +88,6 @@ export default class extends React.Component {
     async load_contract(contract_id, pin){
         let contract = await this.props.load_contract(contract_id,pin, null, true )
         if(contract.contract_id){
-            console.log(contract)
             this.setState({
                 ...contract,
                 pin:pin,
@@ -91,8 +100,7 @@ export default class extends React.Component {
     onClickConfirm = async()=>{
         if(await confirm("승인하기","계약을 승인하시겠습니까?")){
             await window.showIndicator()
-            let raw = this.getContractRaw();
-            let docByte = await window.pdf.gen( raw )
+            let docByte = await window.pdf.gen( this.getContractRaw() )
             let resp = await this.props.confirm_contract(this.state.contract_id, this.getCounterpartiesEth(), docByte)
             //location.reload()
             await window.hideIndicator()
@@ -113,11 +121,12 @@ export default class extends React.Component {
         }
     }
 
-    // onClickPrint = async()=>{
-    //     await window.showIndicator()
-    //     this.props.upload_ipfs( this.state.contract_id, bytes);
-    //     await window.hideIndicator()
-    // }
+    onClickPrint = async()=>{
+        
+        await window.showIndicator()
+        this.props.upload_ipfs( this.state.contract_id, bytes);
+        await window.hideIndicator()
+    }
 
     render_status_text(){
         if(this.state.status == 0){
@@ -142,7 +151,7 @@ export default class extends React.Component {
             })
             if (me.length == 0) {
                 console.log("Impossible!");
-                return "mang";
+                return "m";
             } else {
                 alreadySelect = (me[0].confirm == 1) || (me[0].reject ? true : false);
             }

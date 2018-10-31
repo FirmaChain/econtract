@@ -142,7 +142,7 @@ export default class extends React.Component {
             <td className="text-center">{status_text(e.status)}</td>
             <td className="text-center"><i className={lock_status}></i></td>
             <td className="text-left">{e.name}</td>
-            <td style={{width:"85px"}} className="text-center">{e.username}{e.counterpartyCnt > 0 ?` 외 ${e.counterpartyCnt}명`:""}</td>
+            <td style={{width:"100px"}} className="text-center">{e.username}{e.counterpartyCnt > 0 ?` 외 ${e.counterpartyCnt}명`:""}</td>
             <td className="date-cell">{moment(e.updatedAt).format("YYYY-MM-DD HH:mm:ss")}</td>
         </tr>
     }

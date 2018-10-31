@@ -13,8 +13,10 @@ import md5 from 'md5'
 global.Buffer = require('buffer').Buffer;
 global.process = require('process');
 
-const HOST = "test.firma-solutions.com"
-//const HOST = "127.0.0.1:9999"
+//no use this HOST
+const HOST = "";
+// const HOST = "test.firma-solutions.com"
+// const HOST = "127.0.0.1:9999"
 
 if (typeof btoa === 'undefined') {
   global.btoa = function (str) {
@@ -176,6 +178,13 @@ function getImg(src){
     }
   })
 }
+
+var agent = navigator.userAgent.toLowerCase();
+if((navigator.appName == 'Netscape' && agent.indexOf('trident') != -1) || (agent.indexOf("msie") != -1))
+  window.isIE = true;
+else
+  window.isIE = false;
+
 
 window.pdf = {
   gen:async function(imgs){

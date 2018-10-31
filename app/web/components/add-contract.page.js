@@ -36,11 +36,11 @@ export default class extends React.Component {
 		this.state={
             counterparties:[],
         };
-        this.blockFlag = true;
+        this.blockFlag = 1;
 	}
 
 	componentDidMount(){
-        this.blockFlag = true;
+        this.blockFlag = 1;
         if(!this.props.user_info){
             (async()=>{
                 await window.showIndicator()
@@ -53,7 +53,7 @@ export default class extends React.Component {
         })();
 
         this.unblock = history.block( async (targetLocation) => {
-            if(this.blockFlag){
+            if(this.blockFlag == 1){
                 return window._confirm("계약 배포를 중단하고 현재 페이지를 나가시겠습니까?")
             }
             return true;
@@ -87,7 +87,7 @@ export default class extends React.Component {
                 await this.props.update_epin(resp, this.state.pin);
             }
             //this.unblock();
-            this.blockFlag = false;
+            this.blockFlag = 0;
             history.replace(`/contract-editor/${resp}`)
         }else{
             alert("계약서 생성에 문제가 발생했습니다!")
@@ -246,15 +246,15 @@ export default class extends React.Component {
                     </div>
                     <div className="column-300">
                         <div className="right-desc"> 
-                            <div>PIN : {this.state.pin}</div>
-                            <div className="checkbox">
-                                <input ref="pin_save" type="checkbox" /> PIN 번호 저장하기
+                            <div className="pin-place">PIN : {this.state.pin}</div>
+                            <div className="pin-check checkbox">
+                                <input ref="pin_save" type="checkbox" defaultChecked={true}/> PIN 번호 저장하기
                             </div>
                             <div><strong>저장하지 않을 경우 PIN을 반드시 메모해두세요!</strong></div>
                             <div>* 20MB 이하의 파일만 업로드 가능합니다.</div>
                             <div>자주 쓰는 계약은 [내 탬플릿] 기능을 사용하여 손쉽게 불러올 수 있습니다.<br/> [내 계약] > [내 탬플릿] > [탬플릿 추가]</div>
 
-                            <div style={{marginTop:"110px",color:"red"}}>* 한번 계약을 등록한 경우, 서명자를 변경하실 수 없습니다.<br/>등록 전에 서명자의 정보가 맞는지 확인해주세요.</div>
+                            <div style={{marginTop:"50px",color:"red"}}>* 한번 계약을 등록한 경우, 서명자를 변경하실 수 없습니다.<br/>등록 전에 서명자의 정보가 맞는지 확인해주세요.</div>
 
                             <div>* 계약 당사자들의 초대 코드와 이메일을 받아 입력한 뒤 [서명자 추가] 기능을 통해 서비스에 초대하실 수 있습니다. 초대 코드와 이메일이 모두 일치하여야 하며, 이메일은 대소문자를 구분하여 입력 해주세요.</div>
                         </div>

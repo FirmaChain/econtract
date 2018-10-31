@@ -27,13 +27,13 @@ class Item extends React.Component{
             return <div 
                 // className={"content" + (props.docStatus >= 2 ? "no border" : null)} 
                 className="content" 
-                contentEditable={true} 
+                contentEditable={props.docStatus == 2 ? false : true}
                 onBlur={(e)=>props.onUpdate("text",e.target.innerHTML)} 
                 dangerouslySetInnerHTML={{__html:props.text}}>
             </div>
         } else if(props.type == "checkbox") {
             return <div className="content">
-                <input type="checkbox" />
+                <input type="checkbox" disabled={props.docStatus == 2 ? true : false}/>
             </div>
         } else if(props.type == "img") {
             return <div className="content">
@@ -98,12 +98,12 @@ export default class extends React.Component {
             page_count: 0,
             edit_page:[]
         };
-        this.blockFlag = true;
+        this.blockFlag = 1;
         this.keyMap = {};
 	}
 
 	componentDidMount(){
-        this.blockFlag = true;
+        this.blockFlag = 1;
         (async(r)=>{
             let contract_id = this.props.match.params.id;
             await window.showIndicator("계약서 불러오는 중")
@@ -113,14 +113,15 @@ export default class extends React.Component {
             if (contract_info) {
                 let pin = await this.props.get_pin_from_storage(contract_id)
                 if( pin ){
-                    this.blockFlag = 1;
+                    this.blockFlag = 2;
                     await this.load_contract(contract_id, pin, async(count, length) => {
                         await window.showIndicator(`계약서 불러오는 중 (${count}/${length})`)
                     }, contract_info.epin ? true : false)
+                    this.blockFlag = 1;
                 }else{
                     while(1){
                         try{
-                            this.blockFlag = false;
+                            this.blockFlag = 0;
                             let pin_save_checked = false;
                             let result = await new Promise(r=>window.openModal("TypingPin",{
                                 onFinish:(pin, pin_save_checked)=>{
@@ -132,10 +133,11 @@ export default class extends React.Component {
                             }))
                             pin = result[0];
                             pin_save_checked = result[1];
-                            this.blockFlag = 1;
+                            this.blockFlag = 2;
                             await this.load_contract(contract_id, pin, async(count, length) => {
                                 await window.showIndicator(`계약서 불러오는 중 (${count}/${length})`)
                             }, pin_save_checked)
+                            this.blockFlag = 1;
                             break;
                         }catch(err){
                             alert("PIN 번호가 잘못되었습니다.")
@@ -145,21 +147,21 @@ export default class extends React.Component {
                 document.addEventListener("keydown", this.keydown);
                 document.addEventListener("keyup", this.keyup);
             } else {
+                this.blockFlag = 0;
                 alert("이 계약에 접근할 수 없습니다. 로그인 상태를 확인해주세요.");
                 history.replace("/login")
             }
             
             await window.hideIndicator()
-            this.blockFlag = true;
         })()
 
         this.unblock = history.block(  (targetLocation) => {
-            if(this.blockFlag === 1) {
+            if(this.blockFlag == 2) {
                 alert("파일 로딩중에는 나가실 수 없습니다.")
                 return false
             }
 
-            if(this.blockFlag) {
+            if(this.blockFlag == 1) {
                 return window._confirm("계약작성을 중단하고 현재 페이지를 나가시겠습니까?")
             }
             return true;
@@ -229,7 +231,7 @@ export default class extends React.Component {
             })
 
             if(contract.status == 2)
-                this.blockFlag = false;
+                this.blockFlag = 0;
         }else{
             alert("정상적으로 불러오지 못했습니다.")
         }
@@ -362,7 +364,7 @@ export default class extends React.Component {
                     await window.showIndicator()
                     let resp = await this.props.edit_contract(this.state.contract_id, this.state.pin, window.clone_object(this.state.edit_page))
                     if(resp){
-                        //this.unblock()
+                        this.blockFlag = 0
                         alert("성공적으로 저장했습니다.")
                         history.replace("/recently")
                     }else{
@@ -389,7 +391,6 @@ export default class extends React.Component {
                     if(!!o) return o.code == null || o.code == this.props.user.code
                 })
             })
-            console.log("myObject",myObject)
 
             await window.showIndicator()
             let resp = await this.props.edit_contract(
@@ -409,7 +410,7 @@ export default class extends React.Component {
 
     onClickDetail = async() => {
         if(await confirm("다음으로","변경된 내용이 있다면 먼저 저장해주세요. 다음으로 넘어가시겠습니까?")){
-            this.blockFlag = false
+            this.blockFlag = 0
             history.push(`/contract-confirm/${this.state.contract_id}`)
         }
     }
@@ -431,7 +432,7 @@ export default class extends React.Component {
             counterparties={this.state.counterparties}
             contract_name={this.state.name}
             contract_status={this.state.status}
-            unblockFunction={()=>{this.blockFlag = false}}/>
+            unblockFunction={()=>{this.blockFlag = 0}}/>
     }
 
     render_save_recover_btn(){

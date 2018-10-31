@@ -128,6 +128,7 @@ select:focus { outline:none; }
                 margin-right: 10px;
                 font-size: 12px;
                 padding-bottom: 5px; 
+                min-width: 16px;
             }
 
             &:hover{
@@ -328,7 +329,7 @@ select:focus { outline:none; }
 
         >h1{
             letter-spacing:2px;
-            font-size: 17px;
+            font-size: 24px;
             margin: 0;
             margin-left: 10px;
             display: inline-block;
@@ -413,7 +414,7 @@ select:focus { outline:none; }
             }
         }
 
-        >div.page {
+        div.page {
             margin-top: 30px;
             border:1px solid #E0E0E0;
             border-radius: 7px;
@@ -441,12 +442,12 @@ select:focus { outline:none; }
             div.form-layout{
                 div.form-label{
                     color: #808496;
-                    font-size: 11px;
+                    font-size: 15px;
                 }
 
                 div.form-info{
                     padding: 5px 0 20px 0;
-                    font-size: 13px;
+                    font-size: 17px;
                     color: #1B1B1B;
                 }
 
@@ -475,6 +476,16 @@ select:focus { outline:none; }
                     height: 100px;
                     border: 1px solid #E0E0E0;
                     margin: 10px 0 20px 0;
+                }
+
+                textarea.form-textarea-info {
+                    width:100%;
+                    height: 200px;
+                    border: 1px solid #E0E0E0;
+                    margin: 10px 0 20px 0;
+                    font-size:13px;
+                    outline:none;
+                    resize:none;
                 }
                 
                 div.form-warning{
@@ -705,14 +716,14 @@ table.table{
         border-bottom: 2px solid #000;
         font-weight: bold;
         color: #BEBEC3;
-        font-size: 14px;
+        font-size: 15px;
         padding: 10px 0 10px 20px;
     }
     td{
         border-bottom: 1px solid #c0c0c0;
         font-weight: 400;
         color: #7F7F7F;
-        font-size: 12px;
+        font-size: 15px;
         text-align: left;
         padding: 15px 0 15px 20px;
     }
@@ -756,20 +767,20 @@ table.table{
             margin-right: 10px;
 
             >.top{
-                font-size: 10px;
+                font-size: 14px;
                 color: #8C8880;
             }
 
             >.bottom{
                 margin-top: 3px;
-                font-size: 13px;
+                font-size: 14px;
                 font-weight: bold;
             }
         }
 
         >.pic{
-            width: 30px;
-            height: 30px;
+            width: 40px;
+            height: 40px;
             border:2px solid #324b5f;
             border-radius: 5px;
             background-size: contain;
@@ -785,7 +796,7 @@ table.table{
         display: flex;
         border: 2px solid #324b5f;
         border-radius: 3px;
-        font-size: 12px;
+        font-size: 15px;
         padding: 4px 7px;
         font-weight: bold;
         margin-right: 10px;
@@ -815,6 +826,7 @@ table.table{
             color: #210201;
             font-weight: bold;
             cursor: pointer;
+            font-size:15px;
 
             &:hover {
                 background-color: #EEE;
@@ -824,9 +836,10 @@ table.table{
 
     >.add-button{
         background-color: #324b5f;
-        padding: 7px 20px;
-        font-size: 13px;
+        padding: 10px 20px;
+        font-size: 16px;
         color: #fff;
+        font-weight:bold;
         border-radius: 5px;
         cursor: pointer;
     }
@@ -855,7 +868,7 @@ table.table{
         
 
         li.item{
-            font-size: 13px;
+            font-size: 15px;
             font-weight: bold;
             color: #BEBEBE;
             letter-spacing: 1px;
@@ -904,7 +917,7 @@ table.table{
             border-radius: 5px;
             margin-left: 10px;
             color: #210201;
-            font-weight: bold;
+            font-size: 15px;
             cursor: pointer;
 
             &:hover{
@@ -958,11 +971,22 @@ table.table{
 
     .right-desc {
         margin-top: 90px;
-        font-size: 11px;
+        font-size: 13px;
         color: #7F7F7F;
         padding-left: 20px;
         >div{
             margin: 10px 0;
+        }
+
+        .pin-place {
+            font-size:25px;
+            color:#333;
+            text-align:center;
+        }
+
+        .pin-check {
+            font-size:15px;
+            text-align:center;
         }
     }
 
@@ -1011,14 +1035,16 @@ table.table{
 }
 
 .index-page{
+    width:100%;
+
     .header-section{
         // background-color: rgba(0,0,0,0.5);
         background-image: url('/static/background.jpg');
         background-size: cover;
 
         .content{
-            width: $screen-width;
             margin:0 auto;
+            padding:20px 30px;
 
             .top{
                 display: flex;
@@ -1080,7 +1106,7 @@ table.table{
                     align-items: center;
                     >div{
                         >div{
-                            font-size: 23px;
+                            font-size: 28px;
                             margin-bottom: 5px;
                             color: #fff;
                             letter-spacing:4px;
@@ -1089,8 +1115,20 @@ table.table{
                             }
                         }
                         >span{
-                            font-size: 10px;
+                            font-size: 15px;
                             color: #fff;
+                        }
+
+                        >.start-btn {
+                            display:inline-block;
+                            font-size: 20px;
+                            border-radius:5px;
+                            background-color:white;
+                            color:#324b5f;
+                            padding:15px 25px;
+                            margin-top:30px;
+                            cursor:pointer;
+                            font-weight:bold;
                         }
                     }
                 }
@@ -1107,7 +1145,6 @@ table.table{
         }
     }
     .desc-section{
-        width: $screen-width;
         margin:0 auto;
         align-items: center;
 
@@ -1117,7 +1154,7 @@ table.table{
         >div.text{
             flex:1;
             text-align: center;
-            margin: 30px 0;
+            padding:30px;
 
             .icon{
                 display: inline-block;
@@ -1129,25 +1166,24 @@ table.table{
         }
 
         >div.img{
+            flex:1;
         }
 
         .title{
             color: #fff;
             font-weight: bold;
-            font-size: 16px;
+            font-size: 23px;
             text-align: center;
             margin-bottom: 20px;
         }
         .desc{
             margin-top: 40px;
-            font-size: 10px;
+            font-size: 15px;
             color: #808C96;
         }
 
         .iii{
             background-color: rgba(0,0,0,0.1);
-            height: 300px;
-            width: 500px;
         }
     }
     .section-1{
@@ -1180,7 +1216,6 @@ table.table{
 
     .bottom{
         background-color: #404040;
-        width: $screen-width;
         margin:0 auto;
         padding: 30px;
         box-sizing: border-box;
@@ -1579,6 +1614,7 @@ div.checkbox-comp{
     .form-content{
         display: flex;
         text-align: left;
+        margin-top:20px;
         >div{
             flex:1;
             &:last-child{
@@ -1587,7 +1623,7 @@ div.checkbox-comp{
         }
         .label{
             margin-top: 20px;
-            font-size: 11px;
+            font-size: 14px;
             color: RGB(112, 112, 112);
             &:first-child{
                 margin-top: 0px;
@@ -1596,7 +1632,7 @@ div.checkbox-comp{
 
         .info{
             margin: 5px 0;
-            font-size: 14px;
+            font-size: 17px;
             color: #000;
             
             .pin-box{
@@ -1636,14 +1672,14 @@ div.checkbox-comp{
         >div.title{
             text-align: center;
             font-weight: bold;
-            font-size: 13px;
+            font-size: 18px;
             padding: 10px 0;
         }
 
         >div.msg{
             margin: 15px 0;
             text-align: center;
-            font-size: 13px;
+            font-size: 14px;
             word-break: break-all;
             width: 400px;
             line-height: 1.6;
@@ -1662,7 +1698,7 @@ div.checkbox-comp{
 
         >div.form-label{
             color: RGB(105, 105, 105);
-            font-size: 11px;
+            font-size: 15px;
             margin: 20px 0 5px 0;
         }
 
@@ -1736,7 +1772,7 @@ div.checkbox-comp{
 
         >.info-text{
             flex:1;
-            font-size: 11px;
+            font-size: 13px;
             color: #8C8880;
             overflow: hidden;
 
@@ -1896,6 +1932,7 @@ div.checkbox-comp{
                 font-size: 18px;
                 margin: 0 0 0 5px;
                 cursor: pointer;
+                font-weight: bold;
 
                 &:hover {
                     background-color:#cacaca;
