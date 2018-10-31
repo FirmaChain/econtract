@@ -34,11 +34,11 @@ export default class extends React.Component {
 		this.state={
             counterparties:[],
         };
-        this.blockFlag = true;
+        this.blockFlag = 1;
 	}
 
 	componentDidMount(){
-        this.blockFlag = true;
+        this.blockFlag = 1;
         if(!this.props.user_info){
             (async()=>{
                 await window.showIndicator()
@@ -51,7 +51,7 @@ export default class extends React.Component {
         })();
 
         this.unblock = history.block( async (targetLocation) => {
-            if(this.blockFlag){
+            if(this.blockFlag == 1){
                 return window._confirm("계약 배포를 중단하고 현재 페이지를 나가시겠습니까?")
             }
             return true;

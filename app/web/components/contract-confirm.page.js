@@ -43,11 +43,20 @@ export default class extends React.Component {
             await window.showIndicator()
             await this.props.fetch_user_info()
 
-            let pin = await this.props.get_pin_from_storage(contract_id)
-            if( pin ){
-                await this.load_contract(contract_id, pin)
-            }else{
-                history.replace(`/contract-editor/${contract_id}`)
+
+            let contract_info = await this.props.load_contract_info(contract_id);
+            if (contract_info) {
+
+                let pin = await this.props.get_pin_from_storage(contract_id)
+                if( pin ){
+                    await this.load_contract(contract_id, pin)
+                }else{
+                    history.replace(`/contract-editor/${contract_id}`)
+                }
+
+            } else {
+                alert("이 계약에 접근할 수 없습니다. 로그인 상태를 확인해주세요.");
+                history.replace("/login")
             }
             await window.hideIndicator()
         })()

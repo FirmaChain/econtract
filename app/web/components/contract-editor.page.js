@@ -147,6 +147,7 @@ export default class extends React.Component {
                 document.addEventListener("keydown", this.keydown);
                 document.addEventListener("keyup", this.keyup);
             } else {
+                this.blockFlag = 0;
                 alert("이 계약에 접근할 수 없습니다. 로그인 상태를 확인해주세요.");
                 history.replace("/login")
             }
