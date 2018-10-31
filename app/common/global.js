@@ -189,7 +189,7 @@ else
 
 window.pdf = {
   gen:async function(imgs, saveAs = false){
-    let name = md5(JSON.stringify(imgs))
+    let name = "_"+md5(JSON.stringify(imgs))
     try{
       if(saveAs == false){
         let ret = await fs.readAsArrayBuffer(name);
