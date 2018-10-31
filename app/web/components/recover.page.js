@@ -15,6 +15,7 @@ import {
     mnemonicToSeed,
     getBrowserKey,
     SeedToMasterKeyPublic,
+    BrowserKeyBIP32,
     validateMnemonic,
 } from "../../common/crypto_test"
 
@@ -95,13 +96,11 @@ export default class extends React.Component {
         let encryptedMasterSeed = makeMnemonic(auth, mnemonic);
 
         let seed = mnemonicToSeed(mnemonic);
-        let masterKeyPublic = SeedToMasterKeyPublic(seed);
-
-        let browserKey = getBrowserKey();
-        let browserKeyPublic = CryptoUtil.bip32_from_512bit(browserKey).derivePath("m/0'/1'").publicKey;
+        let masterKeyPublic = SeedToMasterKeyPublic(seed).toString('hex');
+        let browserKeyPublic = BrowserKeyBIP32().publicKey.toString('hex');
 
         await window.showIndicator()
-        let resp = await this.props.recover_account(browserKeyPublic.toString('hex'), masterKeyPublic.toString('hex'), auth, encryptedMasterSeed);
+        let resp = await this.props.recover_account(browserKeyPublic, masterKeyPublic, auth, encryptedMasterSeed);
         await window.hideIndicator()
 
         if(resp.code == 1){
