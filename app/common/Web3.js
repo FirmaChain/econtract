@@ -258,7 +258,11 @@ class Web3Wrapper {
     }
 
     async receipt(transactionId){
-        return await this.web3.eth.getTransactionReceipt(transactionId)
+        try{
+            return await this.web3.eth.getTransactionReceipt(transactionId)
+        }catch(err){
+            return await this.web3.eth.getTransactionReceipt("0x"+transactionId)
+        }
     }
 }
 

@@ -7,6 +7,7 @@ import {
     fetch_user_info
 } from "../../common/actions"
 import { sha256 } from 'js-sha256'
+import Web3 from "../../common/Web3"
 
 let mapStateToProps = (state)=>{
 	return {
@@ -45,6 +46,7 @@ export default class extends React.Component {
             try{
                 this.setState({
                     file: file,
+                    filename: file.name,
                     check_hash:sha256(reader.result)
                 })
             }catch(err){
@@ -54,14 +56,53 @@ export default class extends React.Component {
             await window.hideIndicator()
         }
     }
-
+//9dc1a3dce74374ada23711b60a863c3daf9321e9779928fadad886667f343eac
+//0x85e3e519dad768899e72eab667c815af01ad5f6e67481294a302a9f511ebb8a0
     onVerify = async() => {
+        if(this.state.file == null){
+            return alert("문서파일을 선택해주세요.")
+        }
+        if(!this.state.contract_name || this.state.contract_name.length < 64){
+            return alert("해시를 입력해주세요.")
+        }
+
         this.setState({
             step:1,
             percent:5
         })
+        
+        //check is doc hash ? tx hash?
+        try{
+            let tx_receipt = await Web3.receipt(this.state.contract_name)
+            this.setState({ percent:13 })
+            if( tx_receipt ){
+                console.log(tx_receipt)
+            }else{
+                if(this.state.check_hash == this.state.contract_name){
+                    this.setState({
+                        ok:true,
+                        step:2,
+                    })
+                }else{
+                    this.setState({
+                        ok:false,
+                        step:2,
+                        warning:"입력한 해쉬값이 잘못되었습니다."
+                    })
+                }
+                this.setState({ percent:100 })
+            }
+        }catch(err){
+            alert("검증에 실패했습니다")
+        }
+    }
 
-        setInterval(r=>this.setState({percent:this.state.percent+5}), 800)
+    onClickReset = ()=>{
+        this.setState({
+            step:0,
+            file:null,
+            percent:0
+        })
     }
 
 	render() {
@@ -93,7 +134,7 @@ export default class extends React.Component {
             <div className={this.state.step == 0?`bottom`:`bottom move-out`}>
                 <div className="form-label"> 계약 해쉬값 또는 트랜잭션 </div>
                 <div className="form-input">
-                    <input placeholder="해쉬값 또는 트랜잭션 주소를 입력해주세요(etherscan.io)" value={this.state.contract_name || ""} onChange={e=>this.setState({contract_name:e.target.value})} />
+                    <input placeholder="문서 해쉬값 또는 트랜잭션 해시를 입력해주세요" value={this.state.contract_name || ""} onChange={e=>this.setState({contract_name:e.target.value})} />
                 </div>
                 <div className="form-label"> 계약명 </div>
                 {this.state.file ? <div className="selected-file">
@@ -107,12 +148,24 @@ export default class extends React.Component {
                     <div className="submit-button" onClick={this.onVerify}>검증하기</div>
                 </div>
             </div>
-            <div className={this.state.step == 0?`bottom move-in`:`bottom`} style={{textAlign: "center",paddingTop:"130px"}}>
+            <div className={this.state.step==1?`bottom`:`bottom move-in`} style={{textAlign: "center",paddingTop:"130px"}}>
                 <div className="lds-grid">
                     <div/><div/><div/>
                     <div/><div/><div/>
                     <div/><div/><div/>
                 </div>
+            </div>
+            <div className={this.state.step==2?`bottom checked-panel`:`bottom checked-panel move-out`}>
+                <i className={this.state.ok ? "far fa-check-circle ok_icon":"far fa-times-circle no_icon"}></i>
+                <div className="title">{this.state.ok ? "검증 성공":"검증 실패"}</div>
+                <div className="sub-title">계약 해쉬값 또는 주소</div>
+                <div className="hash-text">{this.state.contract_name}</div>
+                <div className="sub-title">업로드한 문서 파일</div>
+                <div className="content-text">{this.state.filename}</div>
+                {this.state.ok ? null : <div className="sub-title">실패사유</div> }
+                {this.state.ok ? null : <div className="warning-text">{this.state.warning}</div> }
+
+                <div className="btn" onClick={this.onClickReset}>재검증하기</div>
             </div>
 		</div>);
 	}

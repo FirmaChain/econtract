@@ -2114,13 +2114,67 @@ div.checkbox-comp{
         height: auto;
     }
 
+    .checked-panel{
+        text-align: center;
+        .ok_icon{
+            font-size: 50px;
+            color: #55AB68;
+            margin: 20px;
+        }
+        .no_icon{
+            font-size: 50px;
+            color: #D65745;
+            margin: 20px;
+        }
+        .title{
+            font-size: 20px;
+            margin:20px 0;
+            font-weight: bold;
+        }
+        .sub-title{
+            color: #848484;
+            font-size: 13px;
+            margin:10px 0 5px 0;
+        }
+        .hash-text{
+            font-size: 10px;
+            color: #324b5f;
+            margin:0 0 20px 0;
+        }
+        .content-text{
+            font-weight: bold;
+            font-size: 13px;
+        }
+        .warning-text{
+            font-size: 13px;
+        }
+
+        .btn{
+            display:inline-block;
+            border: 2px solid #324b5f;
+            color: #324b5f;
+            padding: 12px 35px;
+            border-radius: 5px;
+            background-color: #fff;
+            font-size: 18px;
+            margin: 30px 0 0 5px;
+            cursor: pointer;
+            font-weight: bold;
+
+            &:hover {
+                background-color:#cacaca;
+                border: 2px solid #324b5f;
+            }
+        }
+    }
+
     .progress{
         width:100%;
         >.progress-fill{
             transition: all 1s;
             // width: 10%;
-            height: 13px;
-            background-color: #3498db;
+            height: 8px;
+            background-color: #394B5B;
             border-top-right-radius: 10px;
             border-bottom-right-radius: 10px;
         }
@@ -2137,6 +2191,7 @@ div.checkbox-comp{
         opacity: 0;
         height: 0;
         padding: 0;
+        padding-top:0 !important;
         transform: translate(-300px,0);
     }
 }
