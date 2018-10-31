@@ -528,10 +528,6 @@ export default class extends React.Component {
                         <textarea className="form-textarea-info" disabled>
                             {this.info2}
                         </textarea>
-    {/*
-                        <div className="form-submit">
-                            <button className="border" onClick={this.next_term}> 동의 </button>
-                        </div>*/}
                     </div>
                 </div>
             </div>
