@@ -155,6 +155,6 @@ export function check_join_publickey(publicms){
 
 export function recover_account(publicbk, publicms, auth, eems){
     return async function(){
-        return (await recover_account(publicbk, publicms, auth, eems)).payload
+        return (await api_recover_account(publicbk, publicms, auth, eems)).payload
     }
 }
