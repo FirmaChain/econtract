@@ -74,7 +74,7 @@ export default class extends React.Component {
             }
             imgs.push({
                 img : this.state.imgs[i],
-                objects : objects
+                objects : objects.filter(e=>e)
             })
         }
         return imgs

@@ -41,16 +41,21 @@ export class ModalManager extends React.Component {
     }
 
     updateModal = async (idx,props)=>{
-        let index = this.state.modals.findIndex(e=>e.idx == idx)
-        let modals = [...this.state.modals]
+        try{
+            let index = this.state.modals.findIndex(e=>e.idx == idx)
+            let modals = [...this.state.modals]
 
-        modals[index].props = {
-            ...modals[index].props,
-            ...props
+            modals[index].props = {
+                ...modals[index].props,
+                ...props
+            }
+            this.setState({
+                modals: modals
+            })
+        }catch(err){
+            return false;
         }
-        this.setState({
-            modals: modals
-        })
+        return true;
     }
 
     closeModal = async (idx)=>{
