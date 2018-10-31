@@ -197,7 +197,7 @@ class TypingPin extends React.Component{
                     <input
                         type="checkbox"
                         onChange={this.pinCheckChange}
-                        defaultChecekd={this.stste.isPinSaved}/> PIN 번호 저장하기
+                        defaultChecekd={this.state.isPinSaved}/> PIN 번호 저장하기
                 </div>
             </div>
             <div className="buttons">
