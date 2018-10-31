@@ -10,6 +10,7 @@ import {
     fetch_user_info,
     get_pin_from_storage,
     upload_ipfs,
+    load_contract_info,
 } from "../../common/actions"
 import SignerSlot from "./signer-slot"
 import moment from "moment"
@@ -27,6 +28,7 @@ let mapDispatchToProps = {
     fetch_user_info,
     get_pin_from_storage,
     upload_ipfs,
+    load_contract_info,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )

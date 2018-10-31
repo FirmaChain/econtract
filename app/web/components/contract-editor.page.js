@@ -391,7 +391,6 @@ export default class extends React.Component {
                     if(!!o) return o.code == null || o.code == this.props.user.code
                 })
             })
-            console.log("myObject",myObject)
 
             await window.showIndicator()
             let resp = await this.props.edit_contract(
