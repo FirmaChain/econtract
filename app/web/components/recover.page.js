@@ -100,7 +100,7 @@ export default class extends React.Component {
         let browserKeyPublic = BrowserKeyBIP32().publicKey.toString('hex');
 
         await window.showIndicator()
-        let resp = await this.props.recover_account(browserKeyPublic, masterKeyPublic, auth, encryptedMasterSeed);
+        let resp = await this.props.recover_account(browserKeyPublic, masterKeyPublic, auth.toString('hex'), encryptedMasterSeed);
         await window.hideIndicator()
 
         if(resp.code == 1){
