@@ -117,6 +117,7 @@ export default class extends React.Component {
                     await this.load_contract(contract_id, pin, async(count, length) => {
                         await window.showIndicator(`계약서 불러오는 중 (${count}/${length})`)
                     }, contract_info.epin ? true : false)
+                    this.blockFlag = 1;
                 }else{
                     while(1){
                         try{
@@ -136,6 +137,7 @@ export default class extends React.Component {
                             await this.load_contract(contract_id, pin, async(count, length) => {
                                 await window.showIndicator(`계약서 불러오는 중 (${count}/${length})`)
                             }, pin_save_checked)
+                            this.blockFlag = 1;
                             break;
                         }catch(err){
                             alert("PIN 번호가 잘못되었습니다.")
