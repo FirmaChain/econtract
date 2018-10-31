@@ -414,7 +414,7 @@ select:focus { outline:none; }
             }
         }
 
-        >div.page {
+        div.page {
             margin-top: 30px;
             border:1px solid #E0E0E0;
             border-radius: 7px;
@@ -476,6 +476,16 @@ select:focus { outline:none; }
                     height: 100px;
                     border: 1px solid #E0E0E0;
                     margin: 10px 0 20px 0;
+                }
+
+                textarea.form-textarea-info {
+                    width:100%;
+                    height: 200px;
+                    border: 1px solid #E0E0E0;
+                    margin: 10px 0 20px 0;
+                    font-size:13px;
+                    outline:none;
+                    resize:none;
                 }
                 
                 div.form-warning{
@@ -961,11 +971,22 @@ table.table{
 
     .right-desc {
         margin-top: 90px;
-        font-size: 11px;
+        font-size: 13px;
         color: #7F7F7F;
         padding-left: 20px;
         >div{
             margin: 10px 0;
+        }
+
+        .pin-place {
+            font-size:25px;
+            color:#333;
+            text-align:center;
+        }
+
+        .pin-check {
+            font-size:15px;
+            text-align:center;
         }
     }
 
