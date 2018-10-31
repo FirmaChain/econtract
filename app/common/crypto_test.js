@@ -33,9 +33,9 @@ export function generateMnemonic() {
 	return mnemonic;
 }
 
-export function getBrowserKey() {
+export function getBrowserKey(forcedGenerate=false) {
 	let browserKey = localStorage.getItem("browser_key");
-	if (browserKey == null) {
+	if (forceGenerate || browserKey == null) {
 		browserKey = generateBrowserKey().toString("base64");
 		localStorage.setItem("browser_key", browserKey);
 	}
