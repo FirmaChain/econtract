@@ -85,7 +85,7 @@ export default class extends React.Component {
                 await this.props.update_epin(resp, this.state.pin);
             }
             //this.unblock();
-            this.blockFlag = false;
+            this.blockFlag = 0;
             history.replace(`/contract-editor/${resp}`)
         }else{
             alert("계약서 생성에 문제가 발생했습니다!")
