@@ -431,11 +431,6 @@ export default class extends React.Component {
     }
 
     onClickCreateEth = async()=>{
-        let keyPair = SeedToEthKey(mnemonicToSeed(this.state.mnemonic), "0'/0");
-        let privateKey = "0x"+keyPair.privateKey.toString('hex');
-        this.setState({
-            user_eth_pk:privateKey
-        })
     }
 
     onClickNextBtnUserInfo = async()=>{
@@ -446,16 +441,14 @@ export default class extends React.Component {
         if(!this.state.useraddress)
             return alert("주소를 입력해주세요.")
 
-        let wallet = Web3.walletWithPK(this.state.user_eth_pk)
-        if(!wallet){
-            return alert("이더리움 프라이빗키가 잘못되었습니다.")
-        }
-
         let account = new_account(this.state.user_id, this.state.password);
+        let keyPair = SeedToEthKey(account.seed, "0'/0");
+        let privateKey = "0x"+keyPair.privateKey.toString('hex');
         this.setState({
             step:this.state.step + 1,
             account:account,
             mnemonic:account.rawMnemonic,
+            user_eth_pk:privateKey,
         })
     }
 
@@ -645,17 +638,6 @@ export default class extends React.Component {
                     <div className="form-input">
                         <input placeholder="주소를 입력해주세요." value={this.state.useraddress || ""} onChange={e=>this.setState({useraddress:e.target.value})} />
                         <button onClick={this.onClickFindAddress}>검색</button>
-                    </div>
-
-                    <div className="form-label"> 롭스텐 이더리움 프라이빗 키 </div>
-                    <div className="form-input">
-                        <input placeholder="기존 보유하고 계신 키값을 입력해주세요." value={this.state.user_eth_pk || ""} onChange={e=>this.setState({user_eth_pk:e.target.value})}/>
-                        <button onClick={this.onClickCreateEth}>생성</button>
-                    </div>
-                    <div className="form-warning">
-                        * 롭스텐 이더리움을 전송받기 위해 필요합니다.
-                        보유하고 계신 키가 없다면 [생성] 버튼을 눌러 
-                        생성하시면 됩니다.
                     </div>
 
                     <div className="form-submit">
