@@ -430,9 +430,6 @@ export default class extends React.Component {
         await window.hideIndicator()
     }
 
-    onClickCreateEth = async()=>{
-    }
-
     onClickNextBtnUserInfo = async()=>{
         if(!this.state.username)
             return alert("이름을 작성해주세요.")
