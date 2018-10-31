@@ -14,6 +14,7 @@ import {
     makeAuth,
     makeSignData,
     decrypt_user_info,
+    SeedToEthKey,
     getMasterSeed,
 } from "../../common/crypto_test"
 
