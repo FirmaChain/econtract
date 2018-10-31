@@ -303,6 +303,7 @@ export function confirm_contract(contract_id, counterparties, docByte){
         let encrypt = aes_encrypt(new Buffer(docByte), thekey)
 
         let original = sha256(docByte)
+        console.log("????",original)
         let signTx = await Web3.signed_newOrSignContract(original,counterparties)
 
         console.log(JSON.stringify(signTx))

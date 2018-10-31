@@ -651,7 +651,7 @@ E-Contract 이용약관(버전 0.0.1)
                         {this.state.mnemonic.split(" ").map((e,k)=>{
                             return <div key={k} className="masterkey-item">{e}</div>
                         })}
-                        <div className="copy" onClick={this.onClickSaveMnemonic}>저장</div>
+                        <div className="copy" onClick={this.onClickSaveMnemonic}>저장 양식 다운로드</div>
                     </div>
                     
                     <div className="form-submit">
@@ -664,7 +664,7 @@ E-Contract 이용약관(버전 0.0.1)
                     * 전체 계약 잠금 해제시에 필요한 마스터 키워드입니다. 브라우저 및 기기 변경시 보안을 위해 접속하신 기기에서는 잠금 상태로 계약이 로드됩니다. 이전 해제 기록이 있는 계약이라면 해당 키워드를 사용해 일괄 해제 가능합니다.
                 </div>
                 <div className="right-desc">
-                    해당 키워드를 서면으로 옮겨 적어 저장하셔서 필요시에 사용하시기 바랍니다. 안전한 계정 보안을 위해 전자매체에 저장, 타인에게 양도 등의 행위를 일체 권장하지 않습니다.
+                    필요할 때 사용할 수 있도록 상단의 12개의 키워드들을 <u><strong>순서대로</strong></u> 종이에 옮겨 적어 안전하게 보관하십시오. 안전하게 계정을 보호하기 위해서는 전자매체에 저장하거나 타엔에게 양도하는 등의 행동을 하지 않는 것을 권장합니다.
                 </div>
             </div>
         </div>)
