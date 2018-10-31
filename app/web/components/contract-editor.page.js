@@ -23,17 +23,18 @@ import CancelablePromise from 'cancelable-promise';
 class Item extends React.Component{
     content(isEditable){
         let props = this.props
+        console.log(props.status)
         if(props.type == "text") {
             return <div 
                 // className={"content" + (props.docStatus >= 2 ? "no border" : null)} 
                 className="content" 
-                contentEditable={true} 
+                contentEditable={props.docStatus == 2 ? false : true}
                 onBlur={(e)=>props.onUpdate("text",e.target.innerHTML)} 
                 dangerouslySetInnerHTML={{__html:props.text}}>
             </div>
         } else if(props.type == "checkbox") {
             return <div className="content">
-                <input type="checkbox" />
+                <input type="checkbox" disabled={props.docStatus == 2 ? true : false}/>
             </div>
         } else if(props.type == "img") {
             return <div className="content">

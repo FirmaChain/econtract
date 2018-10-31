@@ -109,8 +109,7 @@ export function login_account(user_id, password){
             sign.publicKey.toString('hex'),
             nonce,
             sign.payload
-        ))
-        console.log(resp)
+        )).payload
 
         if(resp.eems){
             window.setCookie("session", resp.session, 0.125)
