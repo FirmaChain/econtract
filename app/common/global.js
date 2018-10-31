@@ -187,7 +187,7 @@ else
 
 
 window.pdf = {
-  gen:async function(imgs){
+  gen:async function(imgs, filename = null){
     let pdfs = []
     
     for(let i in imgs){
@@ -228,9 +228,9 @@ window.pdf = {
 
     let fileId = md5(JSON.stringify(pdfs));
     let creatationDate = new Date(1540977124241);
-    return await window.pdf.make( fileId, creatationDate, pdfs )
+    return await window.pdf.make( fileId, creatationDate, pdfs, filename )
   },
-  make:function(fileId, creatationDate, imgs, name = Date.now()){
+  make:function(fileId, creatationDate, imgs, name){
     return new Promise(async(r)=>{
       
       let width = 0;
@@ -255,7 +255,10 @@ window.pdf = {
       doc.setCreationDate(creatationDate)
       doc.setFileId(fileId.toUpperCase())
       
-      // doc.save(name+".pdf")
+      if(name){
+        doc.save(name+".pdf")
+      }
+      
       r(doc.output("arraybuffer"))
     })
   }
