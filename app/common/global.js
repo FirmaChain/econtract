@@ -255,7 +255,7 @@ window.pdf = {
       doc.setCreationDate(creatationDate)
       doc.setFileId(fileId.toUpperCase())
       
-      doc.save(name+".pdf")
+      // doc.save(name+".pdf")
       r(doc.output("arraybuffer"))
     })
   }
