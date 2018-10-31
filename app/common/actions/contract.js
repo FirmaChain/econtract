@@ -302,7 +302,7 @@ export function confirm_contract(contract_id, counterparties, docByte){
         let thekey = await getTheKey(contract_id, pin)
         let encrypt = aes_encrypt(new Buffer(docByte), thekey)
 
-        let original = sha256(encrypt)
+        let original = sha256(docByte)
         let signTx = await Web3.signed_newOrSignContract(original,counterparties)
 
         return (await api_confirm_contract( contract_id, original, JSON.stringify(signTx) )).payload
@@ -362,22 +362,6 @@ export function gen_pin(digit=6) {
 export function eth_transaction(){
     return async function(){
     }
-}
-
-export function upload_ipfs(contract_id, array){
-    return async function(){
-        let pin = await getPIN(contract_id);
-        let thekey = await getTheKey(contract_id, pin)
-        let encrypt = aes_encrypt(new Buffer(array), thekey)
-
-        let original = sha256(array)
-        let ipfs_hash = await window.ipfs_upload("data:application/econtract;sha256|aes256cbc,"+original+"|"+encrypt)
-        
-        // ipfs_hash : server 
-
-        console.log(v)
-        return blob
-   }
 }
 
 export function convert_doc(file){
