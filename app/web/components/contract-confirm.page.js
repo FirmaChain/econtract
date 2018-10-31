@@ -77,7 +77,6 @@ export default class extends React.Component {
     async load_contract(contract_id, pin){
         let contract = await this.props.load_contract(contract_id,pin, null, true )
         if(contract.contract_id){
-            console.log(contract)
             this.setState({
                 ...contract,
                 pin:pin,
@@ -113,7 +112,6 @@ export default class extends React.Component {
 
     onClickPrint = async()=>{
         
-        
         await window.showIndicator()
         this.props.upload_ipfs( this.state.contract_id, bytes);
         await window.hideIndicator()
@@ -142,7 +140,7 @@ export default class extends React.Component {
             })
             if (me.length == 0) {
                 console.log("Impossible!");
-                return "mang";
+                return "m";
             } else {
                 alreadySelect = (me[0].confirm == 1) || (me[0].reject ? true : false);
             }
