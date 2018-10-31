@@ -97,11 +97,12 @@ export default class extends React.Component {
 
     onClickUploadFile = async (e)=>{
         await window.showIndicator()
+        let file = e.target.files[0];
+        let pdf, pdf_payload
 
         try {
-            let file = e.target.files[0];
-            let pdf = await this.props.convert_doc(file)
-            let pdf_payload = pdf.payload.data
+            pdf = await this.props.convert_doc(file)
+            pdf_payload = pdf.payload.data
         } catch(err) {
             console.log(err)
             await window.hideIndicator()
