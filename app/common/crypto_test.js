@@ -35,7 +35,7 @@ export function generateMnemonic() {
 
 export function getBrowserKey(forcedGenerate=false) {
 	let browserKey = localStorage.getItem("browser_key");
-	if (forceGenerate || browserKey == null) {
+	if (forcedGenerate || browserKey == null) {
 		browserKey = generateBrowserKey().toString("base64");
 		localStorage.setItem("browser_key", browserKey);
 	}
