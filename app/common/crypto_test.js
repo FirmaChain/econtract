@@ -38,6 +38,7 @@ export function getBrowserKey(forcedGenerate=false) {
 	if (forcedGenerate || browserKey == null) {
 		browserKey = generateBrowserKey().toString("base64");
 		localStorage.setItem("browser_key", browserKey);
+        localStorage.setItem("browser_key_virgin", 1);
 	}
 	return Buffer.from(browserKey, "base64");
 }
