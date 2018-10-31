@@ -21,7 +21,8 @@ export default class extends React.Component {
 	constructor(){
 		super()
 		this.state={
-
+            step:0,
+            percent:0
         }
 	}
 
@@ -36,17 +37,15 @@ export default class extends React.Component {
 
     onClickUploadFile = async (e)=>{
         let file = e.target.files[0];
-        let reader = new FileReader();
-        reader.readAsBinaryString(file)
 
+        let reader = new FileReader();
+        reader.readAsArrayBuffer(file)
         reader.onload = async()=>{
             await window.showIndicator()
             try{
-                console.log(reader.result.length)
-                console.log("reader.result", sha256(reader.result))
-                
                 this.setState({
                     file: file,
+                    check_hash:sha256(reader.result)
                 })
             }catch(err){
                 console.log(err)
@@ -57,18 +56,23 @@ export default class extends React.Component {
     }
 
     onVerify = async() => {
+        this.setState({
+            step:1,
+            percent:5
+        })
 
+        setInterval(r=>this.setState({percent:this.state.percent+5}), 800)
     }
 
 	render() {
 		return (<div className="verification-page">
-            <div className="top">
+            <div className={this.state.step == 0?`top`:`top toppadding`}>
                 <div className="logo">
                     <img src="/static/logo_blue.png" onClick={()=>history.push("/")}/>
                 </div>
                 <div className="title">문서 위 ・ 변조 검증 서비스</div>
                 <div className="desc">이더리움에 올라간 계약의 해쉬값과 파일의 대조를 통한 검증 서비스를 제공합니다!</div>
-                <div className="desc-image">
+                <div className={this.state.step == 0?`desc-image`:`desc-image folded`}>
                     <div>
                         <img src="/static/pic_01.png" />
                         <div className="img-desc">등록하신 계약의 상세보기 화면에서</div>
@@ -83,7 +87,10 @@ export default class extends React.Component {
                     </div>
                 </div>
             </div>
-            <div className="bottom">
+            <div className="progress">
+                <div className="progress-fill" style={{width:`${this.state.percent}%`}}></div>
+            </div>
+            <div className={this.state.step == 0?`bottom`:`bottom move-out`}>
                 <div className="form-label"> 계약 해쉬값 또는 트랜잭션 </div>
                 <div className="form-input">
                     <input placeholder="해쉬값 또는 트랜잭션 주소를 입력해주세요(etherscan.io)" value={this.state.contract_name || ""} onChange={e=>this.setState({contract_name:e.target.value})} />
@@ -98,6 +105,13 @@ export default class extends React.Component {
                 </div>}
                 <div className="form-button">
                     <div className="submit-button" onClick={this.onVerify}>검증하기</div>
+                </div>
+            </div>
+            <div className={this.state.step == 0?`bottom move-in`:`bottom`} style={{textAlign: "center",paddingTop:"130px"}}>
+                <div className="lds-grid">
+                    <div/><div/><div/>
+                    <div/><div/><div/>
+                    <div/><div/><div/>
                 </div>
             </div>
 		</div>);
