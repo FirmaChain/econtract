@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom'
 import history from '../history';
 import {
-    regist_new_account,
+    recover_account,
     check_join_publickey,
 } from "../../common/actions"
 import Web3 from "../../common/Web3"
@@ -31,7 +31,7 @@ let mapStateToProps = (state)=>{
 }
 
 let mapDispatchToProps = {
-    regist_new_account,
+    recover_account,
     check_join_publickey,
 }
 
@@ -79,7 +79,7 @@ export default class extends React.Component {
                 step: this.state.step+1
             });
         }else{
-            alert("매치되는 계정이 없습니다. 새로 가입해주세요.");
+            alert("일치하는 계정이 없습니다. 새로 가입해주세요.");
         }
         await window.hideIndicator();
         return;
@@ -89,44 +89,31 @@ export default class extends React.Component {
         if(!this.state.user_id){
             return alert("아이디를 입력해주세요!")
         }
-        if(this.state.password.length < 5){
+        if(this.state.password.length < 6){
             return alert("비밀번호는 최소 6글자입니다.")
         }
         if(this.state.password !== this.state.password2){
             return alert("비밀번호 다시입력과 다릅니다.")
         }
 
-        this.setState({
-            step: this.state.step+1
-        })
-    }
+        let mnemonic = this.state.mnemonic;
+        getBrowserKey(true); // Reset browserkey
+        let auth = makeAuth(this.state.user_id, this.state.password);
+        let encryptedMasterSeed = makeMnemonic(auth, mnemonic);
 
-    onClickFinishSortTest = async()=>{
-        if(this.state.sort_test.map(e=>this.state.mnemonic.split(" ")[e]).join(" ") !== this.state.mnemonic){
-            return alert("순서가 맞지 않습니다. 다시 한번 확인해주세요!")
-        }
-        
-        let info = {
-            email: this.state.email,
-            username: this.state.username,
-            userphone: this.state.userphone,
-            useraddress: this.state.useraddress,
-        }
+        let seed = mnemonicToSeed(mnemonic);
+        let masterKeyPublic = SeedToMasterKeyPublic(seed);
 
-        let keyPair = SeedToEthKey(this.state.account.seed, "0'/0/0");
-        let privateKey = "0x"+keyPair.privateKey.toString('hex');
+        let browserKey = getBrowserKey();
+        let browserKeyPublic = CryptoUtil.bip32_from_512bit(browserKey).derivePath("m/0'/1'").publicKey;
 
-        let wallet = Web3.walletWithPK(privateKey)
-        console.log(wallet)
-        let encryptedInfo = aes_encrypt(JSON.stringify(info), this.state.account.masterKeyPublic);
-        
         await window.showIndicator()
-        let resp = await this.props.regist_new_account(this.state.account, encryptedInfo, this.state.email, this.state.username, wallet.address)
+        let resp = await this.props.recover_account(browserKeyPublic.toString('hex'), masterKeyPublic.toString('hex'), auth, encryptedMasterSeed);
         await window.hideIndicator()
 
         if(resp.code == 1){
             history.push("/login");
-            return alert("회원가입에 성공하였습니다.")
+            return alert("이제 기존 계정으로 로그인할 수 있습니다.")
         }else{
             return alert(resp.error)
         }
@@ -136,6 +123,7 @@ export default class extends React.Component {
       if(e.keyCode == 13){
         switch(type) {
             case 0:
+                this.onClickInputMnemonic()
                 break;
             case 1:
                 this.onClickNextBtnAccountInfo()
