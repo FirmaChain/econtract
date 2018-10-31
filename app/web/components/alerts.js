@@ -41,18 +41,34 @@ class AddFolder extends React.Component{
 
 @modal
 class RegistContract extends React.Component{
+
+    constructor() {
+        super()
+        this.state = {
+            isPinSaved : false
+        }
+    }
+
+    componentDidMount() {
+        this.setState({
+            isPinSaved: this.props.is_pin_saved
+        })
+    }
+
     closeSelf = ()=>{
         window.closeModal(this.props.modalId)
     }
 
     onClickOK = ()=>{
-        if(this.refs.pin_save.checked){
-            this.props.updatePIN();
-        } else {
-            this.props.clearPIN();
-        }
-        this.props.onOK && this.props.onOK()
-        this.closeSelf()
+        this.state.isPinSaved ? this.props.updatePIN() : this.props.clearPIN()
+        //this.props.onOK && this.props.onOK()
+        //this.closeSelf()
+    }
+
+    pinCheckChange = (e) => {
+        this.setState({
+            isPinSaved: e.target.checked
+        });
     }
 
     render(){
@@ -74,7 +90,10 @@ class RegistContract extends React.Component{
                         </div>
                         
                         <div className="checkbox">
-                            <input ref="pin_save" type="checkbox" checked={this.props.is_pin_saved}/> PIN 번호 저장하기
+                            <input
+                                type="checkbox" 
+                                onChange={this.pinCheckChange}
+                                defaultChecked={this.props.is_pin_saved}/> PIN 번호 저장하기
                         </div>
 
                         <div className="desc"> * 해당 PIN번호는 암호화되어 저장되어 본인만 열람이 가능합니다.</div>
@@ -106,7 +125,10 @@ class RegistContract extends React.Component{
 class TypingPin extends React.Component{
     constructor(){
         super()
-        this.state = { value : ""}
+        this.state = { 
+            value : "",
+            isPinSaved : false
+        }
     }
     closeSelf = ()=>{
         window.closeModal(this.props.modalId)
@@ -115,11 +137,11 @@ class TypingPin extends React.Component{
     onClickOK = ()=>{
         if(this.state.value.length == 6){
 
-            if(this.refs.pin_save.checked){
+            if(this.state.isPinSaved){
                 this.props.updatePIN(this.state.value);
             }
 
-            this.props.onFinish && this.props.onFinish(this.state.value, this.refs.pin_save.checked)
+            this.props.onFinish && this.props.onFinish(this.state.value, this.stste.isPinSaved)
             this.closeSelf()
         } else {
             alert("핀번호는 6자리입니다. 정확히 입력해주세요.")
@@ -158,6 +180,12 @@ class TypingPin extends React.Component{
         document.removeEventListener("keydown", this.keydown);
     }
 
+    pinCheckChange = (e) => {
+        this.setState({
+            isPinSaved: e.target.checked
+        });
+    }
+
     render(){
         return <div className="default-modal type-pin-modal">
             <div className="contents">
@@ -166,7 +194,10 @@ class TypingPin extends React.Component{
                     {this.state.value}
                 </div>
                 <div className="checkbox">
-                    <input ref="pin_save" type="checkbox" /> PIN 번호 저장하기
+                    <input
+                        type="checkbox"
+                        onChange={this.pinCheckChange}
+                        defaultChecekd={this.stste.isPinSaved}/> PIN 번호 저장하기
                 </div>
             </div>
             <div className="buttons">

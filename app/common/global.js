@@ -11,8 +11,10 @@ import html2canvas from "html2canvas"
 global.Buffer = require('buffer').Buffer;
 global.process = require('process');
 
-const HOST = "test.firma-solutions.com"
-//const HOST = "127.0.0.1:9999"
+//no use this HOST
+const HOST = "";
+// const HOST = "test.firma-solutions.com"
+// const HOST = "127.0.0.1:9999"
 
 if (typeof btoa === 'undefined') {
   global.btoa = function (str) {
