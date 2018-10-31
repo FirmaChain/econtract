@@ -226,3 +226,15 @@ export function decryptPIN(epin){
         return null;
     }
 }
+
+export function getMasterSeed() {
+    try {
+        let entropy = sessionStorage.getItem("entropy");
+        let mnemonic = bip39.entropyToMnemonic(entropy);
+        let seed = bip39.mnemonicToSeed(mnemonic);
+        return seed;
+    } catch(err) {
+        console.log(err);
+        return null;
+    }
+}
