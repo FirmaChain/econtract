@@ -73,7 +73,7 @@ export default class extends React.Component {
         let masterKeyPublic = SeedToMasterKeyPublic(seed);
 
         await window.showIndicator();
-        let resp = await this.props.check_join_publickey(masterKeyPublic);
+        let resp = await this.props.check_join_publickey(masterKeyPublic.toString('hex'));
         if(resp){
             this.setState({
                 step: this.state.step+1
