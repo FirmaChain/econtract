@@ -33,9 +33,9 @@ export function generateMnemonic() {
 	return mnemonic;
 }
 
-export function getBrowserKey() {
+export function getBrowserKey(forcedGenerate=false) {
 	let browserKey = localStorage.getItem("browser_key");
-	if (browserKey == null) {
+	if (forcedGenerate || browserKey == null) {
 		browserKey = generateBrowserKey().toString("base64");
 		localStorage.setItem("browser_key", browserKey);
 	}
@@ -58,8 +58,8 @@ export function validateMnemonic(mnemonic) {
     return bip39.validateMnemonic(mnemonic);
 }
 
-export function makeMnemonic(auth) {
-	let userMnemonic = generateMnemonic();
+export function makeMnemonic(auth, forcedMnemonic=null) {
+	let userMnemonic = forcedMnemonic ? forcedMnemonic : generateMnemonic();
 	let userEntropy = bip39.mnemonicToEntropy(userMnemonic);
 	let browserKey = getBrowserKey();
 	let encryptedUserEntropy = aes_encrypt(userEntropy, auth);
