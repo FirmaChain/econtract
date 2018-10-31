@@ -478,14 +478,11 @@ export default class extends React.Component {
             return alert("순서가 맞지 않습니다. 다시 한번 확인해주세요!")
         }
         
-        let keyPair = SeedToEthKey(this.state.account.seed, "0'/0/0");
-        let privateKey = "0x"+keyPair.privateKey.toString('hex');
         let info = {
             email: this.state.email,
             username: this.state.username,
             userphone: this.state.userphone,
             useraddress: this.state.useraddress,
-            eth_pk: privateKey
         }
         let wallet = Web3.walletWithPK(privateKey)
         console.log(wallet)
