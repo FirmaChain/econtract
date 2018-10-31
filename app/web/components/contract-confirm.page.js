@@ -103,11 +103,12 @@ export default class extends React.Component {
                     doc_hash : sha256(byte)
                 })
 
-                let qq = {}
-                for(let v = 0;v < 100;v++){
-                    qq[v] = sha256(await window.pdf.gen( this.getContractRaw(), false, v ));
-                }
-                console.log("----------------", qq)
+                // let qq = {}
+                // for(let v = 0;v < 100;v++){
+                //     window.scroll(0,v)
+                //     qq[v] = sha256(await window.pdf.gen( this.getContractRaw(), false ));
+                // }
+                // console.log("----------------", qq)
             }
         }else{
             alert("정상적으로 불러오지 못했습니다.")
@@ -141,6 +142,9 @@ export default class extends React.Component {
 
         let v = await window.pdf.gen( this.getContractRaw(), true )
         console.log(v, sha256(v))
+
+        let int32View = new Int32Array(v);
+        console.log(int32View, sha256(int32View))
 
         await window.hideIndicator()
     }

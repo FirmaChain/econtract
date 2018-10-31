@@ -96,8 +96,9 @@ export default class extends React.Component {
     }
 
     onClickUploadFile = async (e)=>{
-        await window.showIndicator()
         let file = e.target.files[0];
+
+        await window.showIndicator()
         let pdf, pdf_payload
 
         try {
