@@ -442,13 +442,10 @@ export default class extends React.Component {
             return alert("주소를 입력해주세요.")
 
         let account = new_account(this.state.user_id, this.state.password);
-        let keyPair = SeedToEthKey(account.seed, "0'/0");
-        let privateKey = "0x"+keyPair.privateKey.toString('hex');
         this.setState({
             step:this.state.step + 1,
             account:account,
             mnemonic:account.rawMnemonic,
-            user_eth_pk:privateKey,
         })
     }
 
@@ -481,14 +478,16 @@ export default class extends React.Component {
             return alert("순서가 맞지 않습니다. 다시 한번 확인해주세요!")
         }
         
+        let keyPair = SeedToEthKey(this.state.account.seed, "0'/0/0");
+        let privateKey = "0x"+keyPair.privateKey.toString('hex');
         let info = {
             email: this.state.email,
             username: this.state.username,
             userphone: this.state.userphone,
             useraddress: this.state.useraddress,
-            eth_pk: this.state.user_eth_pk
+            eth_pk: privateKey
         }
-        let wallet = Web3.walletWithPK(this.state.user_eth_pk)
+        let wallet = Web3.walletWithPK(privateKey)
         console.log(wallet)
         let encryptedInfo = aes_encrypt(JSON.stringify(info), this.state.account.masterKeyPublic);
         
