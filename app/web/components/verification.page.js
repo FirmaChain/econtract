@@ -42,7 +42,7 @@ export default class extends React.Component {
         reader.onload = async()=>{
             await window.showIndicator()
             try{
-                console.log(reader.result)
+                console.log(reader.result.length)
                 console.log("reader.result", sha256(reader.result))
                 
                 this.setState({

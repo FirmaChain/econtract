@@ -187,7 +187,7 @@ else
 
 
 window.pdf = {
-  gen:async function(imgs, saveAs = false,x=0){
+  gen:async function(imgs, saveAs = false){
     let pdfs = []
     
     for(let i in imgs){
@@ -195,8 +195,8 @@ window.pdf = {
         div.style.width=800;
         div.style.display="inline-block";
         div.style.position="fixed";
-        div.style.left=-999999+x;
-        div.style.top=-999999+x;
+        div.style.left=1000000;
+        div.style.top=1000000;
 
         document.body.append(div)
 
