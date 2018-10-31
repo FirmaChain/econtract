@@ -96,7 +96,7 @@ export function SeedToMasterKeyPublicContract(seed){
 export function SeedToEthKey(seed, subpath){
 	let masterKey = hmac_sha512("Bitcoin seed", seed);
     let coinMasterKey = bip32_from_512bit(masterKey).derivePath("m/44'/60'");
-    let requestKey = bip32_from_512bit(masterKey).derivePath("m/44'/60'/"+subpath");
+    let requestKey = bip32_from_512bit(masterKey).derivePath("m/44'/60'/"+subpath);
     if (coinMasterKey.toBase58() == requestKey.toBase58()) {
         return null;
     } else {
