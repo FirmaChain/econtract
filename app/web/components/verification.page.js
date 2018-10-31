@@ -71,12 +71,29 @@ export default class extends React.Component {
             percent:5
         })
         
-        //check is doc hash ? tx hash?
         try{
-            let tx_receipt = await Web3.receipt(this.state.contract_name)
+            let tx_receipt = await Web3.transaction(this.state.contract_name)
             this.setState({ percent:13 })
+            await new Promise(r=>setTimeout(r,1000))
             if( tx_receipt ){
-                console.log(tx_receipt)
+                let head = tx_receipt.input.slice(0,10)
+                let topic_1 = tx_receipt.input.slice(10,74)
+                this.setState({ percent:56 })
+                await new Promise(r=>setTimeout(r,1000))
+                this.setState({ percent:100 })
+                
+                if(topic_1 == this.state.check_hash){
+                    this.setState({
+                        ok:true,
+                        step:2,
+                    })
+                }else{
+                    this.setState({
+                        ok:false,
+                        step:2,
+                        warning:"이더넷과 파일의 해시가 다릅니다."
+                    })
+                }
             }else{
                 if(this.state.check_hash == this.state.contract_name){
                     this.setState({
