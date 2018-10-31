@@ -54,6 +54,10 @@ export function mnemonicToSeed(mnemonic){
 	return bip39.mnemonicToSeed(mnemonic);
 }
 
+export function validateMnemonic(mnemonic) {
+    return bip39.validateMnemonic(mnemonic);
+}
+
 export function makeMnemonic(auth) {
 	let userMnemonic = generateMnemonic();
 	let userEntropy = bip39.mnemonicToEntropy(userMnemonic);
