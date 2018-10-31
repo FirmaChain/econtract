@@ -225,7 +225,7 @@ window.pdf = {
             }
             if(o.type == "text"){
               let text = element = document.createElement("div")
-              text.innerText = o.data
+              text.innerText = o.text
             }
 
             if(element == null)
