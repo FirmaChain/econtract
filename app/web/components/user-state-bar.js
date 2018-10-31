@@ -88,7 +88,8 @@ export default class extends React.Component{
     onLogout = () => {
         window.eraseCookie("session")
         window.eraseCookie("session_update")
-        window.location.href = "/login"
+        
+        location.reload(true)
     }
     
     render(){
