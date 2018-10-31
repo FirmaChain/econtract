@@ -143,8 +143,8 @@ export default class extends React.Component {
         let v = await window.pdf.gen( this.getContractRaw(), true )
         console.log(v, sha256(v))
 
-        let int32View = new Int32Array(v);
-        console.log(int32View, sha256(int32View))
+        let int32View = new Uint8Array(v);
+        console.log(int32View,int32View.length,v.byteLegnth, sha256(int32View))
 
         await window.hideIndicator()
     }

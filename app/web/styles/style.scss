@@ -1937,11 +1937,11 @@ div.checkbox-comp{
 
 .verification-page {
     text-align:center;
-
     >.top {
         background-color:#f8f8f8;
         padding-top:20px;
         padding-bottom:80px;
+        transition: all 0.5s;
 
         >.title {
             margin-top:30px;
@@ -1963,6 +1963,8 @@ div.checkbox-comp{
             align-items:center;
 
             margin-top:40px;
+            height: 175px;
+            transition: all 0.5s;
 
             >div {
                 margin-right: 40px;
@@ -1983,6 +1985,13 @@ div.checkbox-comp{
             }
         }
 
+        >.folded{
+            height: 0;
+            overflow: hidden;
+        }
+    }
+    >.toppadding{
+        padding-bottom:20px;
     }
     >.bottom {
         width:400px;
@@ -1990,7 +1999,7 @@ div.checkbox-comp{
         margin:0 auto;
         text-align:left;
         padding-top:50px;
-
+        transition: all 0.5s;
 
         .upload-form{
             display: flex;
@@ -2088,7 +2097,34 @@ div.checkbox-comp{
                 width: 40px;
             }
         }
+        transform: translate(0,0);
+        height: auto;
+    }
 
+    .progress{
+        width:100%;
+        >.progress-fill{
+            transition: all 1s;
+            // width: 10%;
+            height: 13px;
+            background-color: #3498db;
+            border-top-right-radius: 10px;
+            border-bottom-right-radius: 10px;
+        }
+    }
+
+    >.move-out{
+        opacity: 0;
+        height: 0;
+        padding: 0;
+        transform: translate(300px,0);
+    }
+
+    >.move-in{
+        opacity: 0;
+        height: 0;
+        padding: 0;
+        transform: translate(-300px,0);
     }
 }
 
@@ -2106,3 +2142,73 @@ div.checkbox-comp{
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
+
+
+.lds-grid {
+    display: inline-block;
+    position: relative;
+    width: 64px;
+    height: 64px;
+  }
+  .lds-grid div {
+    position: absolute;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    background: #374B5D;
+    animation: lds-grid 1.2s linear infinite;
+  }
+  .lds-grid div:nth-child(1) {
+    top: 6px;
+    left: 6px;
+    animation-delay: 0s;
+  }
+  .lds-grid div:nth-child(2) {
+    top: 6px;
+    left: 26px;
+    animation-delay: -0.4s;
+  }
+  .lds-grid div:nth-child(3) {
+    top: 6px;
+    left: 45px;
+    animation-delay: -0.8s;
+  }
+  .lds-grid div:nth-child(4) {
+    top: 26px;
+    left: 6px;
+    animation-delay: -0.4s;
+  }
+  .lds-grid div:nth-child(5) {
+    top: 26px;
+    left: 26px;
+    animation-delay: -0.8s;
+  }
+  .lds-grid div:nth-child(6) {
+    top: 26px;
+    left: 45px;
+    animation-delay: -1.2s;
+  }
+  .lds-grid div:nth-child(7) {
+    top: 45px;
+    left: 6px;
+    animation-delay: -0.8s;
+  }
+  .lds-grid div:nth-child(8) {
+    top: 45px;
+    left: 26px;
+    animation-delay: -1.2s;
+  }
+  .lds-grid div:nth-child(9) {
+    top: 45px;
+    left: 45px;
+    animation-delay: -1.6s;
+  }
+  @keyframes lds-grid {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+  }
+  
