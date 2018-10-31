@@ -123,6 +123,7 @@ export default class extends React.Component {
     }
 
 	render() {
+        console.log(this.state.check_hash)
 		return (<div className="verification-page">
             <div className={this.state.step == 0?`top`:`top toppadding`}>
                 <div className="logo">
