@@ -91,10 +91,11 @@ export default class extends React.Component {
 								<b>이젠 블록체인으로 벗어나세요.</b>
 							</div>
 							<div className="desc">
-								E-Contract 서비스는 탈중앙화 전자계약 플랫폼으로<br/>
+								E-Contract 서비스는 탈중앙화 전자 계약 플랫폼으로<br/>
 								모든 계약 내용은 오직 계약 당사자들에게만 읽기 및 수정 권한이 부여되며,<br/>
 								그 외 모든 접근은 불허됩니다.<br/>
-								이는 개발사조차도 계약 내용 접근이 불가능하기 때문에 해킹 위험이 전혀 없습니다.
+								모든 내용은 계약 당사자들만이 가지고 있는 마스터 키워드로만 복호화 할 수 있습니다.<br/>
+								이는 타원 곡선 암호를 이용하여 개발사조차도 계약 내용에 대한 복호화가 불가능합니다.
 							</div>
 						</div>
 					</div>
@@ -108,8 +109,8 @@ export default class extends React.Component {
 								<b>편리한 전자계약을 사용해 보세요.</b>
 							</div>
 							<div className="desc">
-								전자계약 법안이 발효되면서 서면계약과 동일한 법적 효력이<br/>
-								발생하게 되었습니다. E-Contract 는 서면 계약이 가지는 단점들은<br/>
+								전자문서, 서명 법안이 발효되면서 서면계약과 동일한 법적 효력이<br/>
+								발생하게 되었습니다. E-Contract 는 서면 계약이 가지는 단점들을<br/>
 								보완하고 장점들은 극대화하여 상호간에 이뤄지는 계약 과정 내에서의<br/>
 								발생하는 불편한 점들을 <b>*기능</b>을 통해 해결하였습니다.
 							</div>
@@ -130,7 +131,9 @@ export default class extends React.Component {
 							<div className="card">
 								<div className="title">해킹 원천 차단</div>
 								<div className="desc">
-									접속하는 브라우저에 계약 정보를 저장함으로써<br/>
+									서버는 오로지 계약 당사자간의 암호화된 데이터 전달<br/>
+									및 최소한의 세션 정보만 저장합니다.<br/>
+									브라우저에 복호화를 위한 정보를 저장함으로써<br/>
 									계약에 대한 외부 해킹을 차단함은 물론,<br/>
 									오로지 계약 당사자들만이 접근 가능합니다.
 								</div>
