@@ -196,7 +196,7 @@ export default class extends React.Component {
 
                     </div>
                 </div>
-                <TransactionBackgroundWork />
+                {/* <TransactionBackgroundWork /> */}
             </div>
 		</div>);
 	}
