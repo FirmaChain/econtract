@@ -96,11 +96,17 @@ export default class extends React.Component {
     }
 
     onClickUploadFile = async (e)=>{
-        let file = e.target.files[0];
-
         await window.showIndicator()
-        let pdf = await this.props.convert_doc(file)
-        let pdf_payload = pdf.payload.data
+
+        try {
+            let file = e.target.files[0];
+            let pdf = await this.props.convert_doc(file)
+            let pdf_payload = pdf.payload.data
+        } catch(err) {
+            console.log(err)
+            await window.hideIndicator()
+            return window.alert("파일 로딩 중 문제가 발생하여 중단합니다.")
+        }
     
         try{
             let pdf = await pdfjsLib.getDocument({data: pdf_payload}).promise;
@@ -130,7 +136,7 @@ export default class extends React.Component {
             })
         }catch(err){
             console.log(err)
-            window.alert("PDF 형식이 아닙니다.")
+            window.alert("지원하지 않는 포맷입니다.")
         }
         await window.hideIndicator()
     }
