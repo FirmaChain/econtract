@@ -364,7 +364,7 @@ export default class extends React.Component {
                     await window.showIndicator()
                     let resp = await this.props.edit_contract(this.state.contract_id, this.state.pin, window.clone_object(this.state.edit_page))
                     if(resp){
-                        //this.unblock()
+                        this.blockFlag = 0
                         alert("성공적으로 저장했습니다.")
                         history.replace("/recently")
                     }else{
