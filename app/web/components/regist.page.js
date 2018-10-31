@@ -682,12 +682,12 @@ E-Contract 이용약관(버전 0.0.1)
                     </div>
 
                     <div className="masterkey-selection-list">
-                        {this.state.mnemonic.split(" ").map((e,k)=>{
+                        {this.state.mnemonic.split(" ").map((e,k)=>[e,k]).sort(e=>e[0]).map((e,k)=>{
                             return <div key={k} 
-                                        className={`item ${this.state.sort_test.indexOf(k) >= 0 ? "selected" : ""}`}
-                                        onClick={this.onClickSortTest.bind(this,k)}
+                                        className={`item ${this.state.sort_test.indexOf(e[1]) >= 0 ? "selected" : ""}`}
+                                        onClick={this.onClickSortTest.bind(this,e[1])}
                                     >
-                                {e}
+                                {e[0]}
                             </div>
                         })}
                     </div>
