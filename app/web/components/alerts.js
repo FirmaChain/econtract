@@ -141,7 +141,7 @@ class TypingPin extends React.Component{
                 this.props.updatePIN(this.state.value);
             }
 
-            this.props.onFinish && this.props.onFinish(this.state.value, this.stste.isPinSaved)
+            this.props.onFinish && this.props.onFinish(this.state.value, this.state.isPinSaved)
             this.closeSelf()
         } else {
             alert("핀번호는 6자리입니다. 정확히 입력해주세요.")
@@ -197,7 +197,7 @@ class TypingPin extends React.Component{
                     <input
                         type="checkbox"
                         onChange={this.pinCheckChange}
-                        defaultChecekd={this.state.isPinSaved}/> PIN 번호 저장하기
+                        defaultChecked={this.state.isPinSaved}/> PIN 번호 저장하기
                 </div>
             </div>
             <div className="buttons">
