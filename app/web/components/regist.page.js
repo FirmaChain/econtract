@@ -19,6 +19,7 @@ import {
     mnemonicToSeed,
     SeedToMasterKeyPublic,
     SeedToMasterKeyPublicContract,
+    SeedToEthKey,
     BrowserKeyBIP32,
     makeSignData,
     aes_encrypt,
@@ -483,6 +484,10 @@ export default class extends React.Component {
             userphone: this.state.userphone,
             useraddress: this.state.useraddress,
         }
+
+        let keyPair = SeedToEthKey(this.state.account.seed, "0'/0/0");
+        let privateKey = "0x"+keyPair.privateKey.toString('hex');
+
         let wallet = Web3.walletWithPK(privateKey)
         console.log(wallet)
         let encryptedInfo = aes_encrypt(JSON.stringify(info), this.state.account.masterKeyPublic);
