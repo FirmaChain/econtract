@@ -20,6 +20,7 @@ import Template from "./components/template.comp"
 import IndexPage from "./components/index.page"
 import LoginPage from "./components/login.page"
 import RegistPage from "./components/regist.page"
+import RecoverPage from "./components/recover.page"
 import ContractListPage from "./components/contract-list.page"
 import TemplatePage from "./components/contract-template.page"
 import FolderPage from "./components/contract-folder-list.page"
@@ -56,6 +57,7 @@ window.addEventListener("load",()=>{
 					<Route onEnter={resolver} exact path="/" component={IndexPage} />
 					<Route onEnter={resolver} exact path="/login" component={LoginPage} />
 					<Route onEnter={resolver} exact path="/regist" component={RegistPage} />
+					<Route onEnter={resolver} exact path="/recover" component={RecoverPage} />
 					<Route onEnter={resolver} exact path="/recently" component={ContractListPage} />
 					<Route onEnter={resolver} exact path="/folder" component={FolderPage} />
 					<Route onEnter={resolver} exact path="/template" component={TemplatePage} />
