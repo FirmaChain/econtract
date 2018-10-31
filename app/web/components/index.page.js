@@ -66,7 +66,7 @@ export default class extends React.Component {
 						<div className="right-btns">
 							<div className="language"> KOR </div>
 							<div className="buttons">
-								<div className="whatis">FirmaChain 이란</div>
+								<div className="whatis" onClick={()=>window.open("https://firmachain.org", "_blank")}>FirmaChain 이란</div>
 								{user_info ? null : <div className="login-btn" onClick={()=>history.push("/login")} >로그인 / 회원가입</div>}
 							</div>
 						</div>
