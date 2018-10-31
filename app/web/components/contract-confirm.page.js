@@ -44,7 +44,6 @@ export default class extends React.Component {
             await window.showIndicator()
             await this.props.fetch_user_info()
 
-
             let contract_info = await this.props.load_contract_info(contract_id);
             if (contract_info) {
 
@@ -87,18 +86,30 @@ export default class extends React.Component {
 
     async load_contract(contract_id, pin){
         let contract = await this.props.load_contract(contract_id,pin, null, false )
+        if(!contract){
+            alert("문서 로드에 실패했습니다.")
+            return history.replace('/recently') 
+        }
+
         if(contract.contract_id){
-            this.setState({
+            await new Promise(r=>this.setState({
                 ...contract,
                 pin:pin,
-            },async()=>{
-                if(this.state.status == 2){
-                    let byte = await window.pdf.gen( this.getContractRaw() )
-                    this.setState({
-                        doc_hash : sha256(byte)
-                    })
-                }
-            })
+            },r))
+
+            if(this.state.status == 2){
+                let byte = await window.pdf.gen( this.getContractRaw() )
+                this.setState({
+                    doc_hash : sha256(byte)
+                })
+
+                // let qq = {}
+                // for(let v = 0;v < 100;v++){
+                //     window.scroll(0,v)
+                //     qq[v] = sha256(await window.pdf.gen( this.getContractRaw(), false ));
+                // }
+                // console.log("----------------", qq)
+            }
         }else{
             alert("정상적으로 불러오지 못했습니다.")
         }
@@ -109,7 +120,6 @@ export default class extends React.Component {
             await window.showIndicator()
             let docByte = await window.pdf.gen( this.getContractRaw() )
             let resp = await this.props.confirm_contract(this.state.contract_id, this.getCounterpartiesEth(), docByte)
-            //location.reload()
             await window.hideIndicator()
             history.replace('/recently')
         }
@@ -120,7 +130,6 @@ export default class extends React.Component {
             let str = prompt("거절 이유를 작성해주세요.")
             if( str ){
                 await this.props.reject_contract(this.state.contract_id, str)
-                //location.reload()
                 history.replace('/recently')
             }else{
                 alert("거절하시는 이유를 작성해주세요.")
@@ -130,12 +139,18 @@ export default class extends React.Component {
 
     onClickPrint = async()=>{
         await window.showIndicator()
-        await window.pdf.gen( this.getContractRaw(), this.state.name )
+
+        let v = await window.pdf.gen( this.getContractRaw(), true )
+        console.log(v, sha256(v))
+
+        let int32View = new Int32Array(v);
+        console.log(int32View, sha256(int32View))
+
         await window.hideIndicator()
     }
 
     onClickValidation = async()=>{
-        history.push("/verification")
+        history.push(`/verification/${this.state.doc_hash}`)
     }
 
     render_status_text(){

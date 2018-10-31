@@ -187,7 +187,7 @@ else
 
 
 window.pdf = {
-  gen:async function(imgs, filename = null){
+  gen:async function(imgs, saveAs = false){
     let pdfs = []
     
     for(let i in imgs){
@@ -195,8 +195,8 @@ window.pdf = {
         div.style.width=800;
         div.style.display="inline-block";
         div.style.position="fixed";
-        div.style.left=-9999999999;
-        div.style.top=-9999999999;
+        div.style.left=1000000;
+        div.style.top=1000000;
 
         document.body.append(div)
 
@@ -228,9 +228,9 @@ window.pdf = {
 
     let fileId = md5(JSON.stringify(pdfs));
     let creatationDate = new Date(1540977124241);
-    return await window.pdf.make( fileId, creatationDate, pdfs, filename )
+    return await window.pdf.make( fileId, creatationDate, pdfs, saveAs )
   },
-  make:function(fileId, creatationDate, imgs, name){
+  make:function(fileId, creatationDate, imgs, saveAs){
     return new Promise(async(r)=>{
       
       let width = 0;
@@ -255,8 +255,8 @@ window.pdf = {
       doc.setCreationDate(creatationDate)
       doc.setFileId(fileId.toUpperCase())
       
-      if(name){
-        doc.save(name+".pdf")
+      if(saveAs){
+        doc.save(fileId+".pdf")
       }
       
       r(doc.output("arraybuffer"))

@@ -97,46 +97,50 @@ export default class extends React.Component {
 
     onClickUploadFile = async (e)=>{
         let file = e.target.files[0];
-        let pdf = await this.props.convert_doc(file)
-        let pdf_payload = pdf.payload.data
-        
-        // let reader = new FileReader();
-        // reader.readAsBinaryString(file)
 
-        // reader.onload = async()=>{
-            await window.showIndicator()
-            try{
-                let pdf = await pdfjsLib.getDocument({data: pdf_payload}).promise;
-                let imgs = []
-                for(let i=1; i <= pdf.numPages;i++){
-                    let page = await pdf.getPage(i)
-                    let viewport = page.getViewport(1.5);
-        
-                    let canvas = document.createElement('canvas');
-                    let context = canvas.getContext('2d');
-                    canvas.height = viewport.height;
-                    canvas.width = viewport.width;
-        
-                    let renderContext = {
-                        canvasContext: context,
-                        viewport: viewport
-                    };
-        
-                    await page.render(renderContext);
-                    let v = canvas.toDataURL("image/png")
-                    imgs.push(v);
-                }
+        await window.showIndicator()
+        let pdf, pdf_payload
 
-                this.setState({
-                    file: file,
-                    imgs: imgs
-                })
-            }catch(err){
-                console.log(err)
-                window.alert("PDF 형식이 아닙니다.")
-            }
+        try {
+            pdf = await this.props.convert_doc(file)
+            pdf_payload = pdf.payload.data
+        } catch(err) {
+            console.log(err)
             await window.hideIndicator()
-        // }
+            return window.alert("파일 로딩 중 문제가 발생하여 중단합니다.")
+        }
+    
+        try{
+            let pdf = await pdfjsLib.getDocument({data: pdf_payload}).promise;
+            let imgs = []
+            for(let i=1; i <= pdf.numPages;i++){
+                let page = await pdf.getPage(i)
+                let viewport = page.getViewport(1.5);
+    
+                let canvas = document.createElement('canvas');
+                let context = canvas.getContext('2d');
+                canvas.height = viewport.height;
+                canvas.width = viewport.width;
+    
+                let renderContext = {
+                    canvasContext: context,
+                    viewport: viewport
+                };
+    
+                await page.render(renderContext);
+                let v = canvas.toDataURL("image/png")
+                imgs.push(v);
+            }
+
+            this.setState({
+                file: file,
+                imgs: imgs
+            })
+        }catch(err){
+            console.log(err)
+            window.alert("지원하지 않는 포맷입니다.")
+        }
+        await window.hideIndicator()
     }
 
     onClickAddCounterparty = async _=>{
