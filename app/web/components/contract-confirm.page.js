@@ -116,6 +116,7 @@ export default class extends React.Component {
         if(await confirm("승인하기","계약을 승인하시겠습니까?")){
             await window.showIndicator()
             let docByte = await window.pdf.gen( this.getContractRaw() )
+            console.log("??->?",docByte)
             let resp = await this.props.confirm_contract(this.state.contract_id, this.getCounterpartiesEth(), docByte)
             await window.hideIndicator()
 
