@@ -19,6 +19,7 @@ import {
     mnemonicToSeed,
     SeedToMasterKeyPublic,
     SeedToMasterKeyPublicContract,
+    SeedToEthKey,
     BrowserKeyBIP32,
     makeSignData,
     aes_encrypt,
@@ -187,9 +188,10 @@ export default class extends React.Component {
     }
 
     onClickCreateEth = async()=>{
-        let account = Web3.createAccount()
+        let keyPair = SeedToEthKey(mnemonicToSeed(this.state.mnemonic), "0'/0");
+        let privateKey = "0x"+keyPair.privateKey.toString('hex');
         this.setState({
-            user_eth_pk:account.privateKey
+            user_eth_pk:privateKey
         })
     }
 
@@ -200,8 +202,6 @@ export default class extends React.Component {
             return alert("핸드폰 인증을 해주세요.")
         if(!this.state.useraddress)
             return alert("주소를 입력해주세요.")
-        if(!this.state.user_eth_pk)
-            return alert("이더리움 프라이빗키를 입력해주세요.")
 
         let wallet = Web3.walletWithPK(this.state.user_eth_pk)
         if(!wallet){
