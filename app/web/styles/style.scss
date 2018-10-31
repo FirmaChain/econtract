@@ -589,7 +589,7 @@ select:focus { outline:none; }
     }
 
     .hash-section{
-        font-size: 13px;
+        font-size: 13px !important;
         .user-name{
             font-weight: bold;
         }

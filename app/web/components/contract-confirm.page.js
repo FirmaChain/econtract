@@ -225,7 +225,7 @@ export default class extends React.Component {
                                             transaction:this.state.author_transaction,
                                             original:this.state.author_original,
                                         },...this.state.counterparties].map((e,k)=>(<div key={k}>
-                                            <div className="user-name">{e.name}</div>
+                                            <div className="user-name">{e.name} <a href={`https://ropsten.etherscan.io/tx/${e.transaction}`} target="_blank">[이더리움 스캔 확인하기]</a></div>
                                             <div className="transaction-hash">{e.transaction}</div>
                                         </div>))}
                                     </div>
