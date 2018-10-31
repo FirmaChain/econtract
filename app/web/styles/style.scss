@@ -1886,6 +1886,20 @@ div.checkbox-comp{
     }
 }
 
+.chrome-page{
+    .description{
+        margin-top: 20px;
+        text-align: center;
+        line-height: 1.5;
+        
+        img{
+            border-radius: 5px;
+            border: 2px solid #324b5f;
+        }
+    }
+
+}
+
 .signer-slot-comp{
     border: 1px solid RGB(215, 214, 215);
     border-radius: 10px;
