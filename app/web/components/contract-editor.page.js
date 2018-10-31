@@ -214,6 +214,7 @@ export default class extends React.Component {
         let contract = await this.props.load_contract(contract_id,pin,listener)
         if(!contract){
             alert("문서 로드에 실패했습니다.")
+            this.blockFlag = 0
             return history.replace('/recently') 
         }
         

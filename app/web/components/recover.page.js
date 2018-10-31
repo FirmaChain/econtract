@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import history from '../history';
 import {
     regist_new_account,
+    check_join_publickey,
 } from "../../common/actions"
 import Web3 from "../../common/Web3"
 
@@ -20,7 +21,8 @@ import {
     makeSignData,
     aes_encrypt,
     ecdsa_verify,
-    new_account
+    new_account,
+    validateMnemonic,
 } from "../../common/crypto_test"
 
 let mapStateToProps = (state)=>{
@@ -30,6 +32,7 @@ let mapStateToProps = (state)=>{
 
 let mapDispatchToProps = {
     regist_new_account,
+    check_join_publickey,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -60,6 +63,27 @@ export default class extends React.Component {
             step: this.state.step+1
         })
     }
+
+    onClickInputMnemonic = async() => {
+        let mnemonic = this.state.mnemonic;
+        if (!validateMnemonic(mnemonic)) {
+            return alert("유효하지 않은 마스터 키워드입니다.");
+        }
+        let seed = mnemonicToSeed(mnemonic);
+        let masterKeyPublic = SeedToMasterKeyPublic(seed);
+
+        await window.showIndicator();
+        let resp = await this.props.check_join_publickey(masterKeyPublic.toString('hex'));
+        if(resp){
+            this.setState({
+                step: this.state.step+1
+            });
+        }else{
+            alert("매치되는 계정이 없습니다. 새로 가입해주세요.");
+        }
+        await window.hideIndicator();
+        return;
+    };
 
     onClickNextBtnAccountInfo = async()=>{
         if(!this.state.user_id){
@@ -152,15 +176,20 @@ export default class extends React.Component {
             <div className="column-300">
                 <div className="form-layout">
                     <div className="form-label"> 마스터 키워드 </div>
-                    <div className="form-textarea masterkey-list">
-                        {this.state.mnemonic.split(" ").map((e,k)=>{
-                            return <div key={k} className="masterkey-item">{e}</div>
-                        })}
+                    <div className="form-input">
+                        <input placeholder="마스터 키워드를 입력해주세요." value={this.state.mnemonic || ""} onChange={e=>this.setState({mnemonic:e.target.value})} />
                     </div>
-                    
                     <div className="form-submit">
-                        <button className="border" onClick={this.next_term}> 다음 </button>
+                        <button className="border" onClick={this.onClickInputMnemonic}> 다음 </button>
                     </div>
+                </div>
+            </div>
+            <div className="column-300">
+                <div className="right-desc">
+                    * 12개의 단어로 이루어진 마스터 키워드를 띄어쓰기로 구분하여 입력해주세요.
+                </div>
+                <div className="right-desc">
+                    * 과정 완료 후 직전에 사용하던 계정으로 로그인하려면 이 과정을 다시 거쳐야 합니다.
                 </div>
             </div>
         </div>)
@@ -168,9 +197,9 @@ export default class extends React.Component {
 
     render_content(){
         if(this.state.step == 0){
-            return this.render_account();
-        }else if(this.state.step == 1){
             return this.render_masterkey();
+        }else if(this.state.step == 1){
+            return this.render_account();
         }
     }
 
@@ -183,7 +212,7 @@ export default class extends React.Component {
                 <div className="round-btn" onClick={this.goBack}><i className="fas fa-arrow-left"></i></div>
             </div>
             <div className="container">
-                <h1>개인 회원가입</h1>
+                <h1>다른 계정으로 로그인하기</h1>
                 {this.render_content()}
             </div>
 		</div>);
