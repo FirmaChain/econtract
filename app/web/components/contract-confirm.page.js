@@ -49,7 +49,11 @@ export default class extends React.Component {
 
                 let pin = await this.props.get_pin_from_storage(contract_id)
                 if( pin ){
-                    await this.load_contract(contract_id, pin)
+
+                    await this.load_contract(contract_id, pin, async(count, length) => {
+                        await window.showIndicator(`계약서 불러오는 중 (${count}/${length})`)
+                    }, contract_info.epin ? true : false)
+                    
                 }else{
                     history.replace(`/contract-editor/${contract_id}`)
                 }
@@ -121,6 +125,8 @@ export default class extends React.Component {
             let docByte = await window.pdf.gen( this.getContractRaw() )
             let resp = await this.props.confirm_contract(this.state.contract_id, this.getCounterpartiesEth(), docByte)
             await window.hideIndicator()
+
+            alert("계약이 성공적으로 승인되었습니다.")
             history.replace('/recently')
         }
     }
@@ -218,7 +224,7 @@ export default class extends React.Component {
                                 </div>}
 
                                 {this.state.status == 2 ? <div>
-                                    <div className="form-label"> Transaction Hash </div>
+                                    <div className="form-label"> 트랜잭션 해쉬 </div>
                                     <div className="form-info hash-section">
                                         {[{
                                             name:this.state.author_name,
@@ -232,7 +238,7 @@ export default class extends React.Component {
                                 </div> : null}
                                 
                                 {this.state.status == 2 ? <div>
-                                    <div className="form-label"> Document Hash </div>
+                                    <div className="form-label"> 계약서 해쉬 </div>
                                     <div className="form-info" style={{fontSize:"13px"}}>
                                         {this.state.doc_hash ? this.state.doc_hash : "계산중.."}
                                     </div>

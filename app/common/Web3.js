@@ -216,7 +216,7 @@ class Web3Wrapper {
             gasPrice: gasPrice,
             data: method.encodeABI()
         }
-        let signed = account.signTransaction(tx)
+        let signed = this.web3.eth.signTransaction(tx)
         return signed
     }
 

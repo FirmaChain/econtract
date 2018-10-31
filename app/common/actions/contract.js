@@ -305,6 +305,8 @@ export function confirm_contract(contract_id, counterparties, docByte){
         let original = sha256(docByte)
         let signTx = await Web3.signed_newOrSignContract(original,counterparties)
 
+        console.log(JSON.stringify(signTx))
+
         return (await api_confirm_contract( contract_id, original, JSON.stringify(signTx) )).payload
     }
 }
