@@ -5,6 +5,8 @@ import pdfjsLib from "pdfjs-dist"
 import { Base64 } from 'js-base64'
 import CancelablePromise from 'cancelable-promise';
 import html2canvas from "html2canvas"
+import { sha256 } from 'js-sha256'
+import md5 from 'md5'
 
 // window.Promise = global.Promise = CancelablePromise;
 
@@ -215,11 +217,13 @@ window.pdf = {
         div.remove();
     }
 
-    return await window.pdf.make( pdfs )
+    let fileId = md5(JSON.stringify(pdfs));
+    let creatationDate = new Date(1540977124241);
+    return await window.pdf.make( fileId, creatationDate, pdfs )
   },
-  make:function(imgs, name = Date.now()){
+  make:function(fileId, creatationDate, imgs, name = Date.now()){
     return new Promise(async(r)=>{
-
+      
       let width = 0;
       let height = 0;
       for(let info of imgs){
@@ -227,7 +231,7 @@ window.pdf = {
         width = width > img.width ? width : img.width
         height = height > img.height ? height : img.height
       }
-
+      
       let doc = new jsPDF("p","px",[width,height],true)
       doc.deletePage(1)
       for(let info of imgs){
@@ -238,7 +242,11 @@ window.pdf = {
         doc.rect( 0, 0, width,  height, 'F' )
         doc.addImage( info.img, "png", 0, 0, info.i.width, info.i.height, undefined, "FAST" )
       }
-      // doc.save(name+".pdf")
+
+      doc.setCreationDate(creatationDate)
+      doc.setFileId(fileId.toUpperCase())
+      
+      doc.save(name+".pdf")
       r(doc.output("arraybuffer"))
     })
   }

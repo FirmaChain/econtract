@@ -16,6 +16,7 @@ import {
     api_all_folders,
     api_update_epin,
     api_clear_epin,
+    api_convert_doc,
 } from "../../../gen_api"
 
 import {
@@ -304,7 +305,7 @@ export function confirm_contract(contract_id, counterparties, docByte){
         let original = sha256(encrypt)
         let signTx = await Web3.signed_newOrSignContract(original,counterparties)
 
-        return (await api_confirm_contract( contract_id, JSON.stringify(signTx) )).payload
+        return (await api_confirm_contract( contract_id, original, JSON.stringify(signTx) )).payload
     }
 }
 
@@ -377,4 +378,10 @@ export function upload_ipfs(contract_id, array){
         console.log(v)
         return blob
    }
+}
+
+export function convert_doc(file){
+    return async function(){
+        return await api_convert_doc(file)
+    }
 }

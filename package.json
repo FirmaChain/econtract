@@ -51,6 +51,7 @@
     "js-sha512": "^0.7.1",
     "json-loader": "^0.5.7",
     "jspdf": "^1.4.1",
+    "md5": "^2.2.1",
     "moment": "^2.22.2",
     "node-libs-browser": "2.1.0",
     "node-sass": "^4.9.0",

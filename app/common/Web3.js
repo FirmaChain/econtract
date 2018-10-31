@@ -208,7 +208,7 @@ class Web3Wrapper {
     async signed_newOrSignContract(docId,counterparties,gas=500000, gasPrice=20){
         let list = this.allAccounts()
         let account = list[0]
-        let method = this.contract_inst.methods.newOrSignContract(docId,docId,counterparties);
+        let method = this.contract_inst.methods.newOrSignContract(docId, docId, counterparties);
         let tx = {
             from: account.address,
             to: poc.address,

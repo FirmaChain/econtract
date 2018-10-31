@@ -13,6 +13,7 @@ import {
 } from "../../common/actions"
 import SignerSlot from "./signer-slot"
 import moment from "moment"
+import { sha256 } from 'js-sha256'
 
 let mapStateToProps = (state)=>{
 	return {
@@ -90,7 +91,8 @@ export default class extends React.Component {
     onClickConfirm = async()=>{
         if(await confirm("승인하기","계약을 승인하시겠습니까?")){
             await window.showIndicator()
-            let docByte = await window.pdf.gen( this.getContractRaw() )
+            let raw = this.getContractRaw();
+            let docByte = await window.pdf.gen( raw )
             let resp = await this.props.confirm_contract(this.state.contract_id, this.getCounterpartiesEth(), docByte)
             //location.reload()
             await window.hideIndicator()
@@ -111,13 +113,11 @@ export default class extends React.Component {
         }
     }
 
-    onClickPrint = async()=>{
-        
-        
-        await window.showIndicator()
-        this.props.upload_ipfs( this.state.contract_id, bytes);
-        await window.hideIndicator()
-    }
+    // onClickPrint = async()=>{
+    //     await window.showIndicator()
+    //     this.props.upload_ipfs( this.state.contract_id, bytes);
+    //     await window.hideIndicator()
+    // }
 
     render_status_text(){
         if(this.state.status == 0){
