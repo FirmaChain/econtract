@@ -8,6 +8,7 @@ import {
     api_encrypted_user_info,
     api_find_user_with_code_email,
     api_check_join_publickey,
+    api_recover_account,
 } from "../../../gen_api"
 
 import {
@@ -149,5 +150,11 @@ export function find_user_with_code_email(code, email){
 export function check_join_publickey(publicms){
     return async function(){
         return (await api_check_join_publickey(publicms)).payload
+    }
+}
+
+export function recover_account(publicbk, publicms, auth, eems){
+    return async function(){
+        return (await recover_account(publicbk, publicms, auth, eems)).payload
     }
 }
