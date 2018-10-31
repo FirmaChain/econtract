@@ -403,7 +403,7 @@ export default class extends React.Component {
         if(!this.state.user_id){
             return alert("아이디를 입력해주세요!")
         }
-        if(this.state.password.length < 5){
+        if(this.state.password.length < 6){
             return alert("비밀번호는 최소 6글자입니다.")
         }
         if(this.state.password !== this.state.password2){
