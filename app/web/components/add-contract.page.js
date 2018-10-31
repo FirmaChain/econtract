@@ -11,6 +11,7 @@ import {
     new_contract,
     gen_pin,
     update_epin,
+    convert_doc,
 } from "../../common/actions"
 
 let mapStateToProps = (state)=>{
@@ -25,6 +26,7 @@ let mapDispatchToProps = {
     new_contract,
     gen_pin,
     update_epin,
+    convert_doc,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -95,13 +97,16 @@ export default class extends React.Component {
 
     onClickUploadFile = async (e)=>{
         let file = e.target.files[0];
-        let reader = new FileReader();
-        reader.readAsBinaryString(file)
+        let pdf = await this.props.convert_doc(file)
+        let pdf_payload = pdf.payload.data
+        
+        // let reader = new FileReader();
+        // reader.readAsBinaryString(file)
 
-        reader.onload = async()=>{
+        // reader.onload = async()=>{
             await window.showIndicator()
             try{
-                let pdf = await pdfjsLib.getDocument({data: reader.result}).promise;
+                let pdf = await pdfjsLib.getDocument({data: pdf_payload}).promise;
                 let imgs = []
                 for(let i=1; i <= pdf.numPages;i++){
                     let page = await pdf.getPage(i)
@@ -131,7 +136,7 @@ export default class extends React.Component {
                 window.alert("PDF 형식이 아닙니다.")
             }
             await window.hideIndicator()
-        }
+        // }
     }
 
     onClickAddCounterparty = async _=>{
@@ -206,7 +211,7 @@ export default class extends React.Component {
                                 <select>
                                     <option>템플릿 선택</option>
                                 </select>
-                                <input ref="file" type="file" onChange={this.onClickUploadFile} style={{display:"none"}}/>
+                                <input ref="file" type="file" accept=".png, .jpg, .jpeg, .doc, .docx, .ppt, .pptx, .pdf" onChange={this.onClickUploadFile} style={{display:"none"}}/>
                             </div>}
 
                             <div style={{height:20}} />

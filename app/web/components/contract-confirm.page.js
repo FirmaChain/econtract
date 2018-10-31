@@ -9,11 +9,11 @@ import {
     load_contract,
     fetch_user_info,
     get_pin_from_storage,
-    upload_ipfs,
     load_contract_info,
 } from "../../common/actions"
 import SignerSlot from "./signer-slot"
 import moment from "moment"
+import { sha256 } from 'js-sha256'
 
 let mapStateToProps = (state)=>{
 	return {
@@ -27,7 +27,6 @@ let mapDispatchToProps = {
     load_contract,
     fetch_user_info,
     get_pin_from_storage,
-    upload_ipfs,
     load_contract_info,
 }
 
@@ -76,21 +75,29 @@ export default class extends React.Component {
             }
             imgs.push({
                 img : this.state.imgs[i],
-                objects:objects
+                objects : objects
             })
         }
         return imgs
     }
+
     getCounterpartiesEth(){
         return [this.state.author_eth_address, ...this.state.counterparties.map(e=>e.eth_address)]
     }
 
     async load_contract(contract_id, pin){
-        let contract = await this.props.load_contract(contract_id,pin, null, true )
+        let contract = await this.props.load_contract(contract_id,pin, null, false )
         if(contract.contract_id){
             this.setState({
                 ...contract,
                 pin:pin,
+            },async()=>{
+                if(this.state.status == 2){
+                    let byte = await window.pdf.gen( this.getContractRaw() )
+                    this.setState({
+                        doc_hash : sha256(byte)
+                    })
+                }
             })
         }else{
             alert("정상적으로 불러오지 못했습니다.")
@@ -122,10 +129,13 @@ export default class extends React.Component {
     }
 
     onClickPrint = async()=>{
-        
         await window.showIndicator()
-        this.props.upload_ipfs( this.state.contract_id, bytes);
+        await window.pdf.gen( this.getContractRaw(), this.state.name )
         await window.hideIndicator()
+    }
+
+    onClickValidation = async()=>{
+        history.push("/verification")
     }
 
     render_status_text(){
@@ -167,7 +177,7 @@ export default class extends React.Component {
                 </div>
                 <div className="container">
                     <h1>계약 상세보기</h1>
-                    <div className={this.state.status == 2 || alreadySelect ? "page" : 'page bottom-no-border'}>
+                    <div className={'page bottom-no-border'}>
                         <div className="column-300">
                             <div className="form-layout">
                                 <div className="form-label"> 계약명 </div>
@@ -193,18 +203,25 @@ export default class extends React.Component {
                                 </div>}
 
                                 {this.state.status == 2 ? <div>
-                                    <div className="form-label"> 트랜젝션 Hash </div>
+                                    <div className="form-label"> Transaction Hash </div>
                                     <div className="form-info">
-                                        0xasdasdasdasdasdasdasdas
+                                        {[{
+                                            name:this.state.author_name,
+                                            transaction:this.state.author_transaction,
+                                            original:this.state.author_original,
+                                        },...this.state.counterparties].map((e,k)=>(<div key={k}>
+                                            {e.name} : {e.transaction}
+                                        </div>))}
+                                    </div>
+                                </div> : null}
+                                
+                                {this.state.status == 2 ? <div>
+                                    <div className="form-label"> Document Hash </div>
+                                    <div className="form-info">
+                                        {this.state.doc_hash ? this.state.doc_hash : "계산중.."}
                                     </div>
                                 </div> : null}
 
-                                {this.state.status == 2 ? <div>
-                                    <div className="form-label"> 출력 </div>
-                                    <div className="form-info">
-                                        <button onClick={this.onClickPrint}>프린트하기</button>
-                                    </div>
-                                </div> : null}
                                 {/*this.state.status == 2 ? null : [
                                     <div key={1} className="form-label bold"> 확인하기 </div>,
                                     <div key={2} className="form-submit">
@@ -241,9 +258,13 @@ export default class extends React.Component {
                             </div>
                         </div>
                     </div>
-                    {this.state.status == 2 || alreadySelect ? null : [
+                    {this.state.status == 2 || alreadySelect ? [
+                        <button className="left-friendly-button" onClick={this.onClickPrint}> 출 력 </button>,
+                        <button className="right-friendly-button" onClick={this.onClickValidation}> 검 증 </button>
+                    ] : [
                         <button className="left-friendly-button" onClick={this.onClickConfirm}> 승 인 </button>,
-                        <button className="right-friendly-button" onClick={this.onClickReject}> 거 절 </button>]
+                        <button className="right-friendly-button" onClick={this.onClickReject}> 거 절 </button>
+                    ]
                     }
                 </div>
             </div>

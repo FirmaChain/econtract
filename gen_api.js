@@ -5,6 +5,15 @@
 
 import {post, get} from './Network.js';
 
+export async function api_convert_doc(file){
+    let data = new FormData();
+
+    data.append('file', file)
+
+    return await post("/convert_doc", data,{
+        session:window.getCookie("session")
+    });
+}
 export async function api_new_contract(subject,imgs,counterparties,counterparties_eckai){
     let data = new FormData();
 
@@ -154,10 +163,11 @@ export async function api_fetch_chat(contract_id,cursor){
         session:window.getCookie("session")
     });
 }
-export async function api_confirm_contract(contract_id,signTx){
+export async function api_confirm_contract(contract_id,original,signTx){
     let data = new FormData();
 
     data.append('contract_id', contract_id);
+	data.append('original', original);
 	data.append('signTx', signTx)
 
     return await post("/confirm_contract", data,{

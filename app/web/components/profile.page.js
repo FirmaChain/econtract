@@ -93,11 +93,6 @@ export default class extends React.Component {
                             <div className="form-input">
                                 {user.eth_address}
                             </div>
-
-                            <div className="form-label"> 이더리움 프라이빗키 </div>
-                            <div className="form-input">
-                                {user.eth_pk}
-                            </div>
                         </div>
                     </div>
                     {/* <div className="column-300"></div> */}
