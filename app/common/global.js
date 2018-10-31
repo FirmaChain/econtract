@@ -193,8 +193,10 @@ window.pdf = {
     try{
       if(saveAs == false){
         let ret = await fs.readAsArrayBuffer(name);
-        if( ret )
+        if( ret ){
+          console.log(ret)
           return ret;
+        }
       }
     }catch(err){
     }
