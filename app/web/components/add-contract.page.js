@@ -241,8 +241,8 @@ export default class extends React.Component {
                     </div>
                     <div className="column-300">
                         <div className="right-desc"> 
-                            <div>PIN : {this.state.pin}</div>
-                            <div className="checkbox">
+                            <div className="pin-place">PIN : {this.state.pin}</div>
+                            <div className="pin-check checkbox">
                                 <input ref="pin_save" type="checkbox" /> PIN 번호 저장하기
                             </div>
                             <div><strong>저장하지 않을 경우 PIN을 반드시 메모해두세요!</strong></div>
