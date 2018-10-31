@@ -189,12 +189,14 @@ else
 
 window.pdf = {
   gen:async function(imgs, saveAs = false){
-    let name = md5(JSON.stringify(imgs))
+    let name = "_"+md5(JSON.stringify(imgs))
     try{
       if(saveAs == false){
         let ret = await fs.readAsArrayBuffer(name);
-        if( ret )
+        if( ret ){
+          console.log(ret)
           return ret;
+        }
       }
     }catch(err){
     }
@@ -225,7 +227,7 @@ window.pdf = {
             }
             if(o.type == "text"){
               let text = element = document.createElement("div")
-              text.innerText = o.data
+              text.innerText = o.text
             }
 
             if(element == null)
