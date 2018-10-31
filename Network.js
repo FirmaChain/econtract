@@ -1,5 +1,5 @@
-let HOST = window.HOST = "http://127.0.0.1:6544";
-// let HOST = window.HOST = "http://e-contract.io:6544";
+// let HOST = window.HOST = "http://127.0.0.1:6544";
+let HOST = window.HOST = "http://e-contract.io:6544";
 
 export async function get(path,param={},headers={}){
     param = Object.keys(param).map(i=>`${encodeURIComponent(i)}=${encodeURIComponent(param[i])}`)
