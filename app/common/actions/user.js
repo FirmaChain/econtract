@@ -14,6 +14,8 @@ import {
     makeAuth,
     makeSignData,
     decrypt_user_info,
+    SeedToEthKey,
+    getMasterSeed,
 } from "../../common/crypto_test"
 
 import Web3 from "../Web3"
@@ -29,8 +31,13 @@ export function fetch_user_info(){
             let resp = await api_encrypted_user_info()
             if(resp.payload){
                 let user_info = decrypt_user_info(entropy, new Buffer(resp.payload.info.data) )
-                Web3.addAccount(user_info.eth_pk)
-                let wallet = Web3.walletWithPK(user_info.eth_pk)
+
+                let seed = getMasterSeed();
+                let keyPair = SeedToEthKey(seed, "0'/0/0");
+                let privateKey = "0x"+keyPair.privateKey.toString('hex');
+
+                Web3.addAccount(privateKey)
+                let wallet = Web3.walletWithPK(privateKey)
                 dispatch({
                     type:RELOAD_USERINFO,
                     payload:{
