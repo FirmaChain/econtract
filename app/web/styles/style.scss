@@ -448,6 +448,7 @@ select:focus { outline:none; }
                 div.form-info{
                     padding: 5px 0 20px 0;
                     font-size: 17px;
+                    word-break: break-all;
                     color: #1B1B1B;
                 }
 
@@ -585,6 +586,18 @@ select:focus { outline:none; }
     }
     .bold{
         font-weight: bold;
+    }
+
+    .hash-section{
+        font-size: 13px;
+        .user-name{
+            font-weight: bold;
+        }
+
+        .transaction-hash{
+            color: #394B5B;
+            margin-bottom: 10px;
+        }
     }
 }
 

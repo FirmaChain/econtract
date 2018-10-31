@@ -219,20 +219,21 @@ export default class extends React.Component {
 
                                 {this.state.status == 2 ? <div>
                                     <div className="form-label"> Transaction Hash </div>
-                                    <div className="form-info">
+                                    <div className="form-info hash-section">
                                         {[{
                                             name:this.state.author_name,
                                             transaction:this.state.author_transaction,
                                             original:this.state.author_original,
                                         },...this.state.counterparties].map((e,k)=>(<div key={k}>
-                                            {e.name} : {e.transaction}
+                                            <div className="user-name">{e.name}</div>
+                                            <div className="transaction-hash">{e.transaction}</div>
                                         </div>))}
                                     </div>
                                 </div> : null}
                                 
                                 {this.state.status == 2 ? <div>
                                     <div className="form-label"> Document Hash </div>
-                                    <div className="form-info">
+                                    <div className="form-info" style={{fontSize:"13px"}}>
                                         {this.state.doc_hash ? this.state.doc_hash : "계산중.."}
                                     </div>
                                 </div> : null}

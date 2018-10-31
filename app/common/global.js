@@ -209,13 +209,16 @@ window.pdf = {
         for(let o of objects){
             let element = null 
             if(o.type == "img"){
-                let img = element = document.createElement("img")
-                img.src = o.data
+              let img = element = document.createElement("img")
+              img.src = o.data
             }
             if(o.type == "text"){
               let text = element = document.createElement("div")
               text.innerText = o.data
             }
+
+            if(element == null)
+              continue;
 
             element.width=o.width;
             element.height=o.height;
