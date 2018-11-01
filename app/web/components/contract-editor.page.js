@@ -114,9 +114,14 @@ export default class extends React.Component {
                 let pin = await this.props.get_pin_from_storage(contract_id)
                 if( pin ){
                     this.blockFlag = 2;
-                    await this.load_contract(contract_id, pin, async(count, length) => {
-                        await window.showIndicator(`계약서 불러오는 중 (${count}/${length})`)
-                    }, contract_info.epin ? true : false)
+                    try{
+                        await this.load_contract(contract_id, pin, async(count, length) => {
+                            await window.showIndicator(`계약서 불러오는 중 (${count}/${length})`)
+                        }, contract_info.epin ? true : false)
+                    }catch(err){
+                        alert("문서 로드에 실패했습니다.")
+                        history.replace("/recently")    
+                    }
                     this.blockFlag = 1;
                 }else{
                     while(1){
@@ -214,9 +219,7 @@ export default class extends React.Component {
     async load_contract(contract_id, pin, listener, is_pin_saved){
         let contract = await this.props.load_contract(contract_id,pin,listener)
         if(!contract){
-            alert("문서 로드에 실패했습니다.")
-            this.blockFlag = 0
-            return history.replace('/recently') 
+            throw 'ERROR DECRYPT DOCUMENT';
         }
         
         if(contract.contract_id){
