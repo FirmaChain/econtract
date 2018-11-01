@@ -51,6 +51,10 @@ function genPIN(digit=6) {
     return text;
 }
 
+// function removePIN(contract_id){
+//     sessionStorage.removeItem(`contract:${contract_id}`);
+// }
+
 async function getPIN(contract_id) {
     let epin = sessionStorage.getItem(`contract:${contract_id}`);
     if (!epin) {
@@ -194,6 +198,7 @@ export function load_contract(contract_id, pin, load_listener = null, only_info_
             return contract
         }catch(err){
             console.log(err)
+            // removePIN(contract_id);
         }
         return null;
     }

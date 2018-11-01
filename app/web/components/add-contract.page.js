@@ -74,12 +74,23 @@ export default class extends React.Component {
         let counterparties = this.state.counterparties
         let imgs = this.state.imgs
         let subject= this.state.contract_name
+        let email = this.state.counterparty_email;
+        let code = this.state.counterparty_code;
+
         if(!subject){
             return alert("제목을 입력해주세요")
         }
         if(imgs == null || imgs.length == 0){
             return alert("파일 혹은 템플릿을 선택해주세요.")
         }
+
+        if(email){
+            return alert("서명자 정보를 입력 후에 '서명자 추가' 버튼을 누르셔야합니다.")
+        }
+        if(code){
+            return alert("서명자 정보를 입력 후에 '서명자 추가' 버튼을 누르셔야합니다.")
+        }
+
         await window.showIndicator()
         let resp = await this.props.new_contract( subject, imgs, (counterparties || []).map(e=>e.code), [this.props.user_info.publickey_contract].concat((counterparties || []).map(e=>e.publickey_contract)), this.state.pin );
         if(resp){
@@ -211,10 +222,10 @@ export default class extends React.Component {
                                 <div className="del-btn" onClick={()=>this.setState({file:null,imgs:[]})}>삭제</div>
                             </div> : <div className="upload-form">
                                 <button className="file-upload-btn" onClick={()=>this.refs.file.click()}> <i className="fas fa-file-archive"></i> 파일 업로드 </button>
-                                <div className="or"> OR </div>
+                                {/* <div className="or"> OR </div>
                                 <select>
                                     <option>템플릿 선택</option>
-                                </select>
+                                </select> */}
                                 <input ref="file" type="file" accept=".png, .jpg, .jpeg, .doc, .docx, .ppt, .pptx, .pdf" onChange={this.onClickUploadFile} style={{display:"none"}}/>
                             </div>}
 
