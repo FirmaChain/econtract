@@ -447,12 +447,9 @@ E-Contract 이용약관(버전 0.0.1)
     }
 
     onClickSaveMnemonic = ()=>{
-        let blob = new Blob([this.state.mnemonic], { type: 'text/plain' })
         let anchor = document.createElement('a');
-
-        anchor.download = "Seed.txt";
-        anchor.href = (window.webkitURL || window.URL).createObjectURL(blob);
-        anchor.dataset.downloadurl = ['text/plain', anchor.download, anchor.href].join(':');
+        anchor.target = "_blank";
+        anchor.href = "/static/recovery_phrase_document.pdf";
         anchor.click();
     }
 
