@@ -57,6 +57,14 @@ export default class extends React.Component {
         await window.hideIndicator()
     }
 
+    onClickClearBrowserKey = async()=>{
+        await window.showIndicator()
+        sessionStorage.removeItem("browser_key");
+        sessionStorage.removeItem("browser_key_virgin");
+        alert("브라우저 인증이 해제되었습니다.");
+        await window.hideIndicator()
+    }
+
    keyPress = async(e) => {
       if(e.keyCode == 13){
         this.onClickLogin()
@@ -96,7 +104,7 @@ export default class extends React.Component {
                                 <button tabIndex={1} onClick={()=>history.push("/regist")}> 회원가입 </button>
                     ] : [
                                 <button tabIndex={1} onClick={()=>history.push("/recover")}> 다른 계정으로 로그인 하기 </button>,
-                                <button tabIndex={2} onClick={()=>history.push("/regist")}> 회원가입 </button>
+                                <button tabIndex={2} onClick={this.onClickClearBrowserKey}> 브라우저 인증 해제하기 </button>
                     ]}
                                 <button className="border" onClick={this.onClickLogin}> 로그인 </button>
                             </div>
