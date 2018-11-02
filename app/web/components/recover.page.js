@@ -165,9 +165,6 @@ export default class extends React.Component {
                     <div className="mid-desc">
                         * 12개의 단어로 이루어진 마스터 키워드를 띄어쓰기로 구분하여 입력해주세요.
                     </div>
-                    <div className="mid-desc">
-                        * 과정 완료 후 직전에 사용하던 계정으로 로그인하려면 이 과정을 다시 거쳐야 합니다.
-                    </div>
                 </div>
             </div>
             <button className="big-friendly-button top-no-border" onClick={this.onClickInputMnemonic}> 다음 </button>

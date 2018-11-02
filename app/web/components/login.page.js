@@ -75,9 +75,9 @@ export default class extends React.Component {
             localStorage.removeItem("browser_key_virgin");
             alert("브라우저 인증이 해제되었습니다.");
             this.setState({is_clear_browser_key: true});
+            history.push("/recover");
         }
         await window.hideIndicator();
-        history.push("/recover");
     }
 
    keyPress = async(e) => {
