@@ -59,11 +59,25 @@ export default class extends React.Component {
 
     onClickClearBrowserKey = async()=>{
         await window.showIndicator();
-        localStorage.removeItem("browser_key");
-        localStorage.removeItem("browser_key_virgin");
-        alert("브라우저 인증이 해제되었습니다.");
-        this.setState({is_clear_browser_key: true});
+        if (window._confirm("브라우저 인증을 해제하시겠습니까?\n브라우저 인증을 해제하면 기존의 아이디와 비밀번호로 로그인할 수 없습니다.")) {
+            localStorage.removeItem("browser_key");
+            localStorage.removeItem("browser_key_virgin");
+            alert("브라우저 인증이 해제되었습니다.");
+            this.setState({is_clear_browser_key: true});
+        }
         await window.hideIndicator();
+    }
+
+    onClickRecoverAccount = async() => {
+        await window.showIndicator();
+        if (window._confirm("다른 계정으로 로그인하기 전에 먼저 브라우저 인증을 해제해야 합니다.\n브라우저 인증을 해제하면 기존의 아이디와 비밀번호로 로그인할 수 없습니다.\n브라우저 인증을 해제 하시겠습니까?")) {
+            localStorage.removeItem("browser_key");
+            localStorage.removeItem("browser_key_virgin");
+            alert("브라우저 인증이 해제되었습니다.");
+            this.setState({is_clear_browser_key: true});
+        }
+        await window.hideIndicator();
+        history.push("/recover");
     }
 
    keyPress = async(e) => {
@@ -104,7 +118,7 @@ export default class extends React.Component {
                                 <button tabIndex={1} onClick={()=>history.push("/recover")}> 다른 계정으로 로그인 하기 </button>,
                                 <button tabIndex={1} onClick={()=>history.push("/regist")}> 회원가입 </button>
                     ] : [
-                                <button tabIndex={1} onClick={()=>history.push("/recover")}> 다른 계정으로 로그인 하기 </button>,
+                                <button tabIndex={1} onClick={this.onClickRecoverAccount}> 다른 계정으로 로그인 하기 </button>,
                                 <button tabIndex={2} onClick={this.onClickClearBrowserKey}> 브라우저 인증 해제하기 </button>
                     ]}
                                 <button className="border" onClick={this.onClickLogin}> 로그인 </button>
