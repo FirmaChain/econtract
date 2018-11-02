@@ -58,11 +58,12 @@ export default class extends React.Component {
     }
 
     onClickClearBrowserKey = async()=>{
-        await window.showIndicator()
+        await window.showIndicator();
         localStorage.removeItem("browser_key");
         localStorage.removeItem("browser_key_virgin");
         alert("브라우저 인증이 해제되었습니다.");
-        await window.hideIndicator()
+        this.setState({is_clear_browser_key: true});
+        await window.hideIndicator();
     }
 
    keyPress = async(e) => {
