@@ -104,6 +104,7 @@ export default class extends React.Component {
         await window.hideIndicator()
 
         if(resp.code == 1){
+            localStorage.setItem("browser_key_virgin", 0);
             history.push("/login");
             return alert("이제 기존 계정으로 로그인할 수 있습니다.")
         }else{
