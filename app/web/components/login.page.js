@@ -43,15 +43,19 @@ export default class extends React.Component {
     onClickLogin = async()=>{
         await window.showIndicator()
         
-        let resp = await this.props.login_account(this.state.user_id || "", this.state.password || "")
-        if(resp == -2){
-            alert("회원가입 되어 있지 않은 브라우저입니다.")
-        }else if(resp == -1){
-            alert("아이디 혹은 패스워드가 다릅니다.")
-        }else if(resp.eems){
-            history.push("/recently")
-        }else{
-            alert("login error;")
+        if (!this.state.user_id || !this.state.password) {
+            alert("아이디와 비밀번호를 입력해주세요.");
+        } else {
+            let resp = await this.props.login_account(this.state.user_id || "", this.state.password || "")
+            if(resp == -2){
+                alert("회원가입 되어 있지 않은 브라우저입니다.")
+            }else if(resp == -1){
+                alert("아이디 혹은 패스워드가 다릅니다.")
+            }else if(resp.eems){
+                history.push("/recently")
+            }else{
+                alert("login error;")
+            }
         }
 
         await window.hideIndicator()

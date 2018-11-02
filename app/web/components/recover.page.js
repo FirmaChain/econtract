@@ -60,6 +60,9 @@ export default class extends React.Component {
 
     onClickInputMnemonic = async() => {
         let mnemonic = this.state.mnemonic;
+        if (!mnemonic) {
+            return alert("마스터 키워드를 입력해주세요.");
+        }
         if (!validateMnemonic(mnemonic)) {
             return alert("유효하지 않은 마스터 키워드입니다.");
         }
