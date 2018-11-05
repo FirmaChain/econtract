@@ -2301,3 +2301,33 @@ div.checkbox-comp{
     }
   }
   
+  .session-expired-warning-modal{
+    background-color: rgba(0,0,0,0);
+    text-align: center;
+    .title{
+        font-size: 20px;
+        color: #fff;
+        font-weight: bold;
+        text-shadow: 0 0 2px #000;
+    }
+    .content{
+        margin-top: 15px;
+        color: #fff;
+        text-shadow: 0 0 2px #000;
+    }
+    .btns{
+        button{
+            padding: 10px 40px;
+            font-size: 20px;
+            border-radius: 10px;
+            background-color: #fff;
+            margin: 20px;
+            cursor: pointer;
+            border: 0;
+
+            &:hover{
+                background-color: #ccc;
+            }
+        }
+    }
+  }

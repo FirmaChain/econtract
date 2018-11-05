@@ -338,6 +338,80 @@ class Confirm extends React.Component{
     }
 }
 
+@modal
+class RefreshSession extends React.Component{
+    constructor(){
+        super()
+        this.state = {}
+    }
+    componentDidMount(){
+        this.interval = setInterval(this.update, 1000)
+        this.update()
+    }
+
+    componentWillUnmount(){
+        clearInterval(this.interval)
+    }
+
+    digit = (o)=>{
+        o = o.toString()
+        if(o.length == 1){
+            return "0"+o
+        }
+        return o
+    }
+
+    update = ()=>{
+        let t = window.getCookie("session_update");
+        if(t){
+            let day = 60 * 60 * 3;
+
+            let left_time = day - ((Date.now()-t)/1000);
+            let left_hour = Math.floor(left_time/60/60)
+            let left_min = Math.floor(left_time/60%60)
+            let left_sec = Math.floor(left_time%60)
+
+            this.setState({
+                hour:this.digit(left_hour),
+                min:this.digit(left_min),
+                sec:this.digit(left_sec),
+            })
+        }
+    }
+
+    onClickRenewal= ()=>{
+        let session = window.getCookie("session");
+        if(session){
+            window.setCookie("session", session, 0.125)
+            window.setCookie("session_update", Date.now(), 0.125)
+        }
+
+        window.closeModal(this.props.modalId)
+        this.props.onClose && this.props.onClose()
+    }
+    
+    onClickLogout= ()=>{
+        window.eraseCookie("session")
+        window.eraseCookie("session_update")
+        
+        location.reload(true)
+    }
+
+    render(){
+        return <div className="default-modal session-expired-warning-modal">
+            <div className="title">세션이 {this.state.min}분 {this.state.sec}초 후 만료됩니다.</div>
+            <div className="content">
+                세션 만료 후에는 재로그인을 해야합니다.<br />
+                세션 만료를 연장하시겠습니까?
+            </div>
+            <div className="btns">
+                <button onClick={this.onClickRenewal}>연장</button>
+                <button onClick={this.onClickLogout}>로그아웃</button>
+            </div>
+        </div>
+    }
+}
+
 window._confirm = window.confirm;
 window.confirm = (title, msg, left, right)=>{
     return new Promise(r=>{
@@ -367,14 +441,28 @@ window.hideIndicator = ()=>{
     indicator_idx = null
 }
 
-
+let refesh_modal_idx = null
 setInterval(()=>{
     let t = window.getCookie("session_update");
     if(t){
         let day = 60 * 60 * 3;
 
         let left_time = day - ((Date.now()-t)/1000);
-        let left_hour = Math.floor(left_time/60/60)
-        let left_min = Math.floor(left_time/60%60)
+
+        if(left_time < 0){
+            window.eraseCookie("session")
+            window.eraseCookie("session_update")
+            
+            location.reload(true)
+        }
+
+        if(left_time < 60 * 5 && !refesh_modal_idx){
+            refesh_modal_idx = window.openModal("RefreshSession",{
+                onClose:()=>{
+                    refesh_modal_idx = null
+                }
+
+            })
+        }
     }
-})
+},1000)

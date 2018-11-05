@@ -34,7 +34,7 @@ import UserProfilePage from "./components/profile.page"
 
 import { current_platform } from "../common/utils"
 
-const store = createStore(
+const store = window.store = createStore(
 	createReducer({}),
 	applyMiddleware(thunkMiddleware),
 );
