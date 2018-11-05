@@ -1,6 +1,5 @@
 import config from "./config"
 let HOST = window.HOST = config.HOST
-// let HOST = window.HOST = "http://e-contract.io:6544";
 
 export async function get(path,param={},headers={}){
     param = Object.keys(param).map(i=>`${encodeURIComponent(i)}=${encodeURIComponent(param[i])}`)
