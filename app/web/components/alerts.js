@@ -367,3 +367,14 @@ window.hideIndicator = ()=>{
     indicator_idx = null
 }
 
+
+setInterval(()=>{
+    let t = window.getCookie("session_update");
+    if(t){
+        let day = 60 * 60 * 3;
+
+        let left_time = day - ((Date.now()-t)/1000);
+        let left_hour = Math.floor(left_time/60/60)
+        let left_min = Math.floor(left_time/60%60)
+    }
+})
