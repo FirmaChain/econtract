@@ -19,7 +19,7 @@ pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.js';
 import Template from "./components/template.comp"
 import IndexPage from "./components/index.page"
 import LoginPage from "./components/login.page"
-import CheckMnemonicPage from "./components/check_mnemonic.page"
+import CheckMnemonicPage from "./components/check-mnemonic.page"
 import RegistPage from "./components/regist.page"
 import RecoverPage from "./components/recover.page"
 import ContractListPage from "./components/contract-list.page"
