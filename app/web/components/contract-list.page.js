@@ -140,7 +140,7 @@ export default class extends React.Component {
         return <tr key={k} className={mm ? "" : "clickable"} onClick={mm ? null : this.onClickContract.bind(this,e.contract_id)}>
             {mm ? <td><CheckBox2 on={this.state.move_select[k]} onClick={this.onClickMoveSel.bind(this,k)} /></td> : null}
             <td className="text-center">{status_text(e.status)}</td>
-            <td className="text-center"><img src={lock_src} width=40/></td>
+            <td className="text-center"><img src={lock_src} width={40}/></td>
             <td className="text-left">{e.name}</td>
             <td style={{width:"100px"}} className="text-center">{e.username}{e.counterpartyCnt > 0 ?` 외 ${e.counterpartyCnt}명`:""}</td>
             <td className="date-cell">{moment(e.updatedAt).format("YYYY-MM-DD HH:mm:ss")}</td>
