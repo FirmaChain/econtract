@@ -410,10 +410,18 @@ export default class extends React.Component {
 
             await window.hideIndicator();
 
-            if(resp){
-                alert("성공적으로 저장하였습니다.")
-            }else{
+            if (resp == -1) {
                 alert("저장하는데 문제가 발생했습니다. 관리자에게 문의해주세요.")
+            } else {
+                if (this.state.revision + 1 == resp) {
+                    alert("성공적으로 저장하였습니다.");
+                    this.setState({
+                        state: resp
+                    });
+                } else {
+                    alert("계약 내용에 변화가 발생하였습니다. 다시 확인하여 주십시오.");
+                    location.reload();
+                }
             }
         }
     }
