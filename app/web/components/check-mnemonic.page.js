@@ -59,6 +59,17 @@ export default class extends React.Component {
         await window.hideIndicator()
     }
 
+    onClickOK = async()=>{
+        history.push("/login");
+    }
+
+    onClickSaveMnemonic = ()=>{
+        let anchor = document.createElement('a');
+        anchor.target = "_blank";
+        anchor.href = "/static/recovery_phrase_document.pdf";
+        anchor.click();
+    }
+
     render_content() {
         if(this.state.step == 0){
             return this.render_login();
@@ -113,7 +124,7 @@ export default class extends React.Component {
                     </div>
                     
                     <div className="form-submit">
-                        <button className="border" onClick={this.next_term}> 다음 </button>
+                        <button className="border" onClick={this.onClickOK}> 확인 </button>
                     </div>
                 </div>
             </div>

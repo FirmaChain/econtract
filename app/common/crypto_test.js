@@ -51,6 +51,10 @@ export function generateBrowserKey() {
 	return digest;
 }
 
+export function entropyToMnemonic(entropy) {
+    return bip39.entropyToMnemonic(entropy);
+}
+
 export function mnemonicToSeed(mnemonic){
 	return bip39.mnemonicToSeed(mnemonic);
 }

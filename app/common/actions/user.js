@@ -18,6 +18,7 @@ import {
     decrypt_user_info,
     SeedToEthKey,
     getMasterSeed,
+    entropyToMnemonic,
 } from "../../common/crypto_test"
 
 import Web3 from "../Web3"
@@ -121,7 +122,7 @@ export function get_mnemonic(user_id, password){
         )).payload
 
         if(resp.eems){
-            return getUserEntropy(auth, resp.eems)
+            return entropyToMnemonic(getUserEntropy(auth, resp.eems))
         } else {
             return null;
         }
