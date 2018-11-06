@@ -120,9 +120,12 @@ export default class extends React.Component {
             let resp = await this.props.confirm_contract(this.state.contract_id, this.getCounterpartiesEth(), docByte, this.state.revision)
             await window.hideIndicator()
             if (resp == -1) {
-                alert("계약 내용에 상태 변화가 발생하였습니다. 다시 확인하여 주십시오.")
-                location.reload()
-            } else {
+                alert("이미 종료된 계약입니다.");
+                history.replace('/recently');
+            } else if (resp == -2) {
+                alert("계약 내용에 상태 변화가 발생하였습니다. 다시 확인하여 주십시오.");
+                history.replace(`/contract-editor/${contract_id}`)
+            } else { // 0 or 1
                 alert("계약이 성공적으로 승인되었습니다.")
                 history.replace('/recently')
             }
@@ -134,11 +137,14 @@ export default class extends React.Component {
             let str = prompt("거절 이유를 작성해주세요.")
             if( str ){
                 let resp = await this.props.reject_contract(this.state.contract_id, str, this.state.revision);
-                if (resp) {
+                if (resp == 0) {
                     history.replace('/recently');
-                } else {
+                } else if (resp == -1) {
+                    alert("이미 종료된 계약입니다.");
+                    history.replace('/recently');
+                } else if (resp == -2) {
                     alert("계약 내용에 상태 변화가 발생하였습니다. 다시 확인하여 주십시오.");
-                    location.reload();
+                    history.replace(`/contract-editor/${contract_id}`)
                 }
             }else{
                 alert("거절하시는 이유를 작성해주세요.")
