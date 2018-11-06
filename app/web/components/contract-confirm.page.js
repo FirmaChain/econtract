@@ -124,7 +124,7 @@ export default class extends React.Component {
                 history.replace('/recently');
             } else if (resp == -2) {
                 alert("계약 내용에 상태 변화가 발생하였습니다. 다시 확인하여 주십시오.");
-                history.replace(`/contract-editor/${contract_id}`)
+                history.replace(`/contract-editor/${this.state.contract_id}`)
             } else { // 0 or 1
                 alert("계약이 성공적으로 승인되었습니다.")
                 history.replace('/recently')
@@ -144,7 +144,7 @@ export default class extends React.Component {
                     history.replace('/recently');
                 } else if (resp == -2) {
                     alert("계약 내용에 상태 변화가 발생하였습니다. 다시 확인하여 주십시오.");
-                    history.replace(`/contract-editor/${contract_id}`)
+                    history.replace(`/contract-editor/${this.state.contract_id}`)
                 }
             }else{
                 alert("거절하시는 이유를 작성해주세요.")
