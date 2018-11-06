@@ -40,6 +40,7 @@ export default class extends React.Component {
 
 	componentDidMount(){
         let contract_id = this.props.match.params.id;
+        let last_seen_revision = this.props.match.params.revision;
         (async()=>{
             await window.showIndicator()
             await this.props.fetch_user_info()
@@ -50,7 +51,7 @@ export default class extends React.Component {
                 let pin = await this.props.get_pin_from_storage(contract_id)
                 if( pin ){
 
-                    await this.load_contract(contract_id, pin, async(count, length) => {
+                    await this.load_contract(contract_id, pin, last_seen_revision, async(count, length) => {
                         await window.showIndicator(`계약서 불러오는 중 (${count}/${length})`)
                     }, contract_info.epin ? true : false)
                     
@@ -88,11 +89,15 @@ export default class extends React.Component {
         return [this.state.author_eth_address, ...this.state.counterparties.map(e=>e.eth_address)]
     }
 
-    async load_contract(contract_id, pin){
+    async load_contract(contract_id, pin, last_seen_revision){
         let contract = await this.props.load_contract(contract_id,pin, null, false )
         if(!contract){
             alert("문서 로드에 실패했습니다.")
             return history.replace('/recently') 
+        }
+        if (contract.revision != last_seen_revision) {
+            alert("계약 내용에 변화가 발생하였습니다. 다시 확인하여 주십시오.");
+            return history.replace(`/contract-editor/${contract_id}`)
         }
 
         if(contract.contract_id){
@@ -123,7 +128,7 @@ export default class extends React.Component {
                 alert("이미 종료된 계약입니다.");
                 history.replace('/recently');
             } else if (resp == -2) {
-                alert("계약 내용에 상태 변화가 발생하였습니다. 다시 확인하여 주십시오.");
+                alert("계약 내용에 변화가 발생하였습니다. 다시 확인하여 주십시오.");
                 history.replace(`/contract-editor/${this.state.contract_id}`)
             } else { // 0 or 1
                 alert("계약이 성공적으로 승인되었습니다.")
@@ -143,7 +148,7 @@ export default class extends React.Component {
                     alert("이미 종료된 계약입니다.");
                     history.replace('/recently');
                 } else if (resp == -2) {
-                    alert("계약 내용에 상태 변화가 발생하였습니다. 다시 확인하여 주십시오.");
+                    alert("계약 내용에 변화가 발생하였습니다. 다시 확인하여 주십시오.");
                     history.replace(`/contract-editor/${this.state.contract_id}`)
                 }
             }else{
