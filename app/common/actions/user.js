@@ -107,6 +107,27 @@ export function regist_new_account(account, info, email, name, eth){
     }
 }
 
+export function get_mnemonic(user_id, password){
+    return async function(dispatch){
+
+        let nonce = Date.now();
+        let auth = makeAuth(user_id, password);
+        let sign = makeSignData("FirmaChain Login", auth, nonce);
+
+        let resp = (await api_login_account(
+            sign.publicKey.toString('hex'),
+            nonce,
+            sign.payload
+        )).payload
+
+        if(resp.eems){
+            return getUserEntropy(auth, resp.eems)
+        } else {
+            return null;
+        }
+    }
+}
+
 export function login_account(user_id, password){
     return async function(dispatch){
 
