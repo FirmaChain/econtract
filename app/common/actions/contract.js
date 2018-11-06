@@ -301,7 +301,7 @@ export function fetch_chat(contract_id, cursor=0){
     }
 }
 
-export function confirm_contract(contract_id, counterparties, docByte){
+export function confirm_contract(contract_id, counterparties, docByte, revision){
     return async function(dispatch){
         let pin = await getPIN(contract_id);
         let thekey = await getTheKey(contract_id, pin)
@@ -313,17 +313,17 @@ export function confirm_contract(contract_id, counterparties, docByte){
 
         console.log(JSON.stringify(signTx))
 
-        return (await api_confirm_contract( contract_id, original, JSON.stringify(signTx) )).payload
+        return (await api_confirm_contract( contract_id, original, JSON.stringify(signTx), revision)).payload
     }
 }
 
-export function reject_contract(contract_id, msg){
+export function reject_contract(contract_id, msg, revision){
     return async function(dispatch){
         let pin = await getPIN(contract_id);
         let the_key = await getTheKey(contract_id, pin);
         msg = aes_encrypt(msg, the_key)
 
-        return (await api_reject_contract(contract_id, msg)).payload
+        return (await api_reject_contract(contract_id, msg, revision)).payload
     }
 }
 

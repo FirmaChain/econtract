@@ -65,7 +65,7 @@ window.addEventListener("load",()=>{
 					<Route onEnter={resolver} exact path="/add-contract" component={AddContractPage} />
 					<Route onEnter={resolver} exact path="/folder/:id" component={InFolderPage} />
 					<Route onEnter={resolver} exact path="/contract-editor/:id" component={ContractEditorPage} />
-					<Route onEnter={resolver} exact path="/contract-confirm/:id" component={ContractConfirmPage} />
+					<Route onEnter={resolver} exact path="/contract-confirm/:id/:revision" component={ContractConfirmPage} />
 					<Route onEnter={resolver} exact path="/profile" component={UserProfilePage} />
 					
 					<Route onEnter={resolver} exact path="/verification" component={VerificationPage} />
