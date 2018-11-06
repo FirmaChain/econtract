@@ -163,22 +163,24 @@ export async function api_fetch_chat(contract_id,cursor){
         session:window.getCookie("session")
     });
 }
-export async function api_confirm_contract(contract_id,original,signTx){
+export async function api_confirm_contract(contract_id,original,signTx,revision){
     let data = new FormData();
 
     data.append('contract_id', contract_id);
 	data.append('original', original);
-	data.append('signTx', signTx)
+	data.append('signTx', signTx);
+	data.append('revision', revision)
 
     return await post("/confirm_contract", data,{
         session:window.getCookie("session")
     });
 }
-export async function api_reject_contract(contract_id,msg){
+export async function api_reject_contract(contract_id,msg,revision){
     let data = new FormData();
 
     data.append('contract_id', contract_id);
-	data.append('msg', msg)
+	data.append('msg', msg);
+	data.append('revision', revision)
 
     return await post("/reject_contract", data,{
         session:window.getCookie("session")
