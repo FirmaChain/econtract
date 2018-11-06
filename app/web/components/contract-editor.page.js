@@ -421,7 +421,7 @@ export default class extends React.Component {
     onClickDetail = async() => {
         if(await confirm("다음으로","변경된 내용이 있다면 먼저 저장해주세요. 다음으로 넘어가시겠습니까?")){
             this.blockFlag = 0
-            history.push(`/contract-confirm/${this.state.contract_id}`)
+            history.push(`/contract-confirm/${this.state.contract_id}/${this.state.revision}`)
         }
     }
 
