@@ -66,8 +66,8 @@ export default class extends React.Component{
         let left_min = Math.floor(left_time/60%60)
         // console.log(left_hour, left_min)
         this.setState({
-            left_hour: this.digit(left_hour),
-            left_min: this.digit(left_min)
+            left_hour: left_hour,
+            left_min: left_min,
         })
     }
 
@@ -107,7 +107,7 @@ export default class extends React.Component{
                 
             <div className="login-time-bar" onClick={this.onClickUpdateLogin}>
                 <div>로그인 세션</div>
-                <div>{this.state.left_hour||"00"}:{this.state.left_min||"00"}</div>
+                <div>{this.state.left_hour||"0"}시간 {this.state.left_min||"0"}분</div>
                 <div>연장</div>
             </div>
 
