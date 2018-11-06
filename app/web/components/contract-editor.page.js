@@ -416,7 +416,7 @@ export default class extends React.Component {
                 if (this.state.revision + 1 == resp) {
                     alert("성공적으로 저장하였습니다.");
                     this.setState({
-                        state: resp
+                        revision: resp
                     });
                 } else {
                     alert("계약 내용에 변화가 발생하였습니다. 다시 확인하여 주십시오.");
