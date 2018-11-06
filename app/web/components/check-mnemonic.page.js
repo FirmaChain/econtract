@@ -142,7 +142,7 @@ export default class extends React.Component {
             return <div />
         }
 
-		return (<div className="default-page login-page">
+		return (<div className="default-page mnemonic-page">
             <div className="logo">
                 <img src="/static/logo_blue.png" onClick={()=>history.push("/")}/>
             </div>

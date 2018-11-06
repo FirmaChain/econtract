@@ -812,6 +812,18 @@ select:focus {
   margin: 0 0 20px 20px;
 }
 
+.mnemonic-page .masterkey-list > .masterkey-item {
+  margin: 3px;
+}
+
+.mnemonic-page .masterkey-list > .copy {
+  position: absolute;
+  right: 5px;
+  bottom: 5px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
 .display-flex {
   display: -webkit-box;
   display: -ms-flexbox;
