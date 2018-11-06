@@ -79,7 +79,18 @@ export default class extends React.Component {
     }
 
     render_login() {
-		return (
+        if (!localStorage.getItem("browser_key") || localStorage.getItem("browser_key_virgin") == 1) {
+            return (
+            <div className="page">
+                <div className="column-300">
+                    <div className="form-layout">
+                        인증되지 않은 브라우저이므로 마스터 키워드 조회가 불가능합니다.
+                    </div>
+                </div>
+            </div>
+            );
+        } else {
+            return (
             <div className="page">
                 <div className="column-300">
                     <div className="form-layout">
@@ -94,19 +105,13 @@ export default class extends React.Component {
                         </div>
 
                         <div className="form-submit">
-                            {!localStorage.getItem("browser_key") || localStorage.getItem("browser_key_virgin") == 1 ? [
-                                <button key={1} tabIndex={1} onClick={()=>history.push("/recover")}> 다른 계정으로 로그인 하기 </button>,
-                                <button key={2} tabIndex={1} onClick={()=>history.push("/regist")}> 회원가입 </button>
-                            ] : [
-                                <button key={1} tabIndex={1} onClick={this.onClickRecoverAccount}> 다른 계정으로 로그인 하기 </button>,
-                                <button key={2} tabIndex={2} onClick={this.onClickClearBrowserKey}> 브라우저 인증 해제하기 </button>
-                            ]}
                             <button className="border" onClick={this.onClickLogin}> 로그인 </button>
                         </div>
                     </div>
                 </div>
             </div>
-        );
+            );
+        }
 
 
     }
