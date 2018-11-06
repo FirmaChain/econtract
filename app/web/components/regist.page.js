@@ -518,14 +518,10 @@ E-Contract 이용약관(버전 0.0.1)
                 <div className="column-800">
                     <div className="form-layout">
                         <div className="form-label"> 서비스 이용약관 </div>
-                        <textarea className="form-textarea-info" disabled>
-                            {this.info1}
-                        </textarea>
+                        <textarea className="form-textarea-info" defaultValue={this.info1} disabled />
                         
                         <div className="form-label"> 개인정보취급방침 </div>
-                        <textarea className="form-textarea-info" disabled>
-                            {this.info2}
-                        </textarea>
+                        <textarea className="form-textarea-info" defaultValue={this.info2} disabled />
                     </div>
                 </div>
             </div>
