@@ -130,6 +130,7 @@ export default class extends React.Component {
         }
         let mm = this.state.moveMode;
         let lock_status;
+        let lock_src
         if (e.epin) {
             lock_src = "/static/icon_unlocked.png";
         } else if (sessionStorage.getItem(`contract:${e.contract_id}`)) {
