@@ -105,7 +105,7 @@ export default class extends React.Component {
                         </div>
 
                         <div className="form-submit">
-                            <button className="border" onClick={this.onClickLogin}> 로그인 </button>
+                            <button className="border" onClick={this.onClickLogin}> 조회 </button>
                         </div>
                     </div>
                 </div>
@@ -155,7 +155,7 @@ export default class extends React.Component {
                 <div className="round-btn" onClick={()=>history.goBack()}><i className="fas fa-arrow-left"></i></div>
             </div>
             <div className="container">
-                <h1>마스터 키워드 확인</h1>
+                <h1>마스터 키워드 조회</h1>
                 {this.render_content()}
             </div>
 		</div>);
