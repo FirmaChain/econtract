@@ -226,7 +226,7 @@ export default class extends React.Component {
                                 <select>
                                     <option>템플릿 선택</option>
                                 </select> */}
-                                <input ref="file" type="file" accept=".png, .jpg, .jpeg, .doc, .docx, .ppt, .pptx" onChange={this.onClickUploadFile} style={{display:"none"}}/>
+                                <input ref="file" type="file" accept=".png, .jpg, .jpeg, .doc, .docx, .ppt, .pptx, .pdf" onChange={this.onClickUploadFile} style={{display:"none"}}/>
                             </div>}
 
                             <div style={{height:20}} />
