@@ -47,7 +47,7 @@ class Item extends React.Component{
 
     render(){
         let props = this.props
-        let isEditable = props.editable == true && (props.code == null || props.code == this.props.user.code)
+        let isEditable = props.editmode == true &&  props.editable == true && (props.code == null || props.code == this.props.user.code)
         return <Draggable handle=".handle" defaultPosition={{x:props.x,y:props.y}} onStop={(e,n)=>props.onUpdate("pos", {x:n.x, y:n.y})} >
             <Resizable 
                 style={{position:"absolute"}} 
@@ -58,8 +58,18 @@ class Item extends React.Component{
                 onResizeStart={(e, direction, ref, d) => {
                     props.onUpdate("resize",{ dx:ref.clientWidth, dy:ref.clientHeight, })
                 }}
+                enable={{
+                    top: false,
+                    right: isEditable ? true : false,
+                    bottom: isEditable ? true : false,
+                    left: false,
+                    topRight: false,
+                    bottomRight: isEditable ? true : false,
+                    bottomLeft: false,
+                    topLeft: false,
+                }}
             >
-                <div className="draggable-div">
+                <div className={`draggable-div ${props.editmode ? "" : "disable-edit-mode"}`}>
                     {isEditable ? <div className="handle"><i className="fas fa-arrows-alt" /></div> : null }
                     {( props.name && props.docStatus < 2 )? <div className="name-container">{props.name}</div> : null}
                     {isEditable ? <div className="trash" onClick={this.props.removeItem}><img src="/static/trash.png"/></div> : null }
@@ -96,7 +106,8 @@ export default class extends React.Component {
             imgs: [],
             page: 0,
             page_count: 0,
-            edit_page:[]
+            edit_page:[],
+            editmode:true,
         };
         this.blockFlag = 1;
         this.keyMap = {};
@@ -386,6 +397,12 @@ export default class extends React.Component {
         }
     }
 
+    onClickEditMode = ()=>{
+        this.setState({
+            editmode:!this.state.editmode
+        })
+    }
+
     onClickRefresh = async()=>{
         if(await confirm("초기화","수정사항을 저장하지 않고 모두 되돌리겠습니까?")){
             location.reload()
@@ -457,6 +474,10 @@ export default class extends React.Component {
         if(this.state.status == 1){
             return [
                 <div key={0} className="line" />,
+                <div key={1} className={`toolkit ${this.state.editmode?'selected':""}`} onClick={this.onClickEditMode}>
+                    <i className={this.state.editmode ? "fas fa-pen-fancy" : "fas fa-print"}></i>
+                    {this.state.editmode ? "편집모드" : "출력모드"}
+                </div>,
                 <div key={1} className="toolkit" onClick={this.onClickRefresh}>
                     <i className="fas fa-undo"></i>
                     초기화
@@ -498,11 +519,11 @@ export default class extends React.Component {
                     {this.state.status == 1 ?[
                         <div key={0} className="toolkit" onClick={this.onClickAddSign}>
                             <img src="/static/icon_sign.png"/>
-                            서명 그리기
+                            서명
                         </div>,
                         <div key={1} className="toolkit" onClick={this.onClickAddImg}>
                             <img src="/static/icon_sign_upload.png"/>
-                            서명,도장 업로드
+                            도장 선택
                         </div>
                     ] : null}
 
@@ -527,7 +548,9 @@ export default class extends React.Component {
                 <div className="edit-box">
                     {(objects).map((e,k)=>{
                         if(!!e)
-                            return <Item key={`${k}:${e.type}:${e.x}:${e.y}`} {...e} 
+                            return <Item 
+                                key={`${k}:${e.type}:${e.x}:${e.y}`} {...e} 
+                                editmode={this.state.editmode}
                                 onUpdate={this.onUpdateItem.bind(this, k)}
                                 removeItem={this.onRemoveItem.bind(this, k)}
                                 editable={this.state.status < 2}

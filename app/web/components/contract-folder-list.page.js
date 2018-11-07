@@ -57,6 +57,8 @@ export default class extends React.Component {
     }
     
     onClickDeleteMode = ()=>{
+        if(this.props.folders.list.length == 1)
+            return alert("삭제할 폴더가 없습니다!")
         this.setState({
             deleteMode:true,
             del_select:[]
@@ -83,12 +85,18 @@ export default class extends React.Component {
     }
 
     onClickDelete = async ()=>{
+        if(this.state.del_select.length == 0)
+            return alert("삭제할 폴더를 선택해주세요!")
+
         if( await window.confirm("폴더 삭제", "정말 삭제하시겠습니까?") ){
             await this.props.remove_folder(this.state.del_select.map((e,k)=>{
                 if(e)
                     return this.props.folders.list[k].folder_id
             }).filter(e=>e))
             await this.props.folder_list()
+            this.setState({
+                deleteMode:false
+            })
         }
     }
 
