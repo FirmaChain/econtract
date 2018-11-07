@@ -40,6 +40,7 @@ export default class extends React.Component {
             this.props.mapFetchChat(async() => {
                 let list = await this.props.fetch_chat(this.props.contract_id);
                 await this.addList(list)
+                this.refs.bottom.scrollIntoView({ behavior: "smooth" });
             });
         })()
     }
