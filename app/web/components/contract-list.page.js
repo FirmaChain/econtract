@@ -134,7 +134,7 @@ export default class extends React.Component {
         if (e.epin) {
             lock_src = "/static/icon_unlocked.png";
         } else if (sessionStorage.getItem(`contract:${e.contract_id}`)) {
-            lock_src = "/static/icon_unlocked.png";
+            lock_src = "/static/icon_unlocked_session.png";
         } else {
             lock_src = "/static/icon_locked.png";
         }
