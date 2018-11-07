@@ -108,9 +108,9 @@ export default class extends React.Component {
                             <button className="border" onClick={this.onClickLogin}> 조회 </button>
                         </div>
                     </div>
-                </div>
-                <div className="mid-desc">
-                    * 마스터 키워드를 확인하기 위해 다시 로그인 해야 합니다.
+                    <div className="mid-desc">
+                        * 마스터 키워드를 확인하기 위해 다시 로그인 해야 합니다.
+                    </div>
                 </div>
             </div>
             );
