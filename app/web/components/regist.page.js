@@ -573,7 +573,7 @@ E-Contract 이용약관(버전 0.0.1)
                     
                     <div className="form-label"> 비밀번호 </div>
                     <div className="form-input">
-                        <input type="password" placeholder="비밀번호를 입력해주세요." value={this.state.password || ""} onChange={e=>this.setState({password:e.target.value})}  />
+                        <input type="password" placeholder="비밀번호를 최소 6자리 이상 입력해주세요." value={this.state.password || ""} onChange={e=>this.setState({password:e.target.value})}  />
                     </div>
 
                     <div className="form-label"> 비밀번호 확인 </div>
