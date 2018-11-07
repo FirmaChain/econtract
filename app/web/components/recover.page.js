@@ -140,7 +140,7 @@ export default class extends React.Component {
                         
                         <div className="form-label"> 비밀번호 </div>
                         <div className="form-input">
-                            <input type="password" placeholder="비밀번호를 입력해주세요." value={this.state.password || ""} onChange={e=>this.setState({password:e.target.value})}  />
+                            <input type="password" placeholder="비밀번호를 최소 6자리 입력해주세요." value={this.state.password || ""} onChange={e=>this.setState({password:e.target.value})}  />
                         </div>
 
                         <div className="form-label"> 비밀번호 확인 </div>
