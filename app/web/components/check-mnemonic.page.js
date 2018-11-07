@@ -154,7 +154,7 @@ export default class extends React.Component {
         }
 
         if(this.props.user_info === false){
-            return history.replace("/login");
+            return history.push("/login");
         }
 
 		return (<div className="default-page regist-page">
