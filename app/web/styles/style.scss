@@ -646,7 +646,7 @@ select:focus { outline:none; }
     }
 }
 
-.regist-page{
+.register-page{
     .step-indicator{
         float:right;
         display: inline-flex;
@@ -1580,6 +1580,31 @@ div.checkbox-comp{
     }
 }
 
+.mnemonic-page {
+
+    .masterkey-list{
+        font-size: 12px;
+        justify-content: center;
+        align-items: center;
+        display: flex;
+        flex-wrap: wrap;
+        align-content: center;
+        position: relative;
+
+        >.masterkey-item{
+            margin: 3px;
+        }
+
+        >.copy{
+            position: absolute;
+            right: 5px;
+            bottom: 5px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    }
+}
+
 
 .chatting-comp{
     position: fixed;
@@ -1771,7 +1796,7 @@ div.checkbox-comp{
     }
 }
 
-.regist-contract-modal{
+.register-contract-modal{
     width: 700px;
     .form-content{
         display: flex;

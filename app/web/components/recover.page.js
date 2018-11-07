@@ -131,7 +131,7 @@ export default class extends React.Component {
     render_account(){
         return (<div>
             <div className="page bottom-no-border">
-                <div className="column-500">
+                <div className="column-600">
                     <div className="form-layout">
                         <div className="form-label"> ID </div>
                         <div className="form-input">
@@ -140,7 +140,7 @@ export default class extends React.Component {
                         
                         <div className="form-label"> 비밀번호 </div>
                         <div className="form-input">
-                            <input type="password" placeholder="비밀번호를 입력해주세요." value={this.state.password || ""} onChange={e=>this.setState({password:e.target.value})}  />
+                            <input type="password" placeholder="비밀번호를 최소 6자리 입력해주세요." value={this.state.password || ""} onChange={e=>this.setState({password:e.target.value})}  />
                         </div>
 
                         <div className="form-label"> 비밀번호 확인 </div>
@@ -158,7 +158,7 @@ export default class extends React.Component {
     render_masterkey(){
         return (<div>
             <div className="page bottom-no-border">
-                <div className="column-500">
+                <div className="column-600">
                     <div className="form-layout">
                         <div className="form-label"> 마스터 키워드 </div>
                         <div className="form-input">
@@ -184,7 +184,7 @@ export default class extends React.Component {
     }
 
 	render() {
-		return (<div className="default-page regist-page">
+		return (<div className="default-page register-page">
             <div className="logo">
                 <img src="/static/logo_blue.png" onClick={()=>history.push("/")}/>
             </div>

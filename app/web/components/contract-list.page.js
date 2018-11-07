@@ -130,17 +130,18 @@ export default class extends React.Component {
         }
         let mm = this.state.moveMode;
         let lock_status;
+        let lock_src
         if (e.epin) {
-            lock_status = "fas fa-unlock";
+            lock_src = "/static/icon_unlocked.png";
         } else if (sessionStorage.getItem(`contract:${e.contract_id}`)) {
-            lock_status = "fas fa-unlock";
+            lock_src = "/static/icon_unlocked_session.png";
         } else {
-            lock_status = "fas fa-lock";
+            lock_src = "/static/icon_locked.png";
         }
         return <tr key={k} className={mm ? "" : "clickable"} onClick={mm ? null : this.onClickContract.bind(this,e.contract_id)}>
             {mm ? <td><CheckBox2 on={this.state.move_select[k]} onClick={this.onClickMoveSel.bind(this,k)} /></td> : null}
             <td className="text-center">{status_text(e.status)}</td>
-            <td className="text-center"><i className={lock_status}></i></td>
+            <td className="text-center"><img src={lock_src} height={19}/></td>
             <td className="text-left">{e.name}</td>
             <td style={{width:"100px"}} className="text-center">{e.username}{e.counterpartyCnt > 0 ?` 외 ${e.counterpartyCnt}명`:""}</td>
             <td className="date-cell">{moment(e.updatedAt).format("YYYY-MM-DD HH:mm:ss")}</td>

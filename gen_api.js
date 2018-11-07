@@ -223,8 +223,8 @@ export async function api_check_phone_verification_code(phone,code){
         session:window.getCookie("session")
     });
 }
-export async function api_regist_account(publicbk,publicms,publicmsc,info,auth,eems,email,name,eth){
-    return await get("/regist_account", {
+export async function api_register_account(publicbk,publicms,publicmsc,info,auth,eems,email,name,eth){
+    return await get("/register_account", {
         publicbk,
 		publicms,
 		publicmsc,

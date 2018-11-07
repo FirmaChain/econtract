@@ -3,7 +3,7 @@ import {
     api_check_email_verification_code,
     api_request_phone_verification_code,
     api_check_phone_verification_code,
-    api_regist_account,
+    api_register_account,
     api_login_account,
     api_encrypted_user_info,
     api_find_user_with_code_email,
@@ -18,6 +18,7 @@ import {
     decrypt_user_info,
     SeedToEthKey,
     getMasterSeed,
+    entropyToMnemonic,
 } from "../../common/crypto_test"
 
 import Web3 from "../Web3"
@@ -91,9 +92,9 @@ export function check_phone_verification_code(phone, code){
     }
 }
 
-export function regist_new_account(account, info, email, name, eth){
+export function register_new_account(account, info, email, name, eth){
     return async function(dispatch){
-        return (await api_regist_account(
+        return (await api_register_account(
             account.browserKey.publicKey.toString('hex'),
             account.masterKeyPublic.toString('hex'),
             account.masterKeyPublicContract.toString('hex'),
@@ -104,6 +105,29 @@ export function regist_new_account(account, info, email, name, eth){
             name, 
             eth
         )).payload
+    }
+}
+
+export function get_mnemonic(user_id, password){
+    return async function(dispatch){
+
+        let nonce = Date.now();
+        let auth = makeAuth(user_id, password);
+        let sign = makeSignData("FirmaChain Login", auth, nonce);
+
+        let resp = (await api_login_account(
+            sign.publicKey.toString('hex'),
+            nonce,
+            sign.payload
+        )).payload
+
+        if(resp.eems){
+            window.setCookie("session", resp.session, 0.125)
+            window.setCookie("session_update", Date.now(), 0.125)
+            return entropyToMnemonic(getUserEntropy(auth, resp.eems))
+        } else {
+            return null;
+        }
     }
 }
 

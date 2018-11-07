@@ -112,7 +112,7 @@ export default class extends React.Component {
 								전자문서, 서명 법안이 발효되면서 서면계약과 동일한 법적 효력이<br/>
 								발생하게 되었습니다. E-Contract 는 서면 계약이 가지는 단점들을<br/>
 								보완하고 장점들은 극대화하여 상호간에 이뤄지는 계약 과정 내에서의<br/>
-								발생하는 불편한 점들을 <b>*기능</b>을 통해 해결하였습니다.
+								발생하는 불편한 점들을 <b>기능</b>을 통해 해결하였습니다.
 							</div>
 						</div>
 					</div>
@@ -122,7 +122,7 @@ export default class extends React.Component {
 						<img src="/static/econtract_logo.png" />
 						<div>
 							E-Contract 의<br/>
-							<b>특별한 *기능들을 소개합니다.</b>
+							<b>특별한 기능들을 소개합니다.</b>
 						</div>
 					</div>
 					<div className="data-place">

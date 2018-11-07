@@ -19,7 +19,8 @@ pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.js';
 import Template from "./components/template.comp"
 import IndexPage from "./components/index.page"
 import LoginPage from "./components/login.page"
-import RegistPage from "./components/regist.page"
+import CheckMnemonicPage from "./components/check-mnemonic.page"
+import RegisterPage from "./components/register.page"
 import RecoverPage from "./components/recover.page"
 import ContractListPage from "./components/contract-list.page"
 import TemplatePage from "./components/contract-template.page"
@@ -56,7 +57,8 @@ window.addEventListener("load",()=>{
 				<Template>
 					<Route onEnter={resolver} exact path="/" component={IndexPage} />
 					<Route onEnter={resolver} exact path="/login" component={LoginPage} />
-					<Route onEnter={resolver} exact path="/regist" component={RegistPage} />
+					<Route onEnter={resolver} exact path="/register" component={RegisterPage} />
+					<Route onEnter={resolver} exact path="/check-mnemonic" component={CheckMnemonicPage} />
 					<Route onEnter={resolver} exact path="/recover" component={RecoverPage} />
 					<Route onEnter={resolver} exact path="/recently" component={ContractListPage} />
 					<Route onEnter={resolver} exact path="/folder" component={FolderPage} />

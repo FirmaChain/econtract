@@ -111,6 +111,7 @@ export default class extends React.Component {
         };
         this.blockFlag = 1;
         this.keyMap = {};
+        this.fetchChat = null;
 	}
 
 	componentDidMount(){
@@ -432,6 +433,9 @@ export default class extends React.Component {
             } else {
                 if (this.state.revision + 1 == resp) {
                     alert("성공적으로 저장하였습니다.");
+                    if (this.fetchChat) {
+                        this.fetchChat();
+                    }
                     this.setState({
                         revision: resp
                     });
@@ -458,6 +462,7 @@ export default class extends React.Component {
             </div>
         return <Chatting 
             contract_id={this.state.contract_id} 
+            revision={this.state.revision}
             author={{
                 name: this.state.author_name,
                 code: this.state.author_code,
@@ -467,7 +472,8 @@ export default class extends React.Component {
             counterparties={this.state.counterparties}
             contract_name={this.state.name}
             contract_status={this.state.status}
-            unblockFunction={()=>{this.blockFlag = 0}}/>
+            unblockFunction={()=>{this.blockFlag = 0}}
+            mapFetchChat={(fn)=>{this.fetchChat = fn}}/>
     }
 
     render_save_recover_btn(){

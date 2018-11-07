@@ -90,7 +90,7 @@ export default class extends React.Component {
    }
 
 	render() {
-        if(this.props.user_info === null){
+        if(this.props.user_info !== false) {
             return <div />
         }
 
@@ -119,7 +119,7 @@ export default class extends React.Component {
                             <div className="form-submit">
                                 {!localStorage.getItem("browser_key") || localStorage.getItem("browser_key_virgin") == 1 ? [
                                     <button key={1} tabIndex={1} onClick={()=>history.push("/recover")}> 다른 계정으로 로그인 하기 </button>,
-                                    <button key={2} tabIndex={1} onClick={()=>history.push("/regist")}> 회원가입 </button>
+                                    <button key={2} tabIndex={1} onClick={()=>history.push("/register")}> 회원가입 </button>
                                 ] : [
                                     <button key={1} tabIndex={1} onClick={this.onClickRecoverAccount}> 다른 계정으로 로그인 하기 </button>,
                                     <button key={2} tabIndex={2} onClick={this.onClickClearBrowserKey}> 브라우저 인증 해제하기 </button>

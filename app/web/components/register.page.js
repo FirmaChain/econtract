@@ -8,7 +8,7 @@ import {
     check_email_verification_code,
     request_phone_verification_code,
     check_phone_verification_code,
-    regist_new_account,
+    register_new_account,
 } from "../../common/actions"
 import Web3 from "../../common/Web3"
 
@@ -37,7 +37,7 @@ let mapDispatchToProps = {
     check_email_verification_code,
     request_phone_verification_code,
     check_phone_verification_code,
-    regist_new_account,
+    register_new_account,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -487,7 +487,7 @@ E-Contract 이용약관(버전 0.0.1)
         let encryptedInfo = aes_encrypt(JSON.stringify(info), this.state.account.masterKeyPublic);
         
         await window.showIndicator()
-        let resp = await this.props.regist_new_account(this.state.account, encryptedInfo, this.state.email, this.state.username, wallet.address)
+        let resp = await this.props.register_new_account(this.state.account, encryptedInfo, this.state.email, this.state.username, wallet.address)
         await window.hideIndicator()
 
         if(resp.code == 1){
@@ -573,7 +573,7 @@ E-Contract 이용약관(버전 0.0.1)
                     
                     <div className="form-label"> 비밀번호 </div>
                     <div className="form-input">
-                        <input type="password" placeholder="비밀번호를 입력해주세요." value={this.state.password || ""} onChange={e=>this.setState({password:e.target.value})}  />
+                        <input type="password" placeholder="비밀번호를 최소 6자리 입력해주세요." value={this.state.password || ""} onChange={e=>this.setState({password:e.target.value})}  />
                     </div>
 
                     <div className="form-label"> 비밀번호 확인 </div>
@@ -657,7 +657,7 @@ E-Contract 이용약관(버전 0.0.1)
                     * 전체 계약 잠금 해제시에 필요한 마스터 키워드입니다. 브라우저 및 기기 변경시 보안을 위해 접속하신 기기에서는 잠금 상태로 계약이 로드됩니다. 이전 해제 기록이 있는 계약이라면 해당 키워드를 사용해 일괄 해제 가능합니다.
                 </div>
                 <div className="right-desc">
-                    필요할 때 사용할 수 있도록 상단의 12개의 키워드들을 <u><strong>순서대로</strong></u> 종이에 옮겨 적어 안전하게 보관하십시오. 안전하게 계정을 보호하기 위해서는 전자매체에 저장하거나 타엔에게 양도하는 등의 행동을 하지 않는 것을 권장합니다.
+                    필요할 때 사용할 수 있도록 상단의 12개의 키워드들을 <u><strong>순서대로</strong></u> 종이에 옮겨 적어 안전하게 보관하십시오. 안전하게 계정을 보호하기 위해서는 전자매체에 저장하거나 타인에게 양도하는 등의 행동을 하지 않는 것을 권장합니다.
                 </div>
             </div>
         </div>)
@@ -716,7 +716,7 @@ E-Contract 이용약관(버전 0.0.1)
     }
 
 	render() {
-		return (<div className="default-page regist-page">
+		return (<div className="default-page register-page">
             <div className="logo">
                 <img src="/static/logo_blue.png" onClick={()=>history.push("/")}/>
             </div>
