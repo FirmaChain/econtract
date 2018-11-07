@@ -131,7 +131,7 @@ export default class extends React.Component {
     render_account(){
         return (<div>
             <div className="page bottom-no-border">
-                <div className="column-500">
+                <div className="column-600">
                     <div className="form-layout">
                         <div className="form-label"> ID </div>
                         <div className="form-input">
@@ -158,7 +158,7 @@ export default class extends React.Component {
     render_masterkey(){
         return (<div>
             <div className="page bottom-no-border">
-                <div className="column-500">
+                <div className="column-600">
                     <div className="form-layout">
                         <div className="form-label"> 마스터 키워드 </div>
                         <div className="form-input">
