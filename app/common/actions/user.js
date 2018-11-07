@@ -122,6 +122,8 @@ export function get_mnemonic(user_id, password){
         )).payload
 
         if(resp.eems){
+            window.setCookie("session", resp.session, 0.125)
+            window.setCookie("session_update", Date.now(), 0.125)
             return entropyToMnemonic(getUserEntropy(auth, resp.eems))
         } else {
             return null;
