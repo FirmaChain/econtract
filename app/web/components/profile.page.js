@@ -70,7 +70,7 @@ export default class extends React.Component {
             <div className="container">
                 <h1>내 정보</h1>
                 <div className="page">
-                    <div className="column-300">
+                    <div className="column-500">
                         <div className="form-layout">
                             <div className="form-label"> 내 정보 </div>
                             <div className="form-input profile-info">
