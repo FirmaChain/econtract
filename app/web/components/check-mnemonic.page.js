@@ -37,6 +37,9 @@ export default class extends React.Component {
     }
 
     componentWillReceiveProps(props){
+        if(!props.user_info){
+            return history.push("/login")
+        }
     }
     
     onClickLogin = async()=>{
@@ -149,12 +152,8 @@ export default class extends React.Component {
    }
 
 	render() {
-        if(this.props.user_info === null || this.props.user_info === undefined){
+        if(!this.props.user_info){
             return <div />
-        }
-
-        if(this.props.user_info === false){
-            return history.push("/");
         }
 
 		return (<div className="default-page regist-page">
