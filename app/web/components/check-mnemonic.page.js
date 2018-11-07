@@ -109,6 +109,9 @@ export default class extends React.Component {
                         </div>
                     </div>
                 </div>
+                <div className="mid-desc">
+                    * 마스터 키워드를 확인하기 위해 다시 로그인 해야 합니다.
+                </div>
             </div>
             );
         }
@@ -131,6 +134,9 @@ export default class extends React.Component {
                     <div className="form-submit">
                         <button className="border" onClick={this.onClickOK}> 확인 </button>
                     </div>
+                </div>
+                <div className="mid-desc">
+                    * 필요할 때 사용할 수 있도록 상단의 12개의 키워드들을 <u><strong>순서대로</strong></u> 종이에 옮겨 적어 안전하게 보관하십시오. 안전하게 계정을 보호하기 위해서는 전자매체에 저장하거나 타엔에게 양도하는 등의 행동을 하지 않는 것을 권장합니다.
                 </div>
             </div>
         </div>)
