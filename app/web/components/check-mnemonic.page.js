@@ -79,9 +79,6 @@ export default class extends React.Component {
     }
 
     render_login() {
-        if(this.props.user_info === false){
-            return history.replace("/login");
-        }
         if (!localStorage.getItem("browser_key") || localStorage.getItem("browser_key_virgin") == 1) { // Actually unreachable case
             return (
             <div className="page">
@@ -152,8 +149,12 @@ export default class extends React.Component {
    }
 
 	render() {
-        if(this.props.user_info === null){
+        if(this.props.user_info === null || this.props.user_info === undefined){
             return <div />
+        }
+
+        if(this.props.user_info === false){
+            return history.replace("/login");
         }
 
 		return (<div className="default-page regist-page">
