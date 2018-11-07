@@ -90,7 +90,7 @@ export default class extends React.Component {
    }
 
 	render() {
-        if(this.props.user_info === null || this.props.user_info === undefined){
+        if(this.props.user_info !== false) {
             return <div />
         }
 
