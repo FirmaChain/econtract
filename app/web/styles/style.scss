@@ -160,7 +160,9 @@ select:focus { outline:none; }
             box-sizing: border-box;
             justify-content: space-between;
             align-items: center;
-
+            .selected{
+                background-color: rgba(0,0,0,0.4);
+            }
             >.toolkit{
                 display: flex;
                 font-size: 12px;
@@ -225,6 +227,12 @@ select:focus { outline:none; }
                 // left: 0;
                 // right: 0;
 
+                &:hover{
+                    .name-container{
+                        opacity: 0.2;
+                    }
+                }
+
                 .content{
                     position: relative;
                     display: inline-block;
@@ -246,6 +254,7 @@ select:focus { outline:none; }
                     z-index: 2;
                 }
                 .name-container{
+                    transition: all 0.5s;
                     position: absolute;
                     right: 0;
                     top: 0;
@@ -271,7 +280,15 @@ select:focus { outline:none; }
                     color: RGB(255,255,255);
                     // padding: 3px 3px;
                 }
-
+            }
+            .disable-edit-mode{
+                .name-container{
+                    opacity: 0;
+                }
+                .content{
+                    border: 0;
+                    padding:11px;
+                }
             }
         }
     }
