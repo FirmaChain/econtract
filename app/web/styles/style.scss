@@ -1563,6 +1563,24 @@ div.checkbox-comp{
     }
 }
 
+.mnemonic-page {
+
+    .masterkey-list {
+
+        > .masterkey-item {
+            margin: 3px;
+        }
+        
+        > .copy {
+            position: absolute;
+            right: 5px; 
+            bottom: 5px; 
+            font-weight: bold;
+            cursor: pointer;
+        }
+    } 
+}
+
 
 .chatting-comp{
     position: fixed;
