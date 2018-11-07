@@ -79,7 +79,7 @@ export default class extends React.Component {
     }
 
     render_login() {
-        if(props.user_info === false){
+        if(this.props.user_info === false){
             return history.replace("/login");
         }
         if (!localStorage.getItem("browser_key") || localStorage.getItem("browser_key_virgin") == 1) { // Actually unreachable case
