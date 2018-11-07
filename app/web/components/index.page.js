@@ -122,7 +122,7 @@ export default class extends React.Component {
 						<img src="/static/econtract_logo.png" />
 						<div>
 							E-Contract 의<br/>
-							<b>특별한 <b>기능</b>들을 소개합니다.</b>
+							<b>특별한 기능들을 소개합니다.</b>
 						</div>
 					</div>
 					<div className="data-place">
