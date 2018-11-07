@@ -1565,20 +1565,27 @@ div.checkbox-comp{
 
 .mnemonic-page {
 
-    .masterkey-list {
+    .masterkey-list{
+        font-size: 12px;
+        justify-content: center;
+        align-items: center;
+        display: flex;
+        flex-wrap: wrap;
+        align-content: center;
+        position: relative;
 
-        > .masterkey-item {
+        >.masterkey-item{
             margin: 3px;
         }
-        
-        > .copy {
+
+        >.copy{
             position: absolute;
-            right: 5px; 
-            bottom: 5px; 
+            right: 5px;
+            bottom: 5px;
             font-weight: bold;
             cursor: pointer;
         }
-    } 
+    }
 }
 
 
