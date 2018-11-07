@@ -441,6 +441,7 @@ export default class extends React.Component {
             </div>
         return <Chatting 
             contract_id={this.state.contract_id} 
+            revision={this.state.revision}
             author={{
                 name: this.state.author_name,
                 code: this.state.author_code,
