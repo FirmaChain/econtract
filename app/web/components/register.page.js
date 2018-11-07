@@ -385,7 +385,7 @@ E-Contract 이용약관(버전 0.0.1)
 
     onChangePhoneForm = async(name, e)=>{
         let text = e.target.value;
-        text = text.replace(/[0-9\-]/g,"")
+        text = text.replace(/[^0-9\-]/g,"")
         if(text.length >= 8){
             text = `${text.slice(0,3)}-${text.slice(3,7)}-${text.slice(7,11)}`
         }else if(text.length >= 4){
