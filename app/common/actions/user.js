@@ -3,7 +3,7 @@ import {
     api_check_email_verification_code,
     api_request_phone_verification_code,
     api_check_phone_verification_code,
-    api_regist_account,
+    api_register_account,
     api_login_account,
     api_encrypted_user_info,
     api_find_user_with_code_email,
@@ -92,9 +92,9 @@ export function check_phone_verification_code(phone, code){
     }
 }
 
-export function regist_new_account(account, info, email, name, eth){
+export function register_new_account(account, info, email, name, eth){
     return async function(dispatch){
-        return (await api_regist_account(
+        return (await api_register_account(
             account.browserKey.publicKey.toString('hex'),
             account.masterKeyPublic.toString('hex'),
             account.masterKeyPublicContract.toString('hex'),

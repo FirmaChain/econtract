@@ -184,7 +184,7 @@ export default class extends React.Component {
     }
 
 	render() {
-		return (<div className="default-page regist-page">
+		return (<div className="default-page register-page">
             <div className="logo">
                 <img src="/static/logo_blue.png" onClick={()=>history.push("/")}/>
             </div>

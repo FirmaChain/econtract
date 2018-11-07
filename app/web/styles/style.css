@@ -712,7 +712,7 @@ select:focus {
   color: #7F7F7F;
 }
 
-.regist-page .step-indicator {
+.register-page .step-indicator {
   float: right;
   display: -webkit-inline-box;
   display: -ms-inline-flexbox;
@@ -726,22 +726,22 @@ select:focus {
   margin-top: 10px;
 }
 
-.regist-page .step-indicator > .item {
+.register-page .step-indicator > .item {
   font-size: 11px;
   font-weight: bold;
   margin: 0 10px;
   color: #ABB7C0;
 }
 
-.regist-page .step-indicator > .enable {
+.register-page .step-indicator > .enable {
   color: #000000;
 }
 
-.regist-page .step-indicator > i {
+.register-page .step-indicator > i {
   color: #ABB7C0;
 }
 
-.regist-page .masterkey-list {
+.register-page .masterkey-list {
   font-size: 12px;
   -webkit-box-pack: center;
       -ms-flex-pack: center;
@@ -759,11 +759,11 @@ select:focus {
   position: relative;
 }
 
-.regist-page .masterkey-list > .masterkey-item {
+.register-page .masterkey-list > .masterkey-item {
   margin: 3px;
 }
 
-.regist-page .masterkey-list > .copy {
+.register-page .masterkey-list > .copy {
   position: absolute;
   right: 5px;
   bottom: 5px;
@@ -771,7 +771,7 @@ select:focus {
   cursor: pointer;
 }
 
-.regist-page .masterkey-selection-list {
+.register-page .masterkey-selection-list {
   font-size: 12px;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -787,7 +787,7 @@ select:focus {
       flex-wrap: wrap;
 }
 
-.regist-page .masterkey-selection-list > .item {
+.register-page .masterkey-selection-list > .item {
   margin: 3px;
   padding: 5px 10px;
   color: #324b5f;
@@ -796,17 +796,17 @@ select:focus {
   cursor: pointer;
 }
 
-.regist-page .masterkey-selection-list > .item:hover {
+.register-page .masterkey-selection-list > .item:hover {
   background-color: #97A4AF;
   color: #000;
 }
 
-.regist-page .masterkey-selection-list .selected {
+.register-page .masterkey-selection-list .selected {
   background-color: #324b5f;
   color: #fff;
 }
 
-.regist-page .right-desc {
+.register-page .right-desc {
   color: #BEBEC3;
   font-size: 12px;
   margin: 0 0 20px 20px;
@@ -1927,44 +1927,44 @@ div.checkbox-comp > .label {
   border: 1px solid #dadadc;
 }
 
-.regist-contract-modal {
+.register-contract-modal {
   width: 700px;
 }
 
-.regist-contract-modal .form-content {
+.register-contract-modal .form-content {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   text-align: left;
 }
 
-.regist-contract-modal .form-content > div {
+.register-contract-modal .form-content > div {
   -webkit-box-flex: 1;
       -ms-flex: 1;
           flex: 1;
 }
 
-.regist-contract-modal .form-content > div:last-child {
+.register-contract-modal .form-content > div:last-child {
   margin-left: 20px;
 }
 
-.regist-contract-modal .form-content .label {
+.register-contract-modal .form-content .label {
   margin-top: 20px;
   font-size: 11px;
   color: RGB(112, 112, 112);
 }
 
-.regist-contract-modal .form-content .label:first-child {
+.register-contract-modal .form-content .label:first-child {
   margin-top: 0px;
 }
 
-.regist-contract-modal .form-content .info {
+.register-contract-modal .form-content .info {
   margin: 5px 0;
   font-size: 14px;
   color: #000;
 }
 
-.regist-contract-modal .form-content .info .pin-box {
+.register-contract-modal .form-content .info .pin-box {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -1982,12 +1982,12 @@ div.checkbox-comp > .label {
           align-items: center;
 }
 
-.regist-contract-modal .form-content .checkbox {
+.register-contract-modal .form-content .checkbox {
   color: RGB(106, 106, 106);
   font-size: 12px;
 }
 
-.regist-contract-modal .form-content .desc {
+.register-contract-modal .form-content .desc {
   margin: 10px 0 0 0;
   color: RGB(106, 106, 106);
   font-size: 12px;

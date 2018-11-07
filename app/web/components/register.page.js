@@ -8,7 +8,7 @@ import {
     check_email_verification_code,
     request_phone_verification_code,
     check_phone_verification_code,
-    regist_new_account,
+    register_new_account,
 } from "../../common/actions"
 import Web3 from "../../common/Web3"
 
@@ -37,7 +37,7 @@ let mapDispatchToProps = {
     check_email_verification_code,
     request_phone_verification_code,
     check_phone_verification_code,
-    regist_new_account,
+    register_new_account,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -487,7 +487,7 @@ E-Contract 이용약관(버전 0.0.1)
         let encryptedInfo = aes_encrypt(JSON.stringify(info), this.state.account.masterKeyPublic);
         
         await window.showIndicator()
-        let resp = await this.props.regist_new_account(this.state.account, encryptedInfo, this.state.email, this.state.username, wallet.address)
+        let resp = await this.props.register_new_account(this.state.account, encryptedInfo, this.state.email, this.state.username, wallet.address)
         await window.hideIndicator()
 
         if(resp.code == 1){
@@ -716,7 +716,7 @@ E-Contract 이용약관(버전 0.0.1)
     }
 
 	render() {
-		return (<div className="default-page regist-page">
+		return (<div className="default-page register-page">
             <div className="logo">
                 <img src="/static/logo_blue.png" onClick={()=>history.push("/")}/>
             </div>

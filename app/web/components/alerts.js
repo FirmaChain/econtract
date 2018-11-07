@@ -74,7 +74,7 @@ class RegistContract extends React.Component{
     render(){
         let author = this.props.author
         let user_code = this.props.login_user_code
-        return <div className="default-modal regist-contract-modal">
+        return <div className="default-modal register-contract-modal">
             <div className="contents">
                 <div className="title">계약 등록</div>
                 <div className="form-content">
