@@ -350,7 +350,7 @@ E-Contract 이용약관(버전 0.0.1)
     }
 
     onClickRequestPhone = async()=>{
-        if(this.state.userphone == null || this.state.userphone.length != 13)
+        if(this.state.userphone == null || this.state.userphone.length != 13 || !/^01\d-\d{4}-\d{4}$/.test(this.state.userphone))
             return alert("전화번호를 정확히 입력해주세요!")
             
         await window.showIndicator();
