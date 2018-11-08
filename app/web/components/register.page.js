@@ -409,7 +409,7 @@ E-Contract 이용약관(버전 0.0.1)
             return alert("비밀번호는 최소 6글자입니다.")
         }
         if(this.state.password !== this.state.password2){
-            return alert("비밀번호 다시입력과 다릅니다.")
+            return alert("비밀번호가 일치하지 않습니다.")
         }
 
         this.setState({

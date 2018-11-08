@@ -369,7 +369,7 @@ export default class extends React.Component {
     }
 
     onClickFinishEdit = ()=>{
-        if(_confirm("정말로 현재 상태로 계약서를 발행하시겠습니까?")){
+        if(_confirm("현재까지 저장한 내용으로 계약이 발행됩니다.\n계속 진행하시겠습니까?")){
             window.openModal("RegistContract",{
                 subject:this.state.name,
                 pin:this.state.pin,
