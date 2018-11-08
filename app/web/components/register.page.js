@@ -686,7 +686,7 @@ E-Contract 이용약관(버전 0.0.1)
                     </div>
                     
                     <div className="form-submit">
-                        <button className="border" onClick={this.onClickFinishSortTest}> 다음 </button>
+                        <button className="border" onClick={this.onClickFinishSortTest}> 가입 완료 </button>
                     </div>
                 </div>
             </div>
