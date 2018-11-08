@@ -153,7 +153,7 @@ export default class extends React.Component {
     }
 
 	render() {
-        let board = loaded && this.props.board ? this.props.board : { list:[] };
+        let board = this.state.loaded && this.props.board ? this.props.board : { list:[] };
         let total_cnt = board.total_cnt
         let page_num = board.page_num
 		return (<div className="default-page contract-list-page">
