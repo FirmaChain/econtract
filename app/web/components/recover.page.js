@@ -133,9 +133,9 @@ export default class extends React.Component {
             <div className="page bottom-no-border">
                 <div className="column-600">
                     <div className="form-layout">
-                        <div className="form-label"> ID </div>
+                        <div className="form-label"> 아이디 </div>
                         <div className="form-input">
-                            <input placeholder="ID를 입력해주세요." value={this.state.user_id || ""} onChange={e=>this.setState({user_id:e.target.value})} />
+                            <input placeholder="아이디를 입력해주세요." value={this.state.user_id || ""} onChange={e=>this.setState({user_id:e.target.value})} />
                         </div>
                         
                         <div className="form-label"> 비밀번호 </div>
