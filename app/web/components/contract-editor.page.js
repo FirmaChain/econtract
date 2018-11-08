@@ -117,7 +117,7 @@ export default class extends React.Component {
 
 	componentDidMount(){
         this.blockFlag = 1;
-        (async(r)=>{
+        this.refresh_contract = async(r)=>{
             let contract_id = this.props.match.params.id;
             await window.showIndicator("계약서 불러오는 중")
             await this.props.fetch_user_info()
@@ -171,7 +171,8 @@ export default class extends React.Component {
             }
             
             await window.hideIndicator()
-        })()
+        })
+        this.refresh_contract()
 
         this.unblock = history.block(  (targetLocation) => {
             if(this.blockFlag == 2) {
@@ -447,6 +448,7 @@ export default class extends React.Component {
                     this.setState({
                         revision: resp
                     });
+                    this.refresh_contract();
                 } else {
                     alert("계약 내용에 변화가 발생하였습니다. 다시 확인하여 주십시오.");
                     location.reload();
