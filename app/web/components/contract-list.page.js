@@ -139,7 +139,7 @@ export default class extends React.Component {
             lock_src = "/static/icon_locked.png";
         }
         return <tr key={k} className={mm ? "" : "clickable"} onClick={mm ? null : this.onClickContract.bind(this,e.contract_id)}>
-            {mm ? <td><CheckBox2 on={this.state.move_select[k]} onClick={this.onClickMoveSel.bind(this,k)} /></td> : null}
+            {mm ? <td style={{width:"10px"}}><CheckBox2 on={this.state.move_select[k]} onClick={this.onClickMoveSel.bind(this,k)} /></td> : null}
             <td className="text-center">{status_text(e.status)}</td>
             <td className="text-center"><img src={lock_src} height={19}/></td>
             <td className="text-left">{e.name}</td>
