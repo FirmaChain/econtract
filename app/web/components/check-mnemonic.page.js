@@ -63,7 +63,7 @@ export default class extends React.Component {
     }
 
     onClickOK = async()=>{
-        history.push("/login");
+        history.push("/profile");
     }
 
     onClickSaveMnemonic = ()=>{
