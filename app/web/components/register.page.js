@@ -436,7 +436,7 @@ E-Contract 이용약관(버전 0.0.1)
         if(!this.state.username)
             return alert("이름을 작성해주세요.")
         if(!this.state.verificated_phone)
-            return alert("핸드폰 인증을 해주세요.")
+            return alert("휴대폰 인증을 해주세요.")
         if(!this.state.useraddress)
             return alert("주소를 입력해주세요.")
 
