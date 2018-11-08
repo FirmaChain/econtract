@@ -171,7 +171,7 @@ export default class extends React.Component {
             }
             
             await window.hideIndicator()
-        })
+        }
         this.refresh_contract()
 
         this.unblock = history.block(  (targetLocation) => {
