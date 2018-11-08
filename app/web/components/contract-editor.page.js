@@ -448,11 +448,10 @@ export default class extends React.Component {
                     this.setState({
                         revision: resp
                     });
-                    this.refresh_contract();
                 } else {
-                    alert("계약 내용에 변화가 발생하였습니다. 다시 확인하여 주십시오.");
-                    location.reload();
+                    alert("계약 내용에 변화가 발생하였습니다.\n확인하여 주십시오.");
                 }
+                this.refresh_contract();
             }
         }
     }
