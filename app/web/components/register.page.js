@@ -329,14 +329,14 @@ E-Contract 이용약관(버전 0.0.1)
         }else if(resp == -3){
             alert("유효하지 않은 이메일입니다.")
         }else{
-            alert("인증코드 전송에 문제가 생겼습니다! 이메일을 정확히 기입해주세요.\n계속 문제가 발생할 경우 관리자에게 문의해주세요.")
+            alert("인증번호 전송에 문제가 생겼습니다! 이메일을 정확히 기입해주세요.\n계속 문제가 발생할 경우 관리자에게 문의해주세요.")
         }
         await window.hideIndicator();
     }
 
     onClickVerificateEmail = async()=>{
         if(this.state.verification_code == null || this.state.verification_code.length !=4){
-            return alert('인증코드는 4자리입니다.')
+            return alert('인증번호는 4자리입니다.')
         }
 
         await window.showIndicator();
@@ -346,7 +346,7 @@ E-Contract 이용약관(버전 0.0.1)
                 step: this.state.step+1
             })
         }else{
-            alert("잘못된 인증코드입니다.")
+            alert("잘못된 인증번호입니다.")
         }
         await window.hideIndicator();
     }
@@ -358,19 +358,19 @@ E-Contract 이용약관(버전 0.0.1)
         await window.showIndicator();
         let resp = await this.props.request_phone_verification_code(this.state.userphone)
         if(resp == 1){
-            alert("인증 코드가 발송되었습니다!")
+            alert("인증번호가 발송되었습니다!")
             this.setState({
                 phone_verification_code_sent:true
             })
         }else{
-            alert("인증코드 전송에 문제가 생겼습니다!\n계속 문제가 발생할 경우 관리자에게 문의해주세요.")
+            alert("인증번호 전송에 문제가 생겼습니다!\n계속 문제가 발생할 경우 관리자에게 문의해주세요.")
         }
         await window.hideIndicator();
     }
 
     onClickVerificatePhone = async()=>{
         if(this.state.phone_verification_code == null || this.state.phone_verification_code.length !=4){
-            return alert('인증코드는 4자리입니다.')
+            return alert('인증번호는 4자리입니다.')
         }
         await window.showIndicator();
         let resp = await this.props.check_phone_verification_code(this.state.userphone, this.state.phone_verification_code)
@@ -380,7 +380,7 @@ E-Contract 이용약관(버전 0.0.1)
                 verificated_phone:true
             })
         }else{
-            alert("잘못된 인증코드입니다.")
+            alert("잘못된 인증번호입니다.")
         }
         await window.hideIndicator();
     }
