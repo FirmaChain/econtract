@@ -52,6 +52,7 @@ export default class extends React.Component {
             }else if(resp == -1){
                 alert("아이디 혹은 패스워드가 다릅니다.")
             }else if(resp.eems){
+                localStorage.setItem("browser_key_virgin", 0);
                 history.push("/recently")
             }else{
                 alert("login error;")

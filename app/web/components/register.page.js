@@ -326,6 +326,8 @@ E-Contract 이용약관(버전 0.0.1)
             })
         }else if(resp == -1){
             alert("이미 가입 된 이메일입니다!")
+        }else if(resp == -3){
+            alert("유효하지 않은 이메일입니다.")
         }else{
             alert("인증코드 전송에 문제가 생겼습니다! 이메일을 정확히 기입해주세요.\n계속 문제가 발생할 경우 관리자에게 문의해주세요.")
         }
@@ -350,7 +352,7 @@ E-Contract 이용약관(버전 0.0.1)
     }
 
     onClickRequestPhone = async()=>{
-        if(this.state.userphone == null || this.state.userphone.length != 13)
+        if(this.state.userphone == null || this.state.userphone.length != 13 || !/^0\d{2}-\d{4}-\d{4}$/.test(this.state.userphone))
             return alert("전화번호를 정확히 입력해주세요!")
             
         await window.showIndicator();
@@ -686,7 +688,7 @@ E-Contract 이용약관(버전 0.0.1)
                     </div>
                     
                     <div className="form-submit">
-                        <button className="border" onClick={this.onClickFinishSortTest}> 다음 </button>
+                        <button className="border" onClick={this.onClickFinishSortTest}> 가입 완료 </button>
                     </div>
                 </div>
             </div>
