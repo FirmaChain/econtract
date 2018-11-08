@@ -108,6 +108,7 @@ export default class extends React.Component {
             page_count: 0,
             edit_page:[],
             editmode:true,
+            changed:false,
         };
         this.blockFlag = 1;
         this.keyMap = {};
@@ -248,6 +249,7 @@ export default class extends React.Component {
             this.setState({
                 ...contract,
                 pin:pin,
+                changed:false,
                 edit_page:objects,
                 is_pin_saved:is_pin_saved,
             })
@@ -267,6 +269,7 @@ export default class extends React.Component {
         let edit_page = [...this.state.edit_page]
         edit_page[this.state.page] = [...(edit_page[this.state.page]||[]), props]
         this.setState({
+            changed:true,
             edit_page
         })
     }
@@ -337,6 +340,7 @@ export default class extends React.Component {
             let edit_page = [...this.state.edit_page]
             edit_page[this.state.page].splice(i,1)
             this.setState({
+                changed:true,
                 edit_page:edit_page
             })
         }
@@ -355,6 +359,7 @@ export default class extends React.Component {
         }
 
         this.setState({
+            changed:true,
             edit_page
         })
     }
@@ -411,6 +416,9 @@ export default class extends React.Component {
     }
 
     onClickSave = async()=>{
+        if(!this.state.changed) {
+            return alert("변경 사항이 없습니다.");
+        }
         if(await confirm("저장","계약서를 수정사항을 적용하시겠습니까?")){
             console.log("this.state.edit_page",this.state.edit_page)
             let myObject = this.state.edit_page.map(e => {
