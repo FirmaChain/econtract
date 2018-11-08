@@ -36,6 +36,7 @@ export default class extends React.Component{
             })()
         }
 
+        this.update()
         this.updateIdx = setInterval(this.update, 1000)
     }
 
