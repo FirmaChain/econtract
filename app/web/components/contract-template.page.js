@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import ContractMenu from "./contract-menu"
 import UserStatusBar from "./user-state-bar"
 import CheckBox2 from "./checkbox2"
+import translate from "../../common/translate"
 import history from '../history';
 
 let mapStateToProps = (state)=>{

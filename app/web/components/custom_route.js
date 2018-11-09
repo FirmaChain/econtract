@@ -1,6 +1,7 @@
 import React from "react"
 import ReactDOM from "react-dom"
 import { Route } from "react-router-dom"
+import translate from "../../common/translate"
 
 class MyRoute extends React.Component{
 	constructor(){

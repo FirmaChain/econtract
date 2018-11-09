@@ -1,4 +1,5 @@
 import React from "react";
+import translate from "../../common/translate"
 
 export default function(props){
     return (<div className="signer-slot-comp">

@@ -1,6 +1,7 @@
 import React from "react"
 import ReactDOM from "react-dom"
 import { connect } from 'react-redux';
+import translate from "../../common/translate"
 
 let ModalStore = {}
 export function modal(classes){

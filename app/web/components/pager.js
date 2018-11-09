@@ -1,6 +1,7 @@
 import React from "react"
 import ReactDOM from "react-dom"
 import { Link } from "react-router-dom";
+import translate from "../../common/translate"
 
 let display_count = 6;
 

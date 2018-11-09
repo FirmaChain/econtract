@@ -10,6 +10,7 @@ import TransactionBackgroundWork from "./transaction_background_work"
 import CheckBox2 from "./checkbox2"
 import history from '../history';
 import moment from "moment"
+import translate from "../../common/translate"
 import {
     recently_contracts,
     folder_in_contracts,

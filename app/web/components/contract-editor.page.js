@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import history from '../history';
 import Draggable from 'react-draggable';
 import Resizable from "re-resizable";
+import translate from "../../common/translate"
 import {
     load_contract,
     load_contract_info,

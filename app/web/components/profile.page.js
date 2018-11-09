@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import pdfjsLib from "pdfjs-dist"
 import history from '../history';
 import Web3 from "../../common/Web3"
+import translate from "../../common/translate"
 import {
     fetch_user_info
 } from "../../common/actions"

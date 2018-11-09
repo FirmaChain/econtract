@@ -5,6 +5,7 @@ import { Link, Prompt } from 'react-router-dom'
 import SignerSlot from "./signer-slot"
 import history from '../history';
 import pdfjsLib from "pdfjs-dist"
+import translate from "../../common/translate"
 import {
     find_user_with_code_email,
     fetch_user_info,

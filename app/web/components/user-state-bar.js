@@ -2,6 +2,7 @@ import React from "react"
 import ReactDOM from "react-dom"
 import history from '../history';
 import { connect } from 'react-redux';
+import translate from "../../common/translate"
 import {
     fetch_user_info
 } from "../../common/actions"

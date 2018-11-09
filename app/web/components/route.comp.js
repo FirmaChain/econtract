@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { showLoading, hideLoading} from "../../common/actions"
 import queryString from 'query-string';
 import history from "../history"
+import translate from "../../common/translate"
 
 class _HigherComponent extends React.Component {
   constructor(){

@@ -3,6 +3,7 @@ import ReactDOM from "react-dom"
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom'
 import history from '../history';
+import translate from "../../common/translate"
 import {
     request_email_verification_code,
     check_email_verification_code,

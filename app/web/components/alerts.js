@@ -3,6 +3,7 @@ import ReactDOM from "react-dom"
 import {modal} from "./modalmanager"
 import SignerSlot from "./signer-slot"
 import history from '../history';
+import translate from "../../common/translate"
 
 @modal
 class AddFolder extends React.Component{

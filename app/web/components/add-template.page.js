@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom'
 import pdfjsLib from "pdfjs-dist"
 import history from '../history';
+import translate from "../../common/translate"
   
 let mapStateToProps = (state)=>{
 	return {
