@@ -26,7 +26,7 @@ let _ = {
     BOTTOM_RIGHT_DESC_TITLE:["모두가 만족하는 계약","Satisfaction guaranteed",""],
     BOTTOM_RIGHT_DESC:["계약 당사자들에게 제공되는 실시간 메시지 기능과 컨펌하기 기능은 계약 진행에 있어서 모두가 만족하는 계약이 될 수 있게끔 합니다.","The live messaging feature and confirm feature can suit all of your needs.",""],
 
-    FOOTER_1:["(주) 피르마 솔루션즈 ㅣ 대표 권승훈","Firma Solutions Co. Ltd. | CEO Daniel Kwon",""],
+    FOOTER_1:["(주) 피르마 솔루션즈","Firma Solutions Co. Ltd.",""],
     FOOTER_2:["서울시 성동구 성동이로 58, P-Tower 5층 ㅣ 사업자등록번호 261-88-0108","Seoul, Seongdong-gu, Seongdonge-ro 58, P-Tower 5th floor ㅣ CRN 261-88-0108",""],
 }
 
