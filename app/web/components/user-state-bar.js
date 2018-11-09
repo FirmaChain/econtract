@@ -36,6 +36,7 @@ export default class extends React.Component{
             })()
         }
 
+        this.update()
         this.updateIdx = setInterval(this.update, 1000)
     }
 
@@ -111,11 +112,13 @@ export default class extends React.Component{
                 <input type="text" placeholder="검색어를 입력해주세요" />
             </div> */}
                 
+            {this.state.left_hour && this.state.left_min ? [
             <div className="login-time-bar" onClick={this.onClickUpdateLogin}>
                 <div>로그인 세션</div>
                 <div>{this.state.left_hour||"0"}시간 {this.state.left_min||"0"}분</div>
                 <div>연장</div>
             </div>
+            ] : null }
 
             <div className="logout-container">
                 <button className="btn-logout" onClick={this.onLogout}>로그아웃</button>

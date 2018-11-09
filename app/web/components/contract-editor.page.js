@@ -108,6 +108,7 @@ export default class extends React.Component {
             page_count: 0,
             edit_page:[],
             editmode:true,
+            changed:false,
         };
         this.blockFlag = 1;
         this.keyMap = {};
@@ -116,7 +117,7 @@ export default class extends React.Component {
 
 	componentDidMount(){
         this.blockFlag = 1;
-        (async(r)=>{
+        this.refresh_contract = async(r)=>{
             let contract_id = this.props.match.params.id;
             await window.showIndicator("계약서 불러오는 중")
             await this.props.fetch_user_info()
@@ -170,7 +171,8 @@ export default class extends React.Component {
             }
             
             await window.hideIndicator()
-        })()
+        }
+        this.refresh_contract()
 
         this.unblock = history.block(  (targetLocation) => {
             if(this.blockFlag == 2) {
@@ -248,6 +250,7 @@ export default class extends React.Component {
             this.setState({
                 ...contract,
                 pin:pin,
+                changed:false,
                 edit_page:objects,
                 is_pin_saved:is_pin_saved,
             })
@@ -267,6 +270,7 @@ export default class extends React.Component {
         let edit_page = [...this.state.edit_page]
         edit_page[this.state.page] = [...(edit_page[this.state.page]||[]), props]
         this.setState({
+            changed:true,
             edit_page
         })
     }
@@ -337,6 +341,7 @@ export default class extends React.Component {
             let edit_page = [...this.state.edit_page]
             edit_page[this.state.page].splice(i,1)
             this.setState({
+                changed:true,
                 edit_page:edit_page
             })
         }
@@ -355,6 +360,7 @@ export default class extends React.Component {
         }
 
         this.setState({
+            changed:true,
             edit_page
         })
     }
@@ -363,7 +369,7 @@ export default class extends React.Component {
     }
 
     onClickFinishEdit = ()=>{
-        if(_confirm("정말로 현재 상태로 계약서를 발행하시겠습니까?")){
+        if(_confirm("현재까지 저장한 내용으로 계약이 발행됩니다.\n계속 진행하시겠습니까?")){
             window.openModal("RegistContract",{
                 subject:this.state.name,
                 pin:this.state.pin,
@@ -411,6 +417,9 @@ export default class extends React.Component {
     }
 
     onClickSave = async()=>{
+        if(!this.state.changed) {
+            return alert("변경 사항이 없습니다.");
+        }
         if(await confirm("저장","계약서를 수정사항을 적용하시겠습니까?")){
             console.log("this.state.edit_page",this.state.edit_page)
             let myObject = this.state.edit_page.map(e => {
@@ -440,9 +449,9 @@ export default class extends React.Component {
                         revision: resp
                     });
                 } else {
-                    alert("계약 내용에 변화가 발생하였습니다. 다시 확인하여 주십시오.");
-                    location.reload();
+                    alert("계약 내용에 변화가 발생하였습니다.\n확인하여 주십시오.");
                 }
+                this.refresh_contract();
             }
         }
     }

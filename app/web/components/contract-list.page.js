@@ -37,7 +37,8 @@ export default class extends React.Component {
 		this.state={
             filter:1,
             moveMode:false,
-            board:{}
+            board:{},
+            loaded:false,
         };
 	}
 
@@ -55,6 +56,9 @@ export default class extends React.Component {
             }else{
                 await this.props.recently_contracts();
             }
+            this.setState({
+                loaded:true
+            })
         })()
     }
 
@@ -149,7 +153,7 @@ export default class extends React.Component {
     }
 
 	render() {
-        let board = this.props.board || { list:[] };
+        let board = this.state.loaded && this.props.board ? this.props.board : { list:[] };
         let total_cnt = board.total_cnt
         let page_num = board.page_num
 		return (<div className="default-page contract-list-page">

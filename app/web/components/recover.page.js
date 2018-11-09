@@ -90,7 +90,7 @@ export default class extends React.Component {
             return alert("비밀번호는 최소 6글자입니다.")
         }
         if(this.state.password !== this.state.password2){
-            return alert("비밀번호 다시입력과 다릅니다.")
+            return alert("비밀번호가 일치하지 않습니다.")
         }
 
         let mnemonic = this.state.mnemonic;
@@ -133,9 +133,9 @@ export default class extends React.Component {
             <div className="page bottom-no-border">
                 <div className="column-600">
                     <div className="form-layout">
-                        <div className="form-label"> ID </div>
+                        <div className="form-label"> 아이디 </div>
                         <div className="form-input">
-                            <input placeholder="ID를 입력해주세요." value={this.state.user_id || ""} onChange={e=>this.setState({user_id:e.target.value})} />
+                            <input placeholder="아이디를 입력해주세요." value={this.state.user_id || ""} onChange={e=>this.setState({user_id:e.target.value})} />
                         </div>
                         
                         <div className="form-label"> 비밀번호 </div>
