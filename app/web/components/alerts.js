@@ -391,7 +391,7 @@ class RefreshSession extends React.Component{
         this.props.onClose && this.props.onClose()
     }
     
-    onClickLogout= ()=>{
+    onClickLogout = ()=>{
         window.eraseCookie("session")
         window.eraseCookie("session_update")
         
@@ -399,19 +399,23 @@ class RefreshSession extends React.Component{
     }
 
     render(){
-        return <div className="default-modal session-expired-warning-modal">
-            <div className="title">
-                세션이 {this.stsate.hour}시간 {this.state.min}분 {this.state.sec}초 후 만료됩니다.
+        try{
+            return <div className="default-modal session-expired-warning-modal">
+                <div className="title">
+                    세션이 {this.state.hour}시간 {this.state.min}분 {this.state.sec}초 후 만료됩니다.
+                </div>
+                <div className="content">
+                    세션 만료 후에는 재로그인을 해야합니다.<br />
+                    세션 만료를 연장하시겠습니까?
+                </div>
+                <div className="btns">
+                    <button onClick={this.onClickRenewal}>연장</button>
+                    <button onClick={this.onClickLogout}>로그아웃</button>
+                </div>
             </div>
-            <div className="content">
-                세션 만료 후에는 재로그인을 해야합니다.<br />
-                세션 만료를 연장하시겠습니까?
-            </div>
-            <div className="btns">
-                <button onClick={this.onClickRenewal}>연장</button>
-                <button onClick={this.onClickLogout}>로그아웃</button>
-            </div>
-        </div>
+        }catch(err){
+            return <div />
+        }
     }
 }
 
