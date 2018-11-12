@@ -13,6 +13,9 @@ import {
     gen_pin,
     update_epin,
     convert_doc,
+    list_template,
+    get_template,
+    edit_contract
 } from "../../common/actions"
 
 let mapStateToProps = (state)=>{
@@ -28,6 +31,9 @@ let mapDispatchToProps = {
     gen_pin,
     update_epin,
     convert_doc,
+    list_template,
+    get_template,
+    edit_contract
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -50,7 +56,12 @@ export default class extends React.Component {
             })()
         }
         (async() => {
-            this.setState({pin: await this.props.gen_pin()});
+            let template_list = (await this.props.list_template()) || []
+
+            this.setState({
+                pin: await this.props.gen_pin(),
+                template_list:template_list,
+            });
         })();
 
         this.unblock = history.block( async (targetLocation) => {
@@ -74,6 +85,7 @@ export default class extends React.Component {
     onClickNext = async ()=>{
         let counterparties = this.state.counterparties
         let imgs = this.state.imgs
+        let template = this.state.template
         let subject= this.state.contract_name
         let email = this.state.counterparty_email;
         let code = this.state.counterparty_code;
@@ -81,8 +93,10 @@ export default class extends React.Component {
         if(!subject){
             return alert("제목을 입력해주세요")
         }
-        if(imgs == null || imgs.length == 0){
-            return alert("파일 혹은 템플릿을 선택해주세요.")
+        if(!template){
+            if(imgs == null || imgs.length == 0){
+                return alert("파일 혹은 템플릿을 선택해주세요.")
+            }
         }
 
         if(email){
@@ -93,16 +107,35 @@ export default class extends React.Component {
         }
 
         await window.showIndicator()
-        let resp = await this.props.new_contract( subject, imgs, (counterparties || []).map(e=>e.code), [this.props.user_info.publickey_contract].concat((counterparties || []).map(e=>e.publickey_contract)), this.state.pin );
-        if(resp){
-            if(this.refs.pin_save.checked){
-                await this.props.update_epin(resp, this.state.pin);
+        try{
+            let html = [];
+            if(template){
+                try{
+                    let t = await this.props.get_template(template)
+                    imgs = t.imgs
+                    html = t.html
+                }catch(err){
+                    alert("템플릿 로드에 문제가 발생했습니다.")
+                    throw "ERR"
+                }
             }
-            //this.unblock();
-            this.blockFlag = 0;
-            history.replace(`/contract-editor/${resp}`)
-        }else{
-            alert("계약서 생성에 문제가 발생했습니다!")
+
+            let resp = await this.props.new_contract( subject, imgs, (counterparties || []).map(e=>e.code), [this.props.user_info.publickey_contract].concat((counterparties || []).map(e=>e.publickey_contract)), this.state.pin );
+            if(resp){
+                if(this.refs.pin_save.checked){
+                    await this.props.update_epin(resp, this.state.pin);
+                }
+                if(html.length > 0){
+                    // apply template
+                    await this.props.edit_contract(resp, this.state.pin, html);
+                }
+                //this.unblock();
+                this.blockFlag = 0;
+                history.replace(`/contract-editor/${resp}`)
+            }else{
+                alert("계약서 생성에 문제가 발생했습니다!")
+            }
+        }catch(err){
         }
         await window.hideIndicator();
     }
@@ -186,8 +219,15 @@ export default class extends React.Component {
         }
     }
 
+    onChangeTemplate = (e)=>{
+        console.log("e.target.value",e.target.value)
+        this.setState({
+            template:Number(e.target.value)
+        })
+    }
+
 	render() {
-        if(!this.props.user_info)
+        if(!this.props.user_info || !this.state.template_list)
             return <div/>
 
         return (<div className="default-page add-contract-page">
@@ -209,11 +249,22 @@ export default class extends React.Component {
                                 <div className="filename">{this.state.file.name}</div>
                                 <div className="del-btn" onClick={()=>this.setState({file:null,imgs:[]})}>삭제</div>
                             </div> : <div className="upload-form">
-                                <button className="file-upload-btn" onClick={()=>this.refs.file.click()}> <i className="fas fa-file-archive"></i> 파일 업로드 </button>
-                                {/* <div className="or"> OR </div>
-                                <select>
-                                    <option>템플릿 선택</option>
-                                </select> */}
+                                { !this.state.template ?
+                                    <button key={0} className="file-upload-btn" onClick={()=>this.refs.file.click()}> <i className="fas fa-file-archive"></i> 파일 업로드 </button>
+                                : null}
+                                
+                                { !this.state.template ?
+                                    <div key={1} className="or"> OR </div>
+                                :null}
+
+                                { !this.state.file ?
+                                <select onChange={this.onChangeTemplate}>
+                                    <option value={0}>템플릿 선택</option>
+                                    {this.state.template_list.map((e,k)=>{
+                                        return <option key={k} value={e.template_id}>{e.subject}</option>
+                                    })}
+                                </select>
+                                :null}
                                 <input ref="file" type="file" accept=".png, .jpg, .jpeg, .doc, .docx, .ppt, .pptx, .pdf" onChange={this.onClickUploadFile} style={{display:"none"}}/>
                             </div>}
 
