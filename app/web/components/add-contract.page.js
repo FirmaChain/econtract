@@ -151,14 +151,11 @@ export default class extends React.Component {
                 pdf_payload = await window.toPdf(file)
                 pdf = await pdfjsLib.getDocument({data: pdf_payload}).promise;
             }catch(err){
-                console.log("??")
                 let ret = await this.props.convert_doc(file)    
                 pdf_payload = ret.payload.data
                 pdf = await pdfjsLib.getDocument({data: pdf_payload}).promise;
             }
-            console.log(pdf)
         } catch(err) {
-            console.log(err)
             await window.hideIndicator()
             return window.alert("파일 로딩 중 문제가 발생하여 중단합니다.")
         }

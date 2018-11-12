@@ -57,7 +57,6 @@ export function get_template(template_id){
             let bin = await fetch(`${window.HOST}/${resp.payload.imgs[k]}`,{encoding:null})
             resp.payload.imgs[k] = aes_decrypt(await bin.text(),entropy)
         }
-        console.log(resp.payload)
 
         dispatch({
             type:"api_get_template",
