@@ -45,7 +45,7 @@ export default class extends React.Component {
 
 	componentDidMount(){
         (async()=>{
-            let list = await this.props.list_template()
+            let list = (await this.props.list_template()) || []
             this.setState({
                 template:list
             })
