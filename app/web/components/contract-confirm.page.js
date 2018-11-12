@@ -91,7 +91,7 @@ export default class extends React.Component {
     }
 
     async load_contract(contract_id, pin, last_seen_revision){
-        let contract = await this.props.load_contract(contract_id,pin, null, false )
+        let contract = await this.props.load_contract(contract_id,pin, null )
         if(!contract){
             alert("문서 로드에 실패했습니다.")
             return history.replace('/recently') 
@@ -108,10 +108,12 @@ export default class extends React.Component {
             },r))
 
             if(this.state.status == 2){
-                let byte = await window.pdf.gen( this.getContractRaw() )
-                this.setState({
-                    doc_hash : sha256(byte)
-                })
+                if(!contract.pdf){
+                    let byte = await window.pdf.gen( this.getContractRaw() )
+                    this.setState({
+                        doc_hash : sha256(byte)
+                    })
+                }
             }
         }else{
             alert("정상적으로 불러오지 못했습니다.")
@@ -259,6 +261,13 @@ export default class extends React.Component {
                                     <div className="form-label"> 계약서 해쉬 </div>
                                     <div className="form-info" style={{fontSize:"13px"}}>
                                         {this.state.doc_hash ? this.state.doc_hash : "계산중.."}
+                                    </div>
+                                </div> : null}
+
+                                {this.state.ipfs ? <div>
+                                    <div className="form-label"> IPFS 해쉬 </div>
+                                    <div className="form-info" style={{fontSize:"13px"}}>
+                                        <a href={`https://ipfs.infura.io:5001/api/v0/cat?arg=${this.state.ipfs}`} target="_blank">{this.state.ipfs}</a>
                                     </div>
                                 </div> : null}
 

@@ -156,7 +156,7 @@ export function load_contract_info(contract_id){
     };
 }
 
-export function load_contract(contract_id, pin, load_listener = null, only_info_load=false){
+export function load_contract(contract_id, pin, load_listener = null){
     return async function(){
         try{
             let the_key = await getTheKey(contract_id, pin);
@@ -180,19 +180,22 @@ export function load_contract(contract_id, pin, load_listener = null, only_info_
                 try{ counterparty.reject = aes_decrypt(counterparty.reject, the_key) }catch(err){}
             }
 
-            if(!only_info_load) {
-                
-                let img_base64 = []
-                let i = 0;
-                for(let img of contract.imgs ) {
-                    img_base64.push(await fetch_img(img, the_key))
-                    i++;
-                    if(load_listener != null)
-                        load_listener(i, contract.imgs.length)
-                }
-
-                contract.imgs = img_base64;
+            let img_base64 = []
+            let i = 0;
+            for(let img of contract.imgs ) {
+                img_base64.push(await fetch_img(img, the_key))
+                i++;
+                if(load_listener != null)
+                    load_listener(i, contract.imgs.length)
             }
+            contract.imgs = img_base64;
+
+            // if(contract.ipfs){
+            //     let payload = await window.ipfs_download(contract.ipfs);
+            //     contract.pdf = aes_decrypt(payload, the_key)
+            //     console.log(contract.pdf)
+            // }
+            
             sessionStorage.setItem(`contract:${contract_id}`, encryptPIN(pin))
             //localStorage.setItem(`contract:${contract_id}`, pin)
             return contract
@@ -307,14 +310,13 @@ export function confirm_contract(contract_id, counterparties, docByte, revision)
         let thekey = await getTheKey(contract_id, pin)
         let encrypt = aes_encrypt(new Buffer(docByte), thekey)
 
-        console.log("ipfs",await window.ipfs_upload(encrypt))
 
         let original = sha256(docByte)
         let signTx = await Web3.signed_newOrSignContract(original,counterparties)
 
         console.log(JSON.stringify(signTx))
 
-        return (await api_confirm_contract( contract_id, original, JSON.stringify(signTx), revision)).payload
+        return (await api_confirm_contract( contract_id, original, JSON.stringify(signTx), revision, encrypt)).payload
     }
 }
 

@@ -119,6 +119,7 @@ window.ipfs_upload = async function (buf){
     }
     return raw
 }
+
 window.ipfs_download = async function (hash){
     let resp = await global.fetch(`https://ipfs.infura.io:5001/api/v0/cat?arg=${hash}`,{
         method: 'GET'

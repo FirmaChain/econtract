@@ -163,13 +163,14 @@ export async function api_fetch_chat(contract_id,cursor){
         session:window.getCookie("session")
     });
 }
-export async function api_confirm_contract(contract_id,original,signTx,revision){
+export async function api_confirm_contract(contract_id,original,signTx,revision,encrypt){
     let data = new FormData();
 
     data.append('contract_id', contract_id);
 	data.append('original', original);
 	data.append('signTx', signTx);
-	data.append('revision', revision)
+	data.append('revision', revision);
+	data.append('encrypt', encrypt)
 
     return await post("/confirm_contract", data,{
         session:window.getCookie("session")
