@@ -158,7 +158,7 @@ export default class extends React.Component {
         if (!localStorage.getItem("browser_key") || localStorage.getItem("browser_key_virgin") == 1) {
             return this.render_new();
         } else {
-            return this.render();
+            return this.render_login();
         }
 	}
 }
