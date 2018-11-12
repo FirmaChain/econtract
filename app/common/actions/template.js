@@ -48,9 +48,10 @@ export function get_template(template_id){
             try{
                resp.payload.html = JSON.parse(aes_decrypt(resp.payload.html,entropy))
             }catch(err){
-
             }
         }
+
+        resp.payload.html = resp.payload.html || {}
 
         for(let k in resp.payload.imgs){
             let bin = await fetch(`${window.HOST}/${resp.payload.imgs[k]}`,{encoding:null})
