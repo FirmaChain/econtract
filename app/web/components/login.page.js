@@ -102,7 +102,7 @@ export default class extends React.Component {
             <div className="container">
             <h1>시작하기</h1>
                 <div className="page">
-                    <div className="column-600">
+                    <div className="column-400">
                     <div className="mid-desc">
                         서비스를 처음 시작하거나, 접속한 기기가 인증되지 않은 상태일 경우<br/>
                         아래의 방법으로 서비스를 시작할 수 있습니다.
