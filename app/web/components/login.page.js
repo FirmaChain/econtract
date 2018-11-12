@@ -92,8 +92,7 @@ export default class extends React.Component {
    }
 
    render_login() {
-		return (<h1>시작하기</h1>
-                <div className="page">
+		return (<div className="page">
                     <div className="column-600">
                     <div className="mid-desc">
                         서비스를 처음 시작하거나, 접속한 기기가 인증되지 않은 상태일 경우<br/>
@@ -106,8 +105,7 @@ export default class extends React.Component {
    }
 
    render_new() {
-		return (<h1>로그인</h1>
-                <div className="page">
+		return (<div className="page">
                     <div className="column-300">
                         <div className="form-layout">
                             <div className="form-label"> 아이디 </div>
@@ -143,6 +141,7 @@ export default class extends React.Component {
                 <div className="round-btn" onClick={()=>history.goBack()}><i className="fas fa-arrow-left"></i></div>
             </div>
             <div className="container">
+            <h1>시작하기</h1>
             {!localStorage.getItem("browser_key") || localStorage.getItem("browser_key_virgin") == 1 ? this.render_new() : this.render_login()}
             </div>
 		</div>);
