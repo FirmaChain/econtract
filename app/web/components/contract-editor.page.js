@@ -217,6 +217,7 @@ export default class extends React.Component {
     }
 
     onClickAddLabel = async(props)=>{
+        if(!this.state.editmode)return ;
         this.addObject({
             type:"text",
             x:250,
@@ -225,6 +226,7 @@ export default class extends React.Component {
     }
 
     onClickAddCheckbox = async()=>{
+        if(!this.state.editmode)return ;
         this.addObject({
             type:"checkbox",
             x:250,
@@ -233,6 +235,7 @@ export default class extends React.Component {
     }
 
     onClickAddImg = async()=>{
+        if(!this.state.editmode)return ;
         let input = document.createElement("input")
         input.type = "file"
         input.accept=".png, .jpg, .jpeg"
@@ -259,6 +262,7 @@ export default class extends React.Component {
     }
 
     onClickAddSign = async()=>{
+        if(!this.state.editmode)return ;
         await new Promise(r=>{ window.openModal("DrawSign",{
                 onFinish : (base64)=>{
                     if(base64){
@@ -473,22 +477,22 @@ export default class extends React.Component {
             <div className="contents">
                 {this.state.status <= 1 ? <div className="header-toolkit">
                     {this.state.status == 1 ?[
-                        <div key={0} className="toolkit" onClick={this.onClickAddSign}>
+                        <div key={0} className={this.state.editmode?"toolkit":"toolkit disable"} onClick={this.onClickAddSign}>
                             <img src="/static/icon_sign.png"/>
                             서명
                         </div>,
-                        <div key={1} className="toolkit" onClick={this.onClickAddImg}>
+                        <div key={1} className={this.state.editmode?"toolkit":"toolkit disable"} onClick={this.onClickAddImg}>
                             <img src="/static/icon_sign_upload.png"/>
                             도장 선택
                         </div>
                     ] : null}
 
-                    <div className="toolkit" onClick={this.onClickAddImg}>
+                    <div className={this.state.editmode?"toolkit":"toolkit disable"} onClick={this.onClickAddImg}>
                         <img src="/static/icon_img_upload.png"/>
                         이미지 업로드
                     </div>
 
-                    <div className="toolkit" onClick={this.onClickAddLabel}>
+                    <div className={this.state.editmode?"toolkit":"toolkit disable"} onClick={this.onClickAddLabel}>
                         <img src="/static/icon_textbox.png"/>
                         텍스트 입력
                     </div>

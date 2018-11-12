@@ -188,6 +188,18 @@ select:focus { outline:none; }
                 }
             }
 
+            >.disable{
+                color: rgba(255,255,255,0.1);
+                background-color: rgba(0,0,0,0.1);
+                cursor: auto;
+                >img{
+                    opacity: 0.4;
+                }
+                &:hover {
+                    background-color: rgba(0,0,0,0.1);
+                }
+            }
+
             >.line{
                 margin: 0 10px;
                 width:1px;
