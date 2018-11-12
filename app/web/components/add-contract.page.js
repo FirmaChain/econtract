@@ -113,8 +113,16 @@ export default class extends React.Component {
         let pdf, pdf_payload
 
         try {
-            pdf = await this.props.convert_doc(file)
-            pdf_payload = pdf.payload.data
+            try{
+                pdf_payload = await window.toPdf(file)
+                pdf = await pdfjsLib.getDocument({data: pdf_payload}).promise;
+            }catch(err){
+                console.log("??")
+                let ret = await this.props.convert_doc(file)    
+                pdf_payload = ret.payload.data
+                pdf = await pdfjsLib.getDocument({data: pdf_payload}).promise;
+            }
+            console.log(pdf)
         } catch(err) {
             console.log(err)
             await window.hideIndicator()
@@ -122,30 +130,9 @@ export default class extends React.Component {
         }
     
         try{
-            let pdf = await pdfjsLib.getDocument({data: pdf_payload}).promise;
-            let imgs = []
-            for(let i=1; i <= pdf.numPages;i++){
-                let page = await pdf.getPage(i)
-                let viewport = page.getViewport(1.5);
-    
-                let canvas = document.createElement('canvas');
-                let context = canvas.getContext('2d');
-                canvas.height = viewport.height;
-                canvas.width = viewport.width;
-    
-                let renderContext = {
-                    canvasContext: context,
-                    viewport: viewport
-                };
-    
-                await page.render(renderContext);
-                let v = canvas.toDataURL("image/png")
-                imgs.push(v);
-            }
-
             this.setState({
                 file: file,
-                imgs: imgs
+                imgs: await window.pdf2png(pdf)
             })
         }catch(err){
             console.log(err)

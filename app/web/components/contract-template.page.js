@@ -6,15 +6,27 @@ import ContractMenu from "./contract-menu"
 import UserStatusBar from "./user-state-bar"
 import CheckBox2 from "./checkbox2"
 import history from '../history';
+import {
+    list_template,
+    add_template,
+    get_template,
+    update_template,
+    fetch_user_info,
+} from "../../common/actions"
+import moment from "moment"
 
 let mapStateToProps = (state)=>{
 	return {
+
 	}
 }
 
-let mapDispatchToProps = (dispatch) => {
-    return {
-    }
+let mapDispatchToProps = {
+    list_template,
+    add_template,
+    get_template,
+    update_template,
+    fetch_user_info
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -22,11 +34,18 @@ export default class extends React.Component {
 	constructor(){
 		super();
 		this.state={
-            deleteMode:false
+            deleteMode:false,
+            template:[]
         };
 	}
 
 	componentDidMount(){
+        (async()=>{
+            let list = await this.props.list_template()
+            this.setState({
+                template:list
+            })
+        })()
     }
     
     onClickDeleteMode = ()=>{
@@ -43,6 +62,10 @@ export default class extends React.Component {
 
     onClickDelete = async()=>{
         await window.confirm("템플릿 삭제", "삭제하시겠습니까?");
+    }
+
+    onClickTemplate = async(e)=>{
+        history.push(`/template-edit/${e.template_id}`)
     }
 
 	render() {
@@ -65,30 +88,14 @@ export default class extends React.Component {
                                     <th>생성일자</th>
                                     <th>수정시간</th>
                                 </tr>
-                                <tr>
-                                    {this.state.deleteMode ? <td><CheckBox2 /></td> : null}
-                                    <td>표준근로계약서</td>
-                                    <td className="date-cell">2017-00-00 00:00:00</td>
-                                    <td className="date-cell">2017-00-00 00:00:00</td>
-                                </tr>
-                                <tr>
-                                    {this.state.deleteMode ? <td><CheckBox2 /></td> : null}
-                                    <td>표준근로계약서</td>
-                                    <td className="date-cell">2017-00-00 00:00:00</td>
-                                    <td className="date-cell">2017-00-00 00:00:00</td>
-                                </tr>
-                                <tr>
-                                    {this.state.deleteMode ? <td><CheckBox2 /></td> : null}
-                                    <td>표준근로계약서</td>
-                                    <td className="date-cell">2017-00-00 00:00:00</td>
-                                    <td className="date-cell">2017-00-00 00:00:00</td>
-                                </tr>
-                                <tr>
-                                    {this.state.deleteMode ? <td><CheckBox2 /></td> : null}
-                                    <td>표준근로계약서</td>
-                                    <td className="date-cell">2017-00-00 00:00:00</td>
-                                    <td className="date-cell">2017-00-00 00:00:00</td>
-                                </tr>
+                                {this.state.template.map(e=>{
+                                    return <tr key={e.template_id} className="clickable" onClick={this.onClickTemplate.bind(this, e)}>
+                                        {this.state.deleteMode ? <td><CheckBox2 /></td> : null}
+                                        <td>{e.subject}</td>
+                                        <td className="date-cell">{moment(e.updatedAt).format("YYYY-MM-DD HH:mm:ss")}</td>
+                                        <td className="date-cell">{moment(e.addedAt).format("YYYY-MM-DD HH:mm:ss")}</td>
+                                    </tr>
+                                })}
                             </tbody>
                         </table>
 

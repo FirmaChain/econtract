@@ -186,6 +186,56 @@ export async function api_reject_contract(contract_id,msg,revision){
         session:window.getCookie("session")
     });
 }
+export async function api_add_template(subject,imgs){
+    let data = new FormData();
+
+    data.append('subject', subject);
+	for(let k in imgs){
+        data.append('imgs:'+k,imgs[k])
+    }
+    data.append('imgs',imgs.length)
+
+    return await post("/add_template", data,{
+        session:window.getCookie("session")
+    });
+}
+export async function api_update_template(template_id,html){
+    let data = new FormData();
+
+    data.append('template_id', template_id);
+	data.append('html', html)
+
+    return await post("/update_template", data,{
+        session:window.getCookie("session")
+    });
+}
+export async function api_remove_template(template_id){
+    let data = new FormData();
+
+    data.append('template_id', template_id)
+
+    return await post("/remove_template", data,{
+        session:window.getCookie("session")
+    });
+}
+export async function api_get_template(template_id){
+    let data = new FormData();
+
+    data.append('template_id', template_id)
+
+    return await post("/get_template", data,{
+        session:window.getCookie("session")
+    });
+}
+export async function api_list_template(){
+    let data = new FormData();
+
+    
+
+    return await post("/list_template", data,{
+        session:window.getCookie("session")
+    });
+}
 export async function api_test(){
     return await get("/test", {
         

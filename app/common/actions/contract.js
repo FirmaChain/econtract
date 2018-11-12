@@ -327,7 +327,6 @@ export function reject_contract(contract_id, msg, revision){
     }
 }
 
-
 export function new_folder(name){
     return async function(dispatch){
         return (await api_new_folder(name)).payload
@@ -336,14 +335,12 @@ export function new_folder(name){
 
 export function remove_folder(folder_ids){
     return async function(dispatch){
-        console.log(folder_ids)
         return (await api_remove_folder(folder_ids)).payload
     }
 }
 
 export function move_to_folder(folder_id,contract_ids){
     return async function(dispatch){
-        console.log(folder_id,contract_ids)
         return (await api_move_to_folder(folder_id,contract_ids)).payload
     }
 }

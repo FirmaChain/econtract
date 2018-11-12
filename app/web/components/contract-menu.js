@@ -16,11 +16,11 @@ export default function(props){
                 </li>
             </Link>
             <li className="spacer" />
-            {/* <Link to="/template">
+            <Link to="/template">
                 <li className={`item ${props.page == "template" ? 'selected' : ''}`}>
                     <i className="fas fa-file-alt" /> 내 템플릿
                 </li>
-            </Link> */}
+            </Link>
         </ul>
     </div>)
 }

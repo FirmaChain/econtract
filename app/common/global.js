@@ -186,6 +186,48 @@ if((navigator.appName == 'Netscape' && agent.indexOf('trident') != -1) || (agent
 else
   window.isIE = false;
 
+window.toPdf = async function(file){
+  let data = new FormData();
+  data.append('file', file)
+
+  let resp = await fetch(`http://52.79.179.230/convert`,{
+    method:"POST",
+    headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': 'true',
+        'Access-Control-Allow-Methods': 'GET,HEAD,OPTIONS,POST,PUT',
+        'Accept': 'application/json',
+    },
+    body:data
+  })
+
+  let v = await resp.arrayBuffer()
+  return v
+}
+
+window.pdf2png = async function(pdf){
+  let imgs = []
+  for(let i=1; i <= pdf.numPages;i++){
+      let page = await pdf.getPage(i)
+      let viewport = page.getViewport(1.5);
+
+      let canvas = document.createElement('canvas');
+      let context = canvas.getContext('2d');
+      canvas.height = viewport.height;
+      canvas.width = viewport.width;
+
+      let renderContext = {
+          canvasContext: context,
+          viewport: viewport
+      };
+
+      await page.render(renderContext);
+      let v = canvas.toDataURL("image/png")
+      imgs.push(v);
+  }
+  
+  return imgs
+}
 
 window.pdf = {
   gen:async function(imgs, saveAs = false){
