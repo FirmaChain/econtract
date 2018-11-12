@@ -91,7 +91,7 @@ export default class extends React.Component {
       }
    }
 
-   render_login() {
+   render_new() {
 		return (<div className="page">
                     <div className="column-600">
                     <div className="mid-desc">
@@ -104,7 +104,7 @@ export default class extends React.Component {
                 </div>);
    }
 
-   render_new() {
+   render_login() {
 		return (<div className="page">
                     <div className="column-300">
                         <div className="form-layout">
@@ -119,7 +119,7 @@ export default class extends React.Component {
                             </div>
 
                             <div className="form-submit">
-                                <button key={1} tabIndex={1} onClick={this.onClickRecoverAccount}> 다른 계정으로 로그인 하기 </button>,
+                                <button key={1} tabIndex={1} onClick={this.onClickRecoverAccount}> 다른 계정으로 로그인 하기 </button>
                                 <button key={2} tabIndex={2} onClick={this.onClickClearBrowserKey}> 브라우저 인증 해제하기 </button>
                                 <button className="border" onClick={this.onClickLogin}> 로그인 </button>
                             </div>
