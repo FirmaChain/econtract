@@ -13,6 +13,7 @@ import {
     get_template,
     update_template,
     fetch_user_info,
+    remove_template,
 } from "../../common/actions"
 import moment from "moment"
 
@@ -27,7 +28,8 @@ let mapDispatchToProps = {
     add_template,
     get_template,
     update_template,
-    fetch_user_info
+    fetch_user_info,
+    remove_template,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -36,7 +38,8 @@ export default class extends React.Component {
 		super();
 		this.state={
             deleteMode:false,
-            template:[]
+            template:[],
+            del_sel:{}
         };
 	}
 
@@ -62,11 +65,34 @@ export default class extends React.Component {
     }
 
     onClickDelete = async()=>{
-        await window.confirm("템플릿 삭제", "삭제하시겠습니까?");
+        let del_sel = this.state.del_sel
+        let selected = Object.keys(del_sel).filter(e=>del_sel[e])
+        if(selected.length == 0)
+            return alert("삭제 할 템플릿을 선택해주세요!")
+
+        if(await window.confirm("템플릿 삭제", `${selected.length}개의 템플릿을 삭제하시겠습니까?`)){
+            await this.props.remove_template(selected)
+
+            let list = await this.props.list_template()
+            this.setState({
+                template:list,
+                deleteMode:false
+            })
+            
+            alert("성공적으로 삭제했습니다.")
+        }
     }
 
     onClickTemplate = async(e)=>{
         history.push(`/template-edit/${e.template_id}`)
+    }
+
+    onClickDelCell = async(e)=>{
+        let del_sel = this.state.del_sel
+
+        del_sel[e.template_id] = !del_sel[e.template_id];
+
+        this.setState({del_sel})
     }
 
 	render() {
@@ -90,8 +116,8 @@ export default class extends React.Component {
                                     <th>수정시간</th>
                                 </tr>
                                 {this.state.template.map(e=>{
-                                    return <tr key={e.template_id} className="clickable" onClick={this.onClickTemplate.bind(this, e)}>
-                                        {this.state.deleteMode ? <td><CheckBox2 /></td> : null}
+                                    return <tr key={e.template_id} className={`clickable`} onClick={this.state.deleteMode ? this.onClickDelCell.bind(this, e) : this.onClickTemplate.bind(this, e)}>
+                                        {this.state.deleteMode ? <td><CheckBox2 on={this.state.del_sel[e.template_id]} /></td> : null}
                                         <td>{e.subject}</td>
                                         <td className="date-cell">{moment(e.updatedAt).format("YYYY-MM-DD HH:mm:ss")}</td>
                                         <td className="date-cell">{moment(e.addedAt).format("YYYY-MM-DD HH:mm:ss")}</td>

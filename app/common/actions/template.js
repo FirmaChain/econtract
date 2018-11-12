@@ -3,7 +3,7 @@ import {
     api_remove_template,
     api_get_template,
     api_list_template,
-    api_update_template
+    api_update_template,
 } from "../../../gen_api"
 
 import {
@@ -74,6 +74,18 @@ export function update_template(template_id, html){
         let resp = await api_update_template(template_id, html)
         dispatch({
             type:"api_update_template",
+            payload:resp.payload
+        })
+
+        return resp.payload
+    }
+}
+
+export function remove_template(template_ids){
+    return async function(dispatch){
+        let resp = await api_remove_template(JSON.stringify(template_ids))
+        dispatch({
+            type:"api_remove_template",
             payload:resp.payload
         })
 

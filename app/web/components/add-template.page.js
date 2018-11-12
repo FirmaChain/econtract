@@ -39,7 +39,7 @@ export default class extends React.Component {
 
         await window.showIndicator()
         let template_id = await this.props.add_template(this.state.subject, this.state.imgs)
-        console.log(template_id)
+        history.replace(`/template-edit/${template_id}`)
         await window.hideIndicator()
     }
 

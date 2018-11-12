@@ -209,10 +209,10 @@ export async function api_update_template(template_id,html){
         session:window.getCookie("session")
     });
 }
-export async function api_remove_template(template_id){
+export async function api_remove_template(template_ids){
     let data = new FormData();
 
-    data.append('template_id', template_id)
+    data.append('template_ids', template_ids)
 
     return await post("/remove_template", data,{
         session:window.getCookie("session")
