@@ -51,7 +51,7 @@ export function get_template(template_id){
             }
         }
 
-        resp.payload.html = resp.payload.html || {}
+        resp.payload.html = resp.payload.html || []
 
         for(let k in resp.payload.imgs){
             let bin = await fetch(`${window.HOST}/${resp.payload.imgs[k]}`,{encoding:null})
