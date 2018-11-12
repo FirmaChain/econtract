@@ -92,7 +92,16 @@ export default class extends React.Component {
    }
 
    render_new() {
-		return (<div className="page">
+		return (<div className="default-page register-page">
+            <div className="logo">
+                <img src="/static/logo_blue.png" onClick={()=>history.push("/")}/>
+            </div>
+            <div className="back-key">
+                <div className="round-btn" onClick={()=>history.goBack()}><i className="fas fa-arrow-left"></i></div>
+            </div>
+            <div className="container">
+            <h1>시작하기</h1>
+                <div className="page">
                     <div className="column-600">
                     <div className="mid-desc">
                         서비스를 처음 시작하거나, 접속한 기기가 인증되지 않은 상태일 경우<br/>
@@ -101,11 +110,22 @@ export default class extends React.Component {
                     <button className="border" onClick={()=>history.push("/register")}> 회원가입하기 </button>
                     <button className="border" onClick={()=>history.push("/recover")}> 기존 계정으로 로그인하기 </button>
                     </div>
-                </div>);
+                </div>
+            </div>
+		</div>);
    }
 
    render_login() {
-		return (<div className="page">
+		return (<div className="default-page login-page">
+            <div className="logo">
+                <img src="/static/logo_blue.png" onClick={()=>history.push("/")}/>
+            </div>
+            <div className="back-key">
+                <div className="round-btn" onClick={()=>history.goBack()}><i className="fas fa-arrow-left"></i></div>
+            </div>
+            <div className="container">
+            <h1>로그인</h1>
+                <div className="page">
                     <div className="column-300">
                         <div className="form-layout">
                             <div className="form-label"> 아이디 </div>
@@ -125,7 +145,9 @@ export default class extends React.Component {
                             </div>
                         </div>
                     </div>
-                </div>);
+                </div>
+            </div>
+		</div>);
    }
 
 	render() {
@@ -133,17 +155,10 @@ export default class extends React.Component {
             return <div />
         }
 
-		return (<div className="default-page login-page">
-            <div className="logo">
-                <img src="/static/logo_blue.png" onClick={()=>history.push("/")}/>
-            </div>
-            <div className="back-key">
-                <div className="round-btn" onClick={()=>history.goBack()}><i className="fas fa-arrow-left"></i></div>
-            </div>
-            <div className="container">
-            <h1>시작하기</h1>
-            {!localStorage.getItem("browser_key") || localStorage.getItem("browser_key_virgin") == 1 ? this.render_new() : this.render_login()}
-            </div>
-		</div>);
+        if (!localStorage.getItem("browser_key") || localStorage.getItem("browser_key_virgin") == 1) {
+            return this.render_new();
+        } else {
+            return this.render();
+        }
 	}
 }
