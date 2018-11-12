@@ -9,6 +9,7 @@ import CheckBox from "./checkbox"
 import CheckBox2 from "./checkbox2"
 import history from "../history"
 import moment from "moment"
+import translate from "../../common/translate"
 import {
     folder_list,
     new_folder,

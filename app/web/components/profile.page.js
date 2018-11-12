@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import pdfjsLib from "pdfjs-dist"
 import history from '../history';
 import Web3 from "../../common/Web3"
+import translate from "../../common/translate"
 import {
     fetch_user_info
 } from "../../common/actions"
@@ -70,7 +71,7 @@ export default class extends React.Component {
             <div className="container">
                 <h1>내 정보</h1>
                 <div className="page">
-                    <div className="column-600">
+                    <div className="column-400">
                         <div className="form-layout">
                             <div className="form-label"> 내 정보 </div>
                             <div className="form-input profile-info">
@@ -93,9 +94,11 @@ export default class extends React.Component {
                             <div className="form-input">
                                 {user.eth_address}
                             </div>
+                            <div className="form-button">
+                                <button className="submit-button" onClick={()=>history.push("/check-mnemonic")}>마스터 키워드 확인</button>
+                            </div>
                         </div>
                     </div>
-                    {/* <div className="column-300"></div> */}
                 </div>
             </div>
 		</div>);

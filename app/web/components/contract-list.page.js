@@ -10,6 +10,7 @@ import TransactionBackgroundWork from "./transaction_background_work"
 import CheckBox2 from "./checkbox2"
 import history from '../history';
 import moment from "moment"
+import translate from "../../common/translate"
 import {
     recently_contracts,
     folder_in_contracts,
@@ -37,7 +38,8 @@ export default class extends React.Component {
 		this.state={
             filter:1,
             moveMode:false,
-            board:{}
+            board:{},
+            loaded:false,
         };
 	}
 
@@ -55,6 +57,9 @@ export default class extends React.Component {
             }else{
                 await this.props.recently_contracts();
             }
+            this.setState({
+                loaded:true
+            })
         })()
     }
 
@@ -139,7 +144,7 @@ export default class extends React.Component {
             lock_src = "/static/icon_locked.png";
         }
         return <tr key={k} className={mm ? "" : "clickable"} onClick={mm ? null : this.onClickContract.bind(this,e.contract_id)}>
-            {mm ? <td><CheckBox2 on={this.state.move_select[k]} onClick={this.onClickMoveSel.bind(this,k)} /></td> : null}
+            {mm ? <td style={{width:"10px"}}><CheckBox2 on={this.state.move_select[k]} onClick={this.onClickMoveSel.bind(this,k)} /></td> : null}
             <td className="text-center">{status_text(e.status)}</td>
             <td className="text-center"><img src={lock_src} height={19}/></td>
             <td className="text-left">{e.name}</td>
@@ -149,7 +154,7 @@ export default class extends React.Component {
     }
 
 	render() {
-        let board = this.props.board || { list:[] };
+        let board = this.state.loaded && this.props.board ? this.props.board : { list:[] };
         let total_cnt = board.total_cnt
         let page_num = board.page_num
 		return (<div className="default-page contract-list-page">

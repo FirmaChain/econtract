@@ -238,7 +238,7 @@ select:focus { outline:none; }
                     display: inline-block;
                     padding: 0;
                     border: 1px dashed #444;
-                    color:#666;
+                    color:#333;
                     min-width: 30px;
                     padding:10px;
                     outline: 0;
@@ -795,6 +795,7 @@ table.table{
     >.profile{
         display: flex;
         margin-right: 40px;
+        cursor: pointer;
 
         >.info{
             display: flex;
@@ -1133,15 +1134,51 @@ table.table{
                     float:right;
                     height:60px;
 
-                    .language{
+                    .language-dropdown {
+                        position: relative;
                         display:table-cell;
                         vertical-align: middle;
-                        font-size: 10px;
-                        color: #fff;
                         margin: 15px 0;
                         padding-left: 10px;
                         padding-right: 10px;
+
+                        .language {
+                            padding: 16px;
+                            font-size: 12px;
+                            color: #fff;
+                            border: none;
+                        }
+
+                        .languages-dropdown {
+                            display: none;
+                            position: absolute;
+                            min-width: 160px;
+                            z-index: 1;
+
+                            > div {
+                                color: white;
+                                padding: 12px 16px;
+                                display: block;
+                                cursor: pointer;
+
+                                &:hover {
+                                    background-color: #ddd;
+                                    color:black;
+                                }
+                            }
+                        }
+
+
+                        &:hover {
+                            .languages-dropdown {display: block;}
+                            .language {
+                                background-color: #fff;
+                                color:#333;
+                            }
+                        }
                     }
+
+
                     .whatis{
                         display:table-cell;
                         vertical-align: middle;
@@ -1272,6 +1309,7 @@ table.table{
                         display:inline-block;
                         vertical-align: top;
                         width:50%;
+                        text-align: center;
 
                         >.title {
                             font-size:24px;
@@ -1283,6 +1321,8 @@ table.table{
                             font-size:16px;
                             color:white;
                             margin-top:30px;
+                            max-width:400px;
+                            display: inline-block;
                         }
 
                         >.desc-img {
@@ -1313,7 +1353,7 @@ table.table{
             }
 
             >.right-img {
-                position:absolute;
+                position: absolute;
                 z-index:1;
                 right:-30px;
                 top:-100px;
@@ -1322,7 +1362,7 @@ table.table{
             }
 
             >.place {
-                position:relative;
+                position: relative;
                 z-index:2;
                 width:80%;
                 max-width:1000px;
@@ -1331,7 +1371,7 @@ table.table{
                 margin-bottom:100px;
 
                 >.title {
-                    color:white;
+                    color: white;
                     font-size:30px;
                     // border-bottom: 1px solid #eaeaea;
                     padding-bottom:30px;
@@ -1339,8 +1379,9 @@ table.table{
                 }
 
                 >.desc {
-                    color:white;
+                    color: white;
                     font-size:16px;
+                    max-width: 500px;
                 }
             }
 

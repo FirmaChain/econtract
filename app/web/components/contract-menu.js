@@ -1,6 +1,7 @@
 import React from "react"
 import ReactDOM from "react-dom"
 import { Link } from "react-router-dom";
+import translate from "../../common/translate"
 
 export default function(props){
     return (<div className="column-200 display-flex">

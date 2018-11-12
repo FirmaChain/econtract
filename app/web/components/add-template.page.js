@@ -8,6 +8,8 @@ import {
     convert_doc,
     add_template
 } from "../../common/actions" 
+import translate from "../../common/translate"
+
 let mapStateToProps = (state)=>{
 	return {
 	}

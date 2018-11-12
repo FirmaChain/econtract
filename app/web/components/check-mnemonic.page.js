@@ -3,6 +3,7 @@ import ReactDOM from "react-dom"
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom'
 import history from '../history'
+import translate from "../../common/translate"
 import {
     get_mnemonic,
     fetch_user_info
@@ -63,7 +64,7 @@ export default class extends React.Component {
     }
 
     onClickOK = async()=>{
-        history.push("/login");
+        history.push("/profile");
     }
 
     onClickSaveMnemonic = ()=>{
@@ -97,9 +98,9 @@ export default class extends React.Component {
             <div className="page">
                 <div className="column-300">
                     <div className="form-layout">
-                        <div className="form-label"> ID </div>
+                        <div className="form-label"> 아이디 </div>
                         <div className="form-input">
-                            <input placeholder="ID를 입력해주세요." value={this.state.user_id || ""} onChange={e=>this.setState({user_id:e.target.value})} />
+                            <input placeholder="아이디를 입력해주세요." value={this.state.user_id || ""} onChange={e=>this.setState({user_id:e.target.value})} />
                         </div>
                         
                         <div className="form-label"> 비밀번호 </div>

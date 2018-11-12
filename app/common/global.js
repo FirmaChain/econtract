@@ -331,3 +331,11 @@ window.pdf = {
     })
   }
 }
+
+if(window.getCookie("LANGUAGE") != null) {
+  global.LANG = window.getCookie("LANGUAGE");
+}
+else {
+  global.LANG = "KR"
+  window.setCookie("LANGUAGE", "KR")
+}

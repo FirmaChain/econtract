@@ -3,6 +3,7 @@ import ReactDOM from "react-dom"
 import { Link } from "react-router-dom";
 import { connect } from 'react-redux';
 import history from "../history"
+import translate from "../../common/translate"
 import {
     send_chat,
     fetch_chat

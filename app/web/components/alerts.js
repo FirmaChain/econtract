@@ -3,6 +3,7 @@ import ReactDOM from "react-dom"
 import {modal} from "./modalmanager"
 import SignerSlot from "./signer-slot"
 import history from '../history';
+import translate from "../../common/translate"
 
 @modal
 class AddFolder extends React.Component{
@@ -400,7 +401,7 @@ class RefreshSession extends React.Component{
     render(){
         return <div className="default-modal session-expired-warning-modal">
             <div className="title">
-                세션이 {this.state.min}분 {this.state.sec}초 후 만료됩니다.
+                세션이 {this.stsate.hour}시간 {this.state.min}분 {this.state.sec}초 후 만료됩니다.
             </div>
             <div className="content">
                 세션 만료 후에는 재로그인을 해야합니다.<br />
