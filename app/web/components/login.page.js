@@ -107,8 +107,8 @@ export default class extends React.Component {
                         서비스를 처음 시작하거나, 접속한 기기가 인증되지 않은 상태일 경우<br/>
                         아래의 방법으로 서비스를 시작할 수 있습니다.
                     </div>
-                    <button className="border" onClick={()=>history.push("/register")}> 회원가입하기 </button>
-                    <button className="border" onClick={()=>history.push("/recover")}> 기존 계정으로 로그인하기 </button>
+                    <button className="left-friendly-button" onClick={()=>history.push("/register")}> 회원가입하기 </button>
+                    <button className="right-friendly-button" onClick={()=>history.push("/recover")}> 기존 계정으로 로그인하기 </button>
                     </div>
                 </div>
             </div>
