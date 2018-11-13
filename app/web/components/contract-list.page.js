@@ -101,7 +101,7 @@ export default class extends React.Component {
         })
     }
 
-    onClickMoveMode=()=>{
+    onClickMoveMode = async()=>{
         await window.showIndicator();
         let list = await this.props.all_folders();
         await window.hideIndicator();
