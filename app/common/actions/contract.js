@@ -386,6 +386,10 @@ export function aes_test(){
             original += "a";
         }
         let result = aes_encrypt(original, the_key);
+
+        let new_the_key = new Uint8Array(32);
+        new_the_key.set(the_key, 0);
+        let result2 = new Uint8Array(await crypto.subtle.encrypt({"name": "AES-CBC", "iv":new_the_key.slice(0,16)}, new_the_key, global.Buffer.from(original)));
         return result;
     }
 }
