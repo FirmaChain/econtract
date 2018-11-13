@@ -398,7 +398,12 @@ export function aes_test(){
                 true, //whether the key is extractable (i.e. can be used in exportKey)
                 ["encrypt", "decrypt"] //can be "encrypt", "decrypt", "wrapKey", or "unwrapKey"
                 ) ;
-        let result2 = new Uint8Array(await crypto.subtle.encrypt({"name": "AES-CBC", "iv":new_the_key.slice(0,16)}, hohokey, global.Buffer.from(original)));
+        let buffered0 = Buffer.from(original);
+        let buffered = new Uint8Array(original.length);
+        for (let i = 0; i < buffered.length; i++) {
+            buffered[i] = original.charAt(i);
+        }
+        let result2 = new Uint8Array(await crypto.subtle.encrypt({"name": "AES-CBC", "iv":new_the_key.slice(0,16)}, hohokey, buffered));
         return result;
     }
 }
