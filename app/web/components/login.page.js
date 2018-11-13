@@ -65,7 +65,7 @@ export default class extends React.Component {
 
     onClickClearBrowserKey = async()=>{
         await window.showIndicator();
-        if (window._confirm("브라우저 인증을 해제하면 기존의 아이디와 비밀번호로 로그인할 수 없습니다.\n브라우저 인증을 해제 하시겠습니까?")) {
+        if (window._confirm("기기 인증 해제 후 기존의 계정으로 다시 로그인 하려면 [다른 계정으로 로그인] 과정을 거쳐야 하며,\n이 때 마스터 키워드가 필요합니다.\n기기 인증을 해제 하시겠습니까?")) { 
             localStorage.removeItem("browser_key");
             localStorage.removeItem("browser_key_virgin");
             alert("브라우저 인증이 해제되었습니다.");
@@ -76,7 +76,7 @@ export default class extends React.Component {
 
     onClickRecoverAccount = async() => {
         await window.showIndicator();
-        if (window._confirm("다른 계정으로 로그인하기 전에 먼저 브라우저 인증을 해제해야 합니다.\n\n브라우저 인증을 해제하면 기존의 아이디와 비밀번호로 로그인할 수 없습니다.\n브라우저 인증을 해제 하시겠습니까?")) {
+        if (window._confirm("다른 계정으로 로그인하기 전에 먼저 기기 인증을 해제해야 합니다.\n\n기기 인증 해제 후 기존의 계정으로 다시 로그인 하려면 [다른 계정으로 로그인] 과정을 거쳐야 하며,\n이 때 마스터 키워드가 필요합니다.\n기기 인증을 해제 하시겠습니까?")) {
             localStorage.removeItem("browser_key");
             localStorage.removeItem("browser_key_virgin");
             this.setState({is_clear_browser_key: true});
