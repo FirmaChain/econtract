@@ -377,3 +377,16 @@ export function convert_doc(file){
         return await api_convert_doc(file)
     }
 }
+
+export function aes_test(){
+    return async function(dispatch){
+        let the_key = generate_random(31);
+        let original = "";
+        for (let i = 0; i < 2097152; i++) {
+            original += "a";
+        }
+        let result = aes_encrypt(original, the_key);
+        return result;
+    }
+}
+
