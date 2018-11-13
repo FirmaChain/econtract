@@ -126,7 +126,7 @@ export default class extends React.Component {
             <div className="container">
             <h1>로그인</h1>
                 <div className="page">
-                    <div className="column-300">
+                    <div className="column-400">
                         <div className="form-layout">
                             <div className="form-label"> 아이디 </div>
                             <div className="form-input">
@@ -140,7 +140,7 @@ export default class extends React.Component {
 
                             <div className="form-submit">
                                 <button key={1} tabIndex={1} onClick={this.onClickRecoverAccount}> 다른 계정으로 로그인 하기 </button>
-                                <button key={2} tabIndex={2} onClick={this.onClickClearBrowserKey}> 브라우저 인증 해제하기 </button>
+                                <button key={2} tabIndex={2} onClick={this.onClickClearBrowserKey}> 기기 인증 해제하기 </button>
                                 <button className="border" onClick={this.onClickLogin}> 로그인 </button>
                             </div>
                         </div>
