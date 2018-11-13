@@ -381,9 +381,9 @@ export function convert_doc(file){
 export function aes_test(){
     return async function(dispatch){
         let the_key = generate_random(31);
-        let original = "";
+        let original = new Uint8Array(2 * 1024 * 1024);
         for (let i = 0; i < 2097152; i++) {
-            original += "a";
+            original[i] = 97;
         }
         let result = aes_encrypt(original, the_key);
 
@@ -398,10 +398,7 @@ export function aes_test(){
                 true, //whether the key is extractable (i.e. can be used in exportKey)
                 ["encrypt", "decrypt"] //can be "encrypt", "decrypt", "wrapKey", or "unwrapKey"
                 ) ;
-        let buffered = new Uint8Array(original.length);
-        for (let i = 0; i < buffered.length; i++) {
-            buffered[i] = original.charAt(i);
-        }
+        let buffered = original;
         let result2 = new Uint8Array(await crypto.subtle.encrypt({"name": "AES-CBC", "iv":new_the_key.slice(0,16)}, hohokey, buffered));
         return result;
     }
