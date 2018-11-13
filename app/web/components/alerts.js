@@ -472,6 +472,6 @@ setInterval(()=>{
             })
         }
     }else{
-        location.href="/"
+        // location.href="/"
     }
 },1000)
