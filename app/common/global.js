@@ -13,7 +13,6 @@ import fs from "../web/filesystem"
 
 global.Buffer = require('buffer').Buffer;
 global.process = require('process');
-global.md5 = require('md5');
 
 //no use this HOST
 const HOST = "";
