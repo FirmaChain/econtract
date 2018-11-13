@@ -475,7 +475,7 @@ setInterval(()=>{
         let exclude = [
             "/",
             '/login',
-            '/regist',
+            '/register',
             '/recover'
         ]
         if( exclude.indexOf(location.pathname) == -1 ){
