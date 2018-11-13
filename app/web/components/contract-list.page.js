@@ -102,6 +102,13 @@ export default class extends React.Component {
     }
 
     onClickMoveMode=()=>{
+        await window.showIndicator();
+        let list = await this.props.all_folders();
+        await window.hideIndicator();
+        if(list.length == 0){
+            return alert("생성된 폴더가 없습니다.")
+        }
+
         this.setState({
             moveMode:true,
             move_select:[]
