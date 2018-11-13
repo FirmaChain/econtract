@@ -472,6 +472,14 @@ setInterval(()=>{
             })
         }
     }else{
-        // location.href="/"
+        let exclude = [
+            "/",
+            '/login',
+            '/regist',
+            '/recover'
+        ]
+        if( exclude.indexOf(location.pathname) == -1 ){
+            location.href="/"
+        }
     }
 },1000)
