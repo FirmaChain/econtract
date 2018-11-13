@@ -189,7 +189,7 @@ export default class extends React.Component {
                                     <th style={{width:"50px"}}>잠금</th>
                                     <th className="text-left">계약명</th>
                                     <th>서명자</th>
-                                    <th>일자</th>
+                                    <th>수정 일자</th>
                                 </tr>
                             </thead>
                             <tbody>
