@@ -310,7 +310,7 @@ export default class extends React.Component {
                             </button>
                         </div>
                     </div>
-                    <div className="column-300">
+                    <div className="column-400">
                         <div className="right-desc"> 
                             <div className="pin-place">PIN : {this.state.pin}</div>
                             <div className="pin-check checkbox">
