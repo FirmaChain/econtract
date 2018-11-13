@@ -185,7 +185,7 @@ export default class extends React.Component {
                         <div style={{ float:"left", clear: "both" }} ref="bottom" />
                     </div>
                     <div className="confirm-container">
-                        <div className="confirm-text">컨펌 완료</div>
+                        <div className="confirm-text">컨펌한 서명자</div>
                         <div className="confirm-counterparties">
                             {this.props.author.confirm == 1 ? this.props.author.name + (allower.length == 0 ? "" :", ") : null}
                             {allower.map(e=>e.name).join(", ")}
