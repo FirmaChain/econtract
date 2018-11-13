@@ -398,7 +398,6 @@ export function aes_test(){
                 true, //whether the key is extractable (i.e. can be used in exportKey)
                 ["encrypt", "decrypt"] //can be "encrypt", "decrypt", "wrapKey", or "unwrapKey"
                 ) ;
-        let buffered0 = Buffer.from(original);
         let buffered = new Uint8Array(original.length);
         for (let i = 0; i < buffered.length; i++) {
             buffered[i] = original.charAt(i);
