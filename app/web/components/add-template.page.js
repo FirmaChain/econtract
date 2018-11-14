@@ -35,7 +35,7 @@ export default class extends React.Component {
         if(!this.state.subject)
             return alert("제목을 입력해주세요.")
         if(!this.state.imgs)
-            return alert("pdf를 선택해주세요.")
+            return alert("문서를 선택해주세요.")
 
         await window.showIndicator()
         let template_id = await this.props.add_template(this.state.subject, this.state.imgs)
@@ -79,7 +79,7 @@ export default class extends React.Component {
             </div>
             <div className="container">
                 <h1>템플릿 추가</h1>
-                <div className="page">
+                <div className="page bottom-no-border">
                     <div className="column-300">
                         <div className="form-layout">
                             <div className="form-label"> 템플릿 명 </div>
@@ -98,16 +98,13 @@ export default class extends React.Component {
                             </div>
 
                             <input ref="file" type="file" accept=".png, .jpg, .jpeg, .doc, .docx, .ppt, .pptx, .pdf" onChange={this.onClickUploadFile} style={{display:"none"}}/>
-
-                            <div className="form-submit">
-                                <button className="border" onClick={this.onClickNext}> 다음 </button>
-                            </div>
                         </div>
                     </div>
                     <div className="column-300">
                         <div className="right-desc"> * 20MB 이하의 파일만 업로드 가능합니다. </div>
                     </div>
                 </div>
+                <button className="big-friendly-button top-no-border" onClick={this.onClickNext}> 다음 단계로 </button>
             </div>
 		</div>);
 	}
