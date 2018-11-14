@@ -189,7 +189,7 @@ export default class extends React.Component {
             })   
             let text = await resp.text();
             let buffer = await this.props.decrypt_contract_hexstring(this.state.contract_id, text);
-            let blob = new Blob([buffer]);
+            let blob = new Blob([buffer], {type:'application/pdf'});
             let urlblob = URL.createObjectURL(blob);
             let anchor = document.createElement('a');
             anchor.target = "_blank";
