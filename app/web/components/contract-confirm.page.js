@@ -188,7 +188,7 @@ export default class extends React.Component {
                 method:"GET",
             })   
             let text = await resp.text();
-            let buffer = this.props.decrypt_contract_hexstring(this.state.contract_id, text);
+            let buffer = await this.props.decrypt_contract_hexstring(this.state.contract_id, text);
             let blob = new Blob([buffer]);
             let urlblob = URL.createObjectURL(blob);
             let anchor = document.createElement('a');
