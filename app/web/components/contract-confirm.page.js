@@ -184,13 +184,34 @@ export default class extends React.Component {
         try{ 
             let resp = await fetch(url,{
                 method:"GET",
+            })   
+            let blob = await resp.text();
+            console.log(blob);
+        }catch(err){
+            console.log(err)
+        }    
+        try{ 
+            let resp = await fetch(url,{
+                method:"GET",
+                headers:{
+                    'Content-Type':'text/plain',
+                }
+            })   
+            let blob = await resp.text();
+            console.log(blob);
+        }catch(err){
+            console.log(err)
+        }    
+        try{ 
+            let resp = await fetch(url,{
+                method:"GET",
                 mode: 'no-cors',
                 headers:{
                     'Access-Control-Allow-Origin':'*',
                 }    
             })   
-            let blob = await resp.text()
-                console.log(blob);
+            let blob = await resp.text();
+            console.log(blob);
         }catch(err){
             console.log(err)
         }    
