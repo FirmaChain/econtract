@@ -283,7 +283,7 @@ export default class extends React.Component {
                                 {this.state.ipfs ? <div>
                                     <div className="form-label"> IPFS 해쉬 </div>
                                     <div className="form-info" style={{fontSize:"13px"}}>
-                                        <a href=# onClick={this.onClickDownloadDecrypt}>{this.state.ipfs}</a>
+                                        <a onClick={this.onClickDownloadDecrypt}>{this.state.ipfs}</a>
                                     </div>
                                 </div> : null}
 
