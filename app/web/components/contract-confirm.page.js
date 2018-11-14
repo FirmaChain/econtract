@@ -11,6 +11,7 @@ import {
     fetch_user_info,
     get_pin_from_storage,
     load_contract_info,
+    decrypt_contract_hexstring,
 } from "../../common/actions"
 import SignerSlot from "./signer-slot"
 import moment from "moment"
@@ -29,6 +30,7 @@ let mapDispatchToProps = {
     fetch_user_info,
     get_pin_from_storage,
     load_contract_info,
+    decrypt_contract_hexstring,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -185,33 +187,14 @@ export default class extends React.Component {
             let resp = await fetch(url,{
                 method:"GET",
             })   
-            let blob = await resp.text();
-            console.log(blob);
-        }catch(err){
-            console.log(err)
-        }    
-        try{ 
-            let resp = await fetch(url,{
-                method:"GET",
-                headers:{
-                    'Content-Type':'text/plain',
-                }
-            })   
-            let blob = await resp.text();
-            console.log(blob);
-        }catch(err){
-            console.log(err)
-        }    
-        try{ 
-            let resp = await fetch(url,{
-                method:"GET",
-                mode: 'no-cors',
-                headers:{
-                    'Access-Control-Allow-Origin':'*',
-                }    
-            })   
-            let blob = await resp.text();
-            console.log(blob);
+            let text = await resp.text();
+            let buffer = this.props.decrypt_contract_hexstring(this.state.contract_id, text);
+            let blob = new Blob([buffer]);
+            let url = URL.createObjectURL(blob);
+            let anchor = document.createElement('a');
+            anchor.target = "_blank";
+            anchor.href = url;
+            anchor.click();
         }catch(err){
             console.log(err)
         }    
