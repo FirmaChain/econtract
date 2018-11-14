@@ -182,18 +182,18 @@ export default class extends React.Component {
     }
 
     onClickDownloadDecrypt = async() => {
+        let url = "https://ipfs.infura.io:5001/api/v/cat?arg="+this.state.ipfs; 
         try{ 
-            let url = "https://ipfs.infura.io:5001/api/v/cat?arg="+this.state.ipfs; 
             let resp = await fetch(url,{
                 method:"GET",
             })   
             let text = await resp.text();
             let buffer = this.props.decrypt_contract_hexstring(this.state.contract_id, text);
             let blob = new Blob([buffer]);
-            let url = URL.createObjectURL(blob);
+            let urlblob = URL.createObjectURL(blob);
             let anchor = document.createElement('a');
             anchor.target = "_blank";
-            anchor.href = url;
+            anchor.href = urlblob;
             anchor.click();
         }catch(err){
             console.log(err)
