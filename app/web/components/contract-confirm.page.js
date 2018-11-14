@@ -182,7 +182,7 @@ export default class extends React.Component {
     }
 
     onClickDownloadDecrypt = async() => {
-        let url = "https://ipfs.infura.io:5001/api/v/cat?arg="+this.state.ipfs; 
+        let url = "https://ipfs.infura.io:5001/api/v0/cat?arg="+this.state.ipfs; 
         try{ 
             let resp = await fetch(url,{
                 method:"GET",
