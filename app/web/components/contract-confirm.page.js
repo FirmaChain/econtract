@@ -180,19 +180,20 @@ export default class extends React.Component {
     }
 
     onClickDownloadDecrypt = async() => {
-		let url = "https://ipfs.infura.io:5001/api/v0/cat?arg="+this.state.ipfs; 
-		try{ 
-			let resp = await fetch(url,{
-				method:"GET",
-				headers:{
-					'Access-Control-Allow-Origin':'*',
-				}    
-			})   
-			let blob = await resp.text()
-			console.log(blob);
-		}catch(err){
-			console.log(err)
-		}    
+        let url = "https://ipfs.infura.io:5001/api/v0/cat?arg="+this.state.ipfs; 
+        try{ 
+            let resp = await fetch(url,{
+                method:"GET",
+                mode: 'no-cors',
+                headers:{
+                    'Access-Control-Allow-Origin':'*',
+                }    
+            })   
+            let blob = await resp.text()
+                console.log(blob);
+        }catch(err){
+            console.log(err)
+        }    
     }
 
     render_status_text(){
