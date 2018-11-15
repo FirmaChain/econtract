@@ -663,6 +663,66 @@ select:focus { outline:none; }
 }
 
 .register-page{
+
+    button.new-already-button {
+        width: calc(50% - 10px);
+
+        border:1px solid #dadadc;
+        padding: 45px 10px;
+        border-radius: 5px;
+        margin-right: 10px;
+
+        background-color: #fff;
+        color:#444;
+        font-size: 15px;
+        cursor: pointer;
+
+        &:hover{
+            border:1px solid #324b5f;
+            border-top:1px solid #324b5f;
+            background-color: #324b5f;
+            color: white;
+        }
+
+        &:last-child{
+            margin-right: 0;
+        }
+    }
+
+    button.new-img {
+        >div{
+            display: inline-block;
+            width:30px;
+            height:30px;
+            background-size: 100%;
+            background-image: url("/static/new_on.png");
+
+            margin-bottom:5px;
+        }
+        &:hover {
+            >div {
+                background-image: url("/static/new_off.png") !important;
+            }
+        }
+    }
+
+    button.already-img {
+        >div{
+            display: inline-block;
+            width:30px;
+            height:30px;
+            background-size: 100%;
+            background-image: url("/static/already_on.png");
+
+            margin-bottom:5px;
+        }
+        &:hover {
+            >div {
+                background-image: url("/static/already_off.png") !important;
+            }
+        }
+    }
+
     .step-indicator{
         float:right;
         display: inline-flex;
@@ -744,6 +804,13 @@ select:focus { outline:none; }
 
     .mid-desc {
         color: #BEBEC3;
+        font-size: 14px;
+        margin: 10px;
+        text-align: center;
+    }
+
+    .no-login-mid-desc {
+        color: #333;
         font-size: 14px;
         margin: 10px;
         margin-bottom:30px;
