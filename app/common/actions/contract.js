@@ -377,3 +377,13 @@ export function convert_doc(file){
         return await api_convert_doc(file)
     }
 }
+
+export function decrypt_contract_hexstring(contract_id, hexstring){
+    return async function(dispatch){
+        let pin = await getPIN(contract_id);
+        let thekey = await getTheKey(contract_id, pin);
+        let decrypted = aes_decrypt(hexstring, thekey, true);
+        return decrypted;
+    }
+}
+

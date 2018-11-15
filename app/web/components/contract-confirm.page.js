@@ -11,6 +11,7 @@ import {
     fetch_user_info,
     get_pin_from_storage,
     load_contract_info,
+    decrypt_contract_hexstring,
 } from "../../common/actions"
 import SignerSlot from "./signer-slot"
 import moment from "moment"
@@ -29,6 +30,7 @@ let mapDispatchToProps = {
     fetch_user_info,
     get_pin_from_storage,
     load_contract_info,
+    decrypt_contract_hexstring,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -179,6 +181,25 @@ export default class extends React.Component {
         //history.push(`/verification/${this.state.doc_hash}`)
     }
 
+    onClickDownloadDecrypt = async() => {
+        let url = "https://ipfs.infura.io:5001/api/v0/cat?arg="+this.state.ipfs; 
+        try{ 
+            let resp = await fetch(url,{
+                method:"GET",
+            })   
+            let text = await resp.text();
+            let buffer = await this.props.decrypt_contract_hexstring(this.state.contract_id, text);
+            let blob = new Blob([buffer], {type:'application/pdf'});
+            let urlblob = URL.createObjectURL(blob);
+            let anchor = document.createElement('a');
+            anchor.target = "_blank";
+            anchor.href = urlblob;
+            anchor.click();
+        }catch(err){
+            console.log(err)
+        }    
+    }
+
     render_status_text(){
         if(this.state.status == 0){
             return "배포 전"
@@ -267,7 +288,7 @@ export default class extends React.Component {
                                 {this.state.ipfs ? <div>
                                     <div className="form-label"> IPFS 해쉬 </div>
                                     <div className="form-info" style={{fontSize:"13px"}}>
-                                        <a href={`https://ipfs.infura.io:5001/api/v0/cat?arg=${this.state.ipfs}`} target="_blank">{this.state.ipfs}</a>
+                                        <a onClick={this.onClickDownloadDecrypt}>{this.state.ipfs}</a>
                                     </div>
                                 </div> : null}
 
