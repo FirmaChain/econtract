@@ -191,7 +191,7 @@ window.toPdf = async function(file){
   let data = new FormData();
   data.append('file', file)
 
-  let resp = await fetch(`http://52.79.179.230/convert`,{
+  let resp = await fetch(`https://convert.e-contract.io/convert`,{
     method:"POST",
     headers: {
         'Access-Control-Allow-Origin': '*',
