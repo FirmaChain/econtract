@@ -49,6 +49,9 @@ export default class extends React.Component {
         
         let pdf, pdf_payload
 
+        let names = file.name.split(".");
+        let ext = names[names.length - 1];
+
         try {
 
             if(ext == "pdf"){
