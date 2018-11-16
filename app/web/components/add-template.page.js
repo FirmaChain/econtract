@@ -50,13 +50,26 @@ export default class extends React.Component {
         let pdf, pdf_payload
 
         try {
-            try{
-                pdf_payload = await window.toPdf(file)
-                pdf = await pdfjsLib.getDocument({data: pdf_payload}).promise;
-            }catch(err){
-                let ret = await this.props.convert_doc(file)    
-                pdf_payload = ret.payload.data
-                pdf = await pdfjsLib.getDocument({data: pdf_payload}).promise;
+
+            if(ext == "pdf"){
+                let a = await new Promise(r=>{
+                    let reader = new FileReader();
+                    reader.readAsArrayBuffer(file)
+                    reader.onload = ()=>{
+                        r(reader.result) 
+                    }
+                })
+                pdf = await pdfjsLib.getDocument({data: a}).promise;
+            }else{
+
+                try{
+                    pdf_payload = await window.toPdf(file)
+                    pdf = await pdfjsLib.getDocument({data: pdf_payload}).promise;
+                }catch(err){
+                    let ret = await this.props.convert_doc(file)    
+                    pdf_payload = ret.payload.data
+                    pdf = await pdfjsLib.getDocument({data: pdf_payload}).promise;
+                }
             }
 
             this.setState({
