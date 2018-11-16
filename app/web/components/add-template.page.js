@@ -31,13 +31,14 @@ export default class extends React.Component {
     }
 
     onClickNext = async ()=>{
-        console.log(this.props)
         if(!this.state.subject)
             return alert("제목을 입력해주세요.")
         if(!this.state.imgs)
             return alert("문서를 선택해주세요.")
 
         await window.showIndicator()
+        await new Promise(r=>setTimeout(r,100))
+        
         let template_id = await this.props.add_template(this.state.subject, this.state.imgs)
         history.replace(`/template-edit/${template_id}`)
         await window.hideIndicator()

@@ -243,9 +243,11 @@ export default class extends React.Component {
     }
 
     render() {
-        if(this.state.template_id == null)
-            return <div className="default-page"></div>
+        // if(this.state.template_id == null)
+        //     return <div className="default-page"></div>
 
+        let loading = !!this.state.template_id;
+        let imgs = this.state.imgs || []
         let objects = this.state.edit_page[this.state.page] || [];
 		return (<div className="editor-page">
             <div className="back-key">
@@ -253,7 +255,7 @@ export default class extends React.Component {
             </div>
 
             <div className="left-menu" ref={ref => this.left_menu = ref}>
-                {this.state.imgs.map((e,k)=>{
+                {imgs.map((e,k)=>{
                     return (<div key={k} id={`page-${k}`} onClick={()=>this.setState({page:k})} className={this.state.page == k ? `img-slot active` : `img-slot`} >
                         <div>{k+1}</div>
                         <img src={e} width="120px" />
@@ -287,7 +289,7 @@ export default class extends React.Component {
                     
                 </div>
                 <div className="edit-box">
-                    {(objects).map((e,k)=>{
+                    {loading ? (objects).map((e,k)=>{
                         if(!!e)
                             return <Item 
                                 key={`${k}:${e.type}:${e.x}:${e.y}`} {...e} 
@@ -297,8 +299,8 @@ export default class extends React.Component {
                                 removeItem={this.onRemoveItem.bind(this, k)}
                                 docStatus={0}
                         />
-                    })}
-                    <img className="edit-target" src={this.state.imgs[this.state.page]} />
+                    }) : <div style={{color:"white"}}>로딩중..</div>}
+                    {loading ? <img className="edit-target" src={imgs[this.state.page]} />: <div></div>}
                 </div>
             </div>
 		</div>);
