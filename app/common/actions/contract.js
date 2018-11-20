@@ -133,7 +133,8 @@ export function new_contract( subject, imgs, counterparties, publickey_contract_
         } else {
             for(let k in imgs){
                 await new Promise(r=>setTimeout(r,100))
-                imgs[k] = await aes_encrypt(imgs[k], the_key)
+                imgs[k] = await aes_encrypt2(imgs[k], the_key, true, 1)
+                //imgs[k] = await aes_encrypt(imgs[k], the_key)
             }
             c = 1;
         }
@@ -402,8 +403,15 @@ export function decrypt_contract_hexstring(contract_id, hexstring){
     }
 }
 
-export function aes_test(){
+export function aes_test(t){
     return async function(dispatch){
+        let the_key = generate_random(31);
+        let original = new Uint8Array(10 * 1024 * 1024);
+        for (let i = 0; i < 10 * 1024 * 1024; i++) {
+            original[i] = 97;
+        }
+        return await aes_encrypt2(original, the_key, true, t);
+        /*
         let the_key = generate_random(31);
         let original = new Uint8Array(2 * 1024 * 1024);
         for (let i = 0; i < 2097152; i++) {
@@ -425,6 +433,7 @@ export function aes_test(){
         let buffered = original;
         let result2 = new Uint8Array(await crypto.subtle.encrypt({"name": "AES-CBC", "iv":new_the_key.slice(0,16)}, hohokey, buffered));
         return result;
+        */
     }
 }
 

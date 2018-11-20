@@ -85,7 +85,22 @@ export default class extends React.Component {
     }
 
     onTest = async() => {
-        return this.props.aes_test();
+        for (let i = 0; i < 100; i++) {
+        let r = Math.floor(Math.random() * 2);
+        let a = new Date();
+        let d = await this.props.aes_test(r);
+        let b = new Date();
+        /*
+        let e = await this.props.aes_test(1);
+        let c = new Date();
+        */
+        console.log(b - a);
+        console.log(r);
+        /*
+        console.log(c - b);
+        */
+        }
+        return 0;
     }
 
     onClickNext = async ()=>{

@@ -57,7 +57,7 @@ export function ecaes_decrypt(c, keyPair, output_buffer=false) {
 	return plainText;
 }
 
-export async function aes_encrypt2(m, k, is_legacy=false) {
+export async function aes_encrypt2(m, k, is_legacy=false, compare=0) {
     let key, iv;
     if (is_legacy) {
         let keys = ebtk(k, false, 256, 16);
@@ -68,9 +68,16 @@ export async function aes_encrypt2(m, k, is_legacy=false) {
         iv = key.slice(0, 16);
     }
     let importedKey = await window.crypto.subtle.importKey("raw", key, {name: "AES-CBC"}, false, ["encrypt"]);
-    let buffered = Buffer.from(m);
+    let buffered = Buffer.from(m, 'binary');
+    /*
+    if (compare == 0) {
+        buffered = Buffer.from(m, 'binary');
+    } else {
+        buffered = Buffer.from(m);
+    }
+    */
     let result = await window.crypto.subtle.encrypt({"name": "AES-CBC", "iv":iv}, importedKey, buffered);
-    return Buffer.from(result).toString('hex');
+    return Buffer.from(result).toString('binary');
 }
 
 export async function aes_decrypt2(c, k, output_buffer=false, is_legacy=false) {
@@ -84,7 +91,7 @@ export async function aes_decrypt2(c, k, output_buffer=false, is_legacy=false) {
         iv = key.slice(0, 16);
     }
     let importedKey = await window.crypto.subtle.importKey("raw", key, {name: "AES-CBC"}, false, ["decrypt"]);
-    let buffered = Buffer.from(c, "hex");
+    let buffered = Buffer.from(c, "binary");
     let result = await window.crypto.subtle.decrypt({"name": "AES-CBC", "iv":iv}, importedKey, buffered);
     if (output_buffer) {
         return Buffer.from(result);
