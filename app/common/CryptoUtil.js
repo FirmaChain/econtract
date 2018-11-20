@@ -56,6 +56,24 @@ export function ecaes_decrypt(c, keyPair, output_buffer=false) {
 	return plainText;
 }
 
+export async function aes_encrypt2(m, k) {
+    let importedKey = await window.crypto.subtle.importKey("raw", k, {name: "AES-CBC"}, false, ["encrypt"]);
+    let buffered = Buffer.from(m);
+    let result = await window.crypto.subtle.encrypt({"name": "AES-CBC", "iv":k.slice(0, 16)}, importedKey, buffered);
+    return Buffer.from(result).toString('hex');
+}
+
+export async function aes_decrypt2(c, k, output_buffer=false) {
+    let importedKey = await window.crypto.subtle.importKey("raw", k, {name: "AES-CBC"}, false, ["decrypt"]);
+    let buffered = Buffer.from(c, "hex");
+    let result = await window.crypto.subtle.decrypt({"name": "AES-CBC", "iv":k.slice(0, 16)}, importedKey, buffered);
+    if (output_buffer) {
+        return Buffer.from(result);
+    } else {
+        return Buffer.from(result).toString();
+    }
+}
+
 export function aes_encrypt(m, k) {
 	const cipher = crypto.createCipher('aes-256-cbc', k);
 	let c = cipher.update(m, 'utf8', 'hex');

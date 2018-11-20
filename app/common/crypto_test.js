@@ -21,7 +21,9 @@ import {
 
 export { 
     aes_encrypt,
+    aes_encrypt2,
     aes_decrypt,
+    aes_decrypt2,
     ecdsa_verify,
     generate_random,
 } from "./CryptoUtil";
