@@ -108,7 +108,7 @@ async function fetch_img(name, the_key){
     let resp = await fetch(`${window.HOST}/${name}`,{encoding:null})
     let text = await resp.text();
     console.log(text.length, the_key)
-    return aes_decrypt2(text , the_key)
+    return aes_decrypt2(text , the_key, false, true)
 }
 
 export function new_contract( subject, imgs, counterparties, publickey_contract_list, set_pin){
@@ -122,10 +122,23 @@ export function new_contract( subject, imgs, counterparties, publickey_contract_
             counterparties_eckai.push(sealContractAuxKey(publickey_contract_list[i], shared_key));
         }
 
-        for(let k in imgs){
-            await new Promise(r=>setTimeout(r,100))
-            imgs[k] = await aes_encrypt2(imgs[k], the_key)
+        let a = new Date();
+        let c;
+        if (Math.random() < 0.5) {
+            for(let k in imgs){
+                await new Promise(r=>setTimeout(r,100))
+                imgs[k] = await aes_encrypt2(imgs[k], the_key, true)
+            }
+            c = 0;
+        } else {
+            for(let k in imgs){
+                await new Promise(r=>setTimeout(r,100))
+                imgs[k] = await aes_encrypt(imgs[k], the_key)
+            }
+            c = 1;
         }
+        console.log(new Date() - a);
+        console.log(c)
 
         let resp = (await api_new_contract( subject, imgs, counterparties, counterparties_eckai )).payload
         if(resp){

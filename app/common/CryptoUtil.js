@@ -5,6 +5,7 @@ let bip39 = require('bip39');
 let EC = require('elliptic').ec;
 let ec = new EC('curve25519');
 let ecdsa = new EC('secp256k1'); //ec for ecdsa or compatible with HD keys
+let ebtk = require('evp_bytestokey');
 
 export function ecdsa_sign(msgHash, privateKey) {
 	var key = ecdsa.keyFromPrivate(privateKey);
@@ -56,17 +57,35 @@ export function ecaes_decrypt(c, keyPair, output_buffer=false) {
 	return plainText;
 }
 
-export async function aes_encrypt2(m, k) {
-    let importedKey = await window.crypto.subtle.importKey("raw", k, {name: "AES-CBC"}, false, ["encrypt"]);
+export async function aes_encrypt2(m, k, is_legacy=false) {
+    let key, iv;
+    if (is_legacy) {
+        let keys = ebtk(k, false, 256, 16);
+        key = keys.key;
+        iv = keys.iv;
+    } else {
+        key = k;
+        iv = key.slice(0, 16);
+    }
+    let importedKey = await window.crypto.subtle.importKey("raw", key, {name: "AES-CBC"}, false, ["encrypt"]);
     let buffered = Buffer.from(m);
-    let result = await window.crypto.subtle.encrypt({"name": "AES-CBC", "iv":k.slice(0, 16)}, importedKey, buffered);
+    let result = await window.crypto.subtle.encrypt({"name": "AES-CBC", "iv":iv}, importedKey, buffered);
     return Buffer.from(result).toString('hex');
 }
 
-export async function aes_decrypt2(c, k, output_buffer=false) {
-    let importedKey = await window.crypto.subtle.importKey("raw", k, {name: "AES-CBC"}, false, ["decrypt"]);
+export async function aes_decrypt2(c, k, output_buffer=false, is_legacy=false) {
+    let key, iv;
+    if (is_legacy) {
+        let keys = ebtk(k, false, 256, 16);
+        key = keys.key;
+        iv = keys.iv;
+    } else {
+        key = k;
+        iv = key.slice(0, 16);
+    }
+    let importedKey = await window.crypto.subtle.importKey("raw", key, {name: "AES-CBC"}, false, ["decrypt"]);
     let buffered = Buffer.from(c, "hex");
-    let result = await window.crypto.subtle.decrypt({"name": "AES-CBC", "iv":k.slice(0, 16)}, importedKey, buffered);
+    let result = await window.crypto.subtle.decrypt({"name": "AES-CBC", "iv":iv}, importedKey, buffered);
     if (output_buffer) {
         return Buffer.from(result);
     } else {
