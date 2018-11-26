@@ -108,7 +108,10 @@ async function fetch_img(name, the_key){
     let resp = await fetch(`${window.HOST}/${name}`,{encoding:null})
     let text = await resp.text();
     console.log(text.length, the_key)
-    return await aes_decrypt_async(text , the_key)
+    let buffered = await aes_decrypt_async(text, the_key, true);
+    var blob = new Blob([buffered], {type: 'image/png'});
+    var url = URL.createObjectURL(blob);
+    return url;
 }
 
 export function new_contract( subject, imgs, counterparties, publickey_contract_list, set_pin){
@@ -124,7 +127,8 @@ export function new_contract( subject, imgs, counterparties, publickey_contract_
 
         for(let k in imgs){
             await new Promise(r=>setTimeout(r,100))
-            imgs[k] = await aes_encrypt_async(imgs[k], the_key)
+            let buffered = Buffer.from(imgs[k].slice(22), 'base64')
+            imgs[k] = await aes_encrypt_async(buffered, the_key)
         }
 
         let resp = (await api_new_contract( subject, imgs, counterparties, counterparties_eckai )).payload
