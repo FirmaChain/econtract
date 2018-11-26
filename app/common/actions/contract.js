@@ -109,9 +109,13 @@ async function fetch_img(name, the_key){
     let text = await resp.text();
     console.log(text.length, the_key)
     let buffered = await aes_decrypt_async(text, the_key, true);
-    var blob = new Blob([buffered], {type: 'image/png'});
-    var url = URL.createObjectURL(blob);
-    return url;
+    if (buffered.slice(0, 4) == "data") {
+        return buffered;
+    } else {
+        var blob = new Blob([buffered], {type: 'image/png'});
+        var url = URL.createObjectURL(blob);
+        return url;
+    }
 }
 
 export function new_contract( subject, imgs, counterparties, publickey_contract_list, set_pin){
