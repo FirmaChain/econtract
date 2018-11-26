@@ -9,6 +9,8 @@ import {
     ecaes_decrypt,
     aes_encrypt,
     aes_decrypt,
+    aes_encrypt_async,
+    aes_decrypt_async,
     bip32_from_512bit,
     hmac_sha512,
     hmac_sha256,
@@ -20,6 +22,8 @@ import {
 } from "./CryptoUtil"
 
 export { 
+    aes_encrypt_async,
+    aes_decrypt_async,
     aes_encrypt,
     aes_decrypt,
     ecdsa_verify,

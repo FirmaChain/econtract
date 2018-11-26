@@ -5,6 +5,7 @@ let bip39 = require('bip39');
 let EC = require('elliptic').ec;
 let ec = new EC('curve25519');
 let ecdsa = new EC('secp256k1'); //ec for ecdsa or compatible with HD keys
+let ebtk = require('evp_bytestokey');
 
 export function ecdsa_sign(msgHash, privateKey) {
 	var key = ecdsa.keyFromPrivate(privateKey);
@@ -54,6 +55,42 @@ export function ecaes_decrypt(c, keyPair, output_buffer=false) {
 	var thisTime = keyPair.derive(tempKeyPublic).toArrayLike(Buffer, 'be', 32);
 	var plainText = aes_decrypt(encryptedMessage, thisTime, output_buffer);
 	return plainText;
+}
+
+export async function aes_encrypt_async(m, k, is_legacy=true) {
+    let key, iv;
+    if (is_legacy) {
+        let keys = ebtk(k, false, 256, 16);
+        key = keys.key;
+        iv = keys.iv;
+    } else {
+        key = k;
+        iv = key.slice(0, 16);
+    }
+    let importedKey = await window.crypto.subtle.importKey("raw", key, {name: "AES-CBC"}, false, ["encrypt"]);
+    let buffered = Buffer.from(m, 'binary');
+    let result = await window.crypto.subtle.encrypt({"name": "AES-CBC", "iv":iv}, importedKey, buffered);
+    return Buffer.from(result).toString('binary');
+}
+
+export async function aes_decrypt_async(c, k, output_buffer=false, is_legacy=true) {
+    let key, iv;
+    if (is_legacy) {
+        let keys = ebtk(k, false, 256, 16);
+        key = keys.key;
+        iv = keys.iv;
+    } else {
+        key = k;
+        iv = key.slice(0, 16);
+    }
+    let importedKey = await window.crypto.subtle.importKey("raw", key, {name: "AES-CBC"}, false, ["decrypt"]);
+    let buffered = Buffer.from(c, "binary");
+    let result = await window.crypto.subtle.decrypt({"name": "AES-CBC", "iv":iv}, importedKey, buffered);
+    if (output_buffer) {
+        return Buffer.from(result);
+    } else {
+        return Buffer.from(result).toString();
+    }
 }
 
 export function aes_encrypt(m, k) {

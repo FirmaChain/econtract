@@ -31,6 +31,8 @@ import {
     decrypt_user_info,
     aes_decrypt,
     aes_encrypt,
+    aes_decrypt_async,
+    aes_encrypt_async,
     generate_random,
 } from "../../common/crypto_test"
 
@@ -106,7 +108,7 @@ async function fetch_img(name, the_key){
     let resp = await fetch(`${window.HOST}/${name}`,{encoding:null})
     let text = await resp.text();
     console.log(text.length, the_key)
-    return aes_decrypt(text , the_key)
+    return await aes_decrypt_async(text , the_key)
 }
 
 export function new_contract( subject, imgs, counterparties, publickey_contract_list, set_pin){
@@ -122,7 +124,7 @@ export function new_contract( subject, imgs, counterparties, publickey_contract_
 
         for(let k in imgs){
             await new Promise(r=>setTimeout(r,100))
-            imgs[k] = aes_encrypt(imgs[k], the_key)
+            imgs[k] = await aes_encrypt_async(imgs[k], the_key)
         }
 
         let resp = (await api_new_contract( subject, imgs, counterparties, counterparties_eckai )).payload
