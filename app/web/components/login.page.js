@@ -92,32 +92,34 @@ export default class extends React.Component {
    }
 
    render_new() {
-		return (<div className="default-page register-page">
-            <div className="logo">
+		return (<div className="login-common-page first-login-page">
+            <div className="left-logo">
                 <img src="/static/logo_blue.png" onClick={()=>history.push("/")}/>
             </div>
-            <div className="back-key">
-                <div className="round-btn" onClick={()=>history.goBack()}><i className="fas fa-arrow-left"></i></div>
-            </div>
             <div className="container">
-            <h1>시작하기</h1>
-                <div className="page">
-                    <div className="column-400">
-                    <div className="no-login-mid-desc">
-                        서비스를 처음 시작하거나, 접속한 기기가 인증되지 않은 상태일 경우<br/>
-                        아래의 방법으로 서비스를 시작할 수 있습니다.
-                    </div>
+                <div className="content1 font5 font-bold">E-Contract 시작하기</div>
+                <div className="content2 font2">접속하신 브라우저는 미인증 상태입니다.</div>
+                <div className="content3 font1"><u>브라우저 미인증이란?</u></div>
+                <div className="content4 font3">
+                    E-Contract를 처음 시작하거나, 접속된 브라우저가 인증되지 않은 상태일 경우<br/>
+                    아래의 방법으로 서비스를 시작할 수 있습니다.
+                </div>
+                <div className="buttons">
                     <button className="new-already-button new-img" onClick={()=>history.push("/register")}>
                         <div></div>
                         <br/>
-                        회원가입하기
+                        신규 일반 회원 가입
                     </button>
                     <button className="new-already-button already-img" onClick={()=>history.push("/recover")}>
                         <div></div>
                         <br/>
-                        기존 계정으로 로그인하기
+                        신규 기업 회원 가입
                     </button>
-                    </div>
+                    <button className="new-already-button already-img" onClick={()=>history.push("/recover")}>
+                        <div></div>
+                        <br/>
+                        기존 계정으로 로그인
+                    </button>
                 </div>
             </div>
 		</div>);

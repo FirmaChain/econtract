@@ -48,8 +48,10 @@ export default class extends React.Component {
 		this.state={
             step:0,
             step1:0,
-            sort_test:[]
+            sort_test:[],
+            email_verification: false
         };
+
         {
             this.info1 = `서비스 이용약관
 <제1장 총칙>
@@ -317,6 +319,10 @@ export default class extends React.Component {
     }
 
     onClickVerificateEmail = async()=>{
+        if(this.state.step1 != 1) {
+            return alert("먼저 이메일 발송을 진행해주세요.")
+        }
+
         if(this.state.verification_code == null || this.state.verification_code.length !=4){
             return alert('인증번호는 4자리입니다.')
         }
@@ -325,8 +331,9 @@ export default class extends React.Component {
         let resp = await this.props.check_email_verification_code(this.state.email, this.state.verification_code)
         if(resp == 1){
             this.setState({
-                step: this.state.step+1
+                email_verification:true
             })
+            alert("인증 완료되었습니다.")
         }else{
             alert("잘못된 인증번호입니다.")
         }
@@ -384,11 +391,11 @@ export default class extends React.Component {
     }
 
     onClickNextBtnAccountInfo = async()=>{
-        if(!this.state.user_id){
-            return alert("아이디를 입력해주세요!")
+        if(!this.state.email){
+            return alert("이메일을 입력해주세요!")
         }
-        if(this.state.password.length < 6){
-            return alert("비밀번호는 최소 6글자입니다.")
+        if(this.state.password.length < 8){
+            return alert("비밀번호는 최소 8글자입니다.")
         }
         if(this.state.password !== this.state.password2){
             return alert("비밀번호가 일치하지 않습니다.")
@@ -407,10 +414,11 @@ export default class extends React.Component {
                 onclose:r
             }).open();
         }));
-
-        this.setState({
-            useraddress: address.roadAddress+ " "
-        })
+        if(!!address) {
+            this.setState({
+                useraddress: address.roadAddress + " "
+            })
+        }
         await window.hideIndicator()
     }
 
@@ -422,7 +430,7 @@ export default class extends React.Component {
         if(!this.state.useraddress)
             return alert("주소를 입력해주세요.")
 
-        let account = new_account(this.state.user_id, this.state.password);
+        let account = new_account(this.state.email, this.state.password);
         this.setState({
             step:this.state.step + 1,
             account:account,
@@ -512,107 +520,143 @@ export default class extends React.Component {
             <button className="big-friendly-button top-no-border" onClick={this.next_term}> 동의 </button>
         </div>)
     }
-    
+
     render_email(){
         return (<div className="page">
-            <div className="column-300">
-                <div className="form-layout">
-                    <div className="form-label"> 이메일 인증 </div>
-                    <div className="form-input">
-                        <input placeholder="이메일을 입력해주세요." 
-                               value={this.state.email || ""} 
-                               onChange={e=>this.setState({email:e.target.value})}
-                               disabled={this.state.step1 == 1} />
-                    </div>
-
-                    {this.state.step1 == 1 ? [
-                        <div key={0} className="form-label"> 이메일 인증번호 </div>,
-                        <div className="form-input" key={1}>
-                            <input placeholder="이메일로 발송된 인증번호를 적어주세요." 
-                                   value={this.state.verification_code || ""}
-                                   onKeyDown={this.keyPress.bind(this, 0)}
-                                   onChange={e=>this.setState({verification_code:e.target.value})} />
-                        </div>
-                    ] : null }
-
-                    <div className="form-submit">
-                        { this.state.step1 == 1 ?
-                            <button className="border" onClick={this.onClickVerificateEmail}> 확인 </button> : 
-                            <button className="border" onClick={this.onClickRequestEmail}> 인증 메일 보내기 </button>
-                        }
-                    </div>
-                </div>
+            <div className="title-container">
+                <div className="title">계정정보 입력</div>
+                <div className="desc">기본정보를 정확히 입력해주시기 바랍니다.</div>
             </div>
-        </div>)
-    }
-
-    render_account(){
-        return (<div className="page">
-            <div className="column-300">
-                <div className="form-layout">
-                    <div className="form-label"> 아이디 </div>
-                    <div className="form-input">
-                        <input placeholder="아이디를 입력해주세요." value={this.state.user_id || ""} onChange={e=>this.setState({user_id:e.target.value})} />
+            <div className="content">
+                <div className="text-place">
+                    <div className="name">이메일</div>
+                    <div className="textbox">
+                        <input type="text" 
+                            value={this.state.email || ""} 
+                            onChange={e=>this.setState({email:e.target.value})}
+                            disabled={this.state.step1 == 1}
+                            placeholder="이메일을 정확하게 입력해주세요"/>
                     </div>
+                    { this.state.step1 == 1 ?
+                        <div className="gray-but">발송 완료</div> : 
+                        <div className="blue-but" onClick={this.onClickRequestEmail}>인증메일 발송</div>
+                    }
                     
-                    <div className="form-label"> 비밀번호 </div>
-                    <div className="form-input">
-                        <input type="password" placeholder="비밀번호를 최소 6자리 입력해주세요." value={this.state.password || ""} onChange={e=>this.setState({password:e.target.value})}  />
-                    </div>
+                </div>
 
-                    <div className="form-label"> 비밀번호 확인 </div>
-                    <div className="form-input">
-                        <input type="password" placeholder="입력하신 비밀번호를 다시 입력해주세요." value={this.state.password2 || ""} onChange={e=>this.setState({password2:e.target.value})} onKeyDown={this.keyPress.bind(this, 1)} />
+                <div className="text-place">
+                    <div className="name">이메일 인증</div>
+                    <div className="textbox">
+                        <input type="number"
+                            value={this.state.verification_code || ""}
+                            onKeyDown={this.keyPress.bind(this, 0)}
+                            onChange={e=>this.setState({verification_code:e.target.value})}
+                            disabled={this.state.email_verification}
+                            placeholder="인증번호를 정확하게 입력해주세요"/>
                     </div>
+                    {this.state.email_verification ? null : 
+                        <div className={this.state.step1 == 1 ? "blue-but" : "gray-but"} onClick={this.onClickVerificateEmail}>
+                            확인
+                        </div>
+                    }
+                </div>
 
-                    <div className="form-submit">
-                        <button className="border" onClick={this.onClickNextBtnAccountInfo}> 다음 </button>
+                <div className="text-place">
+                    <div className="name">비밀번호</div>
+                    <div className="textbox">
+                        <input type="password"
+                            value={this.state.password || ""}
+                            onChange={e=>this.setState({password:e.target.value})}  
+                            placeholder="최소 8자리(영어, 숫자, 특수문자 사용 가능)"/>
+                    </div>
+                </div>
+
+                <div className="text-place">
+                    <div className="name">비밀번호 확인</div>
+                    <div className="textbox">
+                        <input type="password"
+                            value={this.state.password2 || ""}
+                            onChange={e=>this.setState({password2:e.target.value})}
+                            onKeyDown={this.keyPress.bind(this, 1)}
+                            placeholder="입력하신 패스워드를 다시 입력해주세요"/>
+                    </div>
+                </div>
+
+                <div className="bottom-container">
+                    <div className="confirm-button" onClick={this.onClickNextBtnAccountInfo}>
+                        확인
                     </div>
                 </div>
             </div>
+            
         </div>)
     }
 
     render_personal(){
         return (<div className="page">
-            <div className="column-300">
-                <div className="form-layout">
-                    <div className="form-label"> 이메일 </div>
-                    <div className="form-input">
-                        {this.state.email}
+            <div className="title-container">
+                <div className="title">회원정보 입력</div>
+                <div className="desc">전자 서명에 사용될 회원님의 정보를 입력해주시기 바랍니다.</div>
+            </div>
+            <div className="content">
+                <div className="text-place">
+                    <div className="name">이름</div>
+                    <div className="textbox">
+                        <input type="text"
+                            value={this.state.username || ""}
+                            onChange={e=>this.setState({username:e.target.value})}
+                            placeholder="이름을 정확하게 입력해주세요"/>
                     </div>
-                    
-                    <div className="form-label"> 이름 </div>
-                    <div className="form-input">
-                        <input placeholder="이름을 입력해주세요." value={this.state.username || ""} onChange={e=>this.setState({username:e.target.value})} />
-                    </div>
+                </div>
 
-                    <div className="form-label"> 휴대폰 </div>
-                    <div className="form-input">
-                        <input placeholder="휴대폰" 
-                               value={this.state.userphone || ""} 
-                               onChange={this.onChangePhoneForm.bind(this,"userphone")}
-                               disabled={this.state.phone_verification_code_sent} />
-                        <button onClick={this.onClickRequestPhone} style={this.state.phone_verification_code_sent ? {"display":"none"}: null}>전송</button>
+                <div className="text-place">
+                    <div className="name">휴대폰 번호</div>
+                    <div className="textbox">
+                        <input type="text"
+                           value={this.state.userphone || ""} 
+                           onChange={this.onChangePhoneForm.bind(this,"userphone")}
+                           disabled={this.state.phone_verification_code_sent}
+                            placeholder="휴대폰 번호를 정확하게 입력해주세요"/>
                     </div>
+                    { this.state.phone_verification_code_sent ? null :
+                        <div className="blue-but" onClick={this.onClickRequestPhone}>
+                            발송
+                        </div>
+                    }
+                </div>
 
-                    <div className="form-label"> 인증번호 </div>
-                    <div className="form-input">
-                        <input placeholder="인증번호를 입력해주세요." 
-                               value={this.state.phone_verification_code || ""} 
-                               onChange={e=>this.setState({phone_verification_code:e.target.value})} 
-                               disabled={this.state.verificated_phone} />
-                        <button onClick={this.onClickVerificatePhone} style={this.state.verificated_phone ? {"display":"none"}: null}>확인</button>
+                <div className="text-place">
+                    <div className="name">인증번호</div>
+                    <div className="textbox">
+                        <input type="number"
+                            value={this.state.phone_verification_code || ""} 
+                            onChange={e=>this.setState({phone_verification_code:e.target.value})} 
+                            disabled={this.state.verificated_phone}
+                            placeholder="인증번호를 정확하게 입력해주세요"/>
                     </div>
+                    { this.state.verificated_phone ? null : 
+                        <div className={ this.state.phone_verification_code_sent ? "blue-but":"gray-but"} onClick={this.onClickVerificatePhone}>
+                            확인
+                        </div>
+                    }
+                </div>
 
-                    <div className="form-label"> 주소 </div>
-                    <div className="form-input">
-                        <input placeholder="주소를 입력해주세요." value={this.state.useraddress || ""} onChange={e=>this.setState({useraddress:e.target.value})} />
-                        <button onClick={this.onClickFindAddress}>검색</button>
+                <div className="text-place">
+                    <div className="name">주소</div>
+                    <div className="textbox">
+                        <input type="text"
+                            value={this.state.useraddress || ""} 
+                            onChange={e=>this.setState({useraddress:e.target.value})}
+                            placeholder="주소를 정확하게 입력해주세요"/>
                     </div>
+                    <div className="gray-but" onClick={this.onClickFindAddress}>
+                        검색
+                    </div>
+                </div>
 
-                    <div className="form-submit">
-                        <button className="border" onClick={this.onClickNextBtnUserInfo}> 다음 </button>
+                <div className="bottom-container">
+                    <div className="confirm-button" onClick={this.onClickNextBtnUserInfo}>
+                        확인
                     </div>
                 </div>
             </div>
@@ -621,27 +665,35 @@ export default class extends React.Component {
 
     render_masterkey(){
         return (<div className="page">
-            <div className="column-300">
-                <div className="form-layout">
-                    <div className="form-label"> 마스터 키워드 </div>
-                    <div className="form-textarea masterkey-list">
-                        {this.state.mnemonic.split(" ").map((e,k)=>{
-                            return <div key={k} className="masterkey-item">{e}</div>
-                        })}
-                        <div className="copy" onClick={this.onClickSaveMnemonic}>저장 양식 다운로드</div>
-                    </div>
-                    
-                    <div className="form-submit">
-                        <button className="border" onClick={this.next_term}> 다음 </button>
-                    </div>
-                </div>
+            <div className="title-container">
+                <div className="title">마스터키워드 저장하기</div>
+                <div className="desc">마스터키워드를 저장해주세요.</div>
             </div>
-            <div className="column-300">
-                <div className="right-desc">
-                    * 전체 계약 잠금 해제시에 필요한 마스터 키워드입니다. 브라우저 및 기기 변경시 보안을 위해 접속하신 기기에서는 잠금 상태로 계약이 로드됩니다. 이전 해제 기록이 있는 계약이라면 해당 키워드를 사용해 일괄 해제 가능합니다.
+            <div className="content">
+                <div className="master-keyword-container">
+                    <div className="sub-title-container">
+                        <div className="title">마스터키워드</div>
+                        <div className="what-is-masterkeyword">마스터키워드란?</div>
+                    </div>
+                    <div className="list">
+                        {this.state.mnemonic.split(" ").map((e,k)=>{
+                            return <div key={e+k} className="item">{e}</div>
+                        })}
+                    </div>
+
+                    <div className="reference">
+                        필요할 때 사용할 수 있도록 상단의 12개의 키워드들을 순서대로 종이에 옮겨 적어 안전하게 보관하십시오.<br/>
+                        안전하게 계정을 보호하기 위해서는 전자매체에 저장하거나 타인에게 양도하는 등의 행동을 하지 않는 것을 권장합니다.
+                    </div>
                 </div>
-                <div className="right-desc">
-                    필요할 때 사용할 수 있도록 상단의 12개의 키워드들을 <u><strong>순서대로</strong></u> 종이에 옮겨 적어 안전하게 보관하십시오. 안전하게 계정을 보호하기 위해서는 전자매체에 저장하거나 타인에게 양도하는 등의 행동을 하지 않는 것을 권장합니다.
+
+                <div className="bottom-container">
+                    <div className="transparent-button" onClick={this.onClickSaveMnemonic}>
+                        저장양식 다운로드
+                    </div>
+                    <div className="confirm-button" onClick={this.next_term}>
+                        확인
+                    </div>
                 </div>
             </div>
         </div>)
@@ -688,39 +740,33 @@ export default class extends React.Component {
         }else if(this.state.step == 1){
             return this.render_email();
         }else if(this.state.step == 2){
-            return this.render_account();
-        }else if(this.state.step == 3){
             return this.render_personal();
-        }else if(this.state.step == 4){
+        }else if(this.state.step == 3){
             return this.render_masterkey();
-        }else if(this.state.step == 5){
+        }else if(this.state.step == 4){
             return this.render_confirm_masterkey();
         }
         
     }
 
 	render() {
-		return (<div className="default-page register-page">
-            <div className="logo">
+		return (<div className="register-common-page register-page">
+            <div className="left-logo">
                 <img src="/static/logo_blue.png" onClick={()=>history.push("/")}/>
             </div>
-            <div className="back-key">
-                <div className="round-btn" onClick={this.goBack}><i className="fas fa-arrow-left"></i></div>
-                <div className="step-indicator">
-                    <div className={`item ${this.state.step == 0 ? "enable": ""}`}>약관동의</div>
-                    <i className="fas fa-ellipsis-h"></i>
-                    <div className={`item ${this.state.step == 1 ? "enable": ""}`}>이메일 인증</div>
-                    <i className="fas fa-ellipsis-h"></i>
-                    <div className={`item ${this.state.step == 2 ? "enable": ""}`}>개인정보 입력</div>
-                    <i className="fas fa-ellipsis-h"></i>
-                    <div className={`item ${this.state.step == 3 ? "enable": ""}`}>회원정보 입력</div>
-                    <i className="fas fa-ellipsis-h"></i>
-                    <div className={`item ${this.state.step == 4 || this.state.step == 5 ? "enable": ""}`}>마스터 키워드 발급</div>
+            <div className="desc-container">
+                <div className="info">
+                    <div className="step-indicator">
+                        <div className={`item ${this.state.step == 0 ? "enable": ""}`}>약관동의</div>
+                        <div className={`item ${this.state.step == 1 ? "enable": ""}`}>계정정보 입력</div>
+                        <div className={`item ${this.state.step == 2 ? "enable": ""}`}>회원정보 입력</div>
+                        <div className={`item ${this.state.step == 3 || this.state.step == 4 ? "enable": ""}`}>마스터 키워드 발급</div>
+                    </div>
                 </div>
-            </div>
-            <div className="container">
-                <h1>개인 회원가입</h1>
-                {this.render_content()}
+                <div className="desc">
+                    {/*this.render_content()*/}
+
+                </div>
             </div>
 		</div>);
 	}
