@@ -764,7 +764,7 @@ export default class extends React.Component {
                     </div>
                 </div>
                 <div className="desc">
-                    {/*this.render_content()*/}
+                    {this.render_content()}
 
                 </div>
             </div>
