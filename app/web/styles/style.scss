@@ -824,7 +824,8 @@ select:focus { outline:none; }
         >.info {
             width:300px;
             min-width:200px;
-            height: calc(100% - 71px);
+            min-height: calc(100% - 71px);
+            height:100%;
             border-right:1px solid #a7a4a5;
 
             .step-indicator{
@@ -853,7 +854,8 @@ select:focus { outline:none; }
 
         >.desc {
             flex:1;
-            height: calc(100% - 71px);
+            min-height: calc(100% - 71px);
+            height:100%;
             border-left:1px solid #a7a4a5;
             >.page {
 
@@ -935,6 +937,22 @@ select:focus { outline:none; }
 
 .register-page {
 
+    .service-title {
+        font-size: $font2;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .terms-condition {
+        width:90%;
+        height: 200px;
+        border: 1px solid #E0E0E0;
+        margin: 10px 0 20px 0;
+        font-size: $font0;
+        outline:none;
+        resize:none;
+    }
+
     .text-place {
         display: flex;
         flex-direction: row; 
@@ -958,6 +976,7 @@ select:focus { outline:none; }
                 width:100%;
             }
         }
+
         >.blue-but {
             display: inline-block;
             font-size: $font2;

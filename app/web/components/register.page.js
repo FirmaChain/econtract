@@ -505,21 +505,27 @@ export default class extends React.Component {
    }
     
     render_term(){
-        return (<div>
-            <div className="page bottom-no-border">
-                <div className="column-800">
-                    <div className="form-layout">
-                        <div className="form-label"> 서비스 이용약관 </div>
-                        <textarea className="form-textarea-info" defaultValue={this.info1} disabled />
-                        
-                        <div className="form-label"> 개인정보취급방침 </div>
-                        <textarea className="form-textarea-info" defaultValue={this.info2} disabled />
+        return (<div className="page">
+            <div className="title-container">
+                <div className="title">약관 동의</div>
+                <div className="desc">서비스 이용에 필요한 약관에 동의합니다.</div>
+            </div>
+            <div className="content">
+                <div className="service-title"> 서비스 이용약관 </div>
+                <textarea className="terms-condition" defaultValue={this.info1} disabled />
+                
+                <div className="service-title"> 개인정보취급방침 </div>
+                <textarea className="terms-condition" defaultValue={this.info2} disabled />
+
+                <div className="bottom-container">
+                    <div className="confirm-button" onClick={this.next_term}>
+                        모두 동의
                     </div>
                 </div>
             </div>
-            <button className="big-friendly-button top-no-border" onClick={this.next_term}> 동의 </button>
         </div>)
     }
+
 
     render_email(){
         return (<div className="page">
