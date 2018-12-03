@@ -450,7 +450,7 @@ export default class extends React.Component {
         let idx = sort_test.indexOf(e)
         if( idx >= 0 ){
             sort_test.splice(idx,1)
-        }else{
+        } else {
             sort_test.push(e)
         }
 
@@ -705,36 +705,48 @@ export default class extends React.Component {
         </div>)
     }
 
+    render_empty_slot() {
+        let count = 12 - this.state.sort_test.length
+        let div = []
+        for(let i = 0 ; i < count ; i++) {
+            div.push(<div className="empty-item">&nbsp;</div>)
+        }
+        return div
+    }
+
     render_confirm_masterkey(){
         return (<div className="page">
-            <div className="column-300">
-                <div className="form-layout">
-                    <div className="form-label"> 마스터 키워드 확인 </div>
-                    <div className="form-textarea masterkey-selection-list">
-                        {this.state.sort_test.map((e,k)=>{
-                            return <div className="item selected" key={k}>{this.state.mnemonic.split(" ")[e]}</div>
-                        })}
+            <div className="title-container">
+                <div className="title">마스터키워드 저장하기</div>
+                <div className="desc">앞서 저장해둔 마스터 키워드를 차례대로 배치해 주세요</div>
+            </div>
+            <div className="content">
+                <div className="master-keyword-container">
+                    <div className="sub-title-container">
+                        <div className="title">마스터키워드 확인</div>
                     </div>
-
-                    <div className="masterkey-selection-list">
+                    <div className="selection-list">
+                        {this.state.sort_test.map((e,k)=>{
+                            return <div className="item" key={k}>{this.state.mnemonic.split(" ")[e]}</div>
+                        })}
+                        {this.render_empty_slot()}
+                    </div>
+                    <div className="split-line"></div>
+                    <div className="list">
                         {this.state.mnemonic.split(" ").map((e,k)=>[e,k]).sort(e=>e[0]).map((e,k)=>{
                             return <div key={k} 
-                                        className={`item ${this.state.sort_test.indexOf(e[1]) >= 0 ? "selected" : ""}`}
+                                        className={`item cursored ${this.state.sort_test.indexOf(e[1]) >= 0 ? "selected" : ""}`}
                                         onClick={this.onClickSortTest.bind(this,e[1])}
                                     >
                                 {e[0]}
                             </div>
                         })}
                     </div>
-                    
-                    <div className="form-submit">
-                        <button className="border" onClick={this.onClickFinishSortTest}> 가입 완료 </button>
-                    </div>
                 </div>
-            </div>
-            <div className="column-300">
-                <div className="right-desc">
-                    * 앞서 저장해둔 마스터 키워드를 차례대로 배치해 주세요
+                <div className="bottom-container">
+                    <div className="confirm-button" onClick={this.onClickFinishSortTest}>
+                        가입완료
+                    </div>
                 </div>
             </div>
         </div>)
@@ -771,7 +783,6 @@ export default class extends React.Component {
                 </div>
                 <div className="desc">
                     {this.render_content()}
-
                 </div>
             </div>
 		</div>);
