@@ -506,6 +506,7 @@ export default class extends React.Component {
             }
         } else if(type == 2) {
             info = {
+                email: this.state.email,
                 username: this.state.username,
                 job: this.state.job,
                 userphone: this.state.userphone,
