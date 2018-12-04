@@ -106,19 +106,22 @@ export default class extends React.Component {
                 </div>
                 <div className="buttons">
                     <button className="new-already-button new-img" onClick={()=>history.push("/register")}>
-                        <div></div>
+                        <div className="icon"></div>
                         <br/>
                         신규 일반 회원 가입
+                        <div className="small">개인 사용</div>
                     </button>
                     <button className="new-already-button already-img" onClick={()=>history.push("/recover")}>
-                        <div></div>
+                        <div className="icon"></div>
                         <br/>
                         신규 기업 회원 가입
+                        <div className="small">팀 관리용</div>
                     </button>
                     <button className="new-already-button already-img" onClick={()=>history.push("/recover")}>
-                        <div></div>
+                        <div className="icon"></div>
                         <br/>
                         기존 계정으로 로그인
+                        <div className="small">&nbsp;</div>
                     </button>
                 </div>
             </div>
@@ -127,14 +130,11 @@ export default class extends React.Component {
 
    render_login() {
 		return (<div className="default-page login-page">
-            <div className="logo">
+            <div className="left-logo">
                 <img src="/static/logo_blue.png" onClick={()=>history.push("/")}/>
             </div>
-            <div className="back-key">
-                <div className="round-btn" onClick={()=>history.goBack()}><i className="fas fa-arrow-left"></i></div>
-            </div>
             <div className="container">
-            <h1>로그인</h1>
+                <h1>로그인</h1>
                 <div className="page">
                     <div className="column-400">
                         <div className="form-layout">
@@ -165,10 +165,20 @@ export default class extends React.Component {
             return <div />
         }
 
-        if (!localStorage.getItem("browser_key") || localStorage.getItem("browser_key_virgin") == 1) {
-            return this.render_new();
-        } else {
-            return this.render_login();
-        }
+        return (<div>
+            {
+                (!localStorage.getItem("browser_key") || localStorage.getItem("browser_key_virgin") == true) ? 
+                    this.render_new() : this.render_login()  
+            }
+            <div className="footer">
+                <div className="left">Copyright 2018 Firma Solutions, Inc, All right reserved</div>
+                <div className="middle">
+                    이용약관 | 개인정보처리방침
+                </div>
+                <div className="right">
+                    developer@firma-solutions.com
+                </div>
+            </div>
+        </div>)
 	}
 }

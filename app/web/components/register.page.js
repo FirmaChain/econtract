@@ -286,14 +286,14 @@ export default class extends React.Component {
             history.goBack()
         }else{
             this.setState({
-                step: this.state.step -1
+                step: this.state.step - 1
             })
         }
     }
 
     next_term = ()=>{
         this.setState({
-            step: this.state.step+1
+            step: this.state.step + 1
         })
     }
 
@@ -768,23 +768,26 @@ export default class extends React.Component {
     }
 
 	render() {
-		return (<div className="register-common-page register-page">
-            <div className="left-logo">
-                <img src="/static/logo_blue.png" onClick={()=>history.push("/")}/>
-            </div>
-            <div className="desc-container">
-                <div className="info">
-                    <div className="step-indicator">
-                        <div className={`item ${this.state.step == 0 ? "enable": ""}`}>약관동의</div>
-                        <div className={`item ${this.state.step == 1 ? "enable": ""}`}>계정정보 입력</div>
-                        <div className={`item ${this.state.step == 2 ? "enable": ""}`}>회원정보 입력</div>
-                        <div className={`item ${this.state.step == 3 || this.state.step == 4 ? "enable": ""}`}>마스터 키워드 발급</div>
+		return (<div>
+            <div className="register-common-page register-page">
+                <div className="left-logo">
+                    <img src="/static/logo_blue.png" onClick={()=>history.push("/login")}/>
+                </div>
+                <div className="desc-container">
+                    <div className="info">
+                        <div className="step-indicator">
+                            <div className={`item ${this.state.step == 0 ? "enable": ""}`}>약관동의</div>
+                            <div className={`item ${this.state.step == 1 ? "enable": ""}`}>계정정보 입력</div>
+                            <div className={`item ${this.state.step == 2 ? "enable": ""}`}>회원정보 입력</div>
+                            <div className={`item ${this.state.step == 3 || this.state.step == 4 ? "enable": ""}`}>마스터 키워드 발급</div>
+                        </div>
+                    </div>
+                    <div className="desc">
+                        {this.render_content()}
                     </div>
                 </div>
-                <div className="desc">
-                    {this.render_content()}
-                </div>
-            </div>
+    		</div>
+
             <div className="footer">
                 <div className="left">Copyright 2018 Firma Solutions, Inc, All right reserved</div>
                 <div className="middle">
@@ -794,6 +797,6 @@ export default class extends React.Component {
                     developer@firma-solutions.com
                 </div>
             </div>
-		</div>);
+        </div>);
 	}
 }

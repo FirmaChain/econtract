@@ -2,8 +2,8 @@
 
 $screen-width: 1200px;
 $font5: 22px;
-$font4: 20px;
-$font3: 18px;
+$font4: 19px;
+$font3: 16px;
 $font2: 15px;
 $font1: 14px;
 $font0: 12px;
@@ -353,14 +353,14 @@ select:focus { outline:none; }
     align-items: center;
     height:60px;
     background-color:#f4f4f4;
-
-    padding-right: 20px;
-    padding-left: 20px;
+    width:100%;
+    margin-top:20px;
 
     .left {
         flex:1;
         font-size: $font1;
         color:#a7a4a5;
+        margin-left:20px;
     }
 
     .middle {
@@ -375,15 +375,15 @@ select:focus { outline:none; }
         font-size: $font1;
         color:#a7a4a5;
         text-align:right;
+        margin-right:20px;
     }
 }
 
 .register-common-page {
     background-color: white;
-    min-height: 100%;
+    max-height: calc(100% - 80px);
 
     >.left-logo {
-        cursor: pointer;
         padding-left:10px;
         padding-top:10px;
         padding-bottom:10px;
@@ -391,6 +391,7 @@ select:focus { outline:none; }
         border-bottom:1px solid #a7a4a5;
 
         >img {
+            cursor: pointer;
             height:50px;
         }
     }
@@ -402,7 +403,7 @@ select:focus { outline:none; }
         >.info {
             width:300px;
             min-width:200px;
-            min-height: calc(100% - 131px);
+            max-height: calc(100% - 131px);
             border-right:1px solid #a7a4a5;
 
             .step-indicator{
@@ -431,8 +432,10 @@ select:focus { outline:none; }
 
         >.desc {
             flex:1;
-            min-height: calc(100% - 131px);
+            max-height: calc(100% - 131px);
             border-left:1px solid #a7a4a5;
+            overflow-y: auto;
+
             >.page {
 
                 >.title-container {
@@ -948,46 +951,46 @@ select:focus { outline:none; }
 
 .login-common-page {
     position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    max-height: calc(100% - 80px);
+    background-color: white;
 
     >.container {
         max-width:800px;
+        height: calc(100% - 131px);
         margin: auto;
         text-align: center;
+        overflow-y: auto;
 
         width:100%;
-        padding:0 5px;
-        // padding-top: 50px;
     }
 }
 
 .first-login-page {
-    background-color: white;
-    min-height: 100%;
 
     >.left-logo {
-        cursor: pointer;
-        position: absolute;
-        left:10px;
-        top:10px;
+        padding-left:10px;
+        padding-top:10px;
+        padding-bottom:10px;
+
+        border-bottom:1px solid #a7a4a5;
 
         >img {
+            cursor: pointer;
             height:50px;
         }
     }
 
     .content1 {
+        margin-top: 60px;
         margin-bottom:25px;
     }
     .content2 {
         margin-bottom:15px;
-        color:gray;
+        color: #a7a4a5;
     }
     .content3 {
         margin-bottom:25px;
-        color:gray;
+        color: #a7a4a5;
     }
     .content4 {
         margin-bottom:25px;
@@ -1003,50 +1006,60 @@ select:focus { outline:none; }
             margin-right: 10px;
 
             background-color: #fff;
-            color:#444;
-            font-size: $font4;
+            color:#181818;
+            font-size: $font3;
+            font-weight: bold;
             cursor: pointer;
 
             &:hover{
                 border:2px solid #324b5f;
                 background-color: #324b5f;
                 color: white;
+
+                >.small {
+                    color:white;
+                }
             }
 
             &:last-child{
                 margin-right: 0;
             }
+
+            >.small {
+                font-size: $font0;
+                color: #181818;
+            }
         }
 
         button.new-img {
-            >div{
+            >.icon{
                 display: inline-block;
                 width:30px;
                 height:30px;
                 background-size: 100%;
                 background-image: url("/static/new_on.png");
 
-                margin-bottom:20px;
+                margin-bottom:30px;
             }
             &:hover {
-                >div {
+                >.icon {
                     background-image: url("/static/new_off.png") !important;
                 }
             }
         }
 
         button.already-img {
-            >div{
+            >.icon{
                 display: inline-block;
                 width:30px;
                 height:30px;
                 background-size: 100%;
                 background-image: url("/static/already_on.png");
 
-                margin-bottom:20px;
+                margin-bottom:30px;
             }
             &:hover {
-                >div {
+                >.icon {
                     background-image: url("/static/already_off.png") !important;
                 }
             }
