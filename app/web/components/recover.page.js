@@ -96,7 +96,7 @@ export default class extends React.Component {
 
         let mnemonic = this.state.mnemonic;
         getBrowserKey(true); // Reset browserkey
-        let auth = makeAuth(this.state.user_id, this.state.password);
+        let auth = makeAuth(this.state.email, this.state.password);
         let encryptedMasterSeed = makeMnemonic(auth, mnemonic);
 
         let seed = mnemonicToSeed(mnemonic);
