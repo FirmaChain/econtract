@@ -354,7 +354,6 @@ select:focus { outline:none; }
     height:60px;
     background-color:#f4f4f4;
     width:100%;
-    margin-top:20px;
 
     .left {
         flex:1;
@@ -379,9 +378,15 @@ select:focus { outline:none; }
     }
 }
 
+.maintain {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+}
+
 .register-common-page {
     background-color: white;
-    max-height: calc(100% - 80px);
+    flex:1;
 
     >.left-logo {
         padding-left:10px;
@@ -403,7 +408,9 @@ select:focus { outline:none; }
         >.info {
             width:300px;
             min-width:200px;
-            max-height: calc(100% - 131px);
+            min-height: calc(100% - 131px);
+            overflow-y: auto;
+            
             border-right:1px solid #a7a4a5;
 
             .step-indicator{
@@ -432,8 +439,8 @@ select:focus { outline:none; }
 
         >.desc {
             flex:1;
-            max-height: calc(100% - 131px);
             border-left:1px solid #a7a4a5;
+            min-height: calc(100% - 131px);
             overflow-y: auto;
 
             >.page {
@@ -951,7 +958,7 @@ select:focus { outline:none; }
 
 .login-common-page {
     position: relative;
-    max-height: calc(100% - 80px);
+    max-height: calc(100% - 60px);
     background-color: white;
 
     >.container {

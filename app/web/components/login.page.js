@@ -165,7 +165,7 @@ export default class extends React.Component {
             return <div />
         }
 
-        return (<div>
+        return (<div className="maintain">
             {
                 (!localStorage.getItem("browser_key") || localStorage.getItem("browser_key_virgin") == true) ? 
                     this.render_new() : this.render_login()  
