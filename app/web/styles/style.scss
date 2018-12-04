@@ -410,7 +410,7 @@ select:focus { outline:none; }
             min-width:200px;
             min-height: calc(100% - 131px);
             overflow-y: auto;
-            
+
             border-right:1px solid #a7a4a5;
 
             .step-indicator{
@@ -553,14 +553,14 @@ select:focus { outline:none; }
         }
 
         >.textbox {
-            width:300px;
+            width:350px;
             margin-left: 10px;
 
             >input {
                 border:1px solid #324b5f;
                 padding:10px 15px;
                 font-size: $font1;
-                width:100%;
+                width: 100%;
             }
         }
 
@@ -589,6 +589,16 @@ select:focus { outline:none; }
             width:100px;
             text-align: center;
         }
+    }
+
+
+    .split-line {
+        max-width: 720px;
+        border-top:1px solid #a7a4a5;
+        margin-top:50px;
+        margin-bottom:50px;
+        margin-left:5px;
+        margin-right:5px;
     }
 
     .master-keyword-container {
@@ -633,15 +643,6 @@ select:focus { outline:none; }
                 border:2px solid #324b5f;
                 color: white;
             }
-        }
-
-        >.split-line {
-            max-width: 720px;
-            border-top:2px solid #a7a4a5;
-            margin-top:30px;
-            margin-bottom:30px;
-            margin-left:5px;
-            margin-right:5px;
         }
 
         >.selection-list {

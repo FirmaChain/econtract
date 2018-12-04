@@ -297,7 +297,7 @@ export default class extends React.Component {
         })
     }
 
-    onClickRequestEmail =  async()=>{
+    onClickRequestEmail =  async ()=>{
         if(!this.state.email)
             return alert("이메일을 입력해주세요!")
 
@@ -318,7 +318,7 @@ export default class extends React.Component {
         await window.hideIndicator();
     }
 
-    onClickVerificateEmail = async()=>{
+    onClickVerificateEmail = async ()=>{
         if(this.state.step1 != 1) {
             return alert("먼저 이메일 발송을 진행해주세요.")
         }
@@ -340,7 +340,7 @@ export default class extends React.Component {
         await window.hideIndicator();
     }
 
-    onClickRequestPhone = async()=>{
+    onClickRequestPhone = async ()=>{
         if(this.state.userphone == null || this.state.userphone.length != 13 || !/^0\d{2}-\d{4}-\d{4}$/.test(this.state.userphone))
             return alert("전화번호를 정확히 입력해주세요!")
             
@@ -357,7 +357,7 @@ export default class extends React.Component {
         await window.hideIndicator();
     }
 
-    onClickVerificatePhone = async()=>{
+    onClickVerificatePhone = async ()=>{
         if(this.state.phone_verification_code == null || this.state.phone_verification_code.length !=4){
             return alert('인증번호는 4자리입니다.')
         }
@@ -374,7 +374,7 @@ export default class extends React.Component {
         await window.hideIndicator();
     }
 
-    onChangePhoneForm = async(name, e)=>{
+    onChangePhoneForm = async (name, e)=>{
         let text = e.target.value;
         text = text.replace(/[^0-9]/g,"")
         if(text.length >= 8){
@@ -390,11 +390,11 @@ export default class extends React.Component {
         })
     }
 
-    onClickNextBtnAccountInfo = async()=>{
+    onClickNextBtnAccountInfo = async ()=>{
         if(!this.state.email){
             return alert("이메일을 입력해주세요!")
         }
-        if(this.state.password.length < 8){
+        if(!this.state.password || this.state.password.length < 8){
             return alert("비밀번호는 최소 8글자입니다.")
         }
         if(this.state.password !== this.state.password2){
@@ -406,7 +406,7 @@ export default class extends React.Component {
         })
     }
 
-    onClickFindAddress = async()=>{
+    onClickFindAddress = async (type)=>{
         await window.showIndicator()
         let address = await new Promise(r=>daum.postcode.load(function(){
             new daum.Postcode({
@@ -415,20 +415,51 @@ export default class extends React.Component {
             }).open();
         }));
         if(!!address) {
-            this.setState({
-                useraddress: address.roadAddress + " "
-            })
+            if(type == 1) {
+                this.setState({
+                    useraddress: address.roadAddress + " "
+                })
+            } else if(type == 2) {
+                this.setState({
+                    company_address: address.roadAddress + " "
+                })
+            }
         }
         await window.hideIndicator()
     }
 
-    onClickNextBtnUserInfo = async()=>{
+    onClickNextBtnUserInfo = async ()=>{
         if(!this.state.username)
             return alert("이름을 작성해주세요.")
         if(!this.state.verificated_phone)
             return alert("휴대폰 인증을 해주세요.")
         if(!this.state.useraddress)
             return alert("주소를 입력해주세요.")
+
+        let account = new_account(this.state.email, this.state.password);
+        this.setState({
+            step:this.state.step + 1,
+            account:account,
+            mnemonic:account.rawMnemonic,
+        })
+    }
+
+    onClickNextBtnCompanyInfo = async ()=>{
+        if(!this.state.company_name)
+            return alert("기업명을 입력해주세요.")
+        if(!this.state.duns_number)
+            return alert("사업자등록번호를 입력해주세요.")
+        if(!this.state.company_ceo)
+            return alert("대표자 성함을 입력해주세요.")
+        if(!this.state.company_address)
+            return alert("기업 주소를 입력해주세요.")
+
+        if(!this.state.username)
+            return alert("이름을 작성해주세요.")
+        if(!this.state.job)
+            return alert("직책을 작성해주세요.")
+        if(!this.state.verificated_phone)
+            return alert("휴대폰 인증을 해주세요.")
 
         let account = new_account(this.state.email, this.state.password);
         this.setState({
@@ -459,16 +490,30 @@ export default class extends React.Component {
         })
     }
 
-    onClickFinishSortTest = async()=>{
+    onClickFinishSortTest = async ()=>{
         if(this.state.sort_test.map(e=>this.state.mnemonic.split(" ")[e]).join(" ") !== this.state.mnemonic){
             return alert("순서가 맞지 않습니다. 다시 한번 확인해주세요!")
         }
-        
-        let info = {
-            email: this.state.email,
-            username: this.state.username,
-            userphone: this.state.userphone,
-            useraddress: this.state.useraddress,
+        let type = this.props.location.state.type || 1
+        let info
+
+        if(type == 1) {
+            info = {
+                email: this.state.email,
+                username: this.state.username,
+                userphone: this.state.userphone,
+                useraddress: this.state.useraddress,
+            }
+        } else if(type == 2) {
+            info = {
+                username: this.state.username,
+                job: this.state.job,
+                userphone: this.state.userphone,
+                company_name: this.state.company_name,
+                duns_number: this.state.duns_number,
+                company_ceo: this.state.company_ceo,
+                company_address: this.state.company_address,
+            }
         }
 
         let keyPair = SeedToEthKey(this.state.account.seed, "0'/0/0");
@@ -491,24 +536,35 @@ export default class extends React.Component {
         }
     }
 
-   keyPress = async(type, e) => {
-      if(e.keyCode == 13){
-        switch(type) {
-            case 0:
+    keyPress = async (type, e) => {
+        if(e.keyCode == 13){
+            switch(type) {
+                case 0:
                 this.onClickVerificateEmail()
                 break;
-            case 1:
+                case 1:
                 this.onClickNextBtnAccountInfo()
                 break;
+            }
         }
-      }
-   }
+    }
     
     render_term(){
+        let type = this.props.location.state.type || 1
+        let title, desc
+        if(type == 1) {
+            title = "개인 가입 약관 동의"
+            desc = "서비스 이용에 필요한 약관에 동의합니다."
+        }
+        else if(type == 2) {
+            title = "기업 가입 약관 동의"
+            desc = "기업 가입은 관리자 및 기업 자체 정보로 가입합니다. 추후 직원용 계정은 내부 기능을 통해 이용할 수 있습니다."
+        }
+
         return (<div className="page">
             <div className="title-container">
-                <div className="title">약관 동의</div>
-                <div className="desc">서비스 이용에 필요한 약관에 동의합니다.</div>
+                <div className="title">{title}</div>
+                <div className="desc">{desc}</div>
             </div>
             <div className="content">
                 <div className="service-title"> 서비스 이용약관 </div>
@@ -526,12 +582,18 @@ export default class extends React.Component {
         </div>)
     }
 
-
     render_email(){
+        let type = this.props.location.state.type || 1
+        let desc = ""
+        if(type == 1)
+            desc = "기본정보를 정확히 입력해주시기 바랍니다."
+        else if(type == 2)
+            desc = "회사에서 사용하시는 본인의 이메일을 입력해주세요."
+
         return (<div className="page">
             <div className="title-container">
                 <div className="title">계정정보 입력</div>
-                <div className="desc">기본정보를 정확히 입력해주시기 바랍니다.</div>
+                <div className="desc">{desc}</div>
             </div>
             <div className="content">
                 <div className="text-place">
@@ -655,13 +717,126 @@ export default class extends React.Component {
                             onChange={e=>this.setState({useraddress:e.target.value})}
                             placeholder="주소를 정확하게 입력해주세요"/>
                     </div>
-                    <div className="gray-but" onClick={this.onClickFindAddress}>
+                    <div className="blue-but" onClick={this.onClickFindAddress.bind(this, 1)}>
                         검색
                     </div>
                 </div>
 
                 <div className="bottom-container">
                     <div className="confirm-button" onClick={this.onClickNextBtnUserInfo}>
+                        확인
+                    </div>
+                </div>
+            </div>
+        </div>)
+    }
+
+    render_company() {
+        return (<div className="page">
+            <div className="title-container">
+                <div className="title">기업정보 입력</div>
+                <div className="desc">전자 서명에 사용될 기업 및 담당자 정보를 입력해주시기 바랍니다.</div>
+            </div>
+            <div className="content">
+                <div className="text-place">
+                    <div className="name">기업정보</div>
+                    <div className="textbox">
+                        <input type="text"
+                            value={this.state.company_name || ""}
+                            onChange={e=>this.setState({company_name:e.target.value})}
+                            placeholder="기업명을 입력해주세요."/>
+                    </div>
+                </div>
+
+                <div className="text-place">
+                    <div className="name"></div>
+                    <div className="textbox">
+                        <input type="text"
+                            value={this.state.duns_number || ""}
+                            onChange={e=>this.setState({duns_number:e.target.value})}
+                            placeholder="사업자등록번호를 입력해주세요."/>
+                    </div>
+                </div>
+
+                <div className="text-place">
+                    <div className="name">대표자명</div>
+                    <div className="textbox">
+                        <input type="text"
+                            value={this.state.company_ceo || ""}
+                            onChange={e=>this.setState({company_ceo:e.target.value})}
+                            placeholder="대표자명을 입력해주세요."/>
+                    </div>
+                </div>
+
+                <div className="text-place">
+                    <div className="name">주소</div>
+                    <div className="textbox">
+                        <input type="text"
+                            value={this.state.company_address || ""} 
+                            onChange={e=>this.setState({company_address:e.target.value})}
+                            placeholder="주소를 정확하게 입력해주세요"/>
+                    </div>
+                    <div className="blue-but" onClick={this.onClickFindAddress.bind(this, 2)}>
+                        검색
+                    </div>
+                </div>
+
+                <div className="split-line"></div>
+
+                <div className="text-place">
+                    <div className="name">담당자 정보</div>
+                    <div className="textbox">
+                        <input type="text"
+                            value={this.state.username || ""}
+                            onChange={e=>this.setState({username:e.target.value})}
+                            placeholder="담당자명을 입력해주세요."/>
+                    </div>
+                </div>
+
+                <div className="text-place">
+                    <div className="name"></div>
+                    <div className="textbox">
+                        <input type="text"
+                            value={this.state.job || ""}
+                            onChange={e=>this.setState({job:e.target.value})}
+                            placeholder="담당자 직책을 입력해주세요."/>
+                    </div>
+                </div>
+
+                <div className="text-place">
+                    <div className="name">휴대폰 번호</div>
+                    <div className="textbox">
+                        <input type="text"
+                            value={this.state.userphone || ""} 
+                            onChange={this.onChangePhoneForm.bind(this,"userphone")}
+                            disabled={this.state.phone_verification_code_sent}
+                            placeholder="휴대폰 번호를 정확하게 입력해주세요"/>
+                    </div>
+                    { this.state.phone_verification_code_sent ? null :
+                        <div className="blue-but" onClick={this.onClickRequestPhone}>
+                            발송
+                        </div>
+                    }
+                </div>
+
+                <div className="text-place">
+                    <div className="name">인증번호</div>
+                    <div className="textbox">
+                        <input type="number"
+                            value={this.state.phone_verification_code || ""} 
+                            onChange={e=>this.setState({phone_verification_code:e.target.value})} 
+                            disabled={this.state.verificated_phone}
+                            placeholder="인증번호를 정확하게 입력해주세요"/>
+                    </div>
+                    { this.state.verificated_phone ? null : 
+                        <div className={ this.state.phone_verification_code_sent ? "blue-but":"gray-but"} onClick={this.onClickVerificatePhone}>
+                            확인
+                        </div>
+                    }
+                </div>
+
+                <div className="bottom-container">
+                    <div className="confirm-button" onClick={this.onClickNextBtnCompanyInfo}>
                         확인
                     </div>
                 </div>
@@ -758,16 +933,27 @@ export default class extends React.Component {
         }else if(this.state.step == 1){
             return this.render_email();
         }else if(this.state.step == 2){
-            return this.render_personal();
+            let type = this.props.location.state.type || 1
+            if(type == 1)
+                return this.render_personal();
+            else if(type == 2)
+                return this.render_company();
         }else if(this.state.step == 3){
             return this.render_masterkey();
         }else if(this.state.step == 4){
             return this.render_confirm_masterkey();
         }
-        
     }
 
 	render() {
+
+        let type = this.props.location.state.type || 1
+        let step2_text = ""
+        if(type == 1)
+            step2_text = "회원정보 입력"
+        else if(type == 2)
+            step2_text = "기업정보 입력"
+
 		return (<div className="maintain">
             <div className="register-common-page register-page">
                 <div className="left-logo">
@@ -778,7 +964,7 @@ export default class extends React.Component {
                         <div className="step-indicator">
                             <div className={`item ${this.state.step == 0 ? "enable": ""}`}>약관동의</div>
                             <div className={`item ${this.state.step == 1 ? "enable": ""}`}>계정정보 입력</div>
-                            <div className={`item ${this.state.step == 2 ? "enable": ""}`}>회원정보 입력</div>
+                            <div className={`item ${this.state.step == 2 ? "enable": ""}`}>{step2_text}</div>
                             <div className={`item ${this.state.step == 3 || this.state.step == 4 ? "enable": ""}`}>마스터 키워드 발급</div>
                         </div>
                     </div>

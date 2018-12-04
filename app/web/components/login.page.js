@@ -105,16 +105,16 @@ export default class extends React.Component {
                     아래의 방법으로 서비스를 시작할 수 있습니다.
                 </div>
                 <div className="buttons">
-                    <button className="new-already-button new-img" onClick={()=>history.push("/register")}>
+                    <button className="new-already-button new-img" onClick={()=>history.push({pathname:"/register", state:{type:1}})}>
                         <div className="icon"></div>
                         <br/>
                         신규 일반 회원 가입
                         <div className="small">개인 사용</div>
                     </button>
-                    <button className="new-already-button already-img" onClick={()=>history.push("/recover")}>
+                    <button className="new-already-button already-img" onClick={()=>history.push({pathname:"/register", state:{type:2}})}>
                         <div className="icon"></div>
                         <br/>
-                        신규 기업 회원 가입
+                        신규 기업 가입
                         <div className="small">팀 관리용</div>
                     </button>
                     <button className="new-already-button already-img" onClick={()=>history.push("/recover")}>
