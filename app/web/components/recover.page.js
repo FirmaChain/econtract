@@ -83,9 +83,9 @@ export default class extends React.Component {
         return;
     };
 
-    onClickNextBtnAccountInfo = async()=>{
-        if(!this.state.user_id){
-            return alert("아이디를 입력해주세요!")
+    onClickRecoverMyAccount = async()=>{
+        if(!this.state.email){
+            return alert("이메일을 입력해주세요!")
         }
         if(this.state.password.length < 6){
             return alert("비밀번호는 최소 6글자입니다.")
@@ -116,63 +116,95 @@ export default class extends React.Component {
         }
     }
 
-   keyPress = async(type, e) => {
-      if(e.keyCode == 13){
-        switch(type) {
-            case 0:
+    keyPress = async(type, e) => {
+        if(e.keyCode == 13){
+            switch(type) {
+                case 0:
                 this.onClickInputMnemonic()
                 break;
-            case 1:
-                this.onClickNextBtnAccountInfo()
+                case 1:
+                this.onClickRecoverMyAccount()
                 break;
+            }
         }
-      }
-   }
-    
-    render_account(){
-        return (<div>
-            <div className="page bottom-no-border">
-                <div className="column-600">
-                    <div className="form-layout">
-                        <div className="form-label"> 아이디 </div>
-                        <div className="form-input">
-                            <input placeholder="아이디를 입력해주세요." value={this.state.user_id || ""} onChange={e=>this.setState({user_id:e.target.value})} />
-                        </div>
-                        
-                        <div className="form-label"> 비밀번호 </div>
-                        <div className="form-input">
-                            <input type="password" placeholder="비밀번호를 최소 6자리 입력해주세요." value={this.state.password || ""} onChange={e=>this.setState({password:e.target.value})}  />
-                        </div>
-
-                        <div className="form-label"> 비밀번호 확인 </div>
-                        <div className="form-input">
-                            <input type="password" placeholder="입력하신 비밀번호를 다시 입력해주세요." value={this.state.password2 || ""} onChange={e=>this.setState({password2:e.target.value})} onKeyDown={this.keyPress.bind(this, 1)} />
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-            <button className="big-friendly-button top-no-border" onClick={this.onClickNextBtnAccountInfo}> 기존 계정으로 로그인 </button>
-        </div>)
     }
 
     render_masterkey(){
-        return (<div>
-            <div className="page bottom-no-border">
-                <div className="column-600">
-                    <div className="form-layout">
-                        <div className="form-label"> 마스터 키워드 </div>
-                        <div className="form-input">
-                            <input placeholder="마스터 키워드를 입력해주세요." value={this.state.mnemonic || ""} onChange={e=>this.setState({mnemonic:e.target.value})} />
-                        </div>
+        return (<div className="page">
+            <div className="title-container">
+                <div className="title">마스터키워드 입력하기</div>
+                <div className="desc">로그인하려는 계정의 마스터키워드를 정확하게 입력해주시기 바랍니다.</div>
+            </div>
+            <div className="content">
+                <div className="master-keyword-container">
+                    <div className="sub-title-container">
+                        <div className="title">마스터키워드</div>
+                        <div className="what-is-masterkeyword">마스터키워드를 다시 입력하는 이유는?</div>
                     </div>
 
-                    <div className="mid-desc">
+                    <textarea className="masterkeyword-input-slot"
+                        placeholder="마스터 키워드를 입력해주세요."
+                        value={this.state.mnemonic || ""}
+                        onChange={e=>this.setState({mnemonic:e.target.value.replace(/\r\n|\r|\n|<br>/g, " ")})}></textarea>
+
+                    <div className="reference">
                         * 12개의 단어로 이루어진 마스터 키워드를 띄어쓰기로 구분하여 입력해주세요.
                     </div>
                 </div>
+
+                <div className="bottom-container">
+                    <div className="confirm-button" onClick={this.onClickInputMnemonic}>
+                        다음
+                    </div>
+                </div>
             </div>
-            <button className="big-friendly-button top-no-border" onClick={this.onClickInputMnemonic}> 다음 </button>
+        </div>)
+    }
+    
+    render_account(){
+        return (<div className="page">
+            <div className="title-container">
+                <div className="title">비밀번호 설정</div>
+                <div className="desc">로그인하려는 계정의 이메일과 비밀번호를 입력하여 브라우저에 등록해주세요.</div>
+            </div>
+            <div className="content">
+
+                <div className="text-place">
+                    <div className="name">등록한 이메일</div>
+                    <div className="textbox">
+                        <input type="text"
+                            value={this.state.email || ""}
+                            onChange={e=>this.setState({email:e.target.value})}
+                            placeholder="가입하신 계정의 이메일을 입력해주세요."/>
+                    </div>
+                </div>
+
+                <div className="text-place">
+                    <div className="name">비밀번호</div>
+                    <div className="textbox">
+                        <input type="text"
+                            value={this.state.password || ""}
+                            onChange={e=>this.setState({password:e.target.value})}
+                            placeholder="최소 8자리(영어, 숫자, 특수문자 사용 가능)"/>
+                    </div>
+                </div>
+
+                <div className="text-place">
+                    <div className="name">비밀번호 확인</div>
+                    <div className="textbox">
+                        <input type="text"
+                            value={this.state.password2 || ""}
+                            onChange={e=>this.setState({password2:e.target.value})}
+                            placeholder="입력하신 패스워드를 다시 입력해주세요"/>
+                    </div>
+                </div>
+
+                <div className="bottom-container">
+                    <div className="confirm-button" onClick={this.onClickRecoverMyAccount}>
+                        기존 계정으로 로그인
+                    </div>
+                </div>
+            </div>
         </div>)
     }
 
@@ -185,17 +217,33 @@ export default class extends React.Component {
     }
 
 	render() {
-		return (<div className="default-page register-page">
-            <div className="logo">
-                <img src="/static/logo_blue.png" onClick={()=>history.push("/")}/>
+		return (<div className="maintain">
+            <div className="register-common-page register-page">
+                <div className="left-logo">
+                    <img src="/static/logo_blue.png" onClick={()=>history.push("/login")}/>
+                </div>
+                <div className="desc-container">
+                    <div className="info">
+                        <div className="step-indicator">
+                            <div className={`item ${this.state.step == 0 ? "enable": ""}`}>마스터키워드 입력</div>
+                            <div className={`item ${this.state.step == 1 ? "enable": ""}`}>비밀번호 설정</div>
+                        </div>
+                    </div>
+                    <div className="desc">
+                        {this.render_content()}
+                    </div>
+                </div>
             </div>
-            <div className="back-key">
-                <div className="round-btn" onClick={this.goBack}><i className="fas fa-arrow-left"></i></div>
+
+            <div className="footer">
+                <div className="left">Copyright 2018 Firma Solutions, Inc, All right reserved</div>
+                <div className="middle">
+                    이용약관 | 개인정보처리방침
+                </div>
+                <div className="right">
+                    developer@firma-solutions.com
+                </div>
             </div>
-            <div className="container">
-                <h1>다른 계정으로 로그인하기</h1>
-                {this.render_content()}
-            </div>
-		</div>);
+        </div>);
 	}
 }
