@@ -276,7 +276,6 @@ export default class extends React.Component {
                     </div>
                     
                     <div style={{flex:1}} />
-                    
                         
                     <div className="toolkit" onClick={this.onClickRefresh}>
                         <i className="fas fa-undo"></i>
