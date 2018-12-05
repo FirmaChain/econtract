@@ -145,6 +145,7 @@ export default class extends React.Component {
                     <textarea className="masterkeyword-input-slot"
                         placeholder="마스터 키워드를 입력해주세요."
                         value={this.state.mnemonic || ""}
+                        onKeyDown={this.keyPress.bind(this, 0)}
                         onChange={e=>this.setState({mnemonic:e.target.value.replace(/\r\n|\r|\n|<br>/g, " ")})}></textarea>
 
                     <div className="reference">
@@ -195,6 +196,7 @@ export default class extends React.Component {
                         <input type="password"
                             value={this.state.password2 || ""}
                             onChange={e=>this.setState({password2:e.target.value})}
+                            onKeyDown={this.keyPress.bind(this, 1)}
                             placeholder="입력하신 패스워드를 다시 입력해주세요"/>
                     </div>
                 </div>
