@@ -60,7 +60,7 @@ export default class extends React.Component {
     }
 
     onClickInputMnemonic = async() => {
-        let mnemonic = this.state.mnemonic;
+        let mnemonic = this.state.mnemonic.trim();
         if (!mnemonic) {
             return alert("마스터 키워드를 입력해주세요.");
         }
@@ -145,7 +145,7 @@ export default class extends React.Component {
                     <textarea className="masterkeyword-input-slot"
                         placeholder="마스터 키워드를 입력해주세요."
                         value={this.state.mnemonic || ""}
-                        onChange={e=>this.setState({mnemonic:e.target.value.replace(/\r\n|\r|\n|<br>/g, " ").trim()})}></textarea>
+                        onChange={e=>this.setState({mnemonic:e.target.value.replace(/\r\n|\r|\n|<br>/g, " ")})}></textarea>
 
                     <div className="reference">
                         * 12개의 단어로 이루어진 마스터 키워드를 띄어쓰기로 구분하여 입력해주세요.
