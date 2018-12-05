@@ -525,7 +525,7 @@ export default class extends React.Component {
         let encryptedInfo = aes_encrypt(JSON.stringify(info), this.state.account.masterKeyPublic);
         
         await window.showIndicator()
-        let resp = await this.props.register_new_account(this.state.account, encryptedInfo, this.state.email, this.state.username, wallet.address)
+        let resp = await this.props.register_new_account(this.state.account, encryptedInfo, this.state.email, this.state.username, wallet.address, type)
         await window.hideIndicator()
 
         if(resp.code == 1){
