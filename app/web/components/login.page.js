@@ -44,10 +44,10 @@ export default class extends React.Component {
     onClickLogin = async()=>{
         await window.showIndicator()
         
-        if (!this.state.user_id || !this.state.password) {
+        if (!this.state.email || !this.state.password) {
             alert("아이디와 비밀번호를 확인해주세요.");
         } else {
-            let resp = await this.props.login_account(this.state.user_id || "", this.state.password || "")
+            let resp = await this.props.login_account(this.state.email || "", this.state.password || "")
             if(resp == -2){
                 alert("해당 기기에 연결된 계정 정보가 존재하지 않습니다.\n현재 기기에 인증이 필요할 경우 [다른 계정으로 로그인] 기능을 사용해 주세요.")
             }else if(resp == -1){
@@ -65,7 +65,7 @@ export default class extends React.Component {
 
     onClickClearBrowserKey = async()=>{
         await window.showIndicator();
-        if (window._confirm("기기 인증 해제 후 기존의 계정으로 다시 로그인 하려면 [다른 계정으로 로그인] 과정을 거쳐야 하며,\n이 때 마스터 키워드가 필요합니다.\n기기 인증을 해제 하시겠습니까?")) { 
+        if (window._confirm("신규 회원가입을 하시려면 브라우저 인증을 해제해야 합니다.\n브라우저 인증 해제 후 기존의 계정으로 다시 로그인 하시려면 [기존 계정으로 로그인] 과정을 거쳐야 하며,\n이 때 마스터 키워드가 필요합니다.\n\n브라우저 인증을 해제 하시겠습니까?")) { 
             localStorage.removeItem("browser_key");
             localStorage.removeItem("browser_key_virgin");
             alert("브라우저 인증이 해제되었습니다.");
@@ -76,7 +76,7 @@ export default class extends React.Component {
 
     onClickRecoverAccount = async() => {
         await window.showIndicator();
-        if (window._confirm("다른 계정으로 로그인하기 전에 먼저 기기 인증을 해제해야 합니다.\n\n기기 인증 해제 후 기존의 계정으로 다시 로그인 하려면 [다른 계정으로 로그인] 과정을 거쳐야 하며,\n이 때 마스터 키워드가 필요합니다.\n기기 인증을 해제 하시겠습니까?")) {
+        if (window._confirm("다른 계정으로 로그인하기 전에 먼저 브라우저 인증을 해제해야 합니다.\n브라우저 인증 해제 후 기존의 계정으로 다시 로그인 하시려면 [기존 계정으로 로그인] 과정을 거쳐야 하며,\n이 때 마스터 키워드가 필요합니다.\n\n브라우저 인증을 해제 하시겠습니까?")) {
             localStorage.removeItem("browser_key");
             localStorage.removeItem("browser_key_virgin");
             this.setState({is_clear_browser_key: true});
@@ -129,31 +129,26 @@ export default class extends React.Component {
    }
 
    render_login() {
-		return (<div className="default-page login-page">
+		return (<div className="login-common-page login-page">
             <div className="left-logo">
                 <img src="/static/logo_blue.png" onClick={()=>history.push("/")}/>
             </div>
             <div className="container">
-                <h1>로그인</h1>
-                <div className="page">
-                    <div className="column-400">
-                        <div className="form-layout">
-                            <div className="form-label"> 아이디 </div>
-                            <div className="form-input">
-                                <input placeholder="아이디를 입력해주세요." value={this.state.user_id || ""} onChange={e=>this.setState({user_id:e.target.value})} />
-                            </div>
-                            
-                            <div className="form-label"> 비밀번호 </div>
-                            <div className="form-input">
-                                <input type="password" placeholder="비밀번호를 입력해주세요." value={this.state.password || ""} onKeyDown={this.keyPress} onChange={e=>this.setState({password:e.target.value})} />
-                            </div>
+                <div className="title">E-Contract 시작하기</div>
+                <div className="desc1">접속하신 브라우저는 인증되었습니다.</div>
+                <div className="desc2">인증된 브라우저란?</div>
 
-                            <div className="form-submit">
-                                <button key={1} tabIndex={1} onClick={this.onClickRecoverAccount}> 다른 계정으로 로그인 하기 </button>
-                                <button key={2} tabIndex={2} onClick={this.onClickClearBrowserKey}> 기기 인증 해제하기 </button>
-                                <button className="border" onClick={this.onClickLogin}> 로그인 </button>
-                            </div>
-                        </div>
+                <div className="textbox"><input id="id" type="email" placeholder="이메일을 입력해주세요." value={this.state.email || ""} onChange={e=>this.setState({email:e.target.value})}/></div>
+                <div className="textbox"><input id="password" type="password" placeholder="비밀번호를 입력해주세요." value={this.state.password || ""} onKeyDown={this.keyPress} onChange={e=>this.setState({password:e.target.value})}/></div>
+
+                <div className="login-btn" onClick={this.onClickLogin}>로그인</div>
+                <br/>
+                <div className="register-btn" onClick={this.onClickClearBrowserKey}>신규 회원가입</div>
+
+                <div className="other">
+                    <div className="recover-account" onClick={this.onClickRecoverAccount}>
+                        다른 계정으로 로그인<br/>
+                        (브라우저 인증 해제)
                     </div>
                 </div>
             </div>
