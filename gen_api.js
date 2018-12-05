@@ -286,12 +286,13 @@ export async function api_register_account(publicbk,publicms,publicmsc,info,auth
         session:window.getCookie("session")
     });
 }
-export async function api_recover_account(publicbk,publicms,auth,eems){
+export async function api_recover_account(publicbk,publicms,auth,eems,email){
     return await get("/recover_account", {
         publicbk,
 		publicms,
 		auth,
-		eems
+		eems,
+		email
     },{
         session:window.getCookie("session")
     });
