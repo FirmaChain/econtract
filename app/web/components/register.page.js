@@ -283,7 +283,7 @@ export default class extends React.Component {
 
     getType() {
         if(!!this.props.location.state && !!this.props.location.state.type)
-            return this.this.props.location.state.type
+            return this.props.location.state.type
 
         return 1
     }

@@ -489,10 +489,6 @@ select:focus { outline:none; }
                             margin: auto;
                             margin-right:10px;
 
-                            &:hover {
-                                color: white;
-                                background-color: #324b5f;
-                            }
                         }
 
                         >.confirm-button {
@@ -509,11 +505,6 @@ select:focus { outline:none; }
                             text-align: center;
                             margin: auto;
 
-                            &:hover {
-                                background-color: #f4f4f4;
-                                border: 2px solid #f4f4f4;
-                                color:#a7a4a5;
-                            }
                         }
                     }
                 }
@@ -1133,11 +1124,6 @@ select:focus { outline:none; }
             margin: auto;
             margin-top:50px;
 
-            &:hover {
-                background-color: #f4f4f4;
-                border: 2px solid #f4f4f4;
-                color:#a7a4a5;
-            }
         }
 
         >.register-btn {
@@ -1155,10 +1141,6 @@ select:focus { outline:none; }
             margin: auto;
             margin-top:20px;
 
-            &:hover {
-                color: white;
-                background-color: #324b5f;
-            }
         }
 
         >.textbox {
