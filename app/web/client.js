@@ -22,10 +22,10 @@ import LoginPage from "./components/login.page"
 import CheckMnemonicPage from "./components/check-mnemonic.page"
 import RegisterPage from "./components/register.page"
 import RecoverPage from "./components/recover.page"
-import ContractListPage from "./components/contract-list.page"
+import HomePage from "./components/home.page"
 import TemplatePage from "./components/contract-template.page"
 import FolderPage from "./components/contract-folder-list.page"
-import InFolderPage from "./components/contract-list.page"
+import InFolderPage from "./components/home.page"
 import AddTemplatePage from "./components/add-template.page"
 import EditTemplatePage from "./components/edit-template.page"
 import AddContractPage from "./components/add-contract.page"
@@ -61,7 +61,7 @@ window.addEventListener("load",()=>{
 					<Route onEnter={resolver} exact path="/register" component={RegisterPage} />
 					<Route onEnter={resolver} exact path="/check-mnemonic" component={CheckMnemonicPage} />
 					<Route onEnter={resolver} exact path="/recover" component={RecoverPage} />
-					<Route onEnter={resolver} exact path="/recently" component={ContractListPage} />
+					<Route onEnter={resolver} exact path="/home" component={HomePage} />
 					<Route onEnter={resolver} exact path="/folder" component={FolderPage} />
 					<Route onEnter={resolver} exact path="/add-contract" component={AddContractPage} />
 					<Route onEnter={resolver} exact path="/folder/:id" component={InFolderPage} />

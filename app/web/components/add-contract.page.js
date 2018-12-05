@@ -7,33 +7,22 @@ import history from '../history';
 import pdfjsLib from "pdfjs-dist"
 import translate from "../../common/translate"
 import {
-    find_user_with_code_email,
     fetch_user_info,
-    new_contract,
-    gen_pin,
-    update_epin,
-    convert_doc,
     list_template,
-    get_template,
-    edit_contract
+    select_userinfo_with_email
 } from "../../common/actions"
+import CheckBox2 from "./checkbox2"
 
 let mapStateToProps = (state)=>{
 	return {
-        user_info: state.user.info
+        user_info:state.user.info
 	}
 }
 
 let mapDispatchToProps = {
-    find_user_with_code_email,
     fetch_user_info,
-    new_contract,
-    gen_pin,
-    update_epin,
-    convert_doc,
     list_template,
-    get_template,
-    edit_contract
+    select_userinfo_with_email
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -41,39 +30,74 @@ export default class extends React.Component {
 	constructor(){
 		super();
 		this.state={
-            counterparties:[],
+            target_list:[],
+            indivisual:[{
+                deletable:false,
+                title:"성함",
+                force:true
+            },{
+                deletable:false,
+                title:"이메일",
+                force:true
+            },{
+                deletable:false,
+                title:"주소",
+                force:true
+            },{
+                deletable:false,
+                title:"휴대폰 번호",
+                checked:false
+            },{
+                deletable:false,
+                title:"주민등록 번호",
+                checked:false
+            }],
+            cooperation:[{
+                deletable:false,
+                title:"기업명",
+                force:true
+            },{
+                deletable:false,
+                title:"사업자등록번호",
+                force:true
+            },{
+                deletable:false,
+                title:"주소",
+                force:true
+            },{
+                deletable:false,
+                title:"대표자 성함",
+                checked:false
+            },{
+                deletable:false,
+                title:"담당자 성함",
+                checked:false
+            },{
+                deletable:false,
+                title:"담당자 성함",
+                checked:false
+            },{
+                deletable:false,
+                title:"담당자 이메일",
+                checked:false
+            },{
+                deletable:false,
+                title:"담당자 휴대전화",
+                checked:false
+            }]
         };
-        this.blockFlag = 1;
 	}
 
 	componentDidMount(){
-        this.blockFlag = 1;
-        if(!this.props.user_info){
-            (async()=>{
-                await window.showIndicator()
-                await this.props.fetch_user_info()
-                await window.hideIndicator()
-            })()
-        }
-        (async() => {
-            let template_list = (await this.props.list_template()) || []
-
+        (async()=>{
+            await this.props.fetch_user_info()
             this.setState({
-                pin: await this.props.gen_pin(),
-                template_list:template_list,
-            });
-        })();
-
-        this.unblock = history.block( async (targetLocation) => {
-            if(this.blockFlag == 1){
-                return window._confirm("계약 배포를 중단하고 현재 페이지를 나가시겠습니까?")
-            }
-            return true;
-        })
+                template_list:await this.props.list_template()
+            })
+        })()
     }
 
     componentWillUnmount(){
-        this.unblock();
     }
 
     componentWillReceiveProps(props){
@@ -82,159 +106,84 @@ export default class extends React.Component {
         }
     }
 
-    onClickNext = async ()=>{
-        let counterparties = this.state.counterparties
-        let imgs = this.state.imgs
-        let template = this.state.template
-        let subject= this.state.contract_name
-        let email = this.state.counterparty_email;
-        let code = this.state.counterparty_code;
-
-        if(!subject){
-            return alert("제목을 입력해주세요")
-        }
-        if(!template){
-            if(imgs == null || imgs.length == 0){
-                return alert("파일 혹은 템플릿을 선택해주세요.")
-            }
-        }
-
-        if(email){
-            return alert("서명자 정보를 입력 후에 '서명자 추가' 버튼을 누르셔야합니다.")
-        }
-        if(code){
-            return alert("서명자 정보를 입력 후에 '서명자 추가' 버튼을 누르셔야합니다.")
-        }
-
-        await window.showIndicator()
-        try{
-            let html = [];
-            if(template){
-                try{
-                    let t = await this.props.get_template(template)
-                    imgs = t.imgs
-                    html = t.html
-                }catch(err){
-                    alert("템플릿 로드에 문제가 발생했습니다.")
-                    throw "ERR"
-                }
-            }
-
-            let resp = await this.props.new_contract( subject, imgs, (counterparties || []).map(e=>e.code), [this.props.user_info.publickey_contract].concat((counterparties || []).map(e=>e.publickey_contract)), this.state.pin );
-            if(resp){
-                if(this.refs.pin_save.checked){
-                    await this.props.update_epin(resp, this.state.pin);
-                }
-                if(html.length > 0){
-                    // apply template
-                    await this.props.edit_contract(resp, this.state.pin, html);
-                }
-                //this.unblock();
-                this.blockFlag = 0;
-                history.replace(`/contract-editor/${resp}`)
-            }else{
-                alert("계약서 생성에 문제가 발생했습니다!")
-            }
-        }catch(err){
-        }
-        await window.hideIndicator();
+    onClickBack = ()=>{
+        history.goBack();
     }
 
-    onClickUploadFile = async (e)=>{
-        let file = e.target.files[0];
+    onClickAdd = async()=>{
+        if(!this.state.add_email)
+            return alert("이메일을 입력해주세요.")
+        if(!this.state.add_role)
+            return alert("룰을 선택해주세요.")
 
-        await window.showIndicator()
-        let pdf, pdf_payload
+        let resp = await this.props.select_userinfo_with_email(this.state.add_email)
 
-        let names = file.name.split(".");
-        let ext = names[names.length - 1];
-
-
-        try {
-            if(ext == "pdf"){
-                let a = await new Promise(r=>{
-                    let reader = new FileReader();
-                    reader.readAsArrayBuffer(file)
-                    reader.onload = ()=>{
-                        r(reader.result) 
-                    }
-                })
-                pdf = await pdfjsLib.getDocument({data: a}).promise;
-            }else{
-                try{
-                    pdf_payload = await window.toPdf(file)
-                    pdf = await pdfjsLib.getDocument({data: pdf_payload}).promise;
-                }catch(err){
-                    let ret = await this.props.convert_doc(file)    
-                    pdf_payload = ret.payload.data
-                    pdf = await pdfjsLib.getDocument({data: pdf_payload}).promise;
-                }
-            }
-        } catch(err) {
-            await window.hideIndicator()
-            return window.alert("파일 로딩 중 문제가 발생하여 중단합니다.")
-        }
-    
-        try{
+        if(resp){
             this.setState({
-                file: file,
-                imgs: await window.pdf2png(pdf)
-            })
-        }catch(err){
-            console.log(err)
-            window.alert("지원하지 않는 포맷입니다.")
-        }
-        await window.hideIndicator()
-    }
-
-    onClickAddCounterparty = async _=>{
-        let email = this.state.counterparty_email;
-        let code = this.state.counterparty_code;
-        if(!code)
-            return alert("초대 코드를 입력해주세요.")
-        if(!email)
-            return alert("메일을 입력해주세요.")
-        if(this.state.counterparties.findIndex(e=>code==e.code) >= 0)
-            return alert("이미 추가된 서명자입니다.")
-        if(this.props.user_info.code.toLowerCase() == code.toLowerCase())
-            return alert("본인의 초대코드입니다.")
-    
-        await window.showIndicator()
-        let user = await this.props.find_user_with_code_email(code, email);
-        await window.hideIndicator()
-
-        if(user){
-            this.setState({
-                counterparty_email:"",
-                counterparty_code:"",
-                counterparties:[
-                    ...this.state.counterparties,
-                    {
-                        email,
-                        ...user
-                    }
-                ]
+                target_list:[...this.state.target_list, {
+                    username:resp.username,
+                    email:resp.email,
+                    role:this.state.add_role
+                }],
+                add_email:""
             })
         }else{
-            alert("존재하지 않는 유저입니다.")
+            return alert("이메일에 일치하는 가입자가 없습니다.")
         }
     }
 
-    onClickDeleteCounterparty = (code)=>{
-        let counterparties = [...this.state.counterparties]
-        let idx = this.state.counterparties.findIndex(e=>code==e.code);
-        if(idx >= 0){
-            counterparties.splice(idx,1)
-            this.setState({
-                counterparties:counterparties
-            })
-        }
-    }
-
-    onChangeTemplate = (e)=>{
-        console.log("e.target.value",e.target.value)
+    onToggleSignInfo = (name, k)=>{
+        this.state[name][k].checked = !this.state[name][k].checked;
         this.setState({
-            template:Number(e.target.value)
+            [name]:[...this.state[name]]
+        })
+    }
+
+    onClickAddCooperation = ()=>{
+        if(!this.state.add_cooperation_info){
+            return alert("항목의 이름을 입력해주세요.")
+        }
+
+        this.setState({
+            cooperation:[...this.state.cooperation,{
+                title:this.state.add_cooperation_info,
+                checked:false,
+                deletable:true
+            }],
+            add_cooperation_info:""
+        })
+    }
+
+    onClickRegist = ()=>{
+        let contract_name = this.state.contract_name;
+        let sign_target_me = !!this.state.target_me
+        let sign_target_other = !!this.state.target_other
+        let counterparties = this.state.target_list
+        let indivisual_info = this.state.indivisual.filter(e=>e.force||e.checked).map(e=>e.title)
+        let cooperation_info = this.state.cooperation.filter(e=>e.force||e.checked).map(e=>e.title)
+
+        console.log(
+            contract_name,
+            sign_target_me,
+            sign_target_other,
+            counterparties,
+            indivisual_info,
+            cooperation_info,
+        )
+    }
+
+    onClickAddIndivisual = ()=>{
+        if(!this.state.add_indivisual_info){
+            return alert("항목의 이름을 입력해주세요.")
+        }
+
+        this.setState({
+            indivisual:[...this.state.indivisual,{
+                title:this.state.add_indivisual_info,
+                checked:false,
+                deletable:true
+            }],
+            add_indivisual_info:""
         })
     }
 
@@ -243,90 +192,138 @@ export default class extends React.Component {
             return <div/>
 
         return (<div className="default-page add-contract-page">
-            <div className="back-key">
-                <div className="round-btn" onClick={()=>history.goBack()}><i className="fas fa-arrow-left"></i></div>
+            <div className="header">
+                <div className="close" onClick={this.onClickBack}>
+                    <i className="fas fa-times"></i>
+                </div>
+                <div className="title">계약서</div>
+                <div className="profile">
+                    <div>{this.props.user_info.username}</div>
+                    <div>{this.props.user_info.email}</div>
+                </div>
             </div>
-            <div className="container">
-                <h1>계약 등록</h1>
-                <div className="page bottom-no-border">
-                    <div className="column-300">
-                        <div className="form-layout">
-                            <div className="form-label"> 계약명 </div>
-                            <div className="form-input">
-                                <input placeholder="계약서의 이름을 작성해주세요." value={this.state.contract_name || ""} onChange={e=>this.setState({contract_name:e.target.value})} />
-                            </div>
-                            
-                            <div className="form-label"> 계약 파일 업로드 </div>
-                            {this.state.file ? <div className="selected-file">
-                                <div className="filename">{this.state.file.name}</div>
-                                <div className="del-btn" onClick={()=>this.setState({file:null,imgs:[]})}>삭제</div>
-                            </div> : <div className="upload-form">
-                                { !this.state.template ?
-                                    <button key={0} className="file-upload-btn" onClick={()=>this.refs.file.click()}> <i className="fas fa-file-archive"></i> 파일 업로드 </button>
-                                : null}
-                                
-                                { !this.state.template ?
-                                    <div key={1} className="or"> OR </div>
-                                :null}
-
-                                { !this.state.file ?
-                                <select onChange={this.onChangeTemplate}>
-                                    <option value={0}>템플릿 선택</option>
-                                    {this.state.template_list.map((e,k)=>{
-                                        return <option key={k} value={e.template_id}>{e.subject}</option>
-                                    })}
-                                </select>
-                                :null}
-                                <input ref="file" type="file" accept=".png, .jpg, .jpeg, .doc, .docx, .ppt, .pptx, .pdf" onChange={this.onClickUploadFile} style={{display:"none"}}/>
-                            </div>}
-
-                            <div style={{height:20}} />
-                            <div className="form-label"> 서명자 </div>
-                            <SignerSlot 
-                                me={true}
-                                code={this.props.user_info.code}
-                                name={this.props.user_info.username}
-                                email={this.props.user_info.email}
-                                eth_address={this.props.user_info.eth_address} 
-                            />
-                            {this.state.counterparties.map((e,k)=>{
-                                return <SignerSlot key={k} onDelete={this.onClickDeleteCounterparty} {...e} />
-                            })}
-
-                            <div style={{height:20}} />
-                            <div className="form-label"> 서명자 이메일 </div>
-                            <div className="form-input">
-                                <input placeholder="서명하실 분의 이메일을 입력해주세요." value={this.state.counterparty_email || ""} onChange={e=>this.setState({counterparty_email:e.target.value})} />
-                            </div>
-
-                            <div className="form-label"> 서명자 초대코드 </div>
-                            <div className="form-input">
-                                <input placeholder="서명하실 분에게 초대코드를 요청하여 입력하세요." value={this.state.counterparty_code || ""} onChange={e=>this.setState({counterparty_code:e.target.value})} />
-                            </div>
-
-                            <button className="add-button" onClick={this.onClickAddCounterparty}>
-                                <i className="fas fa-user"></i>
-                                서명자 추가
-                            </button>
-                        </div>
+            <div className="content">
+                <div className="row">
+                    <div className="left-desc">
+                        <div className="desc-head">계약명 입력</div>
+                        <div className="desc-content">해당 계약명을 입력해주세요</div>
                     </div>
-                    <div className="column-400">
-                        <div className="right-desc"> 
-                            <div className="pin-place">PIN : {this.state.pin}</div>
-                            <div className="pin-check checkbox">
-                                <input ref="pin_save" type="checkbox" defaultChecked={true}/> PIN 번호 저장하기
-                            </div>
-                            <div><strong>저장하지 않을 경우 PIN을 반드시 메모해두세요!</strong></div>
-                            <div>* 20MB 이하의 파일만 업로드 가능합니다.</div>
-                            <div>자주 쓰는 계약은 [내 탬플릿] 기능을 사용하여 손쉽게 불러올 수 있습니다.<br/> [내 계약] > [내 탬플릿] > [탬플릿 추가]</div>
-
-                            <div style={{marginTop:"50px",color:"red"}}>* 한번 계약을 등록한 경우, 서명자를 변경하실 수 없습니다.<br/>등록 전에 서명자의 정보가 맞는지 확인해주세요.</div>
-
-                            <div>* 계약 당사자들의 초대 코드와 이메일을 받아 입력한 뒤 [서명자 추가] 기능을 통해 서비스에 초대하실 수 있습니다. 초대 코드와 이메일이 모두 일치하여야 하며, 이메일은 대소문자를 구분하여 입력 해주세요. 초대 코드에는 0(숫자), O(대문자 o), I(대문자 i), l(소문자 L)이 사용되지 않습니다.</div>
+                    <div className="right-form">
+                        <div className="column">
+                            <div className="form-head">계약명</div>
+                            <div className="form-input"><input type="text" value={this.state.contract_name || ""} onChange={e=>this.setState({contract_name:e.target.value})}/></div>
                         </div>
                     </div>
                 </div>
-                <button className="big-friendly-button top-no-border" onClick={this.onClickNext}> 다음 단계로 </button>
+
+                <div className="row">
+                    <div className="left-desc">
+                        <div className="desc-head">서명 대상</div>
+                        <div className="desc-content">계약에 서명하는 대상에 본인 포함 여부를 선택할 수 있습니다</div>
+                    </div>
+                    <div className="right-form">
+                        <div className="column">
+                            <div className="form-head">서명 대상</div>
+                            <div className="form-input">
+                                <CheckBox2 on={this.state.target_me} onClick={()=>this.setState({target_me:!this.state.target_me})}/> 본인({this.props.user_info.username})
+                                <CheckBox2 on={this.state.target_other} onClick={()=>this.setState({target_other:!this.state.target_other})}/> 타 서명자
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="row">
+                    <div className="left-desc">
+                        <div className="desc-head">서명자 추가</div>
+                        <div className="desc-content">계약에 서명할 사용자를 추가합니다</div>
+                        <div className="desc-link">서비스 미가입자도 서명할 수 있나요?</div>
+                    </div>
+                    <div className="right-form">
+                        <div className="column">
+                            <div className="form-head">서명자 이메일</div>
+                            <div className="form-input">
+                                <input type="text" value={this.state.add_email || ""} onChange={e=>this.setState({add_email:e.target.value})}/>
+                            </div>
+                        </div>
+                        <div className="column">
+                            <div className="form-head">서명자 역할</div>
+                            <div className="form-input">
+                                <select onChange={e=>this.setState({add_role:e.target.value})}>
+                                    <option value="">선택</option>
+                                    <option>역할1</option>
+                                    <option>역할2</option>
+                                    <option>역할3</option>
+                                    <option>역할4</option>
+                                </select>
+                                <button onClick={this.onClickAdd}>추가</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="row">
+                    <div className="left-desc">
+                    </div>
+
+                    <div className="right-form">
+                        <table>
+                            <tr>
+                                <th>이름</th>
+                                <th>이메일</th>
+                                <th>역할</th>
+                            </tr>
+                            {this.state.target_list.map((e,k)=>{
+                                return <tr key={k}>
+                                    <td>{e.username}</td>
+                                    <td>{e.email}</td>
+                                    <td>{e.role}</td>
+                                </tr>
+                            })}
+                        </table>
+                    </div>
+                </div>
+
+                <div className="row">
+                    <div className="left-desc">
+                        <div className="desc-head">서명 정보</div>
+                        <div className="desc-content">전자 서명시 계약에 들어갈 정보들을 선택합니다</div>
+                    </div>
+                    <div className="right-form">
+                        <div className="column">
+                            <div className="form-head">개인 서명자 정보</div>
+                            <div className="form-input">
+                                {this.state.indivisual.map((e,k)=>{
+                                    return <div>
+                                        <CheckBox2 on={e.force || e.checked} onClick={this.onToggleSignInfo.bind(this,"indivisual",k)}/>
+                                        {e.title}
+                                    </div>
+                                })}
+                                <div>
+                                    <input type="text" value={this.state.add_indivisual_info || ""} onChange={e=>this.setState({add_indivisual_info:e.target.value})}/>
+                                    <button onClick={this.onClickAddIndivisual}>추가</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="column">
+                            <div className="form-head">기업 서명자 정보</div>
+                            <div className="form-input">
+                                {this.state.cooperation.map((e,k)=>{
+                                    return <div>
+                                        <CheckBox2 on={e.force || e.checked} onClick={this.onToggleSignInfo.bind(this,"cooperation",k)}/>
+                                        {e.title}
+                                    </div>
+                                })}
+                                <div>
+                                    <input type="text" value={this.state.add_cooperation_info || ""} onChange={e=>this.setState({add_cooperation_info:e.target.value})}/>
+                                    <button onClick={this.onClickAddCooperation}>추가</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <button onClick={this.onClickRegist}>등 록</button>
+                </div>
             </div>
 		</div>);
 	}

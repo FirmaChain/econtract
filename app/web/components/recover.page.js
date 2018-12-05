@@ -60,7 +60,7 @@ export default class extends React.Component {
     }
 
     onClickInputMnemonic = async() => {
-        let mnemonic = this.state.mnemonic;
+        let mnemonic = this.state.mnemonic.trim();
         if (!mnemonic) {
             return alert("마스터 키워드를 입력해주세요.");
         }
@@ -87,8 +87,8 @@ export default class extends React.Component {
         if(!this.state.email){
             return alert("이메일을 입력해주세요!")
         }
-        if(this.state.password.length < 6){
-            return alert("비밀번호는 최소 6글자입니다.")
+        if(this.state.password.length < 8){
+            return alert("비밀번호는 최소 8글자입니다.")
         }
         if(this.state.password !== this.state.password2){
             return alert("비밀번호가 일치하지 않습니다.")
@@ -182,7 +182,7 @@ export default class extends React.Component {
                 <div className="text-place">
                     <div className="name">비밀번호</div>
                     <div className="textbox">
-                        <input type="text"
+                        <input type="password"
                             value={this.state.password || ""}
                             onChange={e=>this.setState({password:e.target.value})}
                             placeholder="최소 8자리(영어, 숫자, 특수문자 사용 가능)"/>
@@ -192,7 +192,7 @@ export default class extends React.Component {
                 <div className="text-place">
                     <div className="name">비밀번호 확인</div>
                     <div className="textbox">
-                        <input type="text"
+                        <input type="password"
                             value={this.state.password2 || ""}
                             onChange={e=>this.setState({password2:e.target.value})}
                             placeholder="입력하신 패스워드를 다시 입력해주세요"/>

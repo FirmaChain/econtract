@@ -489,10 +489,6 @@ select:focus { outline:none; }
                             margin: auto;
                             margin-right:10px;
 
-                            &:hover {
-                                color: white;
-                                background-color: #324b5f;
-                            }
                         }
 
                         >.confirm-button {
@@ -509,11 +505,6 @@ select:focus { outline:none; }
                             text-align: center;
                             margin: auto;
 
-                            &:hover {
-                                background-color: #f4f4f4;
-                                border: 2px solid #f4f4f4;
-                                color:#a7a4a5;
-                            }
                         }
                     }
                 }
@@ -977,19 +968,6 @@ select:focus { outline:none; }
     max-height: calc(100% - 60px);
     background-color: white;
 
-    >.container {
-        max-width:800px;
-        height: calc(100% - 131px);
-        margin: auto;
-        text-align: center;
-        overflow-y: auto;
-
-        width:100%;
-    }
-}
-
-.first-login-page {
-
     >.left-logo {
         padding-left:10px;
         padding-top:10px;
@@ -1002,6 +980,19 @@ select:focus { outline:none; }
             height:50px;
         }
     }
+
+    >.container {
+        max-width:800px;
+        height: calc(100% - 131px);
+        margin: auto;
+        text-align: center;
+        overflow-y: auto;
+
+        width:100%;
+    }
+}
+
+.first-login-page {
 
     .content1 {
         margin-top: 60px;
@@ -1091,6 +1082,95 @@ select:focus { outline:none; }
     }
     
 }
+
+.login-page {
+
+    >.container {
+
+        >.title {
+            font-size: $font5;
+            font-weight: bold;
+            margin-top: 60px;
+            color:#324b5f;
+        }
+
+        >.desc1 {
+            font-size: $font1;
+            font-weight: bold;
+            margin-top: 40px;
+            color:#181818;
+        }
+
+        >.desc2 {
+            font-size: $font0;
+            margin-top: 10px;
+            margin-bottom: 50px;
+            color:#a7a4a5;
+            text-decoration: underline;
+        }
+
+        >.login-btn {
+            display: inline-block;
+            background-color:#324b5f;
+            border: 2px solid #324b5f;
+            font-size: $font4;
+            color: white;
+            font-weight:bold;
+            cursor: pointer;
+            width:250px;
+            max-width:40%;
+            padding:15px 20px;
+            text-align: center;
+            margin: auto;
+            margin-top:50px;
+
+        }
+
+        >.register-btn {
+            display: inline-block;
+            background-color: white;
+            border: 2px solid #324b5f;
+            font-size: $font4;
+            color: #181818;
+            font-weight:bold;
+            cursor: pointer;
+            width:250px;
+            max-width:40%;
+            padding:15px 20px;
+            text-align: center;
+            margin: auto;
+            margin-top:20px;
+
+        }
+
+        >.textbox {
+            text-align: center;
+            margin-top: 10px;
+
+            >input {
+                border:1px solid #a7a4a5;
+                padding:10px 15px;
+                font-size: $font1;
+                width: 300px;
+            }
+        }
+
+        >.other {
+            margin-top: 20px;
+
+            >.recover-account {
+                width: 300px;
+                font-size: $font0;
+                font-weight: bold;
+
+                margin: auto;
+                text-align: left;
+                cursor: pointer;
+            }
+        }
+    }   
+}
+
 
 .profile-page{
     .profile-info{
@@ -1417,108 +1497,7 @@ table.table{
 }
 
 .add-contract-page{
-
-    .upload-form{
-        display: flex;
-        align-items: center;
-        margin-top: 10px;
-
-        >.or{
-            font-size: 12px;
-            margin: 0 10px;
-            color: #8C8880;
-        }
-
-        select{
-            height: 34px;
-            width: 120px;
-        }
-
-        .file-upload-btn {
-            border:1px solid #324b5f;
-            color:#324b5f;
-            padding: 7px 15px;
-            border-radius: 5px;
-            background-color: #fff;
-            font-size: 14px;
-            margin: 0 0 0 5px;
-            cursor: pointer;
-
-            &:hover{
-                background-color: E0E0E0;
-            }
-
-            >i{
-                margin-right: 10px;
-            }
-        }
-    }
-
-    .right-desc {
-        margin-top: 90px;
-        font-size: 13px;
-        color: #7F7F7F;
-        padding-left: 20px;
-        >div{
-            margin: 10px 0;
-        }
-
-        .pin-place {
-            font-size:25px;
-            color:#333;
-            text-align:center;
-        }
-
-        .pin-check {
-            font-size:15px;
-            text-align:center;
-        }
-    }
-
-    .add-button {
-        background-color: #324b5f;
-        padding: 7px 15px;
-        font-size: 14px;
-        color: #fff;
-        border-radius: 8px;
-        cursor: pointer;
-        margin-bottom:20px;
-
-        >i {
-            margin-right: 10px;
-        }
-    }
-
-    
-    .selected-file{
-        margin: 10px 0;
-        margin-left: 10px;
-        font-size: 14px;
-        display: flex;
-        align-items:center;
-
-        .filename{
-            color:#333;
-
-        }
-
-        .del-btn{
-            display: inline-block;
-            margin-left: 10px;
-            font-weight: bold;
-            cursor: pointer;
-            width: 40px;
-        }
-    }
-    .next-step {
-        text-align:center;
-
-        .border {
-
-        } 
-    }
 }
-
 
 .index-page{
 

@@ -183,3 +183,13 @@ export function recover_account(publicbk, publicms, auth, eems, email){
         return (await api_recover_account(publicbk, publicms, auth, eems, email)).payload
     }
 }
+
+export function select_userinfo_with_email(email){
+    return async function(){
+        // SERVER TODO : return (await api_select_userinfo_with_email(email)).payload
+        return {
+            email:email,
+            username:"윤대현"+(Math.floor(Math.random()*30))
+        }
+    }
+}

@@ -281,6 +281,13 @@ export default class extends React.Component {
 	componentDidMount(){
     }
 
+    getType() {
+        if(!!this.props.location.state && !!this.props.location.state.type)
+            return this.props.location.state.type
+
+        return 1
+    }
+
     goBack = ()=>{
         if(this.state.step == 0){
             history.goBack()
@@ -494,7 +501,7 @@ export default class extends React.Component {
         if(this.state.sort_test.map(e=>this.state.mnemonic.split(" ")[e]).join(" ") !== this.state.mnemonic){
             return alert("순서가 맞지 않습니다. 다시 한번 확인해주세요!")
         }
-        let type = this.props.location.state.type || 1
+        let type = this.getType()
         let info
 
         if(type == 1) {
@@ -551,7 +558,7 @@ export default class extends React.Component {
     }
     
     render_term(){
-        let type = this.props.location.state.type || 1
+        let type = this.getType()
         let title, desc
         if(type == 1) {
             title = "개인 가입 약관 동의"
@@ -584,7 +591,7 @@ export default class extends React.Component {
     }
 
     render_email(){
-        let type = this.props.location.state.type || 1
+        let type = this.getType()
         let desc = ""
         if(type == 1)
             desc = "기본정보를 정확히 입력해주시기 바랍니다."
@@ -600,7 +607,7 @@ export default class extends React.Component {
                 <div className="text-place">
                     <div className="name">이메일</div>
                     <div className="textbox">
-                        <input type="text" 
+                        <input type="email"
                             value={this.state.email || ""} 
                             onChange={e=>this.setState({email:e.target.value})}
                             disabled={this.state.step1 == 1}
@@ -859,7 +866,7 @@ export default class extends React.Component {
                     </div>
                     <div className="list">
                         {this.state.mnemonic.split(" ").map((e,k)=>{
-                            return <div key={e+k} className="item">{e}</div>
+                            return <div key={e+k} className="item">{k+1}. {e}</div>
                         })}
                     </div>
 
@@ -934,7 +941,7 @@ export default class extends React.Component {
         }else if(this.state.step == 1){
             return this.render_email();
         }else if(this.state.step == 2){
-            let type = this.props.location.state.type || 1
+            let type = this.getType()
             if(type == 1)
                 return this.render_personal();
             else if(type == 2)
@@ -948,7 +955,7 @@ export default class extends React.Component {
 
 	render() {
 
-        let type = this.props.location.state.type || 1
+        let type = this.getType()
         let step2_text = ""
         if(type == 1)
             step2_text = "회원정보 입력"
