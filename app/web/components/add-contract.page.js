@@ -28,7 +28,12 @@ let mapDispatchToProps = {
 @connect(mapStateToProps, mapDispatchToProps )
 export default class extends React.Component {
 	constructor(){
-		super();
+        super();
+        this.roles = [
+            "생성자",
+            "서명자",
+            "참관"
+        ]
 		this.state={
             target_list:[],
             indivisual:[{
@@ -90,9 +95,14 @@ export default class extends React.Component {
 
 	componentDidMount(){
         (async()=>{
-            await this.props.fetch_user_info()
+            let user = await this.props.fetch_user_info();
             this.setState({
-                template_list:await this.props.list_template()
+                template_list:await this.props.list_template(),
+                target_list:[{
+                    username:user.username,
+                    email:user.email,
+                    role:0
+                }]
             })
         })()
     }
@@ -187,9 +197,24 @@ export default class extends React.Component {
         })
     }
 
+    onClickRemoveCounterparty = (k)=>{
+        this.state.target_list.splice(k,1)
+        this.setState({
+            target_list:[]
+        })
+    }
+
+    onClickRemoveSignInfo = (name, k)=>{
+        this.state[name].splice(k,1);
+        this.setState({
+            [name]:[...this.state[name]]
+        })
+
+    }
+
 	render() {
-        if(!this.props.user_info || !this.state.template_list)
-            return <div/>
+        if(!this.props.user_info)
+            return <div></div>
 
         return (<div className="default-page add-contract-page">
             <div className="header">
@@ -250,10 +275,10 @@ export default class extends React.Component {
                             <div className="form-input">
                                 <select onChange={e=>this.setState({add_role:e.target.value})}>
                                     <option value="">선택</option>
-                                    <option>역할1</option>
-                                    <option>역할2</option>
-                                    <option>역할3</option>
-                                    <option>역할4</option>
+                                    {this.roles.map((e,k)=>{
+                                        if(k == 0)return null
+                                        return <option value={k}>{e}</option>
+                                    })}
                                 </select>
                                 <button onClick={this.onClickAdd}>추가</button>
                             </div>
@@ -271,12 +296,19 @@ export default class extends React.Component {
                                 <th>이름</th>
                                 <th>이메일</th>
                                 <th>역할</th>
+                                <th></th>
                             </tr>
                             {this.state.target_list.map((e,k)=>{
                                 return <tr key={k}>
                                     <td>{e.username}</td>
                                     <td>{e.email}</td>
-                                    <td>{e.role}</td>
+                                    <td>{this.roles[e.role]}</td>
+                                    <td>
+                                        {k == 0 ?
+                                            null:
+                                            <button onClick={this.onClickRemoveCounterparty.bind(this, k)}>삭제</button>
+                                        }
+                                    </td>
                                 </tr>
                             })}
                         </table>
@@ -293,9 +325,10 @@ export default class extends React.Component {
                             <div className="form-head">개인 서명자 정보</div>
                             <div className="form-input">
                                 {this.state.indivisual.map((e,k)=>{
-                                    return <div>
+                                    return <div key={k}>
                                         <CheckBox2 on={e.force || e.checked} onClick={this.onToggleSignInfo.bind(this,"indivisual",k)}/>
                                         {e.title}
+                                        {e.deletable ? <button onClick={this.onClickRemoveSignInfo.bind(this,"indivisual", k)}>삭제</button> : null}
                                     </div>
                                 })}
                                 <div>
@@ -308,9 +341,10 @@ export default class extends React.Component {
                             <div className="form-head">기업 서명자 정보</div>
                             <div className="form-input">
                                 {this.state.cooperation.map((e,k)=>{
-                                    return <div>
+                                    return <div key={k}>
                                         <CheckBox2 on={e.force || e.checked} onClick={this.onToggleSignInfo.bind(this,"cooperation",k)}/>
                                         {e.title}
+                                        {e.deletable ? <button onClick={this.onClickRemoveSignInfo.bind(this,"cooperation", k)}>삭제</button> : null}
                                     </div>
                                 })}
                                 <div>

@@ -42,18 +42,19 @@ export function fetch_user_info(){
 
                 Web3.addAccount(privateKey)
                 let wallet = Web3.walletWithPK(privateKey)
+                let _ = {
+                    ...user_info,
+                    code: resp.payload.code,
+                    eth_address: wallet.address,
+                    account_id: resp.payload.account_id,
+                    publickey_contract: resp.payload.publickey_contract,
+                }
                 dispatch({
                     type:RELOAD_USERINFO,
-                    payload:{
-                        ...user_info,
-                        code: resp.payload.code,
-                        eth_address: wallet.address,
-                        account_id: resp.payload.account_id,
-                        publickey_contract: resp.payload.publickey_contract,
-                    }
+                    payload:_
                 })
 
-                return true;
+                return _;
             }
         }
 
@@ -187,10 +188,10 @@ export function recover_account(publicbk, publicms, auth, eems, email){
 
 export function select_userinfo_with_email(email){
     return async function(){
-        // SERVER TODO : return (await api_select_userinfo_with_email(email)).payload
-        return {
-            email:email,
-            username:"윤대현"+(Math.floor(Math.random()*30))
-        }
+        return (await api_select_userinfo_with_email(email)).payload
+        // return {
+        //     email:email,
+        //     username:"윤대현"+(Math.floor(Math.random()*30))
+        // }
     }
 }
