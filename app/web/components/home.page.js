@@ -49,7 +49,7 @@ export default class extends React.Component {
 		return (<div className="home-page">
             <div className="header">
                 <div className="left-logo">
-                    <img src="/static/logo_blue.png" onClick={()=>history.push("/login")}/>
+                    <img src="/static/logo_blue.png" onClick={()=>history.push("/home")}/>
                 </div>
                 <div className="menu">
                     <div className={"item " + (this.getStatus() == "contract" ? "selected" : null)} onClick={() => history.push("/home")}>계약</div>

@@ -52,6 +52,9 @@ export default class extends React.Component{
     }
     
     digit = (o)=>{
+        if(!o)
+            return null
+        
         o = o.toString()
         if(o.length == 1){
             return "0"+o
@@ -66,10 +69,12 @@ export default class extends React.Component{
         let left_time = day - ((Date.now()-t)/1000);
         let left_hour = Math.floor(left_time/60/60)
         let left_min = Math.floor(left_time/60%60)
-        // console.log(left_hour, left_min)
+        let left_second = Math.floor(left_time%60)
+
         this.setState({
-            left_hour: left_hour,
-            left_min: left_min,
+            left_hour,
+            left_min,
+            left_second
         })
     }
 
@@ -108,13 +113,20 @@ export default class extends React.Component{
         let info = this.props.user_info
 
         return (<div className="information">
-            <div className="logout">
-                <button className="btn-logout" style={{padding:"10px", marginRight:"20px"}} onClick={this.onLogout}>Logout</button>
-            </div>
-
-            <div className="profile" onClick={this.onClickProfilePic}>
+            <div className="profile">
                 <div className="name">{info.username} <i className="fas fa-caret-down"></i></div>
                 <div className="email">{info.email}</div>
+                <div className="profile-dropdown">
+                    <div className="container">
+                        <div className="login-session" onClick={this.onClickUpdateLogin}>
+                            <div className="text">로그인 세션 연장</div>
+                            <div className="time"><i className="fas fa-hourglass-half"></i> {this.state.left_hour||"0"}시간 {this.digit(this.state.left_min)||"00"}분 {this.digit(this.state.left_second)||"00"}초</div>
+                        </div>
+                        <div className="line"></div>
+                        <div className="my-info" onClick={this.onClickProfilePic}>내 정보</div>
+                        <div className="logout" onClick={this.onLogout}>로그아웃</div>
+                    </div>
+                </div>
             </div>
         </div>)
     }

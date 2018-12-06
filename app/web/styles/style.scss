@@ -642,8 +642,6 @@ select:focus { outline:none; }
     }   
 }
 
-
-
 .information {
     flex: 1;
     display: flex;
@@ -656,6 +654,7 @@ select:focus { outline:none; }
     >.profile {
         display: inline-block;
         text-align: right;
+        position: relative;
 
         >.name {
             font-size: $font2;
@@ -666,6 +665,70 @@ select:focus { outline:none; }
         >.email {
             font-size: $font0;
             color:$gray;
+        }
+
+        >.profile-dropdown {
+            display: none;
+            position: absolute;
+            z-index: 1;
+            right: 0;
+            padding-top:10px;
+            min-width:170px;
+
+            >.container {
+                background-color: white;
+                box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+
+                text-align: left;
+
+                >.login-session {
+                    cursor: pointer;
+
+                    >.text {
+                        font-size: $font1;
+                        color: $black;
+                        padding:15px;
+                    }
+
+                    >.time {
+                        font-size: $font2;
+                        font-weight: bold;
+                        color: $black;
+                        padding:15px;
+                    }
+                }
+
+                >.line {
+                    background-color: gray;
+                    height:1px;
+                }
+
+                >.my-info {
+                    font-size: $font1;
+                    color: $black;
+                    padding:15px;
+                    cursor: pointer;
+                }
+
+                >.logout {
+                    font-size: $font1;
+                    color: $black;
+                    padding:15px;
+                    cursor: pointer;
+                }
+
+                >div{
+                    &:hover{
+                        background-color: $lightgray;
+                    }
+                }
+            }
+        }
+
+        &:hover {
+            >.profile-dropdown {
+                display: block;
+            }
         }
     }
 }
@@ -710,7 +773,7 @@ select:focus { outline:none; }
 
                 font-size: $font4;
                 font-weight: bold;
-                color: $black;
+                color: $gray;
                 width: 150px;
                 text-align: center;
                 margin-left: -30px;
@@ -728,7 +791,6 @@ select:focus { outline:none; }
         }
     }
 }
-
 
 .profile-page{
     .profile-info{
