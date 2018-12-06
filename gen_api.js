@@ -270,7 +270,7 @@ export async function api_check_phone_verification_code(phone,code){
         session:window.getCookie("session")
     });
 }
-export async function api_register_account(publicbk,publicms,publicmsc,info,auth,eems,email,name,eth){
+export async function api_register_account(publicbk,publicms,publicmsc,info,auth,eems,email,name,eth,account_type){
     return await get("/register_account", {
         publicbk,
 		publicms,
@@ -280,7 +280,8 @@ export async function api_register_account(publicbk,publicms,publicmsc,info,auth
 		eems,
 		email,
 		name,
-		eth
+		eth,
+		account_type
     },{
         session:window.getCookie("session")
     });

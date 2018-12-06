@@ -93,7 +93,7 @@ export function check_phone_verification_code(phone, code){
     }
 }
 
-export function register_new_account(account, info, email, name, eth){
+export function register_new_account(account, info, email, name, eth, type){
     return async function(dispatch){
         return (await api_register_account(
             account.browserKey.publicKey.toString('hex'),
@@ -104,7 +104,8 @@ export function register_new_account(account, info, email, name, eth){
             account.encryptedMasterSeed,
             email, 
             name, 
-            eth
+            eth,
+            type
         )).payload
     }
 }

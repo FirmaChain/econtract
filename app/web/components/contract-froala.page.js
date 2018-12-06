@@ -74,7 +74,7 @@ export default class extends React.Component {
                         }, contract_info.epin ? true : false)
                     }catch(err){
                         alert("문서 로드에 실패했습니다.")
-                        history.replace("/recently")    
+                        history.replace("/home")    
                     }
                     this.blockFlag = 1;
                 }else{
@@ -339,7 +339,7 @@ export default class extends React.Component {
                     if(resp){
                         this.blockFlag = 0
                         alert("성공적으로 저장했습니다.")
-                        history.replace("/recently")
+                        history.replace("/home")
                     }else{
                         alert("저장에 문제가 발생했습니다.")
                     }
