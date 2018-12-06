@@ -13,7 +13,7 @@ import Route from "./custom_route"
 import moment from "moment"
 
 import ContractListPage from "./contract-list.page"
-import TemplateListPage from "./template-list.page"
+import TemplatePage from "./contract-template.page"
 
 import translate from "../../common/translate"
 import {
@@ -40,9 +40,9 @@ export default class extends React.Component {
     }
 
     getStatus() {
-        if(!!this.props.match.params && !!this.props.match.params.menu)
-            return this.props.match.params.menu
-        return "contract"
+        if(!!this.props.location && !!this.props.location.pathname)
+            return this.props.location.pathname
+        return "home"
     }
 
 	render() {
@@ -52,14 +52,14 @@ export default class extends React.Component {
                     <img src="/static/logo_blue.png" onClick={()=>history.push("/home")}/>
                 </div>
                 <div className="menu">
-                    <div className={"item " + (this.getStatus() == "contract" ? "selected" : null)} onClick={() => history.push("/home")}>계약</div>
-                    <div className={"item " + (this.getStatus() == "template" ? "selected" : null)} onClick={() => history.push("/home/template")}>템플릿</div>
+                    <div className={"item " + (this.getStatus() == "/home" ? "selected" : null)} onClick={() => history.push("/home")}>계약</div>
+                    <div className={"item " + (this.getStatus() == "/template" ? "selected" : null)} onClick={() => history.push("/template")}>템플릿</div>
                 </div>
                 <Information />
             </div>
             <div className="content">
-                <Route exact path="/home" component={ContractListPage} />
-                <Route path="/home/template" component={TemplateListPage} />
+                <Route path="/home" component={ContractListPage} />
+                <Route path="/template" component={TemplatePage} />
             </div>
 		</div>);
 	}

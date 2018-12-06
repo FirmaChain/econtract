@@ -687,33 +687,34 @@ select:focus { outline:none; }
                     >.text {
                         font-size: $font1;
                         color: $black;
-                        padding:15px;
+                        padding: 10px 15px;
                     }
 
                     >.time {
                         font-size: $font2;
                         font-weight: bold;
                         color: $black;
-                        padding:15px;
+                        padding:10px 15px;
+                        padding-top: 0;
                     }
                 }
 
                 >.line {
-                    background-color: gray;
+                    background-color: $gray;
                     height:1px;
                 }
 
                 >.my-info {
                     font-size: $font1;
                     color: $black;
-                    padding:15px;
+                    padding:10px 15px;
                     cursor: pointer;
                 }
 
                 >.logout {
                     font-size: $font1;
                     color: $black;
-                    padding:15px;
+                    padding:10px 15px;
                     cursor: pointer;
                 }
 
