@@ -61,7 +61,13 @@ window.addEventListener("load",()=>{
 					<Route onEnter={resolver} exact path="/register" component={RegisterPage} />
 					<Route onEnter={resolver} exact path="/check-mnemonic" component={CheckMnemonicPage} />
 					<Route onEnter={resolver} exact path="/recover" component={RecoverPage} />
+
 					<Route onEnter={resolver} exact path="/home" component={HomePage} />
+					<Route onEnter={resolver} exact path="/home/:menu" component={HomePage} />
+
+					<Route onEnter={resolver} exact path="/template" component={HomePage} />
+					<Route onEnter={resolver} exact path="/template/:menu" component={HomePage} />
+
 					<Route onEnter={resolver} exact path="/folder" component={FolderPage} />
 					<Route onEnter={resolver} exact path="/add-contract" component={AddContractPage} />
 					<Route onEnter={resolver} exact path="/folder/:id" component={InFolderPage} />
@@ -69,9 +75,9 @@ window.addEventListener("load",()=>{
 					<Route onEnter={resolver} exact path="/contract-confirm/:id/:revision" component={ContractConfirmPage} />
 					<Route onEnter={resolver} exact path="/profile" component={UserProfilePage} />
 					
-					<Route onEnter={resolver} exact path="/template" component={TemplatePage} />
+{/*					<Route onEnter={resolver} exact path="/template" component={TemplatePage} />
 					<Route onEnter={resolver} exact path="/add-template" component={AddTemplatePage} />
-					<Route onEnter={resolver} exact path="/template-edit/:id" component={EditTemplatePage} />
+					<Route onEnter={resolver} exact path="/template-edit/:id" component={EditTemplatePage} />*/}
 
 					<Route onEnter={resolver} exact path="/verification" component={VerificationPage} />
 					<Route onEnter={resolver} exact path="/verification/:id" component={VerificationPage} />
