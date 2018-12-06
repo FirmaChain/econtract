@@ -9,6 +9,7 @@ import {
     api_find_user_with_code_email,
     api_check_join_publickey,
     api_recover_account,
+    api_select_userinfo_with_email
 } from "../../../gen_api"
 
 import {

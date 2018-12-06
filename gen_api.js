@@ -14,14 +14,10 @@ export async function api_convert_doc(file){
         session:window.getCookie("session")
     });
 }
-export async function api_new_contract(subject,imgs,counterparties,counterparties_eckai){
+export async function api_new_contract(subject,counterparties,counterparties_eckai){
     let data = new FormData();
 
     data.append('subject', subject);
-	for(let k in imgs){
-        data.append('imgs:'+k,imgs[k])
-    }
-    data.append('imgs',imgs.length);
 	for(let k in counterparties){
         data.append('counterparties:'+k,counterparties[k])
     }
@@ -289,13 +285,12 @@ export async function api_register_account(publicbk,publicms,publicmsc,info,auth
         session:window.getCookie("session")
     });
 }
-export async function api_recover_account(publicbk,publicms,auth,eems,email){
+export async function api_recover_account(publicbk,publicms,auth,eems){
     return await get("/recover_account", {
         publicbk,
 		publicms,
 		auth,
-		eems,
-		email
+		eems
     },{
         session:window.getCookie("session")
     });
@@ -334,6 +329,13 @@ export async function api_find_user_with_code_email(code,email){
     return await get("/find_user_with_code_email", {
         code,
 		email
+    },{
+        session:window.getCookie("session")
+    });
+}
+export async function api_select_userinfo_with_email(email){
+    return await get("/select_userinfo_with_email", {
+        email
     },{
         session:window.getCookie("session")
     });
