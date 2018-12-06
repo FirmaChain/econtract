@@ -47,7 +47,6 @@ export default class extends React.Component {
         (async()=>{
             await this.props.fetch_user_info()
             await this.props.folder_list()
-
         })()
     }
 

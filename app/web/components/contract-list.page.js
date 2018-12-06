@@ -13,23 +13,27 @@ import Route from "./custom_route"
 import moment from "moment"
 
 import {
-    recently_contracts,
-    folder_in_contracts,
-    all_folders,
+    folder_list,
+    new_folder,
+    remove_folder,
     move_to_folder,
+    recently_contracts,
 } from "../../common/actions"
 
 let mapStateToProps = (state)=>{
 	return {
-        user:state.user.info
+        folders:state.contract.folders,
+        user_info: state.user.info,
+        board:state.contract.board,
 	}
 }
 
 let mapDispatchToProps = {
-    recently_contracts,
-    folder_in_contracts,
-    all_folders,
+    folder_list,
+    new_folder,
+    remove_folder,
     move_to_folder,
+    recently_contracts,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -42,14 +46,149 @@ export default class extends React.Component {
 	}
 
 	componentDidMount() {
-
+        (async()=>{
+            await this.props.folder_list()
+            if(this.getTitle().id == "recently") {
+                await this.props.recently_contracts();
+            }
+        })()
 	}
 
+	onClickAddContract(){
+	    history.push("/add-contract")
+	}
+
+	getTitle() {
+		let pathname = this.props.location.pathname
+		if(pathname == "/home/lock")
+			return { id:"lock", title : "잠김"}
+		else if(pathname == "/home/requested")
+			return { id:"requested", title : "요청받음"}
+		else if(pathname == "/home/created")
+			return { id:"created", title : "생성함"}
+
+		else if(pathname == "/home/1") {
+			return { id:"1", title : "내용 입력중"}
+		}
+		else if(pathname == "/home/2") {
+			return { id:"2", title : "내 서명 전"}
+		}
+		else if(pathname == "/home/3") {
+			return { id:"3", title : "상대방 서명 전"}
+		}
+		else if(pathname == "/home/4") {
+			return { id:"4", title : "보기 가능"}
+		}
+		else if(pathname == "/home/5") {
+			return { id:"5", title : "완료됨"}
+		}
+		else if(pathname == "/home/6") {
+			return { id:"6", title : "삭제됨"}
+		}
+		return { id:"recently", title : "최근 사용"}
+	} 
+
+    onClickPage = async(page)=>{
+    	if(this.state.cur_page == page)
+    		return;
+
+        await this.props.recently_contracts(page - 1);
+        this.setState({
+            cur_page:page
+        })
+    }
+
+
+    render_board_slot(e,k){
+        let status_text = (status)=>{
+            if(status == 0){
+                return "배포 전"
+            }else if(status == 1){
+                return "서명 전"
+            }else if(status == 2){
+                return "서명 완료"
+            }
+        }
+        let mm = this.state.moveMode;
+        let lock_status;
+        let lock_src
+        if (e.epin) {
+            lock_src = "/static/icon_unlocked.png";
+        } else if (sessionStorage.getItem(`contract:${e.contract_id}`)) {
+            lock_src = "/static/icon_unlocked_session.png";
+        } else {
+            lock_src = "/static/icon_locked.png";
+        }
+        return <tr key={k} className={mm ? "" : "clickable"} onClick={mm ? null : this.onClickContract.bind(this,e.contract_id)}>
+            {mm ? <td style={{width:"10px"}}><CheckBox2 on={this.state.move_select[k]} onClick={this.onClickMoveSel.bind(this,k)} /></td> : null}
+            <td className="text-center">{status_text(e.status)}</td>
+            <td className="text-center"><img src={lock_src} height={19}/></td>
+            <td className="text-left">{e.name}</td>
+            <td style={{width:"100px"}} className="text-center">{e.username}{e.counterpartyCnt > 0 ?` 외 ${e.counterpartyCnt}명`:""}</td>
+            <td className="date-cell">{moment(e.updatedAt).format("YYYY-MM-DD HH:mm:ss")}</td>
+        </tr>
+    }
+
 	render() {
+        if(!this.props.folders)
+            return <div />
+
+        let board = this.state.loaded && this.props.board ? this.props.board : { list:[] };
+        let total_cnt = board.total_cnt
+        let page_num = board.page_num
+
 		return (<div className="contract-page">
 			<div className="contract-menu">
+				<div className="start-contract" onClick={this.onClickAddContract}>시작하기</div>
+				<div className="menu-list">
+					<div className="list">
+						<div className="title">계약</div>
+						<div className="item"><i className="fal fa-clock"></i> 최근 사용</div>
+						<div className="item"><i className="fas fa-lock-alt"></i> 잠김</div>
+						<div className="item"><i className="fas fa-share-square"></i> 요청받음</div>
+						<div className="item"><i className="fas fa-handshake-alt"></i> 생성함</div>
+					</div>
+					<div className="list">
+						<div className="title">모아보기</div>
+						<div className="item"><i className="fal fa-ellipsis-h"></i> 내용 입력 중</div>
+						<div className="item">내 서명 전</div>
+						<div className="item">상대방 서명 전</div>
+						<div className="item"><i className="fas fa-eye"></i> 보기 가능</div>
+						<div className="item"><i className="fal fa-check-circle"></i> 완료됨</div>
+						<div className="item"><i className="fal fa-folder-open"></i> 삭제됨</div>
+					</div>
+					<div className="list">
+						<div className="title">폴더</div>
+						{this.props.folders.list.map((e,k)=>{
+                            let subject = e.subject || "분류되지 않은 계약"
+                            let folder_id = e.folder_id || 0
+                            return <div className="item" key={e+k}>
+                                <i className={`fas ${folder_id == 0 ? "fa-thumbtack":"fa-folder"}`} /> {subject}
+                            </div>
+                        })}
+					</div>
+				</div>
 			</div>
 			<div className="contract-list">
+				<div className="title">{this.getTitle().title}</div>
+				<div className="list" style={{marginTop:"20px"}}>
+                    <div className="head">
+                        <div className="list-head-item list-chkbox">
+                        	<CheckBox2 on={this.state.target_me}
+                        		onClick={()=>this.setState({target_me:!this.state.target_me})}/>
+                        </div>
+                        <div className="list-head-item list-name">계약명</div>
+                        <div className="list-head-item list-status">상태</div>
+                        <div className="list-head-item list-date">마지막 활동 시간</div>
+                        <div className="list-head-item list-action">액션</div>
+                    </div>
+                    {board.list.map((e,k)=>{
+                        return this.render_board_slot(e,k)
+                    })}
+                    {board.list.length == 0 ? <div className="empty-contract" >최근 계약서가 없습니다.</div> : null}
+                </div>
+                
+                <Pager max={Math.ceil(total_cnt/page_num)} cur={this.state.cur_page||1} onClick={this.onClickPage} />
 			</div>
 		</div>)
 	}

@@ -17,15 +17,17 @@ import TemplatePage from "./contract-template.page"
 
 import translate from "../../common/translate"
 import {
-    move_to_folder,
+    fetch_user_info,
 } from "../../common/actions"
 
 let mapStateToProps = (state)=>{
 	return {
+        user:state.user.info
 	}
 }
 
 let mapDispatchToProps = {
+    fetch_user_info
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -37,6 +39,19 @@ export default class extends React.Component {
 	}
 
 	componentDidMount(){
+        if(!this.props.user_info){
+            (async()=>{
+                await window.showIndicator()
+                await this.props.fetch_user_info()
+                await window.hideIndicator()
+            })()
+        }
+    }
+    
+    componentWillReceiveProps(props){
+        if(props.user_info === false){
+            history.replace("/login")
+        }
     }
 
     getStatus() {
@@ -63,7 +78,7 @@ export default class extends React.Component {
                     <Route path="/template" component={TemplatePage} />
                 </div>
             </div>
-            
+
             <div className="footer">
                 <div className="left">Copyright 2018 Firma Solutions, Inc, All right reserved</div>
                 <div className="middle">
