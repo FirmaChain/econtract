@@ -61,7 +61,10 @@ window.addEventListener("load",()=>{
 					<Route onEnter={resolver} exact path="/register" component={RegisterPage} />
 					<Route onEnter={resolver} exact path="/check-mnemonic" component={CheckMnemonicPage} />
 					<Route onEnter={resolver} exact path="/recover" component={RecoverPage} />
+
 					<Route onEnter={resolver} exact path="/home" component={HomePage} />
+					<Route onEnter={resolver} exact path="/home/:menu" component={HomePage} />
+
 					<Route onEnter={resolver} exact path="/folder" component={FolderPage} />
 					<Route onEnter={resolver} exact path="/add-contract" component={AddContractPage} />
 					<Route onEnter={resolver} exact path="/folder/:id" component={InFolderPage} />
