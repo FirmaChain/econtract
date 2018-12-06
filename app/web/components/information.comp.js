@@ -109,11 +109,11 @@ export default class extends React.Component{
 
         return (<div className="information">
             <div className="logout">
-                <button className="btn-logout" style={{padding:"10px", marginRight:"20px"}} onClick={this.onLogout}>LO</button>
+                <button className="btn-logout" style={{padding:"10px", marginRight:"20px"}} onClick={this.onLogout}>Logout</button>
             </div>
 
             <div className="profile" onClick={this.onClickProfilePic}>
-                <div className="name">{info.username}<i className="fas fa-caret-down"></i></div>
+                <div className="name">{info.username} <i className="fas fa-caret-down"></i></div>
                 <div className="email">{info.email}</div>
             </div>
         </div>)
