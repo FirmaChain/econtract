@@ -761,6 +761,7 @@ select:focus { outline:none; }
         >.menu {
             margin-left:50px;
             position: relative;
+            min-width: 430px;
 
             >.item {
                 position: relative;
@@ -791,6 +792,26 @@ select:focus { outline:none; }
 
         }
     }
+}
+
+.contract-page {
+    display: flex;
+    flex-direction: row;
+}
+
+.contract-menu {
+    width:300px;
+    min-width:200px;
+    min-height: calc(100% - 131px);
+    overflow-y: auto;
+
+}
+
+.contract-list {
+    flex:1;
+    border-left:1px solid $gray;
+    min-height: calc(100% - 131px);
+    overflow-y: auto;
 }
 
 .profile-page{

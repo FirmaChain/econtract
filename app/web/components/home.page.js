@@ -46,20 +46,32 @@ export default class extends React.Component {
     }
 
 	render() {
-		return (<div className="home-page">
-            <div className="header">
-                <div className="left-logo">
-                    <img src="/static/logo_blue.png" onClick={()=>history.push("/home")}/>
+		return (<div className="maintain">
+            <div className="home-page">
+                <div className="header">
+                    <div className="left-logo">
+                        <img src="/static/logo_blue.png" onClick={()=>history.push("/home")}/>
+                    </div>
+                    <div className="menu">
+                        <div className={"item " + (this.getStatus() == "/home" ? "selected" : null)} onClick={() => history.push("/home")}>계약</div>
+                        <div className={"item " + (this.getStatus() == "/template" ? "selected" : null)} onClick={() => history.push("/template")}>템플릿</div>
+                    </div>
+                    <Information />
                 </div>
-                <div className="menu">
-                    <div className={"item " + (this.getStatus() == "/home" ? "selected" : null)} onClick={() => history.push("/home")}>계약</div>
-                    <div className={"item " + (this.getStatus() == "/template" ? "selected" : null)} onClick={() => history.push("/template")}>템플릿</div>
+                <div className="content">
+                    <Route path="/home" component={ContractListPage} />
+                    <Route path="/template" component={TemplatePage} />
                 </div>
-                <Information />
             </div>
-            <div className="content">
-                <Route path="/home" component={ContractListPage} />
-                <Route path="/template" component={TemplatePage} />
+            
+            <div className="footer">
+                <div className="left">Copyright 2018 Firma Solutions, Inc, All right reserved</div>
+                <div className="middle">
+                    이용약관 | 개인정보처리방침
+                </div>
+                <div className="right">
+                    developer@firma-solutions.com
+                </div>
             </div>
 		</div>);
 	}

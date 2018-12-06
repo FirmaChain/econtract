@@ -34,9 +34,30 @@ let mapDispatchToProps = {
 
 @connect(mapStateToProps, mapDispatchToProps )
 export default class extends React.Component {
+
+	constructor(props) {
+	  super(props);
+	  this.state = {
+	  };
+	}
+
+	componentDidMount() {
+
+	}
+
 	render() {
-		return (<div>
-			컨트랙트 리스트
+		return (<div className="contract-page">
+			<div className="contract-menu">
+			</div>
+			<div className="contract-list">
+			</div>
 		</div>)
 	}
 }
+
+
+
+
+
+
+
