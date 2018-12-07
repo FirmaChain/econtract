@@ -66,8 +66,12 @@ export default class extends React.Component {
                         <img src="/static/logo_blue.png" onClick={()=>history.push("/home")}/>
                     </div>
                     <div className="menu">
-                        <div className={"item " + (this.getStatus() == "/home" ? "selected" : null)} onClick={() => history.push("/home")}>계약</div>
-                        <div className={"item " + (this.getStatus() == "/template" ? "selected" : null)} onClick={() => history.push("/template")}>템플릿</div>
+                        <div className={(this.getStatus() == "/home" ? "selected-item" : "item")} onClick={() => history.push("/home")}>
+                            <div>계약</div>
+                        </div>
+                        <div className={(this.getStatus() == "/template" ? "selected-item" : "item")} onClick={() => history.push("/template")}>
+                            <div>템플릿</div>
+                        </div>
                     </div>
                     <Information />
                 </div>

@@ -40,9 +40,10 @@ let mapDispatchToProps = {
 export default class extends React.Component {
 
 	constructor(props) {
-	  super(props);
-	  this.state = {
-	  };
+        super(props);
+        this.state = {
+            board_checks : []
+        };
 	}
 
 	componentDidMount() {
@@ -67,23 +68,23 @@ export default class extends React.Component {
 		else if(pathname == "/home/created")
 			return { id:"created", title : "생성함"}
 
-		else if(pathname == "/home/1") {
-			return { id:"1", title : "내용 입력중"}
+		else if(pathname == "/home/typing") {
+			return { id:"typing", title : "내용 입력중"}
 		}
-		else if(pathname == "/home/2") {
-			return { id:"2", title : "내 서명 전"}
+		else if(pathname == "/home/beforeMySign") {
+			return { id:"beforeMySign", title : "내 서명 전"}
 		}
-		else if(pathname == "/home/3") {
-			return { id:"3", title : "상대방 서명 전"}
+		else if(pathname == "/home/beforeOtherSign") {
+			return { id:"beforeOtherSign", title : "상대방 서명 전"}
 		}
-		else if(pathname == "/home/4") {
-			return { id:"4", title : "보기 가능"}
+		else if(pathname == "/home/view") {
+			return { id:"view", title : "보기 가능"}
 		}
-		else if(pathname == "/home/5") {
-			return { id:"5", title : "완료됨"}
+		else if(pathname == "/home/completed") {
+			return { id:"completed", title : "완료됨"}
 		}
-		else if(pathname == "/home/6") {
-			return { id:"6", title : "삭제됨"}
+		else if(pathname == "/home/deleted") {
+			return { id:"deleted", title : "삭제됨"}
 		}
 		return { id:"recently", title : "최근 사용"}
 	} 
@@ -94,7 +95,8 @@ export default class extends React.Component {
 
         await this.props.recently_contracts(page - 1);
         this.setState({
-            cur_page:page
+            cur_page:page,
+            board_checks:[]
         })
     }
 
@@ -114,24 +116,30 @@ export default class extends React.Component {
             	return "보기 가능"
             }
         }
-        let mm = this.state.moveMode;
-        let lock_status;
-        let lock_src
-        if (e.epin) {
-            lock_src = "/static/icon_unlocked.png";
-        } else if (sessionStorage.getItem(`contract:${e.contract_id}`)) {
-            lock_src = "/static/icon_unlocked_session.png";
-        } else {
-            lock_src = "/static/icon_locked.png";
-        }
-        return <tr key={k} className={mm ? "" : "clickable"} onClick={mm ? null : this.onClickContract.bind(this,e.contract_id)}>
-            {mm ? <td style={{width:"10px"}}><CheckBox2 on={this.state.move_select[k]} onClick={this.onClickMoveSel.bind(this,k)} /></td> : null}
-            <td className="text-center">{status_text(e.status)}</td>
-            <td className="text-center"><img src={lock_src} height={19}/></td>
-            <td className="text-left">{e.name}</td>
-            <td style={{width:"100px"}} className="text-center">{e.username}{e.counterpartyCnt > 0 ?` 외 ${e.counterpartyCnt}명`:""}</td>
-            <td className="date-cell">{moment(e.updatedAt).format("YYYY-MM-DD HH:mm:ss")}</td>
-        </tr>
+        return (<div key={e.contract_id} className="item">
+            <div className="list-body-item list-chkbox">
+                <CheckBox2 size={18}
+                    on={this.state.board_checks[e.contract_id] || false}
+                    onClick={()=> {
+                        let l = [...this.state.board_checks]
+                        l[e.contract_id] = !l[e.contract_id]
+                        this.setState({board_checks:l})
+                    }}/>
+            </div>
+            <div className="list-body-item list-name">
+                {e.name}
+                <div className="sub">서명 : 홍길동(생성자), 누구누구 외 2명</div>
+            </div>
+            <div className="list-body-item list-status">
+                {status_text(e.status)}
+                <div className="sub">새로운 메시지가 도착했습니다.</div>
+            </div>
+            <div className="list-body-item list-date">{moment(e.updatedAt).format("YYYY-MM-DD HH:mm:ss")}</div>
+            <div className="list-body-item list-action">
+                <div className="action-button blue-but">서명</div>
+                <div className="arrow-button blue-but"><i className="fas fa-caret-down"></i></div>
+            </div>
+        </div>)
     }
 
 	render() {
@@ -186,12 +194,100 @@ export default class extends React.Component {
                         <div className="list-head-item list-name">계약명</div>
                         <div className="list-head-item list-status">상태</div>
                         <div className="list-head-item list-date">마지막 활동 시간</div>
-                        <div className="list-head-item list-action">액션</div>
+                        <div className="list-head-item list-action"></div>
                     </div>
                     {board.list.map((e,k)=>{
                         return this.render_board_slot(e,k)
                     })}
-                    {board.list.length == 0 ? <div className="empty-contract" >최근 계약서가 없습니다.</div> : null}
+                    <div className="item">
+                        <div className="list-body-item list-chkbox">
+                            <CheckBox2 size={18}
+                                on={false}
+                                onClick={()=> {}}/>
+                        </div>
+                        <div className="list-body-item list-name">
+                            계약서 테스트 11111
+                            <div className="sub">서명 : 홍길동(생성자), 누구누구 외 2명</div>
+                        </div>
+                        <div className="list-body-item list-status">
+                            내 서명 전
+                            <div className="sub">새로운 메시지가 도착했습니다.</div>
+                        </div>
+                        <div className="list-body-item list-date">{moment().format("YYYY-MM-DD HH:mm:ss")}</div>
+                        <div className="list-body-item list-action">
+                            <div className="button-container">
+                                <div className="action-button action-blue-but">서명</div>
+                                <div className="arrow-button arrow-blue-but"><i className="fas fa-caret-down"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="item">
+                        <div className="list-body-item list-chkbox">
+                            <CheckBox2 size={18}
+                                on={false}
+                                onClick={()=> {}}/>
+                        </div>
+                        <div className="list-body-item list-name">
+                            계약서 테스트 11111
+                            <div className="sub">서명 : 홍길동(생성자), 누구누구 외 2명</div>
+                        </div>
+                        <div className="list-body-item list-status">
+                            내 서명 전
+                            <div className="sub">새로운 메시지가 도착했습니다.</div>
+                        </div>
+                        <div className="list-body-item list-date">{moment().format("YYYY-MM-DD HH:mm:ss")}</div>
+                        <div className="list-body-item list-action">
+                            <div className="button-container">
+                                <div className="action-button action-blue-but">서명</div>
+                                <div className="arrow-button arrow-blue-but"><i className="fas fa-caret-down"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="item">
+                        <div className="list-body-item list-chkbox">
+                            <CheckBox2 size={18}
+                                on={false}
+                                onClick={()=> {}}/>
+                        </div>
+                        <div className="list-body-item list-name">
+                            계약서 테스트 11111
+                            <div className="sub">서명 : 홍길동(생성자), 누구누구 외 2명</div>
+                        </div>
+                        <div className="list-body-item list-status">
+                            내 서명 전
+                            <div className="sub">새로운 메시지가 도착했습니다.</div>
+                        </div>
+                        <div className="list-body-item list-date">{moment().format("YYYY-MM-DD HH:mm:ss")}</div>
+                        <div className="list-body-item list-action">
+                            <div className="button-container">
+                                <div className="action-button action-transparent-but">서명</div>
+                                <div className="arrow-button arrow-transparent-but"><i className="fas fa-caret-down"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="item">
+                        <div className="list-body-item list-chkbox">
+                            <CheckBox2 size={18}
+                                on={false}
+                                onClick={()=> {}}/>
+                        </div>
+                        <div className="list-body-item list-name">
+                            계약서 테스트 11111
+                            <div className="sub">서명 : 홍길동(생성자), 누구누구 외 2명</div>
+                        </div>
+                        <div className="list-body-item list-status">
+                            내 서명 전
+                            <div className="sub">새로운 메시지가 도착했습니다.</div>
+                        </div>
+                        <div className="list-body-item list-date">{moment().format("YYYY-MM-DD HH:mm:ss")}</div>
+                        <div className="list-body-item list-action">
+                            <div className="button-container">
+                                <div className="action-button action-transparent-but">서명</div>
+                                <div className="arrow-button arrow-transparent-but"><i className="fas fa-caret-down"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                    {/*board.list.length == 0 ? <div className="empty-contract" >최근 계약서가 없습니다.</div> : null*/}
                 </div>
                 
                 <Pager max={Math.ceil(total_cnt/page_num)} cur={this.state.cur_page||1} onClick={this.onClickPage} />
