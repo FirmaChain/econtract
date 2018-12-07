@@ -94,7 +94,7 @@ export default class extends React.Component {
             return alert("비밀번호가 일치하지 않습니다.")
         }
 
-        let mnemonic = this.state.mnemonic;
+        let mnemonic = this.state.mnemonic.trim();
         getBrowserKey(true); // Reset browserkey
         let auth = makeAuth(this.state.email, this.state.password);
         let encryptedMasterSeed = makeMnemonic(auth, mnemonic);
@@ -111,7 +111,9 @@ export default class extends React.Component {
             localStorage.setItem("browser_key_virgin", 0);
             history.push("/login");
             return alert("이제 기존 계정으로 로그인할 수 있습니다.")
-        }else{
+        } else if(resp.code == -3) {
+            return alert("일치하는 계정 정보가 없습니다.")
+        } else {
             return alert(resp.error)
         }
     }
