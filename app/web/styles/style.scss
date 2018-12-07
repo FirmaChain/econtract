@@ -1020,7 +1020,9 @@ select:focus { outline:none; }
                     font-weight: bold;
 
                     cursor: pointer;
-                    padding:10px 40px;
+                    padding-top:10px;
+                    padding-bottom:10px;
+                    width:90px;
                     height:38px;
                     box-sizing: border-box;
                     text-align: center;
