@@ -150,9 +150,9 @@ export default class extends React.Component {
 					</div>
 					<div className="list">
 						<div className="title">모아보기</div>
-						<div className="item"><i className="fal fa-ellipsis-h"></i> 내용 입력 중</div>
-						<div className="item">내 서명 전</div>
-						<div className="item">상대방 서명 전</div>
+						<div className="item"><i className="fal fa-keyboard"></i> 내용 입력 중</div>
+						<div className="item"><i className="far fa-file-import"></i> 내 서명 전</div>
+						<div className="item"><i className="far fa-file-export"></i> 상대방 서명 전</div>
 						<div className="item"><i className="fas fa-eye"></i> 보기 가능</div>
 						<div className="item"><i className="fal fa-check-circle"></i> 완료됨</div>
 						<div className="item"><i className="fal fa-folder-open"></i> 삭제됨</div>
