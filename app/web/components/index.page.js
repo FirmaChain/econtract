@@ -134,7 +134,7 @@ export default class extends React.Component {
 			<div className="footer-section">
 				<div className="footer-container">
 					<img className="firma-logo" src="/static/firmachain_logo.png"/>
-					<div className="footer">
+					<div className="footer-place">
 						{translate("FOOTER_1")}<br/>
 						{translate("FOOTER_2")}<br/>
 						developer@firma-solutions.com<br/>
