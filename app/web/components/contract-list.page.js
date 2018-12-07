@@ -102,11 +102,16 @@ export default class extends React.Component {
     render_board_slot(e,k){
         let status_text = (status)=>{
             if(status == 0){
-                return "배포 전"
+                return "내용 입력 중"
             }else if(status == 1){
-                return "서명 전"
+            	if("내가 서명 했다면")
+            		return "상대방 서명 전"
+            	else if("나는 서명 안했고 상대방중 하나라도 서명 했다면")
+            		return "내 서명 전"
             }else if(status == 2){
-                return "서명 완료"
+                return "계약 완료"
+            }else if(status == 3){
+            	return "보기 가능"
             }
         }
         let mm = this.state.moveMode;
@@ -174,7 +179,8 @@ export default class extends React.Component {
 				<div className="list" style={{marginTop:"20px"}}>
                     <div className="head">
                         <div className="list-head-item list-chkbox">
-                        	<CheckBox2 on={this.state.target_me}
+                        	<CheckBox2 size={18}
+                        		on={this.state.target_me}
                         		onClick={()=>this.setState({target_me:!this.state.target_me})}/>
                         </div>
                         <div className="list-head-item list-name">계약명</div>
