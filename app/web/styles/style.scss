@@ -748,6 +748,7 @@ select:focus { outline:none; }
             min-width: 200px;
             width: 20%;
             text-align: center;
+            box-sizing: border-box;
 
             >img {
                 cursor: pointer;
@@ -2392,6 +2393,10 @@ div.pager-comp{
     }
 }
 div.checkbox2-comp{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
     cursor: pointer;
     border: 1px solid $blue;
     overflow: hidden;

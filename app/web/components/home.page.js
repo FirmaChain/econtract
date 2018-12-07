@@ -38,20 +38,6 @@ export default class extends React.Component {
         }
 	}
 
-	componentDidMount(){
-        if(!this.props.user_info){
-            (async()=>{
-                await this.props.fetch_user_info()
-            })()
-        }
-    }
-    
-    componentWillReceiveProps(props){
-        if(props.user_info === false){
-            history.replace("/login")
-        }
-    }
-
     getStatus() {
         if(!!this.props.location && !!this.props.location.pathname)
             return this.props.location.pathname

@@ -71,11 +71,16 @@ export default class extends React.Component{
         let left_min = Math.floor(left_time/60%60)
         let left_second = Math.floor(left_time%60)
 
-        this.setState({
-            left_hour,
-            left_min,
-            left_second
-        })
+        if(left_time <= 0) {
+            this.deleteSession()
+            history.push("/login")
+        } else {
+            this.setState({
+                left_hour,
+                left_min,
+                left_second
+            })
+        }
     }
 
     onClickUpdateLogin = ()=>{
@@ -88,11 +93,11 @@ export default class extends React.Component{
         }
     }
 
-    onClickProfilePic = ()=>{
+    onMyInfo = ()=>{
         history.push("/profile")
     }
 
-    onLogout = () => {
+    deleteSession = () => {
         window.eraseCookie("session")
         window.eraseCookie("session_update")
         sessionStorage.removeItem("user_id");
@@ -101,7 +106,10 @@ export default class extends React.Component{
         for (let i = 0; i < keys.length; i++) {
             sessionStorage.removeItem(keys[i]);
         }
-        
+    }
+
+    onLogout = () => {
+        this.deleteSession()
         location.reload(true)
     }
     
@@ -123,7 +131,7 @@ export default class extends React.Component{
                             <div className="time"><i className="fas fa-hourglass-half"></i> {this.state.left_hour||"0"}시간 {this.digit(this.state.left_min)||"00"}분 {this.digit(this.state.left_second)||"00"}초</div>
                         </div>
                         <div className="line"></div>
-                        <div className="my-info" onClick={this.onClickProfilePic}>내 정보</div>
+                        <div className="my-info" onClick={this.onMyInfo}>내 정보</div>
                         <div className="logout" onClick={this.onLogout}>로그아웃</div>
                     </div>
                 </div>
