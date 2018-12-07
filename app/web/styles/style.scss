@@ -898,6 +898,10 @@ select:focus { outline:none; }
                     width:20px;
                     margin-right:10px;
                 }
+
+                &:hover {
+                    background-color: $lightgray;
+                }
             }
 
             >.selected {
