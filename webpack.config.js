@@ -50,6 +50,9 @@ let defaults = {
       },
     ]
   },
+  devServer: {
+    https: true
+  },
   plugins: plugin
 };
 
