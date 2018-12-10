@@ -12,6 +12,7 @@ $blue : #324b5f;
 $black : #181818;
 $gray : #a7a4a5;
 $lightgray : #f4f4f4;
+$middlegray : #dadadc;
 
 .font1 {
     font-size: $font1;
@@ -279,6 +280,10 @@ select:focus { outline:none; }
                 padding:10px 15px;
                 font-size: $font1;
                 width: 100%;
+            }
+
+            >input:disabled {
+                background-color: $middlegray;
             }
         }
 
