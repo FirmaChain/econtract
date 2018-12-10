@@ -41,6 +41,49 @@ class AddFolder extends React.Component{
 }
 
 @modal
+class StartContract extends React.Component{
+    constructor(){
+        super()
+        this.state = {}
+    }
+    closeSelf = ()=>{
+        window.closeModal(this.props.modalId)
+    }
+
+    onClick = (type)=>{
+
+        this.props.onClick && this.props.onClick( type )
+        this.closeSelf()
+    }
+
+    render(){
+        return <div className="start-contract-modal">
+            <div className="container">
+                <div className="icon"><i className="fas fa-pen-fancy"></i></div>
+                <div className="title">시작하기</div>
+                <div className="btn-container">
+                    <div className="btn" onClick={this.onClick.bind(this, 1)}>
+                        <i className="fal fa-comment-alt-edit"></i>
+                        <div className="btn-desc">
+                            <div className="title">웹 에디터 사용하기</div>
+                            <div className="sub">계약 내용을 직접 추가하고 수정할 수 있습니다.<br/>내용이 확정되면 서명 또는 도장을 추가하여 작업을 완료할 수 있습니다.</div>
+                        </div>
+                    </div>
+                    <div className="btn" onClick={this.onClick.bind(this, 2)}>
+                        <i className="fal fa-paste"></i>
+                        <div className="btn-desc">
+                            <div className="title">템플릿 사용하기</div>
+                            <div className="sub">기존에 생성한 템플릿을 바로 사용하실 수 있습니다.<br/>기존 내용을 수정하거나 서명 또는 도장을 추가할 수 있습니다.</div>
+                        </div>
+                    </div>
+                </div>
+                <div className="cancel" onClick={this.closeSelf}>취소</div>
+            </div>
+        </div>
+    }
+}
+
+@modal
 class RegistContract extends React.Component{
 
     constructor() {

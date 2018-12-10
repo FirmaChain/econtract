@@ -2781,14 +2781,106 @@ div.checkbox-comp{
     }
 }
 
+.start-contract-modal {
+    background-color: #fff;
+    min-width: 400px;
+    width:600px;
+
+    .container {
+        padding:55px;
+        text-align: center;
+
+        >.icon {
+            font-size:40px;
+            margin-bottom: 35px;
+            color: $black;
+        }
+
+        >.title {
+            font-size: $font4;
+            font-weight: bold;
+            margin-bottom: 35px;
+        }
+
+        >.btn-container {
+            text-align: left;
+
+            >.btn {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                cursor: pointer;
+
+                border:1px solid $gray;
+                margin-bottom:10px;
+                padding:20px;
+
+                >i {
+                    font-size: 40px;
+                    color: $gray;
+                    margin-right: 20px;
+                }
+
+                >.btn-desc {
+
+                    >.title {
+                        font-size: $font2;
+                        font-weight: bold;
+                        color: $black;
+                        margin-bottom:7px;
+                    }
+
+                    >.sub {
+                        font-size: $font0;
+                        color: $black;
+                    }
+                }
+
+                &:hover {
+                    & {
+                        border: 1px solid $blue;
+
+                        >i {
+                            color: $blue;
+                        }
+
+                        >.btn-desc {
+                            >.title {
+                                color: $blue;
+                            }
+                        }
+                    }
+                }
+
+            }
+        }
+
+        >.cancel {
+            margin: auto;
+            margin-top:40px;
+
+            font-size: $font4;
+            font-weight: bold;
+            color: $blue;
+            cursor: pointer;
+
+            border:1px solid $blue;
+            padding:15px;
+
+            max-width:300px;
+        }
+    }
+
+}
+
 .default-modal{
     background-color: #fff;
-    border-radius: 5px;
     min-width: 400px;
 
     >div.contents{
         padding: 10px 30px;
         text-align: center;
+
         >div.title{
             text-align: center;
             font-weight: bold;

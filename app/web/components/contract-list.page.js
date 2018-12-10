@@ -56,7 +56,15 @@ export default class extends React.Component {
 	}
 
 	onClickAddContract(){
-	    history.push("/add-contract")
+        window.openModal("StartContract",{
+            onClick:async(type)=>{
+                if(type == 1) {
+                    history.push("/add-contract")
+                } else if(type == 2) {
+
+                }
+            }
+        })
 	}
 
 	getTitle() {
