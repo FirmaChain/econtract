@@ -280,7 +280,7 @@ export default class extends React.Component {
 	}
 
 	componentDidMount(){
-        if(this.getType() == 3) {
+        if(this.getType() == 2) {
             // registration_code 유효 체크 api
             this.setState({
                 email:"test@gmail.com",
@@ -296,13 +296,13 @@ export default class extends React.Component {
     getType() {
         let q = queryString.parse(this.props.location.search)
         if(!!q.registration_code) {
-            return 3
+            return 2
         }
 
         if(!!this.props.location.state && !!this.props.location.state.type)
             return this.props.location.state.type
 
-        return 1
+        return 0
     }
 
     goBack = ()=>{
@@ -439,11 +439,11 @@ export default class extends React.Component {
             }).open();
         }));
         if(!!address) {
-            if(type == 1) {
+            if(type == 0) {
                 this.setState({
                     useraddress: address.roadAddress + " "
                 })
-            } else if(type == 2) {
+            } else if(type == 1) {
                 this.setState({
                     company_address: address.roadAddress + " "
                 })
@@ -521,14 +521,14 @@ export default class extends React.Component {
         let type = this.getType()
         let info
 
-        if(type == 1) { // 개인 계정
+        if(type == 0) { // 개인 계정
             info = {
                 email: this.state.email,
                 username: this.state.username,
                 userphone: this.state.userphone,
                 useraddress: this.state.useraddress,
             }
-        } else if(type == 2) { // 기업 관리자 계정
+        } else if(type == 1) { // 기업 관리자 계정
             info = {
                 email: this.state.email,
                 username: this.state.username,
@@ -539,7 +539,7 @@ export default class extends React.Component {
                 company_ceo: this.state.company_ceo,
                 company_address: this.state.company_address,
             }
-        } else if(type == 3) { // 기업 직원 계정
+        } else if(type == 2) { // 기업 직원 계정
             info = {
                 email: this.state.email,
                 username: this.state.username,
@@ -584,15 +584,15 @@ export default class extends React.Component {
     render_term(){
         let type = this.getType()
         let title, desc
-        if(type == 1) {
+        if(type == 0) {
             title = "개인 가입 약관 동의"
             desc = "서비스 이용에 필요한 약관에 동의합니다."
         }
-        else if(type == 2) {
+        else if(type == 1) {
             title = "기업 가입 약관 동의"
             desc = "기업 가입은 관리자 및 기업 자체 정보로 가입합니다. 추후 직원용 계정은 내부 기능을 통해 이용할 수 있습니다."
         }
-        else if(type == 3) {
+        else if(type == 2) {
             title = "기업 직원 계정 가입 약관 동의"
             desc = "직원 계정 가입 절차입니다. 링크를 통해서만 가입할 수 있으며, 기본적인 기업 정보는 입력되어 있습니다."
         }
@@ -621,11 +621,11 @@ export default class extends React.Component {
     render_email(){
         let type = this.getType()
         let desc = ""
-        if(type == 1)
+        if(type == 0)
             desc = "기본정보를 정확히 입력해주시기 바랍니다."
-        else if(type == 2)
+        else if(type == 1)
             desc = "회사에서 사용하시는 본인의 이메일을 입력해주세요."
-        else if(type == 3)
+        else if(type == 2)
             desc = "직원 계정 가입 과정에서는 지정된 이메일로만 가입할 수 있습니다."
 
         return (<div className="page">
@@ -640,17 +640,17 @@ export default class extends React.Component {
                         <input className="common-textbox" type="email"
                             value={this.state.email || ""} 
                             onChange={e=>this.setState({email:e.target.value})}
-                            disabled={this.getType() == 3 || this.state.step1 == 1}
+                            disabled={this.getType() == 2 || this.state.step1 == 1}
                             placeholder="이메일을 정확하게 입력해주세요"/>
                     </div>
-                    { this.getType() == 3 ? null : (this.state.step1 == 1 ?
+                    { this.getType() == 2 ? null : (this.state.step1 == 1 ?
                         <div className="gray-but">발송 완료</div> : 
                         <div className="blue-but" onClick={this.onClickRequestEmail}>인증메일 발송</div>)
                     }
                     
                 </div>
 
-                {this.getType() == 3 ? null : 
+                {this.getType() == 2 ? null : 
                     <div className="text-place">
                         <div className="name">이메일 인증</div>
                         <div className="textbox">
@@ -785,7 +785,7 @@ export default class extends React.Component {
                             value={this.state.company_name || ""}
                             onChange={e=>this.setState({company_name:e.target.value})}
                             placeholder="기업명을 입력해주세요."
-                            disabled={this.getType() == 3}/>
+                            disabled={this.getType() == 2}/>
                     </div>
                 </div>
 
@@ -796,7 +796,7 @@ export default class extends React.Component {
                             value={this.state.duns_number || ""}
                             onChange={e=>this.setState({duns_number:e.target.value})}
                             placeholder="사업자등록번호를 입력해주세요."
-                            disabled={this.getType() == 3}/>
+                            disabled={this.getType() == 2}/>
                     </div>
                 </div>
 
@@ -807,7 +807,7 @@ export default class extends React.Component {
                             value={this.state.company_ceo || ""}
                             onChange={e=>this.setState({company_ceo:e.target.value})}
                             placeholder="대표자명을 입력해주세요."
-                            disabled={this.getType() == 3}/>
+                            disabled={this.getType() == 2}/>
                     </div>
                 </div>
 
@@ -818,9 +818,9 @@ export default class extends React.Component {
                             value={this.state.company_address || ""} 
                             onChange={e=>this.setState({company_address:e.target.value})}
                             placeholder="주소를 정확하게 입력해주세요"
-                            disabled={this.getType() == 3}/>
+                            disabled={this.getType() == 2}/>
                     </div>
-                    { this.getType() == 3 ? null : <div className="blue-but" onClick={this.onClickFindAddress.bind(this, 2)}>
+                    { this.getType() == 2 ? null : <div className="blue-but" onClick={this.onClickFindAddress.bind(this, 2)}>
                         검색
                     </div>}
                 </div>
@@ -978,9 +978,9 @@ export default class extends React.Component {
             return this.render_email();
         }else if(this.state.step == 2){
             let type = this.getType()
-            if(type == 1)
+            if(type == 0)
                 return this.render_personal();
-            else if(type == 2 || type == 3)
+            else if(type == 1 || type == 2)
                 return this.render_company();
         }else if(this.state.step == 3){
             return this.render_masterkey();
@@ -993,11 +993,11 @@ export default class extends React.Component {
 
         let type = this.getType()
         let step2_text = ""
-        if(type == 1)
+        if(type == 0)
             step2_text = "회원정보 입력"
-        else if(type == 2)
+        else if(type == 1)
             step2_text = "기업정보 입력"
-        else if(type == 3)
+        else if(type == 2)
             step2_text = "담당자 정보 입력"
 
 		return (<div className="maintain">

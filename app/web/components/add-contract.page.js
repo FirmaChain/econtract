@@ -104,7 +104,10 @@ export default class extends React.Component {
         (async()=>{
             let user = await this.props.fetch_user_info()
 
-            user.type = 0;
+            if(!user)
+                return;
+
+            console.log(user)
 
             if(user.type == 0) {
                 this.setState({
@@ -147,6 +150,12 @@ export default class extends React.Component {
         })()
     }
 
+    componentWillReceiveProps(props){
+        if(props.user_info === false){
+            history.replace("/login")
+        }
+    }
+
     getRole(value) {
         for(let v of this.roles) {
             if(v.value == value)
@@ -168,9 +177,6 @@ export default class extends React.Component {
             }
         }
         return str.trim().replace(/\n/g, ", ");
-    }
-
-    componentWillUnmount(){
     }
 
     onClickBack = ()=>{
