@@ -106,6 +106,48 @@ select:focus { outline:none; }
     }
 }
 
+
+.common-textbox {
+    border:1px solid $gray;
+    padding:10px 15px;
+    font-size: $font1;
+    width: 100%;
+    border-radius: none;
+    color: $black;
+    background-color: white;
+
+    &:disabled {
+        background-color: $middlegray;
+    }
+
+    &:focus {
+        border:1px solid $blue;
+        outline: none;
+    }
+}
+
+.common-select {
+    .control {
+        border:1px solid $gray !important;
+        padding:10px 15px !important;
+        font-size: $font1 !important;
+        width: 100px !important;
+        border-radius: 0 !important;
+        color: $black !important;
+        background-color: white !important;
+        height:39px;
+
+        &:disabled {
+            background-color: $middlegray !important;
+        }
+    }
+    .item {
+        >div {
+            font-size: $font1 !important;
+        }
+    }
+}
+
 .maintain {
     display: flex;
     flex-direction: column;
@@ -274,17 +316,6 @@ select:focus { outline:none; }
         >.textbox {
             width:350px;
             margin-left: 10px;
-
-            >input {
-                border:1px solid $blue;
-                padding:10px 15px;
-                font-size: $font1;
-                width: 100%;
-            }
-
-            >input:disabled {
-                background-color: $middlegray;
-            }
         }
 
         >.blue-but {
@@ -437,7 +468,6 @@ select:focus { outline:none; }
         text-align: center;
     }
 }
-
 
 .login-common-page {
     position: relative;
@@ -620,14 +650,9 @@ select:focus { outline:none; }
 
         >.textbox {
             text-align: center;
+            margin: auto;
             margin-top: 10px;
-
-            >input {
-                border:1px solid $gray;
-                padding:10px 15px;
-                font-size: $font1;
-                width: 300px;
-            }
+            width:300px;
         }
 
         >.other {
@@ -738,14 +763,14 @@ select:focus { outline:none; }
     }
 }
 
-.home-page {
+.header-page {
 
     >.header {
         display: flex;
         flex-direction: row;
         align-items: center;
 
-        border-bottom:1px solid $blue;
+        border-bottom:1px solid $gray;
 
         >.left-logo {
             padding: 10px;
@@ -768,7 +793,7 @@ select:focus { outline:none; }
 
             >.selected-item {
                 position: relative;
-                border-bottom: 50px solid $blue;
+                border-bottom: 50px solid $gray;
                 border-right: 27px solid transparent;
                 border-left: 27px solid transparent;
                 height: 0px;
@@ -1101,6 +1126,116 @@ select:focus { outline:none; }
     }
 }
 
+.add-contract-page{
+
+    >.head {
+        border-bottom:1px solid $gray;
+        color:$blue;
+        font-size: $font4;
+        font-weight: bold;
+
+        padding-left: 10%;
+        padding-top: 20px;
+        padding-bottom: 20px;
+
+        background-color: $lightgray;
+    }
+
+    >.content {
+        margin: auto;
+        max-width:900px;
+        width:100%;
+        padding:20px 10px;
+        padding-top: 50px;
+
+        >.row {
+            display: flex;
+            flex-direction: row;
+            margin-bottom: 50px;
+
+            >.left-desc {
+                min-width:170px;
+                max-width:250px;
+                padding-right:40px;
+                width:100%;
+
+                >.desc-head {
+                    color: $black;
+                    font-size: $font2;
+                    font-weight: bold;
+                    margin-bottom:5px;
+                }
+
+                >.desc-content {
+                    color: $black;
+                    font-size: $font1;
+                }
+
+                >.desc-link {
+                    margin-top: 20px;
+                    text-decoration: underline;
+
+                    font-size: $font0;
+                    color: $gray;
+                    cursor: pointer;
+                }
+            }
+
+            >.right-form {
+                flex: 1;
+                display: flex;
+                align-items: center;
+                width:100%;
+
+                >.column {
+                    width: 100%;
+                    flex:1;
+                    margin-left: 10px;
+                }
+
+                >.column-flex-2 {
+                    flex:2;
+                }
+
+                .form-head {
+                    color: $black;
+                    font-size: $font1;
+                    margin-bottom:10px;
+                }
+
+                .form-input {
+                    display: flex;
+                    flex-direction: row;
+                    max-width:400px;
+
+                    >.btn-add-user {
+                        display: inline-block;
+                        background-color: $lightgray;
+                        font-size: $font1;
+                        font-weight: bold;
+                        color: $gray;
+                        border: 1px solid $lightgray;
+
+                        cursor: pointer;
+                        width:130px;
+                        max-width:40%;
+                        padding: 10px 15px;
+                        text-align: center;
+                        margin: auto;
+                    }
+
+                    >.btn-add-user-active {
+                        background-color: $blue;
+                        border: 1px solid $blue;
+                        color: white;
+                    }
+                }
+            }
+        }
+    }
+}
+
+
 .profile-page{
     .profile-info{
         flex-direction: column;
@@ -1425,10 +1560,6 @@ table.table{
         }
     }
 }
-
-.add-contract-page{
-}
-
 
 .logo {
     padding-top:10px;
@@ -2394,28 +2525,46 @@ div.pager-comp{
         }
 
         >li.active{
-            background-color: RGB(41, 58, 73);
+            background-color: rgb(41, 58, 73);
             color: #fff;
         }
 
         >li.chevron{
-            color: RGB(173, 173, 173);
+            color: rgb(173, 173, 173);
         }
     }
 }
+
 div.checkbox2-comp{
     display: flex;
     justify-content: center;
     align-items: center;
 
-    cursor: pointer;
-    border: 1px solid $blue;
-    overflow: hidden;
-    text-align: center;
-    padding-top: 1px;
-    
-    >i {
-        color: #000;
+    >.checkbox {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        cursor: pointer;
+        border: 1px solid $blue;
+        overflow: hidden;
+        text-align: center;
+        padding-top: 1px;
+        
+        >i {
+            color: #000;
+        }
+    }
+
+    >.disabled {
+        background-color: $middlegray;
+        border: 1px solid $gray;
+    }
+
+    >.check-label {
+        color: $black;
+        font-size: $font1;
+        margin-left: 10px;
     }
 }
 div.checkbox-comp{

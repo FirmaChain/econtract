@@ -138,8 +138,8 @@ export default class extends React.Component {
                 <div className="desc1">접속하신 브라우저는 인증되었습니다.</div>
                 <div className="desc2">인증된 브라우저란?</div>
 
-                <div className="textbox"><input id="id" type="email" placeholder="이메일을 입력해주세요." value={this.state.email || ""} onChange={e=>this.setState({email:e.target.value})}/></div>
-                <div className="textbox"><input id="password" type="password" placeholder="비밀번호를 입력해주세요." value={this.state.password || ""} onKeyDown={this.keyPress} onChange={e=>this.setState({password:e.target.value})}/></div>
+                <div className="textbox"><input className="common-textbox" id="email" type="email" placeholder="이메일을 입력해주세요." value={this.state.email || ""} onChange={e=>this.setState({email:e.target.value})}/></div>
+                <div className="textbox"><input className="common-textbox" id="password" type="password" placeholder="비밀번호를 입력해주세요." value={this.state.password || ""} onKeyDown={this.keyPress} onChange={e=>this.setState({password:e.target.value})}/></div>
 
                 <div className="login-btn" onClick={this.onClickLogin}>로그인</div>
                 <br/>

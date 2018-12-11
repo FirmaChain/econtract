@@ -637,7 +637,7 @@ export default class extends React.Component {
                 <div className="text-place">
                     <div className="name">이메일</div>
                     <div className="textbox">
-                        <input type="email"
+                        <input className="common-textbox" type="email"
                             value={this.state.email || ""} 
                             onChange={e=>this.setState({email:e.target.value})}
                             disabled={this.getType() == 3 || this.state.step1 == 1}
@@ -654,7 +654,7 @@ export default class extends React.Component {
                     <div className="text-place">
                         <div className="name">이메일 인증</div>
                         <div className="textbox">
-                            <input type="number"
+                            <input className="common-textbox" type="number"
                                 value={this.state.verification_code || ""}
                                 onKeyDown={this.keyPress.bind(this, 0)}
                                 onChange={e=>this.setState({verification_code:e.target.value})}
@@ -672,7 +672,7 @@ export default class extends React.Component {
                 <div className="text-place">
                     <div className="name">비밀번호</div>
                     <div className="textbox">
-                        <input type="password"
+                        <input className="common-textbox" type="password"
                             value={this.state.password || ""}
                             onChange={e=>this.setState({password:e.target.value})}  
                             placeholder="최소 8자리(영어, 숫자, 특수문자 사용 가능)"/>
@@ -682,7 +682,7 @@ export default class extends React.Component {
                 <div className="text-place">
                     <div className="name">비밀번호 확인</div>
                     <div className="textbox">
-                        <input type="password"
+                        <input className="common-textbox" type="password"
                             value={this.state.password2 || ""}
                             onChange={e=>this.setState({password2:e.target.value})}
                             onKeyDown={this.keyPress.bind(this, 1)}
@@ -710,7 +710,7 @@ export default class extends React.Component {
                 <div className="text-place">
                     <div className="name">이름</div>
                     <div className="textbox">
-                        <input type="text"
+                        <input className="common-textbox" type="text"
                             value={this.state.username || ""}
                             onChange={e=>this.setState({username:e.target.value})}
                             placeholder="이름을 정확하게 입력해주세요"/>
@@ -720,7 +720,7 @@ export default class extends React.Component {
                 <div className="text-place">
                     <div className="name">휴대폰 번호</div>
                     <div className="textbox">
-                        <input type="text"
+                        <input className="common-textbox" type="text"
                            value={this.state.userphone || ""} 
                            onChange={this.onChangePhoneForm.bind(this,"userphone")}
                            disabled={this.state.phone_verification_code_sent}
@@ -736,7 +736,7 @@ export default class extends React.Component {
                 <div className="text-place">
                     <div className="name">인증번호</div>
                     <div className="textbox">
-                        <input type="number"
+                        <input className="common-textbox" type="number"
                             value={this.state.phone_verification_code || ""} 
                             onChange={e=>this.setState({phone_verification_code:e.target.value})} 
                             disabled={this.state.verificated_phone}
@@ -752,7 +752,7 @@ export default class extends React.Component {
                 <div className="text-place">
                     <div className="name">주소</div>
                     <div className="textbox">
-                        <input type="text"
+                        <input className="common-textbox" type="text"
                             value={this.state.useraddress || ""} 
                             onChange={e=>this.setState({useraddress:e.target.value})}
                             placeholder="주소를 정확하게 입력해주세요"/>
@@ -781,7 +781,7 @@ export default class extends React.Component {
                 <div className="text-place">
                     <div className="name">기업정보</div>
                     <div className="textbox">
-                        <input type="text"
+                        <input className="common-textbox" type="text"
                             value={this.state.company_name || ""}
                             onChange={e=>this.setState({company_name:e.target.value})}
                             placeholder="기업명을 입력해주세요."
@@ -792,7 +792,7 @@ export default class extends React.Component {
                 <div className="text-place">
                     <div className="name"></div>
                     <div className="textbox">
-                        <input type="text"
+                        <input className="common-textbox" type="text"
                             value={this.state.duns_number || ""}
                             onChange={e=>this.setState({duns_number:e.target.value})}
                             placeholder="사업자등록번호를 입력해주세요."
@@ -803,7 +803,7 @@ export default class extends React.Component {
                 <div className="text-place">
                     <div className="name">대표자명</div>
                     <div className="textbox">
-                        <input type="text"
+                        <input className="common-textbox" type="text"
                             value={this.state.company_ceo || ""}
                             onChange={e=>this.setState({company_ceo:e.target.value})}
                             placeholder="대표자명을 입력해주세요."
@@ -814,7 +814,7 @@ export default class extends React.Component {
                 <div className="text-place">
                     <div className="name">주소</div>
                     <div className="textbox">
-                        <input type="text"
+                        <input className="common-textbox" type="text"
                             value={this.state.company_address || ""} 
                             onChange={e=>this.setState({company_address:e.target.value})}
                             placeholder="주소를 정확하게 입력해주세요"
@@ -830,7 +830,7 @@ export default class extends React.Component {
                 <div className="text-place">
                     <div className="name">담당자 정보</div>
                     <div className="textbox">
-                        <input type="text"
+                        <input className="common-textbox" type="text"
                             value={this.state.username || ""}
                             onChange={e=>this.setState({username:e.target.value})}
                             placeholder="담당자명을 입력해주세요."/>
@@ -840,7 +840,7 @@ export default class extends React.Component {
                 <div className="text-place">
                     <div className="name"></div>
                     <div className="textbox">
-                        <input type="text"
+                        <input className="common-textbox" type="text"
                             value={this.state.job || ""}
                             onChange={e=>this.setState({job:e.target.value})}
                             placeholder="담당자 직책을 입력해주세요."/>
@@ -850,7 +850,7 @@ export default class extends React.Component {
                 <div className="text-place">
                     <div className="name">휴대폰 번호</div>
                     <div className="textbox">
-                        <input type="text"
+                        <input className="common-textbox" type="text"
                             value={this.state.userphone || ""} 
                             onChange={this.onChangePhoneForm.bind(this,"userphone")}
                             disabled={this.state.phone_verification_code_sent}
@@ -866,7 +866,7 @@ export default class extends React.Component {
                 <div className="text-place">
                     <div className="name">인증번호</div>
                     <div className="textbox">
-                        <input type="number"
+                        <input className="common-textbox" type="number"
                             value={this.state.phone_verification_code || ""} 
                             onChange={e=>this.setState({phone_verification_code:e.target.value})} 
                             disabled={this.state.verificated_phone}
