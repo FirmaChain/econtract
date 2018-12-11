@@ -136,6 +136,7 @@ select:focus { outline:none; }
         color: $black !important;
         background-color: white !important;
         height:39px;
+        cursor: pointer;
 
         &:disabled {
             background-color: $middlegray !important;
@@ -1201,6 +1202,85 @@ select:focus { outline:none; }
                     color: $black;
                     font-size: $font1;
                     margin-bottom:10px;
+                    padding-left: 5px;
+                }
+
+                .form-list {
+                    border-top: 1px solid $gray;
+                    border-bottom: 1px solid $gray;
+
+                    >.item {
+                        display: flex;
+                        flex-direction: row;
+                        align-items: center;
+
+                        padding:20px 20px;
+                        border-bottom:1px solid $lightgray;
+
+                        &:last-child {
+                            border-bottom: 0;
+                        }
+
+                        &:hover {
+                            background-color: $lightgray;
+                        }
+
+                        >.icon {
+                            width:40px;
+                            padding: 0 5px;
+
+                            >i {
+                                font-size: 22px;
+                                color: $black;
+                            }
+                        }
+
+                        >.desc {
+                            flex:1;
+
+                            >.username {
+                                color: $black;
+                                font-weight: bold;
+                                font-size: $font2;
+
+                                >span {
+                                    color: $gray;
+                                    font-size: $font0;
+                                    margin-left:10px;
+                                }
+                            }
+
+                            >.email {
+                                color: $black;
+                                font-size: $font1;
+                            }
+                        }
+
+                        >.privilege {
+                            width:120px;
+                            font-size: $font1;
+                            color:$black;
+                        }
+
+                        >.action {
+                            width:120px;
+                            text-align: center;
+
+                            >.delete {
+                                display: inline-block;
+                                background-color: $blue;
+                                font-size: 14px;
+                                font-weight: bold;
+                                color: white;
+                                border: 1px solid $blue;
+                                cursor: pointer;
+                                padding: 10px 15px;
+                                text-align: center;
+                                box-sizing: border-box;
+                                width:100px;
+                            }
+                        }
+                    }
                 }
 
                 .form-input {
@@ -1230,6 +1310,14 @@ select:focus { outline:none; }
                         color: white;
                     }
                 }
+
+                .checkbox-list {
+                    
+                }
+            }
+            
+            >.align-normal {
+                align-items: normal;
             }
         }
     }

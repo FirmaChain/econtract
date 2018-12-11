@@ -41,7 +41,7 @@ export default class extends React.Component {
         ]
 
 		this.state={
-            target_list:[],
+            target_list:[], // type 0 : 개인, type 1 : 기업 담당자, type 2 : 기업 그룹
             target_me:true,
             indivisual:[{
                 deletable:false,
@@ -102,15 +102,48 @@ export default class extends React.Component {
 
 	componentDidMount(){
         (async()=>{
-            let user = await this.props.fetch_user_info();
-            this.setState({
-                template_list:await this.props.list_template(),
-                target_list:[{
-                    username:user.username,
-                    email:user.email,
-                    role:0
-                }]
-            })
+            let user = await this.props.fetch_user_info()
+
+            user.type = 0;
+
+            if(user.type == 0) {
+                this.setState({
+                    template_list:await this.props.list_template(),
+                    target_list:[{
+                        type:0,
+                        username:user.username,
+                        email:user.email,
+                        role:[0, 1]
+                    },{
+                        type:0,
+                        username:user.username,
+                        email:user.email,
+                        role:[1]
+                    },{
+                        type:0,
+                        username:user.username,
+                        email:user.email,
+                        role:[1]
+                    },{
+                        type:1,
+                        username:"김정완",
+                        email:"jwkim@firma-solutions.com",
+                        company_name:"피르마 솔루션즈",
+                        role:[1],
+                    },{
+                        type:2,
+                        company_name:"피르마 솔루션즈",
+                        group_name:"사업1팀",
+                        count:5,
+                        role:[2],
+                    }]
+                })
+            } else if(user.type == 1) {
+
+            } else {
+
+            }
+
         })()
     }
 
@@ -120,6 +153,21 @@ export default class extends React.Component {
                 return v
         }
         return null;
+    }
+
+    getRoleText(roles) {
+        let str = ""
+
+        for(let v of roles) {
+            if(v == 0) {
+                str += "생성자\n"
+            } else if(v == 1) {
+                str += "서명자\n"
+            } else if(v == 2) {
+                str += "보기 가능\n"
+            }
+        }
+        return str.trim().replace(/\n/g, ", ");
     }
 
     componentWillUnmount(){
@@ -140,9 +188,10 @@ export default class extends React.Component {
         if(resp){
             this.setState({
                 target_list:[...this.state.target_list, {
+                    type:0,
                     username:resp.username,
                     email:resp.email,
-                    role:this.state.add_role
+                    role:[this.state.add_role]
                 }],
                 add_email:""
             })
@@ -207,9 +256,10 @@ export default class extends React.Component {
     }
 
     onClickRemoveCounterparty = (k)=>{
-        this.state.target_list.splice(k,1)
+        let _list = [...this.state.target_list]
+        _list.splice(k,1)
         this.setState({
-            target_list:[]
+            target_list:_list
         })
     }
 
@@ -304,15 +354,6 @@ export default class extends React.Component {
                                     options={_roles}
                                     onChange={e=>{this.setState({add_role:e.value})}}
                                     value={_roles[0]} placeholder="사용자 역할을 골라주세요" />
-
-                                {/*<select className="common-textbox"
-                                    onChange={e=>this.setState({add_role:e.target.value})}>
-                                    <option value="">선택</option>
-                                    {this.roles.map((e,k)=>{
-                                        if(k == 0) return null
-                                        return <option value={k}>{e}</option>
-                                    })}
-                                </select>*/}
                                 <div className={"btn-add-user" + ( (this.state.add_email || "").length==0? "" : " btn-add-user-active" )} onClick={this.onClickAdd}>추가</div>
                             </div>
                         </div>
@@ -322,29 +363,56 @@ export default class extends React.Component {
                 <div className="row">
                     <div className="left-desc">
                     </div>
-
                     <div className="right-form">
-                        <table>
-                            <tr>
-                                <th>이름</th>
-                                <th>이메일</th>
-                                <th>역할</th>
-                                <th></th>
-                            </tr>
-                            {this.state.target_list.map((e,k)=>{
-                                return <tr key={k}>
-                                    <td>{e.username}</td>
-                                    <td>{e.email}</td>
-                                    <td>{this.getRole(e.role).label}</td>
-                                    <td>
-                                        {k == 0 ?
-                                            null:
-                                            <button onClick={this.onClickRemoveCounterparty.bind(this, k)}>삭제</button>
+                        <div className="column">
+                            <div className="form-head">사용자 리스트</div>
+                            <div className="form-list">
+                                {this.state.target_list.map((e, k)=>{
+                                    return <div className="item" key={k}>
+                                        <div className="icon">
+                                        {
+                                            (()=>{ switch(e.type) {
+                                                case 0:
+                                                    return <i class="fas fa-user"></i>
+                                                case 1:
+                                                    return <i class="fas fa-user-tie"></i>
+                                                case 2:
+                                                    return <i class="fas fa-users"></i>
+                                                break;
+                                            } })()
                                         }
-                                    </td>
-                                </tr>
-                            })}
-                        </table>
+                                        </div>
+                                        {
+                                            (()=>{ switch(e.type) {
+                                                case 0:
+                                                    return <div className="desc">
+                                                        <div className="username">{e.username}</div>
+                                                        <div className="email">{e.email}</div>
+                                                    </div>
+                                                    break;
+                                                case 1:
+                                                    return <div className="desc">
+                                                        <div className="username">{e.username}<span>{e.company_name}</span></div>
+                                                        <div className="email">{e.email}</div>
+                                                    </div>
+                                                case 2:
+                                                    return <div className="desc">
+                                                        <div className="username">{e.group_name}<span>{e.company_name}</span></div>
+                                                        <div className="email">{e.count}명의 그룹원</div>
+                                                    </div>
+                                            } })()
+                                        }
+                                        <div className="privilege">{this.getRoleText(e.role)}</div>
+                                        <div className="action">
+                                            {k == 0 ?
+                                                null:
+                                                <div className="delete" onClick={this.onClickRemoveCounterparty.bind(this, k)}>삭제</div>
+                                            }
+                                        </div>
+                                    </div>
+                                })}
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -353,8 +421,8 @@ export default class extends React.Component {
                         <div className="desc-head">서명 정보</div>
                         <div className="desc-content">전자 서명시 계약에 들어갈 정보들을 선택합니다</div>
                     </div>
-                    <div className="right-form">
-                        <div className="column">
+                    <div className="right-form align-normal">
+                        <div className="checkbox-list">
                             <div className="form-head">개인 서명자 정보</div>
                             <div className="form-input">
                                 {this.state.indivisual.map((e,k)=>{
@@ -370,7 +438,7 @@ export default class extends React.Component {
                                 </div>
                             </div>
                         </div>
-                        <div className="column">
+                        <div className="checkbox-list">
                             <div className="form-head">기업 서명자 정보</div>
                             <div className="form-input">
                                 {this.state.cooperation.map((e,k)=>{
