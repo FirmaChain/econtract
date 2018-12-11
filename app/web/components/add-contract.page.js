@@ -61,7 +61,7 @@ export default class extends React.Component {
                 checked:false
             },{
                 deletable:false,
-                title:"주민등록 번호",
+                title:"주민등록번호",
                 checked:false
             }],
             cooperation:[{
@@ -79,10 +79,6 @@ export default class extends React.Component {
             },{
                 deletable:false,
                 title:"대표자 성함",
-                checked:false
-            },{
-                deletable:false,
-                title:"담당자 성함",
                 checked:false
             },{
                 deletable:false,
@@ -109,7 +105,7 @@ export default class extends React.Component {
 
             console.log(user)
 
-            if(user.type == 0) {
+            if(user.account_type == 0) {
                 this.setState({
                     template_list:await this.props.list_template(),
                     target_list:[{
@@ -141,8 +137,38 @@ export default class extends React.Component {
                         role:[2],
                     }]
                 })
-            } else if(user.type == 1) {
-
+            } else if(user.account_type == 1 || user.account_type == 2) {
+                this.setState({
+                    template_list:await this.props.list_template(),
+                    target_list:[{
+                        type:user.account_type,
+                        username:user.username,
+                        email:user.email,
+                        role:[0, 1]
+                    },{
+                        type:0,
+                        username:user.username,
+                        email:user.email,
+                        role:[1]
+                    },{
+                        type:0,
+                        username:user.username,
+                        email:user.email,
+                        role:[1]
+                    },{
+                        type:1,
+                        username:"김정완",
+                        email:"jwkim@firma-solutions.com",
+                        company_name:"피르마 솔루션즈",
+                        role:[1],
+                    },{
+                        type:2,
+                        company_name:"피르마 솔루션즈",
+                        group_name:"사업1팀",
+                        count:5,
+                        role:[2],
+                    }]
+                })
             } else {
 
             }
@@ -221,10 +247,25 @@ export default class extends React.Component {
         this.setState({
             cooperation:[...this.state.cooperation,{
                 title:this.state.add_cooperation_info,
-                checked:false,
+                checked:true,
                 deletable:true
             }],
             add_cooperation_info:""
+        })
+    }
+
+    onClickAddIndivisual = ()=>{
+        if(!this.state.add_indivisual_info){
+            return alert("항목의 이름을 입력해주세요.")
+        }
+
+        this.setState({
+            indivisual:[...this.state.indivisual,{
+                title:this.state.add_indivisual_info,
+                checked:true,
+                deletable:true
+            }],
+            add_indivisual_info:""
         })
     }
 
@@ -246,21 +287,6 @@ export default class extends React.Component {
         )
     }
 
-    onClickAddIndivisual = ()=>{
-        if(!this.state.add_indivisual_info){
-            return alert("항목의 이름을 입력해주세요.")
-        }
-
-        this.setState({
-            indivisual:[...this.state.indivisual,{
-                title:this.state.add_indivisual_info,
-                checked:false,
-                deletable:true
-            }],
-            add_indivisual_info:""
-        })
-    }
-
     onClickRemoveCounterparty = (k)=>{
         let _list = [...this.state.target_list]
         _list.splice(k,1)
@@ -274,7 +300,20 @@ export default class extends React.Component {
         this.setState({
             [name]:[...this.state[name]]
         })
+    }
 
+
+    keyPress = async (type, e) => {
+        if(e.keyCode == 13){
+            switch(type) {
+                case 0:
+                this.onClickAddIndivisual()
+                break;
+                case 1:
+                this.onClickAddCooperation()
+                break;
+            }
+        }
     }
 
 	render() {
@@ -379,11 +418,11 @@ export default class extends React.Component {
                                         {
                                             (()=>{ switch(e.type) {
                                                 case 0:
-                                                    return <i class="fas fa-user"></i>
+                                                    return <i className="fas fa-user"></i>
                                                 case 1:
-                                                    return <i class="fas fa-user-tie"></i>
+                                                    return <i className="fas fa-user-tie"></i>
                                                 case 2:
-                                                    return <i class="fas fa-users"></i>
+                                                    return <i className="fas fa-users"></i>
                                                 break;
                                             } })()
                                         }
@@ -430,40 +469,66 @@ export default class extends React.Component {
                     <div className="right-form align-normal">
                         <div className="checkbox-list">
                             <div className="form-head">개인 서명자 정보</div>
-                            <div className="form-input">
+                            <div className="form-check-list">
                                 {this.state.indivisual.map((e,k)=>{
-                                    return <div key={k}>
-                                        <CheckBox2 on={e.force || e.checked} onClick={this.onToggleSignInfo.bind(this,"indivisual",k)}/>
-                                        {e.title}
-                                        {e.deletable ? <button onClick={this.onClickRemoveSignInfo.bind(this,"indivisual", k)}>삭제</button> : null}
+                                    return <div className="item" key={k}>
+                                        <CheckBox2 size={18} disabled={e.force} on={e.force || e.checked} onClick={this.onToggleSignInfo.bind(this,"indivisual",k)}/>
+                                        <div className="name">{e.title}</div>
+                                        {e.deletable ? <div className="delete" onClick={this.onClickRemoveSignInfo.bind(this,"indivisual", k)}><i className="fal fa-times"></i></div> : null}
                                     </div>
                                 })}
-                                <div>
-                                    <input type="text" value={this.state.add_indivisual_info || ""} onChange={e=>this.setState({add_indivisual_info:e.target.value})}/>
-                                    <button onClick={this.onClickAddIndivisual}>추가</button>
+                                <div className="bottom">
+                                    <input className="text-box common-textbox"
+                                        placeholder="항목 입력"
+                                        type="text"
+                                        value={this.state.add_indivisual_info || ""}
+                                        onChange={e=>this.setState({add_indivisual_info:e.target.value})}
+                                        onKeyDown={this.keyPress.bind(this, 0)}/>
+                                    <div className="add-btn" onClick={this.onClickAddIndivisual}>
+                                        <div>서명 정보 추가</div>
+                                        <i className="fal fa-plus"></i>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <div className="checkbox-list">
                             <div className="form-head">기업 서명자 정보</div>
-                            <div className="form-input">
+                            <div className="form-check-list">
                                 {this.state.cooperation.map((e,k)=>{
-                                    return <div key={k}>
-                                        <CheckBox2 on={e.force || e.checked} onClick={this.onToggleSignInfo.bind(this,"cooperation",k)}/>
-                                        {e.title}
-                                        {e.deletable ? <button onClick={this.onClickRemoveSignInfo.bind(this,"cooperation", k)}>삭제</button> : null}
+                                    return <div className="item" key={k}>
+                                        <CheckBox2 size={18} disabled={e.force} on={e.force || e.checked} onClick={this.onToggleSignInfo.bind(this,"cooperation",k)}/>
+                                        <div className="name">{e.title}</div>
+                                        {e.deletable ? <div className="delete" onClick={this.onClickRemoveSignInfo.bind(this,"cooperation", k)}><i className="fal fa-times"></i></div> : null}
                                     </div>
                                 })}
-                                <div>
-                                    <input type="text" value={this.state.add_cooperation_info || ""} onChange={e=>this.setState({add_cooperation_info:e.target.value})}/>
-                                    <button onClick={this.onClickAddCooperation}>추가</button>
+                                <div className="bottom">
+                                    <input className="text-box common-textbox"
+                                        placeholder="항목 입력"
+                                        type="text"
+                                        value={this.state.add_cooperation_info || ""}
+                                        onChange={e=>this.setState({add_cooperation_info:e.target.value})}
+                                        onKeyDown={this.keyPress.bind(this, 1)}/>
+                                    <div className="add-btn" onClick={this.onClickAddCooperation}>
+                                        <div>서명 정보 추가</div>
+                                        <i className="fal fa-plus"></i>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div>
-                    <button onClick={this.onClickRegist}>등 록</button>
+
+                <div className="bottom-container">
+                    <div className="regist-contract" onClick={this.onClickRegist}>등 록</div>
+                </div>
+            </div>
+            <div className="footer">
+                <div className="left">Copyright 2018 Firma Solutions, Inc, All right reserved</div>
+                <div className="middle">
+                    이용약관 | 개인정보처리방침
+                </div>
+                <div className="right">
+                    developer@firma-solutions.com
                 </div>
             </div>
 		</div>);

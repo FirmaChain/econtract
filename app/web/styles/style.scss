@@ -39,6 +39,7 @@ body{
     -moz-osx-font-smoothing: grayscale;
     padding:0;
     margin: 0;
+    color:$black;
 }
 
 a{
@@ -112,7 +113,7 @@ select:focus { outline:none; }
     padding:10px 15px;
     font-size: $font1;
     width: 100%;
-    border-radius: none;
+    border-radius: 0;
     color: $black;
     background-color: white;
 
@@ -275,7 +276,6 @@ select:focus { outline:none; }
                             padding:15px 20px;
                             text-align: center;
                             margin: auto;
-
                         }
                     }
                 }
@@ -1269,7 +1269,7 @@ select:focus { outline:none; }
                             >.delete {
                                 display: inline-block;
                                 background-color: $blue;
-                                font-size: 14px;
+                                font-size: $font1;
                                 font-weight: bold;
                                 color: white;
                                 border: 1px solid $blue;
@@ -1278,6 +1278,81 @@ select:focus { outline:none; }
                                 text-align: center;
                                 box-sizing: border-box;
                                 width:100px;
+                            }
+                        }
+                    }
+                }
+
+                .form-check-list {
+
+                    >.item {
+                        display: flex;
+                        flex-direction: row;
+                        padding-left: 5px;
+                        padding-bottom:10px;
+                        padding-top:10px;
+
+                        >.name {
+                            margin-left:10px;
+                            color: $black;
+                            font-size: $font1;
+                        }
+
+                        >.delete {
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+
+                            margin-left: 5px;
+                            cursor: pointer;
+
+                            >i {
+                                font-size: 18px;
+                                padding-bottom:3px;
+                                color:$black;
+
+                                &:hover {
+                                    color: $gray;
+                                }
+                            }
+                        }
+                    }
+
+                    >.bottom {
+                        display: flex;
+                        flex-direction: column;
+
+                        padding-left: 5px;
+                        padding-bottom:5px;
+                        padding-top:5px;
+
+                        >.text-box {
+                            width:150px;
+                            padding:5px 10px;
+                            border: 0;
+                            border-bottom: 1px solid $gray;
+                        }
+
+                        >.add-btn {
+                            display: inline-flex;
+                            flex-direction: row;
+                            align-items: center;
+                            width:150px;
+                            margin-top:10px;
+
+                            background-color: $blue;
+                            font-size: $font1;
+                            font-weight: bold;
+                            color: white;
+                            border: 1px solid $blue;
+                            cursor: pointer;
+                            padding: 10px 15px;
+                            text-align: center;
+                            box-sizing: border-box;
+
+                            >div {
+                                flex:1;
+                                text-align:left;
                             }
                         }
                     }
@@ -1312,12 +1387,32 @@ select:focus { outline:none; }
                 }
 
                 .checkbox-list {
-                    
+                    flex:1;
                 }
             }
-            
+
             >.align-normal {
                 align-items: normal;
+            }
+        }
+
+        >.bottom-container {
+            text-align: right;
+            margin-bottom:100px;
+
+            >.regist-contract {
+                display: inline-block;
+                background-color:$blue;
+                border: 2px solid $blue;
+                font-size: $font4;
+                color: white;
+                font-weight:bold;
+                cursor: pointer;
+                width:250px;
+                max-width:40%;
+                padding:15px 20px;
+                text-align: center;
+                margin: auto;
             }
         }
     }
@@ -2640,13 +2735,17 @@ div.checkbox2-comp{
         padding-top: 1px;
         
         >i {
-            color: #000;
+            color: $black;
         }
     }
 
     >.disabled {
         background-color: $middlegray;
         border: 1px solid $gray;
+
+        >i {
+            color: $gray;
+        }
     }
 
     >.check-label {
@@ -2655,6 +2754,7 @@ div.checkbox2-comp{
         margin-left: 10px;
     }
 }
+
 div.checkbox-comp{
     display: inline-flex;
     cursor: pointer;
