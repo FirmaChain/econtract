@@ -211,7 +211,7 @@ export default class extends React.Component {
         if(!this.state.add_email)
             return alert("이메일을 입력해주세요.")
         if(!this.state.add_role)
-            return alert("룰을 선택해주세요.")
+            return alert("역할을 선택해주세요.")
 
         let resp = await this.props.select_userinfo_with_email(this.state.add_email)
 
@@ -226,7 +226,7 @@ export default class extends React.Component {
                 add_email:""
             })
         }else{
-            return alert("이메일에 일치하는 가입자가 없습니다.")
+            return alert("해당 이메일로 일치하는 가입자가 없습니다.")
         }
     }
 

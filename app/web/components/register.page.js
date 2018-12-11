@@ -280,7 +280,7 @@ export default class extends React.Component {
 	}
 
 	componentDidMount(){
-        if(this.getType() == 2) {
+        if(this.getAccountType() == 2) {
             // registration_code 유효 체크 api
             this.setState({
                 email:"test@gmail.com",
@@ -293,7 +293,7 @@ export default class extends React.Component {
         }
     }
 
-    getType() {
+    getAccountType() {
         let q = queryString.parse(this.props.location.search)
         if(!!q.registration_code) {
             return 2
@@ -518,17 +518,17 @@ export default class extends React.Component {
         if(this.state.sort_test.map(e=>this.state.mnemonic.split(" ")[e]).join(" ") !== this.state.mnemonic){
             return alert("순서가 맞지 않습니다. 다시 한번 확인해주세요!")
         }
-        let type = this.getType()
+        let account_type = this.getAccountType()
         let info
 
-        if(type == 0) { // 개인 계정
+        if(account_type == 0) { // 개인 계정
             info = {
                 email: this.state.email,
                 username: this.state.username,
                 userphone: this.state.userphone,
                 useraddress: this.state.useraddress,
             }
-        } else if(type == 1) { // 기업 관리자 계정
+        } else if(account_type == 1) { // 기업 관리자 계정
             info = {
                 email: this.state.email,
                 username: this.state.username,
@@ -539,7 +539,7 @@ export default class extends React.Component {
                 company_ceo: this.state.company_ceo,
                 company_address: this.state.company_address,
             }
-        } else if(type == 2) { // 기업 직원 계정
+        } else if(account_type == 2) { // 기업 직원 계정
             info = {
                 email: this.state.email,
                 username: this.state.username,
@@ -556,7 +556,7 @@ export default class extends React.Component {
         let encryptedInfo = aes_encrypt(JSON.stringify(info), this.state.account.masterKeyPublic);
         
         await window.showIndicator()
-        let resp = await this.props.register_new_account(this.state.account, encryptedInfo, this.state.email, this.state.username, wallet.address, type)
+        let resp = await this.props.register_new_account(this.state.account, encryptedInfo, this.state.email, this.state.username, wallet.address, account_type)
         await window.hideIndicator()
 
         if(resp.code == 1){
@@ -582,7 +582,7 @@ export default class extends React.Component {
     }
     
     render_term(){
-        let type = this.getType()
+        let type = this.getAccountType()
         let title, desc
         if(type == 0) {
             title = "개인 가입 약관 동의"
@@ -619,7 +619,7 @@ export default class extends React.Component {
     }
 
     render_email(){
-        let type = this.getType()
+        let type = this.getAccountType()
         let desc = ""
         if(type == 0)
             desc = "기본정보를 정확히 입력해주시기 바랍니다."
@@ -640,17 +640,17 @@ export default class extends React.Component {
                         <input className="common-textbox" type="email"
                             value={this.state.email || ""} 
                             onChange={e=>this.setState({email:e.target.value})}
-                            disabled={this.getType() == 2 || this.state.step1 == 1}
+                            disabled={this.getAccountType() == 2 || this.state.step1 == 1}
                             placeholder="이메일을 정확하게 입력해주세요"/>
                     </div>
-                    { this.getType() == 2 ? null : (this.state.step1 == 1 ?
+                    { this.getAccountType() == 2 ? null : (this.state.step1 == 1 ?
                         <div className="gray-but">발송 완료</div> : 
                         <div className="blue-but" onClick={this.onClickRequestEmail}>인증메일 발송</div>)
                     }
                     
                 </div>
 
-                {this.getType() == 2 ? null : 
+                {this.getAccountType() == 2 ? null : 
                     <div className="text-place">
                         <div className="name">이메일 인증</div>
                         <div className="textbox">
@@ -785,7 +785,7 @@ export default class extends React.Component {
                             value={this.state.company_name || ""}
                             onChange={e=>this.setState({company_name:e.target.value})}
                             placeholder="기업명을 입력해주세요."
-                            disabled={this.getType() == 2}/>
+                            disabled={this.getAccountType() == 2}/>
                     </div>
                 </div>
 
@@ -796,7 +796,7 @@ export default class extends React.Component {
                             value={this.state.duns_number || ""}
                             onChange={e=>this.setState({duns_number:e.target.value})}
                             placeholder="사업자등록번호를 입력해주세요."
-                            disabled={this.getType() == 2}/>
+                            disabled={this.getAccountType() == 2}/>
                     </div>
                 </div>
 
@@ -807,7 +807,7 @@ export default class extends React.Component {
                             value={this.state.company_ceo || ""}
                             onChange={e=>this.setState({company_ceo:e.target.value})}
                             placeholder="대표자명을 입력해주세요."
-                            disabled={this.getType() == 2}/>
+                            disabled={this.getAccountType() == 2}/>
                     </div>
                 </div>
 
@@ -818,9 +818,9 @@ export default class extends React.Component {
                             value={this.state.company_address || ""} 
                             onChange={e=>this.setState({company_address:e.target.value})}
                             placeholder="주소를 정확하게 입력해주세요"
-                            disabled={this.getType() == 2}/>
+                            disabled={this.getAccountType() == 2}/>
                     </div>
-                    { this.getType() == 2 ? null : <div className="blue-but" onClick={this.onClickFindAddress.bind(this, 2)}>
+                    { this.getAccountType() == 2 ? null : <div className="blue-but" onClick={this.onClickFindAddress.bind(this, 2)}>
                         검색
                     </div>}
                 </div>
@@ -977,7 +977,7 @@ export default class extends React.Component {
         }else if(this.state.step == 1){
             return this.render_email();
         }else if(this.state.step == 2){
-            let type = this.getType()
+            let type = this.getAccountType()
             if(type == 0)
                 return this.render_personal();
             else if(type == 1 || type == 2)
@@ -991,7 +991,7 @@ export default class extends React.Component {
 
 	render() {
 
-        let type = this.getType()
+        let type = this.getAccountType()
         let step2_text = ""
         if(type == 0)
             step2_text = "회원정보 입력"
