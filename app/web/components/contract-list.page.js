@@ -281,7 +281,7 @@ export default class extends React.Component {
                         </div>
                         <div className="list-body-item list-name">
                             계약서 테스트 11111
-                            <div className="sub">서명 : 홍길동(생성자), 누구누구 외 2명</div>
+                            <div className="sub">서명자 : 홍길동(생성자), 누구누구 외 2명</div>
                         </div>
                         <div className="list-body-item list-status">
                             내 서명 전
