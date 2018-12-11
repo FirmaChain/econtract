@@ -175,7 +175,7 @@ export default class extends React.Component {
                 <div className="text-place">
                     <div className="name">등록한 이메일</div>
                     <div className="textbox">
-                        <input type="text"
+                        <input className="common-textbox" type="text"
                             value={this.state.email || ""}
                             onChange={e=>this.setState({email:e.target.value})}
                             placeholder="가입하신 계정의 이메일을 입력해주세요."/>
@@ -185,7 +185,7 @@ export default class extends React.Component {
                 <div className="text-place">
                     <div className="name">비밀번호</div>
                     <div className="textbox">
-                        <input type="password"
+                        <input className="common-textbox" type="password"
                             value={this.state.password || ""}
                             onChange={e=>this.setState({password:e.target.value})}
                             placeholder="최소 8자리(영어, 숫자, 특수문자 사용 가능)"/>
@@ -195,7 +195,7 @@ export default class extends React.Component {
                 <div className="text-place">
                     <div className="name">비밀번호 확인</div>
                     <div className="textbox">
-                        <input type="password"
+                        <input className="common-textbox" type="password"
                             value={this.state.password2 || ""}
                             onChange={e=>this.setState({password2:e.target.value})}
                             onKeyDown={this.keyPress.bind(this, 1)}

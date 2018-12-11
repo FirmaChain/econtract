@@ -46,7 +46,7 @@ export default class extends React.Component {
 
 	render() {
 		return (<div className="maintain">
-            <div className="home-page">
+            <div className="header-page">
                 <div className="header">
                     <div className="left-logo">
                         <img src="/static/logo_blue.png" onClick={()=>history.push("/home")}/>

@@ -6,6 +6,11 @@ import SignerSlot from "./signer-slot"
 import history from '../history';
 import pdfjsLib from "pdfjs-dist"
 import translate from "../../common/translate"
+import Information from "./information.comp"
+
+import Dropdown from "react-dropdown"
+import 'react-dropdown/style.css'
+
 import {
     fetch_user_info,
     list_template,
@@ -30,12 +35,14 @@ export default class extends React.Component {
 	constructor(){
         super();
         this.roles = [
-            "생성자",
-            "서명자",
-            "참관"
+            {value:0, label: "생성자"},
+            {value:1, label: "서명자"},
+            {value:2, label: "보기 가능"}
         ]
+
 		this.state={
             target_list:[],
+            target_me:true,
             indivisual:[{
                 deletable:false,
                 title:"성함",
@@ -107,20 +114,22 @@ export default class extends React.Component {
         })()
     }
 
-    componentWillUnmount(){
+    getRole(value) {
+        for(let v of this.roles) {
+            if(v.value == value)
+                return v
+        }
+        return null;
     }
 
-    componentWillReceiveProps(props){
-        if(props.user_info === false){
-            history.replace("/login")
-        }
+    componentWillUnmount(){
     }
 
     onClickBack = ()=>{
         history.goBack();
     }
 
-    onClickAdd = async()=>{
+    onClickAdd = async ()=>{
         if(!this.state.add_email)
             return alert("이메일을 입력해주세요.")
         if(!this.state.add_role)
@@ -216,16 +225,17 @@ export default class extends React.Component {
         if(!this.props.user_info)
             return <div></div>
 
-        return (<div className="default-page add-contract-page">
+        let _roles = this.roles.filter( (e, k) => k != 0 )
+
+        return (<div className="add-contract-page header-page">
             <div className="header">
-                <div className="close" onClick={this.onClickBack}>
-                    <i className="fas fa-times"></i>
+                <div className="left-logo">
+                    <img src="/static/logo_blue.png" onClick={()=>history.push("/home")}/>
                 </div>
-                <div className="title">계약서</div>
-                <div className="profile">
-                    <div>{this.props.user_info.username}</div>
-                    <div>{this.props.user_info.email}</div>
-                </div>
+                <Information />
+            </div>
+            <div className="head">
+                계약정보 등록
             </div>
             <div className="content">
                 <div className="row">
@@ -235,8 +245,13 @@ export default class extends React.Component {
                     </div>
                     <div className="right-form">
                         <div className="column">
-                            <div className="form-head">계약명</div>
-                            <div className="form-input"><input type="text" value={this.state.contract_name || ""} onChange={e=>this.setState({contract_name:e.target.value})}/></div>
+                            <div className="form-head"></div>
+                            <div className="form-input">
+                                <input className="common-textbox" type="text"
+                                    value={this.state.contract_name || ""}
+                                    placeholder="해당 계약명을 입력해주세요"
+                                    onChange={e=>this.setState({contract_name:e.target.value})}/>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -248,10 +263,17 @@ export default class extends React.Component {
                     </div>
                     <div className="right-form">
                         <div className="column">
-                            <div className="form-head">서명 대상</div>
+                            <div className="form-head"></div>
                             <div className="form-input">
-                                <CheckBox2 on={this.state.target_me} onClick={()=>this.setState({target_me:!this.state.target_me})}/> 본인({this.props.user_info.username})
-                                <CheckBox2 on={this.state.target_other} onClick={()=>this.setState({target_other:!this.state.target_other})}/> 타 서명자
+                                <CheckBox2 on={this.state.target_me}
+                                    size={18}
+                                    disabled
+                                    onClick={()=>this.setState({target_me:!this.state.target_me})}
+                                    text={"본인 (" + this.props.user_info.username + ")"}/> &nbsp;&nbsp;&nbsp;&nbsp;
+                                <CheckBox2 on={this.state.target_other}
+                                    size={18}
+                                    onClick={()=>this.setState({target_other:!this.state.target_other})}
+                                    text={"타 서명자"}/>
                             </div>
                         </div>
                     </div>
@@ -259,28 +281,39 @@ export default class extends React.Component {
 
                 <div className="row">
                     <div className="left-desc">
-                        <div className="desc-head">서명자 추가</div>
-                        <div className="desc-content">계약에 서명할 사용자를 추가합니다</div>
+                        <div className="desc-head">사용자 추가</div>
+                        <div className="desc-content">계약에 서명하거나 볼 수 있는 사용자를 추가합니다</div>
                         <div className="desc-link">서비스 미가입자도 서명할 수 있나요?</div>
                     </div>
                     <div className="right-form">
-                        <div className="column">
-                            <div className="form-head">서명자 이메일</div>
+                        <div className="column column-flex-2">
+                            <div className="form-head">사용자 이메일</div>
                             <div className="form-input">
-                                <input type="text" value={this.state.add_email || ""} onChange={e=>this.setState({add_email:e.target.value})}/>
+                                <input className="common-textbox" id="email" type="email"
+                                    placeholder="이메일을 입력해주세요"
+                                    value={this.state.add_email || ""}
+                                    onChange={e=>this.setState({add_email:e.target.value})}/>
                             </div>
                         </div>
                         <div className="column">
-                            <div className="form-head">서명자 역할</div>
+                            <div className="form-head">사용자 역할</div>
                             <div className="form-input">
-                                <select onChange={e=>this.setState({add_role:e.target.value})}>
+                                <Dropdown className="common-select"
+                                    controlClassName="control"
+                                    menuClassName="item"
+                                    options={_roles}
+                                    onChange={e=>{this.setState({add_role:e.value})}}
+                                    value={_roles[0]} placeholder="사용자 역할을 골라주세요" />
+
+                                {/*<select className="common-textbox"
+                                    onChange={e=>this.setState({add_role:e.target.value})}>
                                     <option value="">선택</option>
                                     {this.roles.map((e,k)=>{
-                                        if(k == 0)return null
+                                        if(k == 0) return null
                                         return <option value={k}>{e}</option>
                                     })}
-                                </select>
-                                <button onClick={this.onClickAdd}>추가</button>
+                                </select>*/}
+                                <div className={"btn-add-user" + ( (this.state.add_email || "").length==0? "" : " btn-add-user-active" )} onClick={this.onClickAdd}>추가</div>
                             </div>
                         </div>
                     </div>
@@ -302,7 +335,7 @@ export default class extends React.Component {
                                 return <tr key={k}>
                                     <td>{e.username}</td>
                                     <td>{e.email}</td>
-                                    <td>{this.roles[e.role]}</td>
+                                    <td>{this.getRole(e.role).label}</td>
                                     <td>
                                         {k == 0 ?
                                             null:
