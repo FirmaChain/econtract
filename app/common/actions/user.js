@@ -48,6 +48,7 @@ export function fetch_user_info(){
                     eth_address: wallet.address,
                     account_id: resp.payload.account_id,
                     publickey_contract: resp.payload.publickey_contract,
+                    account_type: resp.payload.account_type,
                 }
                 dispatch({
                     type:RELOAD_USERINFO,
