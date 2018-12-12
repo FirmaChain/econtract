@@ -340,7 +340,7 @@ export default class extends React.Component {
 
         let _roles = this.roles.filter( (e, k) => k != 0 )
 
-        return (<div className="add-contract-page header-page">
+        return (<div className="upsert-contract-group-page header-page">
             <div className="header">
                 <div className="left-logo">
                     <img src="/static/logo_blue.png" onClick={()=>history.push("/home")}/>

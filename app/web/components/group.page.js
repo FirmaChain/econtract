@@ -91,7 +91,7 @@ export default class extends React.Component {
 
     openGroupInfo(group_id, e) {
         e.stopPropagation()
-        history.push(`/group-info/${group_id}`)
+        history.push({pathname:`/group-info/${group_id}`, state:{group_id}})
     }
 
     render_board_slot(e,k){
