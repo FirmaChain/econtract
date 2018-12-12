@@ -48,55 +48,30 @@ export default class extends React.Component {
 
 	componentDidMount() {
         (async()=>{
-            await this.props.folder_list()
             if(this.getTitle().id == "recently") {
-                await this.props.recently_contracts();
             }
         })()
 	}
 
-	onClickAddContract(){
-        window.openModal("StartContract",{
-            onClick:async(type)=>{
-                if(type == 1) {
-                    history.push("/add-contract")
-                } else if(type == 2) {
-
-                }
-            }
-        })
+	onClickAddGroup(){
+        console.log("onClickAddGroup")
 	}
 
 	getTitle() {
 		let pathname = this.props.location.pathname
-		if(pathname == "/home/lock") {
-			return { id:"lock", title : "잠김"}
+
+        for(let i = 0 ; i < 10 ; i++) {
+            if(pathname == "/group/" + i)
+                return { id:i.toString(), title:"그룹 " + i}
         }
-		else if(pathname == "/home/requested") {
-			return { id:"requested", title : "요청받음"}
+
+		if(pathname == "/group/unclassified") {
+			return { id:"unclassified", title : "분류되지 않은 그룹원"}
         }
-		else if(pathname == "/home/created") {
-			return { id:"created", title : "생성함"}
+		else if(pathname == "/group/withdraw") {
+			return { id:"withdraw", title : "탈퇴한 그룹원"}
         }
-		else if(pathname == "/home/typing") {
-			return { id:"typing", title : "내용 입력중"}
-		}
-		else if(pathname == "/home/beforeMySign") {
-			return { id:"beforeMySign", title : "내 서명 전"}
-		}
-		else if(pathname == "/home/beforeOtherSign") {
-			return { id:"beforeOtherSign", title : "상대방 서명 전"}
-		}
-		else if(pathname == "/home/view") {
-			return { id:"view", title : "보기 가능"}
-		}
-		else if(pathname == "/home/completed") {
-			return { id:"completed", title : "완료됨"}
-		}
-		else if(pathname == "/home/deleted") {
-			return { id:"deleted", title : "삭제됨"}
-		}
-		return { id:"recently", title : "최근 사용"}
+		return { id:"all", title : "모든 계약"}
 	} 
 
     onClickPage = async(page)=>{
@@ -111,9 +86,14 @@ export default class extends React.Component {
     }
 
     move(pageName) {
-        history.push(`/home/${pageName}`)
+        history.push(`/group/${pageName}`)
     }
 
+    openGroupInfo(group_id, e) {
+        e.stopPropagation()
+        console.log("group_id", group_id)
+        history.push(`/group-info/${group_id}`)
+    }
 
     render_board_slot(e,k){
         let status_text = (status)=>{
@@ -157,44 +137,73 @@ export default class extends React.Component {
     }
 
 	render() {
-        // if(!this.props.folders)
-        //     return <div />
-
         let folders = this.props.folders ? this.props.folders : { list: [] }
 
         let board = this.props.board ? this.props.board : { list:[] }
         let total_cnt = board.total_cnt
         let page_num = board.page_num
 
-		return (<div className="contract-page">
-			<div className="contract-menu">
-				<div className="start-contract" onClick={this.onClickAddContract}>시작하기</div>
+		return (<div className="group-page">
+			<div className="contract-group-menu">
+				<div className="left-top-button" onClick={this.onClickAddGroup}>그룹 추가하기</div>
 				<div className="menu-list">
+                    <div className="list">
+                        <div className={"item" + (this.getTitle().id.includes("all") ? " selected" : "")} onClick={this.move.bind(this, "")}><i className="fal fa-clock"></i> 모든 계약</div>
+                    </div>
 					<div className="list">
-						<div className="title">계약</div>
-						<div className={"item" + (this.getTitle().id.includes("recently") ? " selected" : "")} onClick={this.move.bind(this, "")}><i className="fal fa-clock"></i> 최근 사용</div>
-						<div className={"item" + (this.getTitle().id.includes("lock") ? " selected" : "")} onClick={this.move.bind(this, "lock")}><i className="fas fa-lock-alt"></i> 잠김</div>
-						<div className={"item" + (this.getTitle().id.includes("requested") ? " selected" : "")} onClick={this.move.bind(this, "requested")}><i className="fas fa-share-square"></i> 요청받음</div>
-						<div className={"item" + (this.getTitle().id.includes("created") ? " selected" : "")} onClick={this.move.bind(this, "created")}><i className="fas fa-handshake-alt"></i> 생성함</div>
-					</div>
-					<div className="list">
-						<div className="title">모아보기</div>
-						<div className={"item" + (this.getTitle().id.includes("typing") ? " selected" : "")} onClick={this.move.bind(this, "typing")}><i className="fal fa-keyboard"></i> 내용 입력 중</div>
-						<div className={"item" + (this.getTitle().id.includes("beforeMySign") ? " selected" : "")} onClick={this.move.bind(this, "beforeMySign")}><i className="far fa-file-import"></i> 내 서명 전</div>
-						<div className={"item" + (this.getTitle().id.includes("beforeOtherSign") ? " selected" : "")} onClick={this.move.bind(this, "beforeOtherSign")}><i className="far fa-file-export"></i> 상대방 서명 전</div>
-						<div className={"item" + (this.getTitle().id.includes("view") ? " selected" : "")} onClick={this.move.bind(this, "view")}><i className="fas fa-eye"></i> 보기 가능</div>
-						<div className={"item" + (this.getTitle().id.includes("completed") ? " selected" : "")} onClick={this.move.bind(this, "completed")}><i className="fal fa-check-circle"></i> 완료됨</div>
-						<div className={"item" + (this.getTitle().id.includes("deleted") ? " selected" : "")} onClick={this.move.bind(this, "deleted")}><i className="fal fa-trash-alt"></i> 삭제됨</div>
-					</div>
-					<div className="list">
-						<div className="title">폴더</div>
-						{folders.list.map((e,k)=>{
-                            let subject = e.subject || "분류되지 않은 계약"
-                            let folder_id = e.folder_id || 0
-                            return <div className="item" key={e+k}>
-                                <i className={`fas ${folder_id == 0 ? "fa-thumbtack":"fa-folder"}`} /> {subject}
-                            </div>
-                        })}
+						<div className="title">그룹</div>
+						<div className={"item" + (this.getTitle().id.includes("0") ? " selected" : "")} onClick={this.move.bind(this, "0")}>
+                            <div className="text">#인사팀</div>
+                            <i className="setting fas fa-cog" onClick={this.openGroupInfo.bind(this, 0)}></i>
+                            <i className="angle far fa-angle-down"></i>
+                        </div>
+                        <div className={"item" + (this.getTitle().id.includes("1") ? " selected" : "")} onClick={this.move.bind(this, "1")}>
+                            <div className="text">#재무팀</div>
+                            <i className="setting fas fa-cog" onClick={this.openGroupInfo.bind(this, 1)}></i>
+                            <i className="angle far fa-angle-down"></i>
+                        </div>
+                        <div className={"item" + (this.getTitle().id.includes("2") ? " selected" : "")} onClick={this.move.bind(this, "2")}>
+                            <div className="text">#사업1팀</div>
+                            <i className="setting fas fa-cog" onClick={this.openGroupInfo.bind(this, 2)}></i>
+                            <i className="angle far fa-angle-down"></i>
+                        </div>
+                        <div className={"item" + (this.getTitle().id.includes("3") ? " selected" : "")} onClick={this.move.bind(this, "3")}>
+                            <div className="text">#사업2팀</div>
+                            <i className="setting fas fa-cog" onClick={this.openGroupInfo.bind(this, 3)}></i>
+                            <i className="angle far fa-angle-down"></i>
+                        </div>
+                        <div className={"item" + (this.getTitle().id.includes("4") ? " selected" : "")} onClick={this.move.bind(this, "4")}>
+                            <div className="text">#개발1팀</div>
+                            <i className="setting fas fa-cog" onClick={this.openGroupInfo.bind(this, 4)}></i>
+                            <i className="angle far fa-angle-down"></i>
+                        </div>
+                        <div className={"item" + (this.getTitle().id.includes("5") ? " selected" : "")} onClick={this.move.bind(this, "5")}>
+                            <div className="text">#개발2팀</div>
+                            <i className="setting fas fa-cog" onClick={this.openGroupInfo.bind(this, 5)}></i>
+                            <i className="angle far fa-angle-down"></i>
+                        </div>
+                        <div className={"item" + (this.getTitle().id.includes("6") ? " selected" : "")} onClick={this.move.bind(this, "6")}>
+                            <div className="text">#인사2팀</div>
+                            <i className="setting fas fa-cog" onClick={this.openGroupInfo.bind(this, 6)}></i>
+                            <i className="angle far fa-angle-down"></i>
+                        </div>
+                        <div className={"item" + (this.getTitle().id.includes("7") ? " selected" : "")} onClick={this.move.bind(this, "7")}>
+                            <div className="text">#디자인1팀</div>
+                            <i className="setting fas fa-cog" onClick={this.openGroupInfo.bind(this, 7)}></i>
+                            <i className="angle far fa-angle-down"></i>
+                        </div>
+                        <div className={"item" + (this.getTitle().id.includes("8") ? " selected" : "")} onClick={this.move.bind(this, "8")}>
+                            <div className="text">#디자인2팀</div>
+                            <i className="setting fas fa-cog" onClick={this.openGroupInfo.bind(this, 8)}></i>
+                            <i className="angle far fa-angle-down"></i>
+                        </div>
+						<div className={"item" + (this.getTitle().id.includes("9") ? " selected" : "")} onClick={this.move.bind(this, "9")}>
+                            <div className="text">#법무팀</div>
+                            <i className="setting fas fa-cog" onClick={this.openGroupInfo.bind(this, 9)}></i>
+                            <i className="angle far fa-angle-down"></i>
+                        </div>
+						<div className={"item" + (this.getTitle().id.includes("unclassified") ? " selected" : "")} onClick={this.move.bind(this, "unclassified")}><i className="icon fas fa-share-square"></i> 분류되지 않은 그룹원</div>
+						<div className={"item" + (this.getTitle().id.includes("withdraw") ? " selected" : "")} onClick={this.move.bind(this, "withdraw")}><i className="icon fas fa-handshake-alt"></i> 탈퇴한 그룹원</div>
 					</div>
 				</div>
 			</div>

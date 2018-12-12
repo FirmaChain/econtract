@@ -71,6 +71,7 @@ window.addEventListener("load",()=>{
 					<Route onEnter={resolver} exact path="/template/:menu" component={HomePage} />
 
 					<Route onEnter={resolver} exact path="/group" component={HomePage} />
+					<Route onEnter={resolver} exact path="/group/:menu" component={HomePage} />
 
 					<Route onEnter={resolver} exact path="/folder" component={FolderPage} />
 					<Route onEnter={resolver} exact path="/add-contract" component={AddContractPage} />
@@ -79,7 +80,7 @@ window.addEventListener("load",()=>{
 					<Route onEnter={resolver} exact path="/contract-confirm/:id/:revision" component={ContractConfirmPage} />
 					<Route onEnter={resolver} exact path="/profile" component={UserProfilePage} />
 
-					<Route onEnter={resolver} exact path="/group-info" component={CorpGroupInfoPage} />
+					<Route onEnter={resolver} exact path="/group-info/:group_id" component={CorpGroupInfoPage} />
 					
 {/*					<Route onEnter={resolver} exact path="/template" component={TemplatePage} />
 					<Route onEnter={resolver} exact path="/add-template" component={AddTemplatePage} />
