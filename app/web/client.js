@@ -33,7 +33,7 @@ import ContractEditorPage from "./components/contract-editor.page"
 import ContractConfirmPage from "./components/contract-confirm.page"
 import VerificationPage from "./components/verification.page"
 import UserProfilePage from "./components/profile.page"
-import CorpSubPage from "./components/corp-sub-list.page"
+import CorpGroupInfo from "./components/corp-group-info.page"
 
 import { current_platform } from "../common/utils"
 
@@ -76,7 +76,7 @@ window.addEventListener("load",()=>{
 					<Route onEnter={resolver} exact path="/contract-confirm/:id/:revision" component={ContractConfirmPage} />
 					<Route onEnter={resolver} exact path="/profile" component={UserProfilePage} />
 
-					<Route onEnter={resolver} exact path="/corporation-user-list" component={CorpSubPage} />
+					<Route onEnter={resolver} exact path="/group-info" component={CorpGroupInfo} />
 					
 {/*					<Route onEnter={resolver} exact path="/template" component={TemplatePage} />
 					<Route onEnter={resolver} exact path="/add-template" component={AddTemplatePage} />

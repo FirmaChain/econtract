@@ -30,10 +30,10 @@ export default class extends React.Component {
     }
 
 	render() {
-		return (<div>
-                <div className="add-btn" onClick={this.onInviteSubAcount}>
+		return (<div className="corp-group-info">
+            <div className="add-btn" onClick={this.onInviteSubAcount}>
                 <div>초대</div>
-                </div>
+            </div>
 		</div>)
 	}
 }
