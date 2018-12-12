@@ -300,6 +300,21 @@ export default class extends React.Component {
         })
     }
 
+    openServiceNoRegisterModal = () => {
+        window.openModal("CommonModal", {
+            icon:"fal fa-folder",
+            title:"서비스 미가입 사용자",
+            subTitle:"계약 문서의 법적 효력을 위해 서비스 가입이 필요합니다.",
+            desc:`서비스 가입을 거치지 않고 서명을 할 경우, 해당 계약의 법적 효력을 증명할 수 없습니다.<br/><br/>
+사용자를 추가하기 위해선 양측의 서비스 가입이 
+필수적이며, 가입 후 계약 정보 수정 화면에서 해당 
+사용자를 꼭 추가해주세요.`,
+            onClose:()=>{
+                refesh_modal_idx = null
+            }
+        })
+    }
+
 
     keyPress = async (type, e) => {
         if(e.keyCode == 13){
@@ -376,7 +391,7 @@ export default class extends React.Component {
                     <div className="left-desc">
                         <div className="desc-head">사용자 추가</div>
                         <div className="desc-content">계약에 서명하거나 볼 수 있는 사용자를 추가합니다</div>
-                        <div className="desc-link">서비스 미가입자도 서명할 수 있나요?</div>
+                        <div className="desc-link" onClick={this.openServiceNoRegisterModal}>서비스 미가입자도 서명할 수 있나요?</div>
                     </div>
                     <div className="right-form">
                         <div className="column column-flex-2">

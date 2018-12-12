@@ -9,6 +9,7 @@ $font1: 14px;
 $font0: 12px;
 
 $blue : #324b5f;
+$middleblack : #555555;
 $black : #181818;
 $gray : #a7a4a5;
 $lightgray : #f4f4f4;
@@ -1413,6 +1414,74 @@ select:focus { outline:none; }
                 padding:15px 20px;
                 text-align: center;
                 margin: auto;
+            }
+        }
+    }
+}
+
+
+.common-modal {
+    background-color: #fff;
+    min-width: 400px;
+    width:600px;
+
+    >.container {
+        padding:50px;
+
+        >.data {
+            display: flex;
+            flex-direction: row;
+
+            >.icon {
+                margin-right:20px;
+                >i { 
+                    font-size: 50px;
+                }
+            }
+
+            >.desc-container {
+                padding-right:70px;
+
+                >.place {
+                    margin-bottom:50px;
+
+                    >.title {
+                        font-size: $font5;
+                        color: $black;
+                        font-weight: bold;
+                        margin-bottom:10px;
+                    }
+
+                    >.sub-title {
+                        font-size: $font3;
+                        color: $black;
+                    }
+                }
+
+                >.desc {
+                    font-size: $font1;
+                    color:$middleblack;
+                }
+            }
+
+        }
+
+        >.button {
+            text-align: right;
+            margin-top: 30px;
+
+            >div {
+                display: inline-block;
+                font-size: $font2;
+                cursor: pointer;
+                padding:10px 20px;
+                background-color: $blue;
+                color:white;
+                margin-left: 20px;
+                margin-right: 10px;
+                width:100px;
+                text-align: center;
+                font-weight:bold;
             }
         }
     }
