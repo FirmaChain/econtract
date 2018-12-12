@@ -7,9 +7,7 @@ import translate from "../../common/translate"
 import Information from "./information.comp"
 
 import {
-    fetch_user_info,
-    list_template,
-    select_userinfo_with_email
+    invite_sub_account,
 } from "../../common/actions"
 
 let mapStateToProps = (state)=>{
@@ -19,16 +17,23 @@ let mapStateToProps = (state)=>{
 }
 
 let mapDispatchToProps = {
-    fetch_user_info,
-    list_template,
-    select_userinfo_with_email
+    invite_sub_account,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
 export default class extends React.Component {
+    onInviteSubAcount = async ()=>{
+        let resp = await this.props.invite_sub_account("1", "test@test.com", {});
+        if (resp) {
+            return alert(resp);
+        }
+    }
+
 	render() {
 		return (<div>
-			hiho
+                <div className="add-btn" onClick={this.onInviteSubAcount}>
+                <div>초대</div>
+                </div>
 		</div>)
 	}
 }

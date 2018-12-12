@@ -76,7 +76,7 @@ window.addEventListener("load",()=>{
 					<Route onEnter={resolver} exact path="/contract-confirm/:id/:revision" component={ContractConfirmPage} />
 					<Route onEnter={resolver} exact path="/profile" component={UserProfilePage} />
 
-					<Route onEnter={resolver} exact path="/copration-user-list" component={CorpSubPage} />
+					<Route onEnter={resolver} exact path="/corporation-user-list" component={CorpSubPage} />
 					
 {/*					<Route onEnter={resolver} exact path="/template" component={TemplatePage} />
 					<Route onEnter={resolver} exact path="/add-template" component={AddTemplatePage} />
