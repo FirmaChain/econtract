@@ -14,6 +14,8 @@ import moment from "moment"
 
 import ContractListPage from "./contract-list.page"
 import TemplatePage from "./contract-template.page"
+import GroupPage from "./group.page"
+import Footer from "./footer.comp"
 
 import translate from "../../common/translate"
 import {
@@ -22,7 +24,7 @@ import {
 
 let mapStateToProps = (state)=>{
 	return {
-        user:state.user.info
+        user_info:state.user.info
 	}
 }
 
@@ -33,10 +35,26 @@ let mapDispatchToProps = {
 @connect(mapStateToProps, mapDispatchToProps )
 export default class extends React.Component {
 	constructor(){
-		super();
+		super()
 		this.state={
         }
 	}
+
+    componentDidMount(){
+        if(!this.props.user_info){
+            (async()=>{
+                await window.showIndicator()
+                await this.props.fetch_user_info()
+                await window.hideIndicator()
+            })()
+        }
+    }
+
+    componentWillReceiveProps(props){
+        if(props.user_info === false){
+            history.replace("/login")
+        }
+    }
 
     getStatus() {
         if(!!this.props.location && !!this.props.location.pathname)
@@ -45,6 +63,9 @@ export default class extends React.Component {
     }
 
 	render() {
+        if(!this.props.user_info)
+            return <div />
+
 		return (<div className="maintain">
             <div className="header-page">
                 <div className="header">
@@ -55,27 +76,24 @@ export default class extends React.Component {
                         <div className={(this.getStatus().includes("/home") ? "selected-item" : "item")} onClick={() => history.push("/home")}>
                             <div>계약</div>
                         </div>
-                        <div className={(this.getStatus() == "/template" ? "selected-item" : "item")} onClick={() => history.push("/template")}>
+                        <div className={(this.getStatus().includes("/template") ? "selected-item" : "item")} onClick={() => history.push("/template")}>
                             <div>템플릿</div>
                         </div>
+                        { ( !!this.props.user_info && (this.props.user_info.account_type == 1 || this.props.user_info.account_type == 2) ) ? 
+                            <div className={(this.getStatus().includes("/group") ? "selected-item" : "item")} onClick={() => history.push("/group")}>
+                                <div>그룹</div>
+                            </div>: ""}
                     </div>
-                    <Information />
+                    { !!this.props.user_info ? <Information /> : null }
                 </div>
                 <div className="content">
                     <Route path="/home" component={ContractListPage} />
                     <Route path="/template" component={TemplatePage} />
+                    <Route path="/group" component={GroupPage} />
                 </div>
             </div>
 
-            <div className="footer">
-                <div className="left">Copyright 2018 Firma Solutions, Inc, All right reserved</div>
-                <div className="middle">
-                    이용약관 | 개인정보처리방침
-                </div>
-                <div className="right">
-                    developer@firma-solutions.com
-                </div>
-            </div>
+            <Footer />
 		</div>);
 	}
 }

@@ -669,6 +669,12 @@ select:focus { outline:none; }
             font-size: $font2;
             font-weight: bold;
             color:$black;
+
+            >.company {
+                color: $gray;
+                font-size: $font0;
+                margin-right:10px;
+            }
         }
 
         >.email {

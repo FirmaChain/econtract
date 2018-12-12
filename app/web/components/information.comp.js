@@ -29,13 +29,13 @@ export default class extends React.Component{
     }
 
     componentDidMount(){
-        if(!this.props.user_info){
+        /*if(!this.props.user_info){
             (async()=>{
                 await window.showIndicator()
                 await this.props.fetch_user_info()
                 await window.hideIndicator()
             })()
-        }
+        }*/
 
         this.update()
         this.updateIdx = setInterval(this.update, 1000)
@@ -114,15 +114,17 @@ export default class extends React.Component{
     }
     
     render(){
-        if(!this.props.user_info){
+        if(!this.props.user_info)
             return <div />
-        }
 
         let info = this.props.user_info
 
         return (<div className="information">
             <div className="profile">
-                <div className="name">{info.username} <i className="fas fa-caret-down"></i></div>
+                <div className="name">
+                    { (info.account_type == 1 || info.account_type == 2) ? <span className="company">{this.props.user_info.company_name}</span> : "" }
+                    {info.username} <i className="fas fa-caret-down"></i>
+                </div>
                 <div className="email">{info.email}</div>
                 <div className="profile-dropdown">
                     <div className="container">

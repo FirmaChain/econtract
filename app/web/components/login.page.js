@@ -9,6 +9,8 @@ import {
     fetch_user_info
 } from "../../common/actions"
 
+import Footer from "./footer.comp"
+
 let mapStateToProps = (state)=>{
 	return {
         user_info: state.user.info
@@ -123,13 +125,13 @@ export default class extends React.Component {
                     아래의 방법으로 서비스를 시작할 수 있습니다.
                 </div>
                 <div className="buttons">
-                    <button className="new-already-button" onClick={()=>history.push({pathname:"/register", state:{type:1}})}>
+                    <button className="new-already-button" onClick={()=>history.push({pathname:"/register", state:{type:0}})}>
                         <i class="fas fa-user"></i>
                         <br/>
                         신규 일반 회원 가입
                         <div className="small">개인 사용</div>
                     </button>
-                    <button className="new-already-button" onClick={()=>history.push({pathname:"/register", state:{type:2}})}>
+                    <button className="new-already-button" onClick={()=>history.push({pathname:"/register", state:{type:1}})}>
                         <i class="fas fa-user-tie"></i>
                         <br/>
                         신규 기업 가입
@@ -183,15 +185,7 @@ export default class extends React.Component {
                 (!localStorage.getItem("browser_key") || localStorage.getItem("browser_key_virgin") == true) ? 
                     this.render_new() : this.render_login()  
             }
-            <div className="footer">
-                <div className="left">Copyright 2018 Firma Solutions, Inc, All right reserved</div>
-                <div className="middle">
-                    이용약관 | 개인정보처리방침
-                </div>
-                <div className="right">
-                    developer@firma-solutions.com
-                </div>
-            </div>
+            <Footer />
         </div>)
 	}
 }
