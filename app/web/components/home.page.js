@@ -41,7 +41,7 @@ export default class extends React.Component {
     getStatus() {
         if(!!this.props.location && !!this.props.location.pathname)
             return this.props.location.pathname
-        return "home"
+        return "/home"
     }
 
 	render() {
@@ -52,7 +52,7 @@ export default class extends React.Component {
                         <img src="/static/logo_blue.png" onClick={()=>history.push("/home")}/>
                     </div>
                     <div className="menu">
-                        <div className={(this.getStatus() == "/home" ? "selected-item" : "item")} onClick={() => history.push("/home")}>
+                        <div className={(this.getStatus().includes("/home") ? "selected-item" : "item")} onClick={() => history.push("/home")}>
                             <div>계약</div>
                         </div>
                         <div className={(this.getStatus() == "/template" ? "selected-item" : "item")} onClick={() => history.push("/template")}>

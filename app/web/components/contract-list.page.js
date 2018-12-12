@@ -42,7 +42,7 @@ export default class extends React.Component {
 	constructor(props) {
         super(props);
         this.state = {
-            board_checks : []
+            board_checks : [],
         };
 	}
 
@@ -69,13 +69,15 @@ export default class extends React.Component {
 
 	getTitle() {
 		let pathname = this.props.location.pathname
-		if(pathname == "/home/lock")
+		if(pathname == "/home/lock") {
 			return { id:"lock", title : "잠김"}
-		else if(pathname == "/home/requested")
+        }
+		else if(pathname == "/home/requested") {
 			return { id:"requested", title : "요청받음"}
-		else if(pathname == "/home/created")
+        }
+		else if(pathname == "/home/created") {
 			return { id:"created", title : "생성함"}
-
+        }
 		else if(pathname == "/home/typing") {
 			return { id:"typing", title : "내용 입력중"}
 		}
@@ -108,19 +110,23 @@ export default class extends React.Component {
         })
     }
 
+    move(pageName) {
+        history.push(`/home/${pageName}`)
+    }
+
 
     render_board_slot(e,k){
         let status_text = (status)=>{
-            if(status == 0){
+            if(status == 0) {
                 return "내용 입력 중"
-            }else if(status == 1){
+            } else if(status == 1) {
             	if("내가 서명 했다면")
             		return "상대방 서명 전"
             	else if("나는 서명 안했고 상대방중 하나라도 서명 했다면")
             		return "내 서명 전"
-            }else if(status == 2){
+            } else if(status == 2) {
                 return "계약 완료"
-            }else if(status == 3){
+            } else if(status == 3) {
             	return "보기 가능"
             }
         }
@@ -164,19 +170,19 @@ export default class extends React.Component {
 				<div className="menu-list">
 					<div className="list">
 						<div className="title">계약</div>
-						<div className="item"><i className="fal fa-clock"></i> 최근 사용</div>
-						<div className="item"><i className="fas fa-lock-alt"></i> 잠김</div>
-						<div className="item"><i className="fas fa-share-square"></i> 요청받음</div>
-						<div className="item"><i className="fas fa-handshake-alt"></i> 생성함</div>
+						<div className={"item" + (this.getTitle().id.includes("recently") ? " selected" : "")} onClick={this.move.bind(this, "")}><i className="fal fa-clock"></i> 최근 사용</div>
+						<div className={"item" + (this.getTitle().id.includes("lock") ? " selected" : "")} onClick={this.move.bind(this, "lock")}><i className="fas fa-lock-alt"></i> 잠김</div>
+						<div className={"item" + (this.getTitle().id.includes("requested") ? " selected" : "")} onClick={this.move.bind(this, "requested")}><i className="fas fa-share-square"></i> 요청받음</div>
+						<div className={"item" + (this.getTitle().id.includes("created") ? " selected" : "")} onClick={this.move.bind(this, "created")}><i className="fas fa-handshake-alt"></i> 생성함</div>
 					</div>
 					<div className="list">
 						<div className="title">모아보기</div>
-						<div className="item"><i className="fal fa-keyboard"></i> 내용 입력 중</div>
-						<div className="item"><i className="far fa-file-import"></i> 내 서명 전</div>
-						<div className="item"><i className="far fa-file-export"></i> 상대방 서명 전</div>
-						<div className="item"><i className="fas fa-eye"></i> 보기 가능</div>
-						<div className="item"><i className="fal fa-check-circle"></i> 완료됨</div>
-						<div className="item"><i className="fal fa-trash-alt"></i> 삭제됨</div>
+						<div className={"item" + (this.getTitle().id.includes("typing") ? " selected" : "")} onClick={this.move.bind(this, "typing")}><i className="fal fa-keyboard"></i> 내용 입력 중</div>
+						<div className={"item" + (this.getTitle().id.includes("beforeMySign") ? " selected" : "")} onClick={this.move.bind(this, "beforeMySign")}><i className="far fa-file-import"></i> 내 서명 전</div>
+						<div className={"item" + (this.getTitle().id.includes("beforeOtherSign") ? " selected" : "")} onClick={this.move.bind(this, "beforeOtherSign")}><i className="far fa-file-export"></i> 상대방 서명 전</div>
+						<div className={"item" + (this.getTitle().id.includes("view") ? " selected" : "")} onClick={this.move.bind(this, "view")}><i className="fas fa-eye"></i> 보기 가능</div>
+						<div className={"item" + (this.getTitle().id.includes("completed") ? " selected" : "")} onClick={this.move.bind(this, "completed")}><i className="fal fa-check-circle"></i> 완료됨</div>
+						<div className={"item" + (this.getTitle().id.includes("deleted") ? " selected" : "")} onClick={this.move.bind(this, "deleted")}><i className="fal fa-trash-alt"></i> 삭제됨</div>
 					</div>
 					<div className="list">
 						<div className="title">폴더</div>
