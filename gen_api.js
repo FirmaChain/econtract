@@ -352,3 +352,10 @@ export async function api_invite_sub_account(group_id,email,passphrase2,data){
         session:window.getCookie("session")
     });
 }
+export async function api_invite_information(registration_code){
+    return await get("/invite_information", {
+        registration_code
+    },{
+        session:window.getCookie("session")
+    });
+}
