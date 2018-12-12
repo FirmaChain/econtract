@@ -614,6 +614,7 @@ select:focus { outline:none; }
             margin-bottom: 50px;
             color:$gray;
             text-decoration: underline;
+            cursor: pointer;
         }
 
         >.login-btn {
@@ -1423,7 +1424,7 @@ select:focus { outline:none; }
 .common-modal {
     background-color: #fff;
     min-width: 400px;
-    width:600px;
+    width:800px;
 
     >.container {
         padding:50px;
@@ -1433,7 +1434,8 @@ select:focus { outline:none; }
             flex-direction: row;
 
             >.icon {
-                margin-right:20px;
+                margin-right:30px;
+
                 >i { 
                     font-size: 50px;
                 }
