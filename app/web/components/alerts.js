@@ -117,6 +117,48 @@ class StartContract extends React.Component{
 }
 
 @modal
+class BrowserNotVerified extends React.Component{
+    constructor(){
+        super()
+        this.state = {}
+    }
+
+    closeSelf = ()=>{
+        window.closeModal(this.props.modalId)
+    }
+
+    render(){
+        return <div className="browser-not-verified-modal">
+            <div className="container">
+                <div className="icon"><i className="fal fa-browser"></i></div>
+                <div className="title">브라우저 미인증이란?</div>
+                <div className="sub-title">E-Contract 서비스는 회원가입시 발급되는 마스터 키워드를 기반으로 로그인 하실 수 있습니다.</div>
+                <div className="desc-container">
+                    <div className="place">
+                        <i className="fal fa-sign-in"></i>
+                        <div className="title">회원가입</div>
+                        <div className="sub">전자 계약 진행시 신원을 확인 할 수 있는 정보를 입력하여 가입합니다.</div>
+                    </div>
+                    <div className="place">
+                        <i className="fal fa-key"></i>
+                        <div className="title">마스터 키워드 발급</div>
+                        <div className="sub">발급받은 마스터 키워드는 접속하고 있는 브라우저에 자동으로 저장됩니다.</div>
+                    </div>
+                    <div className="place">
+                        <i className="fal fa-money-check"></i>
+                        <div className="title">마스터 키워드 인증</div>
+                        <div className="sub">서비스에 접속시 브라우저에 저장된 마스터 키워드를 기반으로 인증이 진행되며, 가입시 입력한 이메일과 비밀번호로 로그인이 가능합니다</div>
+                    </div>
+                </div>
+                <div className="button">
+                    <div onClick={this.closeSelf}>확인</div>
+                </div>
+            </div>
+        </div>
+    }
+}
+
+@modal
 class RegistContract extends React.Component{
 
     constructor() {

@@ -568,6 +568,20 @@ export default class extends React.Component {
         }
     }
 
+    openWhatIsMasterkeywordModal = () => {
+        window.openModal("CommonModal", {
+            icon:"fal fa-lock-alt",
+            title:"마스터 키워드란?",
+            subTitle:"마스터 키워드는 회원님의 계정을 안전하게 보호하기 위한 장치입니다.",
+            desc:`브라우저상에 저장되는 마스터 키워드는 브라우저 인증, 계약 잠금 해제 등 이컨트랙트 서비스 전반에서 사용됩니다.<br/><br/>
+접속 브라우저 변경시에는 기존에 사용한 계약들이 
+잠금 상태로 로드가 되는데 이때, 기존 마스터 키워드를 
+입력하면 잠금 해제 하실 수 있습니다. <br/><br/>
+또, 팀 계정 또한 마스터 키워드를 기반으로 사용되기 
+때문에 해당 마스터 키워드들을 잘 보관하여 사용하시길 바랍니다.`
+        })
+    }
+
     keyPress = async (type, e) => {
         if(e.keyCode == 13){
             switch(type) {
@@ -898,7 +912,7 @@ export default class extends React.Component {
                 <div className="master-keyword-container">
                     <div className="sub-title-container">
                         <div className="title">마스터키워드</div>
-                        <div className="what-is-masterkeyword">마스터키워드란?</div>
+                        <div className="what-is-masterkeyword" onClick={this.openWhatIsMasterkeywordModal}>마스터키워드란?</div>
                     </div>
                     <div className="list">
                         {this.state.mnemonic.split(" ").map((e,k)=>{
