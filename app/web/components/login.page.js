@@ -89,17 +89,18 @@ export default class extends React.Component {
         window.openModal("CommonModal", {
             icon:"fal fa-lock-alt",
             title:"인증된 브라우저",
-            subTitle:"이컨트랙트 서비스는 마스터 키워드를 기반으로 로그인 하실 수 있습니다.",
+            subTitle:"E-Contract 서비스는 마스터 키워드를 기반으로 로그인 하실 수 있습니다.",
             desc:`회원가입시 발급되는 마스터 키워드는 해당 계정에 귀속되며, 당시 사용된 브라우저에 자동으로 저장됩니다.<br/><br/>
 회원님의 계정은 일치하는 마스터 키워드가 
 저장되있는 브라우저에서만 로그인이 가능합니다.<br/><br/>
-서비스에 가입한 적이 없다면 [신규 회원가입]을 통해 이컨트랙트 서비스를 경험해보시길 바랍니다.<br/><br/>
+서비스에 가입한 적이 없다면 [신규 회원가입]을 통해 E-Contract 서비스를 경험해보시길 바랍니다.<br/><br/>
 현재 접속해있는 브라우저에 회원님의 마스터 키워드가 저장되어 있지 않은 경우, [다른 계정으로 로그인] 기능을 통해 현재 인증된 계정을 해제하고 회원님의 기존 
-마스터 키워드를 사용하여 로그인하실 수 있습니다.`,
-            onClose:()=>{
-                refesh_modal_idx = null
-            }
+마스터 키워드를 사용하여 로그인하실 수 있습니다.`
         })
+    }
+
+    openNotVerifiedBrowserModal = () => {
+        window.openModal("BrowserNotVerified", {})
     }
 
     keyPress = async (e) => {
@@ -115,27 +116,27 @@ export default class extends React.Component {
             </div>
             <div className="container">
                 <div className="content1 font5 font-bold">E-Contract 시작하기</div>
-                <div className="content2 font2">접속하신 브라우저는 미인증 상태입니다.</div>
-                <div className="content3 font1"><u>브라우저 미인증이란?</u></div>
+                <div className="content2 font2"><i className="fas fa-lock-alt"></i> &nbsp; 접속하신 브라우저는 미인증 상태입니다.</div>
+                <div className="content3 font1" onClick={this.openNotVerifiedBrowserModal}><u>브라우저 미인증이란?</u></div>
                 <div className="content4 font3">
                     E-Contract를 처음 시작하거나, 접속된 브라우저가 인증되지 않은 상태일 경우<br/>
                     아래의 방법으로 서비스를 시작할 수 있습니다.
                 </div>
                 <div className="buttons">
-                    <button className="new-already-button new-img" onClick={()=>history.push({pathname:"/register", state:{type:1}})}>
-                        <div className="icon"></div>
+                    <button className="new-already-button" onClick={()=>history.push({pathname:"/register", state:{type:1}})}>
+                        <i class="fas fa-user"></i>
                         <br/>
                         신규 일반 회원 가입
                         <div className="small">개인 사용</div>
                     </button>
-                    <button className="new-already-button already-img" onClick={()=>history.push({pathname:"/register", state:{type:2}})}>
-                        <div className="icon"></div>
+                    <button className="new-already-button" onClick={()=>history.push({pathname:"/register", state:{type:2}})}>
+                        <i class="fas fa-user-tie"></i>
                         <br/>
                         신규 기업 가입
                         <div className="small">팀 관리용</div>
                     </button>
-                    <button className="new-already-button already-img" onClick={()=>history.push("/recover")}>
-                        <div className="icon"></div>
+                    <button className="new-already-button" onClick={()=>history.push("/recover")}>
+                        <i class="fas fa-user-check"></i>
                         <br/>
                         기존 계정으로 로그인
                         <div className="small">&nbsp;</div>
@@ -152,7 +153,7 @@ export default class extends React.Component {
             </div>
             <div className="container">
                 <div className="title">E-Contract 시작하기</div>
-                <div className="desc1">접속하신 브라우저는 인증되었습니다.</div>
+                <div className="desc1"><i className="fas fa-lock-open-alt"></i> &nbsp; 접속하신 브라우저는 인증되었습니다.</div>
                 <div className="desc2" onClick={this.openVerifiedBrowserModal}>인증된 브라우저란?</div>
 
                 <div className="textbox"><input className="common-textbox" id="email" type="email" placeholder="이메일을 입력해주세요." value={this.state.email || ""} onChange={e=>this.setState({email:e.target.value})}/></div>
