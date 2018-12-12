@@ -91,7 +91,6 @@ export default class extends React.Component {
 
     openGroupInfo(group_id, e) {
         e.stopPropagation()
-        console.log("group_id", group_id)
         history.push(`/group-info/${group_id}`)
     }
 
@@ -148,7 +147,10 @@ export default class extends React.Component {
 				<div className="left-top-button" onClick={this.onClickAddGroup}>그룹 추가하기</div>
 				<div className="menu-list">
                     <div className="list">
-                        <div className={"item" + (this.getTitle().id.includes("all") ? " selected" : "")} onClick={this.move.bind(this, "")}><i className="fal fa-clock"></i> 모든 계약</div>
+                        <div className={"item" + (this.getTitle().id.includes("all") ? " selected" : "")} onClick={this.move.bind(this, "")}>
+                            <i className="icon fal fa-clock"></i>
+                            <div className="text">모든 계약</div>
+                        </div>
                     </div>
 					<div className="list">
 						<div className="title">그룹</div>
@@ -202,8 +204,17 @@ export default class extends React.Component {
                             <i className="setting fas fa-cog" onClick={this.openGroupInfo.bind(this, 9)}></i>
                             <i className="angle far fa-angle-down"></i>
                         </div>
-						<div className={"item" + (this.getTitle().id.includes("unclassified") ? " selected" : "")} onClick={this.move.bind(this, "unclassified")}><i className="icon fas fa-share-square"></i> 분류되지 않은 그룹원</div>
-						<div className={"item" + (this.getTitle().id.includes("withdraw") ? " selected" : "")} onClick={this.move.bind(this, "withdraw")}><i className="icon fas fa-handshake-alt"></i> 탈퇴한 그룹원</div>
+
+						<div className={"item" + (this.getTitle().id.includes("unclassified") ? " selected" : "")} onClick={this.move.bind(this, "unclassified")}>
+                            <i className="icon fas fa-share-square"></i> 
+                            <div className="text">분류되지 않은 그룹원</div>
+                            <i className="angle far fa-angle-down"></i>
+                        </div>
+						<div className={"item" + (this.getTitle().id.includes("withdraw") ? " selected" : "")} onClick={this.move.bind(this, "withdraw")}>
+                            <i className="icon fas fa-handshake-alt"></i>
+                            <div className="text">탈퇴한 그룹원</div>
+                            <i className="angle far fa-angle-down"></i>
+                        </div>
 					</div>
 				</div>
 			</div>
