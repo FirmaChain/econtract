@@ -342,3 +342,13 @@ export async function api_select_userinfo_with_email(email){
         session:window.getCookie("session")
     });
 }
+export async function api_invite_sub_account(group_id,email,passphrase2,data){
+    return await get("/invite_sub_account", {
+        group_id,
+		email,
+		passphrase2,
+		data
+    },{
+        session:window.getCookie("session")
+    });
+}
