@@ -1247,11 +1247,11 @@ select:focus { outline:none; }
 
                             >.delete {
                                 display: inline-block;
-                                background-color: $blue;
+                                background-color: $lightgray;
                                 font-size: $font1;
                                 font-weight: bold;
-                                color: white;
-                                border: 1px solid $blue;
+                                color: $gray;
+                                border: 1px solid $lightgray;
                                 cursor: pointer;
                                 padding: 10px 15px;
                                 text-align: center;

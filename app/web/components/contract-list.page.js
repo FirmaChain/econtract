@@ -157,10 +157,12 @@ export default class extends React.Component {
     }
 
 	render() {
-        if(!this.props.folders)
-            return <div />
+        // if(!this.props.folders)
+        //     return <div />
 
-        let board = this.state.loaded && this.props.board ? this.props.board : { list:[] };
+        let folders = this.props.folders ? this.props.folders : { list: [] }
+
+        let board = this.props.board ? this.props.board : { list:[] }
         let total_cnt = board.total_cnt
         let page_num = board.page_num
 
@@ -186,7 +188,7 @@ export default class extends React.Component {
 					</div>
 					<div className="list">
 						<div className="title">폴더</div>
-						{this.props.folders.list.map((e,k)=>{
+						{folders.list.map((e,k)=>{
                             let subject = e.subject || "분류되지 않은 계약"
                             let folder_id = e.folder_id || 0
                             return <div className="item" key={e+k}>

@@ -43,6 +43,7 @@ export default class extends React.Component {
 		this.state={
             target_list:[], // type 0 : 개인, type 1 : 기업 담당자, type 2 : 기업 그룹
             target_me:true,
+            target_other:false,
             indivisual:[{
                 deletable:false,
                 title:"성함",
@@ -302,7 +303,7 @@ export default class extends React.Component {
 
     openServiceNoRegisterModal = () => {
         window.openModal("CommonModal", {
-            icon:"fal fa-folder",
+            icon:"fal fa-user-slash",
             title:"서비스 미가입 사용자",
             subTitle:"계약 문서의 법적 효력을 위해 서비스 가입이 필요합니다.",
             desc:`서비스 가입을 거치지 않고 서명을 할 경우, 해당 계약의 법적 효력을 증명할 수 없습니다.<br/><br/>
@@ -387,7 +388,7 @@ export default class extends React.Component {
                     </div>
                 </div>
 
-                <div className="row">
+                <div className="row" style={{display:this.state.target_other ? "flex" : "none"}}>
                     <div className="left-desc">
                         <div className="desc-head">사용자 추가</div>
                         <div className="desc-content">계약에 서명하거나 볼 수 있는 사용자를 추가합니다</div>
