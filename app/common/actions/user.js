@@ -9,7 +9,8 @@ import {
     api_find_user_with_code_email,
     api_check_join_publickey,
     api_recover_account,
-    api_select_userinfo_with_email
+    api_select_userinfo_with_email,
+    api_invite_sub_account,
 } from "../../../gen_api"
 
 import {
@@ -20,6 +21,9 @@ import {
     SeedToEthKey,
     getMasterSeed,
     entropyToMnemonic,
+    aes_decrypt_async,
+    aes_encrypt_async,
+    hmac_sha256,
 } from "../../common/crypto_test"
 
 import Web3 from "../Web3"
@@ -196,3 +200,19 @@ export function select_userinfo_with_email(email){
         // }
     }
 }
+
+// TODO: Separate corp user actions
+export function invite_sub_account(group_id, email, data_plain) {
+    return async function(){
+        const possible = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
+        let passphrase2_length = 32;
+        let passphrase2 = "";
+        for (let i = 0; i < passphrase2_length; i++)
+          passphrase2 += possible.charAt(Math.floor(Math.random() * possible.length));
+        let key = hmac_sha256("", Buffer.from(email+passphrase2));
+        let data_plain_buffered = Buffer.from(JSON.stringify({company_name: "company name", duns_number: "duns", company_ceo: "company_ceo", company_address: "addr"}));
+        let data = Buffer.from((await aes_encrypt_async(data_plain_buffered, key)), 'binary').toString('hex');
+        return (await api_invite_sub_account(group_id,email,passphrase2,data)).payload;
+    }
+}
+

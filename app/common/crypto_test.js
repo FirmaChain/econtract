@@ -28,6 +28,7 @@ export {
     aes_decrypt,
     ecdsa_verify,
     generate_random,
+    hmac_sha256,
 } from "./CryptoUtil";
 
 let serverDB = {};
