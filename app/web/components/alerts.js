@@ -41,6 +41,39 @@ class AddFolder extends React.Component{
 }
 
 @modal
+class CommonModal extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {}
+    }
+
+    closeSelf = () => {
+        window.closeModal(this.props.modalId)
+    }
+
+    render() {
+        return <div className="common-modal">
+            <div className="container">
+                <div className="data">
+                    <div className="icon"><i className={this.props.icon}></i></div>
+                    <div className="desc-container">
+                        <div className="place">
+                            <div className="title">{this.props.title}</div>
+                            <div className="sub-title">{this.props.subTitle}</div>
+                        </div>
+                        <div className="desc" dangerouslySetInnerHTML={{__html:this.props.desc}}>
+                        </div>
+                    </div>
+                </div>
+                <div className="button">
+                    <div onClick={this.closeSelf}>확인</div>
+                </div>
+            </div>
+        </div>
+    }
+}
+
+@modal
 class StartContract extends React.Component{
     constructor(){
         super()
