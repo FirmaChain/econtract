@@ -100,6 +100,7 @@ export default class extends React.Component {
 
 	componentDidMount(){
         (async()=>{
+            await window.showIndicator()
             let user = await this.props.fetch_user_info()
 
             if(!user)
@@ -172,6 +173,8 @@ export default class extends React.Component {
             } else {
 
             }
+
+            await window.hideIndicator()
 
         })()
     }
