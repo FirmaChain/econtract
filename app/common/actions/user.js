@@ -201,18 +201,3 @@ export function select_userinfo_with_email(email){
     }
 }
 
-// TODO: Separate corp user actions
-export function invite_sub_account(group_id, email, data_plain) {
-    return async function(){
-        const possible = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
-        let passphrase2_length = 32;
-        let passphrase2 = "";
-        for (let i = 0; i < passphrase2_length; i++)
-          passphrase2 += possible.charAt(Math.floor(Math.random() * possible.length));
-        let key = hmac_sha256("", Buffer.from(email+passphrase2));
-        let data_plain_buffered = Buffer.from(JSON.stringify({company_name: "company name", duns_number: "duns", company_ceo: "company_ceo", company_address: "addr"}));
-        let data = Buffer.from((await aes_encrypt_async(data_plain_buffered, key)), 'binary').toString('hex');
-        return (await api_invite_sub_account(group_id,email,passphrase2,data)).payload;
-    }
-}
-

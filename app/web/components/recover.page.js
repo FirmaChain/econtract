@@ -10,6 +10,8 @@ import {
 } from "../../common/actions"
 import Web3 from "../../common/Web3"
 
+import Footer from "./footer.comp"
+
 import {
     makeAuth,
     makeMnemonic,
@@ -249,15 +251,7 @@ export default class extends React.Component {
                 </div>
             </div>
 
-            <div className="footer">
-                <div className="left">Copyright 2018 Firma Solutions, Inc, All right reserved</div>
-                <div className="middle">
-                    이용약관 | 개인정보처리방침
-                </div>
-                <div className="right">
-                    developer@firma-solutions.com
-                </div>
-            </div>
+            <Footer />
         </div>);
 	}
 }

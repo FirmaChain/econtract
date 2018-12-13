@@ -3,7 +3,10 @@ import {
     RELOAD_IMPORTABLE_DOCUMENTS,
 } from '../actions';
 
-export default function loading(state={}, action){
+let _ = {
+}
+
+export default function loading(state=_, action){
     switch (action.type) {
         case RELOAD_DOCUMENTS:
             return { 

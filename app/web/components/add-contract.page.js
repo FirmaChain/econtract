@@ -7,6 +7,7 @@ import history from '../history';
 import pdfjsLib from "pdfjs-dist"
 import translate from "../../common/translate"
 import Information from "./information.comp"
+import Footer from "./footer.comp"
 
 import Dropdown from "react-dropdown"
 import 'react-dropdown/style.css'
@@ -99,6 +100,7 @@ export default class extends React.Component {
 
 	componentDidMount(){
         (async()=>{
+            await window.showIndicator()
             let user = await this.props.fetch_user_info()
 
             if(!user)
@@ -171,6 +173,8 @@ export default class extends React.Component {
             } else {
 
             }
+
+            await window.hideIndicator()
 
         })()
     }
@@ -336,15 +340,16 @@ export default class extends React.Component {
 
         let _roles = this.roles.filter( (e, k) => k != 0 )
 
-        return (<div className="add-contract-page header-page">
+        return (<div className="upsert-contract-group-page header-page">
             <div className="header">
                 <div className="left-logo">
                     <img src="/static/logo_blue.png" onClick={()=>history.push("/home")}/>
                 </div>
-                <Information />
+                { !!this.props.user_info ? <Information /> : null }
             </div>
             <div className="head">
-                계약정보 등록
+                <i className="back fal fa-chevron-left" onClick={()=> history.goBack()}></i>
+                <div className="text">계약정보 등록</div>
             </div>
             <div className="content">
                 <div className="row">
@@ -536,15 +541,7 @@ export default class extends React.Component {
                     <div className="regist-contract" onClick={this.onClickRegist}>등 록</div>
                 </div>
             </div>
-            <div className="footer">
-                <div className="left">Copyright 2018 Firma Solutions, Inc, All right reserved</div>
-                <div className="middle">
-                    이용약관 | 개인정보처리방침
-                </div>
-                <div className="right">
-                    developer@firma-solutions.com
-                </div>
-            </div>
+            <Footer />
 		</div>);
 	}
 }

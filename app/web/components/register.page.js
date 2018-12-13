@@ -14,6 +14,8 @@ import {
 } from "../../common/actions"
 import Web3 from "../../common/Web3"
 
+import Footer from "./footer.comp"
+
 import {
     makeAuth,
     makeMnemonic,
@@ -485,6 +487,8 @@ export default class extends React.Component {
 
         if(!this.state.username)
             return alert("이름을 작성해주세요.")
+        if(!this.state.department)
+            return alert("직책을 작성해주세요.")
         if(!this.state.job)
             return alert("직책을 작성해주세요.")
         if(!this.state.verificated_phone)
@@ -537,6 +541,7 @@ export default class extends React.Component {
             info = {
                 email: this.state.email,
                 username: this.state.username,
+                department: this.state.department,
                 job: this.state.job,
                 userphone: this.state.userphone,
                 company_name: this.state.company_name,
@@ -548,6 +553,7 @@ export default class extends React.Component {
             info = {
                 email: this.state.email,
                 username: this.state.username,
+                department: this.state.department,
                 job: this.state.job,
                 userphone: this.state.userphone,
             }
@@ -860,6 +866,16 @@ export default class extends React.Component {
                     <div className="name"></div>
                     <div className="textbox">
                         <input className="common-textbox" type="text"
+                            value={this.state.department || ""}
+                            onChange={e=>this.setState({department:e.target.value})}
+                            placeholder="담당자 부서를 입력해주세요."/>
+                    </div>
+                </div>
+
+                <div className="text-place">
+                    <div className="name"></div>
+                    <div className="textbox">
+                        <input className="common-textbox" type="text"
                             value={this.state.job || ""}
                             onChange={e=>this.setState({job:e.target.value})}
                             placeholder="담당자 직책을 입력해주세요."/>
@@ -1039,15 +1055,7 @@ export default class extends React.Component {
                 </div>
     		</div>
 
-            <div className="footer">
-                <div className="left">Copyright 2018 Firma Solutions, Inc, All right reserved</div>
-                <div className="middle">
-                    이용약관 | 개인정보처리방침
-                </div>
-                <div className="right">
-                    developer@firma-solutions.com
-                </div>
-            </div>
+            <Footer />
         </div>);
 	}
 }

@@ -167,24 +167,24 @@ export default class extends React.Component {
         let page_num = board.page_num
 
 		return (<div className="contract-page">
-			<div className="contract-menu">
-				<div className="start-contract" onClick={this.onClickAddContract}>시작하기</div>
+			<div className="contract-group-menu">
+				<div className="left-top-button" onClick={this.onClickAddContract}>시작하기</div>
 				<div className="menu-list">
 					<div className="list">
 						<div className="title">계약</div>
-						<div className={"item" + (this.getTitle().id.includes("recently") ? " selected" : "")} onClick={this.move.bind(this, "")}><i className="fal fa-clock"></i> 최근 사용</div>
-						<div className={"item" + (this.getTitle().id.includes("lock") ? " selected" : "")} onClick={this.move.bind(this, "lock")}><i className="fas fa-lock-alt"></i> 잠김</div>
-						<div className={"item" + (this.getTitle().id.includes("requested") ? " selected" : "")} onClick={this.move.bind(this, "requested")}><i className="fas fa-share-square"></i> 요청받음</div>
-						<div className={"item" + (this.getTitle().id.includes("created") ? " selected" : "")} onClick={this.move.bind(this, "created")}><i className="fas fa-handshake-alt"></i> 생성함</div>
+						<div className={"item" + (this.getTitle().id.includes("recently") ? " selected" : "")} onClick={this.move.bind(this, "")}><i className="icon fal fa-clock"></i> <div className="text">최근 사용</div></div>
+						<div className={"item" + (this.getTitle().id.includes("lock") ? " selected" : "")} onClick={this.move.bind(this, "lock")}><i className="icon fas fa-lock-alt"></i> <div className="text">잠김</div></div>
+						<div className={"item" + (this.getTitle().id.includes("requested") ? " selected" : "")} onClick={this.move.bind(this, "requested")}><i className="icon fas fa-share-square"></i> <div className="text">요청받음</div></div>
+						<div className={"item" + (this.getTitle().id.includes("created") ? " selected" : "")} onClick={this.move.bind(this, "created")}><i className="icon fas fa-handshake-alt"></i> <div className="text">생성함</div></div>
 					</div>
 					<div className="list">
 						<div className="title">모아보기</div>
-						<div className={"item" + (this.getTitle().id.includes("typing") ? " selected" : "")} onClick={this.move.bind(this, "typing")}><i className="fal fa-keyboard"></i> 내용 입력 중</div>
-						<div className={"item" + (this.getTitle().id.includes("beforeMySign") ? " selected" : "")} onClick={this.move.bind(this, "beforeMySign")}><i className="far fa-file-import"></i> 내 서명 전</div>
-						<div className={"item" + (this.getTitle().id.includes("beforeOtherSign") ? " selected" : "")} onClick={this.move.bind(this, "beforeOtherSign")}><i className="far fa-file-export"></i> 상대방 서명 전</div>
-						<div className={"item" + (this.getTitle().id.includes("view") ? " selected" : "")} onClick={this.move.bind(this, "view")}><i className="fas fa-eye"></i> 보기 가능</div>
-						<div className={"item" + (this.getTitle().id.includes("completed") ? " selected" : "")} onClick={this.move.bind(this, "completed")}><i className="fal fa-check-circle"></i> 완료됨</div>
-						<div className={"item" + (this.getTitle().id.includes("deleted") ? " selected" : "")} onClick={this.move.bind(this, "deleted")}><i className="fal fa-trash-alt"></i> 삭제됨</div>
+						<div className={"item" + (this.getTitle().id.includes("typing") ? " selected" : "")} onClick={this.move.bind(this, "typing")}><i className="icon fal fa-keyboard"></i> <div className="text">내용 입력 중</div></div>
+						<div className={"item" + (this.getTitle().id.includes("beforeMySign") ? " selected" : "")} onClick={this.move.bind(this, "beforeMySign")}><i className="icon far fa-file-import"></i> <div className="text">내 서명 전</div></div>
+						<div className={"item" + (this.getTitle().id.includes("beforeOtherSign") ? " selected" : "")} onClick={this.move.bind(this, "beforeOtherSign")}><i className="icon far fa-file-export"></i> <div className="text">상대방 서명 전</div></div>
+						<div className={"item" + (this.getTitle().id.includes("view") ? " selected" : "")} onClick={this.move.bind(this, "view")}><i className="icon fas fa-eye"></i> <div className="text">보기 가능</div></div>
+						<div className={"item" + (this.getTitle().id.includes("completed") ? " selected" : "")} onClick={this.move.bind(this, "completed")}><i className="icon fal fa-check-circle"></i> <div className="text">완료됨</div></div>
+						<div className={"item" + (this.getTitle().id.includes("deleted") ? " selected" : "")} onClick={this.move.bind(this, "deleted")}><i className="icon fal fa-trash-alt"></i> <div className="text">삭제됨</div></div>
 					</div>
 					<div className="list">
 						<div className="title">폴더</div>
@@ -192,7 +192,7 @@ export default class extends React.Component {
                             let subject = e.subject || "분류되지 않은 계약"
                             let folder_id = e.folder_id || 0
                             return <div className="item" key={e+k}>
-                                <i className={`fas ${folder_id == 0 ? "fa-thumbtack":"fa-folder"}`} /> {subject}
+                                <i className={`fas icon ${folder_id == 0 ? "fa-thumbtack":"fa-folder"}`} /> {subject}
                             </div>
                         })}
 					</div>

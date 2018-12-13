@@ -669,6 +669,12 @@ select:focus { outline:none; }
             font-size: $font2;
             font-weight: bold;
             color:$black;
+
+            >.company {
+                color: $gray;
+                font-size: $font0;
+                margin-right:10px;
+            }
         }
 
         >.email {
@@ -753,7 +759,7 @@ select:focus { outline:none; }
         border-bottom:1px solid $gray;
 
         >.left-logo {
-            padding: 10px;
+            padding: 15px 10px;
             max-width: 300px;
             min-width: 200px;
             width: 20%;
@@ -786,7 +792,7 @@ select:focus { outline:none; }
                 color: $black;
                 text-align: center;
 
-                width: 150px;
+                width: 100px;
                 margin-left: -30px;
                 z-index:2;
 
@@ -794,7 +800,7 @@ select:focus { outline:none; }
 
                 >div {
                     position: absolute;
-                    width: 150px;
+                    width: 100px;
 
                     text-align: center;
                     top: 10px;
@@ -815,7 +821,7 @@ select:focus { outline:none; }
                 color: $black;
                 text-align: center;
 
-                width: 148px;
+                width: 98px;
                 margin-left: -46px;
                 margin-top: -9px;
                 z-index:2;
@@ -838,7 +844,7 @@ select:focus { outline:none; }
                 color: $gray;
                 text-align: center;
 
-                width: 150px;
+                width: 100px;
                 margin-left: -30px;
                 z-index:1;
 
@@ -853,7 +859,12 @@ select:focus { outline:none; }
     flex-direction: row;
 }
 
-.contract-menu {
+.group-page {
+    display: flex;
+    flex-direction: row;
+}
+
+.contract-group-menu {
     width:300px;
     min-width:200px;
     height:100%;
@@ -863,7 +874,7 @@ select:focus { outline:none; }
     box-sizing: border-box;
     position: relative;
 
-    .start-contract {
+    .left-top-button {
         display: inline-block;
         font-size: $font4;
         font-weight: bold;
@@ -898,20 +909,73 @@ select:focus { outline:none; }
             }
 
             >.item {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+
                 font-size:$font2;
                 padding:10px 0;
                 padding-left:30px;
                 padding-right:30px;
                 cursor: pointer;
 
-                >i {
+                >.text {
+                    flex:1;
+                }
+
+                >.icon {
                     width:20px;
                     margin-right:10px;
                 }
 
+                >.setting {
+                    display: none;
+                    text-align: right;
+                    width:20px;
+                    padding:0 5px;
+
+                    &:hover {
+                        color:$gray;
+                    }
+                }
+
+                >.angle {
+                    text-align: right;
+                    width:20px;
+                    padding:0 5px;
+
+                    &:hover {
+                        color:$gray;
+                    }
+                }
+
                 &:hover {
                     background-color: $lightgray;
+
+                    >.setting {
+                        display: block;
+                    }
+
+                    >.icon {
+                        color:$gray;
+                    }
                 }
+            }
+
+            >.sub {
+                padding-left:40px;
+
+                >.icon {
+                    margin-right:5px;
+                }
+
+                >.setting {
+                    display: initial;
+                }
+            }
+
+            >.hide {
+                display: none;
             }
 
             >.selected {
@@ -1106,19 +1170,97 @@ select:focus { outline:none; }
     }
 }
 
-.add-contract-page{
+.upsert-contract-group-page{
 
     >.head {
-        border-bottom:1px solid $gray;
-        color:$blue;
-        font-size: $font4;
-        font-weight: bold;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
 
-        padding-left: 10%;
+        border-bottom:1px solid $gray;
+
         padding-top: 20px;
         padding-bottom: 20px;
 
         background-color: $lightgray;
+
+        >.back {
+            padding:0 10px;
+            margin-left:20px;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        >.text {
+            flex:1;
+            text-align: center;
+            color:$blue;
+            font-size: $font4;
+            font-weight: bold;
+            margin-right: 30px;
+        }
+    }
+
+    >.group-head {
+        background-color: white;
+        align-items: flex-start;
+
+        >.back {
+            margin-top: 10px;
+        }
+
+        >.info {
+            flex:1;
+            text-align: center;
+            margin-right: 30px;
+
+            >.title {
+                margin-top: 10px;
+
+                >i {
+                    font-size: 20px;
+                    margin-right: 10px;
+                }
+
+                >span {
+                    color:$blue;
+                    font-size: $font4;
+                    font-weight: bold;
+                }
+            }
+
+            >.date {
+                font-size: $font0;
+                color: $gray;
+                margin-top: 20px;
+            }
+
+            >.button-container {
+                font-size: $font1;
+                margin-top: 40px;
+                margin-bottom: 10px;
+
+                >.button {
+                    display: inline-block;
+                    font-size: $font2;
+                    cursor: pointer;
+                    padding:10px 20px;
+                    background-color: $blue;
+                    color: white;
+                    width:100px;
+                    text-align: center;
+                    border: 1px solid $blue;
+                }
+
+                >.delete {
+                    background-color:white;
+                    border: 1px solid $blue;
+                    color: $blue;
+                    margin-left: 15px;
+                }
+            }
+        }
     }
 
     >.content {
@@ -1397,7 +1539,6 @@ select:focus { outline:none; }
     }
 }
 
-
 .common-modal {
     background-color: #fff;
     min-width: 400px;
@@ -1630,9 +1771,7 @@ select:focus { outline:none; }
             max-width:300px;
         }
     }
-
 }
-
 
 .profile-page{
     .profile-info{
