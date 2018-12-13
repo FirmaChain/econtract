@@ -1190,6 +1190,11 @@ select:focus { outline:none; }
             margin-left:20px;
             font-size: 20px;
             cursor: pointer;
+            color:$black;
+
+            &:hover {
+                color: $gray;
+            }
         }
 
         >.text {
@@ -1695,7 +1700,7 @@ select:focus { outline:none; }
         text-align: center;
 
         >.icon {
-            font-size:40px;
+            font-size:45px;
             margin-bottom: 35px;
             color: $black;
         }
@@ -1730,13 +1735,13 @@ select:focus { outline:none; }
                     >.title {
                         font-size: $font2;
                         font-weight: bold;
-                        color: $black;
+                        color: $gray;
                         margin-bottom:7px;
                     }
 
                     >.sub {
                         font-size: $font0;
-                        color: $black;
+                        color: $gray;
                     }
                 }
 
@@ -1750,7 +1755,10 @@ select:focus { outline:none; }
 
                         >.btn-desc {
                             >.title {
-                                color: $blue;
+                                color: $black;
+                            }
+                            >.sub {
+                                color: $black;
                             }
                         }
                     }

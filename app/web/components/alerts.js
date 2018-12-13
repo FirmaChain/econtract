@@ -92,7 +92,7 @@ class StartContract extends React.Component{
     render(){
         return <div className="start-contract-modal">
             <div className="container">
-                <div className="icon"><i className="fas fa-pen-fancy"></i></div>
+                <div className="icon"><i className="fal fa-file-code"></i></div>
                 <div className="title">시작하기</div>
                 <div className="btn-container">
                     <div className="btn" onClick={this.onClick.bind(this, 1)}>

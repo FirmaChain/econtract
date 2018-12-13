@@ -44,7 +44,7 @@ export default class extends React.Component {
 		this.state={
             target_list:[], // type 0 : 개인, type 1 : 기업 담당자, type 2 : 기업 그룹
             target_me:true,
-            target_other:false,
+            target_other:true,
             indivisual:[{
                 deletable:false,
                 title:"성함",
