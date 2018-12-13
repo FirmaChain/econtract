@@ -962,6 +962,22 @@ select:focus { outline:none; }
                 }
             }
 
+            >.sub {
+                padding-left:40px;
+
+                >.icon {
+                    margin-right:5px;
+                }
+
+                >.setting {
+                    display: initial;
+                }
+            }
+
+            >.hide {
+                display: none;
+            }
+
             >.selected {
                 font-weight: bold;
                 background-color: $lightgray;
