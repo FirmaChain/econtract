@@ -1179,9 +1179,6 @@ select:focus { outline:none; }
         align-items: center;
 
         border-bottom:1px solid $gray;
-        color:$blue;
-        font-size: $font4;
-        font-weight: bold;
 
         padding-top: 20px;
         padding-bottom: 20px;
@@ -1198,12 +1195,72 @@ select:focus { outline:none; }
         >.text {
             flex:1;
             text-align: center;
+            color:$blue;
+            font-size: $font4;
+            font-weight: bold;
             margin-right: 30px;
         }
     }
 
     >.group-head {
         background-color: white;
+        align-items: flex-start;
+
+        >.back {
+            margin-top: 10px;
+        }
+
+        >.info {
+            flex:1;
+            text-align: center;
+            margin-right: 30px;
+
+            >.title {
+                margin-top: 10px;
+
+                >i {
+                    font-size: 20px;
+                    margin-right: 10px;
+                }
+
+                >span {
+                    color:$blue;
+                    font-size: $font4;
+                    font-weight: bold;
+                }
+            }
+
+            >.date {
+                font-size: $font0;
+                color: $gray;
+                margin-top: 20px;
+            }
+
+            >.button-container {
+                font-size: $font1;
+                margin-top: 40px;
+                margin-bottom: 10px;
+
+                >.button {
+                    display: inline-block;
+                    font-size: $font2;
+                    cursor: pointer;
+                    padding:10px 20px;
+                    background-color: $blue;
+                    color: white;
+                    width:100px;
+                    text-align: center;
+                    border: 1px solid $blue;
+                }
+
+                >.delete {
+                    background-color:white;
+                    border: 1px solid $blue;
+                    color: $blue;
+                    margin-left: 15px;
+                }
+            }
+        }
     }
 
     >.content {

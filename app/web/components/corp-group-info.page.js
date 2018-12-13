@@ -5,6 +5,7 @@ import { Link, Prompt } from 'react-router-dom'
 import history from '../history';
 import translate from "../../common/translate"
 import Information from "./information.comp"
+import moment from "moment"
 
 import {
     invite_sub_account,
@@ -74,7 +75,19 @@ export default class extends React.Component {
             </div>
             <div className="head group-head">
                 <i className="back fal fa-chevron-left" onClick={()=> history.goBack()}></i>
-                <div className="text">인사팀</div>
+                <div className="info">
+                    <div className="title">
+                        <i className="fal fa-building"></i>
+                        <span>인사팀</span>
+                    </div>
+                    <div className="date">
+                        {moment().toString()}
+                    </div>
+                    <div className="button-container">
+                        <div className="button">그룹명 변경</div>
+                        <div className="button delete">삭제</div>
+                    </div>
+                </div>
             </div>
             <div className="content">
                 <div className="row">
