@@ -1224,7 +1224,7 @@ select:focus { outline:none; }
                 }
 
                 >span {
-                    color:$blue;
+                    color:$black;
                     font-size: $font4;
                     font-weight: bold;
                 }
@@ -1233,7 +1233,7 @@ select:focus { outline:none; }
             >.date {
                 font-size: $font0;
                 color: $gray;
-                margin-top: 20px;
+                margin-top: 10px;
             }
 
             >.button-container {
