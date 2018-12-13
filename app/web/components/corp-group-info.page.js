@@ -34,6 +34,15 @@ export default class extends React.Component {
                 email:"pbes0707@gmail.com"
             },{
                 email:"daeun@gmail.com"
+            }],
+            group_members:[{
+                username:"윤대현",
+                email:"daehyun@gmail.com",
+                job:"선임연구원"
+            },{
+                username:"윤대현",
+                email:"daehyun@gmail.com",
+                job:"선임연구원"
             }]
         }
     }
@@ -125,7 +134,7 @@ export default class extends React.Component {
                     </div>
                     <div className="right-form">
                         <div className="column">
-                            <div className="form-head">초대 리스트</div>
+                            <div className="form-head">초대한 그룹원 리스트</div>
                             <div className="form-list form-list-400">
                                 {this.state.invited_list.map((e, k)=>{
                                     return <div className="item" key={k}>
@@ -134,6 +143,36 @@ export default class extends React.Component {
                                         </div>
                                         <div className="action">
                                             <div className="delete">취소</div>
+                                        </div>
+                                    </div>
+                                })}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="left-desc">
+                        <div className="desc-head">그룹원 관리</div>
+                        <div className="desc-content">해당 그룹에서 그룹 변경 및 삭제 처리하실 수 있습니다</div>
+                    </div>
+                    <div className="right-form">
+                        <div className="column">
+                            <div className="form-head">그룹원 리스트</div>
+                            <div className="form-list">
+                                {this.state.group_members.map((e, k)=>{
+                                    return <div className="item" key={k}>
+                                        <div className="icon">
+                                            <i className="fas fa-user-tie"></i>
+                                        </div>
+                                        <div className="desc">
+                                                <div className="username">{e.username}</div>
+                                                <div className="email">{e.email}</div>
+                                        </div>
+                                        <div className="privilege">
+                                            {e.job}
+                                        </div>
+                                        <div className="action">
+                                            <div className="delete">삭제</div>
                                         </div>
                                     </div>
                                 })}

@@ -28,11 +28,13 @@ import {
     makeSignData,
     aes_encrypt,
     ecdsa_verify,
-    new_account
+    new_account,
+    fetch_user_info
 } from "../../common/crypto_test"
 
 let mapStateToProps = (state)=>{
 	return {
+        user_info:state.user.info
 	}
 }
 
@@ -42,6 +44,7 @@ let mapDispatchToProps = {
     request_phone_verification_code,
     check_phone_verification_code,
     register_new_account,
+    fetch_user_info
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -282,6 +285,14 @@ export default class extends React.Component {
 	}
 
 	componentDidMount(){
+        if(!this.props.user_info){
+            (async()=>{
+                await window.showIndicator()
+                await this.props.fetch_user_info()
+                await window.hideIndicator()
+            })()
+        }
+        
         if(this.getAccountType() == 2) {
             let registration_code = queryString.parse(this.props.location.search).registration_code;
             let registration_info = {};
@@ -297,6 +308,12 @@ export default class extends React.Component {
             } else {
                 alert("mang! invalid registration code!");
             }
+        }
+    }
+
+    componentWillReceiveProps(props) {
+        if(props.user_info) {
+            history.replace("/home")
         }
     }
 
@@ -487,10 +504,8 @@ export default class extends React.Component {
 
         if(!this.state.username)
             return alert("이름을 작성해주세요.")
-        if(!this.state.department)
-            return alert("직책을 작성해주세요.")
         if(!this.state.job)
-            return alert("직책을 작성해주세요.")
+            return alert("직급을 작성해주세요.")
         if(!this.state.verificated_phone)
             return alert("휴대폰 인증을 해주세요.")
 
@@ -866,19 +881,9 @@ export default class extends React.Component {
                     <div className="name"></div>
                     <div className="textbox">
                         <input className="common-textbox" type="text"
-                            value={this.state.department || ""}
-                            onChange={e=>this.setState({department:e.target.value})}
-                            placeholder="담당자 부서를 입력해주세요."/>
-                    </div>
-                </div>
-
-                <div className="text-place">
-                    <div className="name"></div>
-                    <div className="textbox">
-                        <input className="common-textbox" type="text"
                             value={this.state.job || ""}
                             onChange={e=>this.setState({job:e.target.value})}
-                            placeholder="담당자 직책을 입력해주세요."/>
+                            placeholder="담당자 직급을 입력해주세요."/>
                     </div>
                 </div>
 
