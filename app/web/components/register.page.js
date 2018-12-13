@@ -291,6 +291,8 @@ export default class extends React.Component {
                 await this.props.fetch_user_info()
                 await window.hideIndicator()
             })()
+        } else {
+            return history.replace("/home")
         }
 
         if(this.getAccountType() == 2) {
@@ -312,6 +314,7 @@ export default class extends React.Component {
     }
 
     componentWillReceiveProps(props) {
+        console.log(props)
         if(props.user_info) {
             history.replace("/home")
         }
