@@ -292,11 +292,11 @@ export default class extends React.Component {
                 await window.hideIndicator()
             })()
         }
-        
+
         if(this.getAccountType() == 2) {
             let registration_code = queryString.parse(this.props.location.search).registration_code;
             let registration_info = {};
-            if (registation_info) {
+            if (registration_info) {
                 this.setState({
                     email:"test@gmail.com",
                     company_name: "test1",
