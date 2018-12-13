@@ -122,7 +122,7 @@ export default class extends React.Component {
 
     openWhyMasterkeywordReInputModal = () => {
         window.openModal("CommonModal", {
-            icon:"fal fa-lock-alt",
+            icon:"fas fa-money-check",
             title:"마스터 키워드 입력",
             subTitle:"미인증된 브라우저에 로그인을 할려면 기존 마스터 키워드가 필요합니다.",
             desc:`브라우저상에 저장되는 마스터 키워드는 브라우저 인증외에도 기존 계약 내용을 불러오는 기능이 있습니다.<br/><br/>

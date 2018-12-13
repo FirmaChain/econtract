@@ -89,7 +89,7 @@ export default class extends React.Component {
 
     openVerifiedBrowserModal = () => {
         window.openModal("CommonModal", {
-            icon:"fal fa-lock-alt",
+            icon:"fas fa-browser",
             title:"인증된 브라우저",
             subTitle:"E-Contract 서비스는 마스터 키워드를 기반으로 로그인 하실 수 있습니다.",
             desc:`회원가입시 발급되는 마스터 키워드는 해당 계정에 귀속되며, 당시 사용된 브라우저에 자동으로 저장됩니다.<br/><br/>

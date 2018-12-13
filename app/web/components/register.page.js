@@ -599,7 +599,7 @@ export default class extends React.Component {
 
     openWhatIsMasterkeywordModal = () => {
         window.openModal("CommonModal", {
-            icon:"fal fa-lock-alt",
+            icon:"fas fa-money-check",
             title:"마스터 키워드란?",
             subTitle:"마스터 키워드는 회원님의 계정을 안전하게 보호하기 위한 장치입니다.",
             desc:`브라우저상에 저장되는 마스터 키워드는 브라우저 인증, 계약 잠금 해제 등 이컨트랙트 서비스 전반에서 사용됩니다.<br/><br/>
