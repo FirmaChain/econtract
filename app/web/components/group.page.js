@@ -18,6 +18,8 @@ import {
     remove_folder,
     move_to_folder,
     recently_contracts,
+    openGroup,
+    closeGroup,
 } from "../../common/actions"
 
 let mapStateToProps = (state)=>{
@@ -25,6 +27,7 @@ let mapStateToProps = (state)=>{
         folders:state.contract.folders,
         user_info: state.user.info,
         board:state.contract.board,
+        isOpenGroupList: state.group.isOpenGroupList
 	}
 }
 
@@ -34,6 +37,8 @@ let mapDispatchToProps = {
     remove_folder,
     move_to_folder,
     recently_contracts,
+    openGroup,
+    closeGroup,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -43,7 +48,6 @@ export default class extends React.Component {
         super(props);
         this.state = {
             board_checks : [],
-            isOpenGroupList : [],
         };
 	}
 
@@ -97,28 +101,20 @@ export default class extends React.Component {
 
     openCloseGroup(group_id, e) {
         e.stopPropagation()
-        let list = [...this.state.isOpenGroupList]
+        let list = [...this.props.isOpenGroupList]
 
-        let i = 0
         for(let v of list) {
             if(v == group_id) {
-                list.splice(i, 1)
-                console.log("close",list)
-                this.setState({
-                    isOpenGroupList: list
-                })
+                this.props.closeGroup(group_id)
                 return;
             }
-            i++;
         }
-        list.push(group_id)
-        this.setState({
-            isOpenGroupList: list
-        })
+        this.props.openGroup(group_id)
     }
 
     isOpenGroup(group_id) {
-        for(let v of this.state.isOpenGroupList)
+
+        for(let v of this.props.isOpenGroupList)
             if(v == group_id)
                 return true;
         return false;
@@ -240,7 +236,7 @@ export default class extends React.Component {
                             <i className="setting fas fa-cog" onClick={this.openGroupInfo.bind(this, 9)}></i>
                             <i className={"angle far " + ( this.isOpenGroup(9) ? "fa-angle-down" : "fa-angle-up")} onClick={this.openCloseGroup.bind(this, 9)}></i>
                         </div>
-                        
+
 
 						<div className={"item" + (this.getTitle().id.includes("unclassified") ? " selected" : "")} onClick={this.move.bind(this, "unclassified")}>
                             <i className="icon fas fa-share-square"></i> 
