@@ -1,6 +1,7 @@
 @import url("/fontawesome/css/all.min.css");
 
 $screen-width: 1200px;
+$font6: 25px;
 $font5: 22px;
 $font4: 19px;
 $font3: 16px;
@@ -756,7 +757,7 @@ select:focus { outline:none; }
         flex-direction: row;
         align-items: center;
 
-        border-bottom:1px solid $gray;
+        border-bottom:1px solid $middlegray;
 
         >.left-logo {
             padding: 15px 10px;
@@ -779,7 +780,7 @@ select:focus { outline:none; }
 
             >.selected-item {
                 position: relative;
-                border-bottom: 50px solid $gray;
+                border-bottom: 50px solid $middlegray;
                 border-right: 27px solid transparent;
                 border-left: 27px solid transparent;
                 height: 0px;
@@ -1175,22 +1176,38 @@ select:focus { outline:none; }
     >.head {
         display: flex;
         flex-direction: row;
-        justify-content: center;
+        // justify-content: center;
         align-items: center;
 
-        border-bottom:1px solid $gray;
+        // border-bottom:1px solid $gray;
 
-        padding-top: 20px;
+        padding-top: 60px;
         padding-bottom: 20px;
 
-        background-color: $lightgray;
+        // background-color: $lightgray;
 
         >.back {
+            display: flex;
+            flex-direction:row;
+            justify-content: center;
+            align-items: center;
+
             padding:0 10px;
-            margin-left:20px;
-            font-size: 20px;
+            margin-left:40px;
+
             cursor: pointer;
             color:$black;
+            font-size:$font2;
+
+            >i {
+                width:20px;
+                font-size: 20px;
+                margin-right:5px;
+            }
+
+            >span {
+                width:100px;
+            }
 
             &:hover {
                 color: $gray;
@@ -1203,7 +1220,7 @@ select:focus { outline:none; }
             color:$blue;
             font-size: $font4;
             font-weight: bold;
-            margin-right: 30px;
+            margin-right: 145px;
         }
     }
 
@@ -1218,19 +1235,18 @@ select:focus { outline:none; }
         >.info {
             flex:1;
             text-align: center;
-            margin-right: 30px;
+            margin-right: 145px;
 
             >.title {
                 margin-top: 10px;
+                font-size: $font6;
 
                 >i {
-                    font-size: 20px;
                     margin-right: 10px;
                 }
 
                 >span {
                     color:$black;
-                    font-size: $font4;
                     font-weight: bold;
                 }
             }
