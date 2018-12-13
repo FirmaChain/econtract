@@ -2,6 +2,12 @@ import {
     api_invite_sub_account,
 } from "../../../gen_api"
 
+import {
+    aes_decrypt_async,
+    aes_encrypt_async,
+    hmac_sha256,
+} from "../../common/crypto_test"
+
 import Web3 from "../Web3"
 
 export const GROUP_HOME_OPEN_GROUP = "GROUP_HOME_OPEN_GROUP"
@@ -19,7 +25,6 @@ export function closeGroup(group_id){
 	}
 }
 
-// TODO: Separate corp user actions
 export function invite_sub_account(group_id, email, data_plain) {
     return async function(){
         const possible = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
