@@ -10,7 +10,6 @@ import {
     api_check_join_publickey,
     api_recover_account,
     api_select_userinfo_with_email,
-    api_invite_sub_account,
 } from "../../../gen_api"
 
 import {
@@ -21,9 +20,6 @@ import {
     SeedToEthKey,
     getMasterSeed,
     entropyToMnemonic,
-    aes_decrypt_async,
-    aes_encrypt_async,
-    hmac_sha256,
 } from "../../common/crypto_test"
 
 import Web3 from "../Web3"
