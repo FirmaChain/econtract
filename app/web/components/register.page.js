@@ -283,15 +283,20 @@ export default class extends React.Component {
 
 	componentDidMount(){
         if(this.getAccountType() == 2) {
-            // registration_code 유효 체크 api
-            this.setState({
-                email:"test@gmail.com",
-                company_name: "test1",
-                duns_number: "test2",
-                company_ceo: "test3",
-                company_address: "test4",
-                email_verification: true,
-            })
+            let registration_code = queryString.parse(this.props.location.search).registration_code;
+            let registration_info = {};
+            if (registation_info) {
+                this.setState({
+                    email:"test@gmail.com",
+                    company_name: "test1",
+                    duns_number: "test2",
+                    company_ceo: "test3",
+                    company_address: "test4",
+                    email_verification: true,
+                });
+            } else {
+                alert("mang! invalid registration code!");
+            }
         }
     }
 

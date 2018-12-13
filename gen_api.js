@@ -183,6 +183,23 @@ export async function api_reject_contract(contract_id,msg,revision){
         session:window.getCookie("session")
     });
 }
+export async function api_invite_sub_account(group_id,email,passphrase2,data){
+    return await get("/invite_sub_account", {
+        group_id,
+		email,
+		passphrase2,
+		data
+    },{
+        session:window.getCookie("session")
+    });
+}
+export async function api_invite_information(registration_code){
+    return await get("/invite_information", {
+        registration_code
+    },{
+        session:window.getCookie("session")
+    });
+}
 export async function api_add_template(subject,imgs){
     let data = new FormData();
 
@@ -230,13 +247,6 @@ export async function api_list_template(){
     
 
     return await post("/list_template", data,{
-        session:window.getCookie("session")
-    });
-}
-export async function api_test(){
-    return await get("/test", {
-        
-    },{
         session:window.getCookie("session")
     });
 }
@@ -338,23 +348,6 @@ export async function api_find_user_with_code_email(code,email){
 export async function api_select_userinfo_with_email(email){
     return await get("/select_userinfo_with_email", {
         email
-    },{
-        session:window.getCookie("session")
-    });
-}
-export async function api_invite_sub_account(group_id,email,passphrase2,data){
-    return await get("/invite_sub_account", {
-        group_id,
-		email,
-		passphrase2,
-		data
-    },{
-        session:window.getCookie("session")
-    });
-}
-export async function api_invite_information(registration_code){
-    return await get("/invite_information", {
-        registration_code
     },{
         session:window.getCookie("session")
     });
