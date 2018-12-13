@@ -1310,7 +1310,6 @@ select:focus { outline:none; }
                 width:100%;
 
                 >.column {
-                    width: 100%;
                     flex:1;
                     margin-left: 10px;
                 }
@@ -1501,7 +1500,7 @@ select:focus { outline:none; }
                         max-width:40%;
                         padding: 10px 15px;
                         text-align: center;
-                        margin: auto;
+                        margin-left:10px;
                     }
 
                     >.btn-add-user-active {

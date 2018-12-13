@@ -11,6 +11,7 @@ import {
     request_phone_verification_code,
     check_phone_verification_code,
     register_new_account,
+    fetch_user_info
 } from "../../common/actions"
 import Web3 from "../../common/Web3"
 
@@ -29,7 +30,6 @@ import {
     aes_encrypt,
     ecdsa_verify,
     new_account,
-    fetch_user_info
 } from "../../common/crypto_test"
 
 let mapStateToProps = (state)=>{
