@@ -72,8 +72,9 @@ export default class extends React.Component {
                 </div>
                 { !!this.props.user_info ? <Information /> : null }
             </div>
-            <div className="head">
-                인사팀
+            <div className="head group-head">
+                <i className="back fal fa-chevron-left" onClick={()=> history.goBack()}></i>
+                <div className="text">인사팀</div>
             </div>
             <div className="content">
                 <div className="row">

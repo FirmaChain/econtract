@@ -759,7 +759,7 @@ select:focus { outline:none; }
         border-bottom:1px solid $gray;
 
         >.left-logo {
-            padding: 10px;
+            padding: 15px 10px;
             max-width: 300px;
             min-width: 200px;
             width: 20%;
@@ -1173,16 +1173,37 @@ select:focus { outline:none; }
 .upsert-contract-group-page{
 
     >.head {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+
         border-bottom:1px solid $gray;
         color:$blue;
         font-size: $font4;
         font-weight: bold;
 
-        padding-left: 10%;
         padding-top: 20px;
         padding-bottom: 20px;
 
         background-color: $lightgray;
+
+        >.back {
+            padding:0 10px;
+            margin-left:20px;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        >.text {
+            flex:1;
+            text-align: center;
+            margin-right: 30px;
+        }
+    }
+
+    >.group-head {
+        background-color: white;
     }
 
     >.content {
@@ -1461,7 +1482,6 @@ select:focus { outline:none; }
     }
 }
 
-
 .common-modal {
     background-color: #fff;
     min-width: 400px;
@@ -1694,9 +1714,7 @@ select:focus { outline:none; }
             max-width:300px;
         }
     }
-
 }
-
 
 .profile-page{
     .profile-info{

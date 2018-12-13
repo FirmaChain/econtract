@@ -348,7 +348,8 @@ export default class extends React.Component {
                 { !!this.props.user_info ? <Information /> : null }
             </div>
             <div className="head">
-                계약정보 등록
+                <i className="back fal fa-chevron-left" onClick={()=> history.goBack()}></i>
+                <div className="text">계약정보 등록</div>
             </div>
             <div className="content">
                 <div className="row">
