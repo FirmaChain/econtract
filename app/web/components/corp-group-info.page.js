@@ -29,7 +29,12 @@ export default class extends React.Component {
     constructor() {
         super()
         this.state = {
-            add_email:""
+            add_email:"",
+            invited_list:[{
+                email:"pbes0707@gmail.com"
+            },{
+                email:"daeun@gmail.com"
+            }]
         }
     }
 
@@ -109,6 +114,29 @@ export default class extends React.Component {
                             <div className="form-head">&nbsp;</div>
                             <div className="form-input">
                                 <div className={"btn-add-user" + ( (this.state.add_email || "").length==0 ? "" : " btn-add-user-active" )} onClick={this.onInviteSubAcount}>추가</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="left-desc">
+                        <div className="desc-head"></div>
+                        <div className="desc-content"></div>
+                    </div>
+                    <div className="right-form">
+                        <div className="column">
+                            <div className="form-head">초대 리스트</div>
+                            <div className="form-list form-list-400">
+                                {this.state.invited_list.map((e, k)=>{
+                                    return <div className="item" key={k}>
+                                        <div className="desc">
+                                            <div className="email">{e.email}</div>
+                                        </div>
+                                        <div className="action">
+                                            <div className="delete">취소</div>
+                                        </div>
+                                    </div>
+                                })}
                             </div>
                         </div>
                     </div>
