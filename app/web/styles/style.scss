@@ -868,6 +868,11 @@ select:focus { outline:none; }
     flex-direction: row;
 }
 
+.template-page {
+    display: flex;
+    flex-direction: row;
+}
+
 .contract-group-menu {
     width:300px;
     min-width:200px;

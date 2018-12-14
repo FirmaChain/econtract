@@ -13,7 +13,7 @@ import Route from "./custom_route"
 import moment from "moment"
 
 import ContractListPage from "./contract-list.page"
-import TemplatePage from "./contract-template.page"
+import TemplatePage from "./template.page"
 import GroupPage from "./group.page"
 import Footer from "./footer.comp"
 

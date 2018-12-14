@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom'
 import ContractMenu from "./contract-menu"
 import Information from "./information.comp"
 import Pager from "./pager"
-import CheckBox from "./checkbox"
 import TransactionBackgroundWork from "./transaction_background_work"
 import CheckBox2 from "./checkbox2"
 import history from '../history'
