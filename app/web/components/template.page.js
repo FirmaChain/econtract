@@ -70,6 +70,18 @@ export default class extends React.Component {
         }
     }
 
+    onClickPage = async(page)=>{
+        if(this.state.cur_page == page)
+            return;
+
+        await this.props.recently_contracts(page - 1);
+        this.setState({
+            cur_page:page,
+            board_checks:[]
+        })
+    }
+
+
     onClickTemplate = async(e)=>{
         history.push(`/template-edit/${e.template_id}`)
     }

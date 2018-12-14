@@ -280,7 +280,7 @@ export default class extends React.Component {
                     {/*board.list.length == 0 ? <div className="empty-contract" >최근 계약서가 없습니다.</div> : null*/}
                 </div>
                 
-                <Pager max={Math.ceil(total_cnt/page_num)} cur={this.state.cur_page||1} onClick={this.onClickPage} />
+                <Pager max={40/*Math.ceil(total_cnt/page_num)*/} cur={13/*this.state.cur_page||1*/} onClick={this.onClickPage} />
             </div>
 		</div>)
 	}

@@ -112,6 +112,103 @@ select:focus { outline:none; }
     }
 }
 
+div.pager-comp{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    >ul{
+        display: flex;
+        padding: 0;
+        margin: 10px 0;
+
+        >li{
+            width: 20px;
+            height: 20px;
+            padding:5px;
+            list-style: none;
+        }
+
+        >li.slot{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            list-style: none;
+            font-weight: bold;
+            font-size: $font0;
+            cursor: pointer;
+            border: 1px solid $middlegray;
+
+            color: $blue;
+
+            &:hover{
+                background-color: $blue;
+                border: 1px solid $blue;
+                color: white;
+            }
+
+            >i {
+                font-size: $font1;
+            }
+        }
+
+        >li.active{
+            background-color: $blue;
+            color: white;
+        }
+
+        >li.chevron{
+            color: $gray;
+        }
+
+        >li.chevron.left {
+            margin-right:10px;
+        }
+
+        >li.chevron.right {
+            margin-left:10px;
+        }
+    }
+}
+
+div.checkbox2-comp{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    >.checkbox {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        cursor: pointer;
+        border: 1px solid $blue;
+        overflow: hidden;
+        text-align: center;
+        padding-top: 1px;
+        
+        >i {
+            color: $black;
+        }
+    }
+
+    >.disabled {
+        background-color: $middlegray;
+        border: 1px solid $gray;
+
+        >i {
+            color: $gray;
+        }
+    }
+
+    >.check-label {
+        color: $black;
+        font-size: $font1;
+        margin-left: 10px;
+    }
+}
+
 
 .common-textbox {
     border:1px solid $gray;
@@ -3098,97 +3195,6 @@ table.table{
             justify-content: center;
             align-items: center;
         }
-    }
-}
-
-div.pager-comp{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    >ul{
-        display: flex;
-        padding: 0;
-        margin: 10px 0;
-        >li{
-            width: 15px;
-            height: 15px;
-            margin: 5px;
-            padding: 5px;
-            list-style: none;
-        }
-        >li.slot{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-
-            list-style: none;
-            font-weight: bold;
-            border-radius: 7px;
-            font-size: 10px;
-            cursor: pointer;
-
-            color: $blue;
-
-            &:hover{
-                background-color: $blue;
-                opacity:0.5;
-            }
-
-            &:active{
-                background-color: $blue;
-                color: #fff;
-            }
-
-            >i{
-                font-size: 13px;
-            }
-        }
-
-        >li.active{
-            background-color: rgb(41, 58, 73);
-            color: #fff;
-        }
-
-        >li.chevron{
-            color: rgb(173, 173, 173);
-        }
-    }
-}
-
-div.checkbox2-comp{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    >.checkbox {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        cursor: pointer;
-        border: 1px solid $blue;
-        overflow: hidden;
-        text-align: center;
-        padding-top: 1px;
-        
-        >i {
-            color: $black;
-        }
-    }
-
-    >.disabled {
-        background-color: $middlegray;
-        border: 1px solid $gray;
-
-        >i {
-            color: $gray;
-        }
-    }
-
-    >.check-label {
-        color: $black;
-        font-size: $font1;
-        margin-left: 10px;
     }
 }
 

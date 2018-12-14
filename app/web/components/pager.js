@@ -3,18 +3,18 @@ import ReactDOM from "react-dom"
 import { Link } from "react-router-dom";
 import translate from "../../common/translate"
 
-let display_count = 6;
+let display_count = 8;
 
 function render_left_btn(cur, onClick){
     if(cur-1 > display_count/2){
-        return <li className="slot chevron" onClick={()=>{onClick(Math.max(0,cur-display_count))}}> <i className="fas fa-chevron-left" /> </li>
+        return <li className="slot chevron left" onClick={()=>{onClick(Math.max(0,cur-display_count))}}> <i className="fas fa-chevron-left" /> </li>
     }
     return <li></li>
 }
 
 function render_right_btn(cur, max, onClick){
     if( max - display_count/2 > cur){
-        return <li className="slot chevron" onClick={()=>{onClick(Math.min(max,cur+display_count))}}> <i className="fas fa-chevron-right" /> </li>
+        return <li className="slot chevron right" onClick={()=>{onClick(Math.min(max,cur+display_count))}}> <i className="fas fa-chevron-right" /> </li>
     }
     return <li></li>
 }
