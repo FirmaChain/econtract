@@ -251,9 +251,116 @@ export default class extends React.Component {
 					</div>
 				</div>
 			</div>
-			<div className="contract-list">
-				<div className="title">{this.getTitle().title}</div>
-			</div>
+            <div className="contract-list">
+                <div className="title">{this.getTitle().title}</div>
+                <div className="list" style={{marginTop:"20px"}}>
+                    <div className="head">
+                        <div className="list-head-item list-chkbox">
+                            <CheckBox2 size={18}
+                                on={this.state.target_me}
+                                onClick={()=>this.setState({target_me:!this.state.target_me})}/>
+                        </div>
+                        <div className="list-head-item list-name">계약명</div>
+                        <div className="list-head-item list-status">상태</div>
+                        <div className="list-head-item list-date">마지막 활동 시간</div>
+                        <div className="list-head-item list-action"></div>
+                    </div>
+                    {board.list.map((e,k)=>{
+                        return this.render_board_slot(e,k)
+                    })}
+                    <div className="item">
+                        <div className="list-body-item list-chkbox">
+                            <CheckBox2 size={18}
+                                on={false}
+                                onClick={()=> {}}/>
+                        </div>
+                        <div className="list-body-item list-name">
+                            계약서 테스트 11111
+                            <div className="sub">서명자 : 홍길동(생성자), 누구누구 외 2명</div>
+                        </div>
+                        <div className="list-body-item list-status">
+                            내 서명 전
+                            <div className="sub">새로운 메시지가 도착했습니다.</div>
+                        </div>
+                        <div className="list-body-item list-date">{moment().format("YYYY-MM-DD HH:mm:ss")}</div>
+                        <div className="list-body-item list-action">
+                            <div className="button-container">
+                                <div className="action-button action-blue-but">서명</div>
+                                <div className="arrow-button arrow-blue-but"><i className="fas fa-caret-down"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="item">
+                        <div className="list-body-item list-chkbox">
+                            <CheckBox2 size={18}
+                                on={false}
+                                onClick={()=> {}}/>
+                        </div>
+                        <div className="list-body-item list-name">
+                            계약서 테스트 11111
+                            <div className="sub">서명자 : 홍길동(생성자), 누구누구 외 2명</div>
+                        </div>
+                        <div className="list-body-item list-status">
+                            내 서명 전
+                            <div className="sub">새로운 메시지가 도착했습니다.</div>
+                        </div>
+                        <div className="list-body-item list-date">{moment().format("YYYY-MM-DD HH:mm:ss")}</div>
+                        <div className="list-body-item list-action">
+                            <div className="button-container">
+                                <div className="action-button action-blue-but">서명</div>
+                                <div className="arrow-button arrow-blue-but"><i className="fas fa-caret-down"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="item">
+                        <div className="list-body-item list-chkbox">
+                            <CheckBox2 size={18}
+                                on={false}
+                                onClick={()=> {}}/>
+                        </div>
+                        <div className="list-body-item list-name">
+                            계약서 테스트 11111
+                            <div className="sub">서명자 : 홍길동(생성자), 누구누구 외 2명</div>
+                        </div>
+                        <div className="list-body-item list-status">
+                            내 서명 전
+                            <div className="sub">새로운 메시지가 도착했습니다.</div>
+                        </div>
+                        <div className="list-body-item list-date">{moment().format("YYYY-MM-DD HH:mm:ss")}</div>
+                        <div className="list-body-item list-action">
+                            <div className="button-container">
+                                <div className="action-button action-transparent-but">서명</div>
+                                <div className="arrow-button arrow-transparent-but"><i className="fas fa-caret-down"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="item">
+                        <div className="list-body-item list-chkbox">
+                            <CheckBox2 size={18}
+                                on={false}
+                                onClick={()=> {}}/>
+                        </div>
+                        <div className="list-body-item list-name">
+                            계약서 테스트 11111
+                            <div className="sub">서명자 : 홍길동(생성자), 누구누구 외 2명</div>
+                        </div>
+                        <div className="list-body-item list-status">
+                            내 서명 전
+                            <div className="sub">새로운 메시지가 도착했습니다.</div>
+                        </div>
+                        <div className="list-body-item list-date">{moment().format("YYYY-MM-DD HH:mm:ss")}</div>
+                        <div className="list-body-item list-action">
+                            <div className="button-container">
+                                <div className="action-button action-transparent-but">서명</div>
+                                <div className="arrow-button arrow-transparent-but"><i className="fas fa-caret-down"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                    {/*board.list.length == 0 ? <div className="empty-contract" >최근 계약서가 없습니다.</div> : null*/}
+                </div>
+                
+                <Pager max={Math.ceil(total_cnt/page_num)} cur={this.state.cur_page||1} onClick={this.onClickPage} />
+            </div>
 		</div>)
 	}
 }
