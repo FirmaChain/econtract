@@ -1,4 +1,5 @@
 @import url("/fontawesome/css/all.min.css");
+@import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
 
 $screen-width: 1200px;
 $font6: 25px;
@@ -36,7 +37,9 @@ $middlegray : #dadadc;
 }
 
 body{
-    font-family: -apple-system, BlinkMacSystemFont, Sans-serif;
+    font-family: "Nanum Gothic", sans-serif;
+    
+    // font-family: -apple-system, BlinkMacSystemFont, Sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     padding:0;
