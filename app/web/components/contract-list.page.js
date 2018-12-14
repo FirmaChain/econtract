@@ -313,8 +313,8 @@ export default class extends React.Component {
                                     <i className="fas fa-caret-down"></i>
                                     <div className="arrow-dropdown" style={{display:!!this.isOpenOption(2/*contract_id*/) ? "initial" : "none"}}>
                                         <div className="container">
-                                            <div className="detail">내 정보</div>
-                                            <div className="move">로그아웃</div>
+                                            <div className="detail">상세 정보</div>
+                                            <div className="move">이동</div>
                                         </div>
                                     </div>
                                 </div>
@@ -343,8 +343,8 @@ export default class extends React.Component {
                                     <i className="fas fa-caret-down"></i>
                                     <div className="arrow-dropdown" style={{display:!!this.isOpenOption(3/*contract_id*/) ? "initial" : "none"}}>
                                         <div className="container">
-                                            <div className="detail">내 정보</div>
-                                            <div className="move">로그아웃</div>
+                                            <div className="detail">상세 정보</div>
+                                            <div className="move">이동</div>
                                         </div>
                                     </div>
                                 </div>
