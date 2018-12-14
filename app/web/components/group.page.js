@@ -63,17 +63,22 @@ export default class extends React.Component {
 	}
 
 	getTitle() {
-		let pathname = this.props.location.pathname
+        let menu = this.props.match.params.menu || "all"
+		let account_id = this.props.match.params.account_id || null
 
         for(let i = 0 ; i < 10 ; i++) {
-            if(pathname == "/group/" + i)
-                return { id:i.toString(), title:"그룹 " + i}
+            if(menu == i+"") {
+                if(!!account_id)
+                    return { id:i.toString(), account_id:account_id, title:"그룹 " + i + "_" + account_id}
+                else
+                    return { id:i.toString(), title:"그룹 " + i}
+            }
         }
 
-		if(pathname == "/group/unclassified") {
+		if(menu == "unclassified") {
 			return { id:"unclassified", title : "분류되지 않은 그룹원"}
         }
-		else if(pathname == "/group/withdraw") {
+		else if(menu == "withdraw") {
 			return { id:"withdraw", title : "탈퇴한 그룹원"}
         }
 		return { id:"all", title : "모든 계약"}
@@ -92,6 +97,11 @@ export default class extends React.Component {
 
     move(pageName) {
         history.push(`/group/${pageName}`)
+    }
+
+    moveGroup(group) {
+        history.push(`/group/${group}`)
+        this.props.openGroup(group)
     }
 
     openGroupInfo(group_id, e) {
@@ -174,76 +184,76 @@ export default class extends React.Component {
 				<div className="left-top-button" onClick={this.onClickAddGroup}>그룹 추가하기</div>
 				<div className="menu-list">
                     <div className="list">
-                        <div className={"item" + (this.getTitle().id.includes("all") ? " selected" : "")} onClick={this.move.bind(this, "")}>
+                        <div className={"item" + (this.getTitle().id == "all" ? " selected" : "")} onClick={this.moveGroup.bind(this, "")}>
                             <i className="icon fal fa-clock"></i>
                             <div className="text">모든 계약</div>
                         </div>
                     </div>
 					<div className="list">
 						<div className="title">그룹</div>
-						<div className={"item" + (this.getTitle().id.includes("0") ? " selected" : "")} onClick={this.move.bind(this, "0")}>
+						<div className={"item" + (this.getTitle().id == "0" ? " selected" : "")} onClick={this.moveGroup.bind(this, "0")}>
                             <div className="text">#인사팀</div>
                             <i className="setting fas fa-cog" onClick={this.openGroupInfo.bind(this, 0)}></i>
                             <i className={"angle far " + ( this.isOpenGroup(0) ? "fa-angle-down" : "fa-angle-up" )} onClick={this.openCloseGroup.bind(this, 0)}></i>
                         </div>
-                        <div className={"item sub" + (this.isOpenGroup(0) ? "" : " hide")}>
+                        <div className={"item sub" + (this.isOpenGroup(0) ? "" : " hide") + ( (this.getTitle().id == "0" && (this.getTitle().account_id || null) == "1") ? " selected" : "")} onClick={this.move.bind(this, "0/1")}>
                             <i className="icon fas fa-user"></i>
                             <div className="text">김상렬</div>
                             <i className="setting far fa-ellipsis-h"></i>
                         </div>
-                        <div className={"item" + (this.getTitle().id.includes("1") ? " selected" : "")} onClick={this.move.bind(this, "1")}>
+                        <div className={"item" + (this.getTitle().id == "1" ? " selected" : "")} onClick={this.moveGroup.bind(this, "1")}>
                             <div className="text">#재무팀</div>
                             <i className="setting fas fa-cog" onClick={this.openGroupInfo.bind(this, 1)}></i>
                             <i className={"angle far " + ( this.isOpenGroup(1) ? "fa-angle-down" : "fa-angle-up")} onClick={this.openCloseGroup.bind(this, 1)}></i>
                         </div>
-                        <div className={"item" + (this.getTitle().id.includes("2") ? " selected" : "")} onClick={this.move.bind(this, "2")}>
+                        <div className={"item" + (this.getTitle().id == "2" ? " selected" : "")} onClick={this.moveGroup.bind(this, "2")}>
                             <div className="text">#사업1팀</div>
                             <i className="setting fas fa-cog" onClick={this.openGroupInfo.bind(this, 2)}></i>
                             <i className={"angle far " + ( this.isOpenGroup(2) ? "fa-angle-down" : "fa-angle-up")} onClick={this.openCloseGroup.bind(this, 2)}></i>
                         </div>
-                        <div className={"item" + (this.getTitle().id.includes("3") ? " selected" : "")} onClick={this.move.bind(this, "3")}>
+                        <div className={"item" + (this.getTitle().id == "3" ? " selected" : "")} onClick={this.moveGroup.bind(this, "3")}>
                             <div className="text">#사업2팀</div>
                             <i className="setting fas fa-cog" onClick={this.openGroupInfo.bind(this, 3)}></i>
                             <i className={"angle far " + ( this.isOpenGroup(3) ? "fa-angle-down" : "fa-angle-up")} onClick={this.openCloseGroup.bind(this, 3)}></i>
                         </div>
-                        <div className={"item" + (this.getTitle().id.includes("4") ? " selected" : "")} onClick={this.move.bind(this, "4")}>
+                        <div className={"item" + (this.getTitle().id == "4" ? " selected" : "")} onClick={this.moveGroup.bind(this, "4")}>
                             <div className="text">#개발1팀</div>
                             <i className="setting fas fa-cog" onClick={this.openGroupInfo.bind(this, 4)}></i>
                             <i className={"angle far " + ( this.isOpenGroup(4) ? "fa-angle-down" : "fa-angle-up")} onClick={this.openCloseGroup.bind(this, 4)}></i>
                         </div>
-                        <div className={"item" + (this.getTitle().id.includes("5") ? " selected" : "")} onClick={this.move.bind(this, "5")}>
+                        <div className={"item" + (this.getTitle().id == "5" ? " selected" : "")} onClick={this.moveGroup.bind(this, "5")}>
                             <div className="text">#개발2팀</div>
                             <i className="setting fas fa-cog" onClick={this.openGroupInfo.bind(this, 5)}></i>
                             <i className={"angle far " + ( this.isOpenGroup(5) ? "fa-angle-down" : "fa-angle-up")} onClick={this.openCloseGroup.bind(this, 5)}></i>
                         </div>
-                        <div className={"item" + (this.getTitle().id.includes("6") ? " selected" : "")} onClick={this.move.bind(this, "6")}>
+                        <div className={"item" + (this.getTitle().id == "6" ? " selected" : "")} onClick={this.moveGroup.bind(this, "6")}>
                             <div className="text">#인사2팀</div>
                             <i className="setting fas fa-cog" onClick={this.openGroupInfo.bind(this, 6)}></i>
                             <i className={"angle far " + ( this.isOpenGroup(6) ? "fa-angle-down" : "fa-angle-up")} onClick={this.openCloseGroup.bind(this, 6)}></i>
                         </div>
-                        <div className={"item" + (this.getTitle().id.includes("7") ? " selected" : "")} onClick={this.move.bind(this, "7")}>
+                        <div className={"item" + (this.getTitle().id == "7" ? " selected" : "")} onClick={this.moveGroup.bind(this, "7")}>
                             <div className="text">#디자인1팀</div>
                             <i className="setting fas fa-cog" onClick={this.openGroupInfo.bind(this, 7)}></i>
                             <i className={"angle far " + ( this.isOpenGroup(7) ? "fa-angle-down" : "fa-angle-up")} onClick={this.openCloseGroup.bind(this, 7)}></i>
                         </div>
-                        <div className={"item" + (this.getTitle().id.includes("8") ? " selected" : "")} onClick={this.move.bind(this, "8")}>
+                        <div className={"item" + (this.getTitle().id == "8" ? " selected" : "")} onClick={this.moveGroup.bind(this, "8")}>
                             <div className="text">#디자인2팀</div>
                             <i className="setting fas fa-cog" onClick={this.openGroupInfo.bind(this, 8)}></i>
                             <i className={"angle far " + ( this.isOpenGroup(8) ? "fa-angle-down" : "fa-angle-up")} onClick={this.openCloseGroup.bind(this, 8)}></i>
                         </div>
-						<div className={"item" + (this.getTitle().id.includes("9") ? " selected" : "")} onClick={this.move.bind(this, "9")}>
+						<div className={"item" + (this.getTitle().id == "9" ? " selected" : "")} onClick={this.moveGroup.bind(this, "9")}>
                             <div className="text">#법무팀</div>
                             <i className="setting fas fa-cog" onClick={this.openGroupInfo.bind(this, 9)}></i>
                             <i className={"angle far " + ( this.isOpenGroup(9) ? "fa-angle-down" : "fa-angle-up")} onClick={this.openCloseGroup.bind(this, 9)}></i>
                         </div>
 
 
-						<div className={"item" + (this.getTitle().id.includes("unclassified") ? " selected" : "")} onClick={this.move.bind(this, "unclassified")}>
+						<div className={"item" + (this.getTitle().id == "unclassified" ? " selected" : "")} onClick={this.moveGroup.bind(this, "unclassified")}>
                             <i className="icon fas fa-share-square"></i> 
                             <div className="text">분류되지 않은 그룹원</div>
                             <i className={"angle far "  + ( this.isOpenGroup("unclassified") ? "fa-angle-down" : "fa-angle-up")}></i>
                         </div>
-						<div className={"item" + (this.getTitle().id.includes("withdraw") ? " selected" : "")} onClick={this.move.bind(this, "withdraw")}>
+						<div className={"item" + (this.getTitle().id == "withdraw" ? " selected" : "")} onClick={this.moveGroup.bind(this, "withdraw")}>
                             <i className="icon fas fa-handshake-alt"></i>
                             <div className="text">탈퇴한 그룹원</div>
                             <i className={"angle far "  + ( this.isOpenGroup("withdraw") ? "fa-angle-down" : "fa-angle-up")}></i>

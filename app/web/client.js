@@ -72,6 +72,7 @@ window.addEventListener("load",()=>{
 
 					<Route onEnter={resolver} exact path="/group" component={HomePage} />
 					<Route onEnter={resolver} exact path="/group/:menu" component={HomePage} />
+					<Route onEnter={resolver} exact path="/group/:menu/:account_id" component={HomePage} />
 
 					<Route onEnter={resolver} exact path="/folder" component={FolderPage} />
 					<Route onEnter={resolver} exact path="/add-contract" component={AddContractPage} />

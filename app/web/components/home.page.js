@@ -87,9 +87,9 @@ export default class extends React.Component {
                     { !!this.props.user_info ? <Information /> : null }
                 </div>
                 <div className="content">
-                    <Route path="/home" component={ContractListPage} />
-                    <Route path="/template" component={TemplatePage} />
-                    <Route path="/group" component={GroupPage} />
+                    <Route path="/home" render={() => <ContractListPage {...this.props}/>} />
+                    <Route path="/template" render={() => <TemplatePage {...this.props}/>} />
+                    <Route path="/group" render={() => <GroupPage {...this.props}/>} />
                 </div>
             </div>
 

@@ -167,7 +167,7 @@ select:focus { outline:none; }
         padding-top:10px;
         padding-bottom:10px;
 
-        border-bottom:1px solid $gray;
+        border-bottom:1px solid $middlegray;
 
         >img {
             cursor: pointer;
@@ -185,7 +185,7 @@ select:focus { outline:none; }
             min-height: calc(100% - 131px);
             overflow-y: auto;
 
-            border-right:1px solid $gray;
+            border-right:1px solid $middlegray;
 
             .step-indicator{
                 display: flex;
@@ -213,7 +213,7 @@ select:focus { outline:none; }
 
         >.desc {
             flex:1;
-            border-left:1px solid $gray;
+            border-left:1px solid $middlegray;
             min-height: calc(100% - 131px);
             overflow-y: auto;
 
@@ -483,7 +483,7 @@ select:focus { outline:none; }
         padding-top:10px;
         padding-bottom:10px;
 
-        border-bottom:1px solid $gray;
+        border-bottom:1px solid $middlegray;
 
         >img {
             cursor: pointer;

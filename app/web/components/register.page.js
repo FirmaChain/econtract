@@ -298,10 +298,13 @@ export default class extends React.Component {
         }
 
         if(this.getAccountType() == 2) {
-            let registration_code = queryString.parse(this.props.location.search).registration_code;
-            let email_address = queryString.parse(this.props.location.search).email_address;
+            let params = queryString.parse(this.props.location.search)
+
+            let registration_code = params.registration_code || "";
+            let email_address = params.email_address || "";
             (async() => {
                 let registration_info = await this.props.invite_information(email_address, registration_code);
+                console.log(registration_info)
                 if (registration_info) {
                     this.setState({
                         email:email_address,
@@ -319,7 +322,6 @@ export default class extends React.Component {
     }
 
     componentWillReceiveProps(props) {
-        console.log(props)
         if(props.user_info) {
             history.replace("/home")
         }
@@ -327,7 +329,7 @@ export default class extends React.Component {
 
     getAccountType() {
         let q = queryString.parse(this.props.location.search)
-        if(!!q.registration_code) {
+        if(!!q.registration_code && !!q.email_address) {
             return 2
         }
 
