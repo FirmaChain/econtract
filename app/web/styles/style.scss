@@ -1477,6 +1477,15 @@ select:focus { outline:none; }
                             padding:5px 10px;
                             border: 0;
                             border-bottom: 1px solid $gray;
+
+                            &:disabled {
+                                background-color: $middlegray;
+                            }
+
+                            &:focus {
+                                border-bottom:1px solid $blue;
+                                outline: none;
+                            }
                         }
 
                         >.add-btn {
