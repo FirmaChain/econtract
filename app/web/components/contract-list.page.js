@@ -43,6 +43,7 @@ export default class extends React.Component {
         super(props);
         this.state = {
             board_checks : [],
+            showOptions: null
         };
 	}
 
@@ -114,6 +115,21 @@ export default class extends React.Component {
         history.push(`/home/${pageName}`)
     }
 
+    onClickOption(contract_id) {
+        if(this.state.showOption == contract_id) {
+            return this.setState({
+                showOption:null
+            })
+        }
+
+        this.setState({
+            showOption:contract_id
+        })
+    }
+
+    isOpenOption(contract_id) {
+        return this.state.showOption == contract_id;
+    }
 
     render_board_slot(e,k){
         let status_text = (status)=>{
@@ -233,7 +249,15 @@ export default class extends React.Component {
                         <div className="list-body-item list-action">
                             <div className="button-container">
                                 <div className="action-button action-blue-but">서명</div>
-                                <div className="arrow-button arrow-blue-but"><i className="fas fa-caret-down"></i></div>
+                                <div className="arrow-button arrow-blue-but" onClick={this.onClickOption.bind(this, 0/*contract_id*/)} >
+                                    <i className="fas fa-caret-down"></i>
+                                    <div className="arrow-dropdown" style={{display:!!this.isOpenOption(0/*contract_id*/) ? "initial" : "none"}}>
+                                        <div className="container">
+                                            <div className="detail">상세 정보</div>
+                                            <div className="move">이동</div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -255,7 +279,15 @@ export default class extends React.Component {
                         <div className="list-body-item list-action">
                             <div className="button-container">
                                 <div className="action-button action-blue-but">서명</div>
-                                <div className="arrow-button arrow-blue-but"><i className="fas fa-caret-down"></i></div>
+                                <div className="arrow-button arrow-blue-but" onClick={this.onClickOption.bind(this, 1/*contract_id*/)} >
+                                    <i className="fas fa-caret-down"></i>
+                                    <div className="arrow-dropdown" style={{display:!!this.isOpenOption(1/*contract_id*/) ? "initial" : "none"}}>
+                                        <div className="container">
+                                            <div className="detail">상세 정보</div>
+                                            <div className="move">이동</div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -276,8 +308,16 @@ export default class extends React.Component {
                         <div className="list-body-item list-date">{moment().format("YYYY-MM-DD HH:mm:ss")}</div>
                         <div className="list-body-item list-action">
                             <div className="button-container">
-                                <div className="action-button action-transparent-but">서명</div>
-                                <div className="arrow-button arrow-transparent-but"><i className="fas fa-caret-down"></i></div>
+                                <div className="action-button action-blue-but">서명</div>
+                                <div className="arrow-button arrow-blue-but" onClick={this.onClickOption.bind(this, 2/*contract_id*/)} >
+                                    <i className="fas fa-caret-down"></i>
+                                    <div className="arrow-dropdown" style={{display:!!this.isOpenOption(2/*contract_id*/) ? "initial" : "none"}}>
+                                        <div className="container">
+                                            <div className="detail">내 정보</div>
+                                            <div className="move">로그아웃</div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -298,8 +338,16 @@ export default class extends React.Component {
                         <div className="list-body-item list-date">{moment().format("YYYY-MM-DD HH:mm:ss")}</div>
                         <div className="list-body-item list-action">
                             <div className="button-container">
-                                <div className="action-button action-transparent-but">서명</div>
-                                <div className="arrow-button arrow-transparent-but"><i className="fas fa-caret-down"></i></div>
+                                <div className="action-button action-blue-but">서명</div>
+                                <div className="arrow-button arrow-blue-but" onClick={this.onClickOption.bind(this, 3/*contract_id*/)} >
+                                    <i className="fas fa-caret-down"></i>
+                                    <div className="arrow-dropdown" style={{display:!!this.isOpenOption(3/*contract_id*/) ? "initial" : "none"}}>
+                                        <div className="container">
+                                            <div className="detail">내 정보</div>
+                                            <div className="move">로그아웃</div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -1,5 +1,5 @@
 @import url("/fontawesome/css/all.min.css");
-@import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
+@import url(https://fonts.googleapis.com/earlyaccess/nanumgothic.css);
 
 $screen-width: 1200px;
 $font6: 25px;
@@ -38,7 +38,7 @@ $middlegray : #dadadc;
 
 body{
     font-family: "Nanum Gothic", sans-serif;
-    
+
     // font-family: -apple-system, BlinkMacSystemFont, Sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -1107,6 +1107,7 @@ select:focus { outline:none; }
                 }
 
                 .arrow-button {
+                    position: relative;
                     display: inline-block;
                     font-size: $font1;
                     font-weight: bold;
@@ -1116,6 +1117,43 @@ select:focus { outline:none; }
                     height:38px;
                     box-sizing: border-box;
                     text-align: center;
+                }
+
+                .arrow-dropdown {
+                    position: absolute;
+                    z-index: 1;
+                    right: 0;
+                    padding-top:30px;
+                    min-width:120px;
+                    font-weight: initial;
+
+                    >.container {
+                        background-color: white;
+                        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+
+                        text-align: left;
+
+                        >.detail {
+                            font-size: $font0;
+                            color: $black;
+                            padding:10px 15px;
+                            cursor: pointer;
+                        }
+
+                        >.move {
+                            font-size: $font0;
+                            color: $black;
+                            padding:10px 15px;
+                            cursor: pointer;
+                        }
+
+                        >div{
+                            &:hover{
+                                background-color: $lightgray;
+                            }
+                        }
+                    }
+
                 }
 
                 .action-blue-but {
