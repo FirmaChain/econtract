@@ -1,5 +1,6 @@
 import {
     api_invite_sub_account,
+    api_invite_information,
 } from "../../../gen_api"
 
 import {
@@ -9,6 +10,7 @@ import {
 } from "../../common/crypto_test"
 
 import Web3 from "../Web3"
+import md5 from 'md5'
 
 export const GROUP_HOME_OPEN_GROUP = "GROUP_HOME_OPEN_GROUP"
 export const GROUP_HOME_CLOSE_GROUP = "GROUP_HOME_CLOSE_GROUP"
@@ -38,3 +40,20 @@ export function invite_sub_account(group_id, email, data_plain) {
         return (await api_invite_sub_account(group_id,email,passphrase2,data)).payload;
     }
 }
+
+export function invite_information(email, registration_code) {
+    return async function(){
+        let info = (await api_invite_information(registration_code)).payload;
+        if (!info) return null;
+        let email_hashed = md5(email+info.passphrase1);
+        try {
+            let passphrase2 = (await aes_decrypt_async(Buffer.from(info.encrypted_passphrase2, 'hex'), email_hashed));
+            let key = hmac_sha256("", Buffer.from(email+passphrase2));
+            let data = JSON.parse(await aes_decrypt_async(Buffer.from(info.encrypted_data, 'hex'), key));
+            return data;
+        } catch(e) {
+            return null;
+        }
+    }
+}
+

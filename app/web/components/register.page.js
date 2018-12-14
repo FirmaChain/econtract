@@ -11,7 +11,8 @@ import {
     request_phone_verification_code,
     check_phone_verification_code,
     register_new_account,
-    fetch_user_info
+    fetch_user_info,
+    invite_information,
 } from "../../common/actions"
 import Web3 from "../../common/Web3"
 
@@ -44,7 +45,8 @@ let mapDispatchToProps = {
     request_phone_verification_code,
     check_phone_verification_code,
     register_new_account,
-    fetch_user_info
+    fetch_user_info,
+    invite_information,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -297,19 +299,22 @@ export default class extends React.Component {
 
         if(this.getAccountType() == 2) {
             let registration_code = queryString.parse(this.props.location.search).registration_code;
-            let registration_info = {};
-            if (registration_info) {
-                this.setState({
-                    email:"test@gmail.com",
-                    company_name: "test1",
-                    duns_number: "test2",
-                    company_ceo: "test3",
-                    company_address: "test4",
-                    email_verification: true,
-                });
-            } else {
-                alert("mang! invalid registration code!");
-            }
+            let email_address = queryString.parse(this.props.location.search).email_address;
+            (async() => {
+                let registration_info = await this.props.invite_information(email_address, registration_code);
+                if (registration_info) {
+                    this.setState({
+                        email:email_address,
+                        company_name: registration_info.company_name,
+                        duns_number: registration_info.duns_number,
+                        company_ceo: registration_info.company_ceo,
+                        company_address: registration_info.company_address,
+                        email_verification: true,
+                    });
+                } else {
+                    alert("mang! invalid registration code!");
+                }
+            })();
         }
     }
 
