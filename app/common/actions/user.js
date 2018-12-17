@@ -155,14 +155,14 @@ export function login_account(user_id, password){
             let entropy = getUserEntropy(auth, resp.eems)
             sessionStorage.setItem("entropy", entropy)
             sessionStorage.setItem("login_id", user_id)
-
+/*
             dispatch({
                 type:SUCCESS_LOGIN,
                 paylaod:{
                     session: resp.session,
                     entropy: entropy
                 }
-            })
+            })*/
         }
 
         return resp;
