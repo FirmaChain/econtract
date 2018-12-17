@@ -598,7 +598,7 @@ export default class extends React.Component {
         let resp = await this.props.register_new_account(this.state.account, encryptedInfo, this.state.email, this.state.username, wallet.address, account_type)
         await window.hideIndicator()
 
-        if (account_type == 2) {
+        if (account_type == 1) {
             // Create new corp info
         }
 

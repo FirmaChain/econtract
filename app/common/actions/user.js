@@ -97,7 +97,7 @@ export function check_phone_verification_code(phone, code){
 
 export function register_new_account(account, info, email, name, eth, type){
     return async function(dispatch){
-        return (await api_register_account(
+        let resp = (await api_register_account(
             account.browserKey.publicKey.toString('hex'),
             account.masterKeyPublic.toString('hex'),
             account.masterKeyPublicContract.toString('hex'),
@@ -108,7 +108,16 @@ export function register_new_account(account, info, email, name, eth, type){
             name, 
             eth,
             type
-        )).payload
+        )).payload;
+        if (type == 1) {
+            let auth = account.auth;
+            let eems = Buffer.from(account.encryptedMasterSeed, 'hex').toString('base64');
+            window.setCookie("session", resp.session, 0.125)
+            window.setCookie("session_update", Date.now(), 0.125)
+            let entropy = getUserEntropy(auth, eems)
+            sessionStorage.setItem("entropy", entropy)
+        }
+        return resp;
     }
 }
 
