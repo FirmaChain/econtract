@@ -554,6 +554,7 @@ export default class extends React.Component {
         }
         let account_type = this.getAccountType()
         let info
+        let corp_info
 
         if(account_type == 0) { // 개인 계정
             info = {
@@ -563,16 +564,18 @@ export default class extends React.Component {
                 useraddress: this.state.useraddress,
             }
         } else if(account_type == 1) { // 기업 관리자 계정
+            corp_info = {
+                company_name: this.state.company_name,
+                duns_number: this.state.duns_number,
+                company_ceo: this.state.company_ceo,
+                company_address: this.state.company_address,
+            }
             info = {
                 email: this.state.email,
                 username: this.state.username,
                 department: this.state.department,
                 job: this.state.job,
                 userphone: this.state.userphone,
-                company_name: this.state.company_name,
-                duns_number: this.state.duns_number,
-                company_ceo: this.state.company_ceo,
-                company_address: this.state.company_address,
             }
         } else if(account_type == 2) { // 기업 직원 계정
             info = {
@@ -594,6 +597,10 @@ export default class extends React.Component {
         await window.showIndicator()
         let resp = await this.props.register_new_account(this.state.account, encryptedInfo, this.state.email, this.state.username, wallet.address, account_type)
         await window.hideIndicator()
+
+        if (account_type == 2) {
+            // Create new corp info
+        }
 
         if(resp.code == 1){
             localStorage.setItem("browser_key_virgin", 0);
