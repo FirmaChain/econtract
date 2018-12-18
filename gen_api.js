@@ -183,26 +183,9 @@ export async function api_reject_contract(contract_id,msg,revision){
         session:window.getCookie("session")
     });
 }
-export async function api_invite_sub_account(group_id,email,passphrase2,data){
-    return await get("/invite_sub_account", {
-        group_id,
-		email,
-		passphrase2,
-		data
-    },{
-        session:window.getCookie("session")
-    });
-}
 export async function api_invite_information(registration_code){
     return await get("/invite_information", {
         registration_code
-    },{
-        session:window.getCookie("session")
-    });
-}
-export async function api_get_my_group(){
-    return await get("/get_my_group", {
-        
     },{
         session:window.getCookie("session")
     });
@@ -224,6 +207,46 @@ export async function api_get_group_info(group_id){
 export async function api_get_group_members(group_id){
     return await get("/get_group_members", {
         group_id
+    },{
+        session:window.getCookie("session")
+    });
+}
+export async function api_create_group(group_name){
+    return await get("/create_group", {
+        group_name
+    },{
+        session:window.getCookie("session")
+    });
+}
+export async function api_add_member_group(group_id,email,passphrase2,data){
+    return await get("/add_member_group", {
+        group_id,
+		email,
+		passphrase2,
+		data
+    },{
+        session:window.getCookie("session")
+    });
+}
+export async function api_remove_group(group_id){
+    return await get("/remove_group", {
+        group_id
+    },{
+        session:window.getCookie("session")
+    });
+}
+export async function api_add_member_group(group_id,account_id){
+    return await get("/add_member_group", {
+        group_id,
+		account_id
+    },{
+        session:window.getCookie("session")
+    });
+}
+export async function api_remove_member_group(group_id,account_id){
+    return await get("/remove_member_group", {
+        group_id,
+		account_id
     },{
         session:window.getCookie("session")
     });
@@ -375,6 +398,13 @@ export async function api_find_user_with_code_email(email){
 export async function api_select_userinfo_with_email(email){
     return await get("/select_userinfo_with_email", {
         email
+    },{
+        session:window.getCookie("session")
+    });
+}
+export async function api_update_user_info(info){
+    return await get("/update_user_info", {
+        info
     },{
         session:window.getCookie("session")
     });

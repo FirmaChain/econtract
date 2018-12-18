@@ -8,7 +8,7 @@ import Information from "./information.comp"
 import moment from "moment"
 
 import {
-    invite_sub_account,
+    add_member_group,
     fetch_user_info
 } from "../../common/actions"
 
@@ -19,7 +19,7 @@ let mapStateToProps = (state)=>{
 }
 
 let mapDispatchToProps = {
-    invite_sub_account,
+    add_member_group,
     fetch_user_info
 }
 
@@ -75,7 +75,7 @@ export default class extends React.Component {
         if(this.state.add_email == "")
             return alert("초대하려는 그룹원의 이메일을 입력해주세요.")
 
-        let resp = await this.props.invite_sub_account(this.getGroupId(), this.state.add_email, {});
+        let resp = await this.props.add_member_group(this.getGroupId(), this.state.add_email, {});
         return alert(JSON.stringify(resp));
     }
 

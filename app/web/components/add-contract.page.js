@@ -315,7 +315,6 @@ export default class extends React.Component {
 필수적이며, 가입 후 계약 정보 수정 화면에서 해당 
 사용자를 꼭 추가해주세요.`,
             onClose:()=>{
-                refesh_modal_idx = null
             }
         })
     }

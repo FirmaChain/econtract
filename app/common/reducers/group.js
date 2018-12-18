@@ -1,10 +1,14 @@
 import {
 	GROUP_HOME_OPEN_GROUP,
 	GROUP_HOME_CLOSE_GROUP,
+	GET_MY_GROUPS_INFO,
+	GET_GROUP_INFO,
+	GET_GROUP_MEMBERS,
 } from '../actions';
 
 let _ = {
-	isOpenGroupList:[]
+	isOpenGroupList:[],
+	groups:[]
 }
 
 export default function (state=_, action){
@@ -34,6 +38,11 @@ export default function (state=_, action){
 				isOpenGroupList: list
 			}
 		}
+		case GET_MY_GROUPS_INFO:
+			return {
+				...state,
+				groups:action.payload
+			}
 		default:
 			return state;
 	}

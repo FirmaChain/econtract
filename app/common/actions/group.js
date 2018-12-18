@@ -1,6 +1,12 @@
 import {
-    api_invite_sub_account,
     api_invite_information,
+    api_get_my_groups_info,
+    api_get_group_info,
+    api_get_group_members,
+    api_create_group,
+    api_remove_group,
+    api_add_member_group,
+    api_remove_member_group,
 } from "../../../gen_api"
 
 import {
@@ -14,6 +20,14 @@ import md5 from 'md5'
 
 export const GROUP_HOME_OPEN_GROUP = "GROUP_HOME_OPEN_GROUP"
 export const GROUP_HOME_CLOSE_GROUP = "GROUP_HOME_CLOSE_GROUP"
+export const GET_MY_GROUPS_INFO = "GET_MY_GROUPS_INFO"
+export const GET_GROUP_INFO = "GET_GROUP_INFO"
+export const GET_GROUP_MEMBERS = "GET_GROUP_MEMBERS"
+
+export const CREATE_GROUP = "CREATE_GROUP"
+export const REMOVE_GROUP = "REMOVE_GROUP"
+export const ADD_MEMBER_GROUP = "ADD_MEMBER_GROUP"
+export const REMOVE_MEMBER_GROUP = "REMOVE_MEMBER_GROUP"
 
 export function openGroup(group_id){
 	return async function (dispatch){
@@ -27,17 +41,60 @@ export function closeGroup(group_id){
 	}
 }
 
-export function invite_sub_account(group_id, email, data_plain) {
-    return async function(){
+export function get_my_groups_info() {
+    return async function(dispatch) {
+        let infos = await api_get_my_groups_info();
+        if(infos.code == 1 && infos.payload)
+            dispatch({ type:GET_MY_GROUPS_INFO, payload:infos.payload})
+        return infos.payload
+    }
+}
+
+export function get_group_info() {
+    return async function(dispatch) {
+        let infos = await api_get_group_info();
+        return infos.payload
+    }
+}
+
+export function get_group_members() {
+    return async function(dispatch) {
+        let infos = await api_get_group_members();
+        return infos.payload
+    }
+}
+
+export function create_group(group_name) {
+    return async function() {
+        let resp = await api_create_group(group_name);
+        return resp.payload
+    }
+}
+export function remove_group(group_id) {
+    return async function() {
+        let resp = await api_remove_group(group_id);
+        return resp.payload
+    }
+}
+export function add_member_group(group_id, email, data_plain) {
+    return async function() {
         const possible = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
         let passphrase2_length = 32;
         let passphrase2 = "";
         for (let i = 0; i < passphrase2_length; i++)
-          passphrase2 += possible.charAt(Math.floor(Math.random() * possible.length));
+            passphrase2 += possible.charAt(Math.floor(Math.random() * possible.length));
         let key = hmac_sha256("", Buffer.from(email+passphrase2));
         let data_plain_buffered = Buffer.from(JSON.stringify({company_name: "company name", duns_number: "duns", company_ceo: "company_ceo", company_address: "addr"}));
         let data = Buffer.from((await aes_encrypt_async(data_plain_buffered, key)), 'binary').toString('hex');
-        return (await api_invite_sub_account(group_id,email,passphrase2,data)).payload;
+
+        let resp = await api_add_member_group(group_id, email, passphrase2, data);
+        return resp.payload
+    }
+}
+export function remove_member_group(group_id, account_id) {
+    return async function() {
+        let resp = await api_remove_member_group(group_id, account_id);
+        return resp.payload
     }
 }
 
