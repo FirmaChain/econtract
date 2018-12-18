@@ -10,6 +10,7 @@ import {
     api_check_join_publickey,
     api_recover_account,
     api_select_userinfo_with_email,
+    api_update_user_info,
 } from "../../../gen_api"
 
 import {
@@ -203,6 +204,12 @@ export function select_userinfo_with_email(email){
         //     email:email,
         //     username:"윤대현"+(Math.floor(Math.random()*30))
         // }
+    }
+}
+
+export function update_user_info(info){
+    return async function(){
+        return (await api_update_user_info(info)).payload
     }
 }
 
