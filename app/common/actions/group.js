@@ -7,7 +7,8 @@ import {
     api_remove_group,
     api_add_member_group,
     api_remove_member_group,
-    api_remove_invite_group
+    api_remove_invite_group,
+    api_change_group_title,
 } from "../../../gen_api"
 
 import {
@@ -79,6 +80,14 @@ export function remove_group(group_id) {
         return resp.payload
     }
 }
+
+export function change_group_title(group_id, change_title) {
+    return async function() {
+        let resp = await api_change_group_title(group_id, change_title);
+        return resp.payload
+    }
+}
+
 export function add_member_group(group_id, email, data_plain) {
     return async function() {
         const possible = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";

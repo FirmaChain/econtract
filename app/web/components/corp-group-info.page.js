@@ -13,6 +13,7 @@ import {
     fetch_user_info,
     get_group_info,
     remove_member_group,
+    change_group_title,
 } from "../../common/actions"
 
 let mapStateToProps = (state)=>{
@@ -27,6 +28,7 @@ let mapDispatchToProps = {
     fetch_user_info,
     get_group_info,
     remove_member_group,
+    change_group_title,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -87,6 +89,23 @@ export default class extends React.Component {
     getGroupId() {
         let group_id = this.props.match.params.group_id || null
         return group_id
+    }
+
+    onChangeGroupTitle = (text) => {
+
+        window.openModal("AddCommonModal", {
+            icon:"fas fa-users",
+            title:"그룹명 변경",
+            subTitle:"새 그룹명",
+            placeholder:"그룹명을 입력해주세요.",
+            onConfirm: async (group_name) => {
+                let resp = this.props.change_group_title(this.getGroupId(), group_name)
+                if(resp) {
+                    alert("그룹명 변경에 성공했습니다.")
+                    await this.onRefresh()
+                }
+            }
+        })
     }
 
     onAddMember = async ()=>{

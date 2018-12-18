@@ -225,6 +225,14 @@ export async function api_remove_group(group_id){
         session:window.getCookie("session")
     });
 }
+export async function api_change_group_title(group_id,change_title){
+    return await get("/change_group_title", {
+        group_id,
+		change_title
+    },{
+        session:window.getCookie("session")
+    });
+}
 export async function api_add_member_group(group_id,email,passphrase2,data){
     return await get("/add_member_group", {
         group_id,
