@@ -13,6 +13,7 @@ import {
     register_new_account,
     fetch_user_info,
     invite_information,
+    update_user_info,
 } from "../../common/actions"
 import Web3 from "../../common/Web3"
 
@@ -28,6 +29,8 @@ import {
     SeedToEthKey,
     BrowserKeyBIP32,
     makeSignData,
+    generateCorpKey,
+    get256bitDerivedPublicKey,
     aes_encrypt,
     ecdsa_verify,
     new_account,
@@ -47,6 +50,7 @@ let mapDispatchToProps = {
     register_new_account,
     fetch_user_info,
     invite_information,
+    update_user_info,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -599,7 +603,30 @@ export default class extends React.Component {
         await window.hideIndicator()
 
         if (account_type == 1) {
+            alert("hiho");
+            info['hiho'] = "hiho";
+            let encryptedInfo = aes_encrypt(JSON.stringify(info), this.state.account.masterKeyPublic);
+            let updateResp = await this.props.update_user_info(encryptedInfo);
+            alert(updateResp);
+            /*
+            let corpMasterKey = generateCorpKey();
+            // inject into master's info
+            let corpKey = get256bitDerivedPublicKey(corpMasterkey, "m/0'/0'");
+            let encryptedCorpInfo = aes_encrypt(JSON.stringify(corp_info), corpKey);
+            let corpResp = await this.props.create_new_corp(encryptedCorpInfo);
+            if (corpResp != 1) {
+                return "mang";
+            }
+            info['corp_master_key'] = corpMasterKey.toString("hex");
+            info['corp_id'] = resp.corp_id;
+            info['corp_key'] = corpKey.toString('hex');
+            let encryptedInfo = aes_encrypt(JSON.stringify(info), this.state.account.masterKeyPublic);
+            let updateResp = await this.props.update_user_info(encryptedInfo);
+            if (updateResp != 1) {
+                return "mang";
+            }
             // Create new corp info
+            */
         }
 
         if(resp.code == 1){

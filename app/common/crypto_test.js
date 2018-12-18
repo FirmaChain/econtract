@@ -56,6 +56,14 @@ export function generateBrowserKey() {
 	return digest;
 }
 
+export function generateCorpKey() {
+	let mnemonic = generateMnemonic();
+	let entropy = bip39.mnemonicToEntropy(mnemonic);
+	let seed = bip39.mnemonicToSeed(mnemonic);
+	let digest = hmac_sha512("FirmaChain corp seed", seed);
+	return digest;
+}
+
 export function entropyToMnemonic(entropy) {
     return bip39.entropyToMnemonic(entropy);
 }
