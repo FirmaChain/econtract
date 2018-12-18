@@ -58,7 +58,33 @@ export default class extends React.Component {
                 }
                 html2pdf().set(savePdfOption).from(document.getElementsByClassName('fr-view')[0]).save()
             }
-        });
+        })
+
+        this.config = {
+            key:"aH3J4B7C7bA4B3E3C1I3I2C4C6B3D4uB1B2G1A3B1A2A5D1A5D1E4B3==",
+            language:"ko",
+            height:"100%",
+            heightMax:"100%",
+            charCounterCount: false,
+            toolbarSticky: false,
+
+            fontFamily: {
+                "'Nanum Gothic',sans-serif":'나눔 고딕',
+                'Arial,Helvetica,sans-serif': 'Arial',
+                'Georgia,serif': 'Georgia',
+                'Impact,Charcoal,sans-serif': 'Impact',
+                'Tahoma,Geneva,sans-serif': 'Tahoma',
+                "'Times New Roman',Times,serif": 'Times New Roman',
+                'Verdana,Geneva,sans-serif': 'Verdana'
+            },
+
+            toolbarButtons:['paragraphFormat', 'fontFamily', 'fontSize', 'bold', 'italic', 'underline', 'strikeThrough', '|',
+                'color', 'align', 'outdent', 'indent', 'formatOL', 'formatUL', 'lineHeight', '|',
+                'subscript', 'superscript', 'quote', 'paragraphStyle', '-',
+                'insertLink', 'insertImage', 'insertTable', '|',
+                'specialCharacters', 'insertHR', 'selectAll', 'clearFormatting', '|',
+                'print', 'getPDF', 'spellChecker', 'help', '|', 'undo', 'redo','fullscreen']
+        }
 
         this.state = {
             model:""
@@ -79,50 +105,50 @@ export default class extends React.Component {
         }
     }
 
+    onClickPreview = () => {
+
+    }
+
+    onClickSubmit = () => {
+
+    }
+
 	render() {
 
         return (<div className="add-template">
             <div className="header-page">
                 <div className="header">
                     <div className="left-icon">
-                        <i class="fal fa-times" onClick={()=>history.goBack()}></i>
+                        <i className="fal fa-times" onClick={()=>history.goBack()}></i>
                     </div>
                     <div className="title">템플릿 생성</div>
                     { !!this.props.user_info ? <Information /> : null }
                 </div>
                 <div className="container">
-                    <FroalaEditor
-                        tag='textarea'
-                        config={{
-                            key:"aH3J4B7C7bA4B3E3C1I3I2C4C6B3D4uB1B2G1A3B1A2A5D1A5D1E4B3==",
-                            language:"ko",
-                            height:"100%",
-                            heightMax:"100%",
-                            charCounterCount: false,
-                            toolbarSticky: false,
-
-                            fontFamily: {
-                                "'Nanum Gothic',sans-serif":'나눔 고딕',
-                                'Arial,Helvetica,sans-serif': 'Arial',
-                                'Georgia,serif': 'Georgia',
-                                'Impact,Charcoal,sans-serif': 'Impact',
-                                'Tahoma,Geneva,sans-serif': 'Tahoma',
-                                "'Times New Roman',Times,serif": 'Times New Roman',
-                                'Verdana,Geneva,sans-serif': 'Verdana'
-                            },
-
-                            toolbarButtons:['paragraphFormat', 'fontFamily', 'fontSize', 'bold', 'italic', 'underline', 'strikeThrough', '|',
-                                'color', 'align', 'outdent', 'indent', 'formatOL', 'formatUL', 'lineHeight', '|',
-                                'subscript', 'superscript', 'quote', 'paragraphStyle', '-',
-                                'insertLink', 'insertImage', 'insertTable', '|',
-                                'specialCharacters', 'insertHR', 'selectAll', 'clearFormatting', '|',
-                                'print', 'getPDF', 'spellChecker', 'help', '|', 'undo', 'redo','fullscreen']
-                        }}
-                        model={this.state.model}
-                        onModelChange={(model) => this.setState({model})} />
+                    <div className="editor">
+                        <FroalaEditor
+                            tag='textarea'
+                            config={this.config}
+                            model={this.state.model}
+                            onModelChange={(model) => this.setState({model})} />
+                    </div>
+                    <div className="info">
+                        <div className="title">
+                            <i className="far fa-file-contract"></i>
+                            <div className="text">정보 입력</div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <Footer />
+            <div className="bottom-container">
+                <div className="preview" onClick={this.onClickPreview}>
+                    <i className="fal fa-eye"></i>
+                    미리보기
+                </div>
+                <div className="submit" onClick={this.onClickSubmit}>
+                    등록하기
+                </div>
+            </div>
 		</div>);
 	}
 }

@@ -80,15 +80,31 @@ select:focus { outline:none; }
     color: $gray;
 }
 
+.fr-toolbar {
+    border-top: none !important;
+    border-radius: 0 !important;
+    -moz-border-radius: 0 !important;
+    -webkit-border-radius: 0 !important;
+
+    -webkit-box-shadow: none !important;
+    -moz-box-shadow: none !important;
+    box-shadow: none !important;
+
+    border-right: 1px solid $middlegray !important;
+}
+
 .fr-wrapper {
     background-color: $gray !important;
-    max-height: calc(100% - 82px) !important;
+    max-height: calc(100% - 77px) !important;
 }
 .fr-view {
     margin:20px !important;
     padding:50px 70px !important;
     background-color: white !important;
     min-height: 100% !important;
+}
+a.fr-command {
+    padding: 10px 24px !important;
 }
 
 
@@ -119,7 +135,7 @@ select:focus { outline:none; }
         flex:1;
         font-size: $font1;
         color:$gray;
-        text-align:right;
+        text-align: right;
         margin-right:20px;
     }
 }
@@ -1792,12 +1808,90 @@ div.checkbox2-comp{
     min-height: 100%;
 
     >.header-page .container {
+        display: flex;
+        flex-direction: row;
+
         height: 100%;
         max-height: calc(100% - 131px);
         overflow-y: auto;
 
         box-sizing: border-box;
         position: relative;
+
+        >.editor {
+            flex:1;
+
+            >.preview {
+
+            }
+        }
+
+        >.info {
+            min-width:150px;
+            max-width:300px;
+            width:25%;
+
+            >.title {
+                text-align: center;
+                border-bottom: 1px solid $middlegray;
+
+                >i {
+                    font-size: 20px;
+                    color: $gray;
+                    margin-top: 10px;
+                }
+
+                >.text {
+                    font-size: $font1;
+                    color: $gray;
+                    margin-top: 5px;
+                    margin-bottom: 10px;
+                }
+            }
+        }
+    }
+
+    .bottom-container {
+        display: flex;
+        flex-direction:row;
+        justify-content: center;
+        align-items: center;
+        height:60px;
+        width:100%;
+
+        >.preview {
+            flex:1;
+            height:100%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-top: 1px solid $middlegray;
+            background-color: white;
+            cursor: pointer;
+
+            >i {
+                font-size: 22px;
+                margin-right: 10px;
+            }
+        }
+
+        >.submit {
+            min-width:150px;
+            max-width:300px;
+            width:25%;
+            height:100%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-top: 1px solid $middlegray;
+            background-color:$blue;
+            color: white;
+            cursor: pointer;
+        }
     }
 }
 
