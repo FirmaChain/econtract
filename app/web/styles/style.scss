@@ -1748,6 +1748,20 @@ div.checkbox2-comp{
     }
 }
 
+.add-template {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+
+    >.header-page .container {
+        height: 100%;
+        max-height: calc(100% - 131px);
+    }
+}
+
+
+
+
 .common-modal {
     background-color: #fff;
     min-width: 400px;

@@ -13,7 +13,7 @@ import Route from "./custom_route"
 import moment from "moment"
 
 import ContractListPage from "./contract-list.page"
-import TemplatePage from "./template.page"
+import TemplatePage from "./template-list.page"
 import GroupPage from "./group.page"
 import Footer from "./footer.comp"
 
@@ -86,11 +86,9 @@ export default class extends React.Component {
                     </div>
                     { !!this.props.user_info ? <Information /> : null }
                 </div>
-                <div className="content">
-                    <Route path="/home" render={() => <ContractListPage {...this.props}/>} />
-                    <Route path="/template" render={() => <TemplatePage {...this.props}/>} />
-                    <Route path="/group" render={() => <GroupPage {...this.props}/>} />
-                </div>
+                <Route path="/home" render={() => <ContractListPage {...this.props}/>} />
+                <Route path="/template" render={() => <TemplatePage {...this.props}/>} />
+                <Route path="/group" render={() => <GroupPage {...this.props}/>} />
             </div>
 
             <Footer />

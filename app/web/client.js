@@ -16,17 +16,19 @@ import history from './history'
 import pdfjsLib from "pdfjs-dist"
 pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.js';
 
-import Template from "./components/template.comp"
+import Container from "./components/container.comp"
 import IndexPage from "./components/index.page"
 import LoginPage from "./components/login.page"
 import CheckMnemonicPage from "./components/check-mnemonic.page"
 import RegisterPage from "./components/register.page"
 import RecoverPage from "./components/recover.page"
 import HomePage from "./components/home.page"
-import TemplatePage from "./components/template.page"
+import TemplatePage from "./components/template-list.page"
+import AddTemplatePage from "./components/add-template.page"
+
 import FolderPage from "./components/contract-folder-list.page"
 import InFolderPage from "./components/home.page"
-import AddTemplatePage from "./components/add-template.page"
+//import AddTemplatePage from "./components/old-add-template.page"
 import EditTemplatePage from "./components/edit-template.page"
 import AddContractPage from "./components/add-contract.page"
 import ContractEditorPage from "./components/contract-editor.page"
@@ -57,7 +59,7 @@ window.addEventListener("load",()=>{
 	ReactDOM.render(
 		<Router history={history}>
 			<Provider store={store}>
-				<Template>
+				<Container>
 					<Route onEnter={resolver} exact path="/" component={IndexPage} />
 					<Route onEnter={resolver} exact path="/login" component={LoginPage} />
 					<Route onEnter={resolver} exact path="/register" component={RegisterPage} />
@@ -73,10 +75,12 @@ window.addEventListener("load",()=>{
 
 					<Route onEnter={resolver} exact path="/template" component={HomePage} />
 					<Route onEnter={resolver} exact path="/template/:menu" component={HomePage} />
+					<Route onEnter={resolver} exact path="/new-template" component={AddTemplatePage} />
 
 					<Route onEnter={resolver} exact path="/group" component={HomePage} />
 					<Route onEnter={resolver} exact path="/group/:menu" component={HomePage} />
 					<Route onEnter={resolver} exact path="/group/:menu/:account_id" component={HomePage} />
+					<Route onEnter={resolver} exact path="/group-info/:group_id" component={CorpGroupInfoPage} />
 
 					<Route onEnter={resolver} exact path="/folder" component={FolderPage} />
 					<Route onEnter={resolver} exact path="/add-contract" component={AddContractPage} />
@@ -85,15 +89,13 @@ window.addEventListener("load",()=>{
 					<Route onEnter={resolver} exact path="/contract-confirm/:id/:revision" component={ContractConfirmPage} />
 					<Route onEnter={resolver} exact path="/profile" component={UserProfilePage} />
 
-					<Route onEnter={resolver} exact path="/group-info/:group_id" component={CorpGroupInfoPage} />
-					
 {/*					<Route onEnter={resolver} exact path="/template" component={TemplatePage} />
 					<Route onEnter={resolver} exact path="/add-template" component={AddTemplatePage} />
 					<Route onEnter={resolver} exact path="/template-edit/:id" component={EditTemplatePage} />*/}
 
 					<Route onEnter={resolver} exact path="/verification" component={VerificationPage} />
 					<Route onEnter={resolver} exact path="/verification/:id" component={VerificationPage} />
-				</Template>
+				</Container>
 			</Provider>
 		</Router>,
 		document.getElementsByClassName("root-container")[0]

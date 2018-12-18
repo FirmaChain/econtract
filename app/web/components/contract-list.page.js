@@ -150,6 +150,10 @@ export default class extends React.Component {
             placeholder:"폴더명을 입력해주세요.",
             onConfirm: async (folder_name) => {
                 //TODO 폴더 생성 api
+
+                if(!folder_name || folder_name == "") {
+                    return alert("폴더명을 입력해주세요")
+                }
                 let resp = await this.props.new_folder(folder_name)
                 console.log(resp)
 
