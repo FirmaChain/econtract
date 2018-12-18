@@ -190,6 +190,13 @@ export async function api_invite_information(registration_code){
         session:window.getCookie("session")
     });
 }
+export async function api_new_corp(data){
+    return await get("/new_corp", {
+        data
+    },{
+        session:window.getCookie("session")
+    });
+}
 export async function api_get_my_groups_info(){
     return await get("/get_my_groups_info", {
         
