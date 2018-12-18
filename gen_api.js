@@ -218,16 +218,6 @@ export async function api_create_group(group_name){
         session:window.getCookie("session")
     });
 }
-export async function api_add_member_group(group_id,email,passphrase2,data){
-    return await get("/add_member_group", {
-        group_id,
-		email,
-		passphrase2,
-		data
-    },{
-        session:window.getCookie("session")
-    });
-}
 export async function api_remove_group(group_id){
     return await get("/remove_group", {
         group_id
@@ -235,10 +225,12 @@ export async function api_remove_group(group_id){
         session:window.getCookie("session")
     });
 }
-export async function api_add_member_group(group_id,account_id){
+export async function api_add_member_group(group_id,email,passphrase2,data){
     return await get("/add_member_group", {
         group_id,
-		account_id
+		email,
+		passphrase2,
+		data
     },{
         session:window.getCookie("session")
     });
