@@ -9,7 +9,9 @@ import moment from "moment"
 
 import {
     add_member_group,
-    fetch_user_info
+    remove_invite_group,
+    fetch_user_info,
+    get_group_info,
 } from "../../common/actions"
 
 let mapStateToProps = (state)=>{
@@ -20,7 +22,9 @@ let mapStateToProps = (state)=>{
 
 let mapDispatchToProps = {
     add_member_group,
-    fetch_user_info
+    remove_invite_group,
+    fetch_user_info,
+    get_group_info,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -30,16 +34,21 @@ export default class extends React.Component {
         super()
         this.state = {
             add_email:"",
+            info:null,
             invited_list:[{
+                invite_id:0,
                 email:"pbes0707@gmail.com"
             },{
+                invite_id:1,
                 email:"daeun@gmail.com"
             }],
             group_members:[{
+                account_id:1,
                 username:"윤대현",
                 email:"daehyun@gmail.com",
                 job:"선임연구원"
             },{
+                account_id:2,
                 username:"윤대현",
                 email:"daehyun@gmail.com",
                 job:"선임연구원"
@@ -48,10 +57,15 @@ export default class extends React.Component {
     }
 
     componentDidMount() {
-        if(!this.props.user_info){
+        if(this.getGroupId() == null) {
+            alert("잘못된 경로로 들어왔습니다.")
+            return history.goBack()
+        } else if(!this.props.user_info){
             (async()=>{
                 await window.showIndicator()
                 await this.props.fetch_user_info()
+                let info = await this.props.get_group_info(this.getGroupId())
+                await this.setState({info})
                 await window.hideIndicator()
             })()
         }
@@ -63,20 +77,42 @@ export default class extends React.Component {
         }
     }
 
-    getGroupId() {
-        console.log(this.props)
-        if(!!this.props.location.state && !!this.props.location.state.group_id)
-            return this.props.location.state.group_id
-
-        return 0
+    onRefresh = async () => {
+        let info = await this.props.get_group_info(this.getGroupId())
+        await this.setState({info})
     }
 
-    onInviteSubAcount = async ()=>{
+    getGroupId() {
+        let group_id = this.props.match.params.group_id || null
+        return group_id
+    }
+
+    onAddMember = async ()=>{
         if(this.state.add_email == "")
             return alert("초대하려는 그룹원의 이메일을 입력해주세요.")
 
         let resp = await this.props.add_member_group(this.getGroupId(), this.state.add_email, {});
         return alert(JSON.stringify(resp));
+    }
+
+    onRemoveInviteList = async (invite_id) => {
+        let resp = await this.props.remove_invite_group(this.getGroupId(), invite_id)
+        if(resp) {
+            alert("초대를 취소하였습니다.")
+            await this.onRefresh()
+        }
+        else
+            alert("초대 취소에 실패하였습니다.")
+    }
+
+    onRemoveGroupMember = async (account_id) => {
+        let resp = await this.props.remove_member_group(this.getGroupId(), account_id)
+        if(resp) {
+            alert("멤버를 해당 그룹에서 삭제했습니다.")
+            await this.onRefresh()
+        }
+        else
+            alert("멤버 삭제에 실패하였습니다.")
     }
 
 	render() {
@@ -124,7 +160,7 @@ export default class extends React.Component {
                         <div className="column">
                             <div className="form-head">&nbsp;</div>
                             <div className="form-input">
-                                <div className={"btn-add-user" + ( (this.state.add_email || "").length==0 ? "" : " btn-add-user-active" )} onClick={this.onInviteSubAcount}>추가</div>
+                                <div className={"btn-add-user" + ( (this.state.add_email || "").length==0 ? "" : " btn-add-user-active" )} onClick={this.onAddMember}>추가</div>
                             </div>
                         </div>
                     </div>
@@ -144,7 +180,7 @@ export default class extends React.Component {
                                             <div className="email">{e.email}</div>
                                         </div>
                                         <div className="action">
-                                            <div className="delete">취소</div>
+                                            <div className="delete" onClick={this.onRemoveInviteList.bind(this, e.invite_id)}>취소</div>
                                         </div>
                                     </div>
                                 })}
@@ -174,7 +210,7 @@ export default class extends React.Component {
                                             {e.job}
                                         </div>
                                         <div className="action">
-                                            <div className="delete">삭제</div>
+                                            <div className="delete" onClick={this.onRemoveGroupMember.bind(this, e.account_id)}>삭제</div>
                                         </div>
                                     </div>
                                 })}

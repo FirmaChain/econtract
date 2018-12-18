@@ -7,6 +7,7 @@ import {
     api_remove_group,
     api_add_member_group,
     api_remove_member_group,
+    api_remove_invite_group
 } from "../../../gen_api"
 
 import {
@@ -28,6 +29,7 @@ export const CREATE_GROUP = "CREATE_GROUP"
 export const REMOVE_GROUP = "REMOVE_GROUP"
 export const ADD_MEMBER_GROUP = "ADD_MEMBER_GROUP"
 export const REMOVE_MEMBER_GROUP = "REMOVE_MEMBER_GROUP"
+export const REMOVE_INVITE_GROUP = "REMOVE_INVITE_GROUP"
 
 export function openGroup(group_id){
 	return async function (dispatch){
@@ -50,16 +52,17 @@ export function get_my_groups_info() {
     }
 }
 
-export function get_group_info() {
+export function get_group_info(group_id) {
     return async function(dispatch) {
-        let infos = await api_get_group_info();
-        return infos.payload
+        let info = await api_get_group_info(group_id);
+        console.log(info)
+        return info.payload
     }
 }
 
-export function get_group_members() {
+export function get_group_members(group_id) {
     return async function(dispatch) {
-        let infos = await api_get_group_members();
+        let infos = await api_get_group_members(group_id);
         return infos.payload
     }
 }
@@ -94,6 +97,13 @@ export function add_member_group(group_id, email, data_plain) {
 export function remove_member_group(group_id, account_id) {
     return async function() {
         let resp = await api_remove_member_group(group_id, account_id);
+        return resp.payload
+    }
+}
+
+export function remove_invite_group(group_id, invite_id) {
+    return async function() {
+        let resp = await api_remove_invite_group(group_id, invite_id);
         return resp.payload
     }
 }

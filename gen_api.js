@@ -243,6 +243,14 @@ export async function api_remove_member_group(group_id,account_id){
         session:window.getCookie("session")
     });
 }
+export async function api_remove_invite_group(group_id,invite_id){
+    return await get("/remove_invite_group", {
+        group_id,
+		invite_id
+    },{
+        session:window.getCookie("session")
+    });
+}
 export async function api_add_template(subject,imgs){
     let data = new FormData();
 

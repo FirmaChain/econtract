@@ -124,7 +124,7 @@ export default class extends React.Component {
 
     openGroupInfo(group_id, e) {
         e.stopPropagation()
-        history.push({pathname:`/group-info/${group_id}`, state:{group_id}})
+        history.push(`/group-info/${group_id}`)
     }
 
     openCloseGroup(group_id, e) {
