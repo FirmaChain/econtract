@@ -603,11 +603,9 @@ export default class extends React.Component {
         await window.hideIndicator()
 
         if (account_type == 1) {
-            alert("hiho");
-            info['hiho'] = "hiho";
+            info['inject_test'] = "test";
             let encryptedInfo = aes_encrypt(JSON.stringify(info), this.state.account.masterKeyPublic);
             let updateResp = await this.props.update_user_info(encryptedInfo);
-            alert(updateResp);
             /*
             let corpMasterKey = generateCorpKey();
             // inject into master's info
