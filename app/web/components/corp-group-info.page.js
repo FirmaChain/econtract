@@ -12,6 +12,7 @@ import {
     remove_invite_group,
     fetch_user_info,
     get_group_info,
+    remove_member_group,
 } from "../../common/actions"
 
 let mapStateToProps = (state)=>{
@@ -25,6 +26,7 @@ let mapDispatchToProps = {
     remove_invite_group,
     fetch_user_info,
     get_group_info,
+    remove_member_group,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
