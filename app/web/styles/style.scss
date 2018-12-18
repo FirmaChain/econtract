@@ -1816,6 +1816,75 @@ div.checkbox2-comp{
     }
 }
 
+.confirm-modal {
+    
+    background-color: #fff;
+    min-width: 200px;
+    width:400px;
+
+    >.container {
+        padding:50px;
+        text-align: center;
+
+        >.icon {
+
+            >i { 
+                font-size: 30px;
+            }
+        }
+
+        >.title {
+            font-size: $font5;
+            color: $black;
+            font-weight: bold;
+            margin-top: 18px;
+        }
+
+        >.sub-title {
+            font-size: $font2;
+            color:$black;
+            font-weight: bold;
+            margin-left:5px;
+            margin-top:40px;
+        }
+
+        >.button {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+
+            margin-top: 40px;
+
+            >.confirm {
+                display: inline-block;
+                font-size: $font2;
+                cursor: pointer;
+                padding:10px 20px;
+                background-color: $blue;
+                border: 1px solid $blue;
+                color:white;
+                margin-right: 10px;
+                width:100px;
+                text-align: center;
+            }
+
+            >.cancel {
+                display: inline-block;
+                font-size: $font2;
+                cursor: pointer;
+                padding:10px 20px;
+                background-color: white;
+                border: 1px solid $blue;
+                color: $black;
+                margin-left: 10px;
+                width:100px;
+                text-align: center;
+            }
+        }
+    }
+}
+
 .add-common-modal {
     background-color: #fff;
     min-width: 200px;
@@ -1961,9 +2030,6 @@ div.checkbox2-comp{
     }
 }
 
-
-
-
 .browser-not-verified-modal {
     background-color: #fff;
     min-width: 400px;
@@ -1974,7 +2040,7 @@ div.checkbox2-comp{
         text-align: center;
 
         >.icon {
-            font-size:40px;
+            font-size:35px;
             margin-bottom: 20px;
             color: $black;
         }
@@ -2049,7 +2115,7 @@ div.checkbox2-comp{
         text-align: center;
 
         >.icon {
-            font-size:45px;
+            font-size:40px;
             margin-bottom: 35px;
             color: $black;
         }
@@ -2132,6 +2198,15 @@ div.checkbox2-comp{
         }
     }
 }
+
+
+
+
+
+
+
+
+
 
 .profile-page{
 

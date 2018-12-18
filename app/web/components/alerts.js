@@ -231,6 +231,42 @@ class BrowserNotVerified extends React.Component{
 }
 
 @modal
+class Confirm extends React.Component{
+
+    clickOk = ()=>{
+        this.props.resolve && this.props.resolve(true)
+        this.closeSelf();
+    }
+
+    clickNo = ()=>{
+        this.props.resolve && this.props.resolve(false)
+        this.closeSelf();
+    }
+
+    closeSelf = ()=>{
+        window.closeModal(this.props.modalId)
+    }
+
+    render(){
+        return <div className="confirm-modal">
+            <div className="container">
+                <div className="icon"><i className="fal fa-user-check"></i></div>
+                <div className="title" dangerouslySetInnerHTML={{__html:this.props.title||"타이틀"}}></div>
+                <div className="sub-title" dangerouslySetInnerHTML={{__html:this.props.msg||"메세지"}}></div>
+
+                <div className="button">
+                    <div className="confirm" onClick={this.clickOk}>{this.props.right_btn || "확인"}</div>
+                    <div className="cancel" onClick={this.clickNo}>{this.props.left_btn || "취소"}</div>
+                </div>
+            </div>
+        </div>
+    }
+}
+
+
+
+
+@modal
 class RegistContract extends React.Component{
 
     constructor() {
@@ -498,36 +534,6 @@ class Loading extends React.Component{
     }
 }
 
-@modal
-class Confirm extends React.Component{
-
-    clickOk = ()=>{
-        this.props.resolve && this.props.resolve(true)
-        this.closeSelf();
-    }
-
-    clickNo = ()=>{
-        this.props.resolve && this.props.resolve(false)
-        this.closeSelf();
-    }
-
-    closeSelf = ()=>{
-        window.closeModal(this.props.modalId)
-    }
-
-    render(){
-        return <div className="default-modal">
-            <div className="contents">
-                <div className="title">{this.props.title || "타이틀"}</div>
-                <div className="msg">{this.props.msg || "메세지"}</div>
-            </div>
-            <div className="buttons">
-                <button onClick={this.clickOk}>{this.props.left_btn ||"확인"}</button>
-                <button onClick={this.clickNo}>{this.props.right_btn ||"취소"}</button>
-            </div>
-        </div>
-    }
-}
 
 @modal
 class RefreshSession extends React.Component{

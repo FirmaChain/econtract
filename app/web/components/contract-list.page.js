@@ -160,8 +160,8 @@ export default class extends React.Component {
         })
     }
 
-    onRemoveFolder = async (folder_id) => {
-        if( await window.confirm("폴더 삭제", "정말 삭제하시겠습니까?") ){
+    onRemoveFolder = async (folder_id, folder_name) => {
+        if( await window.confirm("폴더 삭제", `<b>${folder_name}</b> 를 정말 삭제하시겠습니까?`) ){
             await this.props.remove_folder([folder_id])
             await this.props.folder_list()
         }
@@ -285,7 +285,7 @@ export default class extends React.Component {
                             return <div className="item" key={e+k}>
                                 <i className={`fas icon ${folder_id == 0 ? "fa-thumbtack":"fa-folder"}`} />
                                 <div className="text">{subject}</div>
-                                {folder_id != 0 ? <i className="angle fal fa-trash" onClick={this.onRemoveFolder.bind(this, folder_id)}></i> : null }
+                                {folder_id != 0 ? <i className="angle fal fa-trash" onClick={this.onRemoveFolder.bind(this, folder_id, subject)}></i> : null }
                             </div>
                         })}
 					</div>
