@@ -16,9 +16,13 @@ import {
     new_folder,
     remove_folder,
     move_to_folder,
-    recently_contracts,
     openGroup,
     closeGroup,
+    get_my_group,
+    get_my_groups_info,
+    get_group_info,
+    get_group_members,
+    create_group,
 } from "../../common/actions"
 
 let mapStateToProps = (state)=>{
@@ -26,7 +30,8 @@ let mapStateToProps = (state)=>{
         folders:state.contract.folders,
         user_info: state.user.info,
         board:state.contract.board,
-        isOpenGroupList: state.group.isOpenGroupList
+        isOpenGroupList: state.group.isOpenGroupList,
+        groups: state.group.groups,
 	}
 }
 
@@ -35,9 +40,13 @@ let mapDispatchToProps = {
     new_folder,
     remove_folder,
     move_to_folder,
-    recently_contracts,
     openGroup,
     closeGroup,
+    get_my_group,
+    get_my_groups_info,
+    get_group_info,
+    get_group_members,
+    create_group,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -52,13 +61,23 @@ export default class extends React.Component {
 
 	componentDidMount() {
         (async()=>{
-            if(this.getTitle().id == "recently") {
-            }
+            let info = await this.props.get_my_groups_info()
+            if(info.code == -2)
+                alert("그룹 에러")
         })()
 	}
 
-	onClickAddGroup(){
-        console.log("onClickAddGroup")
+	onClickAddGroup = () => {
+        window.openModal("AddCommonModal", {
+            icon:"fas fa-users",
+            title:"그룹 추가",
+            subTitle:"새 그룹명",
+            placeholder:"그룹명을 입력해주세요.",
+            onConfirm: async (group_name) => {
+                //TODO 그룹 생성 api
+                let resp = await this.props.create_group(group_name);
+            }
+        })
 	}
 
 	getTitle() {
@@ -171,9 +190,9 @@ export default class extends React.Component {
     }
 
 	render() {
-
         let folders = this.props.folders ? this.props.folders : { list: [] }
-
+        let groups = this.props.groups ? this.props.groups : []
+        console.log(groups)
         let board = this.props.board ? this.props.board : { list:[] }
         let total_cnt = board.total_cnt
         let page_num = board.page_num
@@ -190,6 +209,15 @@ export default class extends React.Component {
                     </div>
 					<div className="list">
 						<div className="title">그룹</div>
+                        {groups.map((e,k)=>{
+                            return <div key={e.group_id} className={"item" + (this.getTitle().id == e.group_id ? " selected" : "")}
+                                onClick={this.moveGroup.bind(this, e.group_id)}>
+                                <div className="text">#{e.title}</div>
+                                <i className="setting fas fa-cog" onClick={this.openGroupInfo.bind(this, e.group_id)}></i>
+                                <i className={"angle far " + ( this.isOpenGroup(e.group_id) ? "fa-angle-down" : "fa-angle-up" )} onClick={this.openCloseGroup.bind(this, e.group_id)}></i>
+                            </div>
+                        })}
+
 						<div className={"item" + (this.getTitle().id == "0" ? " selected" : "")} onClick={this.moveGroup.bind(this, "0")}>
                             <div className="text">#인사팀</div>
                             <i className="setting fas fa-cog" onClick={this.openGroupInfo.bind(this, 0)}></i>

@@ -126,19 +126,19 @@ export default class extends React.Component {
                 </div>
                 <div className="buttons">
                     <button className="new-already-button" onClick={()=>history.push({pathname:"/register", state:{type:0}})}>
-                        <i class="fas fa-user"></i>
+                        <i className="fas fa-user"></i>
                         <br/>
                         신규 일반 회원 가입
                         <div className="small">개인 사용</div>
                     </button>
                     <button className="new-already-button" onClick={()=>history.push({pathname:"/register", state:{type:1}})}>
-                        <i class="fas fa-user-tie"></i>
+                        <i className="fas fa-user-tie"></i>
                         <br/>
                         신규 기업 가입
                         <div className="small">팀 관리용</div>
                     </button>
                     <button className="new-already-button" onClick={()=>history.push("/recover")}>
-                        <i class="fas fa-user-check"></i>
+                        <i className="fas fa-user-check"></i>
                         <br/>
                         기존 계정으로 로그인
                         <div className="small">&nbsp;</div>

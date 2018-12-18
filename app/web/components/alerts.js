@@ -41,6 +41,45 @@ class AddFolder extends React.Component{
 }
 
 @modal
+class AddCommonModal extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            text:""
+        }
+    }
+
+    closeSelf = () => {
+        window.closeModal(this.props.modalId)
+    }
+
+    onConfirm = () => {
+        this.props.onConfirm && this.props.onConfirm(this.state.text)
+        this.closeSelf()
+    }
+
+    render() {
+        return <div className="add-common-modal">
+            <div className="container">
+                <div className="icon"><i className={this.props.icon}></i></div>
+                <div className="title">{this.props.title}</div>
+                <div className="text-box">
+                    <div className="sub-title">{this.props.subTitle}</div>
+                    <input type="text" className="common-textbox"
+                        onChange={(e)=>this.setState({text:e.target.value})}
+                        value={this.state.text}
+                        placeholder={this.props.placeholder}/>
+                </div>
+                <div className="button">
+                    <div className="confirm" onClick={this.onConfirm}>생성</div>
+                    <div className="cancel" onClick={this.closeSelf}>취소</div>
+                </div>
+            </div>
+        </div>
+    }
+}
+
+@modal
 class CommonModal extends React.Component {
     constructor(props) {
         super(props);
