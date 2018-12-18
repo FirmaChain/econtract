@@ -5,9 +5,13 @@ const autoprefixer = require('autoprefixer');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const WebpackShellPlugin = require('webpack-shell-plugin');
 
-let plugin = [
+let plugins = [
     new webpack.NoEmitOnErrorsPlugin(),
     new webpack.optimize.OccurrenceOrderPlugin(),
+    new webpack.ProvidePlugin({
+      $: "jquery",
+      jQuery: "jquery"
+    })
 ]
 
 let devtool = "source-map"
@@ -15,7 +19,7 @@ process.env.NODE_ENV = "development"
 
 console.log("build mode : ", process.env.NODE_ENV)
 
-plugin.push(new webpack.DefinePlugin({
+plugins.push(new webpack.DefinePlugin({
   'process.env': {
     'NODE_ENV': JSON.stringify(process.env.NODE_ENV),
   }
@@ -38,7 +42,7 @@ let defaults = {
         exclude: /(node_modules)/,
         loader: 'babel-loader',
         query: {
-           presets:['env','react','stage-0'],
+           presets:['env','react','stage-2'],
            plugins: [
             "transform-decorators-legacy",
           ]
@@ -48,12 +52,28 @@ let defaults = {
         test: /\.s?css$/,
         use: ['style-loader', 'css-loader', 'sass-loader']
       },
+      {
+        test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
+        use: "url-loader?limit=10000&mimetype=application/font-woff"
+      }, {
+        test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
+        use: "url-loader?limit=10000&mimetype=application/font-woff"
+      }, {
+        test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
+        use: "url-loader?limit=10000&mimetype=application/octet-stream"
+      }, {
+        test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
+        use: "file-loader"
+      }, {
+        test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+        use: "url-loader?limit=10000&mimetype=image/svg+xml"
+      }
     ]
   },
   devServer: {
     https: true
   },
-  plugins: plugin
+  plugins: plugins
 };
 
 //////////////////////
@@ -73,7 +93,7 @@ module.exports = [{
     publicPath: "/"
   },
   plugins: [
-    ...plugin,
+    ...plugins,
     web_bundle_copy_script_plugin
   ]
 }]

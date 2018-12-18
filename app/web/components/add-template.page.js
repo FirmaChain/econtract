@@ -1,5 +1,13 @@
 import React from "react"
 import ReactDOM from "react-dom"
+
+import 'froala-editor/js/froala_editor.pkgd.min.js';
+import 'froala-editor/js/languages/ko.js';
+import 'froala-editor/css/froala_style.min.css';
+import 'froala-editor/css/froala_editor.pkgd.min.css';
+
+import FroalaEditor from 'react-froala-wysiwyg';
+ 
 import { connect } from 'react-redux';
 import { Link, Prompt } from 'react-router-dom'
 import SignerSlot from "./signer-slot"
@@ -33,7 +41,28 @@ let mapDispatchToProps = {
 export default class extends React.Component {
 	constructor(){
         super();
-        this.state = {}
+
+        $.FroalaEditor.DefineIcon('getPDF', {NAME: 'file-pdf'});
+        $.FroalaEditor.RegisterCommand('getPDF', {
+            title: 'getPDF',
+            focus: true,
+            undo: true,
+            refreshAfterCallback: true,
+            callback: () => {
+                let savePdfOption = {
+                    margin:1,
+                    filename:'계약서.pdf',
+                    image:{ type: 'jpeg', quality: 0.98 },
+                    jsPDF:{ unit: 'in', format: 'letter', orientation: 'portrait' },
+                    pagebreak:{ mode: ['avoid-all'] }
+                }
+                html2pdf().set(savePdfOption).from(document.getElementsByClassName('fr-view')[0]).save()
+            }
+        });
+
+        this.state = {
+            model:""
+        }
     }
 
     componentDidMount() {
@@ -55,13 +84,42 @@ export default class extends React.Component {
         return (<div className="add-template">
             <div className="header-page">
                 <div className="header">
-                    <div className="left-logo">
-                        <img src="/static/logo_blue.png" onClick={()=>history.push("/home")}/>
+                    <div className="left-icon">
+                        <i class="fal fa-times" onClick={()=>history.goBack()}></i>
                     </div>
+                    <div className="title">템플릿 생성</div>
                     { !!this.props.user_info ? <Information /> : null }
                 </div>
                 <div className="container">
-                    asd
+                    <FroalaEditor
+                        tag='textarea'
+                        config={{
+                            key:"aH3J4B7C7bA4B3E3C1I3I2C4C6B3D4uB1B2G1A3B1A2A5D1A5D1E4B3==",
+                            language:"ko",
+                            height:"100%",
+                            heightMax:"100%",
+                            charCounterCount: false,
+                            toolbarSticky: false,
+
+                            fontFamily: {
+                                "'Nanum Gothic',sans-serif":'나눔 고딕',
+                                'Arial,Helvetica,sans-serif': 'Arial',
+                                'Georgia,serif': 'Georgia',
+                                'Impact,Charcoal,sans-serif': 'Impact',
+                                'Tahoma,Geneva,sans-serif': 'Tahoma',
+                                "'Times New Roman',Times,serif": 'Times New Roman',
+                                'Verdana,Geneva,sans-serif': 'Verdana'
+                            },
+
+                            toolbarButtons:['paragraphFormat', 'fontFamily', 'fontSize', 'bold', 'italic', 'underline', 'strikeThrough', '|',
+                                'color', 'align', 'outdent', 'indent', 'formatOL', 'formatUL', 'lineHeight', '|',
+                                'subscript', 'superscript', 'quote', 'paragraphStyle', '-',
+                                'insertLink', 'insertImage', 'insertTable', '|',
+                                'specialCharacters', 'insertHR', 'selectAll', 'clearFormatting', '|',
+                                'print', 'getPDF', 'spellChecker', 'help', '|', 'undo', 'redo','fullscreen']
+                        }}
+                        model={this.state.model}
+                        onModelChange={(model) => this.setState({model})} />
                 </div>
             </div>
             <Footer />

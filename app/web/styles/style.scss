@@ -1,3 +1,4 @@
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css");
 @import url("/fontawesome/css/all.min.css");
 @import url(https://fonts.googleapis.com/earlyaccess/nanumgothic.css);
 
@@ -77,6 +78,17 @@ select:focus { outline:none; }
 
 ::-ms-input-placeholder { /* Microsoft Edge */
     color: $gray;
+}
+
+.fr-wrapper {
+    background-color: $gray !important;
+    max-height: calc(100% - 82px) !important;
+}
+.fr-view {
+    margin:20px !important;
+    padding:50px 70px !important;
+    background-color: white !important;
+    min-height: 100% !important;
 }
 
 
@@ -871,6 +883,32 @@ div.checkbox2-comp{
                 cursor: pointer;
                 height:40px;
             }
+        }
+
+        >.left-icon {
+            padding: 15px 10px;
+            text-align: left;
+            box-sizing: border-box;
+
+            margin-right:20px;
+
+            >i {
+                margin-left:20px;
+                cursor: pointer;
+                font-size: 40px;
+                color: $black;
+            }
+        }
+
+        >.title {
+            text-align: left;
+            font-size: $font4;
+            color: $black;
+            font-weight: bold;
+
+            margin-right: 20px;
+            padding-right: 20px;
+            margin-left: 20px;
         }
 
         >.menu {
@@ -1756,6 +1794,10 @@ div.checkbox2-comp{
     >.header-page .container {
         height: 100%;
         max-height: calc(100% - 131px);
+        overflow-y: auto;
+
+        box-sizing: border-box;
+        position: relative;
     }
 }
 
