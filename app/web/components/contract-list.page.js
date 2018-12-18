@@ -46,7 +46,8 @@ export default class extends React.Component {
         super(props);
         this.state = {
             board_checks : [],
-            showOptions: null
+            showGroupMenu: false,
+            showOptions: null,
         };
 	}
 
@@ -59,7 +60,7 @@ export default class extends React.Component {
 
             if(this.getTitle().id == "recently")
                 await this.props.recently_contracts()
-            
+
         })()
 	}
 
@@ -141,8 +142,43 @@ export default class extends React.Component {
         })
     }
 
+    onAddFolder = () => {
+        window.openModal("AddCommonModal", {
+            icon:"fas fa-folder",
+            title:"폴더 추가",
+            subTitle:"새 폴더명",
+            placeholder:"폴더명을 입력해주세요.",
+            onConfirm: async (folder_name) => {
+                //TODO 폴더 생성 api
+                let resp = await this.props.new_folder(folder_name)
+                console.log(resp)
+
+                if(resp) {
+                    await this.props.folder_list()
+                }
+            }
+        })
+    }
+
+    onRemoveFolder = async (folder_id) => {
+        if( await window.confirm("폴더 삭제", "정말 삭제하시겠습니까?") ){
+            await this.props.remove_folder([folder_id])
+            await this.props.folder_list()
+        }
+    }
+
+    onClickGroupMenu = () => {
+        this.setState({
+            showGroupMenu: !this.state.showGroupMenu
+        }) 
+    }
+
     isOpenOption(contract_id) {
         return this.state.showOption == contract_id;
+    }
+
+    isOpenGroupMenu() {
+        return this.state.showGroupMenu
     }
 
     render_board_slot(e,k){
@@ -192,6 +228,8 @@ export default class extends React.Component {
 
         let folders = this.props.folders ? this.props.folders : { list: [] }
         let board = this.props.board ? this.props.board : { list:[] }
+
+        let account_type = this.props.user_info.account_type
         let total_cnt = board.total_cnt
         let page_num = board.page_num
 
@@ -202,6 +240,25 @@ export default class extends React.Component {
                     <div className="list">
                         <div className={"item" + (this.getTitle().id == "lock" ? " selected" : "")} onClick={this.move.bind(this, "lock")}><i className="icon fas fa-lock-alt"></i> <div className="text">잠김</div></div>
                     </div>
+                    { account_type != 0 ? (<div className="list">
+                        <div className="item group-item" onClick={this.onClickGroupMenu}>
+                            <div className="text">인사팀</div>
+                            <i className={"angle far " + (!!this.isOpenGroupMenu() ? "fa-angle-down" : "fa-angle-up")}></i>
+                        </div>
+                        <div className="item" style={{display:!!this.isOpenGroupMenu() ? "flex" : "none"}}>
+                            <i className="icon fas fa-user-tie"></i>
+                            <div className="text">인사팀</div>
+                        </div>
+                        <div className="item" style={{display:!!this.isOpenGroupMenu() ? "flex" : "none"}}>
+                            <i className="icon fas fa-user-tie"></i>
+                            <div className="text">재무팀</div>
+                        </div>
+                        <div className="item" style={{display:!!this.isOpenGroupMenu() ? "flex" : "none"}}>
+                            <i className="icon fas fa-user-tie"></i>
+                            <div className="text">개발팀</div>
+                        </div>
+                    </div>) : null
+                    }
 					<div className="list">
 						<div className="title">계약</div>
 						<div className={"item" + (this.getTitle().id == "recently" ? " selected" : "")} onClick={this.move.bind(this, "")}><i className="icon fal fa-clock"></i> <div className="text">최근 사용</div></div>
@@ -218,12 +275,17 @@ export default class extends React.Component {
 						<div className={"item" + (this.getTitle().id == "deleted" ? " selected" : "")} onClick={this.move.bind(this, "deleted")}><i className="icon fal fa-trash-alt"></i> <div className="text">삭제됨</div></div>
 					</div>
 					<div className="list">
-						<div className="title">폴더</div>
+						<div className="title">
+                            <div className="text">폴더</div>
+                            <i className="angle far fa-plus" onClick={this.onAddFolder}></i>
+                        </div>
 						{folders.list.map((e,k)=>{
                             let subject = e.subject || "분류되지 않은 계약"
                             let folder_id = e.folder_id || 0
                             return <div className="item" key={e+k}>
-                                <i className={`fas icon ${folder_id == 0 ? "fa-thumbtack":"fa-folder"}`} /> {subject}
+                                <i className={`fas icon ${folder_id == 0 ? "fa-thumbtack":"fa-folder"}`} />
+                                <div className="text">{subject}</div>
+                                {folder_id != 0 ? <i className="angle fal fa-trash" onClick={this.onRemoveFolder.bind(this, folder_id)}></i> : null }
                             </div>
                         })}
 					</div>
@@ -246,6 +308,7 @@ export default class extends React.Component {
                     {board.list.map((e,k)=>{
                         return this.render_board_slot(e,k)
                     })}
+                    {board.list.length == 0 ? <div className="empty-contract">계약서가 없습니다.</div> : null}
                     <div className="item">
                         <div className="list-body-item list-chkbox">
                             <CheckBox2 size={18}
@@ -366,7 +429,6 @@ export default class extends React.Component {
                             </div>
                         </div>
                     </div>
-                    {/*board.list.length == 0 ? <div className="empty-contract" >최근 계약서가 없습니다.</div> : null*/}
                 </div>
                 
                 <Pager max={Math.ceil(total_cnt/page_num)} cur={this.state.cur_page||1} onClick={this.onClickPage} />

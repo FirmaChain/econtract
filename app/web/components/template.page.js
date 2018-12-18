@@ -148,7 +148,7 @@ export default class extends React.Component {
                     {template.list.map((e,k)=>{
                         return this.render_template_slot(e,k)
                     })}
-                    {/*template.list.length == 0 ? <div className="empty-contract" >최근 계약서가 없습니다.</div> : null*/}
+                    {template.list.length == 0 ? <div className="empty-contract">템플릿이 없습니다.</div> : null}
                 </div>
                 
                 <Pager max={Math.ceil(total_cnt/page_num)} cur={this.state.cur_page||1} onClick={this.onClickPage} />

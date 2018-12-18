@@ -303,7 +303,7 @@ export default class extends React.Component {
                     {board.list.map((e,k)=>{
                         return this.render_board_slot(e,k)
                     })}
-                    {/*board.list.length == 0 ? <div className="empty-contract" >최근 계약서가 없습니다.</div> : null*/}
+                    {board.list.length == 0 ? <div className="empty-contract">계약서가 없습니다.</div> : null}
                 </div>
                 
                 <Pager max={Math.ceil(total_cnt/page_num)} cur={this.state.cur_page||1} onClick={this.onClickPage} />

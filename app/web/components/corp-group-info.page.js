@@ -136,23 +136,27 @@ export default class extends React.Component {
     }
 
     onRemoveInviteList = async (invite_id) => {
-        let resp = await this.props.remove_invite_group(this.getGroupId(), invite_id)
-        if(resp) {
-            alert("초대를 취소하였습니다.")
-            await this.onRefresh()
+        if( await window.confirm("초대 취소", "해당 그룹원의 초대를 취소하시겠습니까?") ){
+            let resp = await this.props.remove_invite_group(this.getGroupId(), invite_id)
+            if(resp) {
+                alert("초대를 취소하였습니다.")
+                await this.onRefresh()
+            }
+            else
+                alert("초대 취소에 실패하였습니다.")
         }
-        else
-            alert("초대 취소에 실패하였습니다.")
     }
 
     onRemoveGroupMember = async (account_id) => {
-        let resp = await this.props.remove_member_group(this.getGroupId(), account_id)
-        if(resp) {
-            alert("멤버를 해당 그룹에서 삭제했습니다.")
-            await this.onRefresh()
+        if( await window.confirm("그룹원 삭제", "해당 그룹원을 이 그룹에서 삭제하시겠습니까?") ){
+            let resp = await this.props.remove_member_group(this.getGroupId(), account_id)
+            if(resp) {
+                alert("그룹원을 해당 그룹에서 삭제했습니다.")
+                await this.onRefresh()
+            }
+            else
+                alert("그룹원을 삭제에 실패하였습니다.")
         }
-        else
-            alert("멤버 삭제에 실패하였습니다.")
     }
 
 	render() {

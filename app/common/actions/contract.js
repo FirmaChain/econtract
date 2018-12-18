@@ -338,7 +338,9 @@ export function reject_contract(contract_id, msg, revision){
 
 export function new_folder(name){
     return async function(dispatch){
-        return (await api_new_folder(name)).payload
+        let resp = await api_new_folder(name)
+        console.log(resp)
+        return resp.payload
     }
 }
 
