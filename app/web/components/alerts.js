@@ -80,6 +80,39 @@ class AddCommonModal extends React.Component {
 }
 
 @modal
+class RemoveCommonModal extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+        }
+    }
+
+    closeSelf = () => {
+        window.closeModal(this.props.modalId)
+    }
+
+    onConfirm = () => {
+        this.props.onDelete && this.props.onDelete()
+        this.closeSelf()
+    }
+
+    render() {
+        return <div className="remove-common-modal">
+            <div className="container">
+                <div className="icon"><i className={this.props.icon}></i></div>
+                <div className="title">{this.props.title}</div>
+                <div className="sub-title" dangerouslySetInnerHTML={{__html:this.props.subTitle}}>
+                </div>
+                <div className="button">
+                    <div className="confirm" onClick={this.onDelete}>{this.props.deleteText || "삭제"}</div>
+                    <div className="cancel" onClick={this.closeSelf}>취소</div>
+                </div>
+            </div>
+        </div>
+    }
+}
+
+@modal
 class CommonModal extends React.Component {
     constructor(props) {
         super(props);

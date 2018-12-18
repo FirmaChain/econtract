@@ -111,14 +111,20 @@ export default class extends React.Component {
     }
 
     onRemoveGroup = async () => {
-        if(await confirm("그룹 삭제", "정말로 해당 그룹을 삭제하시겠습니까?")) {
-            let resp = this.props.remove_group(this.getGroupId())
-            if(resp){
-                alert("성공적으로 삭제하였습니다.")
-                return history.push("/group")
+
+        window.openModal("RemoveCommonModal", {
+            icon:"fas fa-trash",
+            title:"그룹 삭제",
+            subTitle:"인사팀 그룹을 삭제합니다.<br/>삭제하시겠습니까?",
+            onDelete: async (group_name) => {
+                let resp = this.props.remove_group(this.getGroupId())
+                if(resp){
+                    alert("성공적으로 삭제하였습니다.")
+                    return history.push("/group")
+                }
+                alert("삭제에 실패하였습니다.")
             }
-            alert("삭제에 실패하였습니다.")
-        }
+        })
     }
 
     onAddMember = async ()=>{

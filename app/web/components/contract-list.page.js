@@ -18,6 +18,7 @@ import {
     remove_folder,
     move_to_folder,
     recently_contracts,
+    get_my_groups_info,
 } from "../../common/actions"
 
 let mapStateToProps = (state)=>{
@@ -25,6 +26,7 @@ let mapStateToProps = (state)=>{
         folders:state.contract.folders,
         user_info: state.user.info,
         board:state.contract.board,
+        groups: state.group.groups,
 	}
 }
 
@@ -34,6 +36,7 @@ let mapDispatchToProps = {
     remove_folder,
     move_to_folder,
     recently_contracts,
+    get_my_groups_info,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -50,11 +53,21 @@ export default class extends React.Component {
 	componentDidMount() {
         (async()=>{
             await this.props.folder_list()
-            if(this.getTitle().id == "recently") {
-                await this.props.recently_contracts();
-            }
+
+            if(this.props.user_info.account_type == 1 || this.props.user_info.account_type == 2)
+                await this.props.get_my_groups_info()
+
+            if(this.getTitle().id == "recently")
+                await this.props.recently_contracts()
+            
         })()
 	}
+
+    componentWillReceiveProps(props){
+        if(props.user_info === false) {
+            history.replace("/login")
+        }
+    }
 
 	onClickAddContract(){
         window.openModal("StartContract",{
@@ -99,7 +112,7 @@ export default class extends React.Component {
 			return { id:"deleted", title : "삭제됨"}
 		}
 		return { id:"recently", title : "최근 사용"}
-	} 
+	}
 
     onClickPage = async(page)=>{
     	if(this.state.cur_page == page)
@@ -178,7 +191,6 @@ export default class extends React.Component {
         //     return <div />
 
         let folders = this.props.folders ? this.props.folders : { list: [] }
-
         let board = this.props.board ? this.props.board : { list:[] }
         let total_cnt = board.total_cnt
         let page_num = board.page_num
@@ -187,10 +199,12 @@ export default class extends React.Component {
 			<div className="contract-group-menu">
 				<div className="left-top-button" onClick={this.onClickAddContract}>시작하기</div>
 				<div className="menu-list">
+                    <div className="list">
+                        <div className={"item" + (this.getTitle().id == "lock" ? " selected" : "")} onClick={this.move.bind(this, "lock")}><i className="icon fas fa-lock-alt"></i> <div className="text">잠김</div></div>
+                    </div>
 					<div className="list">
 						<div className="title">계약</div>
 						<div className={"item" + (this.getTitle().id == "recently" ? " selected" : "")} onClick={this.move.bind(this, "")}><i className="icon fal fa-clock"></i> <div className="text">최근 사용</div></div>
-						<div className={"item" + (this.getTitle().id == "lock" ? " selected" : "")} onClick={this.move.bind(this, "lock")}><i className="icon fas fa-lock-alt"></i> <div className="text">잠김</div></div>
 						<div className={"item" + (this.getTitle().id == "requested" ? " selected" : "")} onClick={this.move.bind(this, "requested")}><i className="icon fas fa-share-square"></i> <div className="text">요청받음</div></div>
 						<div className={"item" + (this.getTitle().id == "created" ? " selected" : "")} onClick={this.move.bind(this, "created")}><i className="icon fas fa-handshake-alt"></i> <div className="text">생성함</div></div>
 					</div>

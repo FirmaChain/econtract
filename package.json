@@ -65,6 +65,7 @@
     "react-dom": "^16.4.0",
     "react-draggable": "^3.0.5",
     "react-dropdown": "^1.6.2",
+    "react-froala-wysiwyg": "^2.9.1",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.2.2",
     "react-router-page-transition": "^3.1.0",
