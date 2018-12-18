@@ -71,7 +71,7 @@ class AddCommonModal extends React.Component {
                         placeholder={this.props.placeholder}/>
                 </div>
                 <div className="button">
-                    <div className="confirm" onClick={this.onConfirm}>생성</div>
+                    <div className="confirm" onClick={this.onConfirm}>{this.props.confirmText || "생성"}</div>
                     <div className="cancel" onClick={this.closeSelf}>취소</div>
                 </div>
             </div>

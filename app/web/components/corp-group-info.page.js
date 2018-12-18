@@ -10,6 +10,7 @@ import moment from "moment"
 import {
     add_member_group,
     remove_invite_group,
+    remove_group,
     fetch_user_info,
     get_group_info,
     remove_member_group,
@@ -25,6 +26,7 @@ let mapStateToProps = (state)=>{
 let mapDispatchToProps = {
     add_member_group,
     remove_invite_group,
+    remove_group,
     fetch_user_info,
     get_group_info,
     remove_member_group,
@@ -91,13 +93,13 @@ export default class extends React.Component {
         return group_id
     }
 
-    onChangeGroupTitle = (text) => {
-
+    onChangeGroupTitle = () => {
         window.openModal("AddCommonModal", {
             icon:"fas fa-users",
             title:"그룹명 변경",
             subTitle:"새 그룹명",
             placeholder:"그룹명을 입력해주세요.",
+            confirmText:"변경",
             onConfirm: async (group_name) => {
                 let resp = this.props.change_group_title(this.getGroupId(), group_name)
                 if(resp) {
@@ -106,6 +108,17 @@ export default class extends React.Component {
                 }
             }
         })
+    }
+
+    onRemoveGroup = async () => {
+        if(await confirm("그룹 삭제", "정말로 해당 그룹을 삭제하시겠습니까?")) {
+            let resp = this.props.remove_group(this.getGroupId())
+            if(resp){
+                alert("성공적으로 삭제하였습니다.")
+                return history.push("/group")
+            }
+            alert("삭제에 실패하였습니다.")
+        }
     }
 
     onAddMember = async ()=>{
@@ -157,8 +170,8 @@ export default class extends React.Component {
                         {moment().toString()}
                     </div>
                     <div className="button-container">
-                        <div className="button">그룹명 변경</div>
-                        <div className="button delete">삭제</div>
+                        <div className="button" onClick={this.onChangeGroupTitle}>그룹명 변경</div>
+                        <div className="button delete" onClick={this.onRemoveGroup}>삭제</div>
                     </div>
                 </div>
             </div>
