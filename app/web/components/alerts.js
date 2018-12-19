@@ -49,6 +49,12 @@ class AddCommonModal extends React.Component {
         }
     }
 
+    componentDidMount() {
+        this.setState({
+            text: this.props.text || ""
+        })
+    }
+
     closeSelf = () => {
         window.closeModal(this.props.modalId)
     }
