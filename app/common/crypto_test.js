@@ -29,6 +29,7 @@ export {
     ecdsa_verify,
     generate_random,
     hmac_sha256,
+    get256bitDerivedPublicKey,
 } from "./CryptoUtil";
 
 let serverDB = {};
