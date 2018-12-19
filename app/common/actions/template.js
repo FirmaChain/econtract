@@ -28,7 +28,7 @@ export const FOLDER_LIST_TEMPLATE = "FOLDER_LIST_TEMPLATE"
 export const ADD_FOLDER_TEMPLATE = "ADD_FOLDER_TEMPLATE"
 
 
-export function list_template(folder_id = -1, page = 0){
+export function list_template(folder_id = "all", page = 0){
     return async function(dispatch){
         let resp = await api_list_template(folder_id, page)
         dispatch({
@@ -101,14 +101,14 @@ export function get_template(template_id){
     }
 }
 
-export function update_template(template_id, folder_id, html){
+export function update_template(template_id, folder_id, subject, html){
     return async function(){
         /*let entropy = sessionStorage.getItem("entropy");
         html = aes_encrypt(JSON.stringify(html),entropy)*/
 
         let encrypted_html = html
 
-        let resp = await api_update_template(template_id, folder_id, html)
+        let resp = await api_update_template(template_id, folder_id, subject, html)
 
         return resp.payload
     }

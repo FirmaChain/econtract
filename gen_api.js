@@ -313,11 +313,12 @@ export async function api_add_template(subject,folder_id,html){
         session:window.getCookie("session")
     });
 }
-export async function api_update_template(template_id,folder_id,html){
+export async function api_update_template(template_id,folder_id,subject,html){
     let __data = new FormData();
 
     __data.append('template_id', template_id);
 	__data.append('folder_id', folder_id);
+	__data.append('subject', subject);
 	__data.append('html', html)
 
     return await post("/update_template", __data,{

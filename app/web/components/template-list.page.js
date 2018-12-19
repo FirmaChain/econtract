@@ -81,7 +81,7 @@ export default class extends React.Component {
         if(await window.confirm("템플릿 삭제", `${selected.length}개의 템플릿을 삭제하시겠습니까?`)){
             await window.showIndicator()
             await this.props.remove_template(selected)
-            await this.props.list_template(this.state.folder_id, this.state.cur_page - 1)
+            await this.props.list_template(this.getTitle().id, this.state.cur_page - 1)
             await window.hideIndicator()
             
             alert("성공적으로 삭제했습니다.")
@@ -92,7 +92,7 @@ export default class extends React.Component {
         if(this.state.cur_page == page)
             return;
 
-        await this.props.list_template(this.state.folder_id, page - 1);
+        await this.props.list_template(this.getTitle().id, page - 1);
         this.setState({
             cur_page:page,
             template_checks:[]
@@ -133,7 +133,9 @@ export default class extends React.Component {
         return this.state.showOption == template_id;
     }
 
-    onClickOption(template_id) {
+    onClickOption(template_id, e) {
+        e.stopPropagation()
+
         if(this.state.showOption == template_id) {
             return this.setState({
                 showOption:null
@@ -143,6 +145,18 @@ export default class extends React.Component {
         this.setState({
             showOption:template_id
         })
+    }
+
+    async onRemoveTemplate(template_id, subject, e) {
+        e.stopPropagation()
+
+        if(await window.confirm("템플릿 삭제", `'${subject}' 템플릿을 삭제하시겠습니까?`)) {
+            await window.showIndicator()
+            await this.props.remove_template([template_id])
+            await this.props.list_template(this.getTitle().id, this.state.cur_page - 1)
+            await window.hideIndicator()
+            alert(`성공적으로 ${subject} 템플릿을 삭제하였습니다.`)
+        }
     }
 
     getTitle(props) {
@@ -163,7 +177,7 @@ export default class extends React.Component {
     } 
 
     render_template_slot(e, k) {
-        return <div className="item" key={e.template_id}>
+        return <div className="item" key={e.template_id} onClick={()=>history.push(`/edit-template/${e.template_id}`)}>
             <div className="list-body-item list-chkbox">
                 <CheckBox2 size={18}
                     on={false}
@@ -180,8 +194,7 @@ export default class extends React.Component {
                         <i className="fas fa-caret-down"></i>
                     <div className="arrow-dropdown" style={{display:!!this.isOpenOption(e.template_id) ? "initial" : "none"}}>
                             <div className="container">
-                                <div className="detail">상세 정보</div>
-                                <div className="move">이동</div>
+                                <div className="move" onClick={this.onRemoveTemplate.bind(this, e.template_id, e.subject)}>삭제</div>
                             </div>
                         </div>
                     </div>

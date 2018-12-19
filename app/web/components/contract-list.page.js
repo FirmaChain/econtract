@@ -80,7 +80,7 @@ export default class extends React.Component {
         }
     }
 
-	onClickAddContract(){
+	onClickAddContract() {
         window.openModal("StartContract",{
             onClick:async(type)=>{
                 if(type == 1) {

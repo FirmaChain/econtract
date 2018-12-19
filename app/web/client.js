@@ -76,6 +76,7 @@ window.addEventListener("load",()=>{
 					<Route onEnter={resolver} exact path="/template" component={HomePage} />
 					<Route onEnter={resolver} exact path="/template/:menu" component={HomePage} />
 					<Route onEnter={resolver} exact path="/new-template" component={UpsertTemplatePage} />
+					<Route onEnter={resolver} exact path="/edit-template/:template_id" component={UpsertTemplatePage} />
 
 					<Route onEnter={resolver} exact path="/group" component={HomePage} />
 					<Route onEnter={resolver} exact path="/group/:menu" component={HomePage} />

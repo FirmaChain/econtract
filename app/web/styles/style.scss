@@ -91,6 +91,7 @@ select:focus { outline:none; }
     box-shadow: none !important;
 
     border-right: 1px solid $middlegray !important;
+    border-bottom: 1px solid $middlegray !important;
 }
 
 .fr-wrapper {
@@ -1854,14 +1855,16 @@ div.checkbox2-comp{
                 padding:0 10px;
 
                 >.title {
-
+                    font-size: $font2;
+                    color: $black;
                 }
 
                 >.text-box {
                     margin-top: 10px;
 
                     >input {
-
+                        font-size: $font2;
+                        color: $black;
                     }
 
                     >.common-select {
