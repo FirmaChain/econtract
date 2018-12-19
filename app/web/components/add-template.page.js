@@ -42,26 +42,18 @@ export default class extends React.Component {
 	constructor(){
         super();
 
-        $.FroalaEditor.DefineIcon('getPDF', {NAME: 'file-pdf'});
+        /*$.FroalaEditor.DefineIcon('getPDF', {NAME: 'file-pdf'});
         $.FroalaEditor.RegisterCommand('getPDF', {
             title: 'getPDF',
             focus: true,
             undo: true,
             refreshAfterCallback: true,
             callback: () => {
-                let savePdfOption = {
-                    margin:1,
-                    filename:'계약서.pdf',
-                    image:{ type: 'jpeg', quality: 0.98 },
-                    jsPDF:{ unit: 'in', format: 'letter', orientation: 'portrait' },
-                    pagebreak:{ mode: ['avoid-all'] }
-                }
-                html2pdf().set(savePdfOption).from(document.getElementsByClassName('fr-view')[0]).save()
             }
-        })
+        })*/
 
         this.config = {
-            key:"aH3J4B7C7bA4B3E3C1I3I2C4C6B3D4uB1B2G1A3B1A2A5D1A5D1E4B3==",
+            key:"YD3H5F3F3c1A6B5B4E2A3C2C2G3C5B1D-17mB5idbyC-22nseB1zH-9==",
             language:"ko",
             height:"100%",
             heightMax:"100%",
@@ -83,7 +75,7 @@ export default class extends React.Component {
                 'subscript', 'superscript', 'quote', 'paragraphStyle', '-',
                 'insertLink', 'insertImage', 'insertTable', '|',
                 'specialCharacters', 'insertHR', 'selectAll', 'clearFormatting', '|',
-                'print', 'getPDF', 'spellChecker', 'help', '|', 'undo', 'redo','fullscreen']
+                'print', /*'getPDF', */'spellChecker', 'help', '|', 'undo', 'redo','fullscreen']
         }
 
         this.state = {
@@ -106,7 +98,14 @@ export default class extends React.Component {
     }
 
     onClickPreview = () => {
-
+        let savePdfOption = {
+            margin:0,
+            filename:'계약서.pdf',
+            image:{ type: 'jpeg', quality: 0.98 },
+            jsPDF:{ unit: 'in', format: 'letter', orientation: 'portrait' },
+            pagebreak:{ mode: ['avoid-all'] }
+        }
+        html2pdf().set(savePdfOption).from(document.getElementsByClassName('fr-view')[0]).save()
     }
 
     onClickSubmit = () => {
@@ -136,6 +135,23 @@ export default class extends React.Component {
                         <div className="title">
                             <i className="far fa-file-contract"></i>
                             <div className="text">정보 입력</div>
+                        </div>
+                        <div className="desc">
+                            <div className="title">템플릿명</div>
+                            <div className="text-box">
+                                <input className="common-textbox" type="text" />
+                            </div>
+                        </div>
+                        <div className="desc">
+                            <div className="title">폴더 지정</div>
+                            <div className="text-box">
+                                <Dropdown className="common-select"
+                                    controlClassName="control"
+                                    menuClassName="item"
+                                    options={_roles}
+                                    onChange={e=>{this.setState({add_role:e.value})}}
+                                    value={_roles[0]} placeholder="사용자 역할을 골라주세요" />
+                            </div>
                         </div>
                     </div>
                 </div>

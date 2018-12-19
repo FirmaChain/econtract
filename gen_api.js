@@ -51,44 +51,56 @@ export async function api_clear_epin(contract_id){
     });
 }
 export async function api_load_contract_info(contract_id){
-    return await get("/load_contract_info", {
-        contract_id
-    },{
+    let data = new FormData();
+
+    data.append('contract_id', contract_id)
+
+    return await post("/load_contract_info", data,{
         session:window.getCookie("session")
     });
 }
 export async function api_load_contract(contract_id){
-    return await get("/load_contract", {
-        contract_id
-    },{
+    let data = new FormData();
+
+    data.append('contract_id', contract_id)
+
+    return await post("/load_contract", data,{
         session:window.getCookie("session")
     });
 }
 export async function api_recently_contracts(page){
-    return await get("/recently_contracts", {
-        page
-    },{
+    let data = new FormData();
+
+    data.append('page', page)
+
+    return await post("/recently_contracts", data,{
         session:window.getCookie("session")
     });
 }
 export async function api_all_folders(page){
-    return await get("/all_folders", {
-        page
-    },{
+    let data = new FormData();
+
+    data.append('page', page)
+
+    return await post("/all_folders", data,{
         session:window.getCookie("session")
     });
 }
 export async function api_folder_list(page){
-    return await get("/folder_list", {
-        page
-    },{
+    let data = new FormData();
+
+    data.append('page', page)
+
+    return await post("/folder_list", data,{
         session:window.getCookie("session")
     });
 }
 export async function api_new_folder(name){
-    return await get("/new_folder", {
-        name
-    },{
+    let data = new FormData();
+
+    data.append('name', name)
+
+    return await post("/new_folder", data,{
         session:window.getCookie("session")
     });
 }
@@ -118,10 +130,12 @@ export async function api_move_to_folder(folder_id,contract_ids){
     });
 }
 export async function api_folder_in_contracts(folder_id,page){
-    return await get("/folder_in_contracts", {
-        folder_id,
-		page
-    },{
+    let data = new FormData();
+
+    data.append('folder_id', folder_id);
+	data.append('page', page)
+
+    return await post("/folder_in_contracts", data,{
         session:window.getCookie("session")
     });
 }
@@ -184,96 +198,116 @@ export async function api_reject_contract(contract_id,msg,revision){
     });
 }
 export async function api_invite_information(registration_code){
-    return await get("/invite_information", {
-        registration_code
-    },{
+    let data = new FormData();
+
+    data.append('registration_code', registration_code)
+
+    return await post("/invite_information", data,{
         session:window.getCookie("session")
     });
 }
 export async function api_new_corp(data){
-    return await get("/new_corp", {
-        data
-    },{
+    let data = new FormData();
+
+    data.append('data', data)
+
+    return await post("/new_corp", data,{
         session:window.getCookie("session")
     });
 }
 export async function api_get_my_groups_info(){
-    return await get("/get_my_groups_info", {
-        
-    },{
+    let data = new FormData();
+
+    
+
+    return await post("/get_my_groups_info", data,{
         session:window.getCookie("session")
     });
 }
 export async function api_get_group_info(group_id){
-    return await get("/get_group_info", {
-        group_id
-    },{
+    let data = new FormData();
+
+    data.append('group_id', group_id)
+
+    return await post("/get_group_info", data,{
         session:window.getCookie("session")
     });
 }
 export async function api_get_group_members(group_id){
-    return await get("/get_group_members", {
-        group_id
-    },{
+    let data = new FormData();
+
+    data.append('group_id', group_id)
+
+    return await post("/get_group_members", data,{
         session:window.getCookie("session")
     });
 }
 export async function api_create_group(group_name){
-    return await get("/create_group", {
-        group_name
-    },{
+    let data = new FormData();
+
+    data.append('group_name', group_name)
+
+    return await post("/create_group", data,{
         session:window.getCookie("session")
     });
 }
 export async function api_remove_group(group_id){
-    return await get("/remove_group", {
-        group_id
-    },{
+    let data = new FormData();
+
+    data.append('group_id', group_id)
+
+    return await post("/remove_group", data,{
         session:window.getCookie("session")
     });
 }
 export async function api_change_group_title(group_id,change_title){
-    return await get("/change_group_title", {
-        group_id,
-		change_title
-    },{
+    let data = new FormData();
+
+    data.append('group_id', group_id);
+	data.append('change_title', change_title)
+
+    return await post("/change_group_title", data,{
         session:window.getCookie("session")
     });
 }
 export async function api_add_member_group(group_id,email,passphrase2,data){
-    return await get("/add_member_group", {
-        group_id,
-		email,
-		passphrase2,
-		data
-    },{
+    let data = new FormData();
+
+    data.append('group_id', group_id);
+	data.append('email', email);
+	data.append('passphrase2', passphrase2);
+	data.append('data', data)
+
+    return await post("/add_member_group", data,{
         session:window.getCookie("session")
     });
 }
 export async function api_remove_member_group(group_id,account_id){
-    return await get("/remove_member_group", {
-        group_id,
-		account_id
-    },{
+    let data = new FormData();
+
+    data.append('group_id', group_id);
+	data.append('account_id', account_id)
+
+    return await post("/remove_member_group", data,{
         session:window.getCookie("session")
     });
 }
 export async function api_remove_invite_group(group_id,invite_id){
-    return await get("/remove_invite_group", {
-        group_id,
-		invite_id
-    },{
+    let data = new FormData();
+
+    data.append('group_id', group_id);
+	data.append('invite_id', invite_id)
+
+    return await post("/remove_invite_group", data,{
         session:window.getCookie("session")
     });
 }
-export async function api_add_template(subject,imgs){
+export async function api_add_template(subject,folder_id,html){
     let data = new FormData();
 
     data.append('subject', subject);
-	for(let k in imgs){
-        data.append('imgs:'+k,imgs[k])
-    }
-    data.append('imgs',imgs.length)
+	data.append('folder_id', folder_id);
+	data.append('html', html)
 
     return await post("/add_template", data,{
         session:window.getCookie("session")
@@ -307,120 +341,146 @@ export async function api_get_template(template_id){
         session:window.getCookie("session")
     });
 }
-export async function api_list_template(){
+export async function api_list_template(folder_id){
     let data = new FormData();
 
-    
+    data.append('folder_id', folder_id)
 
     return await post("/list_template", data,{
         session:window.getCookie("session")
     });
 }
 export async function api_request_email_verification(email){
-    return await get("/request_email_verification", {
-        email
-    },{
+    let data = new FormData();
+
+    data.append('email', email)
+
+    return await post("/request_email_verification", data,{
         session:window.getCookie("session")
     });
 }
 export async function api_check_email_verification_code(email,code){
-    return await get("/check_email_verification_code", {
-        email,
-		code
-    },{
+    let data = new FormData();
+
+    data.append('email', email);
+	data.append('code', code)
+
+    return await post("/check_email_verification_code", data,{
         session:window.getCookie("session")
     });
 }
 export async function api_request_phone_verification_code(phone){
-    return await get("/request_phone_verification_code", {
-        phone
-    },{
+    let data = new FormData();
+
+    data.append('phone', phone)
+
+    return await post("/request_phone_verification_code", data,{
         session:window.getCookie("session")
     });
 }
 export async function api_check_phone_verification_code(phone,code){
-    return await get("/check_phone_verification_code", {
-        phone,
-		code
-    },{
+    let data = new FormData();
+
+    data.append('phone', phone);
+	data.append('code', code)
+
+    return await post("/check_phone_verification_code", data,{
         session:window.getCookie("session")
     });
 }
 export async function api_register_account(publicbk,publicms,publicmsc,info,auth,eems,email,name,eth,account_type){
-    return await get("/register_account", {
-        publicbk,
-		publicms,
-		publicmsc,
-		info,
-		auth,
-		eems,
-		email,
-		name,
-		eth,
-		account_type
-    },{
+    let data = new FormData();
+
+    data.append('publicbk', publicbk);
+	data.append('publicms', publicms);
+	data.append('publicmsc', publicmsc);
+	data.append('info', info);
+	data.append('auth', auth);
+	data.append('eems', eems);
+	data.append('email', email);
+	data.append('name', name);
+	data.append('eth', eth);
+	data.append('account_type', account_type)
+
+    return await post("/register_account", data,{
         session:window.getCookie("session")
     });
 }
 export async function api_recover_account(publicbk,publicms,auth,eems,email){
-    return await get("/recover_account", {
-        publicbk,
-		publicms,
-		auth,
-		eems,
-		email
-    },{
+    let data = new FormData();
+
+    data.append('publicbk', publicbk);
+	data.append('publicms', publicms);
+	data.append('auth', auth);
+	data.append('eems', eems);
+	data.append('email', email)
+
+    return await post("/recover_account", data,{
         session:window.getCookie("session")
     });
 }
 export async function api_check_join_browser(publicbk){
-    return await get("/check_join_browser", {
-        publicbk
-    },{
+    let data = new FormData();
+
+    data.append('publicbk', publicbk)
+
+    return await post("/check_join_browser", data,{
         session:window.getCookie("session")
     });
 }
 export async function api_check_join_publickey(publicms){
-    return await get("/check_join_publickey", {
-        publicms
-    },{
+    let data = new FormData();
+
+    data.append('publicms', publicms)
+
+    return await post("/check_join_publickey", data,{
         session:window.getCookie("session")
     });
 }
 export async function api_login_account(publicbk,nonce,sign){
-    return await get("/login_account", {
-        publicbk,
-		nonce,
-		sign
-    },{
+    let data = new FormData();
+
+    data.append('publicbk', publicbk);
+	data.append('nonce', nonce);
+	data.append('sign', sign)
+
+    return await post("/login_account", data,{
         session:window.getCookie("session")
     });
 }
 export async function api_encrypted_user_info(){
-    return await get("/encrypted_user_info", {
-        
-    },{
+    let data = new FormData();
+
+    
+
+    return await post("/encrypted_user_info", data,{
         session:window.getCookie("session")
     });
 }
 export async function api_find_user_with_code_email(email){
-    return await get("/find_user_with_code_email", {
-        email
-    },{
+    let data = new FormData();
+
+    data.append('email', email)
+
+    return await post("/find_user_with_code_email", data,{
         session:window.getCookie("session")
     });
 }
 export async function api_select_userinfo_with_email(email){
-    return await get("/select_userinfo_with_email", {
-        email
-    },{
+    let data = new FormData();
+
+    data.append('email', email)
+
+    return await post("/select_userinfo_with_email", data,{
         session:window.getCookie("session")
     });
 }
 export async function api_update_user_info(info){
-    return await get("/update_user_info", {
-        info
-    },{
+    let data = new FormData();
+
+    data.append('info', info)
+
+    return await post("/update_user_info", data,{
         session:window.getCookie("session")
     });
 }
