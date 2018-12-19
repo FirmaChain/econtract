@@ -313,10 +313,11 @@ export async function api_add_template(subject,folder_id,html){
         session:window.getCookie("session")
     });
 }
-export async function api_update_template(template_id,html){
+export async function api_update_template(template_id,folder_id,html){
     let __data = new FormData();
 
     __data.append('template_id', template_id);
+	__data.append('folder_id', folder_id);
 	__data.append('html', html)
 
     return await post("/update_template", __data,{
@@ -347,6 +348,43 @@ export async function api_list_template(folder_id){
     __data.append('folder_id', folder_id)
 
     return await post("/list_template", __data,{
+        session:window.getCookie("session")
+    });
+}
+export async function api_folder_list_template(){
+    let __data = new FormData();
+
+    
+
+    return await post("/folder_list_template", __data,{
+        session:window.getCookie("session")
+    });
+}
+export async function api_add_folder_template(name){
+    let __data = new FormData();
+
+    __data.append('name', name)
+
+    return await post("/add_folder_template", __data,{
+        session:window.getCookie("session")
+    });
+}
+export async function api_remove_folder_template(folder_id){
+    let __data = new FormData();
+
+    __data.append('folder_id', folder_id)
+
+    return await post("/remove_folder_template", __data,{
+        session:window.getCookie("session")
+    });
+}
+export async function api_change_folder_template(folder_id,name){
+    let __data = new FormData();
+
+    __data.append('folder_id', folder_id);
+	__data.append('name', name)
+
+    return await post("/change_folder_template", __data,{
         session:window.getCookie("session")
     });
 }

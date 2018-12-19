@@ -38,7 +38,7 @@ export default class extends React.Component {
 	constructor(){
 		super();
 		this.state={
-            template:[],
+            templates:[],
             folders:[]
         };
 	}
@@ -100,6 +100,10 @@ export default class extends React.Component {
                 return { id:i.toString(), title:"폴더 " + i}
             }
         }
+
+        if(menu == "unclassified") {
+            return { id:"unclassified", title : "분류되지 않은 템플릿"}
+        }
         return { id:"all", title : "모든 템플릿"}
     } 
 
@@ -110,9 +114,9 @@ export default class extends React.Component {
 	render() {
         let folders = this.props.folders ? this.props.folders : { list: [] }
 
-        let template = this.props.template ? this.props.template : { list:[] }
-        let total_cnt = template.total_cnt
-        let page_num = template.page_num
+        let templates = this.props.templates ? this.props.templates : { list:[] }
+        let total_cnt = templates.total_cnt
+        let page_num = templates.page_num
 
 		return (<div className="template-page">
             <div className="contract-group-menu">
@@ -124,11 +128,15 @@ export default class extends React.Component {
                             <i className="icon fal fa-clock"></i>
                             <div className="text">모든 템플릿</div>
                         </div>
+                        <div className={"item" + (this.getTitle().id == "unclassified" ? " selected" : "")} onClick={this.move.bind(this, "unclassified")}>
+                            <i className="icon fas fa-thumbtack"></i>
+                            <div className="text">분류되지 않은 템플릿</div>
+                        </div>
                         {folders.list.map((e,k)=>{
-                            let subject = e.subject || "분류되지 않은 계약"
-                            let folder_id = e.folder_id || 0
+                            let subject = e.subject
+                            let folder_id = e.folder_id
                             return <div className="item" key={e+k}>
-                                <i className={`fas icon ${folder_id == 0 ? "fa-thumbtack":"fa-folder"}`} /> {subject}
+                                <i className="fas icon fa-folder"></i> {subject}
                             </div>
                         })}
                     </div>
@@ -147,10 +155,10 @@ export default class extends React.Component {
                         <div className="list-head-item list-date">생성 일자</div>
                         <div className="list-head-item list-action"></div>
                     </div>
-                    {template.list.map((e,k)=>{
+                    {templates.list.map((e,k)=>{
                         return this.render_template_slot(e,k)
                     })}
-                    {template.list.length == 0 ? <div className="empty-contract">템플릿이 없습니다.</div> : null}
+                    {templates.list.length == 0 ? <div className="empty-contract">템플릿이 없습니다.</div> : null}
                 </div>
                 
                 <Pager max={Math.ceil(total_cnt/page_num)} cur={this.state.cur_page||1} onClick={this.onClickPage} />
@@ -158,48 +166,3 @@ export default class extends React.Component {
         </div>);
 	}
 }
-
-/*
-<div className="default-page contract-list-page">
-            <div className="logo">
-                <img src="/static/logo_blue.png" onClick={()=>history.push("/")}/>
-            </div>
-            <div className="container">
-                <h1>내 계약</h1>
-                <UserStatusBar />
-                <div className="page">
-                    <ContractMenu page="template" />
-                    <div className="column-800 page-contents">
-                        <h1>내 탬플릿</h1>
-                        <table className="table" style={{marginTop:"20px"}}>
-                            <tbody>
-                                <tr>
-                                    {this.state.deleteMode ? <th><CheckBox2 /></th> : null}
-                                    <th className="text-left">템플릿 명</th>
-                                    <th>생성일자</th>
-                                    <th>수정시간</th>
-                                </tr>
-                                {this.state.template.map(e=>{
-                                    return <tr key={e.template_id} className={`clickable`} onClick={this.state.deleteMode ? this.onClickDelCell.bind(this, e) : this.onClickTemplate.bind(this, e)}>
-                                        {this.state.deleteMode ? <td><CheckBox2 on={this.state.del_sel[e.template_id]} /></td> : null}
-                                        <td>{e.subject}</td>
-                                        <td className="date-cell">{moment(e.updatedAt).format("YYYY-MM-DD HH:mm:ss")}</td>
-                                        <td className="date-cell">{moment(e.addedAt).format("YYYY-MM-DD HH:mm:ss")}</td>
-                                    </tr>
-                                })}
-                            </tbody>
-                        </table>
-
-                        {this.state.deleteMode ? <div className="right-align">
-                            <button onClick={this.onClickNormalMode}>취소</button>
-                            <button className="danger" onClick={this.onClickDelete}>선택 삭제</button>
-                        </div> : <div className="right-align">
-                            <button onClick={this.onClickDeleteMode}>템플릿 삭제</button>
-                            <button onClick={()=>history.push("add-template")} >템플릿 추가</button>
-                        </div>}
-
-                    </div>
-                </div>
-            </div>
-        </div>
-*/
