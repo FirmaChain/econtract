@@ -14,6 +14,7 @@ import {
     fetch_user_info,
     invite_information,
     update_user_info,
+    new_corp,
 } from "../../common/actions"
 import Web3 from "../../common/Web3"
 
@@ -51,6 +52,7 @@ let mapDispatchToProps = {
     fetch_user_info,
     invite_information,
     update_user_info,
+    new_corp,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -603,9 +605,19 @@ export default class extends React.Component {
         await window.hideIndicator()
 
         if (account_type == 1) {
+            let corpMasterKey = generateCorpKey();
+            // inject into master's info
+            let corpKey = get256bitDerivedPublicKey(corpMasterKey, "m/0'/0'");
+            let encryptedCorpInfo = aes_encrypt(JSON.stringify(corp_info), corpKey);
+            let corpResp = await this.props.new_corp(encryptedCorpInfo);
+            if (corpResp != 1) {
+                return "mang";
+            }
+            /*
             info['inject_test'] = "test";
             let encryptedInfo = aes_encrypt(JSON.stringify(info), this.state.account.masterKeyPublic);
             let updateResp = await this.props.update_user_info(encryptedInfo);
+            */
             /*
             let corpMasterKey = generateCorpKey();
             // inject into master's info
