@@ -371,10 +371,10 @@ export async function api_add_folder_template(name){
         session:window.getCookie("session")
     });
 }
-export async function api_remove_folder_template(folder_id){
+export async function api_remove_folder_template(folder_ids){
     let __data = new FormData();
 
-    __data.append('folder_id', folder_id)
+    __data.append('folder_ids', folder_ids)
 
     return await post("/remove_folder_template", __data,{
         session:window.getCookie("session")

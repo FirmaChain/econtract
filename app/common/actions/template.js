@@ -57,9 +57,9 @@ export function add_folder_template(folder_name) {
     }
 }
 
-export function remove_folder_template(folder_id) {
+export function remove_folder_template(folder_ids) {
     return async function() {
-        let resp = await api_remove_folder_template(folder_id)
+        let resp = await api_remove_folder_template(JSON.stringify(folder_ids))
         return resp.payload
     }
 }

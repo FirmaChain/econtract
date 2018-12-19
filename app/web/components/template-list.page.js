@@ -176,6 +176,13 @@ export default class extends React.Component {
         return { id:"all", title : "모든 템플릿"}
     } 
 
+    onRemoveFolder = async (folder_id, folder_name) => {
+        if( await window.confirm("템플릿 폴더 삭제", `${folder_name} 를 정말 삭제하시겠습니까?`) ){
+            await this.props.remove_folder_template([folder_id])
+            history.push("/template")
+        }
+    }
+
     render_template_slot(e, k) {
         return <div className="item" key={e.template_id} onClick={()=>history.push(`/edit-template/${e.template_id}`)}>
             <div className="list-body-item list-chkbox">
@@ -186,7 +193,7 @@ export default class extends React.Component {
             <div className="list-body-item list-name">
                 {e.subject}
             </div>
-            <div className="list-body-item list-date">{moment().format("YYYY-MM-DD HH:mm:ss")}</div>
+            <div className="list-body-item list-date">{moment(e.addedAt).format("YYYY-MM-DD HH:mm:ss")}</div>
             <div className="list-body-item list-action">
                 <div className="button-container">
                     <div className="action-button action-blue-but">사용</div>
@@ -231,7 +238,9 @@ export default class extends React.Component {
                             let subject = e.subject
                             let folder_id = e.folder_id
                             return <div  key={folder_id} className={"item" + (this.getTitle().id == folder_id ? " selected" : "")} onClick={this.move.bind(this, folder_id)}>
-                                <i className="fas icon fa-folder"></i> {subject}
+                                <i className="fas icon fa-folder"></i>
+                                <div className="text">{subject}</div>
+                                <i className="angle fal fa-trash" onClick={this.onRemoveFolder.bind(this, folder_id, subject)}></i>
                             </div>
                         })}
                     </div>
