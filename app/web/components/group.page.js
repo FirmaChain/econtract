@@ -65,6 +65,18 @@ export default class extends React.Component {
         })()
 	}
 
+    componentWillReceiveProps(props){
+        if(props.user_info === false) {
+            history.replace("/login")
+        }
+
+        let prevMenu = props.match.params.menu || "all"
+        let menu = this.props.match.params.menu || "all"
+        if(prevMenu != menu){
+            this.componentDidMount()
+        }
+    }
+
 	onClickAddGroup = () => {
         window.openModal("AddCommonModal", {
             icon:"fas fa-users",

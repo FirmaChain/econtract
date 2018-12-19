@@ -1802,7 +1802,7 @@ div.checkbox2-comp{
     }
 }
 
-.add-template {
+.upsert-template-page {
     display: flex;
     flex-direction: column;
     min-height: 100%;
@@ -1862,6 +1862,12 @@ div.checkbox2-comp{
 
                     >input {
 
+                    }
+
+                    >.common-select {
+                        .control {
+                            width:100% !important;
+                        }
                     }
                 }
             }

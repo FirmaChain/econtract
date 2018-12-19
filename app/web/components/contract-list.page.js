@@ -48,25 +48,35 @@ export default class extends React.Component {
             board_checks : [],
             showGroupMenu: false,
             showOptions: null,
+            cur_page:1
         };
 	}
 
 	componentDidMount() {
         (async()=>{
-            await this.props.folder_list()
-
-            if(this.props.user_info.account_type == 1 || this.props.user_info.account_type == 2)
-                await this.props.get_my_groups_info()
-
-            if(this.getTitle().id == "recently")
-                await this.props.recently_contracts()
-
+            await this.onRefresh();
         })()
 	}
 
-    componentWillReceiveProps(props){
-        if(props.user_info === false) {
+    onRefresh = async (nextProps) => {
+        await this.props.folder_list()
+
+        if(this.props.user_info.account_type == 1 || this.props.user_info.account_type == 2)
+            await this.props.get_my_groups_info()
+
+        if(this.getTitle(nextProps).id == "recently")
+            await this.props.recently_contracts()
+    }
+
+    componentWillReceiveProps(nextProps){
+        if(nextProps.user_info === false) {
             history.replace("/login")
+        }
+
+        let prevMenu = nextProps.match.params.menu || "recently"
+        let menu = this.props.match.params.menu || "recently"
+        if(prevMenu != menu){
+            this.onRefresh(nextProps)
         }
     }
 
@@ -82,8 +92,10 @@ export default class extends React.Component {
         })
 	}
 
-	getTitle() {
-		let menu = this.props.match.params.menu || "recently"
+	getTitle(props) {
+        props = !!props ? props : this.props
+
+		let menu = props.match.params.menu || "recently"
 
 		if(menu == "lock") {
 			return { id:"lock", title : "잠김"}

@@ -1,9 +1,13 @@
 import {
     api_add_template,
+    api_update_template,
     api_remove_template,
     api_get_template,
     api_list_template,
-    api_update_template,
+    api_folder_list_template,
+    api_add_folder_template,
+    api_remove_folder_template,
+    api_change_folder_template,
 } from "../../../gen_api"
 
 import {
@@ -14,68 +18,97 @@ import {
 
 import { sha256 } from 'js-sha256'
 
-export function list_template(){
+export const LIST_TEMPLATE = "LIST_TEMPLATE"
+export const ADD_TEMPLATE = "ADD_TEMPLATE"
+export const GET_TEMPLATE = "GET_TEMPLATE"
+export const UPDATE_TEMPLATE = "UPDATE_TEMPLATE"
+export const REMOVE_TEMPLATE = "REMOVE_TEMPLATE"
+
+export const FOLDER_LIST_TEMPLATE = "FOLDER_LIST_TEMPLATE"
+export const ADD_FOLDER_TEMPLATE = "ADD_FOLDER_TEMPLATE"
+
+
+export function list_template(folder_id = -1, page = 0){
     return async function(dispatch){
-        let resp = await api_list_template()
+        let resp = await api_list_template(folder_id, page)
         dispatch({
-            type:"api_list_template",
+            type:LIST_TEMPLATE,
             payload:resp.payload
         })
         return resp.payload
     }
 }
 
-export function add_template(subject, imgs){
-    return async function(dispatch){
-        let entropy = sessionStorage.getItem("entropy");
-        imgs = imgs.map(e=>aes_encrypt(e,entropy))
-        
-        let resp = await api_add_template(subject, imgs)
+export function folder_list_template() {
+    return async function(dispatch) {
+        let resp = await api_folder_list_template()
         dispatch({
-            type:"api_add_template",
+            type:FOLDER_LIST_TEMPLATE,
             payload:resp.payload
         })
+        return resp.payload
+    }
+}
+
+export function add_folder_template(folder_name) {
+    return async function() {
+        let resp = await api_add_folder_template(folder_name)
+        return resp.payload
+    }
+}
+
+export function remove_folder_template(folder_id) {
+    return async function() {
+        let resp = await api_remove_folder_template(folder_id)
+        return resp.payload
+    }
+}
+
+export function change_folder_template(folder_id, folder_name) {
+    return async function() {
+        let resp = await api_rchange_folder_template(folder_id, folder_name)
+        return resp.payload
+    }
+}
+
+export function add_template(subject, folder_id, html){
+    return async function(){
+        /*let entropy = sessionStorage.getItem("entropy");
+        imgs = imgs.map(e=>aes_encrypt(e,entropy))*/
+
+        let encrypted_html = html
+        
+        let resp = await api_add_template(subject, folder_id, encrypted_html)
         return resp.payload
     }
 }
 
 export function get_template(template_id){
-    return async function(dispatch){
-        let entropy = sessionStorage.getItem("entropy");
+    return async function(){
+        // let entropy = sessionStorage.getItem("entropy");
 
         let resp = await api_get_template(template_id)
-        if(resp.payload.html){
+        /*if(resp.payload.html){
             try{
                resp.payload.html = JSON.parse(aes_decrypt(resp.payload.html,entropy))
             }catch(err){
             }
         }
 
-        resp.payload.html = resp.payload.html || []
+        resp.payload.html = resp.payload.html || []*/
 
-        for(let k in resp.payload.imgs){
-            let bin = await fetch(`${window.HOST}/${resp.payload.imgs[k]}`,{encoding:null})
-            resp.payload.imgs[k] = aes_decrypt(await bin.text(),entropy)
-        }
-
-        dispatch({
-            type:"api_get_template",
-            payload:resp.payload
-        })
         return resp.payload
     }
 }
 
-export function update_template(template_id, html){
-    return async function(dispatch){
-        let entropy = sessionStorage.getItem("entropy");
-        html = aes_encrypt(JSON.stringify(html),entropy)
+export function update_template(template_id, folder_id, html){
+    return async function(){
+        /*let entropy = sessionStorage.getItem("entropy");
+        html = aes_encrypt(JSON.stringify(html),entropy)*/
 
-        let resp = await api_update_template(template_id, html)
-        dispatch({
-            type:"api_update_template",
-            payload:resp.payload
-        })
+        let encrypted_html = html
+
+        let resp = await api_update_template(template_id, folder_id, html)
 
         return resp.payload
     }
@@ -84,10 +117,6 @@ export function update_template(template_id, html){
 export function remove_template(template_ids){
     return async function(dispatch){
         let resp = await api_remove_template(JSON.stringify(template_ids))
-        dispatch({
-            type:"api_remove_template",
-            payload:resp.payload
-        })
 
         return resp.payload
     }

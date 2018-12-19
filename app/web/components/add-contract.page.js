@@ -417,8 +417,8 @@ export default class extends React.Component {
                                     controlClassName="control"
                                     menuClassName="item"
                                     options={_roles}
-                                    onChange={e=>{this.setState({add_role:e.value})}}
-                                    value={_roles[0]} placeholder="사용자 역할을 골라주세요" />
+                                    onChange={e=>{this.setState({add_role:e.value, add_role_label:e.label})}}
+                                    value={this.state.add_role_label} placeholder="사용자 역할을 골라주세요" />
                                 <div className={"btn-add-user" + ( (this.state.add_email || "").length==0? "" : " btn-add-user-active" )} onClick={this.onClickAdd}>추가</div>
                             </div>
                         </div>
