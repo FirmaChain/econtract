@@ -44,11 +44,11 @@ export default class extends React.Component {
     }
 
 	render() {
-        /*if(!this.props.user_info)
-            return <div />*/
+		return (<div className="right-desc price-status-page">
+            <div className="title">요금 정보</div>
+            <div className="container">
 
-		return (<div className="right-desc profile-page">
-            asdasd
+            </div>
         </div>)
 	}
 }

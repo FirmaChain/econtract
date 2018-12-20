@@ -6,6 +6,7 @@ import translate from "../../common/translate"
 import {
     fetch_user_info
 } from "../../common/actions"
+import moment from "moment"
 
 function onClickAddContract(){
     history.push("/add-contract")
@@ -94,7 +95,11 @@ export default class extends React.Component{
     }
 
     onMyInfo = ()=>{
-        history.push("/profile")
+        history.push("/information/profile")
+    }
+
+    onPriceStatusInfo = ()=>{
+        history.push("/information/price-status")
     }
 
     deleteSession = () => {
@@ -130,7 +135,20 @@ export default class extends React.Component{
                     <div className="container">
                         <div className="login-session" onClick={this.onClickUpdateLogin}>
                             <div className="text">로그인 세션 연장</div>
-                            <div className="time"><i className="fas fa-hourglass-half"></i> {this.state.left_hour||"0"}시간 {this.digit(this.state.left_min)||"00"}분 {this.digit(this.state.left_second)||"00"}초</div>
+                            <div className="time">
+                                <span className="icon"><i className="fas fa-hourglass-half"></i></span>
+                                {this.state.left_hour||"0"}시간 {this.digit(this.state.left_min)||"00"}분 {this.digit(this.state.left_second)||"00"}초
+                            </div>
+                        </div>
+                        <div className="price-status" onClick={this.onPriceStatusInfo}>
+                            <div className="text">이용권 현황</div>
+                            <div className="status">
+                                <span className="icon"><i className="far fa-usd-circle"></i></span>
+                                기업 00 / 00 <span className="small">건</span> 
+                            </div>
+                            {/*<div className="date">
+                                연간 결제 | {moment().format("YYYY-MM-DD HH:mm:ss")}
+                            </div>*/}
                         </div>
                         <div className="line"></div>
                         <div className="my-info" onClick={this.onMyInfo}>내 정보</div>

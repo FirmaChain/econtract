@@ -26,6 +26,8 @@ import HomePage from "./components/home.page"
 import TemplatePage from "./components/template-list.page"
 import UpsertTemplatePage from "./components/upsert-template.page"
 
+import InformationPage from "./components/information.page"
+
 import FolderPage from "./components/contract-folder-list.page"
 import InFolderPage from "./components/home.page"
 //import AddTemplatePage from "./components/old-add-template.page"
@@ -34,7 +36,6 @@ import AddContractPage from "./components/add-contract.page"
 import ContractEditorPage from "./components/contract-editor.page"
 import ContractConfirmPage from "./components/contract-confirm.page"
 import VerificationPage from "./components/verification.page"
-import UserProfilePage from "./components/profile.page"
 import CorpGroupInfoPage from "./components/corp-group-info.page"
 import GroupPage from "./components/group.page"
 
@@ -83,12 +84,15 @@ window.addEventListener("load",()=>{
 					<Route onEnter={resolver} exact path="/group/:menu/:account_id" component={HomePage} />
 					<Route onEnter={resolver} exact path="/group-info/:group_id" component={CorpGroupInfoPage} />
 
+					<Route onEnter={resolver} exact path="/profile" component={InformationPage} />
+					<Route onEnter={resolver} exact path="/price-status" component={InformationPage} />
+					<Route onEnter={resolver} exact path="/group-manage" component={InformationPage} />
+
 					<Route onEnter={resolver} exact path="/folder" component={FolderPage} />
 					<Route onEnter={resolver} exact path="/add-contract" component={AddContractPage} />
 					<Route onEnter={resolver} exact path="/folder/:id" component={InFolderPage} />
 					<Route onEnter={resolver} exact path="/contract-editor/:id" component={ContractEditorPage} />
 					<Route onEnter={resolver} exact path="/contract-confirm/:id/:revision" component={ContractConfirmPage} />
-					<Route onEnter={resolver} exact path="/profile" component={UserProfilePage} />
 
 {/*					<Route onEnter={resolver} exact path="/template" component={TemplatePage} />
 					<Route onEnter={resolver} exact path="/add-template" component={AddTemplatePage} />

@@ -47,7 +47,7 @@ export default class extends React.Component {
         /*if(!this.props.user_info)
             return <div />*/
 
-		return (<div className="right-desc profile-page">
+		return (<div className="right-desc group-manage-page">
             asdasd
         </div>)
 	}
