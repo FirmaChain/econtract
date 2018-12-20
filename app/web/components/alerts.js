@@ -4,7 +4,7 @@ import {modal} from "./modalmanager"
 import SignerSlot from "./signer-slot"
 import history from '../history';
 import translate from "../../common/translate"
-
+/*
 @modal
 class AddFolder extends React.Component{
     constructor(){
@@ -38,7 +38,7 @@ class AddFolder extends React.Component{
             </div>
         </div>
     }
-}
+}*/
 
 @modal
 class AddCommonModal extends React.Component {
@@ -49,12 +49,18 @@ class AddCommonModal extends React.Component {
         }
     }
 
+    componentDidMount() {
+        this.setState({
+            text: this.props.text || ""
+        })
+    }
+
     closeSelf = () => {
         window.closeModal(this.props.modalId)
     }
 
     onConfirm = () => {
-        this.props.onConfirm && this.props.onConfirm(this.state.text)
+        this.props.onConfirm && this.props.onConfirm(this.state.text.trim())
         this.closeSelf()
     }
 

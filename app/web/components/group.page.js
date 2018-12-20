@@ -65,6 +65,18 @@ export default class extends React.Component {
         })()
 	}
 
+    componentWillReceiveProps(props){
+        if(props.user_info === false) {
+            history.replace("/login")
+        }
+
+        let prevMenu = props.match.params.menu || "all"
+        let menu = this.props.match.params.menu || "all"
+        if(prevMenu != menu){
+            this.componentDidMount()
+        }
+    }
+
 	onClickAddGroup = () => {
         window.openModal("AddCommonModal", {
             icon:"fas fa-users",
@@ -190,7 +202,7 @@ export default class extends React.Component {
 	render() {
         let folders = this.props.folders ? this.props.folders : { list: [] }
         let groups = this.props.groups ? this.props.groups : []
-        console.log(groups)
+        
         let board = this.props.board ? this.props.board : { list:[] }
         let total_cnt = board.total_cnt
         let page_num = board.page_num

@@ -9,28 +9,32 @@ import translate from "../../common/translate"
 import Pager from "./pager"
 import history from '../history';
 import {
-    list_template,
-    add_template,
-    get_template,
-    update_template,
-    fetch_user_info,
     remove_template,
+    list_template,
+    folder_list_template,
+    add_folder_template,
+    remove_folder_template,
+    change_folder_template,
+    fetch_user_info,
 } from "../../common/actions"
 import moment from "moment"
 
 let mapStateToProps = (state)=>{
 	return {
-
+        folders:state.template.folders,
+        templates:state.template.templates,
+        user_info:state.user.info,
 	}
 }
 
 let mapDispatchToProps = {
-    list_template,
-    add_template,
-    get_template,
-    update_template,
-    fetch_user_info,
     remove_template,
+    list_template,
+    folder_list_template,
+    add_folder_template,
+    remove_folder_template,
+    change_folder_template,
+    fetch_user_info,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -38,33 +42,47 @@ export default class extends React.Component {
 	constructor(){
 		super();
 		this.state={
-            templates:[],
-            folders:[]
-        };
+            cur_page:1,
+            showOptions: null,
+            templates_checks:[]
+        }
 	}
 
 	componentDidMount(){
         (async()=>{
-            let list = (await this.props.list_template()) || []
-            this.setState({
-                template:list
-            })
+            await window.showIndicator()
+            await this.props.folder_list_template()
+            this.onRefresh()
+            await window.hideIndicator()
         })()
     }
 
+    onRefresh = async (nextProps) => {
+        await this.props.list_template(this.getTitle(nextProps).id, this.state.cur_page - 1)
+    }
+
+    componentWillReceiveProps(nextProps){
+        if(nextProps.user_info === false) {
+            history.replace("/login")
+        }
+
+        let prevMenu = nextProps.match.params.menu || "all"
+        let menu = this.props.match.params.menu || "all"
+        if(prevMenu != menu){
+            this.onRefresh(nextProps)
+        }
+    }
+
     onClickDelete = async()=>{
-        let del_sel = this.state.del_sel
-        let selected = Object.keys(del_sel).filter(e=>del_sel[e])
+        let selected = Object.keys(this.state.templates_checks).filter(e=>this.state.templates_checks[e].template_id)
         if(selected.length == 0)
             return alert("삭제 할 템플릿을 선택해주세요!")
 
         if(await window.confirm("템플릿 삭제", `${selected.length}개의 템플릿을 삭제하시겠습니까?`)){
+            await window.showIndicator()
             await this.props.remove_template(selected)
-
-            let list = await this.props.list_template()
-            this.setState({
-                template:list,
-            })
+            await this.props.list_template(this.getTitle().id, this.state.cur_page - 1)
+            await window.hideIndicator()
             
             alert("성공적으로 삭제했습니다.")
         }
@@ -74,45 +92,163 @@ export default class extends React.Component {
         if(this.state.cur_page == page)
             return;
 
-        await this.props.recently_contracts(page - 1);
+        await this.props.list_template(this.getTitle().id, page - 1);
         this.setState({
             cur_page:page,
-            board_checks:[]
+            templates_checks:[]
         })
     }
-    onClickAddTemplate = async () => {
+    onClickAddTemplate = () => {
         history.push("/new-template")
     }
 
-    onClickTemplate = async(e)=>{
+    onClickTemplate = (e)=>{
         history.push(`/template-edit/${e.template_id}`)
     }
 
-    move(pageName) {
+    onAddFolder = () => {
+        window.openModal("AddCommonModal", {
+            icon:"fas fa-folder",
+            title:"템플릿 폴더 추가",
+            subTitle:"새 폴더명",
+            placeholder:"폴더명을 입력해주세요.",
+            onConfirm: async (folder_name) => {
+                if(!folder_name || folder_name == "") {
+                    return alert("폴더명을 입력해주세요")
+                }
+                let resp = await this.props.add_folder_template(folder_name)
+
+                if(resp) {
+                    await this.props.folder_list_template()
+                }
+            }
+        })
+    }
+
+    move = (pageName) => {
         history.push(`/template/${pageName}`)
     }
 
-    getTitle() {
-        let menu = this.props.match.params.menu || "all"
+    isOpenOption(template_id) {
+        return this.state.showOption == template_id;
+    }
 
-        for(let i = 0 ; i < 10 ; i++) {
-            if(menu == i+"") {
-                return { id:i.toString(), title:"폴더 " + i}
-            }
+    onClickOption(template_id, e) {
+        e.stopPropagation()
+
+        if(this.state.showOption == template_id) {
+            return this.setState({
+                showOption:null
+            })
         }
 
+        this.setState({
+            showOption:template_id
+        })
+    }
+
+    async onRemoveTemplate(template_id, subject, e) {
+        e.stopPropagation()
+
+        if(await window.confirm("템플릿 삭제", `'${subject}' 템플릿을 삭제하시겠습니까?`)) {
+            await window.showIndicator()
+            await this.props.remove_template([template_id])
+            await this.props.list_template(this.getTitle().id, this.state.cur_page - 1)
+            await window.hideIndicator()
+            alert(`성공적으로 ${subject} 템플릿을 삭제하였습니다.`)
+        }
+    }
+
+    getTitle(props) {
+        props = !!props ? props : this.props
+
+        let menu = props.match.params.menu || "all"
+        let folders = props.folders ? props.folders : []
+
+        for(let v of folders) {
+            if(menu == v.folder_id+"") {
+                return { id:v.folder_id, title:v.subject}
+            }
+        }
         if(menu == "unclassified") {
             return { id:"unclassified", title : "분류되지 않은 템플릿"}
         }
         return { id:"all", title : "모든 템플릿"}
     } 
 
-    render_template_slot(e, k) {
+    onRemoveFolder = async (folder_id, folder_name) => {
+        if( await window.confirm("템플릿 폴더 삭제", `${folder_name} 를 정말 삭제하시겠습니까?`) ){
+            await this.props.remove_folder_template([folder_id])
+            history.push("/template")
+        }
+    }
 
+    checkTemplate(template_id) {
+        let l = [...this.state.templates_checks], isCheckAll = false
+
+        let push_flag = true
+        for(let i in l) {
+            if(l[i] == template_id) {
+                l.splice(i, 1)
+                push_flag = false
+                break;
+            }
+        }
+
+        if(push_flag)
+            l.push(template_id)
+
+        this.setState({
+            templates_checks:l
+        })
+    }
+
+    checkAll = () => {
+        let templates = this.props.templates ? this.props.templates : { list:[] }
+        let check_list = templates.list.map( (e) => e.template_id )
+
+        if(this.isCheckAll())
+            check_list = []
+
+        this.setState({
+            templates_checks:check_list
+        })
+    }
+
+    isCheckAll = () => {
+        let templates = this.props.templates ? this.props.templates : { list:[] }
+        return this.state.templates_checks.length == templates.list.length 
+    }
+
+    render_template_slot(e, k) {
+        return <div className="item" key={e.template_id} onClick={()=>history.push(`/edit-template/${e.template_id}`)}>
+            <div className="list-body-item list-chkbox">
+                <CheckBox2 size={18}
+                    on={this.state.templates_checks.includes(e.template_id) || false}
+                    onClick={this.checkTemplate.bind(this, e.template_id)}/>
+            </div>
+            <div className="list-body-item list-name">
+                {e.subject}
+            </div>
+            <div className="list-body-item list-date">{moment(e.addedAt).format("YYYY-MM-DD HH:mm:ss")}</div>
+            <div className="list-body-item list-action">
+                <div className="button-container">
+                    <div className="action-button action-blue-but">사용</div>
+                    <div className="arrow-button arrow-blue-but" onClick={this.onClickOption.bind(this, e.template_id)} >
+                        <i className="fas fa-caret-down"></i>
+                    <div className="arrow-dropdown" style={{display:!!this.isOpenOption(e.template_id) ? "initial" : "none"}}>
+                            <div className="container">
+                                <div className="move" onClick={this.onRemoveTemplate.bind(this, e.template_id, e.subject)}>삭제</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     }
 
 	render() {
-        let folders = this.props.folders ? this.props.folders : { list: [] }
+        let folders = this.props.folders ? this.props.folders : []
 
         let templates = this.props.templates ? this.props.templates : { list:[] }
         let total_cnt = templates.total_cnt
@@ -123,7 +259,10 @@ export default class extends React.Component {
                 <div className="left-top-button" onClick={this.onClickAddTemplate}>생성하기</div>
                 <div className="menu-list">
                     <div className="list">
-                        <div className="title">템플릿</div>
+                        <div className="title">
+                            <div className="text">템플릿</div>
+                            <i className="angle far fa-plus" onClick={this.onAddFolder}></i>
+                        </div>
                         <div className={"item" + (this.getTitle().id == "all" ? " selected" : "")} onClick={this.move.bind(this, "")}>
                             <i className="icon fal fa-clock"></i>
                             <div className="text">모든 템플릿</div>
@@ -132,11 +271,13 @@ export default class extends React.Component {
                             <i className="icon fas fa-thumbtack"></i>
                             <div className="text">분류되지 않은 템플릿</div>
                         </div>
-                        {folders.list.map((e,k)=>{
+                        {folders.map((e,k)=>{
                             let subject = e.subject
                             let folder_id = e.folder_id
-                            return <div className="item" key={e+k}>
-                                <i className="fas icon fa-folder"></i> {subject}
+                            return <div  key={folder_id} className={"item" + (this.getTitle().id == folder_id ? " selected" : "")} onClick={this.move.bind(this, folder_id)}>
+                                <i className="fas icon fa-folder"></i>
+                                <div className="text">{subject}</div>
+                                <i className="angle fal fa-trash" onClick={this.onRemoveFolder.bind(this, folder_id, subject)}></i>
                             </div>
                         })}
                     </div>
@@ -148,8 +289,8 @@ export default class extends React.Component {
                     <div className="head">
                         <div className="list-head-item list-chkbox">
                             <CheckBox2 size={18}
-                                on={this.state.target_me}
-                                onClick={()=>this.setState({target_me:!this.state.target_me})}/>
+                                on={this.isCheckAll()}
+                                onClick={this.checkAll}/>
                         </div>
                         <div className="list-head-item list-name">템플릿명</div>
                         <div className="list-head-item list-date">생성 일자</div>

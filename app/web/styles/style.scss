@@ -91,6 +91,7 @@ select:focus { outline:none; }
     box-shadow: none !important;
 
     border-right: 1px solid $middlegray !important;
+    border-bottom: 1px solid $middlegray !important;
 }
 
 .fr-wrapper {
@@ -98,7 +99,8 @@ select:focus { outline:none; }
     max-height: calc(100% - 77px) !important;
 }
 .fr-view {
-    margin:20px !important;
+    margin: 20px auto !important;
+    max-width: 900px;
     padding:50px 70px !important;
     background-color: white !important;
     min-height: 100% !important;
@@ -1802,7 +1804,7 @@ div.checkbox2-comp{
     }
 }
 
-.add-template {
+.upsert-template-page {
     display: flex;
     flex-direction: column;
     min-height: 100%;
@@ -1854,14 +1856,22 @@ div.checkbox2-comp{
                 padding:0 10px;
 
                 >.title {
-
+                    font-size: $font2;
+                    color: $black;
                 }
 
                 >.text-box {
                     margin-top: 10px;
 
                     >input {
+                        font-size: $font2;
+                        color: $black;
+                    }
 
+                    >.common-select {
+                        .control {
+                            width:100% !important;
+                        }
                     }
                 }
             }

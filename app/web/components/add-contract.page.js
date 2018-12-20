@@ -177,6 +177,14 @@ export default class extends React.Component {
             await window.hideIndicator()
 
         })()
+
+
+        history.block( (targetLocation) => {
+            let out_flag = window._confirm("게약 작성을 중단하고 현재 페이지를 나가시겠습니까?")
+            if(out_flag)
+                history.block( () => true )
+            return out_flag
+        })
     }
 
     componentWillReceiveProps(props){
@@ -417,8 +425,8 @@ export default class extends React.Component {
                                     controlClassName="control"
                                     menuClassName="item"
                                     options={_roles}
-                                    onChange={e=>{this.setState({add_role:e.value})}}
-                                    value={_roles[0]} placeholder="사용자 역할을 골라주세요" />
+                                    onChange={e=>{this.setState({add_role:e.value, add_role_label:e.label})}}
+                                    value={this.state.add_role_label} placeholder="역할" />
                                 <div className={"btn-add-user" + ( (this.state.add_email || "").length==0? "" : " btn-add-user-active" )} onClick={this.onClickAdd}>추가</div>
                             </div>
                         </div>

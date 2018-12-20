@@ -21,20 +21,29 @@ import Dropdown from "react-dropdown"
 import 'react-dropdown/style.css'
 
 import {
+    add_template,
+    update_template,
+    folder_list_template,
     fetch_user_info,
-    list_template,
+    add_folder_template,
+    get_template,
 } from "../../common/actions"
 import CheckBox2 from "./checkbox2"
 
 let mapStateToProps = (state)=>{
 	return {
-        user_info:state.user.info
+        user_info:state.user.info,
+        template_folders:state.template.folders
 	}
 }
 
 let mapDispatchToProps = {
+    add_template,
+    update_template,
+    folder_list_template,
     fetch_user_info,
-    list_template,
+    add_folder_template,
+    get_template,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -79,7 +88,10 @@ export default class extends React.Component {
         }
 
         this.state = {
-            model:""
+            model:"",
+            title:"",
+            editMode:false,
+            select_folder_id:null,
         }
     }
 
@@ -87,14 +99,63 @@ export default class extends React.Component {
         (async()=>{
             await window.showIndicator()
             await this.props.fetch_user_info()
+            let folders = await this.props.folder_list_template()
+            folders = folders ? folders : []
+
+            let templateId = this.props.match.params.template_id
+
+            if(!!templateId) {
+                let templateData = await this.props.get_template(templateId)
+                let select_folder_label = null;
+                for(let v of folders) {
+                    if(v.folder_id == templateData.folder_id) {
+                        select_folder_label = v.subject
+                        break;
+                    }
+                }
+                this.setState({
+                    editMode: true,
+                    template_id : templateId,
+                    model:Buffer.from(templateData.html).toString(),
+                    title:templateData.subject,
+                    select_folder_id:templateData.folder_id,
+                    select_folder_label:select_folder_label,
+                })
+            }
             await window.hideIndicator()
         })()
+
+        history.block( (targetLocation) => {
+            let out_flag = window._confirm("템플릿 작업을 중단하고 현재 페이지를 나가시겠습니까?")
+            if(out_flag)
+                history.block( () => true )
+            return out_flag
+        })
     }
 
     componentWillReceiveProps(props){
         if(props.user_info === false){
             history.replace("/login")
         }
+    }
+
+    onAddFolder = () => {
+        window.openModal("AddCommonModal", {
+            icon:"fas fa-folder",
+            title:"템플릿 폴더 추가",
+            subTitle:"새 폴더명",
+            placeholder:"폴더명을 입력해주세요.",
+            onConfirm: async (folder_name) => {
+                if(!folder_name || folder_name == "") {
+                    return alert("폴더명을 입력해주세요")
+                }
+                let resp = await this.props.add_folder_template(folder_name)
+
+                if(resp) {
+                    await this.props.folder_list_template()
+                }
+            }
+        })
     }
 
     onClickPreview = () => {
@@ -108,19 +169,38 @@ export default class extends React.Component {
         html2pdf().set(savePdfOption).from(document.getElementsByClassName('fr-view')[0]).save()
     }
 
-    onClickSubmit = () => {
+    onClickSubmit = async () => {
+        if(this.state.title == "")
+            return alert("템플릿 제목을 입력해주세요.")
+        else if(this.state.select_folder_id == null)
+            return alert("템플릿을 저장할 폴더를 선택해주세요.")
 
+        if(this.state.editMode) {
+            if(await window.confirm("템플릿 수정", `해당 템플릿을 수정하시겠습니까?`)){
+                await window.showIndicator()
+                await this.props.update_template(this.state.template_id, this.state.select_folder_id, this.state.title, this.state.model)
+                await window.hideIndicator()
+                history.goBack()
+            }
+        } else {
+            if(await window.confirm("템플릿 등록", `해당 템플릿을 등록하시겠습니까?`)){
+                await window.showIndicator()
+                await this.props.add_template(this.state.title, this.state.select_folder_id, this.state.model)
+                await window.hideIndicator()
+                history.goBack()
+            }
+        }
     }
 
 	render() {
-
-        return (<div className="add-template">
+        let folders = this.props.template_folders ? this.props.template_folders : []
+        return (<div className="upsert-template-page">
             <div className="header-page">
                 <div className="header">
                     <div className="left-icon">
                         <i className="fal fa-times" onClick={()=>history.goBack()}></i>
                     </div>
-                    <div className="title">템플릿 생성</div>
+                    <div className="title">{this.state.editMode ? "템플릿 수정":"템플릿 생성"}</div>
                     { !!this.props.user_info ? <Information /> : null }
                 </div>
                 <div className="container">
@@ -139,7 +219,10 @@ export default class extends React.Component {
                         <div className="desc">
                             <div className="title">템플릿명</div>
                             <div className="text-box">
-                                <input className="common-textbox" type="text" />
+                                <input className="common-textbox"
+                                    type="text"
+                                    value={this.state.title}
+                                    onChange={(e) => this.setState({title:e.target.value})} />
                             </div>
                         </div>
                         <div className="desc">
@@ -148,9 +231,9 @@ export default class extends React.Component {
                                 <Dropdown className="common-select"
                                     controlClassName="control"
                                     menuClassName="item"
-                                    options={_roles}
-                                    onChange={e=>{this.setState({add_role:e.value})}}
-                                    value={_roles[0]} placeholder="사용자 역할을 골라주세요" />
+                                    options={folders.map((e,k) => {return {value:e.folder_id, label:e.subject}})}
+                                    onChange={e=>{this.setState({select_folder_id:e.value, select_folder_label: e.label})}}
+                                    value={this.state.select_folder_label} placeholder="저장할 폴더를 골라주세요" />
                             </div>
                         </div>
                     </div>
@@ -162,7 +245,7 @@ export default class extends React.Component {
                     미리보기
                 </div>
                 <div className="submit" onClick={this.onClickSubmit}>
-                    등록하기
+                    {this.state.editMode ? "적용하기":"등록하기"}
                 </div>
             </div>
 		</div>);

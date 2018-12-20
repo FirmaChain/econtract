@@ -24,12 +24,12 @@ import RegisterPage from "./components/register.page"
 import RecoverPage from "./components/recover.page"
 import HomePage from "./components/home.page"
 import TemplatePage from "./components/template-list.page"
-import AddTemplatePage from "./components/add-template.page"
+import UpsertTemplatePage from "./components/upsert-template.page"
 
 import FolderPage from "./components/contract-folder-list.page"
 import InFolderPage from "./components/home.page"
 //import AddTemplatePage from "./components/old-add-template.page"
-import EditTemplatePage from "./components/edit-template.page"
+// import EditTemplatePage from "./components/edit-template.page"
 import AddContractPage from "./components/add-contract.page"
 import ContractEditorPage from "./components/contract-editor.page"
 import ContractConfirmPage from "./components/contract-confirm.page"
@@ -75,7 +75,8 @@ window.addEventListener("load",()=>{
 
 					<Route onEnter={resolver} exact path="/template" component={HomePage} />
 					<Route onEnter={resolver} exact path="/template/:menu" component={HomePage} />
-					<Route onEnter={resolver} exact path="/new-template" component={AddTemplatePage} />
+					<Route onEnter={resolver} exact path="/new-template" component={UpsertTemplatePage} />
+					<Route onEnter={resolver} exact path="/edit-template/:template_id" component={UpsertTemplatePage} />
 
 					<Route onEnter={resolver} exact path="/group" component={HomePage} />
 					<Route onEnter={resolver} exact path="/group/:menu" component={HomePage} />

@@ -48,29 +48,39 @@ export default class extends React.Component {
             board_checks : [],
             showGroupMenu: false,
             showOptions: null,
+            cur_page:1
         };
 	}
 
 	componentDidMount() {
         (async()=>{
-            await this.props.folder_list()
-
-            if(this.props.user_info.account_type == 1 || this.props.user_info.account_type == 2)
-                await this.props.get_my_groups_info()
-
-            if(this.getTitle().id == "recently")
-                await this.props.recently_contracts()
-
+            await this.onRefresh();
         })()
 	}
 
-    componentWillReceiveProps(props){
-        if(props.user_info === false) {
+    onRefresh = async (nextProps) => {
+        await this.props.folder_list()
+
+        if(this.props.user_info.account_type == 1 || this.props.user_info.account_type == 2)
+            await this.props.get_my_groups_info()
+
+        if(this.getTitle(nextProps).id == "recently")
+            await this.props.recently_contracts()
+    }
+
+    componentWillReceiveProps(nextProps){
+        if(nextProps.user_info === false) {
             history.replace("/login")
+        }
+
+        let prevMenu = nextProps.match.params.menu || "recently"
+        let menu = this.props.match.params.menu || "recently"
+        if(prevMenu != menu){
+            this.onRefresh(nextProps)
         }
     }
 
-	onClickAddContract(){
+	onClickAddContract() {
         window.openModal("StartContract",{
             onClick:async(type)=>{
                 if(type == 1) {
@@ -82,8 +92,10 @@ export default class extends React.Component {
         })
 	}
 
-	getTitle() {
-		let menu = this.props.match.params.menu || "recently"
+	getTitle(props) {
+        props = !!props ? props : this.props
+
+		let menu = props.match.params.menu || "recently"
 
 		if(menu == "lock") {
 			return { id:"lock", title : "잠김"}
@@ -185,6 +197,45 @@ export default class extends React.Component {
         return this.state.showGroupMenu
     }
 
+    checkBoard(contract_id) {
+        let l = [...this.state.board_checks], isCheckAll = false
+
+        let push_flag = true
+        for(let i in l) {
+            if(l[i] == contract_id) {
+                l.splice(i, 1)
+                push_flag = false
+                break;
+            }
+        }
+
+        if(push_flag)
+            l.push(contract_id)
+
+        this.setState({
+            board_checks:l
+        })
+    }
+
+    checkAll = () => {
+        let board = this.props.board ? this.props.board : { list:[ {contract_id:0}, {contract_id:1}, {contract_id:2}, {contract_id:3}] }
+        board = { list:[ {contract_id:0}, {contract_id:1}, {contract_id:2}, {contract_id:3}] }
+        let check_list = board.list.map( (e) => e.contract_id )
+
+        if(this.isCheckAll())
+            check_list = []
+
+        this.setState({
+            board_checks:check_list
+        })
+    }
+
+    isCheckAll = () => {
+        let board = this.props.board ? this.props.board : { list:[ {contract_id:0}, {contract_id:1}, {contract_id:2}, {contract_id:3}] }
+        board = { list:[ {contract_id:0}, {contract_id:1}, {contract_id:2}, {contract_id:3}] }
+        return this.state.board_checks.length == board.list.length 
+    }
+
     render_board_slot(e,k){
         let status_text = (status)=>{
             if(status == 0) {
@@ -203,12 +254,8 @@ export default class extends React.Component {
         return (<div key={e.contract_id} className="item">
             <div className="list-body-item list-chkbox">
                 <CheckBox2 size={18}
-                    on={this.state.board_checks[e.contract_id] || false}
-                    onClick={()=> {
-                        let l = [...this.state.board_checks]
-                        l[e.contract_id] = !l[e.contract_id]
-                        this.setState({board_checks:l})
-                    }}/>
+                    on={this.state.board_checks.includes(e.contract_id) || false}
+                    onClick={this.checkBoard.bind(this, e.contract_id)}/>
             </div>
             <div className="list-body-item list-name">
                 {e.name}
@@ -220,8 +267,18 @@ export default class extends React.Component {
             </div>
             <div className="list-body-item list-date">{moment(e.updatedAt).format("YYYY-MM-DD HH:mm:ss")}</div>
             <div className="list-body-item list-action">
-                <div className="action-button blue-but">서명</div>
-                <div className="arrow-button blue-but"><i className="fas fa-caret-down"></i></div>
+                <div className="button-container">
+                    <div className="action-button action-blue-but">서명</div>
+                    <div className="arrow-button arrow-blue-but" onClick={this.onClickOption.bind(this, e.contract_id)} >
+                        <i className="fas fa-caret-down"></i>
+                        <div className="arrow-dropdown" style={{display:!!this.isOpenOption(e.contract_id) ? "initial" : "none"}}>
+                            <div className="container">
+                                <div className="detail">상세 정보</div>
+                                <div className="move">이동</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>)
     }
@@ -301,8 +358,8 @@ export default class extends React.Component {
                     <div className="head">
                         <div className="list-head-item list-chkbox">
                         	<CheckBox2 size={18}
-                        		on={this.state.target_me}
-                        		onClick={()=>this.setState({target_me:!this.state.target_me})}/>
+                        		on={this.isCheckAll()}
+                        		onClick={this.checkAll}/>
                         </div>
                         <div className="list-head-item list-name">계약명</div>
                         <div className="list-head-item list-status">상태</div>
@@ -316,8 +373,8 @@ export default class extends React.Component {
                     <div className="item">
                         <div className="list-body-item list-chkbox">
                             <CheckBox2 size={18}
-                                on={false}
-                                onClick={()=> {}}/>
+                                on={this.state.board_checks.includes(0) || false}
+                                onClick={this.checkBoard.bind(this, 0)}/>
                         </div>
                         <div className="list-body-item list-name">
                             계약서 테스트 11111
@@ -346,8 +403,8 @@ export default class extends React.Component {
                     <div className="item">
                         <div className="list-body-item list-chkbox">
                             <CheckBox2 size={18}
-                                on={false}
-                                onClick={()=> {}}/>
+                                on={this.state.board_checks.includes(1) || false}
+                                onClick={this.checkBoard.bind(this, 1)}/>
                         </div>
                         <div className="list-body-item list-name">
                             계약서 테스트 11111
@@ -376,8 +433,8 @@ export default class extends React.Component {
                     <div className="item">
                         <div className="list-body-item list-chkbox">
                             <CheckBox2 size={18}
-                                on={false}
-                                onClick={()=> {}}/>
+                                on={this.state.board_checks.includes(2) || false}
+                                onClick={this.checkBoard.bind(this, 2)}/>
                         </div>
                         <div className="list-body-item list-name">
                             계약서 테스트 11111
@@ -406,8 +463,8 @@ export default class extends React.Component {
                     <div className="item">
                         <div className="list-body-item list-chkbox">
                             <CheckBox2 size={18}
-                                on={false}
-                                onClick={()=> {}}/>
+                                on={this.state.board_checks.includes(3) || false}
+                                onClick={this.checkBoard.bind(this, 3)}/>
                         </div>
                         <div className="list-body-item list-name">
                             계약서 테스트 11111
