@@ -610,7 +610,7 @@ export default class extends React.Component {
             let corpKey = get256bitDerivedPublicKey(corpMasterKey, "m/0'/0'");
             let encryptedCorpInfo = aes_encrypt(JSON.stringify(corp_info), corpKey);
             let corpResp = await this.props.new_corp(encryptedCorpInfo);
-            if (corpResp != 1) {
+            if (corpResp != -1) {
                 return alert("Failed to create corp");
             }
             info['corp_master_key'] = corpMasterKey.toString("hex");
@@ -618,7 +618,7 @@ export default class extends React.Component {
             info['corp_key'] = corpKey.toString('hex');
             let encryptedInfo = aes_encrypt(JSON.stringify(info), this.state.account.masterKeyPublic);
             let updateResp = await this.props.update_user_info(encryptedInfo);
-            if (updateResp != 1) {
+            if (!updateResp) {
                 return alert("Failed to update info");
             }
         }
