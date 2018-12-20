@@ -124,6 +124,13 @@ export default class extends React.Component {
             }
             await window.hideIndicator()
         })()
+
+        history.block( (targetLocation) => {
+            let out_flag = window._confirm("템플릿 작업을 중단하고 현재 페이지를 나가시겠습니까?")
+            if(out_flag)
+                history.block( () => true )
+            return out_flag
+        })
     }
 
     componentWillReceiveProps(props){

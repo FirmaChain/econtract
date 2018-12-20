@@ -202,7 +202,7 @@ export default class extends React.Component {
 	render() {
         let folders = this.props.folders ? this.props.folders : { list: [] }
         let groups = this.props.groups ? this.props.groups : []
-        console.log(groups)
+        
         let board = this.props.board ? this.props.board : { list:[] }
         let total_cnt = board.total_cnt
         let page_num = board.page_num
