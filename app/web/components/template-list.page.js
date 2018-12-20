@@ -44,7 +44,7 @@ export default class extends React.Component {
 		this.state={
             cur_page:1,
             showOptions: null,
-            template_checks:[]
+            templates_checks:[]
         }
 	}
 
@@ -74,7 +74,7 @@ export default class extends React.Component {
     }
 
     onClickDelete = async()=>{
-        let selected = Object.keys(this.state.template_checks).filter(e=>this.state.template_checks[e].template_id)
+        let selected = Object.keys(this.state.templates_checks).filter(e=>this.state.templates_checks[e].template_id)
         if(selected.length == 0)
             return alert("삭제 할 템플릿을 선택해주세요!")
 
@@ -95,7 +95,7 @@ export default class extends React.Component {
         await this.props.list_template(this.getTitle().id, page - 1);
         this.setState({
             cur_page:page,
-            template_checks:[]
+            templates_checks:[]
         })
     }
     onClickAddTemplate = () => {
@@ -183,12 +183,49 @@ export default class extends React.Component {
         }
     }
 
+    checkTemplate(template_id) {
+        let l = [...this.state.templates_checks], isCheckAll = false
+
+        let push_flag = true
+        for(let i in l) {
+            if(l[i] == template_id) {
+                l.splice(i, 1)
+                push_flag = false
+                break;
+            }
+        }
+
+        if(push_flag)
+            l.push(template_id)
+
+        this.setState({
+            templates_checks:l
+        })
+    }
+
+    checkAll = () => {
+        let templates = this.props.templates ? this.props.templates : { list:[] }
+        let check_list = templates.list.map( (e) => e.template_id )
+
+        if(this.isCheckAll())
+            check_list = []
+
+        this.setState({
+            templates_checks:check_list
+        })
+    }
+
+    isCheckAll = () => {
+        let templates = this.props.templates ? this.props.templates : { list:[] }
+        return this.state.templates_checks.length == templates.list.length 
+    }
+
     render_template_slot(e, k) {
         return <div className="item" key={e.template_id} onClick={()=>history.push(`/edit-template/${e.template_id}`)}>
             <div className="list-body-item list-chkbox">
                 <CheckBox2 size={18}
-                    on={false}
-                    onClick={() => {}}/>
+                    on={this.state.templates_checks.includes(e.template_id) || false}
+                    onClick={this.checkTemplate.bind(this, e.template_id)}/>
             </div>
             <div className="list-body-item list-name">
                 {e.subject}
@@ -252,8 +289,8 @@ export default class extends React.Component {
                     <div className="head">
                         <div className="list-head-item list-chkbox">
                             <CheckBox2 size={18}
-                                on={this.state.target_me}
-                                onClick={()=>this.setState({target_me:!this.state.target_me})}/>
+                                on={this.isCheckAll()}
+                                onClick={this.checkAll}/>
                         </div>
                         <div className="list-head-item list-name">템플릿명</div>
                         <div className="list-head-item list-date">생성 일자</div>
