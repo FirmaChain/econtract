@@ -1563,6 +1563,7 @@ div.checkbox2-comp{
         width:100%;
         padding:20px 10px;
         padding-top: 50px;
+        margin-bottom:90px;
 
         >.row {
             display: flex;
@@ -1594,6 +1595,18 @@ div.checkbox2-comp{
                     font-size: $font0;
                     color: $gray;
                     cursor: pointer;
+                }
+
+                >.desc-button {
+                    display: inline-block;
+                    font-size: $font3;
+                    cursor: pointer;
+                    padding:15px 20px;
+                    background-color: $blue;
+                    color:white;
+                    margin-top:20px;
+                    width:150px;
+                    text-align: center;
                 }
             }
 
