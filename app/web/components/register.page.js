@@ -595,7 +595,6 @@ export default class extends React.Component {
         let privateKey = "0x"+keyPair.privateKey.toString('hex');
 
         let wallet = Web3.walletWithPK(privateKey)
-        console.log(wallet)
         let encryptedInfo = aes_encrypt(JSON.stringify(info), this.state.account.masterKeyPublic);
         
         await window.showIndicator()
