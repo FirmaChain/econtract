@@ -144,7 +144,7 @@ export default class extends React.Component {
             corp_id:this.props.user_info.corp_id,
         }
 
-        let resp = await this.props.add_member_group(this.getGroupId(), this.state.add_email, data);
+        let resp = await this.props.add_member_group(this.getGroupId(), this.state.add_email.trim(), data);
         if(resp) {
             this.setState({
                 add_email:""
