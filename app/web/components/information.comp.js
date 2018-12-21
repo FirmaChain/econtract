@@ -95,11 +95,11 @@ export default class extends React.Component{
     }
 
     onMyInfo = ()=>{
-        history.push("/information/profile")
+        history.push("/profile")
     }
 
     onPriceStatusInfo = ()=>{
-        history.push("/information/price-status")
+        history.push("/price-status")
     }
 
     deleteSession = () => {
