@@ -215,12 +215,12 @@ export async function api_new_corp(data){
         session:window.getCookie("session")
     });
 }
-export async function api_new_group(title){
+export async function api_create_group(title){
     let __data = new FormData();
 
     __data.append('title', title)
 
-    return await post("/new_group", __data,{
+    return await post("/create_group", __data,{
         session:window.getCookie("session")
     });
 }
@@ -248,15 +248,6 @@ export async function api_get_group_members(group_id){
     __data.append('group_id', group_id)
 
     return await post("/get_group_members", __data,{
-        session:window.getCookie("session")
-    });
-}
-export async function api_create_group(group_name){
-    let __data = new FormData();
-
-    __data.append('group_name', group_name)
-
-    return await post("/create_group", __data,{
         session:window.getCookie("session")
     });
 }

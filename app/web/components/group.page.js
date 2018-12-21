@@ -86,6 +86,7 @@ export default class extends React.Component {
             onConfirm: async (group_name) => {
                 //TODO 그룹 생성 api
                 let resp = await this.props.create_group(group_name);
+                alert(resp);
             }
         })
 	}

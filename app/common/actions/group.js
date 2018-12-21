@@ -10,7 +10,6 @@ import {
     api_remove_invite_group,
     api_change_group_title,
     api_new_corp,
-    api_new_group,
 } from "../../../gen_api"
 
 import {
@@ -138,13 +137,6 @@ export function invite_information(email, registration_code) {
 export function new_corp(data) {
     return async function() {
         let resp = await api_new_corp(data);
-        return resp.payload;
-    }
-}
-
-export function new_group(title) {
-    return async function() {
-        let resp = await api_new_group(title);
         return resp.payload;
     }
 }
