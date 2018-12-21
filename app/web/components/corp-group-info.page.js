@@ -135,7 +135,16 @@ export default class extends React.Component {
         if(this.state.add_email == "")
             return alert("초대하려는 그룹원의 이메일을 입력해주세요.")
 
-        let resp = await this.props.add_member_group(this.getGroupId(), this.state.add_email, {});
+        let data = {
+            company_name: this.props.user_info.company_name,
+            duns_number: this.props.user_info.duns_number,
+            company_ceo: this.props.user_info.company_ceo,
+            company_address: this.props.user_info.company_address,
+            corp_key:this.props.user_info.corp_key,
+            corp_id:this.props.user_info.corp_id,
+        }
+
+        let resp = await this.props.add_member_group(this.getGroupId(), this.state.add_email, data);
         return alert(JSON.stringify(resp));
     }
 

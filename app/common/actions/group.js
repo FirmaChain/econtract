@@ -132,7 +132,7 @@ export function add_member_group(group_id, email, data_plain) {
         for (let i = 0; i < passphrase2_length; i++)
             passphrase2 += possible.charAt(Math.floor(Math.random() * possible.length));
         let key = hmac_sha256("", Buffer.from(email+passphrase2));
-        let data_plain_buffered = Buffer.from(JSON.stringify(data_plain);
+        let data_plain_buffered = Buffer.from(JSON.stringify(data_plain));
         let data = Buffer.from((await aes_encrypt_async(data_plain_buffered, key)), 'binary').toString('hex');
 
         let resp = await api_add_member_group(group_id, email, passphrase2, data);
