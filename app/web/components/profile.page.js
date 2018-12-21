@@ -83,6 +83,9 @@ export default class extends React.Component {
                 username: this.state.username,
                 job: this.state.job,
                 userphone: this.state.userphone,
+                corp_id:this.state.corp_id,
+				corp_master_key:this.state.corp_master_key,
+				corp_key:this.state.corp_key,
             }
         } else if(account_type == 2) { // 기업 직원 계정
             info = {
@@ -90,6 +93,8 @@ export default class extends React.Component {
                 username: this.state.username,
                 job: this.state.job,
                 userphone: this.state.userphone,
+                corp_id:this.state.corp_id,
+				corp_key:this.state.corp_key,
             }
         }
         try {
@@ -106,7 +111,7 @@ export default class extends React.Component {
     	} catch( err ) {
     		console.log(err)
     		return alert("에러가 발생하여 회원정보 수정에 실패하였습니다.")
-    		
+
     	}
     	return alert("회원정보 수정에 성공하였습니다.")
     }
