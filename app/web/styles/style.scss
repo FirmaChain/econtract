@@ -97,6 +97,7 @@ select:focus { outline:none; }
 .fr-wrapper {
     background-color: $gray !important;
     max-height: calc(100% - 77px) !important;
+    padding: 0 20px !important;
 }
 .fr-view {
     margin: 20px auto !important;
