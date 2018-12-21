@@ -524,12 +524,3 @@ export async function api_update_user_info(encrypted_info){
         session:window.getCookie("session")
     });
 }
-export async function api_update_corp_info(encrypted_corp_info){
-    let __data = new FormData();
-
-    __data.append('encrypted_corp_info', encrypted_corp_info)
-
-    return await post("/update_corp_info", __data,{
-        session:window.getCookie("session")
-    });
-}

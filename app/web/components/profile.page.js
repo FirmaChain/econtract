@@ -106,6 +106,7 @@ export default class extends React.Component {
     	} catch( err ) {
     		console.log(err)
     		return alert("에러가 발생하여 회원정보 수정에 실패하였습니다.")
+    		
     	}
     	return alert("회원정보 수정에 성공하였습니다.")
     }
