@@ -115,7 +115,7 @@ export function register_new_account(account, info, email, name, eth, type){
             eth,
             type
         )).payload;
-        if (type == 1) {
+        if (type != 0) {
             let auth = account.auth;
             let eems = Buffer.from(account.encryptedMasterSeed, 'hex').toString('base64');
             window.setCookie("session", resp.session, 0.125)
