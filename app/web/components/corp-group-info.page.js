@@ -13,7 +13,8 @@ import {
     hide_group,
     fetch_user_info,
     get_group_info,
-    remove_member_group,
+    remove_group_member,
+    remove_group_member_all,
     change_group_title,
 } from "../../common/actions"
 
@@ -29,7 +30,8 @@ let mapDispatchToProps = {
     hide_group,
     fetch_user_info,
     get_group_info,
-    remove_member_group,
+    remove_group_member,
+    remove_group_member_all,
     change_group_title,
 }
 
@@ -150,15 +152,41 @@ export default class extends React.Component {
     }
 
     onRemoveGroupMember = async (account_id) => {
-        if( await window.confirm("그룹원 삭제", "해당 그룹원을 이 그룹에서 삭제하시겠습니까?") ){
-            let resp = await this.props.remove_member_group(this.getGroupId(), account_id)
-            if(resp) {
-                alert("그룹원을 해당 그룹에서 삭제했습니다.")
-                await this.onRefresh()
+
+        window.openModal("RemoveCommonModal", {
+            icon:"fas fa-trash",
+            title:"그룹원 삭제",
+            subTitle:`해당 그룹원을 이 그룹에서 삭제하시겠습니까?`,
+            onDelete: async (group_name) => {
+                let resp = await this.props.remove_member_group(this.getGroupId(), account_id)
+                if(resp) {
+                    alert("그룹원을 해당 그룹에서 삭제했습니다.")
+                    await this.onRefresh()
+                }
+                else {
+                    alert("그룹원을 삭제에 실패하였습니다.")
+                }
             }
-            else
-                alert("그룹원을 삭제에 실패하였습니다.")
-        }
+        })
+    }
+
+    onAllRemoveGroupMembers = async () => {
+
+        window.openModal("RemoveCommonModal", {
+            icon:"fas fa-trash",
+            title:"그룹원 전체 삭제",
+            subTitle:`모든 그룹원들을 삭제하시겠습니까?`,
+            onDelete: async (group_name) => {
+                let resp = await this.props.remove_group_member_all(this.getGroupId())
+                if(resp) {
+                    alert("그룹원을 해당 그룹에서 삭제했습니다.")
+                    await this.onRefresh()
+                }
+                else {
+                    alert("그룹원을 삭제에 실패하였습니다.")
+                }
+            }
+        })
     }
 
 	render() {
@@ -238,6 +266,7 @@ export default class extends React.Component {
                     <div className="left-desc">
                         <div className="desc-head">그룹원 관리</div>
                         <div className="desc-content">해당 그룹에서 그룹 변경 및 삭제 처리하실 수 있습니다</div>
+                        <div className="desc-button" onClick={this.onAllRemoveGroupMembers}>그룹원 전체 삭제</div>
                     </div>
                     <div className="right-form">
                         <div className="column">
