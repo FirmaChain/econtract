@@ -262,6 +262,24 @@ export async function api_remove_group_member(group_id,account_id){
         session:window.getCookie("session")
     });
 }
+export async function api_remove_group_member_all(group_id){
+    let __data = new FormData();
+
+    __data.append('group_id', group_id)
+
+    return await post("/remove_group_member_all", __data,{
+        session:window.getCookie("session")
+    });
+}
+export async function api_consume_invitation(invite_code){
+    let __data = new FormData();
+
+    __data.append('invite_code', invite_code)
+
+    return await post("/consume_invitation", __data,{
+        session:window.getCookie("session")
+    });
+}
 export async function api_remove_group(group_id){
     let __data = new FormData();
 
