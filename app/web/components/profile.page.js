@@ -84,7 +84,7 @@ export default class extends React.Component {
 	            	</div>
 	            	{this.props.user_info.account_type == 0 ? <div className="text-place">
 	            		<div className="title">주소</div>
-	            		<div className="text-box"><input className="common-textbox" type="text" value={this.state.address} onChange={this.onInfoChange.bind(this, "address")}/></div>
+	            		<div className="text-box"><input className="common-textbox" type="text" value={this.state.useraddress} onChange={this.onInfoChange.bind(this, "useraddress")}/></div>
 	            	</div> : null}
 	            	<div className="text-place">
 	            		<div className="title">마스터 키워드 확인</div>

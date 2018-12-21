@@ -579,7 +579,6 @@ export default class extends React.Component {
             info = {
                 email: this.state.email,
                 username: this.state.username,
-                department: this.state.department,
                 job: this.state.job,
                 userphone: this.state.userphone,
             }
@@ -587,7 +586,6 @@ export default class extends React.Component {
             info = {
                 email: this.state.email,
                 username: this.state.username,
-                department: this.state.department,
                 job: this.state.job,
                 userphone: this.state.userphone,
             }
