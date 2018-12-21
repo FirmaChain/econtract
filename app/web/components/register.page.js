@@ -54,6 +54,7 @@ let mapDispatchToProps = {
     invite_information,
     update_user_info,
     new_corp,
+    consume_invitation,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
