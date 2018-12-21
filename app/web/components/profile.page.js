@@ -29,6 +29,7 @@ import {
 import {
     fetch_user_info,
     update_user_info,
+    update_corp_info,
 } from "../../common/actions"
 
 let mapStateToProps = (state)=>{
@@ -40,6 +41,7 @@ let mapStateToProps = (state)=>{
 let mapDispatchToProps = {
     fetch_user_info,
     update_user_info,
+    update_corp_info,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -95,11 +97,9 @@ export default class extends React.Component {
 	        let encryptedInfo = aes_encrypt(JSON.stringify(info), masterKeyPublic);
 	        await this.props.update_user_info(encryptedInfo)
 
-
-
 	        if(account_type == 1) {
-	        	let encryptedCorpInfo = aes_encrypt(JSON.stringify(corp_info), Buffer.from(this.props.corp_key,'hex'))
-	        	this.props.update_corp_info(encryptedCorpInfo)
+	        	let encryptedCorpInfo = aes_encrypt(JSON.stringify(corp_info), Buffer.from(this.props.user_info.corp_key,'hex'))
+	        	await this.props.update_corp_info(encryptedCorpInfo)
 	        }
 
 	        await this.props.fetch_user_info()
