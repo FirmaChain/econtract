@@ -579,7 +579,6 @@ export default class extends React.Component {
             info = {
                 email: this.state.email,
                 username: this.state.username,
-                department: this.state.department,
                 job: this.state.job,
                 userphone: this.state.userphone,
             }
@@ -587,7 +586,6 @@ export default class extends React.Component {
             info = {
                 email: this.state.email,
                 username: this.state.username,
-                department: this.state.department,
                 job: this.state.job,
                 userphone: this.state.userphone,
             }
@@ -597,7 +595,6 @@ export default class extends React.Component {
         let privateKey = "0x"+keyPair.privateKey.toString('hex');
 
         let wallet = Web3.walletWithPK(privateKey)
-        console.log(wallet)
         let encryptedInfo = aes_encrypt(JSON.stringify(info), this.state.account.masterKeyPublic);
         
         await window.showIndicator()
