@@ -5,6 +5,7 @@ import {
     api_get_group_members,
     api_create_group,
     api_remove_group,
+    api_hide_group,
     api_add_member_group,
     api_remove_member_group,
     api_remove_invite_group,
@@ -45,13 +46,20 @@ export function closeGroup(group_id){
 	}
 }
 
-export function get_group_info(group_id) {
+export function get_group_info(group_id, hidden=0) {
     return async function(dispatch) {
-        let infos = await api_get_group_info(group_id);
+        let infos = await api_get_group_info(group_id, hidden);
         if (group_id == 0) {
             dispatch({ type:GET_MY_GROUPS_INFO, payload:infos.payload});
         }
         return infos.payload;
+    }
+}
+
+export function hide_group(group_id) {
+    return async function(dispatch) {
+        let infos = await api_hide_group(group_id);
+        return infos.payload
     }
 }
 

@@ -224,12 +224,22 @@ export async function api_create_group(title){
         session:window.getCookie("session")
     });
 }
-export async function api_get_group_info(group_id){
+export async function api_get_group_info(group_id,hidden){
+    let __data = new FormData();
+
+    __data.append('group_id', group_id);
+	__data.append('hidden', hidden)
+
+    return await post("/get_group_info", __data,{
+        session:window.getCookie("session")
+    });
+}
+export async function api_hide_group(group_id){
     let __data = new FormData();
 
     __data.append('group_id', group_id)
 
-    return await post("/get_group_info", __data,{
+    return await post("/hide_group", __data,{
         session:window.getCookie("session")
     });
 }
