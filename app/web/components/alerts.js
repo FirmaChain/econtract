@@ -97,7 +97,7 @@ class RemoveCommonModal extends React.Component {
         window.closeModal(this.props.modalId)
     }
 
-    onConfirm = () => {
+    onDelete = () => {
         this.props.onDelete && this.props.onDelete()
         this.closeSelf()
     }
