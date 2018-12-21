@@ -314,7 +314,8 @@ export default class extends React.Component {
                 console.log(registration_info)
                 if (registration_info) {
                     this.setState({
-                        email:email_address,
+                        registration_code: registration_code,
+                        email: email_address,
                         company_name: registration_info.company_name,
                         duns_number: registration_info.duns_number,
                         company_ceo: registration_info.company_ceo,
@@ -624,7 +625,7 @@ export default class extends React.Component {
                 return alert("Failed to update info");
             }
         } else if (account_type == 2) {
-            let consumeResp = await this.props.consume_invitation(invitationcode);
+            let consumeResp = await this.props.consume_invitation(this.state.registration_code);
             if (!consumeResp) {
                 return alert("Failed to link to corp");
             }
