@@ -41,14 +41,79 @@ export default class extends React.Component {
 	}
 
 	componentDidMount(){
+		if(this.props.user_info) {
+			let info = this.props.user_info
+
+			this.setState({
+				...info
+			})
+		}
+    }
+
+    onSaveInformation = () => {
+
+    }
+
+    onInfoChange = (propertyName, e) => {
+    	this.setState({
+    		[propertyName]:e.target.value
+    	})
     }
 
 	render() {
-        /*if(!this.props.user_info)
-            return <div />*/
+        if(!this.props.user_info || !this.state.username)
+            return <div />
+
+        console.log(this.state)
 
 		return (<div className="right-desc profile-page">
-            asdasd
+			<div className="info-container">
+	            <div className="info">
+	            	<div className="title">계정 정보</div>
+	            	<div className="text-place">
+	            		<div className="title">이름</div>
+	            		<div className="text-box"><input className="common-textbox" type="text" value={this.state.username} onChange={this.onInfoChange.bind(this, "username")}/></div>
+	            	</div>
+	            	<div className="text-place">
+	            		<div className="title">이메일</div>
+	            		<div className="text-box"><input className="common-textbox" type="text" value={this.state.email} onChange={this.onInfoChange.bind(this, "email")}/></div>
+	            	</div>
+	            	<div className="text-place">
+	            		<div className="title">휴대폰 번호</div>
+	            		<div className="text-box"><input className="common-textbox" type="text" value={this.state.userphone} onChange={this.onInfoChange.bind(this, "userphone")}/></div>
+	            	</div>
+	            	{this.props.user_info.account_type == 0 ? <div className="text-place">
+	            		<div className="title">주소</div>
+	            		<div className="text-box"><input className="common-textbox" type="text" value={this.state.address} onChange={this.onInfoChange.bind(this, "address")}/></div>
+	            	</div> : null}
+	            	<div className="text-place">
+	            		<div className="title">마스터 키워드 확인</div>
+	            		<div className="text-box"><input className="common-textbox" type="text" value={this.state.username} onChange={this.onInfoChange.bind(this, "username")}/></div>
+	            	</div>
+	            </div>
+	            {this.props.user_info.account_type != 0 ? <div className="info">
+	            	<div className="title">기업 정보</div>
+	            	<div className="text-place">
+	            		<div className="title">기업명</div>
+	            		<div className="text-box"><input className="common-textbox" type="text" value={this.state.company_name} onChange={this.onInfoChange.bind(this, "company_name")}/></div>
+	            	</div>
+	            	<div className="text-place">
+	            		<div className="title">사업자 등록번호</div>
+	            		<div className="text-box"><input className="common-textbox" type="text" value={this.state.duns_number} onChange={this.onInfoChange.bind(this, "duns_number")}/></div>
+	            	</div>
+	            	<div className="text-place">
+	            		<div className="title">대표자 이름</div>
+	            		<div className="text-box"><input className="common-textbox" type="text" value={this.state.company_ceo} onChange={this.onInfoChange.bind(this, "company_ceo")}/></div>
+	            	</div>
+	            	<div className="text-place">
+	            		<div className="title">주소</div>
+	            		<div className="text-box"><input className="common-textbox" type="text" value={this.state.company_address} onChange={this.onInfoChange.bind(this, "company_address")}/></div>
+	            	</div>
+	            </div>:null}
+            </div>
+            <div className="button-container">
+            	<div className="blue-but" onClick={this.onSaveInformation}>저장하기</div>
+            </div>
         </div>)
 	}
 }

@@ -2034,12 +2034,6 @@ div.checkbox2-comp{
         padding:20px;
         box-sizing: border-box;
 
-        >.title {
-            font-size: $font5;
-            font-weight: bold;
-            color: $black;
-        }
-
         >.container {
             margin-top:30px;
         }
@@ -2048,6 +2042,64 @@ div.checkbox2-comp{
 
 .profile-page {
 
+    >.info-container {
+        display: flex;
+        flex-direction: row;
+
+        >.info {
+            flex:1;
+
+            >.title {
+                font-size: $font5;
+                color: $black;
+                margin-bottom:30px;
+            }
+            
+            >.text-place {
+                margin-bottom:25px;
+
+                >.title {
+                    font-size: $font2;
+                    color: $black;
+                }
+
+                >.text-box {
+                    margin-top: 10px;
+
+                    >input {
+                        font-size: $font1;
+                        color: $black;
+                        max-width:300px;
+                    }
+
+                    >.common-select {
+                        .control {
+                            width:100% !important;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    >.button-container {
+        text-align: right;
+        margin-top:30px;
+
+        >.blue-but {
+            display: inline-block;
+            font-size: $font3;
+            cursor: pointer;
+            padding:15px 20px;
+            background-color: $blue;
+            color:white;
+            margin-left: 20px;
+            margin-right: 10px;
+            width:200px;
+            text-align: center;
+        }
+
+    }
 }
 
 .price-status-page {
