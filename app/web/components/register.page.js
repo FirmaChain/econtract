@@ -318,6 +318,8 @@ export default class extends React.Component {
                         duns_number: registration_info.duns_number,
                         company_ceo: registration_info.company_ceo,
                         company_address: registration_info.company_address,
+                        corp_key: registration_info.corp_key,
+                        corp_id: registration_info.corp_id,
                         email_verification: true,
                     });
                 } else {
@@ -588,6 +590,8 @@ export default class extends React.Component {
                 username: this.state.username,
                 job: this.state.job,
                 userphone: this.state.userphone,
+                corp_id: this.state.corp_id,
+                corp_key: this.state.corp_key,
             }
         }
 
@@ -618,6 +622,13 @@ export default class extends React.Component {
             if (!updateResp) {
                 return alert("Failed to update info");
             }
+        } else if (account_type == 2) {
+            /*
+            let consumeResp = await this.props.consume_invitation(invitationcode);
+            if (!consumeResp) {
+                return alert("Failed to link to corp");
+            }
+            */
         }
 
         if(resp.code == 1){
