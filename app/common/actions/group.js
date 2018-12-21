@@ -45,6 +45,17 @@ export function closeGroup(group_id){
 	}
 }
 
+export function get_group_info(group_id) {
+    return async function(dispatch) {
+        let infos = await api_get_group_info(group_id);
+        if (group_id == 0) {
+            dispatch({ type:GET_MY_GROUPS_INFO, payload:infos.payload});
+        }
+        return infos.payload;
+    }
+}
+
+/*
 export function get_my_groups_info() {
     return async function(dispatch) {
         let infos = await api_get_my_groups_info();
@@ -61,6 +72,7 @@ export function get_group_info(group_id) {
         return info.payload
     }
 }
+*/
 
 export function get_group_members(group_id) {
     return async function(dispatch) {

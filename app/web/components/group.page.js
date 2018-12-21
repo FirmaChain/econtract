@@ -18,7 +18,6 @@ import {
     move_to_folder,
     openGroup,
     closeGroup,
-    get_my_groups_info,
     get_group_info,
     get_group_members,
     create_group,
@@ -41,7 +40,6 @@ let mapDispatchToProps = {
     move_to_folder,
     openGroup,
     closeGroup,
-    get_my_groups_info,
     get_group_info,
     get_group_members,
     create_group,
@@ -59,7 +57,7 @@ export default class extends React.Component {
 
 	componentDidMount() {
         (async()=>{
-            let info = await this.props.get_my_groups_info()
+            let info = await this.props.get_group_info(0)
             if(info.code == -2)
                 alert("그룹 에러")
         })()
