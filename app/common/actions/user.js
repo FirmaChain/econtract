@@ -18,6 +18,7 @@ import {
     makeAuth,
     makeSignData,
     decrypt_user_info,
+    decrypt_corp_info,
     SeedToEthKey,
     getMasterSeed,
     entropyToMnemonic,
@@ -36,6 +37,11 @@ export function fetch_user_info(){
             let resp = await api_encrypted_user_info()
             if(resp.payload){
                 let user_info = decrypt_user_info(entropy, new Buffer(resp.payload.info.data) )
+                console.log(new Buffer(resp.payload.info.data))
+                console.log(new Buffer(resp.payload.corp_info.data))
+                let corp_info = decrypt_corp_info(user_info.corp_key, new Buffer(resp.payload.corp_info.data) )
+
+                console.log(corp_info)
 
                 let seed = getMasterSeed();
                 let keyPair = SeedToEthKey(seed, "0'/0/0");

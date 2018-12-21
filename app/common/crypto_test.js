@@ -191,6 +191,20 @@ export function decrypt_user_info(entropy, encrypted_info){
 	}
 }
 
+export function decrypt_corp_info(entropy, encrypted_info){
+	let mnemonic = bip39.entropyToMnemonic(entropy);
+	let seed = bip39.mnemonicToSeed(mnemonic);
+	let masterKey = hmac_sha512("FirmaChain corp seed", seed);
+	let masterKeyPublic = get256bitDerivedPublicKey(masterKey, "m/0'/0'");
+	let result = aes_decrypt(encrypted_info, masterKeyPublic);
+
+	try{
+		return JSON.parse(result)
+	}catch(err){
+		return result
+	}
+}
+
 export function getContractKey(pin, sharedAuxKey) {
     return hmac_sha256("FirmaChain New Contract", Buffer.concat([Buffer.from(pin), sharedAuxKey]));
 }

@@ -127,7 +127,7 @@ export default class extends React.Component{
         return (<div className="information">
             <div className="profile">
                 <div className="name">
-                    { (info.account_type == 1 || info.account_type == 2) ? <span className="company">{this.props.user_info.company_name}</span> : "" }
+                    { (info.account_type == 1 || info.account_type == 2) ? <span className="company">{info.company_name}</span> : "" }
                     {info.username} <i className="fas fa-caret-down"></i>
                 </div>
                 <div className="email">{info.email}</div>
