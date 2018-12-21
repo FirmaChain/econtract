@@ -66,15 +66,18 @@ export default class extends React.Component {
         if(this.getGroupId() == null) {
             alert("잘못된 경로로 들어왔습니다.")
             return history.goBack()
-        } else if(!this.props.user_info){
-            (async()=>{
-                await window.showIndicator()
-                await this.props.fetch_user_info()
-                let info = await this.props.get_group_info(this.getGroupId())
-                await this.setState({info})
-                await window.hideIndicator()
-            })()
         }
+
+        (async()=>{
+            await window.showIndicator()
+            let user_info = await this.props.fetch_user_info()
+            if(!user_info)
+                history.back('/login')
+            let info = await this.props.get_group_info(this.getGroupId())
+            console.log(info)
+            await this.setState({...info[0]})
+            await window.hideIndicator()
+        })()
     }
 
     componentWillReceiveProps(props) {
@@ -174,7 +177,7 @@ export default class extends React.Component {
                 <div className="info">
                     <div className="title">
                         <i className="fal fa-building"></i>
-                        <span>인사팀</span>
+                        <span>{this.state.title}</span>
                     </div>
                     <div className="date">
                         {moment().toString()}
