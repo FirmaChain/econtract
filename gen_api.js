@@ -515,12 +515,21 @@ export async function api_select_userinfo_with_email(email){
         session:window.getCookie("session")
     });
 }
-export async function api_update_user_info(info){
+export async function api_update_user_info(encrypted_info){
     let __data = new FormData();
 
-    __data.append('info', info)
+    __data.append('encrypted_info', encrypted_info)
 
     return await post("/update_user_info", __data,{
+        session:window.getCookie("session")
+    });
+}
+export async function api_update_corp_info(encrypted_corp_info){
+    let __data = new FormData();
+
+    __data.append('encrypted_corp_info', encrypted_corp_info)
+
+    return await post("/update_corp_info", __data,{
         session:window.getCookie("session")
     });
 }
