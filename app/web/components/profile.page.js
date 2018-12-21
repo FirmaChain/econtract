@@ -122,12 +122,33 @@ export default class extends React.Component {
     	})
     }
 
+    onClickFindAddress = async (type)=>{
+        await window.showIndicator()
+        let address = await new Promise(r=>daum.postcode.load(function(){
+            new daum.Postcode({
+                oncomplete: r,
+                onclose:r
+            }).open();
+        }));
+        if(!!address) {
+            if(type == "personal") {
+                this.setState({
+                    useraddress: address.roadAddress + " "
+                })
+            } else if(type == "company") {
+                this.setState({
+                    company_address: address.roadAddress + " "
+                })
+            }
+        }
+        await window.hideIndicator()
+    }
+
 	render() {
         if(!this.props.user_info || !this.state.username)
             return <div />
 
         let account_type = this.props.user_info.account_type
-        console.log(this.props.user_info)
 
 		return (<div className="right-desc profile-page">
 			<div className="info-container">
@@ -151,7 +172,12 @@ export default class extends React.Component {
 	            	</div>
 	            	{account_type == 0 ? <div className="text-place">
 	            		<div className="title">주소</div>
-	            		<div className="text-box"><input className="common-textbox" type="text" value={this.state.useraddress} onChange={this.onInfoChange.bind(this, "useraddress")}/></div>
+	            		<div className="text-box">
+	            			<input className="common-textbox" type="text"
+	            				value={this.state.useraddress}
+	            				onChange={this.onInfoChange.bind(this, "useraddress")}/>
+	            			<div className="blue-but" onClick={this.onClickFindAddress.bind(this, "personal")}>찾기</div>
+	            		</div>
 	            	</div> : null}
 	            </div>
 	            {account_type != 0 ? <div className="info">
@@ -170,7 +196,12 @@ export default class extends React.Component {
 	            	</div>
 	            	<div className="text-place">
 	            		<div className="title">주소</div>
-	            		<div className="text-box"><input className="common-textbox" type="text" disabled={account_type == 2} value={this.state.company_address} onChange={this.onInfoChange.bind(this, "company_address")}/></div>
+	            		<div className="text-box">
+	            			<input className="common-textbox" type="text"
+	            				disabled={account_type == 2} value={this.state.company_address}
+	            				onChange={this.onInfoChange.bind(this, "company_address")}/>
+	            			<div className="blue-but" onClick={this.onClickFindAddress.bind(this, "company")}>찾기</div>
+	            		</div>
 	            	</div>
 	            </div>:null}
             </div>
