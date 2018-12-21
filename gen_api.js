@@ -215,6 +215,15 @@ export async function api_new_corp(data){
         session:window.getCookie("session")
     });
 }
+export async function api_new_group(title){
+    let __data = new FormData();
+
+    __data.append('title', title)
+
+    return await post("/new_group", __data,{
+        session:window.getCookie("session")
+    });
+}
 export async function api_get_my_groups_info(){
     let __data = new FormData();
 
