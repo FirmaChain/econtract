@@ -15,6 +15,7 @@ import {
     invite_information,
     update_user_info,
     new_corp,
+    consume_invitation,
 } from "../../common/actions"
 import Web3 from "../../common/Web3"
 
@@ -623,12 +624,10 @@ export default class extends React.Component {
                 return alert("Failed to update info");
             }
         } else if (account_type == 2) {
-            /*
             let consumeResp = await this.props.consume_invitation(invitationcode);
             if (!consumeResp) {
                 return alert("Failed to link to corp");
             }
-            */
         }
 
         if(resp.code == 1){

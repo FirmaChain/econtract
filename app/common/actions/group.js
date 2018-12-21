@@ -8,6 +8,7 @@ import {
     api_hide_group,
     api_remove_group_member,
     api_remove_group_member_all,
+    api_consume_invitation,
     api_add_member_group,
     api_remove_member_group,
     api_remove_invite_group,
@@ -75,6 +76,13 @@ export function remove_group_member(group_id, account_id) {
 export function remove_group_member_all(group_id) {
     return async function() {
         let resp = await api_remove_group_member_all(group_id);
+        return resp.payload
+    }
+}
+
+export function consume_invitation(invite_code) {
+    return async function() {
+        let resp = await api_consume_invitation(invite_code);
         return resp.payload
     }
 }
