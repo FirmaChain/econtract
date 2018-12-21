@@ -71,6 +71,13 @@ export function remove_group_member(group_id, account_id) {
     }
 }
 
+export function remove_group_member_all(group_id) {
+    return async function() {
+        let resp = await api_remove_group_member(group_id, 0);
+        return resp.payload
+    }
+}
+
 /*
 export function get_my_groups_info() {
     return async function(dispatch) {
