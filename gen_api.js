@@ -293,6 +293,15 @@ export async function api_remove_invite_group(group_id,invite_id){
         session:window.getCookie("session")
     });
 }
+export async function api_update_corp_info(encrypted_corp_info){
+    let __data = new FormData();
+
+    __data.append('encrypted_corp_info', encrypted_corp_info)
+
+    return await post("/update_corp_info", __data,{
+        session:window.getCookie("session")
+    });
+}
 export async function api_add_template(subject,folder_id,html){
     let __data = new FormData();
 
