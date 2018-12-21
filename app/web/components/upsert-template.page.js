@@ -60,6 +60,7 @@ export default class extends React.Component {
             callback: () => {
             }
         })*/
+        this.blockFlag = false;
 
         this.config = {
             key:"YD3H5F3F3c1A6B5B4E2A3C2C2G3C5B1D-17mB5idbyC-22nseB1zH-9==",
@@ -126,6 +127,8 @@ export default class extends React.Component {
         })()
 
         history.block( (targetLocation) => {
+            if(this.blockFlag)
+                return true
             let out_flag = window._confirm("템플릿 작업을 중단하고 현재 페이지를 나가시겠습니까?")
             if(out_flag)
                 history.block( () => true )
@@ -177,6 +180,7 @@ export default class extends React.Component {
 
         if(this.state.editMode) {
             if(await window.confirm("템플릿 수정", `해당 템플릿을 수정하시겠습니까?`)){
+                this.blockFlag = true
                 await window.showIndicator()
                 await this.props.update_template(this.state.template_id, this.state.select_folder_id, this.state.title, this.state.model)
                 await window.hideIndicator()
@@ -184,6 +188,7 @@ export default class extends React.Component {
             }
         } else {
             if(await window.confirm("템플릿 등록", `해당 템플릿을 등록하시겠습니까?`)){
+                this.blockFlag = true
                 await window.showIndicator()
                 await this.props.add_template(this.state.title, this.state.select_folder_id, this.state.model)
                 await window.hideIndicator()

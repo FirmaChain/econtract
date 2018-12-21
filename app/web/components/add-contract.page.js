@@ -35,6 +35,7 @@ let mapDispatchToProps = {
 export default class extends React.Component {
 	constructor(){
         super();
+        this.blockFlag = false
         this.roles = [
             {value:0, label: "생성자"},
             {value:1, label: "서명자"},
@@ -180,6 +181,8 @@ export default class extends React.Component {
 
 
         history.block( (targetLocation) => {
+            if(this.blockFlag)
+                return true
             let out_flag = window._confirm("게약 작성을 중단하고 현재 페이지를 나가시겠습니까?")
             if(out_flag)
                 history.block( () => true )
@@ -281,6 +284,7 @@ export default class extends React.Component {
     }
 
     onClickRegist = ()=>{
+        this.blockFlag = true
         let contract_name = this.state.contract_name;
         let sign_target_me = !!this.state.target_me
         let sign_target_other = !!this.state.target_other
