@@ -6,6 +6,7 @@ import {
     api_create_group,
     api_remove_group,
     api_hide_group,
+    api_remove_group_member,
     api_add_member_group,
     api_remove_member_group,
     api_remove_invite_group,
@@ -60,6 +61,13 @@ export function hide_group(group_id) {
     return async function(dispatch) {
         let infos = await api_hide_group(group_id);
         return infos.payload
+    }
+}
+
+export function remove_group_member(group_id, account_id) {
+    return async function() {
+        let resp = await api_remove_group_member(group_id, account_id);
+        return resp.payload
     }
 }
 
@@ -124,6 +132,7 @@ export function add_member_group(group_id, email, data_plain) {
         return resp.payload
     }
 }
+
 export function remove_member_group(group_id, account_id) {
     return async function() {
         let resp = await api_remove_member_group(group_id, account_id);
