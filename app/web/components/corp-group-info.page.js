@@ -10,7 +10,7 @@ import moment from "moment"
 import {
     add_member_group,
     remove_invite_group,
-    remove_group,
+    hide_group,
     fetch_user_info,
     get_group_info,
     remove_member_group,
@@ -26,7 +26,7 @@ let mapStateToProps = (state)=>{
 let mapDispatchToProps = {
     add_member_group,
     remove_invite_group,
-    remove_group,
+    hide_group,
     fetch_user_info,
     get_group_info,
     remove_member_group,
@@ -74,7 +74,6 @@ export default class extends React.Component {
             if(!user_info)
                 history.back('/login')
             let info = await this.props.get_group_info(this.getGroupId())
-            console.log(info)
             await this.setState({...info[0]})
             await window.hideIndicator()
         })()
@@ -118,9 +117,9 @@ export default class extends React.Component {
         window.openModal("RemoveCommonModal", {
             icon:"fas fa-trash",
             title:"그룹 삭제",
-            subTitle:"인사팀 그룹을 삭제합니다.<br/>삭제하시겠습니까?",
+            subTitle:`${this.state.title} 그룹을 삭제합니다.<br/>삭제하시겠습니까?`,
             onDelete: async (group_name) => {
-                let resp = this.props.remove_group(this.getGroupId())
+                let resp = this.props.hide_group(this.getGroupId())
                 if(resp){
                     alert("성공적으로 삭제하였습니다.")
                     return history.push("/group")
