@@ -2077,18 +2077,27 @@ div.checkbox2-comp{
                 }
 
                 >.text-box {
+                    display: flex;
+                    flex-direction: row;
                     margin-top: 10px;
 
                     >input {
                         font-size: $font1;
                         color: $black;
-                        max-width:300px;
+                        max-width:400px;
+                        width:100%;
                     }
 
-                    >.common-select {
-                        .control {
-                            width:100% !important;
-                        }
+                    >.blue-but {
+                        display: inline-block;
+                        font-size: $font1;
+                        cursor: pointer;
+                        padding:10px 20px;
+                        background-color: $blue;
+                        color:white;
+                        margin-left: 10px;
+                        width:50px;
+                        text-align: center;
                     }
                 }
             }
