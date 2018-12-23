@@ -155,12 +155,117 @@ class CommonModal extends React.Component {
 }
 
 @modal
+class CardInfo extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            select_card_month:1,
+            select_card_year:2020,
+            select_card_month_label:"1월",
+            select_card_year_label:"2020년",
+            card_validation_month:[
+                {value:1, label:"1월"},
+                {value:2, label:"2월"},
+                {value:3, label:"3월"},
+                {value:4, label:"4월"},
+                {value:5, label:"5월"},
+                {value:6, label:"6월"},
+                {value:7, label:"7월"},
+                {value:8, label:"8월"},
+                {value:9, label:"9월"},
+                {value:10, label:"10월"},
+                {value:11, label:"11월"},
+                {value:12, label:"12월"},
+            ],
+            card_validation_year:[
+                {value:2019, label:"2019년"},
+                {value:2020, label:"2020년"},
+                {value:2021, label:"2021년"},
+                {value:2022, label:"2022년"},
+                {value:2023, label:"2023년"},
+                {value:2024, label:"2024년"},
+                {value:2025, label:"2025년"},
+                {value:2026, label:"2026년"},
+                {value:2027, label:"2027년"},
+                {value:2028, label:"2028년"},
+            ]
+        }
+    }
+
+    componentDidMount() {
+
+    }
+
+    closeSelf = ()=>{
+        window.closeModal(this.props.modalId)
+    }
+
+    onResponse = () => {
+        this.props.onResponse && this.props.onResponse()
+        this.closeSelf();
+    }
+
+    render() {
+        return <div className="card-info-modal">
+            <div className="container">
+                <div className="icon"><i className="far fa-credit-card"></i></div>
+                <div className="title">결제 정보 입력 / 변경</div>
+                <div className="text-box">
+                    <div className="sub-title">카드 번호</div>
+                    <input type="number" className="common-textbox"
+                        onChange={(e)=>this.setState({card_number:e.target.value})}
+                        value={this.state.card_number}
+                        placeholder="카드 번호를 입력해주세요."/>
+                </div>
+                <div className="text-box">
+                    <div className="sub-title">CVC</div>
+                    <input type="number" className="common-textbox"
+                        onChange={(e)=>this.setState({cvc:e.target.value})}
+                        value={this.state.cvc}
+                        placeholder="카드 뒷면의 세자리 CVC 번호를 입력해주세요."/>
+                </div>
+                <div className="text-box">
+                    <div className="sub-title">유효기간</div>
+                    <Dropdown className="common-select"
+                        controlClassName="control"
+                        menuClassName="item"
+                        options={this.state.card_validation_month}
+                        onChange={e=>{this.setState({select_card_month:e.value, select_card_month_label:e.label})}}
+                        value={this.state.select_card_month_label} placeholder="월" />
+                    <Dropdown className="common-select"
+                        controlClassName="control"
+                        menuClassName="item"
+                        options={this.state.card_validation_year}
+                        onChange={e=>{this.setState({select_card_year:e.value, select_card_year_label:e.label})}}
+                        value={this.state.select_card_year_label} placeholder="년도" />
+                </div>
+                <div className="text-box">
+                    <div className="sub-title">주민등록번호 앞자리</div>
+                    <input type="number" className="common-textbox"
+                        onChange={(e)=>this.setState({social_number_front:e.target.value})}
+                        value={this.state.social_number_front}
+                        placeholder="주민번호 앞자리를 입력해주세요."/>
+                </div>
+                <div className="button">
+                    <div className="submit" onClick={this.onResponse}>확인</div>
+                    <div className="cancel" onClick={this.closeSelf}>취소</div>
+                </div>
+            </div>
+        </div>
+    }
+}
+
+@modal
 class PurchaseTicket extends React.Component {
     constructor() {
         super();
         this.state = {
             give_count:10
         };
+    }
+
+    componentDidMount() {
+
     }
 
     closeSelf = ()=>{
@@ -185,7 +290,7 @@ class PurchaseTicket extends React.Component {
                     <input type="number" className="common-textbox"
                         onChange={(e)=>this.setState({give_count:e.target.value})}
                         value={this.state.give_count}
-                        placeholder={this.props.placeholder}/>
+                        placeholder="구매하실 이용권 건수를 입력해주세요."/>
                 </div>
                 <div className="result">
                     금액 : <span className="price">{(this.state.give_count * 1500).number_format()}</span> 원
@@ -206,28 +311,30 @@ class PurchaseRegularPayment extends React.Component {
         this.state = {
             select_monthly_count:10,
             select_yearly_count:30,
+            select_monthly_count_label:"10건",
+            select_yearly_count_label:"30건",
             monthly_count:[
-                10,
-                20,
-                30,
-                40,
-                50,
-                100,
-                500,
+                {value:10, label:"10건"},
+                {value:20, label:"20건"},
+                {value:30, label:"30건"},
+                {value:40, label:"40건"},
+                {value:50, label:"50건"},
+                {value:100, label:"100건"},
+                {value:500, label:"500건"},
             ],
             yearly_count:[
-                30,
-                50,
-                70,
-                100,
-                150,
-                200,
-                250,
-                300,
-                500,
-                1000,
-                2000,
-                3000,
+                {value:30, label:"30건"},
+                {value:50, label:"50건"},
+                {value:70, label:"70건"},
+                {value:100, label:"100건"},
+                {value:150, label:"150건"},
+                {value:200, label:"200건"},
+                {value:250, label:"250건"},
+                {value:300, label:"300건"},
+                {value:500, label:"500건"},
+                {value:1000, label:"1000건"},
+                {value:2000, label:"2000건"},
+                {value:3000, label:"3000건"},
             ],
         }
     }
@@ -255,8 +362,8 @@ class PurchaseRegularPayment extends React.Component {
                                 controlClassName="control"
                                 menuClassName="item"
                                 options={this.state.monthly_count}
-                                onChange={e=>{this.setState({select_monthly_count:e.value})}}
-                                value={this.state.select_monthly_count+""} placeholder="건수" />
+                                onChange={e=>{this.setState({select_monthly_count:e.value, select_monthly_count_label:e.label})}}
+                                value={this.state.select_monthly_count_label} placeholder="건수" />
                             <span className="last"> 건 사용 / 월</span>
                         </div>
                         <div className="price-info">{"12500".number_format()}<span className="last">원 / 월</span></div>
@@ -272,8 +379,8 @@ class PurchaseRegularPayment extends React.Component {
                                 controlClassName="control"
                                 menuClassName="item"
                                 options={this.state.yearly_count}
-                                onChange={e=>{this.setState({select_yearly_count:e.value})}}
-                                value={this.state.select_yearly_count+""} placeholder="건수" />
+                                onChange={e=>{this.setState({select_yearly_count:e.value, select_yearly_count_label:e.label})}}
+                                value={this.state.select_yearly_count_label} placeholder="건수" />
                             <span className="last"> 건 사용 / 월</span>
                         </div>
                         <div className="price-info">{"12500".number_format()}<span className="last">원 / 월</span></div>

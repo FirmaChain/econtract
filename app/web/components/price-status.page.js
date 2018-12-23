@@ -58,7 +58,10 @@ export default class extends React.Component {
     }
 
     onChangeCardInfo = async () => {
-
+        window.openModal("CardInfo", {
+            onResponse: async (card_info) => {
+            }
+        })
     }
 
     onChangeAccountNumber = async () => {
