@@ -8,7 +8,8 @@ import {
 
 let _ = {
 	isOpenGroupList:[],
-	groups:[]
+	groups:[],
+	members:[],
 }
 
 export default function (state=_, action){
@@ -38,6 +39,11 @@ export default function (state=_, action){
 				isOpenGroupList: list
 			}
 		}
+		case GET_GROUP_MEMBERS:
+			return {
+				...state,
+				members:action.payload
+			}
 		case GET_MY_GROUPS_INFO:
 			return {
 				...state,

@@ -21,6 +21,7 @@ import {
 import {
     aes_decrypt_async,
     aes_encrypt_async,
+    aes_decrypt,
     hmac_sha256,
 } from "../../common/crypto_test"
 
@@ -191,7 +192,7 @@ export function new_corp(data) {
 export function get_corp_member_info(account_id, corp_key) {
     return async function() {
         let resp = await api_get_corp_member_info(account_id);
-        let data = await aes_decrypt_async(Buffer.from(resp.payload.data, 'hex'), corp_key)
+        let data = aes_decrypt(new Buffer(resp.payload.data), Buffer.from(corp_key, 'hex') )
         data = JSON.parse(data);
         return data;
     }
@@ -202,9 +203,10 @@ export function get_corp_member_info_all(corp_key) {
         let resp = await api_get_corp_member_info_all();
         let list = [...resp.payload]
         for(let v of list) {
-            let data = await aes_decrypt_async(Buffer.from(v.data, 'hex'), corp_key);
+            let data = aes_decrypt(new Buffer(v.data), Buffer.from(corp_key, 'hex') )
             v.data = JSON.parse(data);
         }
+        dispatch({ type:GET_GROUP_MEMBERS, payload:list});
         return list;
     }
 }

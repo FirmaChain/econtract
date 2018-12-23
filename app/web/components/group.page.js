@@ -61,11 +61,9 @@ export default class extends React.Component {
 
 	componentDidMount() {
         (async()=>{
-            let info = await this.props.get_group_info(0)
+            await this.props.get_group_info(0)
             //let dodo = await this.props.get_corp_member_info(128, this.props.user_info.corp_key)
-            let dodo = await this.props.get_corp_member_info_all(this.props.user_info.corp_key)
-            /*if(info.code == -2)
-                alert("그룹 에러")*/
+            await this.props.get_corp_member_info_all(this.props.user_info.corp_key)
         })()
 	}
 
