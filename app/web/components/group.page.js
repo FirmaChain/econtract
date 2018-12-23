@@ -213,7 +213,7 @@ export default class extends React.Component {
         let folders = this.props.folders ? this.props.folders : { list: [] }
         let groups = this.props.groups ? this.props.groups : []
         let members = this.props.members ? this.props.members : []
-        
+
         let board = this.props.board ? this.props.board : { list:[] }
         let total_cnt = board.total_cnt
         let page_num = board.page_num
@@ -234,7 +234,11 @@ export default class extends React.Component {
                             let memberList = []
                             for(let v of members) {
                                 if(v.group_id == e.group_id) {
-                                    memberList.push(<div></div>)
+                                    memberList.push(<div key={e.group_id+" "+v.account_id} className={"item sub" + (this.isOpenGroup(e.group_id) ? "" : " hide")}>
+                                        <i className="icon fas fa-user"></i>
+                                        <div className="text">{v.data.username}</div>
+                                        <i className="setting far fa-ellipsis-h"></i>
+                                    </div>)
                                 }
                             }
                             return [<div key={e.group_id} className={"item" + (this.getTitle().id == e.group_id ? " selected" : "")}
