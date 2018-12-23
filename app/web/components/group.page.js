@@ -32,6 +32,7 @@ let mapStateToProps = (state)=>{
         board:state.contract.board,
         isOpenGroupList: state.group.isOpenGroupList,
         groups: state.group.groups,
+        members: state.group.members,
 	}
 }
 
@@ -211,6 +212,7 @@ export default class extends React.Component {
 	render() {
         let folders = this.props.folders ? this.props.folders : { list: [] }
         let groups = this.props.groups ? this.props.groups : []
+        let members = this.props.members ? this.props.members : []
         
         let board = this.props.board ? this.props.board : { list:[] }
         let total_cnt = board.total_cnt
@@ -229,12 +231,18 @@ export default class extends React.Component {
 					<div className="list">
 						<div className="title">그룹</div>
                         {groups.map((e,k)=>{
-                            return <div key={e.group_id} className={"item" + (this.getTitle().id == e.group_id ? " selected" : "")}
+                            let memberList = []
+                            for(let v of members) {
+                                if(v.group_id == e.group_id) {
+                                    memberList.push(<div></div>)
+                                }
+                            }
+                            return [<div key={e.group_id} className={"item" + (this.getTitle().id == e.group_id ? " selected" : "")}
                                 onClick={this.moveGroup.bind(this, e.group_id)}>
                                 <div className="text">#{e.title}</div>
                                 <i className="setting fas fa-cog" onClick={this.openGroupInfo.bind(this, e.group_id)}></i>
                                 <i className={"angle far " + ( this.isOpenGroup(e.group_id) ? "fa-angle-down" : "fa-angle-up" )} onClick={this.openCloseGroup.bind(this, e.group_id)}></i>
-                            </div>
+                            </div>, ...memberList]
                         })}
 
 
