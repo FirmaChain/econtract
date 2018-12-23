@@ -350,6 +350,15 @@ export async function api_get_corp_member_info(target_account_id){
         session:window.getCookie("session")
     });
 }
+export async function api_get_corp_member_info_all(){
+    let __data = new FormData();
+
+    
+
+    return await post("/get_corp_member_info_all", __data,{
+        session:window.getCookie("session")
+    });
+}
 export async function api_add_template(subject,folder_id,html){
     let __data = new FormData();
 
