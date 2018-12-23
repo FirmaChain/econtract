@@ -65,6 +65,14 @@ export default class extends React.Component {
             await this.props.get_group_info(0)
             //let dodo = await this.props.get_corp_member_info(128, this.props.user_info.corp_key)
             await this.props.get_corp_member_info_all(this.props.user_info.corp_key)
+            let account_id = this.props.match.params.account_id || null
+            if(account_id) {
+                let member = await this.props.get_corp_member_info(account_id, this.props.user_info.corp_key)
+                this.setState({
+                    member
+                })
+            }
+
         })()
 	}
 
@@ -105,7 +113,10 @@ export default class extends React.Component {
         for(let v of groups) {
             if(menu == v.group_id) {
                 if(!!account_id) {
-                    return { id:v.group_id, account_id:account_id, title:"그룹 " + v.title + "_" + account_id}
+                    let username = ""
+                    if(!!this.state.member)
+                        username = this.state.member.username
+                    return { id:v.group_id, account_id:account_id, title:"#" + v.title + " " + username}
                 }
                 else {
                     return { id:v.group_id, title:"#" + v.title}
@@ -137,9 +148,14 @@ export default class extends React.Component {
         history.push(`/group/${pageName}`)
     }
 
-    moveGroup(group) {
-        history.push(`/group/${group}`)
-        this.props.openGroup(group)
+    moveGroup(group_id) {
+        history.push(`/group/${group_id}`)
+        this.props.openGroup(group_id)
+    }
+
+    moveGroupMember(group_id, account_id) {
+        history.push(`/group/${group_id}/${account_id}`)
+        this.props.openGroup(group_id)
     }
 
     openGroupInfo(group_id, e) {
@@ -234,7 +250,7 @@ export default class extends React.Component {
                             let memberList = []
                             for(let v of members) {
                                 if(v.group_id == e.group_id) {
-                                    memberList.push(<div key={e.group_id+" "+v.account_id} className={"item sub" + (this.isOpenGroup(e.group_id) ? "" : " hide")}>
+                                    memberList.push(<div key={e.group_id+" "+v.account_id} className={"item sub" + (this.isOpenGroup(e.group_id) ? "" : " hide")} onClick={this.moveGroupMember.bind(this, e.group_id, v.account_id)}>
                                         <i className="icon fas fa-user"></i>
                                         <div className="text">{v.data.username}</div>
                                         <i className="setting far fa-ellipsis-h"></i>
