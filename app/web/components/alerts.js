@@ -4,6 +4,9 @@ import {modal} from "./modalmanager"
 import SignerSlot from "./signer-slot"
 import history from '../history';
 import translate from "../../common/translate"
+
+import Dropdown from "react-dropdown"
+import 'react-dropdown/style.css'
 /*
 @modal
 class AddFolder extends React.Component{
@@ -149,6 +152,104 @@ class CommonModal extends React.Component {
             </div>
         </div>
     }
+}
+
+@modal
+class PurchaseRegularPayment extends React.Component {
+    constructor() {
+        super()
+        this.state = {
+            select_monthly_count:10,
+            select_yearly_count:30,
+            monthly_count:[
+                10,
+                20,
+                30,
+                40,
+                50,
+                100,
+                500,
+            ],
+            yearly_count:[
+                30,
+                50,
+                70,
+                100,
+                150,
+                200,
+                250,
+                300,
+                500,
+                1000,
+                2000,
+                3000,
+            ],
+        }
+    }
+
+    closeSelf = ()=>{
+        window.closeModal(this.props.modalId)
+    }
+
+    onClick = (type) => {
+
+    }
+
+    onResponse = () => {
+        this.props.onResponse && this.props.onResponse()
+        this.closeSelf();
+    }
+
+    render() {
+        return <div className="purchase-regular-payment-modal">
+            <div className="container">
+                <div className="icon"><i className="fas fa-credit-card"></i></div>
+                <div className="title">정기 결제 이용권 선택</div>
+                <div className="sub-title">월간, 연간 이용권 선택해서 구매하실 수 있습니다.</div>
+                <div className="btn-container">
+                    <div className="btn" onClick={this.onClick.bind(this, 1)}>
+                        <div className="title">월간 정기 결제</div>
+                        <div className="give-count">
+                            <Dropdown className="common-select"
+                                controlClassName="control"
+                                menuClassName="item"
+                                options={this.state.monthly_count}
+                                onChange={e=>{this.setState({select_monthly_count:e.value})}}
+                                value={this.state.select_monthly_count+""} placeholder="건수" />
+                            <span className="last"> 건 사용 / 월</span>
+                        </div>
+                        <div className="price-info">{"12500".number_format()}<span className="last">원 / 월</span></div>
+                        <div className="sub">
+                            1250 원 / 건당<br/>
+                            + 마스터 계정 1명, 서브 계정 4명
+                        </div>
+                    </div>
+                    <div className="btn" onClick={this.onClick.bind(this, 2)}>
+                        <div className="title">연간 정기 결제</div>
+                        <div className="give-count">
+                            <Dropdown className="common-select"
+                                controlClassName="control"
+                                menuClassName="item"
+                                options={this.state.yearly_count}
+                                onChange={e=>{this.setState({select_yearly_count:e.value})}}
+                                value={this.state.select_yearly_count+""} placeholder="건수" />
+                            <span className="last"> 건 사용 / 월</span>
+                        </div>
+                        <div className="price-info">{"12500".number_format()}<span className="last">원 / 월</span></div>
+                        <div className="sub">
+                            1125 원 / 건당<br/>
+                            + 마스터 계정 1명, 서브 계정 4명
+                        </div>
+                    </div>
+                </div>
+                <div className="button">
+                    <div className="submit" onClick={this.closeSelf}>변경</div>
+                    <div className="cancel" onClick={this.closeSelf}>취소</div>
+                </div>
+            </div>
+        </div>
+    }
+
 }
 
 @modal

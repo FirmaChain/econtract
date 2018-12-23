@@ -2154,7 +2154,7 @@ div.checkbox2-comp{
                 text-align: center;
 
                 >.icon {
-                    margin-top: 70px;
+                    margin-top: 50px;
 
                     >i {
                         font-size: 40px;
@@ -2174,9 +2174,28 @@ div.checkbox2-comp{
 
                 >.sub {
                     margin-top: 20px;
-                    margin-bottom: 50px;
                     font-size:$font0;
+                }
 
+                >.button-container {
+                    margin-top:15px;
+
+                    >.button {
+                        display: inline-block;
+                        background-color: white;
+                        border: 1px solid $blue;
+                        font-size: $font1;
+                        color: $black;
+                        cursor: pointer;
+                        width:80px;
+                        padding:10px 10px;
+                        margin-right: 10px;
+                        text-align: center;
+
+                        &:last-child {
+                            margin-right: 0;
+                        }
+                    }
                 }
             }
 
@@ -2815,6 +2834,151 @@ div.checkbox2-comp{
             padding:15px;
 
             max-width:300px;
+        }
+    }
+}
+
+.purchase-regular-payment-modal {
+    background-color: #fff;
+    min-width: 400px;
+    width:600px;
+
+    .container {
+        padding:55px;
+        text-align: center;
+
+        >.icon {
+            font-size:40px;
+            margin-bottom: 35px;
+            color: $black;
+        }
+
+        >.title {
+            font-size: $font5;
+            font-weight: bold;
+            margin-bottom: 35px;
+        }
+
+        >.sub-title {
+            font-size: $font2;
+            color:$black;
+            margin-bottom:40px;
+        }
+
+        >.btn-container {
+            display: flex;
+            flex-direction:row;
+
+            >.btn {
+                flex:1;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                cursor: pointer;
+
+                border:1px solid $gray;
+                margin-bottom:10px;
+                padding:20px;
+                margin-right:10px;
+
+                >.title {
+                    font-size: $font3;
+                    font-weight: bold;
+                    color: $black;
+                    margin-bottom:20px;
+                }
+
+                >.give-count {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: center;
+                    align-items: center;
+
+                    margin-bottom:20px;
+
+                    >.common-select {
+                        display: inline-block;
+
+                        >.control {
+                            width:80px !important;
+                            text-align: left;
+                        }
+                    }
+
+                    >.last {
+                        color: $black;
+                        font-size: $font2;
+                        margin-left: 10px;
+                    }
+                }
+
+                >.price-info {
+                    color: $black;
+                    font-size: $font5;
+                    font-weight: bold;
+
+                    >.last {
+                        color: $black;
+                        font-size: $font2;
+                        font-weight: initial;
+                        margin-left: 10px;
+                    }
+                }
+
+                >.sub {
+                    margin-top:30px;
+                    font-size: $font0;
+                    color: $black;
+                }
+
+                &:hover {
+                    border: 1px solid $blue;
+                }
+
+                &:last-child {
+                    margin-right:0;
+                }
+
+            }
+        }
+
+        >.button {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+
+            margin-top: 40px;
+
+            >.submit {
+                margin: auto;
+                margin-top:40px;
+
+                font-size: $font4;
+                font-weight: bold;
+                color: white;
+                cursor: pointer;
+
+                background-color: $blue;
+                border:1px solid $blue;
+                padding:15px;
+                margin-right:10px;
+                width:200px;
+            }
+
+            >.cancel {
+                margin: auto;
+                margin-top:40px;
+
+                font-size: $font4;
+                font-weight: bold;
+                color: $blue;
+                cursor: pointer;
+
+                border:1px solid $blue;
+                padding:15px;
+                width:200px;
+            }
         }
     }
 }

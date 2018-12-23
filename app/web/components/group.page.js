@@ -96,13 +96,16 @@ export default class extends React.Component {
 	getTitle() {
         let menu = this.props.match.params.menu || "all"
 		let account_id = this.props.match.params.account_id || null
+        let groups = this.props.groups ? this.props.groups : []
 
-        for(let i = 0 ; i < 10 ; i++) {
-            if(menu == i+"") {
-                if(!!account_id)
-                    return { id:i.toString(), account_id:account_id, title:"그룹 " + i + "_" + account_id}
-                else
-                    return { id:i.toString(), title:"그룹 " + i}
+        for(let v of groups) {
+            if(menu == v.group_id) {
+                if(!!account_id) {
+                    return { id:v.group_id, account_id:account_id, title:"그룹 " + v.title + "_" + account_id}
+                }
+                else {
+                    return { id:v.group_id, title:"#" + v.title}
+                }
             }
         }
 

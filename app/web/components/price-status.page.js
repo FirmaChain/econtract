@@ -43,6 +43,14 @@ export default class extends React.Component {
 	componentDidMount(){
     }
 
+    onClickChangeRegularPayment = async () => {
+
+        window.openModal("PurchaseRegularPayment", {
+            onResponse: async (purchase_type, give_count) => {
+            }
+        })
+    }
+
 	render() {
 		return (<div className="right-desc price-status-page">
             <div className="title">요금 정보</div>
@@ -52,13 +60,20 @@ export default class extends React.Component {
                         <div className="icon"><i className="fas fa-credit-card"></i></div>
                         <div className="title">기업 회원 | 연간 결제 30</div>
                         <div className="desc">00 / 00 건</div>
-                        <div className="sub">{moment().format("YYYY-MM-DD HH:mm:ss")}</div>
+                        <div className="sub">결제일 : {moment().format("YYYY-MM-DD HH:mm:ss")}</div>
+                        <div className="button-container">
+                            <div className="button" onClick={this.onClickChangeRegularPayment}>변경</div>
+                            <div className="button">해지</div>
+                        </div>
                     </div>
                     <div className="box gray-box">
                         <div className="icon"><i className="fal fa-users"></i></div>
                         <div className="title">10명</div>
                         <div className="desc">00 / 00 건</div>
-                        <div className="sub">{moment().format("YYYY-MM-DD HH:mm:ss")}</div>
+                        <div className="sub">결제일 : {moment().format("YYYY-MM-DD HH:mm:ss")}</div>
+                        <div className="button-container">
+                            <div className="button">변경</div>
+                        </div>
                     </div>
                     <div className="big-box">
                         <div className="bar middlegray-bar">
