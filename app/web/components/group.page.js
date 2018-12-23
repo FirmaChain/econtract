@@ -21,6 +21,8 @@ import {
     get_group_info,
     get_group_members,
     create_group,
+    get_corp_member_info_all,
+    get_corp_member_info,
 } from "../../common/actions"
 
 let mapStateToProps = (state)=>{
@@ -43,6 +45,8 @@ let mapDispatchToProps = {
     get_group_info,
     get_group_members,
     create_group,
+    get_corp_member_info_all,
+    get_corp_member_info,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -58,7 +62,8 @@ export default class extends React.Component {
 	componentDidMount() {
         (async()=>{
             let info = await this.props.get_group_info(0)
-            console.log(info)
+            //let dodo = await this.props.get_corp_member_info(128, this.props.user_info.corp_key)
+            let dodo = await this.props.get_corp_member_info_all(this.props.user_info.corp_key)
             /*if(info.code == -2)
                 alert("그룹 에러")*/
         })()

@@ -15,6 +15,7 @@ import {
     api_change_group_title,
     api_new_corp,
     api_get_corp_member_info,
+    api_get_corp_member_info_all,
 } from "../../../gen_api"
 
 import {
@@ -190,8 +191,21 @@ export function new_corp(data) {
 export function get_corp_member_info(account_id, corp_key) {
     return async function() {
         let resp = await api_get_corp_member_info(account_id);
-        let data = JSON.parse(await aes_decrypt_async(Buffer.from(resp.payload, 'hex'), corp_key));
+        let data = await aes_decrypt_async(Buffer.from(resp.payload.data, 'hex'), corp_key)
+        data = JSON.parse(data);
         return data;
+    }
+}
+
+export function get_corp_member_info_all(corp_key) {
+    return async function() {
+        let resp = await api_get_corp_member_info_all();
+        let list = [...resp.payload]
+        for(let v of list) {
+            let data = await aes_decrypt_async(Buffer.from(v.data, 'hex'), corp_key);
+            v.data = JSON.parse(data);
+        }
+        return list;
     }
 }
 
