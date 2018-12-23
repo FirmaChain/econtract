@@ -80,9 +80,9 @@ export function remove_group_member_all(group_id) {
     }
 }
 
-export function consume_invitation(invite_code) {
+export function consume_invitation(invite_code, data) {
     return async function() {
-        let resp = await api_consume_invitation(invite_code);
+        let resp = await api_consume_invitation(invite_code, data);
         return resp.payload
     }
 }

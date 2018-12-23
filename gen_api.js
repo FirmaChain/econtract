@@ -271,10 +271,11 @@ export async function api_remove_group_member_all(group_id){
         session:window.getCookie("session")
     });
 }
-export async function api_consume_invitation(invite_code){
+export async function api_consume_invitation(invite_code,data){
     let __data = new FormData();
 
-    __data.append('invite_code', invite_code)
+    __data.append('invite_code', invite_code);
+	__data.append('data', data)
 
     return await post("/consume_invitation", __data,{
         session:window.getCookie("session")

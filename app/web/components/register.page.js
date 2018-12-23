@@ -626,7 +626,8 @@ export default class extends React.Component {
                 return alert("Failed to update info");
             }
         } else if (account_type == 2) {
-            let consumeResp = await this.props.consume_invitation(this.state.registration_code);
+            let encryptedInfo = aes_encrypt(JSON.stringify(info), Buffer.from(info['corp_key'], 'hex'));
+            let consumeResp = await this.props.consume_invitation(this.state.registration_code, encryptedInfo);
             if (!consumeResp) {
                 return alert("Failed to link to corp");
             }
