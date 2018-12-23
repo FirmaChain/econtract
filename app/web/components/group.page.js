@@ -68,6 +68,7 @@ export default class extends React.Component {
             let account_id = this.props.match.params.account_id || null
             if(account_id) {
                 let member = await this.props.get_corp_member_info(account_id, this.props.user_info.corp_key)
+                this.props.openGroup(member.group_id)
                 this.setState({
                     member
                 })
@@ -115,7 +116,7 @@ export default class extends React.Component {
                 if(!!account_id) {
                     let username = ""
                     if(!!this.state.member)
-                        username = this.state.member.username
+                        username = this.state.member.data.username
                     return { id:v.group_id, account_id:account_id, title:"#" + v.title + " " + username}
                 }
                 else {

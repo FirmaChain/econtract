@@ -192,9 +192,10 @@ export function new_corp(data) {
 export function get_corp_member_info(account_id, corp_key) {
     return async function() {
         let resp = await api_get_corp_member_info(account_id);
-        let data = aes_decrypt(new Buffer(resp.payload.data), Buffer.from(corp_key, 'hex') )
-        data = JSON.parse(data);
-        return data;
+        let member = {...resp.payload}
+        let data = aes_decrypt(new Buffer(member.data), Buffer.from(corp_key, 'hex') )
+        member.data = JSON.parse(data);
+        return member;
     }
 }
 
