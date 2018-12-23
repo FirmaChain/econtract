@@ -14,6 +14,7 @@ import {
     api_remove_invite_group,
     api_change_group_title,
     api_new_corp,
+    api_get_corp_member_info,
 } from "../../../gen_api"
 
 import {
@@ -183,6 +184,14 @@ export function new_corp(data) {
     return async function() {
         let resp = await api_new_corp(data);
         return resp.payload;
+    }
+}
+
+export function get_corp_member_info(account_id, corp_key) {
+    return async function() {
+        let resp = await api_get_corp_member_info(account_id);
+        let data = JSON.parse(await aes_decrypt_async(Buffer.from(resp.payload, 'hex'), corp_key));
+        return data;
     }
 }
 
