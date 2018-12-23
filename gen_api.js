@@ -341,6 +341,15 @@ export async function api_update_corp_info(encrypted_corp_info){
         session:window.getCookie("session")
     });
 }
+export async function api_get_corp_member_info(target_account_id){
+    let __data = new FormData();
+
+    __data.append('target_account_id', target_account_id)
+
+    return await post("/get_corp_member_info", __data,{
+        session:window.getCookie("session")
+    });
+}
 export async function api_add_template(subject,folder_id,html){
     let __data = new FormData();
 
