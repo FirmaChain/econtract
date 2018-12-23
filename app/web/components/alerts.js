@@ -155,6 +155,51 @@ class CommonModal extends React.Component {
 }
 
 @modal
+class PurchaseTicket extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            give_count:10
+        };
+    }
+
+    closeSelf = ()=>{
+        window.closeModal(this.props.modalId)
+    }
+
+    onResponse = () => {
+        this.props.onResponse && this.props.onResponse()
+        this.closeSelf();
+    }
+
+    render() {
+        return <div className="purchase-ticket">
+            <div className="container">
+                <div className="icon"><i className="fal fa-ticket-alt"></i></div>
+                <div className="title">건별 이용권 구매</div>
+                <div className="sub-title">건별로 이용권을 구매해서 사용하실 수 있습니다.</div>
+                <div className="content">{"1500".number_format()}<span className="last">원 / 건당</span></div>
+
+                <div className="text-box">
+                    <div className="sub-title">구매하실 이용권 건수</div>
+                    <input type="number" className="common-textbox"
+                        onChange={(e)=>this.setState({give_count:e.target.value})}
+                        value={this.state.give_count}
+                        placeholder={this.props.placeholder}/>
+                </div>
+                <div className="result">
+                    금액 : <span className="price">{(this.state.give_count * 1500).number_format()}</span> 원
+                </div>
+                <div className="button">
+                    <div className="submit" onClick={this.onResponse}>구매</div>
+                    <div className="cancel" onClick={this.closeSelf}>취소</div>
+                </div>
+            </div>
+        </div>
+    }
+}
+
+@modal
 class PurchaseRegularPayment extends React.Component {
     constructor() {
         super()
@@ -189,10 +234,6 @@ class PurchaseRegularPayment extends React.Component {
 
     closeSelf = ()=>{
         window.closeModal(this.props.modalId)
-    }
-
-    onClick = (type) => {
-
     }
 
     onResponse = () => {
@@ -243,7 +284,7 @@ class PurchaseRegularPayment extends React.Component {
                     </div>
                 </div>
                 <div className="button">
-                    <div className="submit" onClick={this.closeSelf}>변경</div>
+                    <div className="submit" onClick={this.onResponse}>변경</div>
                     <div className="cancel" onClick={this.closeSelf}>취소</div>
                 </div>
             </div>

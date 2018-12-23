@@ -44,11 +44,25 @@ export default class extends React.Component {
     }
 
     onClickChangeRegularPayment = async () => {
-
         window.openModal("PurchaseRegularPayment", {
             onResponse: async (purchase_type, give_count) => {
             }
         })
+    }
+
+    onBuyTicket = async () => {
+        window.openModal("PurchaseTicket", {
+            onResponse: async (give_count) => {
+            }
+        })
+    }
+
+    onChangeCardInfo = async () => {
+
+    }
+
+    onChangeAccountNumber = async () => {
+
     }
 
 	render() {
@@ -72,7 +86,7 @@ export default class extends React.Component {
                         <div className="desc">00 / 00 건</div>
                         <div className="sub">결제일 : {moment().format("YYYY-MM-DD HH:mm:ss")}</div>
                         <div className="button-container">
-                            <div className="button">변경</div>
+                            <div className="button" onClick={this.onChangeAccountNumber}>변경</div>
                         </div>
                     </div>
                     <div className="big-box">
@@ -83,7 +97,7 @@ export default class extends React.Component {
                                 <div className="sub">*정기결제과 건별 이용권 모두 보유시 정기결제 이용권 먼저 차감됩니다.</div>
                             </div>
                             <div className="right">
-                                <div className="button">구매</div>
+                                <div className="button" onClick={this.onBuyTicket}>구매</div>
                             </div>
                         </div>
                         <div className="bar gray-bar">
@@ -92,7 +106,7 @@ export default class extends React.Component {
                                 <div className="desc">기업 | 4854-****-****-****</div>
                             </div>
                             <div className="right">
-                                <div className="button">변경</div>
+                                <div className="button" onClick={this.onChangeCardInfo}>변경</div>
                             </div>
                         </div>
                     </div>
