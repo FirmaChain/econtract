@@ -256,6 +256,55 @@ class CardInfo extends React.Component {
 }
 
 @modal
+class PurchaseGroupMemberAdd extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            give_count:10
+        };
+    }
+
+    componentDidMount() {
+
+    }
+
+    closeSelf = ()=>{
+        window.closeModal(this.props.modalId)
+    }
+
+    onResponse = () => {
+        this.props.onResponse && this.props.onResponse()
+        this.closeSelf();
+    }
+
+    render() {
+        return <div className="purchase-group-member-add">
+            <div className="container">
+                <div className="icon"><i className="fal fa-ticket-alt"></i></div>
+                <div className="title">그룹 계정 추가</div>
+                <div className="sub-title">그룹 계정을 추가로 등록하는데는 1계정당 2,000원/월 의 추가 비용이 청구됩니다.</div>
+
+                <div className="text-box">
+                    <div className="sub-title">추가할 그룹 계정 수</div>
+                    <input type="number" className="common-textbox"
+                        onChange={(e)=>this.setState({give_count:e.target.value})}
+                        value={this.state.give_count}
+                        placeholder="추가할 그룹 계정 수를 입력해주세요."/>
+                </div>
+                <div className="sub-title">현재 계정 수 : 마스터 계정 1 + 서브 계정 5</div>
+                <div className="sub-desc">
+                    추가하신 인원은 바로 등록이 가능하며, 결제는 등록하신 결제 정보로 다음달 %일에 진행됩니다
+                </div>
+                <div className="button">
+                    <div className="submit" onClick={this.onResponse}>추가</div>
+                    <div className="cancel" onClick={this.closeSelf}>취소</div>
+                </div>
+            </div>
+        </div>
+    }
+}
+
+@modal
 class PurchaseTicket extends React.Component {
     constructor() {
         super();

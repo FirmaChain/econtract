@@ -65,7 +65,10 @@ export default class extends React.Component {
     }
 
     onChangeAccountNumber = async () => {
-
+        window.openModal("PurchaseGroupMemberAdd", {
+            onResponse: async (card_info) => {
+            }
+        })
     }
 
 	render() {
