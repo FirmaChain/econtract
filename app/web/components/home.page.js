@@ -66,6 +66,8 @@ export default class extends React.Component {
         if(!this.props.user_info)
             return <div />
 
+        console.log(this.props.user_info)
+
 		return (<div className="maintain">
             <div className="header-page">
                 <div className="header">
@@ -79,7 +81,7 @@ export default class extends React.Component {
                         <div className={(this.getStatus().includes("/template") ? "selected-item" : "item")} onClick={() => history.push("/template")}>
                             <div>템플릿</div>
                         </div>
-                        { ( !!this.props.user_info && (this.props.user_info.account_type == 1 || this.props.user_info.account_type == 2) ) ? 
+                        { ( !!this.props.user_info && (this.props.user_info.account_type == 1) ) ? 
                             <div className={(this.getStatus().includes("/group") ? "selected-item" : "item")} onClick={() => history.push("/group")}>
                                 <div>그룹</div>
                             </div>: ""}
