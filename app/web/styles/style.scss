@@ -2047,8 +2047,15 @@ div.checkbox2-comp{
         padding:20px;
         box-sizing: border-box;
 
+        >.title {
+            font-weight:bold;
+            font-size:$font3;
+            color: $black;
+        }
+
         >.container {
             margin-top:30px;
+
         }
     }
 }
@@ -2063,8 +2070,9 @@ div.checkbox2-comp{
             flex:1;
 
             >.title {
-                font-size: $font5;
+                font-size: $font3;
                 color: $black;
+                font-weight:bold;
                 margin-bottom:30px;
             }
             
@@ -2085,7 +2093,7 @@ div.checkbox2-comp{
                         font-size: $font1;
                         color: $black;
                         max-width:400px;
-                        width:100%;
+                        width:90%;
                     }
 
                     >.blue-but {
@@ -2126,6 +2134,229 @@ div.checkbox2-comp{
 
 .price-status-page {
     
+    >.container {
+
+        >.cluster {
+            display: flex;
+
+            @media screen and (max-width: 1360px) {
+                & {
+                    display: block;
+                }
+            }
+
+            .box {
+                display: inline-flex;
+                flex-direction: column;
+                width:270px;
+                height:285px;
+                padding: 0 10px;
+                text-align: center;
+
+                >.icon {
+                    margin-top: 70px;
+
+                    >i {
+                        font-size: 40px;
+                    }
+                }
+
+                >.title {
+                    margin-top: 30px;
+                    font-size: $font4;
+                    font-weight: bold;
+                }
+
+                >.desc {
+                    margin-top: 10px;
+                    font-size:$font2;
+                }
+
+                >.sub {
+                    margin-top: 20px;
+                    margin-bottom: 50px;
+                    font-size:$font0;
+
+                }
+            }
+
+            .blue-box {
+                background-color: $blue;
+                color: white;
+
+                >.icon {
+
+                    >i {
+                        color:white;
+                    }
+                }
+            }
+
+            .gray-box {
+                background-color: $lightgray;
+                color: $black;
+
+                >.icon {
+
+                    >i {
+                        color:$black;
+                    }
+                }
+            }
+
+            .big-box {
+                display: inline-flex;
+                flex-direction: column;
+                width: 580px;
+                height: 285px;
+
+                .bar {
+                    padding: 0 10px;
+                    flex:1;
+
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+
+                    >.left {
+                        margin-left:30px;
+                        flex:1;
+
+                        >.title {
+                            font-size: $font4;
+                            font-weight: bold;
+                        }
+
+                        >.desc {
+                            margin-top: 10px;
+                            font-size:$font2;
+                        }
+
+                        >.sub {
+                            margin-top: 20px;
+                            font-size:$font0;
+                        }
+                    }
+
+                    >.right {
+
+                        >.button {
+                            display: inline-block;
+                            font-size: $font2;
+                            cursor: pointer;
+                            padding:10px 20px;
+                            background-color: $blue;
+                            color:white;
+                            margin-left: 10px;
+                            margin-right: 10px;
+                            width:70px;
+                            text-align: center;
+                        }
+                    }
+                }
+            }
+
+            .middlegray-bar {
+                background-color: $middlegray;
+                color: $black;
+            }
+
+            .gray-bar {
+                background-color: $gray;
+                color: $black;
+            }
+        }
+
+        >.list {
+            margin-top: 50px;
+            margin-bottom: 30px;
+
+            >.title {
+                padding-bottom:20px;
+                font-size: $font3;
+                font-weight: bold;
+            }
+
+            >.head {
+                display: flex;
+                flex-direction: row;
+
+                border-bottom: 1px solid $middlegray;
+                color: $black;
+                text-align: left;
+                padding: 10px 0 10px 20px;
+
+                width:100%;
+                max-width:700px;
+                margin:auto;
+            }
+
+            >.item {
+                display: flex;
+                flex-direction: row;
+
+                border-bottom: 1px solid $middlegray;
+                color: $black;
+                text-align: left;
+                padding: 10px 0 10px 20px;
+
+                cursor: pointer;
+
+                width:100%;
+                max-width:700px;
+                margin:auto;
+
+                &:hover {
+                    background-color: $lightgray;
+                }
+            }
+
+            .list-head-item {
+                padding-left:5px;
+                padding-right:5px;
+
+                font-size: $font2;
+                font-weight: bold;
+            }
+
+            .list-body-item {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+
+                padding:10px 5px;
+
+                font-size: $font1;
+
+                >.sub {
+                    font-size: $font0;
+                    color: $gray;
+                    margin-top:5px;
+                }
+            }
+
+            .list-content {
+                flex:1;
+            }
+
+            .list-signer {
+                width:150px;
+            }
+
+            .list-purchase-type {
+                width:120px;
+            }
+
+            .list-price {
+                width:120px;
+            }
+
+            .list-date {
+                width:150px;
+            }
+
+        }
+    }
 }
 
 .group-manage-page {

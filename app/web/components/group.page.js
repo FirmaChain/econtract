@@ -58,6 +58,7 @@ export default class extends React.Component {
 	componentDidMount() {
         (async()=>{
             let info = await this.props.get_group_info(0)
+            console.log(info)
             /*if(info.code == -2)
                 alert("그룹 에러")*/
         })()
