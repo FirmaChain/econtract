@@ -404,7 +404,7 @@ class PurchaseRegularPayment extends React.Component {
                 <div className="title">정기 결제 이용권 선택</div>
                 <div className="sub-title">월간, 연간 이용권 선택해서 구매하실 수 있습니다.</div>
                 <div className="btn-container">
-                    <div className="btn" onClick={this.onClick.bind(this, 1)}>
+                    <div className="btn">
                         <div className="title">월간 정기 결제</div>
                         <div className="give-count">
                             <Dropdown className="common-select"
@@ -421,7 +421,7 @@ class PurchaseRegularPayment extends React.Component {
                             + 마스터 계정 1명, 서브 계정 4명
                         </div>
                     </div>
-                    <div className="btn" onClick={this.onClick.bind(this, 2)}>
+                    <div className="btn">
                         <div className="title">연간 정기 결제</div>
                         <div className="give-count">
                             <Dropdown className="common-select"
