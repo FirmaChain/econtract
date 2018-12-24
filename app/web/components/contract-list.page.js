@@ -18,7 +18,7 @@ import {
     remove_folder,
     move_to_folder,
     recently_contracts,
-    get_my_groups_info,
+    get_group_info,
 } from "../../common/actions"
 
 let mapStateToProps = (state)=>{
@@ -36,7 +36,7 @@ let mapDispatchToProps = {
     remove_folder,
     move_to_folder,
     recently_contracts,
-    get_my_groups_info,
+    get_group_info,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -61,8 +61,14 @@ export default class extends React.Component {
     onRefresh = async (nextProps) => {
         await this.props.folder_list()
 
-        if(this.props.user_info.account_type == 1 || this.props.user_info.account_type == 2)
-            await this.props.get_my_groups_info()
+        if(this.props.user_info.account_type == 1 || this.props.user_info.account_type == 2) {
+            let groups_info = await this.props.get_group_info(0)
+
+            let group_id = this.props.match.params.group_id || null
+            if(!group_id) {
+                history.replace(`/home/${groups_info[0].group_id}/recently`)
+            }
+        }
 
         if(this.getTitle(nextProps).id == "recently")
             await this.props.recently_contracts()
@@ -95,36 +101,51 @@ export default class extends React.Component {
 	getTitle(props) {
         props = !!props ? props : this.props
 
-		let menu = props.match.params.menu || "recently"
+        let menu = props.match.params.menu || "recently"
+		let group_id = props.match.params.group_id || null
+
+        let result = {}
 
 		if(menu == "lock") {
-			return { id:"lock", title : "잠김"}
+			result = { id:"lock", title : "잠김"}
         }
 		else if(menu == "requested") {
-			return { id:"requested", title : "요청받음"}
+			result = { id:"requested", title : "요청받음"}
         }
 		else if(menu == "created") {
-			return { id:"created", title : "생성함"}
+			result = { id:"created", title : "생성함"}
         }
 		else if(menu == "typing") {
-			return { id:"typing", title : "내용 입력중"}
+			result = { id:"typing", title : "내용 입력중"}
 		}
 		else if(menu == "beforeMySign") {
-			return { id:"beforeMySign", title : "내 서명 전"}
+			result = { id:"beforeMySign", title : "내 서명 전"}
 		}
 		else if(menu == "beforeOtherSign") {
-			return { id:"beforeOtherSign", title : "상대방 서명 전"}
+			result = { id:"beforeOtherSign", title : "상대방 서명 전"}
 		}
 		else if(menu == "view") {
-			return { id:"view", title : "보기 가능"}
+			result = { id:"view", title : "보기 가능"}
 		}
 		else if(menu == "completed") {
-			return { id:"completed", title : "완료됨"}
+			result = { id:"completed", title : "완료됨"}
 		}
 		else if(menu == "deleted") {
-			return { id:"deleted", title : "삭제됨"}
+			result = { id:"deleted", title : "삭제됨"}
 		}
-		return { id:"recently", title : "최근 사용"}
+		else
+            result = { id:"recently", title : "최근 사용"}
+
+        if(!!group_id) {
+            let groups = this.props.groups ? this.props.groups : []
+            for(let v of groups) {
+                if(v.group_id == group_id) {
+                    result.groupName = v.title
+                }
+            }
+        }
+
+        return result
 	}
 
     onClickPage = async(page)=>{
@@ -139,7 +160,16 @@ export default class extends React.Component {
     }
 
     move(pageName) {
-        history.push(`/home/${pageName}`)
+        let group_id = this.props.match.params.group_id || null
+
+        if(!!group_id)
+            return history.push(`/home/${group_id}/${pageName}`)
+
+        return history.push(`/home/${pageName}`)
+    }
+
+    moveGroup(group_id) {
+        history.push(`/home/${group_id}/${this.getTitle().id}`)
     }
 
     onClickOption(contract_id) {
@@ -289,10 +319,13 @@ export default class extends React.Component {
 
         let folders = this.props.folders ? this.props.folders : { list: [] }
         let board = this.props.board ? this.props.board : { list:[] }
+        let groups = this.props.groups ? this.props.groups : []
 
         let account_type = this.props.user_info.account_type
         let total_cnt = board.total_cnt
         let page_num = board.page_num
+
+        console.log(this.getTitle())
 
 		return (<div className="contract-page">
 			<div className="contract-group-menu">
@@ -303,26 +336,20 @@ export default class extends React.Component {
                     </div>
                     { account_type != 0 ? (<div className="list">
                         <div className="item group-item" onClick={this.onClickGroupMenu}>
-                            <div className="text">인사팀</div>
+                            <div className="text">{this.getTitle().groupName}</div>
                             <i className={"angle far " + (!!this.isOpenGroupMenu() ? "fa-angle-down" : "fa-angle-up")}></i>
                         </div>
-                        <div className="item" style={{display:!!this.isOpenGroupMenu() ? "flex" : "none"}}>
-                            <i className="icon fas fa-user-tie"></i>
-                            <div className="text">인사팀</div>
-                        </div>
-                        <div className="item" style={{display:!!this.isOpenGroupMenu() ? "flex" : "none"}}>
-                            <i className="icon fas fa-user-tie"></i>
-                            <div className="text">재무팀</div>
-                        </div>
-                        <div className="item" style={{display:!!this.isOpenGroupMenu() ? "flex" : "none"}}>
-                            <i className="icon fas fa-user-tie"></i>
-                            <div className="text">개발팀</div>
-                        </div>
+                        {groups.map( (e, k) => {
+                            return <div className="item" key={e.group_id} onClick={this.moveGroup.bind(this, e.group_id)} style={{display:!!this.isOpenGroupMenu() ? "flex" : "none"}}>
+                                <i className="icon fas fa-user-tie"></i>
+                                <div className="text">{e.title}</div>
+                            </div>
+                        })}
                     </div>) : null
                     }
 					<div className="list">
 						<div className="title">계약</div>
-						<div className={"item" + (this.getTitle().id == "recently" ? " selected" : "")} onClick={this.move.bind(this, "")}><i className="icon fal fa-clock"></i> <div className="text">최근 사용</div></div>
+						<div className={"item" + (this.getTitle().id == "recently" ? " selected" : "")} onClick={this.move.bind(this, "recently")}><i className="icon fal fa-clock"></i> <div className="text">최근 사용</div></div>
 						<div className={"item" + (this.getTitle().id == "requested" ? " selected" : "")} onClick={this.move.bind(this, "requested")}><i className="icon fas fa-share-square"></i> <div className="text">요청받음</div></div>
 						<div className={"item" + (this.getTitle().id == "created" ? " selected" : "")} onClick={this.move.bind(this, "created")}><i className="icon fas fa-handshake-alt"></i> <div className="text">생성함</div></div>
 					</div>
