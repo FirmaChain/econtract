@@ -50,7 +50,8 @@ export function fetch_user_info(){
                 let wallet = Web3.walletWithPK(privateKey)
                 let _ = {
                     ...user_info,
-                    ...corp_info,
+                    ...corp_info, // It should be removed and the following line is used
+                    corp_info: corp_info,
                     eth_address: wallet.address,
                     account_id: resp.payload.account_id,
                     publickey_contract: resp.payload.publickey_contract,

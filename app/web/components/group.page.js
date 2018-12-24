@@ -98,6 +98,17 @@ export default class extends React.Component {
             onConfirm: async (group_name) => {
                 //TODO 그룹 생성 api
                 let resp = await this.props.create_group(group_name);
+                /*
+                let group_id = resp.payload;
+                let group_key = get256bitDerivedPublicKey(corpMasterKey, "m/0'/"+group_id+"'").toString('hex');
+                let corp_info = user_info.corp_info;
+                if ("group_keys" in user_info.corp_info) {
+                    corp_info['group_keys'] = {}
+                }
+                corp_info['group_keys'][group_id] = group_key;
+                let encryptedCorpInfo = aes_encrypt(JSON.stringify(corp_info), Buffer.from(this.props.user_info.corp_key,'hex'));
+                await this.props.update_corp_info(encryptedCorpInfo);
+                */
                 if(resp) {
                     await this.props.get_group_info(0)
                     alert("성공적으로 그룹이 추가되었습니다.")
