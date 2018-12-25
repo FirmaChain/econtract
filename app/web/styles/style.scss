@@ -1599,13 +1599,13 @@ div.checkbox2-comp{
 
                 >.desc-button {
                     display: inline-block;
-                    font-size: $font3;
+                    font-size: $font1;
                     cursor: pointer;
-                    padding:15px 20px;
-                    background-color: $blue;
-                    color:white;
+                    padding:10px 20px;
+                    border: 1px solid $blue;
+                    color: $black;
                     margin-top:20px;
-                    width:150px;
+                    width:120px;
                     text-align: center;
                 }
             }

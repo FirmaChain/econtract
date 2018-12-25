@@ -105,15 +105,15 @@ export default class extends React.Component {
                 //TODO 그룹 생성 api
                 let resp = await this.props.create_group(group_name);
 
-                let group_id = resp;
-                let group_key = get256bitDerivedPublicKey(Buffer.from(this.props.user_info.corp_master_key, 'hex'), "m/0'/"+group_id+"'").toString('hex');
-                let corp_info = this.props.user_info.corp_info;
-                if (!corp_info.group_keys) {
-                    corp_info['group_keys'] = []
-                }
-                corp_info['group_keys'].push({ group_id, group_key })
-                let encryptedCorpInfo = aes_encrypt(JSON.stringify(corp_info), Buffer.from(this.props.user_info.corp_key,'hex'));
-                await this.props.update_corp_info(encryptedCorpInfo);
+                //let group_id = resp;
+                //let group_key = get256bitDerivedPublicKey(Buffer.from(this.props.user_info.corp_master_key, 'hex'), "m/0'/"+group_id+"'").toString('hex');
+                //let corp_info = this.props.user_info.corp_info;
+                //if (!corp_info.group_keys) {
+                //    corp_info['group_keys'] = []
+                //}
+                //corp_info['group_keys'].push({ group_id, group_key })
+                //let encryptedCorpInfo = aes_encrypt(JSON.stringify(corp_info), Buffer.from(this.props.user_info.corp_key,'hex'));
+                //await this.props.update_corp_info(encryptedCorpInfo);
                 
                 if(resp) {
                     await this.props.get_group_info(0)

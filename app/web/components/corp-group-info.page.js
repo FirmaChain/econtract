@@ -135,6 +135,9 @@ export default class extends React.Component {
         if(this.state.add_email == "")
             return alert("초대하려는 그룹원의 이메일을 입력해주세요.")
 
+        let group_key = get256bitDerivedPublicKey(Buffer.from(this.props.user_info.corp_master_key, 'hex'), "m/0'/"+this.getGroupId()+"'").toString('hex');
+
+
         let data = {
             company_name: this.props.user_info.company_name,
             duns_number: this.props.user_info.duns_number,
@@ -142,6 +145,9 @@ export default class extends React.Component {
             company_address: this.props.user_info.company_address,
             corp_key:this.props.user_info.corp_key,
             corp_id:this.props.user_info.corp_id,
+            group_keys: [
+                { group_id:this.getGroupId(), key:group_key }
+            ]
         }
 
         let resp = await this.props.add_member_group(this.getGroupId(), this.state.add_email.trim(), data);
@@ -221,7 +227,7 @@ export default class extends React.Component {
                         <span>{this.state.title}</span>
                     </div>
                     <div className="date">
-                        {moment().toString()}
+                        {moment(this.state.added_at).toString()}
                     </div>
                     <div className="button-container">
                         <div className="button" onClick={this.onChangeGroupTitle}>그룹명 변경</div>

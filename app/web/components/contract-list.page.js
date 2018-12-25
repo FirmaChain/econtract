@@ -325,8 +325,6 @@ export default class extends React.Component {
         let total_cnt = board.total_cnt
         let page_num = board.page_num
 
-        console.log(this.getTitle())
-
 		return (<div className="contract-page">
 			<div className="contract-group-menu">
 				<div className="left-top-button" onClick={this.onClickAddContract}>시작하기</div>
