@@ -300,13 +300,14 @@ export async function api_change_group_title(group_id,change_title){
         session:window.getCookie("session")
     });
 }
-export async function api_add_member_group(group_id,email,passphrase2,data){
+export async function api_add_member_group(group_id,email,passphrase2,data,data_for_inviter){
     let __data = new FormData();
 
     __data.append('group_id', group_id);
 	__data.append('email', email);
 	__data.append('passphrase2', passphrase2);
-	__data.append('data', data)
+	__data.append('data', data);
+	__data.append('data_for_inviter', data_for_inviter)
 
     return await post("/add_member_group", __data,{
         session:window.getCookie("session")

@@ -142,6 +142,8 @@ export default class extends React.Component {
         
         await window.showIndicator()
 
+        let email = this.state.add_email.trim()
+
         let group_key = get256bitDerivedPublicKey(Buffer.from(this.props.user_info.corp_master_key, 'hex'), "m/0'/"+this.getGroupId()+"'").toString('hex');
 
         let data = {
@@ -153,7 +155,11 @@ export default class extends React.Component {
             corp_id:this.props.user_info.corp_id,
         }
 
-        let resp = await this.props.add_member_group(this.getGroupId(), this.state.add_email.trim(), data);
+        let data_for_inviter = {
+            email
+        }
+
+        let resp = await this.props.add_member_group(this.getGroupId(), email, this.props.user_info.corp_key, data, data_for_inviter);
         if(resp) {
             this.setState({
                 add_email:""

@@ -136,7 +136,7 @@ export function change_group_title(group_id, change_title) {
     }
 }
 
-export function add_member_group(group_id, email, data_plain) {
+export function add_member_group(group_id, email, corp_key, data_plain, data_for_inviter_plain) {
     return async function() {
         const possible = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
         let passphrase2_length = 32;
@@ -147,7 +147,11 @@ export function add_member_group(group_id, email, data_plain) {
         let data_plain_buffered = Buffer.from(JSON.stringify(data_plain));
         let data = Buffer.from((await aes_encrypt_async(data_plain_buffered, key)), 'binary').toString('hex');
 
-        let resp = await api_add_member_group(group_id, email, passphrase2, data);
+
+        let data_for_inviter_plain_buffered = Buffer.from(JSON.stringify(data_for_inviter_plain));
+        let data_for_inviter = Buffer.from((await aes_encrypt_async(data_for_inviter_plain_buffered, corp_key)), 'binary').toString('hex');
+
+        let resp = await api_add_member_group(group_id, email, passphrase2, data, data_for_inviter);
         return resp.payload
     }
 }
