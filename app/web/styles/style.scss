@@ -676,6 +676,10 @@ div.checkbox2-comp{
     }
 
     .buttons {
+        display: flex;
+        flex-direction:row;
+        justify-content: center;
+        align-items: center;
 
         button.new-already-button {
             width: 250px/*calc(33% - 15px)*/;
@@ -716,6 +720,11 @@ div.checkbox2-comp{
                 background-color:white;
                 opacity: 0;
 
+                display: flex;
+                flex-direction:column;
+                justify-content: center;
+                align-items: center;
+
                 transition:opacity 0.25s, height 0.25s, background-color 0.25s, transform 0.25s;
 
                 >.big {
@@ -725,7 +734,9 @@ div.checkbox2-comp{
                 }
 
                 >.small {
+                    margin-top:10px;
                     font-size: $font1;
+                    font-weight: initial;
                     color: $black;
                 }
             }
@@ -739,12 +750,14 @@ div.checkbox2-comp{
                 font-weight: bold;
                 padding-bottom: 0;
 
-                width: 290px;
-                height: 290px;
+                width: 260px;
+                height: 260px;
 
                 display: inline-flex;
                 flex-direction: column;
                 align-items: center;
+
+                box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
 
                 >.icon {
                     font-size:50px;
@@ -760,8 +773,8 @@ div.checkbox2-comp{
                 >.yeshover {
                     opacity: 1;
                     color:white;
-                    height:70px;
-                    width:286px;
+                    height:80px;
+                    width:256px;
                 }
             }
         }
