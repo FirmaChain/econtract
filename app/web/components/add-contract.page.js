@@ -300,6 +300,8 @@ export default class extends React.Component {
             indivisual_info,
             cooperation_info,
         )
+
+        history.push("/edit-contract/1")
     }
 
     onClickRemoveCounterparty = (k)=>{

@@ -1977,6 +1977,135 @@ div.checkbox2-comp{
     }
 }
 
+.upsert-contract-page {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+
+    >.header-page .container {
+        display: flex;
+        flex-direction: row;
+
+        height: 100%;
+        max-height: calc(100% - 131px);
+        overflow-y: auto;
+
+        box-sizing: border-box;
+        position: relative;
+
+        >.editor {
+            flex:1;
+
+            >.preview {
+
+            }
+        }
+
+        >.info {
+            min-width:150px;
+            max-width:300px;
+            width:25%;
+
+            >.title {
+                text-align: center;
+                border-bottom: 1px solid $middlegray;
+
+                >i {
+                    font-size: 20px;
+                    color: $gray;
+                    margin-top: 10px;
+                }
+
+                >.text {
+                    font-size: $font1;
+                    color: $gray;
+                    margin-top: 5px;
+                    margin-bottom: 10px;
+                }
+            }
+
+            >.desc {
+                margin-top:30px;
+                padding:0 10px;
+
+                >.title {
+                    font-size: $font2;
+                    color: $black;
+                }
+
+                >.text-box {
+                    margin-top: 10px;
+
+                    >input {
+                        font-size: $font2;
+                        color: $black;
+                    }
+
+                    >.common-select {
+                        .control {
+                            width:100% !important;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .bottom-container {
+        display: flex;
+        flex-direction:row;
+        justify-content: center;
+        align-items: center;
+        height:60px;
+        width:100%;
+
+        >.left {
+            flex:1;
+            height:100%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-top: 1px solid $middlegray;
+            background-color: white;
+
+            >.but {
+                flex:1;
+                height:100%;
+
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                border-right: 1px solid $middlegray;
+                cursor: pointer;
+
+                >i {
+                    font-size: 22px;
+                    margin-right: 10px;
+                }
+            }
+        }
+
+        >.sign {
+            min-width:150px;
+            max-width:300px;
+            width:25%;
+            height:100%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-top: 1px solid $middlegray;
+            background-color:$blue;
+            color: white;
+            cursor: pointer;
+        }
+    }
+}
+
 .information-page {
     display: flex;
     flex-direction: row;

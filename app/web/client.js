@@ -26,13 +26,15 @@ import HomePage from "./components/home.page"
 import TemplatePage from "./components/template-list.page"
 import UpsertTemplatePage from "./components/upsert-template.page"
 
+import AddContractPage from "./components/add-contract.page"
+import UpsertContractPage from "./components/upsert-contract.page"
+
 import InformationPage from "./components/information.page"
 
 import FolderPage from "./components/contract-folder-list.page"
 import InFolderPage from "./components/home.page"
 //import AddTemplatePage from "./components/old-add-template.page"
 // import EditTemplatePage from "./components/edit-template.page"
-import AddContractPage from "./components/add-contract.page"
 import ContractEditorPage from "./components/contract-editor.page"
 import ContractConfirmPage from "./components/contract-confirm.page"
 import VerificationPage from "./components/verification.page"
@@ -88,8 +90,10 @@ window.addEventListener("load",()=>{
 					<Route onEnter={resolver} exact path="/price-status" component={InformationPage} />
 					<Route onEnter={resolver} exact path="/group-manage" component={InformationPage} />
 
-					<Route onEnter={resolver} exact path="/folder" component={FolderPage} />
 					<Route onEnter={resolver} exact path="/add-contract" component={AddContractPage} />
+					<Route onEnter={resolver} exact path="/edit-contract/:contract_id" component={UpsertContractPage} />
+
+					<Route onEnter={resolver} exact path="/folder" component={FolderPage} />
 					<Route onEnter={resolver} exact path="/folder/:id" component={InFolderPage} />
 					<Route onEnter={resolver} exact path="/contract-editor/:id" component={ContractEditorPage} />
 					<Route onEnter={resolver} exact path="/contract-confirm/:id/:revision" component={ContractConfirmPage} />
