@@ -143,7 +143,15 @@ export default class extends React.Component {
         }
 
 		if(menu == "unclassified") {
-			return { id:"unclassified", title : "분류되지 않은 그룹원"}
+            if(!!account_id) {
+                let username = ""
+                if(!!this.state.member)
+                    username = this.state.member.data.username
+                return { id:"unclassified", account_id:account_id, title : "분류되지 않은 그룹원 #" + username}
+            }
+            else {
+                return { id:"unclassified", title : "분류되지 않은 그룹원"}
+            }
         }
 		else if(menu == "withdraw") {
 			return { id:"withdraw", title : "탈퇴한 그룹원"}
