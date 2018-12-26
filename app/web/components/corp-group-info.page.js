@@ -79,7 +79,7 @@ export default class extends React.Component {
             await window.showIndicator()
             let user_info = await this.props.fetch_user_info()
             if(!user_info)
-                history.back('/login')
+                history.push('/login')
             let info = await this.props.get_group_info(this.getGroupId())
             await this.setState({...info[0]})
             await window.hideIndicator()

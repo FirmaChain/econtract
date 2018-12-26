@@ -18,6 +18,9 @@ $gray : #a7a4a5;
 $lightgray : #f4f4f4;
 $middlegray : #dadadc;
 
+.font0 {
+    font-size: $font0;
+}
 .font1 {
     font-size: $font1;
 }
@@ -32,6 +35,9 @@ $middlegray : #dadadc;
 }
 .font5 {
     font-size: $font5;
+}
+.font6 {
+    font-size: $font6;
 }
 .font-bold {
     font-weight: bold;
@@ -624,7 +630,7 @@ div.checkbox2-comp{
     }
 
     >.container {
-        max-width:800px;
+        min-width:900px;
         height: calc(100% - 131px);
         margin: auto;
         text-align: center;
@@ -636,51 +642,92 @@ div.checkbox2-comp{
 
 .first-login-page {
 
-    .content1 {
+    .top {
+        display: flex;
+        flex-direction:row;
+        margin:auto;
         margin-top: 60px;
-        margin-bottom:45px;
+        margin-bottom: 100px;
+
+        max-width: 900px;
+
+
+        >.left {
+            width: 450px;
+        }
+
+        >.right {
+            margin-left: 70px;
+        }
+    }
+
+    .content1 {
+        margin-bottom:20px;
     }
     .content2 {
         margin-bottom:10px;
-        color: $black;
-    }
-    .content3 {
-        margin-bottom:45px;
         color: $gray;
         cursor: pointer;
     }
-    .content4 {
+    .content3 {
         color: $black;
         margin-bottom:45px;
+        text-align: left;
     }
 
     .buttons {
 
         button.new-already-button {
-            width: calc(33% - 15px);
+            width: 250px/*calc(33% - 15px)*/;
+            height: 250px;
 
-            border:2px solid $blue;
-            padding: 45px 10px;
+            border:1px solid $middlegray;
+            padding: 45px 0;
             margin-right: 20px;
 
             background-color: #fff;
-            color:$black;
-            font-size: $font3;
-            font-weight: bold;
             cursor: pointer;
+
+            transition:width 0.25s, height 0.25s, background-color 0.25s, transform 0.25s;
 
             &:last-child{
                 margin-right: 0;
             }
 
-            >.small {
-                font-size: $font0;
-                color: $black;
-            }
-
-            >i {
+            >.icon {
                 margin-bottom:30px;
                 font-size: 35px;
+            }
+
+            >.nohover {
+                color:$black;
+                font-size: $font3;
+                font-weight: bold;
+
+                >.small {
+                    font-size: $font0;
+                    color: $black;
+                }
+            }
+
+            >.yeshover {
+                height:0;
+                width:100%;
+                background-color:white;
+                opacity: 0;
+
+                transition:opacity 0.25s, height 0.25s, background-color 0.25s, transform 0.25s;
+
+                >.big {
+                    color:$black;
+                    font-size: $font3;
+                    font-weight: bold;
+                }
+
+                >.small {
+                    font-size: $font1;
+                    color: $black;
+                }
             }
 
             &:hover{
@@ -688,11 +735,33 @@ div.checkbox2-comp{
                 background-color: $blue;
                 color: white;
 
-                >.small {
-                    color:white;
+                font-size: $font5;
+                font-weight: bold;
+                padding-bottom: 0;
+
+                width: 290px;
+                height: 290px;
+
+                display: inline-flex;
+                flex-direction: column;
+                align-items: center;
+
+                >.icon {
+                    font-size:50px;
+                    margin-bottom:0;
+                    margin-top: 30px;
+                    flex:1;
                 }
-                
-                >i {
+
+                >.nohover {
+                    display: none;
+                }
+
+                >.yeshover {
+                    opacity: 1;
+                    color:white;
+                    height:70px;
+                    width:286px;
                 }
             }
         }
