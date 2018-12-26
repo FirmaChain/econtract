@@ -267,7 +267,7 @@ export default class extends React.Component {
                         {groups.map((e,k)=>{
                             let memberList = []
                             for(let v of members) {
-                                if(v.group_ids.includes(e.group_id)) {
+                                if(v.group_ids && v.group_ids.includes(e.group_id)) {
                                     memberList.push(<div key={e.group_id+" "+v.account_id} className={"item sub" + (this.isOpenGroup(e.group_id) ? "" : " hide")} onClick={this.moveGroupMember.bind(this, e.group_id, v.account_id)}>
                                         <i className="icon fas fa-user"></i>
                                         <div className="text">{v.data.username}</div>
@@ -289,6 +289,16 @@ export default class extends React.Component {
                             <div className="text">분류되지 않은 그룹원</div>
                             <i className={"angle far "  + ( this.isOpenGroup("unclassified") ? "fa-angle-down" : "fa-angle-up")} onClick={this.openCloseGroup.bind(this, "unclassified")}></i>
                         </div>
+                        {members.map((e,k)=>{
+                            if(e.group_ids == null) {
+                                return <div key={"unclassified "+e.account_id} className={"item sub" + (this.isOpenGroup("unclassified") ? "" : " hide")} onClick={this.moveGroupMember.bind(this, "unclassified", e.account_id)}>
+                                    <i className="icon fas fa-user"></i>
+                                    <div className="text">{e.data.username}</div>
+                                    <i className="setting far fa-ellipsis-h"></i>
+                                </div>
+                            }
+                        })}
+
 						<div className={"item" + (this.getTitle().id == "withdraw" ? " selected" : "")} onClick={this.moveGroup.bind(this, "withdraw")}>
                             <i className="icon fas fa-handshake-alt"></i>
                             <div className="text">탈퇴한 그룹원</div>

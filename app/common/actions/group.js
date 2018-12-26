@@ -192,7 +192,6 @@ export function get_corp_member_info(account_id, corp_key) {
         let member = {...resp.payload}
         let data = await aes_decrypt_async(new Buffer(member.info), Buffer.from(corp_key, 'hex') )
         member.data = JSON.parse(data);
-        member.group_ids = member.group_ids.split(",").map(Math.floor);
         return member;
     }
 }

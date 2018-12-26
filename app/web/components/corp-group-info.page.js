@@ -167,19 +167,19 @@ export default class extends React.Component {
 
         let resp = await this.props.add_member_group(this.getGroupId(), email, this.props.user_info.corp_key, data, data_for_inviter);
         if(resp) {
-
             if(resp.code == 1) {
                 this.setState({
                     add_email:""
                 })
                 alert("성공적으로 그룹에 추가하였습니다.")
             } else if(resp.code == 2) {
-                alert("이미 해당 기업에 가입이 되어있는 사용자 입니다.")
+                alert("이미 해당 그룹에 속해있는 사용자 입니다.")
             } else if(resp.code == -5) {
                 alert("이메일이 형식에 맞지 않습니다.")
             } else if(resp.code == -7) {
                 alert("가입은 되었으나 초대 이메일을 보내지 못했습니다. 초대 코드는 " + resp.invite_code + " 입니다.")
             }
+            await this.onRefresh()
         }
         await window.hideIndicator()
     }
