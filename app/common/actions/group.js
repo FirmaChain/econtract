@@ -204,7 +204,6 @@ export function get_corp_member_info_all(corp_key) {
         for(let v of list) {
             let data = await aes_decrypt_async(new Buffer(v.info), Buffer.from(corp_key, 'hex') )
             v.data = JSON.parse(data);
-            v.group_ids = v.group_ids.split(",").map(Math.floor);
         }
         dispatch({ type:GET_GROUP_MEMBERS, payload:list});
         return list;
