@@ -29,6 +29,7 @@ import {
 import {
     fetch_user_info,
     update_user_info,
+    update_user_public_info,
     update_corp_info,
 } from "../../common/actions"
 
@@ -41,6 +42,7 @@ let mapStateToProps = (state)=>{
 let mapDispatchToProps = {
     fetch_user_info,
     update_user_info,
+    update_user_public_info,
     update_corp_info,
 }
 
@@ -63,7 +65,7 @@ export default class extends React.Component {
 
     onSaveInformation = async () => {		
 		let account_type = this.props.user_info.account_type;
-		let info, corp_info
+		let info, corp_info, public_info
         if(account_type == 0) { // 개인 계정
             info = {
                 email: this.state.email,
@@ -78,23 +80,27 @@ export default class extends React.Component {
                 company_ceo: this.state.company_ceo,
                 company_address: this.state.company_address,
             }
-            info = {
+            public_info = {
                 email: this.state.email,
                 username: this.state.username,
                 job: this.state.job,
                 userphone: this.state.userphone,
+            }
+            info = {
                 corp_id:this.state.corp_id,
-				corp_master_key:this.state.corp_master_key,
-				corp_key:this.state.corp_key,
+                corp_master_key:this.state.corp_master_key,
+                corp_key:this.state.corp_key,
             }
         } else if(account_type == 2) { // 기업 직원 계정
-            info = {
+            public_info = {
                 email: this.state.email,
                 username: this.state.username,
                 job: this.state.job,
                 userphone: this.state.userphone,
+            }
+            info = {
                 corp_id:this.state.corp_id,
-				corp_key:this.state.corp_key,
+                corp_key:this.state.corp_key,
             }
         }
         try {
@@ -106,6 +112,11 @@ export default class extends React.Component {
 	        	let encryptedCorpInfo = aes_encrypt(JSON.stringify(corp_info), Buffer.from(this.props.user_info.corp_key,'hex'))
 	        	await this.props.update_corp_info(encryptedCorpInfo)
 	        }
+
+            if(public_info) {
+                let encryptedPublicInfo = aes_encrypt(JSON.stringify(public_info), Buffer.from(this.props.user_info.corp_key,'hex'))
+                await this.props.update_user_public_info(encryptedPublicInfo)
+            }
 
 	        await this.props.fetch_user_info()
     	} catch( err ) {

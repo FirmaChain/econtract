@@ -581,3 +581,12 @@ export async function api_update_user_info(encrypted_info){
         session:window.getCookie("session")
     });
 }
+export async function api_update_user_public_info(encrypted_info){
+    let __data = new FormData();
+
+    __data.append('encrypted_info', encrypted_info)
+
+    return await post("/update_user_public_info", __data,{
+        session:window.getCookie("session")
+    });
+}

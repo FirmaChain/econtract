@@ -12,6 +12,7 @@ import {
     api_select_userinfo_with_email,
     api_update_user_info,
     api_update_corp_info,
+    api_update_user_public_info,
 } from "../../../gen_api"
 
 import {
@@ -217,6 +218,12 @@ export function select_userinfo_with_email(email){
 export function update_user_info(encrypted_info){
     return async function(){
         return (await api_update_user_info(encrypted_info)).payload
+    }
+}
+
+export function update_user_public_info(encrypted_info) {
+    return async function(){
+        return (await api_update_user_public_info(encrypted_info)).payload
     }
 }
 

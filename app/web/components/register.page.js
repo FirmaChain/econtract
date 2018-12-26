@@ -580,12 +580,13 @@ export default class extends React.Component {
                 company_ceo: this.state.company_ceo,
                 company_address: this.state.company_address,
             }
-            info = {
+            public_info = {
                 email: this.state.email,
                 username: this.state.username,
                 job: this.state.job,
                 userphone: this.state.userphone,
             }
+            info = {}
         } else if(account_type == 2) { // 기업 직원 계정
             info = {
                 corp_id: this.state.corp_id,
@@ -627,6 +628,13 @@ export default class extends React.Component {
             if (!updateResp) {
                 return alert("Failed to update info");
             }
+
+            let encryptedPublicInfo = aes_encrypt(JSON.stringify(public_info), Buffer.from(info['corp_key'], 'hex'));
+            updateResp = await this.props.update_user_public_info(encryptedPublicInfo);
+            if (!updateResp) {
+                return alert("Failed to update info");
+            }
+
         } else if (account_type == 2) {
             let encryptedPublicInfo = aes_encrypt(JSON.stringify(public_info), Buffer.from(info['corp_key'], 'hex'));
             let consumeResp = await this.props.consume_invitation(this.state.registration_code, encryptedPublicInfo);
