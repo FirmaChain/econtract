@@ -10,7 +10,6 @@ import {
     api_remove_group_member_all,
     api_consume_invitation,
     api_add_member_group,
-    api_remove_member_group,
     api_remove_invite_group,
     api_change_group_title,
     api_new_corp,
@@ -154,13 +153,6 @@ export function add_member_group(group_id, email, corp_key, data_plain, data_for
 
         let resp = await api_add_member_group(group_id, email, passphrase2, data, data_for_inviter);
         return resp
-    }
-}
-
-export function remove_member_group(group_id, account_id) {
-    return async function() {
-        let resp = await api_remove_member_group(group_id, account_id);
-        return resp.payload
     }
 }
 

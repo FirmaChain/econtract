@@ -11,6 +11,7 @@ import md5 from 'md5'
 import {
     get256bitDerivedPublicKey,
     aes_encrypt,
+    decrypt_corp_info,
 } from "../../common/crypto_test"
 
 import {
@@ -49,26 +50,7 @@ export default class extends React.Component {
     constructor() {
         super()
         this.state = {
-            add_email:"",
-            info:null,
-            invited_list:[{
-                invite_id:0,
-                email:"pbes0707@gmail.com"
-            },{
-                invite_id:1,
-                email:"daeun@gmail.com"
-            }],
-            group_members:[{
-                account_id:1,
-                username:"윤대현",
-                email:"daehyun@gmail.com",
-                job:"선임연구원"
-            },{
-                account_id:2,
-                username:"윤대현",
-                email:"daehyun@gmail.com",
-                job:"선임연구원"
-            }]
+            add_email:""
         }
     }
 
@@ -79,26 +61,31 @@ export default class extends React.Component {
         }
 
         (async()=>{
-            await window.showIndicator()
-            let user_info = await this.props.fetch_user_info()
-            if(!user_info)
-                history.push('/login')
-            let info = await this.props.get_group_info(this.getGroupId(), 0, true )
-            console.log(info)
-            await this.setState({...info})
-            await window.hideIndicator()
+            await this.onRefresh()
         })()
+    }
+
+    onRefresh = async () => {
+        await window.showIndicator()
+        let user_info = await this.props.fetch_user_info()
+        if(!user_info)
+            history.push('/login')
+        let info = await this.props.get_group_info(this.getGroupId(), 0, true )
+        for(let v of info.invite_list) 
+            if(v.data_for_inviter) v.data_for_inviter = decrypt_corp_info(Buffer.from(this.props.user_info.corp_key, 'hex'), new Buffer(v.data_for_inviter) )
+        
+        for(let v of info.members) 
+            if(v.info) v.info = decrypt_corp_info(Buffer.from(this.props.user_info.corp_key, 'hex'), new Buffer(v.info) )
+
+        await this.setState({...info})
+        await window.hideIndicator()
+
     }
 
     componentWillReceiveProps(props) {
         if(props.user_info === false) {
             history.replace("/login")
         }
-    }
-
-    onRefresh = async () => {
-        let info = await this.props.get_group_info(this.getGroupId())
-        await this.setState({info})
     }
 
     getGroupId() {
@@ -128,7 +115,7 @@ export default class extends React.Component {
         window.openModal("RemoveCommonModal", {
             icon:"fas fa-trash",
             title:"그룹 삭제",
-            subTitle:`${this.state.title} 그룹을 삭제합니다.<br/>삭제하시겠습니까?`,
+            subTitle:`${this.state.group.title} 그룹을 삭제합니다.<br/>삭제하시겠습니까?`,
             onDelete: async (group_name) => {
                 let resp = this.props.hide_group(this.getGroupId())
                 if(resp){
@@ -216,7 +203,7 @@ export default class extends React.Component {
             title:"그룹원 삭제",
             subTitle:`해당 그룹원을 이 그룹에서 삭제하시겠습니까?`,
             onDelete: async (group_name) => {
-                let resp = await this.props.remove_member_group(this.getGroupId(), account_id)
+                let resp = await this.props.remove_group_member(this.getGroupId(), account_id)
                 if(resp) {
                     alert("그룹원을 해당 그룹에서 삭제했습니다.")
                     await this.onRefresh()
@@ -248,7 +235,10 @@ export default class extends React.Component {
     }
 
 	render() {
-		return (<div className="upsert-contract-group-page header-page">
+        if(!this.state.group)
+            return <div></div>
+		
+        return (<div className="upsert-contract-group-page header-page">
             <div className="header">
                 <div className="left-logo">
                     <img src="/static/logo_blue.png" onClick={()=>history.push("/home")}/>
@@ -262,10 +252,10 @@ export default class extends React.Component {
                 <div className="info">
                     <div className="title">
                         <i className="fal fa-building"></i>
-                        <span>{this.state.title}</span>
+                        <span>{this.state.group.title}</span>
                     </div>
                     <div className="date">
-                        {moment(this.state.added_at).toString()}
+                        {moment(this.state.group.added_at).toString()}
                     </div>
                     <div className="button-container">
                         <div className="button" onClick={this.onChangeGroupTitle}>그룹명 변경</div>
@@ -306,7 +296,7 @@ export default class extends React.Component {
                         <div className="column">
                             <div className="form-head">초대한 그룹원 리스트</div>
                             <div className="form-list form-list-400">
-                                {this.state.invited_list.map((e, k)=>{
+                                {this.state.invite_list.map((e, k)=>{
                                     return <div className="item" key={k}>
                                         <div className="desc">
                                             <div className="email">{e.email}</div>
@@ -316,6 +306,7 @@ export default class extends React.Component {
                                         </div>
                                     </div>
                                 })}
+                                {this.state.invite_list.length == 0 ? <div className="empty">초대한 그룹원이 없습니다.</div> : null}
                             </div>
                         </div>
                     </div>
@@ -330,23 +321,24 @@ export default class extends React.Component {
                         <div className="column">
                             <div className="form-head">그룹원 리스트</div>
                             <div className="form-list">
-                                {this.state.group_members.map((e, k)=>{
+                                {this.state.members.map((e, k)=>{
                                     return <div className="item" key={k}>
                                         <div className="icon">
                                             <i className="fas fa-user-tie"></i>
                                         </div>
                                         <div className="desc">
-                                                <div className="username">{e.username}</div>
-                                                <div className="email">{e.email}</div>
+                                                <div className="username">{e.info.username}</div>
+                                                <div className="email">{e.info.email}</div>
                                         </div>
                                         <div className="privilege">
-                                            {e.job}
+                                            {e.info.job}
                                         </div>
                                         <div className="action">
                                             <div className="delete" onClick={this.onRemoveGroupMember.bind(this, e.account_id)}>삭제</div>
                                         </div>
                                     </div>
                                 })}
+                                {this.state.members.length == 0 ? <div className="empty">그룹원이 없습니다.</div> : null}
                             </div>
                         </div>
                     </div>

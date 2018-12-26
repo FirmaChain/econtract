@@ -1517,6 +1517,7 @@ div.checkbox2-comp{
             font-size: $font3;
             text-align: center;
             margin-top: 20px;
+            margin-bottom: 20px;
         }
 
         .date-cell{
@@ -1791,6 +1792,13 @@ div.checkbox2-comp{
                                 width:100px;
                             }
                         }
+                    }
+
+                    >.empty {
+                        font-size: $font3;
+                        text-align: center;
+                        margin-top:30px;
+                        margin-bottom:30px;
                     }
                 }
 
