@@ -21,6 +21,7 @@ import {
     remove_group_member,
     remove_group_member_all,
     change_group_title,
+    all_invite_list,
 } from "../../common/actions"
 
 let mapStateToProps = (state)=>{
@@ -38,6 +39,7 @@ let mapDispatchToProps = {
     remove_group_member,
     remove_group_member_all,
     change_group_title,
+    all_invite_list,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -158,6 +160,13 @@ export default class extends React.Component {
         let data_for_inviter = {
             email
         }
+
+        let resp = await this.props.all_invite_list()
+
+        for(let v of resp) {
+            console.log(v)
+        }
+        return;
 
         let resp = await this.props.add_member_group(this.getGroupId(), email, this.props.user_info.corp_key, data, data_for_inviter);
         if(resp) {

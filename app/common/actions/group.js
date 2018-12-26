@@ -16,6 +16,7 @@ import {
     api_new_corp,
     api_get_corp_member_info,
     api_get_corp_member_info_all,
+    api_all_invite_list,
 } from "../../../gen_api"
 
 import {
@@ -214,6 +215,13 @@ export function get_corp_member_info_all(corp_key) {
         }
         dispatch({ type:GET_GROUP_MEMBERS, payload:list});
         return list;
+    }
+}
+
+export function all_invite_list() {
+    return async function() {
+        let resp = await api_all_invite_list();
+        return resp
     }
 }
 

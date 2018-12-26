@@ -313,16 +313,6 @@ export async function api_add_member_group(group_id,email,passphrase2,data,data_
         session:window.getCookie("session")
     });
 }
-export async function api_remove_member_group(group_id,account_id){
-    let __data = new FormData();
-
-    __data.append('group_id', group_id);
-	__data.append('account_id', account_id)
-
-    return await post("/remove_member_group", __data,{
-        session:window.getCookie("session")
-    });
-}
 export async function api_remove_invite_group(group_id,invite_id){
     let __data = new FormData();
 
@@ -357,6 +347,15 @@ export async function api_get_corp_member_info_all(){
     
 
     return await post("/get_corp_member_info_all", __data,{
+        session:window.getCookie("session")
+    });
+}
+export async function api_all_invite_list(){
+    let __data = new FormData();
+
+    
+
+    return await post("/all_invite_list", __data,{
         session:window.getCookie("session")
     });
 }
