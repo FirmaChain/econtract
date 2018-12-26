@@ -103,6 +103,7 @@ export const decrypt_with_pin = function(raw, p){
   let base64 = aesjs.utils.utf8.fromBytes(encrypted)
   return decodeURIComponent(escape(atob( base64 )));
 }
+window.email_regex = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
 
 window.ipfs_upload = async function (buf){
     const form = new FormData();

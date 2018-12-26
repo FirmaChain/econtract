@@ -6,6 +6,7 @@ import history from '../history';
 import translate from "../../common/translate"
 import Information from "./information.comp"
 import moment from "moment"
+import md5 from 'md5'
 
 import {
     get256bitDerivedPublicKey,
@@ -146,6 +147,9 @@ export default class extends React.Component {
 
         let email = this.state.add_email.trim()
 
+        if(!window.email_regex.test(email))
+            return alert("이메일이 형식에 맞지 않습니다.")
+
         let group_key = get256bitDerivedPublicKey(Buffer.from(this.props.user_info.corp_master_key, 'hex'), "m/0'/"+this.getGroupId()+"'").toString('hex');
 
         let data = {
@@ -161,19 +165,33 @@ export default class extends React.Component {
             email
         }
 
-        let resp = await this.props.all_invite_list()
+        let all_invite_list = await this.props.all_invite_list()
 
-        for(let v of resp) {
-            console.log(v)
+        for(let v of all_invite_list) {
+            if(v.email_hashed == md5(email+v.passphrase1) ) {
+                await window.hideIndicator()
+                if(v.group_id == this.getGroupId())
+                    return alert("이미 해당 그룹에 초대중인 사용자입니다.")
+                else
+                    return alert("이미 다른 그룹에서 초대중인 사용자입니다.")
+            }
         }
-        return;
 
         let resp = await this.props.add_member_group(this.getGroupId(), email, this.props.user_info.corp_key, data, data_for_inviter);
         if(resp) {
-            this.setState({
-                add_email:""
-            })
-            alert("성공적으로 그룹에 추가하였습니다.")
+
+            if(resp.code == 1) {
+                this.setState({
+                    add_email:""
+                })
+                alert("성공적으로 그룹에 추가하였습니다.")
+            } else if(resp.code == 2) {
+                alert("이미 해당 기업에 가입이 되어있는 사용자 입니다.")
+            } else if(resp.code == -5) {
+                alert("이메일이 형식에 맞지 않습니다.")
+            } else if(resp.code == -7) {
+                alert("가입은 되었으나 초대 이메일을 보내지 못했습니다. 초대 코드는 " + resp.invite_code + " 입니다.")
+            }
         }
         await window.hideIndicator()
     }

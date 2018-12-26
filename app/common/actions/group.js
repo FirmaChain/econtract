@@ -153,7 +153,7 @@ export function add_member_group(group_id, email, corp_key, data_plain, data_for
         let data_for_inviter = Buffer.from((await aes_encrypt_async(data_for_inviter_plain_buffered, corp_key)), 'binary').toString('hex');
 
         let resp = await api_add_member_group(group_id, email, passphrase2, data, data_for_inviter);
-        return resp.payload
+        return resp
     }
 }
 
@@ -221,7 +221,7 @@ export function get_corp_member_info_all(corp_key) {
 export function all_invite_list() {
     return async function() {
         let resp = await api_all_invite_list();
-        return resp
+        return resp.payload
     }
 }
 
