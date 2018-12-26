@@ -38,10 +38,11 @@ export function fetch_user_info(){
             let resp = await api_encrypted_user_info()
             if(resp.payload){
                 let user_info = decrypt_user_info(entropy, new Buffer(resp.payload.info.data) )
-                let corp_info = {}
+                let corp_info = {}, public_info = {}
                 if(resp.payload.account_type != 0)
                     corp_info = decrypt_corp_info(Buffer.from(user_info.corp_key, 'hex'), new Buffer(resp.payload.corp_info.data) )
-                
+                if(!!resp.payload.public_info)
+                    public_info = decrypt_corp_info(Buffer.from(user_info.corp_key, 'hex'), new Buffer(resp.payload.public_info.data) )
                 let seed = getMasterSeed();
                 let keyPair = SeedToEthKey(seed, "0'/0/0");
                 let privateKey = "0x"+keyPair.privateKey.toString('hex');
@@ -51,7 +52,7 @@ export function fetch_user_info(){
                 let _ = {
                     ...user_info,
                     ...corp_info, // It should be removed and the following line is used
-                    corp_info: corp_info,
+                    ...public_info,
                     eth_address: wallet.address,
                     account_id: resp.payload.account_id,
                     publickey_contract: resp.payload.publickey_contract,
