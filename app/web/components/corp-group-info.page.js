@@ -83,8 +83,9 @@ export default class extends React.Component {
             let user_info = await this.props.fetch_user_info()
             if(!user_info)
                 history.push('/login')
-            let info = await this.props.get_group_info(this.getGroupId())
-            await this.setState({...info[0]})
+            let info = await this.props.get_group_info(this.getGroupId(), 0, true )
+            console.log(info)
+            await this.setState({...info})
             await window.hideIndicator()
         })()
     }

@@ -53,9 +53,9 @@ export function closeGroup(group_id){
 	}
 }
 
-export function get_group_info(group_id, hidden=0) {
+export function get_group_info(group_id, hidden=0, detail) {
     return async function(dispatch) {
-        let infos = await api_get_group_info(group_id, hidden);
+        let infos = await api_get_group_info(group_id, hidden, detail);
         if (group_id == 0) {
             dispatch({ type:GET_MY_GROUPS_INFO, payload:infos.payload});
         }
@@ -209,7 +209,6 @@ export function get_corp_member_info_all(corp_key) {
         let resp = await api_get_corp_member_info_all();
         let list = [...resp.payload]
         for(let v of list) {
-            console.log(v)
             let data = await aes_decrypt_async(new Buffer(v.info), Buffer.from(corp_key, 'hex') )
             v.data = JSON.parse(data);
         }
