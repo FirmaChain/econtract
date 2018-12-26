@@ -267,7 +267,7 @@ export default class extends React.Component {
                         {groups.map((e,k)=>{
                             let memberList = []
                             for(let v of members) {
-                                if(v.group_id == e.group_id) {
+                                if(v.group_ids.includes(e.group_id)) {
                                     memberList.push(<div key={e.group_id+" "+v.account_id} className={"item sub" + (this.isOpenGroup(e.group_id) ? "" : " hide")} onClick={this.moveGroupMember.bind(this, e.group_id, v.account_id)}>
                                         <i className="icon fas fa-user"></i>
                                         <div className="text">{v.data.username}</div>

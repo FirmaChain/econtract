@@ -192,6 +192,7 @@ export function get_corp_member_info(account_id, corp_key) {
         let member = {...resp.payload}
         let data = await aes_decrypt_async(new Buffer(member.info), Buffer.from(corp_key, 'hex') )
         member.data = JSON.parse(data);
+        member.group_ids = member.group_ids.split(",").map(Math.floor);
         return member;
     }
 }
@@ -203,6 +204,7 @@ export function get_corp_member_info_all(corp_key) {
         for(let v of list) {
             let data = await aes_decrypt_async(new Buffer(v.info), Buffer.from(corp_key, 'hex') )
             v.data = JSON.parse(data);
+            v.group_ids = v.group_ids.split(",").map(Math.floor);
         }
         dispatch({ type:GET_GROUP_MEMBERS, payload:list});
         return list;
