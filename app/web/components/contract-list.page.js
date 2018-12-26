@@ -64,8 +64,6 @@ export default class extends React.Component {
         if(this.props.user_info.account_type == 1 || this.props.user_info.account_type == 2) {
             let groups_info = await this.props.get_group_info(0)
 
-            console.log(groups_info)
-
             let group_id = this.props.match.params.group_id || null
             if(!group_id) {
                 if(groups_info)
