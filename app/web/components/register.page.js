@@ -312,7 +312,6 @@ export default class extends React.Component {
             let email_address = params.email_address || "";
             (async() => {
                 let registration_info = await this.props.invite_information(email_address, registration_code);
-                console.log(registration_info)
                 if (registration_info) {
                     this.setState({
                         registration_code: registration_code,
@@ -326,7 +325,8 @@ export default class extends React.Component {
                         email_verification: true,
                     });
                 } else {
-                    alert("mang! invalid registration code!");
+                    alert("유효하지 않은 초대코드입니다.");
+                    history.goBack();
                 }
             })();
         }
@@ -564,8 +564,7 @@ export default class extends React.Component {
             return alert("순서가 맞지 않습니다. 다시 한번 확인해주세요!")
         }
         let account_type = this.getAccountType()
-        let info
-        let corp_info
+        let info, corp_info, public_info
 
         if(account_type == 0) { // 개인 계정
             info = {
@@ -589,12 +588,15 @@ export default class extends React.Component {
             }
         } else if(account_type == 2) { // 기업 직원 계정
             info = {
+                corp_id: this.state.corp_id,
+                corp_key: this.state.corp_key,
+            }
+
+            public_info = {
                 email: this.state.email,
                 username: this.state.username,
                 job: this.state.job,
                 userphone: this.state.userphone,
-                corp_id: this.state.corp_id,
-                corp_key: this.state.corp_key,
             }
         }
 
@@ -626,8 +628,8 @@ export default class extends React.Component {
                 return alert("Failed to update info");
             }
         } else if (account_type == 2) {
-            let encryptedInfo = aes_encrypt(JSON.stringify(info), Buffer.from(info['corp_key'], 'hex'));
-            let consumeResp = await this.props.consume_invitation(this.state.registration_code, encryptedInfo);
+            let encryptedPublicInfo = aes_encrypt(JSON.stringify(public_info), Buffer.from(info['corp_key'], 'hex'));
+            let consumeResp = await this.props.consume_invitation(this.state.registration_code, encryptedPublicInfo);
             if (!consumeResp) {
                 return alert("Failed to link to corp");
             }

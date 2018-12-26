@@ -8,6 +8,11 @@ import Information from "./information.comp"
 import moment from "moment"
 
 import {
+    get256bitDerivedPublicKey,
+    aes_encrypt,
+} from "../../common/crypto_test"
+
+import {
     add_member_group,
     remove_invite_group,
     hide_group,
@@ -134,6 +139,8 @@ export default class extends React.Component {
     onAddMember = async ()=>{
         if(this.state.add_email == "")
             return alert("초대하려는 그룹원의 이메일을 입력해주세요.")
+        
+        await window.showIndicator()
 
         let group_key = get256bitDerivedPublicKey(Buffer.from(this.props.user_info.corp_master_key, 'hex'), "m/0'/"+this.getGroupId()+"'").toString('hex');
 
@@ -151,8 +158,9 @@ export default class extends React.Component {
             this.setState({
                 add_email:""
             })
+            alert("성공적으로 그룹에 추가하였습니다.")
         }
-        return alert(JSON.stringify(resp));
+        await window.hideIndicator()
     }
 
     onRemoveInviteList = async (invite_id) => {
