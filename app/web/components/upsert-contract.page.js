@@ -155,7 +155,7 @@ export default class extends React.Component {
     }
 
     onClickContractSave = () => {
-        
+
     }
 
     onClickMoveEditPrivilege = () => {

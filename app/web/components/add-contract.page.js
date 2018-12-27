@@ -229,9 +229,14 @@ export default class extends React.Component {
         if(!this.state.add_role)
             return alert("역할을 선택해주세요.")
 
+        if( !window.email_regex.test(this.state.add_email) )
+            return alert("이메일 형식이 잘못되었습니다.")
+
         let resp = await this.props.select_userinfo_with_email(this.state.add_email)
+        console.log(resp)
 
         if(resp){
+            console.log(resp)
             this.setState({
                 target_list:[...this.state.target_list, {
                     account_type:resp.account_type,
