@@ -44,7 +44,7 @@ export function fetch_user_info(){
                     corp_info = decrypt_corp_info(Buffer.from(user_info.corp_key, 'hex'), new Buffer(resp.payload.corp_info.data) )
                     let keys = {}
                     for(let v of resp.payload.group_public_keys) {
-                        keys[v.group_id] = v.group_public_key
+                        keys[v.group_id] = Buffer.from(v.group_public_key)
                     }
                     group_public_keys = keys
                 }
