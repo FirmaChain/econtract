@@ -115,8 +115,12 @@ export default class extends React.Component {
             return alert("이제 기존 계정으로 로그인할 수 있습니다.")
         } else if(resp.code == -3) {
             return alert("일치하는 계정 정보가 없습니다.")
+        } else if(resp.code == -4) {
+            return alert("로그인 정보 생성에 실패하였습니다.")
+        } else if(resp.code == -5) {
+            return alert("마스터 키워드와 이메일에 일치하는 계정 정보가 없습니다.")
         } else {
-            return alert(resp.error)
+            return alert("알 수 없는 에러 발생")
         }
     }
 

@@ -117,7 +117,13 @@ export function register_new_account(account, info, email, name, eth, type){
             name, 
             eth,
             type
-        )).payload;
+        ));
+
+        resp = {
+            code:resp.code,
+            ...resp.payload
+        }
+
         if (type != 0) {
             let auth = account.auth;
             let eems = Buffer.from(account.encryptedMasterSeed, 'hex').toString('base64');

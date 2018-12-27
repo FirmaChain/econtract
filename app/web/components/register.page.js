@@ -609,16 +609,15 @@ export default class extends React.Component {
         
         await window.showIndicator()
         let resp = await this.props.register_new_account(this.state.account, encryptedInfo, this.state.email, this.state.username, wallet.address, account_type)
-        await window.hideIndicator()
 
-        if (account_type == 1) {
+        if (resp.code == 1 && account_type == 1) {
             let corpMasterKey = generateCorpKey();
             // inject into master's info
             let corpKey = get256bitDerivedPublicKey(corpMasterKey, "m/0'/0'");
             let encryptedCorpInfo = aes_encrypt(JSON.stringify(corp_info), corpKey);
             let corpResp = await this.props.new_corp(encryptedCorpInfo);
             if (!corpResp) {
-                return alert("Failed to create corp");
+                return alert("기업 정보 생성에 실패하였습니다.");
             }
             info['corp_id'] = corpResp.corp_id;
             info['corp_master_key'] = corpMasterKey.toString("hex");
@@ -626,30 +625,38 @@ export default class extends React.Component {
             let encryptedInfo = aes_encrypt(JSON.stringify(info), this.state.account.masterKeyPublic);
             let updateResp = await this.props.update_user_info(encryptedInfo);
             if (!updateResp) {
-                return alert("Failed to update info");
+                return alert("기업 키 저장에 실패하였습니다.");
             }
 
             let encryptedPublicInfo = aes_encrypt(JSON.stringify(public_info), Buffer.from(info['corp_key'], 'hex'));
             updateResp = await this.props.update_user_public_info(encryptedPublicInfo);
             if (!updateResp) {
-                return alert("Failed to update info");
+                return alert("공개 정보 저장에 실패하였습니다.");
             }
 
-        } else if (account_type == 2) {
+        } else if (resp.code == 1 && account_type == 2) {
             let encryptedPublicInfo = aes_encrypt(JSON.stringify(public_info), Buffer.from(info['corp_key'], 'hex'));
             let consumeResp = await this.props.consume_invitation(this.state.registration_code, encryptedPublicInfo);
             if (!consumeResp) {
-                return alert("Failed to link to corp");
+                return alert("초대 코드 소모에 실패하였습니다.");
             }
         }
+        await window.hideIndicator()
 
         if(resp.code == 1){
             localStorage.setItem("browser_key_virgin", 0);
             history.push("/login");
             return alert("회원가입에 성공하였습니다.")
-        }else{
-            return alert(resp.error)
+        } else if(resp.code == -3) {
+            return alert("이미 해당 브라우저에 로그인 되어 있습니다.")
+        } else if(resp.code == -4) {
+            return alert("세션을 만들지 못했습니다.")
+        } else if(resp.code == -5) {
+            return alert("계정 생성에 실패하였습니다.")
+        } else {
+            return alert("알 수 없는 에러 발생")
         }
+
     }
 
     openWhatIsMasterkeywordModal = () => {

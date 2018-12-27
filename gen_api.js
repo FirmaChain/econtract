@@ -282,15 +282,6 @@ export async function api_consume_invitation(invite_code,data){
         session:window.getCookie("session")
     });
 }
-export async function api_remove_group(group_id){
-    let __data = new FormData();
-
-    __data.append('group_id', group_id)
-
-    return await post("/remove_group", __data,{
-        session:window.getCookie("session")
-    });
-}
 export async function api_change_group_title(group_id,change_title){
     let __data = new FormData();
 

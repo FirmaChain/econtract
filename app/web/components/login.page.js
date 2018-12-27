@@ -50,14 +50,14 @@ export default class extends React.Component {
             alert("아이디와 비밀번호를 확인해주세요.");
         } else {
             let resp = await this.props.login_account(this.state.email || "", this.state.password || "")
-            if(resp == -2){
+            if(resp.code == -3){
                 alert("해당 기기에 연결된 계정 정보가 존재하지 않습니다.\n현재 기기에 인증이 필요할 경우 [다른 계정으로 로그인] 기능을 사용해 주세요.")
-            }else if(resp == -1){
+            } else if(resp.code == -4){
                 alert("아이디와 비밀번호를 확인해주세요.");
-            }else if(resp.eems){
+            } else if(resp.eems){
                 localStorage.setItem("browser_key_virgin", 0);
                 history.push("/home")
-            }else{
+            } else{
                 alert("login error;")
             }
         }
