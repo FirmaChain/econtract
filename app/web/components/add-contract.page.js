@@ -287,14 +287,14 @@ export default class extends React.Component {
         })
     }
 
-    onClickRegister = ()=>{
-        this.blockFlag = true
+    onClickRegister = async ()=>{
+        this.blockFlag = true;
         let contract_name = this.state.contract_name;
-        let sign_target_me = !!this.state.target_me
-        let sign_target_other = !!this.state.target_other
-        let counterparties = this.state.target_list
-        let indivisual_info = this.state.indivisual.filter(e=>e.force||e.checked).map(e=>e.title)
-        let corporation_info = this.state.corporation.filter(e=>e.force||e.checked).map(e=>e.title)
+        let counterparties = this.state.target_list;
+        let indivisual_info = this.state.indivisual.filter(e=>e.force||e.checked).map(e=>e.title);
+        let corporation_info = this.state.corporation.filter(e=>e.force||e.checked).map(e=>e.title);
+        let pin = "000000";
+        await this.props.new_contract(subject, counterparties, pin, indivisual_info, corporation_info);
 
         console.log(
             contract_name,
