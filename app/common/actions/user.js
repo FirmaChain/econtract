@@ -86,28 +86,28 @@ export function fetch_user_info(){
 export function request_email_verification_code(email){
     return async function(dispatch){
         let resp = await api_request_email_verification(email)
-        return resp.payload;
+        return resp;
     }
 }
 
 export function check_email_verification_code(email, code){
     return async function(dispatch){
         let resp = await api_check_email_verification_code(email, code)
-        return resp.payload;
+        return resp;
     }
 }
 
 export function request_phone_verification_code(phone){
     return async function(dispatch){
         let resp = await api_request_phone_verification_code(phone)
-        return resp.payload;
+        return resp;
     }
 }
 
 export function check_phone_verification_code(phone, code){
     return async function(dispatch){
         let resp = await api_check_phone_verification_code(phone, code)
-        return resp.payload;
+        return resp;
     }
 }
 
