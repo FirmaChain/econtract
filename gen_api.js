@@ -224,13 +224,13 @@ export async function api_create_group(title){
         session:window.getCookie("session")
     });
 }
-export async function api_update_group_key(group_id,group_public_key){
+export async function api_update_group_public_key(group_id,group_public_key){
     let __data = new FormData();
 
     __data.append('group_id', group_id);
 	__data.append('group_public_key', group_public_key)
 
-    return await post("/update_group_key", __data,{
+    return await post("/update_group_public_key", __data,{
         session:window.getCookie("session")
     });
 }

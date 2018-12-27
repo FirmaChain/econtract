@@ -16,7 +16,7 @@ import {
     api_get_corp_member_info,
     api_get_corp_member_info_all,
     api_all_invite_list,
-    api_update_group_key,
+    api_update_group_public_key,
 } from "../../../gen_api"
 
 import {
@@ -124,9 +124,9 @@ export function create_group(group_name) {
     }
 }
 
-export function update_group_key(group_id, encrypted_group_key) {
+export function update_group_public_key(group_id, encrypted_group_key) {
     return async function() {
-        let resp = await api_update_group_key(group_id, encrypted_group_key)
+        let resp = await api_update_group_public_key(group_id, encrypted_group_key)
         return resp
     }
 }
