@@ -111,28 +111,28 @@ export default class extends React.Component {
                 this.setState({
                     template_list:await this.props.list_template(),
                     target_list:[{
-                        account_type:0,
+                        user_type:0,
                         username:user.username,
                         email:user.email,
                         role:[0, 1]
                     },{
-                        account_type:0,
+                        user_type:0,
                         username:user.username,
                         email:user.email,
                         role:[1]
                     },{
-                        account_type:0,
+                        user_type:0,
                         username:user.username,
                         email:user.email,
                         role:[1]
                     },{
-                        account_type:1,
+                        user_type:1,
                         username:"김정완",
                         email:"jwkim@firma-solutions.com",
                         company_name:"피르마 솔루션즈",
                         role:[1],
                     },{
-                        account_type:2,
+                        user_type:2,
                         company_name:"피르마 솔루션즈",
                         group_name:"사업1팀",
                         count:5,
@@ -143,28 +143,28 @@ export default class extends React.Component {
                 this.setState({
                     template_list:await this.props.list_template(),
                     target_list:[{
-                        account_type:user.account_type,
+                        user_type:1,
                         username:user.username,
                         email:user.email,
                         role:[0, 1]
                     },{
-                        account_type:0,
+                        user_type:0,
                         username:user.username,
                         email:user.email,
                         role:[1]
                     },{
-                        account_type:0,
+                        user_type:0,
                         username:user.username,
                         email:user.email,
                         role:[1]
                     },{
-                        account_type:1,
+                        user_type:1,
                         username:"김정완",
                         email:"jwkim@firma-solutions.com",
                         company_name:"피르마 솔루션즈",
                         role:[1],
                     },{
-                        account_type:2,
+                        user_type:2,
                         company_name:"피르마 솔루션즈",
                         group_name:"사업1팀",
                         count:5,
@@ -239,7 +239,7 @@ export default class extends React.Component {
             console.log(resp)
             this.setState({
                 target_list:[...this.state.target_list, {
-                    account_type:resp.account_type,
+                    user_type:resp.account_type != 0 ? 1 : 0,
                     username:resp.username,
                     email:resp.email,
                     role:[this.state.add_role]
@@ -455,7 +455,7 @@ export default class extends React.Component {
                                     return <div className="item" key={k}>
                                         <div className="icon">
                                         {
-                                            (()=>{ switch(e.account_type) {
+                                            (()=>{ switch(e.user_type) {
                                                 case 0:
                                                     return <i className="fas fa-user"></i>
                                                 case 1:
@@ -467,7 +467,7 @@ export default class extends React.Component {
                                         }
                                         </div>
                                         {
-                                            (()=>{ switch(e.account_type) {
+                                            (()=>{ switch(e.user_type) {
                                                 case 0:
                                                     return <div className="desc">
                                                         <div className="username">{e.username}</div>
