@@ -125,7 +125,7 @@ export function new_contract(subject, counterparties, publickey_contract_list, s
             counterparties_eckai.push(sealContractAuxKey(publickey_contract_list[i], shared_key));
         }
 
-        let resp = (await api_new_contract( subject, counterparties, counterparties_eckai, necessary_info )).payload
+        let resp = (await api_new_contract( subject, counterparties, counterparties_eckai, JSON.stringify(necessary_info) )).payload
         if(resp){
             sessionStorage.setItem(`contract:${resp}`, encryptPIN(pin))
             dispatch({
