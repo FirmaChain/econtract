@@ -233,15 +233,14 @@ export default class extends React.Component {
             return alert("이메일 형식이 잘못되었습니다.")
 
         let resp = await this.props.select_userinfo_with_email(this.state.add_email)
-        console.log(resp)
 
         if(resp){
-            console.log(resp)
             this.setState({
                 target_list:[...this.state.target_list, {
                     user_type:resp.account_type != 0 ? 1 : 0,
                     username:resp.username,
                     email:resp.email,
+                    account_id:resp.account_id,
                     role:[this.state.add_role]
                 }],
                 add_email:""
