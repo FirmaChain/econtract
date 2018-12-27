@@ -148,7 +148,7 @@ export function get_mnemonic(user_id, password){
             window.setCookie("session_update", Date.now(), 0.125)
             return entropyToMnemonic(getUserEntropy(auth, resp.eems))
         } else {
-            return null;
+            return false;
         }
     }
 }
@@ -164,7 +164,12 @@ export function login_account(user_id, password){
             sign.publicKey.toString('hex'),
             nonce,
             sign.payload
-        )).payload
+        ))
+
+        resp = {
+            code:resp.code,
+            ...resp.payload
+        }
 
         if(resp.eems){
             window.setCookie("session", resp.session, 0.125)
