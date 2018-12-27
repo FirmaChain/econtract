@@ -449,6 +449,15 @@ export async function api_change_folder_template(folder_id,name){
         session:window.getCookie("session")
     });
 }
+export async function api_encrypted_user_info(){
+    let __data = new FormData();
+
+    
+
+    return await post("/encrypted_user_info", __data,{
+        session:window.getCookie("session")
+    });
+}
 export async function api_request_email_verification(email){
     let __data = new FormData();
 
@@ -544,15 +553,6 @@ export async function api_login_account(publicbk,nonce,sign){
 	__data.append('sign', sign)
 
     return await post("/login_account", __data,{
-        session:window.getCookie("session")
-    });
-}
-export async function api_encrypted_user_info(){
-    let __data = new FormData();
-
-    
-
-    return await post("/encrypted_user_info", __data,{
         session:window.getCookie("session")
     });
 }
