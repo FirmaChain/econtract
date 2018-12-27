@@ -322,6 +322,8 @@ export default class extends React.Component {
                         company_address: registration_info.company_address,
                         corp_key: registration_info.corp_key,
                         corp_id: registration_info.corp_id,
+                        group_key: registration_info.group_key,
+                        group_id: registration_info.group_id,
                         email_verification: true,
                     });
                 } else {
@@ -591,6 +593,7 @@ export default class extends React.Component {
             info = {
                 corp_id: this.state.corp_id,
                 corp_key: this.state.corp_key,
+                group_keys: {this.state.group_id: this.state.group_key},
             }
 
             public_info = {
