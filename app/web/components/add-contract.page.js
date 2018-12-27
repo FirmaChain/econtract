@@ -46,7 +46,7 @@ export default class extends React.Component {
             target_list:[], // type 0 : 개인, type 1 : 기업 담당자, type 2 : 기업 그룹
             target_me:true,
             target_other:true,
-            indivisual:[{
+            individual:[{
                 deletable:false,
                 title:"성함",
                 force:true
@@ -273,35 +273,35 @@ export default class extends React.Component {
     }
 
     onClickAddIndivisual = ()=>{
-        if(!this.state.add_indivisual_info){
+        if(!this.state.add_individual_info){
             return alert("항목의 이름을 입력해주세요.")
         }
 
         this.setState({
-            indivisual:[...this.state.indivisual,{
-                title:this.state.add_indivisual_info,
+            individual:[...this.state.individual,{
+                title:this.state.add_individual_info,
                 checked:true,
                 deletable:true
             }],
-            add_indivisual_info:""
+            add_individual_info:""
         })
     }
 
-    onClickRegister = ()=>{
-        this.blockFlag = true
+    onClickRegister = async ()=>{
+        this.blockFlag = true;
         let contract_name = this.state.contract_name;
-        let sign_target_me = !!this.state.target_me
-        let sign_target_other = !!this.state.target_other
-        let counterparties = this.state.target_list
-        let indivisual_info = this.state.indivisual.filter(e=>e.force||e.checked).map(e=>e.title)
-        let corporation_info = this.state.corporation.filter(e=>e.force||e.checked).map(e=>e.title)
+        let counterparties = this.state.target_list;
+        let individual_info = this.state.individual.filter(e=>e.force||e.checked).map(e=>e.title);
+        let corporation_info = this.state.corporation.filter(e=>e.force||e.checked).map(e=>e.title);
+        let pin = "000000";
+        await this.props.new_contract(subject, counterparties, pin, individual_info, corporation_info);
 
         console.log(
             contract_name,
             sign_target_me,
             sign_target_other,
             counterparties,
-            indivisual_info,
+            individual_info,
             corporation_info,
         )
 
@@ -521,19 +521,19 @@ export default class extends React.Component {
                         <div className="checkbox-list">
                             <div className="form-head">개인 서명자 정보</div>
                             <div className="form-check-list">
-                                {this.state.indivisual.map((e,k)=>{
+                                {this.state.individual.map((e,k)=>{
                                     return <div className="item" key={k}>
-                                        <CheckBox2 size={18} disabled={e.force} on={e.force || e.checked} onClick={this.onToggleSignInfo.bind(this,"indivisual",k)}/>
+                                        <CheckBox2 size={18} disabled={e.force} on={e.force || e.checked} onClick={this.onToggleSignInfo.bind(this,"individual",k)}/>
                                         <div className="name">{e.title}</div>
-                                        {e.deletable ? <div className="delete" onClick={this.onClickRemoveSignInfo.bind(this,"indivisual", k)}><i className="fal fa-times"></i></div> : null}
+                                        {e.deletable ? <div className="delete" onClick={this.onClickRemoveSignInfo.bind(this,"individual", k)}><i className="fal fa-times"></i></div> : null}
                                     </div>
                                 })}
                                 <div className="bottom">
                                     <input className="text-box common-textbox"
                                         placeholder="항목 입력"
                                         type="text"
-                                        value={this.state.add_indivisual_info || ""}
-                                        onChange={e=>this.setState({add_indivisual_info:e.target.value})}
+                                        value={this.state.add_individual_info || ""}
+                                        onChange={e=>this.setState({add_individual_info:e.target.value})}
                                         onKeyDown={this.keyPress.bind(this, 0)}/>
                                     <div className="add-btn" onClick={this.onClickAddIndivisual}>
                                         <div>서명 정보 추가</div>
