@@ -557,7 +557,7 @@ export default class extends React.Component {
                 </div>
 
                 <div className="bottom-container">
-                    <div className="regist-contract" onClick={this.onClickRegist}>등 록</div>
+                    <div className="regist-contract" onClick={this.onClickRegister}>등 록</div>
                 </div>
             </div>
             <Footer />
