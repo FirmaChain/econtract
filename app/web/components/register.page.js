@@ -680,37 +680,16 @@ export default class extends React.Component {
     }
     
     render_term(){
-        let type = this.getAccountType()
-        let title, desc
-        if(type == 0) {
-            title = "개인 가입 약관 동의"
-            desc = "서비스 이용에 필요한 약관에 동의합니다."
-        }
-        else if(type == 1) {
-            title = "기업 가입 약관 동의"
-            desc = "기업 가입은 관리자 및 기업 자체 정보로 가입합니다. 추후 직원용 계정은 내부 기능을 통해 이용할 수 있습니다."
-        }
-        else if(type == 2) {
-            title = "기업 직원 계정 가입 약관 동의"
-            desc = "직원 계정 가입 절차입니다. 링크를 통해서만 가입할 수 있으며, 기본적인 기업 정보는 입력되어 있습니다."
-        }
+        return (<div className="content">
+            <div className="service-title"> 서비스 이용약관 </div>
+            <textarea className="terms-condition" defaultValue={this.info1} disabled />
+            
+            <div className="service-title"> 개인정보취급방침 </div>
+            <textarea className="terms-condition" defaultValue={this.info2} disabled />
 
-        return (<div className="page">
-            <div className="title-container">
-                <div className="title">{title}</div>
-                <div className="desc">{desc}</div>
-            </div>
-            <div className="content">
-                <div className="service-title"> 서비스 이용약관 </div>
-                <textarea className="terms-condition" defaultValue={this.info1} disabled />
-                
-                <div className="service-title"> 개인정보취급방침 </div>
-                <textarea className="terms-condition" defaultValue={this.info2} disabled />
-
-                <div className="bottom-container">
-                    <div className="confirm-button" onClick={this.next_term}>
-                        모두 동의
-                    </div>
+            <div className="bottom-container">
+                <div className="confirm-button" onClick={this.next_term}>
+                    모두 동의
                 </div>
             </div>
         </div>)
@@ -718,305 +697,273 @@ export default class extends React.Component {
 
     render_email(){
         let type = this.getAccountType()
-        let desc = ""
-        if(type == 0)
-            desc = "기본정보를 정확히 입력해주시기 바랍니다."
-        else if(type == 1)
-            desc = "회사에서 사용하시는 본인의 이메일을 입력해주세요."
-        else if(type == 2)
-            desc = "직원 계정 가입 과정에서는 지정된 이메일로만 가입할 수 있습니다."
 
-        return (<div className="page">
-            <div className="title-container">
-                <div className="title">계정정보 입력</div>
-                <div className="desc">{desc}</div>
-            </div>
-            <div className="content">
-                <div className="text-place">
-                    <div className="name">이메일</div>
-                    <div className="textbox">
-                        <input className="common-textbox" type="email"
-                            value={this.state.email || ""} 
-                            onChange={e=>this.setState({email:e.target.value})}
-                            disabled={this.getAccountType() == 2 || this.state.step1 == 1}
-                            placeholder="이메일을 정확하게 입력해주세요"/>
-                    </div>
-                    { this.getAccountType() == 2 ? null : (this.state.step1 == 1 ?
-                        <div className="gray-but">발송 완료</div> : 
-                        <div className="blue-but" onClick={this.onClickRequestEmail}>인증메일 발송</div>)
-                    }
-                    
+        return (<div className="content">
+            <div className="text-place">
+                <div className="name">이메일</div>
+                <div className="textbox">
+                    <input className="common-textbox" type="email"
+                        value={this.state.email || ""} 
+                        onChange={e=>this.setState({email:e.target.value})}
+                        disabled={this.getAccountType() == 2 || this.state.step1 == 1}
+                        placeholder="이메일을 정확하게 입력해주세요"/>
                 </div>
-
-                {this.getAccountType() == 2 ? null : 
-                    <div className="text-place">
-                        <div className="name">이메일 인증</div>
-                        <div className="textbox">
-                            <input className="common-textbox" type="number"
-                                value={this.state.verification_code || ""}
-                                onKeyDown={this.keyPress.bind(this, 0)}
-                                onChange={e=>this.setState({verification_code:e.target.value})}
-                                disabled={this.state.email_verification}
-                                placeholder="인증번호를 정확하게 입력해주세요"/>
-                        </div>
-                        {this.state.email_verification ? null : 
-                            <div className={this.state.step1 == 1 ? "blue-but" : "gray-but"} onClick={this.onClickVerificateEmail}>
-                                확인
-                            </div>
-                        }
-                    </div>
+                { type == 2 ? null : (this.state.step1 == 1 ?
+                    <div className="gray-but">발송 완료</div> : 
+                    <div className="blue-but" onClick={this.onClickRequestEmail}>인증메일 발송</div>)
                 }
-
-                <div className="text-place">
-                    <div className="name">비밀번호</div>
-                    <div className="textbox">
-                        <input className="common-textbox" type="password"
-                            value={this.state.password || ""}
-                            onChange={e=>this.setState({password:e.target.value})}  
-                            placeholder="최소 8자리(영어, 숫자, 특수문자 사용 가능)"/>
-                    </div>
-                </div>
-
-                <div className="text-place">
-                    <div className="name">비밀번호 확인</div>
-                    <div className="textbox">
-                        <input className="common-textbox" type="password"
-                            value={this.state.password2 || ""}
-                            onChange={e=>this.setState({password2:e.target.value})}
-                            onKeyDown={this.keyPress.bind(this, 1)}
-                            placeholder="입력하신 패스워드를 다시 입력해주세요"/>
-                    </div>
-                </div>
-
-                <div className="bottom-container">
-                    <div className="confirm-button" onClick={this.onClickNextBtnAccountInfo}>
-                        확인
-                    </div>
-                </div>
+                
             </div>
-            
-        </div>)
-    }
 
-    render_personal(){
-        return (<div className="page">
-            <div className="title-container">
-                <div className="title">회원정보 입력</div>
-                <div className="desc">전자 서명에 사용될 회원님의 정보를 입력해주시기 바랍니다.</div>
-            </div>
-            <div className="content">
+            {type == 2 ? null : 
                 <div className="text-place">
-                    <div className="name">이름</div>
-                    <div className="textbox">
-                        <input className="common-textbox" type="text"
-                            value={this.state.username || ""}
-                            onChange={e=>this.setState({username:e.target.value})}
-                            placeholder="이름을 정확하게 입력해주세요"/>
-                    </div>
-                </div>
-
-                <div className="text-place">
-                    <div className="name">휴대폰 번호</div>
-                    <div className="textbox">
-                        <input className="common-textbox" type="text"
-                           value={this.state.userphone || ""} 
-                           onChange={this.onChangePhoneForm.bind(this,"userphone")}
-                           disabled={this.state.phone_verification_code_sent}
-                            placeholder="휴대폰 번호를 정확하게 입력해주세요"/>
-                    </div>
-                    { this.state.phone_verification_code_sent ? null :
-                        <div className="blue-but" onClick={this.onClickRequestPhone}>
-                            발송
-                        </div>
-                    }
-                </div>
-
-                <div className="text-place">
-                    <div className="name">인증번호</div>
+                    <div className="name">이메일 인증</div>
                     <div className="textbox">
                         <input className="common-textbox" type="number"
-                            value={this.state.phone_verification_code || ""} 
-                            onChange={e=>this.setState({phone_verification_code:e.target.value})} 
-                            disabled={this.state.verificated_phone}
+                            value={this.state.verification_code || ""}
+                            onKeyDown={this.keyPress.bind(this, 0)}
+                            onChange={e=>this.setState({verification_code:e.target.value})}
+                            disabled={this.state.email_verification}
                             placeholder="인증번호를 정확하게 입력해주세요"/>
                     </div>
-                    { this.state.verificated_phone ? null : 
-                        <div className={ this.state.phone_verification_code_sent ? "blue-but":"gray-but"} onClick={this.onClickVerificatePhone}>
+                    {this.state.email_verification ? null : 
+                        <div className={this.state.step1 == 1 ? "blue-but" : "gray-but"} onClick={this.onClickVerificateEmail}>
                             확인
                         </div>
                     }
                 </div>
+            }
 
-                <div className="text-place">
-                    <div className="name">주소</div>
-                    <div className="textbox">
-                        <input className="common-textbox" type="text"
-                            value={this.state.useraddress || ""} 
-                            onChange={e=>this.setState({useraddress:e.target.value})}
-                            placeholder="주소를 정확하게 입력해주세요"/>
-                    </div>
-                    <div className="blue-but" onClick={this.onClickFindAddress.bind(this, 1)}>
-                        검색
-                    </div>
+            <div className="text-place">
+                <div className="name">비밀번호</div>
+                <div className="textbox">
+                    <input className="common-textbox" type="password"
+                        value={this.state.password || ""}
+                        onChange={e=>this.setState({password:e.target.value})}  
+                        placeholder="최소 8자리(영어, 숫자, 특수문자 사용 가능)"/>
                 </div>
+            </div>
 
-                <div className="bottom-container">
-                    <div className="confirm-button" onClick={this.onClickNextBtnUserInfo}>
+            <div className="text-place">
+                <div className="name">비밀번호 확인</div>
+                <div className="textbox">
+                    <input className="common-textbox" type="password"
+                        value={this.state.password2 || ""}
+                        onChange={e=>this.setState({password2:e.target.value})}
+                        onKeyDown={this.keyPress.bind(this, 1)}
+                        placeholder="입력하신 패스워드를 다시 입력해주세요"/>
+                </div>
+            </div>
+
+            <div className="bottom-container">
+                <div className="confirm-button" onClick={this.onClickNextBtnAccountInfo}>
+                    확인
+                </div>
+            </div>
+        </div>)
+    }
+
+    render_personal(){
+        return (<div className="content">
+            <div className="text-place">
+                <div className="name">이름</div>
+                <div className="textbox">
+                    <input className="common-textbox" type="text"
+                        value={this.state.username || ""}
+                        onChange={e=>this.setState({username:e.target.value})}
+                        placeholder="이름을 정확하게 입력해주세요"/>
+                </div>
+            </div>
+
+            <div className="text-place">
+                <div className="name">휴대폰 번호</div>
+                <div className="textbox">
+                    <input className="common-textbox" type="text"
+                       value={this.state.userphone || ""} 
+                       onChange={this.onChangePhoneForm.bind(this,"userphone")}
+                       disabled={this.state.phone_verification_code_sent}
+                        placeholder="휴대폰 번호를 정확하게 입력해주세요"/>
+                </div>
+                { this.state.phone_verification_code_sent ? null :
+                    <div className="blue-but" onClick={this.onClickRequestPhone}>
+                        발송
+                    </div>
+                }
+            </div>
+
+            <div className="text-place">
+                <div className="name">인증번호</div>
+                <div className="textbox">
+                    <input className="common-textbox" type="number"
+                        value={this.state.phone_verification_code || ""} 
+                        onChange={e=>this.setState({phone_verification_code:e.target.value})} 
+                        disabled={this.state.verificated_phone}
+                        placeholder="인증번호를 정확하게 입력해주세요"/>
+                </div>
+                { this.state.verificated_phone ? null : 
+                    <div className={ this.state.phone_verification_code_sent ? "blue-but":"gray-but"} onClick={this.onClickVerificatePhone}>
                         확인
                     </div>
+                }
+            </div>
+
+            <div className="text-place">
+                <div className="name">주소</div>
+                <div className="textbox">
+                    <input className="common-textbox" type="text"
+                        value={this.state.useraddress || ""} 
+                        onChange={e=>this.setState({useraddress:e.target.value})}
+                        placeholder="주소를 정확하게 입력해주세요"/>
+                </div>
+                <div className="blue-but" onClick={this.onClickFindAddress.bind(this, 1)}>
+                    검색
+                </div>
+            </div>
+
+            <div className="bottom-container">
+                <div className="confirm-button" onClick={this.onClickNextBtnUserInfo}>
+                    확인
                 </div>
             </div>
         </div>)
     }
 
     render_company() {
-        return (<div className="page">
-            <div className="title-container">
-                <div className="title">기업정보 입력</div>
-                <div className="desc">전자 서명에 사용될 기업 및 담당자 정보를 입력해주시기 바랍니다.</div>
+        return (<div className="content">
+            <div className="text-place">
+                <div className="name">기업정보</div>
+                <div className="textbox">
+                    <input className="common-textbox" type="text"
+                        value={this.state.company_name || ""}
+                        onChange={e=>this.setState({company_name:e.target.value})}
+                        placeholder="기업명을 입력해주세요."
+                        disabled={this.getAccountType() == 2}/>
+                </div>
             </div>
-            <div className="content">
-                <div className="text-place">
-                    <div className="name">기업정보</div>
-                    <div className="textbox">
-                        <input className="common-textbox" type="text"
-                            value={this.state.company_name || ""}
-                            onChange={e=>this.setState({company_name:e.target.value})}
-                            placeholder="기업명을 입력해주세요."
-                            disabled={this.getAccountType() == 2}/>
-                    </div>
+
+            <div className="text-place">
+                <div className="name"></div>
+                <div className="textbox">
+                    <input className="common-textbox" type="text"
+                        value={this.state.duns_number || ""}
+                        onChange={e=>this.setState({duns_number:e.target.value})}
+                        placeholder="사업자등록번호를 입력해주세요."
+                        disabled={this.getAccountType() == 2}/>
                 </div>
+            </div>
 
-                <div className="text-place">
-                    <div className="name"></div>
-                    <div className="textbox">
-                        <input className="common-textbox" type="text"
-                            value={this.state.duns_number || ""}
-                            onChange={e=>this.setState({duns_number:e.target.value})}
-                            placeholder="사업자등록번호를 입력해주세요."
-                            disabled={this.getAccountType() == 2}/>
-                    </div>
+            <div className="text-place">
+                <div className="name">대표자명</div>
+                <div className="textbox">
+                    <input className="common-textbox" type="text"
+                        value={this.state.company_ceo || ""}
+                        onChange={e=>this.setState({company_ceo:e.target.value})}
+                        placeholder="대표자명을 입력해주세요."
+                        disabled={this.getAccountType() == 2}/>
                 </div>
+            </div>
 
-                <div className="text-place">
-                    <div className="name">대표자명</div>
-                    <div className="textbox">
-                        <input className="common-textbox" type="text"
-                            value={this.state.company_ceo || ""}
-                            onChange={e=>this.setState({company_ceo:e.target.value})}
-                            placeholder="대표자명을 입력해주세요."
-                            disabled={this.getAccountType() == 2}/>
-                    </div>
+            <div className="text-place">
+                <div className="name">주소</div>
+                <div className="textbox">
+                    <input className="common-textbox" type="text"
+                        value={this.state.company_address || ""} 
+                        onChange={e=>this.setState({company_address:e.target.value})}
+                        placeholder="주소를 정확하게 입력해주세요"
+                        disabled={this.getAccountType() == 2}/>
                 </div>
+                { this.getAccountType() == 2 ? null : <div className="blue-but" onClick={this.onClickFindAddress.bind(this, 2)}>
+                    검색
+                </div>}
+            </div>
 
-                <div className="text-place">
-                    <div className="name">주소</div>
-                    <div className="textbox">
-                        <input className="common-textbox" type="text"
-                            value={this.state.company_address || ""} 
-                            onChange={e=>this.setState({company_address:e.target.value})}
-                            placeholder="주소를 정확하게 입력해주세요"
-                            disabled={this.getAccountType() == 2}/>
-                    </div>
-                    { this.getAccountType() == 2 ? null : <div className="blue-but" onClick={this.onClickFindAddress.bind(this, 2)}>
-                        검색
-                    </div>}
+            <div className="split-line"></div>
+
+            <div className="text-place">
+                <div className="name">담당자 정보</div>
+                <div className="textbox">
+                    <input className="common-textbox" type="text"
+                        value={this.state.username || ""}
+                        onChange={e=>this.setState({username:e.target.value})}
+                        placeholder="담당자명을 입력해주세요."/>
                 </div>
+            </div>
 
-                <div className="split-line"></div>
-
-                <div className="text-place">
-                    <div className="name">담당자 정보</div>
-                    <div className="textbox">
-                        <input className="common-textbox" type="text"
-                            value={this.state.username || ""}
-                            onChange={e=>this.setState({username:e.target.value})}
-                            placeholder="담당자명을 입력해주세요."/>
-                    </div>
+            <div className="text-place">
+                <div className="name"></div>
+                <div className="textbox">
+                    <input className="common-textbox" type="text"
+                        value={this.state.job || ""}
+                        onChange={e=>this.setState({job:e.target.value})}
+                        placeholder="담당자 직급을 입력해주세요."/>
                 </div>
+            </div>
 
-                <div className="text-place">
-                    <div className="name"></div>
-                    <div className="textbox">
-                        <input className="common-textbox" type="text"
-                            value={this.state.job || ""}
-                            onChange={e=>this.setState({job:e.target.value})}
-                            placeholder="담당자 직급을 입력해주세요."/>
-                    </div>
+            <div className="text-place">
+                <div className="name">휴대폰 번호</div>
+                <div className="textbox">
+                    <input className="common-textbox" type="text"
+                        value={this.state.userphone || ""} 
+                        onChange={this.onChangePhoneForm.bind(this,"userphone")}
+                        disabled={this.state.phone_verification_code_sent}
+                        placeholder="휴대폰 번호를 정확하게 입력해주세요"/>
                 </div>
-
-                <div className="text-place">
-                    <div className="name">휴대폰 번호</div>
-                    <div className="textbox">
-                        <input className="common-textbox" type="text"
-                            value={this.state.userphone || ""} 
-                            onChange={this.onChangePhoneForm.bind(this,"userphone")}
-                            disabled={this.state.phone_verification_code_sent}
-                            placeholder="휴대폰 번호를 정확하게 입력해주세요"/>
+                { this.state.phone_verification_code_sent ? null :
+                    <div className="blue-but" onClick={this.onClickRequestPhone}>
+                        발송
                     </div>
-                    { this.state.phone_verification_code_sent ? null :
-                        <div className="blue-but" onClick={this.onClickRequestPhone}>
-                            발송
-                        </div>
-                    }
-                </div>
+                }
+            </div>
 
-                <div className="text-place">
-                    <div className="name">인증번호</div>
-                    <div className="textbox">
-                        <input className="common-textbox" type="number"
-                            value={this.state.phone_verification_code || ""} 
-                            onChange={e=>this.setState({phone_verification_code:e.target.value})} 
-                            disabled={this.state.verificated_phone}
-                            placeholder="인증번호를 정확하게 입력해주세요"/>
-                    </div>
-                    { this.state.verificated_phone ? null : 
-                        <div className={ this.state.phone_verification_code_sent ? "blue-but":"gray-but"} onClick={this.onClickVerificatePhone}>
-                            확인
-                        </div>
-                    }
+            <div className="text-place">
+                <div className="name">인증번호</div>
+                <div className="textbox">
+                    <input className="common-textbox" type="number"
+                        value={this.state.phone_verification_code || ""} 
+                        onChange={e=>this.setState({phone_verification_code:e.target.value})} 
+                        disabled={this.state.verificated_phone}
+                        placeholder="인증번호를 정확하게 입력해주세요"/>
                 </div>
-
-                <div className="bottom-container">
-                    <div className="confirm-button" onClick={this.onClickNextBtnCompanyInfo}>
+                { this.state.verificated_phone ? null : 
+                    <div className={ this.state.phone_verification_code_sent ? "blue-but":"gray-but"} onClick={this.onClickVerificatePhone}>
                         확인
                     </div>
+                }
+            </div>
+
+            <div className="bottom-container">
+                <div className="confirm-button" onClick={this.onClickNextBtnCompanyInfo}>
+                    확인
                 </div>
             </div>
         </div>)
     }
 
     render_masterkey(){
-        return (<div className="page">
-            <div className="title-container">
-                <div className="title">마스터키워드 저장하기</div>
-                <div className="desc">마스터키워드를 저장해주세요.</div>
-            </div>
-            <div className="content">
-                <div className="master-keyword-container">
-                    <div className="sub-title-container">
-                        <div className="title">마스터키워드</div>
-                        <div className="what-is-masterkeyword" onClick={this.openWhatIsMasterkeywordModal}>마스터키워드란?</div>
-                    </div>
-                    <div className="list">
-                        {this.state.mnemonic.split(" ").map((e,k)=>{
-                            return <div key={e+k} className="item">{k+1}. {e}</div>
-                        })}
-                    </div>
-
-                    <div className="reference">
-                        필요할 때 사용할 수 있도록 상단의 12개의 키워드들을 순서대로 종이에 옮겨 적어 안전하게 보관하십시오.<br/>
-                        안전하게 계정을 보호하기 위해서는 전자매체에 저장하거나 타인에게 양도하는 등의 행동을 하지 않는 것을 권장합니다.
-                    </div>
+        return (<div className="content">
+            <div className="master-keyword-container">
+                <div className="sub-title-container">
+                    <div className="title">마스터키워드</div>
+                    <div className="what-is-masterkeyword" onClick={this.openWhatIsMasterkeywordModal}>마스터키워드란?</div>
+                </div>
+                <div className="list">
+                    {this.state.mnemonic.split(" ").map((e,k)=>{
+                        return <div key={e+k} className="item">{k+1}. {e}</div>
+                    })}
                 </div>
 
-                <div className="bottom-container">
-                    <div className="transparent-button" onClick={this.onClickSaveMnemonic}>
-                        저장양식 다운로드
-                    </div>
-                    <div className="confirm-button" onClick={this.next_term}>
-                        확인
-                    </div>
+                <div className="reference">
+                    필요할 때 사용할 수 있도록 상단의 12개의 키워드들을 순서대로 종이에 옮겨 적어 안전하게 보관하십시오.<br/>
+                    안전하게 계정을 보호하기 위해서는 전자매체에 저장하거나 타인에게 양도하는 등의 행동을 하지 않는 것을 권장합니다.
+                </div>
+            </div>
+
+            <div className="bottom-container">
+                <div className="transparent-button" onClick={this.onClickSaveMnemonic}>
+                    저장양식 다운로드
+                </div>
+                <div className="confirm-button" onClick={this.next_term}>
+                    확인
                 </div>
             </div>
         </div>)
@@ -1032,38 +979,32 @@ export default class extends React.Component {
     }
 
     render_confirm_masterkey(){
-        return (<div className="page">
-            <div className="title-container">
-                <div className="title">마스터키워드 저장하기</div>
-                <div className="desc">앞서 저장해둔 마스터 키워드를 차례대로 배치해 주세요</div>
-            </div>
-            <div className="content">
-                <div className="master-keyword-container">
-                    <div className="sub-title-container">
-                        <div className="title">마스터키워드 확인</div>
-                    </div>
-                    <div className="selection-list">
-                        {this.state.sort_test.map((e,k)=>{
-                            return <div className="item" key={k}>{this.state.mnemonic.split(" ")[e]}</div>
-                        })}
-                        {this.render_empty_slot()}
-                    </div>
-                    <div className="split-line"></div>
-                    <div className="list">
-                        {this.state.mnemonic.split(" ").map((e,k)=>[e,k]).sort(e=>e[0]).map((e,k)=>{
-                            return <div key={k} 
-                                        className={`item cursored ${this.state.sort_test.indexOf(e[1]) >= 0 ? "selected" : ""}`}
-                                        onClick={this.onClickSortTest.bind(this,e[1])}
-                                    >
-                                {e[0]}
-                            </div>
-                        })}
-                    </div>
+        return (<div className="content">
+            <div className="master-keyword-container">
+                <div className="sub-title-container">
+                    <div className="title">마스터키워드 확인</div>
                 </div>
-                <div className="bottom-container">
-                    <div className="confirm-button" onClick={this.onClickFinishSortTest}>
-                        가입완료
-                    </div>
+                <div className="selection-list">
+                    {this.state.sort_test.map((e,k)=>{
+                        return <div className="item" key={k}>{this.state.mnemonic.split(" ")[e]}</div>
+                    })}
+                    {this.render_empty_slot()}
+                </div>
+                <div className="split-line"></div>
+                <div className="list">
+                    {this.state.mnemonic.split(" ").map((e,k)=>[e,k]).sort(e=>e[0]).map((e,k)=>{
+                        return <div key={k} 
+                                    className={`item cursored ${this.state.sort_test.indexOf(e[1]) >= 0 ? "selected" : ""}`}
+                                    onClick={this.onClickSortTest.bind(this,e[1])}
+                                >
+                            {e[0]}
+                        </div>
+                    })}
+                </div>
+            </div>
+            <div className="bottom-container">
+                <div className="confirm-button" onClick={this.onClickFinishSortTest}>
+                    가입완료
                 </div>
             </div>
         </div>)
@@ -1087,6 +1028,52 @@ export default class extends React.Component {
         }
     }
 
+    render_title() {
+        let type = this.getAccountType()
+        let title = "", desc = ""
+        if(this.state.step == 0){
+            if(type == 0) {
+                title = "개인 가입 약관 동의"
+                desc = "서비스 이용에 필요한 약관에 동의합니다."
+            }
+            else if(type == 1) {
+                title = "기업 가입 약관 동의"
+                desc = "기업 가입은 관리자 및 기업 자체 정보로 가입합니다. 추후 직원용 계정은 내부 기능을 통해 이용할 수 있습니다."
+            }
+            else if(type == 2) {
+                title = "기업 직원 계정 가입 약관 동의"
+                desc = "직원 계정 가입 절차입니다. 링크를 통해서만 가입할 수 있으며, 기본적인 기업 정보는 입력되어 있습니다."
+            }
+        }else if(this.state.step == 1){
+            title = "계정 정보 입력"
+            if(type == 0)
+                desc = "기본정보를 정확히 입력해주시기 바랍니다."
+            else if(type == 1)
+                desc = "회사에서 사용하시는 본인의 이메일을 입력해주세요."
+            else if(type == 2)
+                desc = "직원 계정 가입 과정에서는 지정된 이메일로만 가입할 수 있습니다."
+        }else if(this.state.step == 2){
+            if(type == 0) {
+                title = "회원정보 입력"
+                desc = "전자 서명에 사용될 회원님의 정보를 입력해주시기 바랍니다."
+            } else if(type == 1 || type == 2) {
+                title = "기업정보 입력"
+                desc = "전자 서명에 사용될 기업 및 담당자 정보를 입력해주시기 바랍니다."
+            }
+        }else if(this.state.step == 3){
+            title = "마스터키워드 저장하기"
+            desc = "마스터키워드를 저장해주세요."
+        }else if(this.state.step == 4){
+            title = "마스터키워드 저장하기"
+            desc = "앞서 저장해둔 마스터 키워드를 차례대로 배치해 주세요"
+        }
+
+        return <div className="top">
+            <div className="title">{title}</div>
+            <div className="sub">{desc}</div>
+        </div>
+    }
+
 	render() {
 
         let type = this.getAccountType()
@@ -1105,7 +1092,17 @@ export default class extends React.Component {
                 </div>
                 <div className="desc-container">
                     <div className="info">
+                        {this.render_title()}
                         <div className="step-indicator">
+                            <div className={`circle ${this.state.step == 0 ? "enable-circle": ""}`}></div>
+                            <div className="line"></div>
+                            <div className={`circle ${this.state.step == 1 ? "enable-circle": ""}`}></div>
+                            <div className="line"></div>
+                            <div className={`circle ${this.state.step == 2 ? "enable-circle": ""}`}></div>
+                            <div className="line"></div>
+                            <div className={`circle ${this.state.step == 3 || this.state.step == 4 ? "enable-circle": ""}`}></div>
+                        </div>
+                        <div className="step-text">
                             <div className={`item ${this.state.step == 0 ? "enable": ""}`}>약관동의</div>
                             <div className={`item ${this.state.step == 1 ? "enable": ""}`}>계정정보 입력</div>
                             <div className={`item ${this.state.step == 2 ? "enable": ""}`}>{step2_text}</div>

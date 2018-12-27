@@ -315,108 +315,126 @@ div.checkbox2-comp{
 
     >.desc-container {
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
 
         >.info {
-            width:300px;
-            min-width:200px;
-            min-height: calc(100% - 131px);
             overflow-y: auto;
 
-            border-right:1px solid $middlegray;
+            background-color:$blue;
+
+            >.top {
+                text-align: center;
+
+                >.title {
+                    font-size:$font5;
+                    font-weight: bold;
+                    color:white;
+                    margin-top:50px;
+                    margin-bottom:10px;
+                }
+
+                >.sub {
+                    font-size:$font2;
+                    color: $middlegray;
+                }
+            }
 
             .step-indicator{
                 display: flex;
-                flex-direction: column;
-                align-items: flex-end;
-                margin-top: 36px;
-                margin-right:58px;
+                flex-direction: row;
+                justify-content: center;
+                align-items:center;
+                margin-top: 50px;
+
+                >.circle {
+                    width:10px;
+                    height:10px;
+                    border-radius:50%;
+                    background-color: $gray;
+                }
+
+                >.enable-circle {
+                    width:14px;
+                    height:14px;
+                    background-color: white;
+                }
+
+                >.line {
+                    width:140px;
+                    height:1px;
+                    background-color:gray;
+                }
+            }
+
+            .step-text {
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                align-items:center;
+                margin-top: 20px;
+                margin-bottom:50px;
 
                 >.item{
                     font-size: $font2;
                     font-weight: bold;
-                    margin-bottom:36px;
+                    width:150px;
+                    box-sizing: border-box;
                     color: $gray;
+                    text-align: center;
                 }
 
                 >.enable{
-                    color: $black;
+                    color: white;
+                    font-size:$font4;
+                    font-weight: bold;
                 }
 
-                >i{
-                    color: #ABB7C0;
-                }
             }
         }
 
         >.desc {
-            flex:1;
             border-left:1px solid $middlegray;
-            min-height: calc(100% - 131px);
-            overflow-y: auto;
 
-            >.page {
+            >.content {
+                padding-top:40px;
+                max-width:800px;
+                margin: auto;
 
-                >.title-container {
-                    padding-left:30px;
-                    padding-bottom: 20px;
-                    padding-top: 20px;
-                    background-color:$lightgray;
+                >.bottom-container {
+                    margin-top: 60px;
+                    margin-bottom: 20px; 
+                    text-align: center;
 
-                    >.title {
+                    >.transparent-button {
+                        display: inline-block;
+                        background-color: white;
+                        border: 2px solid $blue;
                         font-size: $font4;
-                        font-weight: bold;
-                        margin-bottom: 10px;
-                        color:$blue;
-                    }
-
-                    >.desc {
-                        font-size: $font1;
-                        color:$black;
-                    }
-                }
-
-                >.content {
-                    padding-top:40px;
-                    padding-left:40px;
-                    max-width:800px;
-
-                    >.bottom-container {
-                        margin-top: 60px;
-                        margin-bottom: 20px; 
+                        color: $black;
+                        font-weight:bold;
+                        cursor: pointer;
+                        width:250px;
+                        max-width:40%;
+                        padding:15px 20px;
                         text-align: center;
+                        margin: auto;
+                        margin-right:10px;
 
-                        >.transparent-button {
-                            display: inline-block;
-                            background-color: white;
-                            border: 2px solid $blue;
-                            font-size: $font4;
-                            color: $black;
-                            font-weight:bold;
-                            cursor: pointer;
-                            width:250px;
-                            max-width:40%;
-                            padding:15px 20px;
-                            text-align: center;
-                            margin: auto;
-                            margin-right:10px;
+                    }
 
-                        }
-
-                        >.confirm-button {
-                            display: inline-block;
-                            background-color:$blue;
-                            border: 2px solid $blue;
-                            font-size: $font4;
-                            color: white;
-                            font-weight:bold;
-                            cursor: pointer;
-                            width:250px;
-                            max-width:40%;
-                            padding:15px 20px;
-                            text-align: center;
-                            margin: auto;
-                        }
+                    >.confirm-button {
+                        display: inline-block;
+                        background-color:$blue;
+                        border: 2px solid $blue;
+                        font-size: $font4;
+                        color: white;
+                        font-weight:bold;
+                        cursor: pointer;
+                        width:250px;
+                        max-width:40%;
+                        padding:15px 20px;
+                        text-align: center;
+                        margin: auto;
                     }
                 }
             }

@@ -144,81 +144,68 @@ export default class extends React.Component {
     }
 
     render_masterkey(){
-        return (<div className="page">
-            <div className="title-container">
-                <div className="title">마스터키워드 입력하기</div>
-                <div className="desc">로그인하려는 계정의 마스터키워드를 정확하게 입력해주시기 바랍니다.</div>
-            </div>
-            <div className="content">
-                <div className="master-keyword-container">
-                    <div className="sub-title-container">
-                        <div className="title">마스터키워드</div>
-                        <div className="what-is-masterkeyword" onClick={this.openWhyMasterkeywordReInputModal}>마스터키워드를 다시 입력하는 이유는?</div>
-                    </div>
-
-                    <textarea className="masterkeyword-input-slot"
-                        placeholder="마스터 키워드를 입력해주세요."
-                        value={this.state.mnemonic || ""}
-                        onKeyDown={this.keyPress.bind(this, 0)}
-                        onChange={e=>this.setState({mnemonic:e.target.value.replace(/\r\n|\r|\n|<br>/g, " ")})}></textarea>
-
-                    <div className="reference">
-                        * 12개의 단어로 이루어진 마스터 키워드를 띄어쓰기로 구분하여 입력해주세요.
-                    </div>
+        return (<div className="content">
+            <div className="master-keyword-container">
+                <div className="sub-title-container">
+                    <div className="title">마스터키워드</div>
+                    <div className="what-is-masterkeyword" onClick={this.openWhyMasterkeywordReInputModal}>마스터키워드를 다시 입력하는 이유는?</div>
                 </div>
 
-                <div className="bottom-container">
-                    <div className="confirm-button" onClick={this.onClickInputMnemonic}>
-                        다음
-                    </div>
+                <textarea className="masterkeyword-input-slot"
+                    placeholder="마스터 키워드를 입력해주세요."
+                    value={this.state.mnemonic || ""}
+                    onKeyDown={this.keyPress.bind(this, 0)}
+                    onChange={e=>this.setState({mnemonic:e.target.value.replace(/\r\n|\r|\n|<br>/g, " ")})}></textarea>
+
+                <div className="reference">
+                    * 12개의 단어로 이루어진 마스터 키워드를 띄어쓰기로 구분하여 입력해주세요.
+                </div>
+            </div>
+
+            <div className="bottom-container">
+                <div className="confirm-button" onClick={this.onClickInputMnemonic}>
+                    다음
                 </div>
             </div>
         </div>)
     }
     
     render_account(){
-        return (<div className="page">
-            <div className="title-container">
-                <div className="title">비밀번호 설정</div>
-                <div className="desc">로그인하려는 계정의 이메일과 비밀번호를 입력하여 브라우저에 등록해주세요.</div>
+        return (<div className="content">
+            <div className="text-place">
+                <div className="name">등록한 이메일</div>
+                <div className="textbox">
+                    <input className="common-textbox" type="text"
+                        value={this.state.email || ""}
+                        onChange={e=>this.setState({email:e.target.value})}
+                        placeholder="가입하신 계정의 이메일을 입력해주세요."/>
+                </div>
             </div>
-            <div className="content">
 
-                <div className="text-place">
-                    <div className="name">등록한 이메일</div>
-                    <div className="textbox">
-                        <input className="common-textbox" type="text"
-                            value={this.state.email || ""}
-                            onChange={e=>this.setState({email:e.target.value})}
-                            placeholder="가입하신 계정의 이메일을 입력해주세요."/>
-                    </div>
+            <div className="text-place">
+                <div className="name">비밀번호</div>
+                <div className="textbox">
+                    <input className="common-textbox" type="password"
+                        value={this.state.password || ""}
+                        onChange={e=>this.setState({password:e.target.value})}
+                        placeholder="최소 8자리(영어, 숫자, 특수문자 사용 가능)"/>
                 </div>
+            </div>
 
-                <div className="text-place">
-                    <div className="name">비밀번호</div>
-                    <div className="textbox">
-                        <input className="common-textbox" type="password"
-                            value={this.state.password || ""}
-                            onChange={e=>this.setState({password:e.target.value})}
-                            placeholder="최소 8자리(영어, 숫자, 특수문자 사용 가능)"/>
-                    </div>
+            <div className="text-place">
+                <div className="name">비밀번호 확인</div>
+                <div className="textbox">
+                    <input className="common-textbox" type="password"
+                        value={this.state.password2 || ""}
+                        onChange={e=>this.setState({password2:e.target.value})}
+                        onKeyDown={this.keyPress.bind(this, 1)}
+                        placeholder="입력하신 패스워드를 다시 입력해주세요"/>
                 </div>
+            </div>
 
-                <div className="text-place">
-                    <div className="name">비밀번호 확인</div>
-                    <div className="textbox">
-                        <input className="common-textbox" type="password"
-                            value={this.state.password2 || ""}
-                            onChange={e=>this.setState({password2:e.target.value})}
-                            onKeyDown={this.keyPress.bind(this, 1)}
-                            placeholder="입력하신 패스워드를 다시 입력해주세요"/>
-                    </div>
-                </div>
-
-                <div className="bottom-container">
-                    <div className="confirm-button" onClick={this.onClickRecoverMyAccount}>
-                        기존 계정으로 로그인
-                    </div>
+            <div className="bottom-container">
+                <div className="confirm-button" onClick={this.onClickRecoverMyAccount}>
+                    기존 계정으로 로그인
                 </div>
             </div>
         </div>)
@@ -232,6 +219,23 @@ export default class extends React.Component {
         }
     }
 
+    render_title(){
+        let title = "", desc = ""
+
+        if(this.state.step == 0){
+            title = "마스터키워드 입력하기"
+            desc = "로그인하려는 계정의 마스터키워드를 정확하게 입력해주시기 바랍니다."
+        }else if(this.state.step == 1){
+            title = "비밀번호 설정"
+            desc = "로그인하려는 계정의 이메일과 비밀번호를 입력하여 브라우저에 등록해주세요."
+        }
+
+        return <div className="top">
+            <div className="title">{title}</div>
+            <div className="sub">{desc}</div>
+        </div>
+    }
+
 	render() {
 		return (<div className="maintain">
             <div className="register-common-page register-page">
@@ -240,7 +244,13 @@ export default class extends React.Component {
                 </div>
                 <div className="desc-container">
                     <div className="info">
+                        {this.render_title()}
                         <div className="step-indicator">
+                            <div className={`circle ${this.state.step == 0 ? "enable-circle": ""}`}></div>
+                            <div className="line"></div>
+                            <div className={`circle ${this.state.step == 1 ? "enable-circle": ""}`}></div>
+                        </div>
+                        <div className="step-text">
                             <div className={`item ${this.state.step == 0 ? "enable": ""}`}>마스터키워드 입력</div>
                             <div className={`item ${this.state.step == 1 ? "enable": ""}`}>비밀번호 설정</div>
                         </div>
