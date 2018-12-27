@@ -114,7 +114,7 @@ async function fetch_img(name, the_key){
     return url;
 }
 
-export function new_contract( subject, imgs, counterparties, publickey_contract_list, set_pin){
+export function new_contract(subject, counterparties, publickey_contract_list, set_pin, necessary_info) {
     return async function(dispatch){
         let pin = set_pin ? set_pin : genPIN();
         let counterparties_eckai = [];
@@ -125,21 +125,13 @@ export function new_contract( subject, imgs, counterparties, publickey_contract_
             counterparties_eckai.push(sealContractAuxKey(publickey_contract_list[i], shared_key));
         }
 
-        for(let k in imgs){
-            await new Promise(r=>setTimeout(r,100))
-            let buffered = Buffer.from(imgs[k].slice(22), 'base64')
-            imgs[k] = await aes_encrypt_async(buffered, the_key)
-        }
-
-        let resp = (await api_new_contract( subject, imgs, counterparties, counterparties_eckai )).payload
+        let resp = (await api_new_contract( subject, counterparties, counterparties_eckai, necessary_info )).payload
         if(resp){
             sessionStorage.setItem(`contract:${resp}`, encryptPIN(pin))
-            //localStorage.setItem(`contract:${resp}`, pin)
             dispatch({
                 type:NEW_CONTRACT,
                 payload:{
                     subject, 
-                    imgs, 
                     counterparties,
                     counterparties_eckai,
                     pin

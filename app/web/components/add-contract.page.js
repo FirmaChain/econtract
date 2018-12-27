@@ -15,7 +15,8 @@ import 'react-dropdown/style.css'
 import {
     fetch_user_info,
     list_template,
-    select_userinfo_with_email
+    select_userinfo_with_email,
+    new_contract,
 } from "../../common/actions"
 import CheckBox2 from "./checkbox2"
 
@@ -28,7 +29,8 @@ let mapStateToProps = (state)=>{
 let mapDispatchToProps = {
     fetch_user_info,
     list_template,
-    select_userinfo_with_email
+    select_userinfo_with_email,
+    new_contract,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -241,7 +243,8 @@ export default class extends React.Component {
                     username:resp.username,
                     email:resp.email,
                     account_id:resp.account_id,
-                    role:[this.state.add_role]
+                    role:[this.state.add_role],
+                    public_key:resp.publickey_contract,
                 }],
                 add_email:""
             })
@@ -290,11 +293,13 @@ export default class extends React.Component {
     onClickRegister = async ()=>{
         this.blockFlag = true;
         let contract_name = this.state.contract_name;
-        let counterparties = this.state.target_list;
+        let counterparties = this.state.target_list.map(e=>e.email);
+        let counterparties_public = this.state.target_list.map(e=>e.public_key);
         let individual_info = this.state.individual.filter(e=>e.force||e.checked).map(e=>e.title);
         let corporation_info = this.state.corporation.filter(e=>e.force||e.checked).map(e=>e.title);
+        let necessary_info = {individual: individual_info, corporation: corporation_info};
         let pin = "000000";
-        await this.props.new_contract(subject, counterparties, pin, individual_info, corporation_info);
+        await this.props.new_contract(subject, counterparties, counterparties_public, pin, necessary_info);
 
         console.log(
             contract_name,
