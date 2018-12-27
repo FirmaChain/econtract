@@ -110,7 +110,7 @@ export default class extends React.Component {
                 let group_id = resp.group_id;
                 let group_key = get256bitDerivedPublicKey(Buffer.from(this.props.user_info.corp_master_key, 'hex'), "m/0'/"+group_id+"'").toString('hex');
                 let group_key2 = hmac_sha256("FirmaChain Group Key", group_key);
-                let group_master_key = Buffer.concat([group_key, group_key2]);
+                let group_master_key = Buffer.concat([Buffer.from(group_key, "hex"), group_key2]);
                 let group_public_key_for_contract = bip32_from_512bit(group_master_key).derivePath("m/2'/0'").publicKey;
                 await this.props.update_group_key(group_id, group_public_key_for_contract.toString('hex'));
                 

@@ -30,6 +30,7 @@ export {
     generate_random,
     hmac_sha256,
     get256bitDerivedPublicKey,
+    bip32_from_512bit,
 } from "./CryptoUtil";
 
 let serverDB = {};
