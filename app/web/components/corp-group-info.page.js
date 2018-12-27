@@ -147,6 +147,8 @@ export default class extends React.Component {
             company_address: this.props.user_info.company_address,
             corp_key:this.props.user_info.corp_key,
             corp_id:this.props.user_info.corp_id,
+            group_id:this.getGroupId(),
+            group_key,
         }
 
         let data_for_inviter = {
