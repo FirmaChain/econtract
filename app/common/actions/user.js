@@ -42,7 +42,11 @@ export function fetch_user_info(){
                 let corp_info = {}, public_info = {}, group_public_keys = {}
                 if(resp.payload.account_type != 0) {
                     corp_info = decrypt_corp_info(Buffer.from(user_info.corp_key, 'hex'), new Buffer(resp.payload.corp_info.data) )
-                    group_public_keys = resp.payload.group_public_keys
+                    let keys = {}
+                    for(let v of resp.payload.group_public_keys) {
+                        keys[v.group_id] = v.group_public_key
+                    }
+                    group_public_keys = keys
                 }
                 if(!!resp.payload.public_info)
                     public_info = decrypt_corp_info(Buffer.from(user_info.corp_key, 'hex'), new Buffer(resp.payload.public_info.data) )
