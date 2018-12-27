@@ -323,6 +323,10 @@ export default class extends React.Component {
         })
     }
 
+    onAddGroup = () => {
+        
+    }
+
     openServiceNoRegisterModal = () => {
         window.openModal("CommonModal", {
             icon:"fal fa-user-slash",
@@ -442,6 +446,15 @@ export default class extends React.Component {
                         </div>
                     </div>
                 </div>
+                { (this.props.user_info.account_type != 0 && this.state.target_other) ?
+                    <div className="row">
+                        <div className="left-desc">
+                        </div>
+                        <div className="right-form">
+                            <div className="group-add-button" onClick={this.onAddGroup}>그룹 추가하기</div>
+                        </div>
+                    </div> : null
+                }
 
                 <div className="row">
                     <div className="left-desc">

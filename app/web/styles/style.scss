@@ -1719,6 +1719,18 @@ div.checkbox2-comp{
                 align-items: center;
                 width:100%;
 
+                >.group-add-button {
+                    display: inline-block;
+                    font-size: $font1;
+                    cursor: pointer;
+                    padding:10px 20px;
+                    background-color: $blue;
+                    color:white;
+                    margin-left: 10px;
+                    width:100px;
+                    text-align: center;
+                }
+
                 >.column {
                     flex:1;
                     margin-left: 10px;
