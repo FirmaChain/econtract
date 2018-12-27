@@ -16,6 +16,7 @@ import {
     api_get_corp_member_info,
     api_get_corp_member_info_all,
     api_all_invite_list,
+    api_update_group_key,
 } from "../../../gen_api"
 
 import {
@@ -122,6 +123,14 @@ export function create_group(group_name) {
         return resp.payload
     }
 }
+
+export function update_group_key(group_id, encrypted_group_key) {
+    return async function() {
+        let resp = await api_update_group_key(group_id, encrypted_group_key)
+        return resp
+    }
+}
+
 export function remove_group(group_id) {
     return async function() {
         let resp = await api_remove_group(group_id);
