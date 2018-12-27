@@ -30,7 +30,7 @@ import {
     create_group,
     get_corp_member_info_all,
     get_corp_member_info,
-    update_corp_info,
+    update_group_key,
 } from "../../common/actions"
 
 let mapStateToProps = (state)=>{
@@ -55,7 +55,7 @@ let mapDispatchToProps = {
     create_group,
     get_corp_member_info_all,
     get_corp_member_info,
-    update_corp_info,
+    update_group_key,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -112,13 +112,7 @@ export default class extends React.Component {
                 let group_key2 = hmac_sha256("FirmaChain Group Key", group_key);
                 let group_master_key = Buffer.concat([group_key, group_key2]);
                 let group_public_key_for_contract = bip32_from_512bit(group_master_key).derivePath("m/2'/0'").publicKey;
-                let corp_info = this.props.user_info.corp_info;
-                if (!corp_info.group_public_keys) {
-                    corp_info['group_public_keys'] = {};
-                }
-                corp_info['group_public_keys'][group_id] = group_public_key_for_contract.toString('hex');
-                let encryptedCorpInfo = aes_encrypt(JSON.stringify(corp_info), Buffer.from(this.props.user_info.corp_key,'hex'));
-                await this.props.update_corp_info(encryptedCorpInfo);
+                await this.props.update_group_key(group_id, group_public_key_for_contract.toString('hex'));
                 
                 if(resp) {
                     await this.props.get_group_info(0)
