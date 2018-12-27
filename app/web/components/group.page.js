@@ -90,9 +90,13 @@ export default class extends React.Component {
             history.replace("/login")
         }
 
-        let prevMenu = props.match.params.menu || "all"
-        let menu = this.props.match.params.menu || "all"
-        if(prevMenu != menu){
+        let prevMenu = this.props.match.params.menu || "all"
+        let menu = props.match.params.menu || "all"
+
+        let prev_account_id = this.props.match.params.account_id || null
+        let account_id = props.match.params.account_id || null
+
+        if(prevMenu != menu || prev_account_id != account_id){
             this.componentDidMount()
         }
     }
