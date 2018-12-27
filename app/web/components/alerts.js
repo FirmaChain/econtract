@@ -122,6 +122,11 @@ class RemoveCommonModal extends React.Component {
 }
 
 @modal
+class OneAddModal extends React.Component {
+    
+}
+
+@modal
 class CommonModal extends React.Component {
     constructor(props) {
         super(props);
