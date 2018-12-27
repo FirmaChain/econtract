@@ -374,14 +374,14 @@ export default class extends React.Component {
 
         await window.showIndicator();
         let resp = await this.props.request_email_verification_code(this.state.email)
-        if(resp == 1){
+        if(resp.code == 1){
             alert("이메일이 발송되었습니다!")
             this.setState({
                 step1:1
             })
-        }else if(resp == -1){
+        }else if(resp.code == -1){
             alert("이미 가입 된 이메일입니다!")
-        }else if(resp == -3){
+        }else if(resp.code == -3){
             alert("유효하지 않은 이메일입니다.")
         }else{
             alert("인증번호 전송에 문제가 생겼습니다! 이메일을 정확히 기입해주세요.\n계속 문제가 발생할 경우 관리자에게 문의해주세요.")
@@ -400,7 +400,7 @@ export default class extends React.Component {
 
         await window.showIndicator();
         let resp = await this.props.check_email_verification_code(this.state.email, this.state.verification_code)
-        if(resp == 1){
+        if(resp.code == 1){
             this.setState({
                 email_verification:true
             })
@@ -417,7 +417,7 @@ export default class extends React.Component {
             
         await window.showIndicator();
         let resp = await this.props.request_phone_verification_code(this.state.userphone)
-        if(resp == 1){
+        if(resp.code == 1){
             alert("인증번호가 발송되었습니다!")
             this.setState({
                 phone_verification_code_sent:true
@@ -434,7 +434,7 @@ export default class extends React.Component {
         }
         await window.showIndicator();
         let resp = await this.props.check_phone_verification_code(this.state.userphone, this.state.phone_verification_code)
-        if(resp == 1){
+        if(resp.code == 1){
             alert("정상적으로 인증되었습니다.")
             this.setState({
                 verificated_phone:true
