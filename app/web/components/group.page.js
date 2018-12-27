@@ -55,7 +55,7 @@ let mapDispatchToProps = {
     create_group,
     get_corp_member_info_all,
     get_corp_member_info,
-    update_group_key,
+    update_group_public_key,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
