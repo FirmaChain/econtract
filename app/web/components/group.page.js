@@ -107,7 +107,7 @@ export default class extends React.Component {
                 //TODO 그룹 생성 api
                 let resp = await this.props.create_group(group_name);
 
-                let group_id = resp;
+                let group_id = resp.group_id;
                 let group_key = get256bitDerivedPublicKey(Buffer.from(this.props.user_info.corp_master_key, 'hex'), "m/0'/"+group_id+"'").toString('hex');
                 let group_key2 = hmac_sha256("FirmaChain Group Key", group_key);
                 let group_master_key = Buffer.concat([group_key, group_key2]);
