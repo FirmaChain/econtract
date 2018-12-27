@@ -593,7 +593,7 @@ export default class extends React.Component {
             info = {
                 corp_id: this.state.corp_id,
                 corp_key: this.state.corp_key,
-                group_keys: {this.state.group_id: this.state.group_key},
+                group_keys: { [this.state.group_id] : this.state.group_key },
             }
 
             public_info = {

@@ -86,10 +86,10 @@ export default class extends React.Component {
                 job: this.state.job,
                 userphone: this.state.userphone,
             }
-            info = {
+            info = {/*
                 corp_id:this.state.corp_id,
                 corp_master_key:this.state.corp_master_key,
-                corp_key:this.state.corp_key,
+                corp_key:this.state.corp_key,*/
             }
         } else if(account_type == 2) { // 기업 직원 계정
             public_info = {
@@ -99,14 +99,16 @@ export default class extends React.Component {
                 userphone: this.state.userphone,
             }
             info = {
-                corp_id:this.state.corp_id,
-                corp_key:this.state.corp_key,
+                /*corp_id:this.state.corp_id,
+                corp_key:this.state.corp_key,*/
             }
         }
         try {
-	    	let masterKeyPublic = SeedToMasterKeyPublic(getMasterSeed())
-	        let encryptedInfo = aes_encrypt(JSON.stringify(info), masterKeyPublic);
-	        await this.props.update_user_info(encryptedInfo)
+            if(account_type == 0) {
+    	    	let masterKeyPublic = SeedToMasterKeyPublic(getMasterSeed())
+    	        let encryptedInfo = aes_encrypt(JSON.stringify(info), masterKeyPublic);
+    	        await this.props.update_user_info(encryptedInfo)
+            }
 
 	        if(account_type == 1) {
 	        	let encryptedCorpInfo = aes_encrypt(JSON.stringify(corp_info), Buffer.from(this.props.user_info.corp_key,'hex'))
