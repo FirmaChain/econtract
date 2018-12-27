@@ -67,7 +67,7 @@ export default class extends React.Component {
                 title:"주민등록번호",
                 checked:false
             }],
-            cooperation:[{
+            corporation:[{
                 deletable:false,
                 title:"기업명",
                 force:true
@@ -257,18 +257,18 @@ export default class extends React.Component {
         })
     }
 
-    onClickAddCooperation = ()=>{
-        if(!this.state.add_cooperation_info){
+    onClickAddCorporation = ()=>{
+        if(!this.state.add_corporation_info){
             return alert("항목의 이름을 입력해주세요.")
         }
 
         this.setState({
-            cooperation:[...this.state.cooperation,{
-                title:this.state.add_cooperation_info,
+            corporation:[...this.state.corporation,{
+                title:this.state.add_corporation_info,
                 checked:true,
                 deletable:true
             }],
-            add_cooperation_info:""
+            add_corporation_info:""
         })
     }
 
@@ -287,14 +287,14 @@ export default class extends React.Component {
         })
     }
 
-    onClickRegist = ()=>{
+    onClickRegister = ()=>{
         this.blockFlag = true
         let contract_name = this.state.contract_name;
         let sign_target_me = !!this.state.target_me
         let sign_target_other = !!this.state.target_other
         let counterparties = this.state.target_list
         let indivisual_info = this.state.indivisual.filter(e=>e.force||e.checked).map(e=>e.title)
-        let cooperation_info = this.state.cooperation.filter(e=>e.force||e.checked).map(e=>e.title)
+        let corporation_info = this.state.corporation.filter(e=>e.force||e.checked).map(e=>e.title)
 
         console.log(
             contract_name,
@@ -302,7 +302,7 @@ export default class extends React.Component {
             sign_target_other,
             counterparties,
             indivisual_info,
-            cooperation_info,
+            corporation_info,
         )
 
         history.push("/edit-contract/1")
@@ -345,7 +345,7 @@ export default class extends React.Component {
                 this.onClickAddIndivisual()
                 break;
                 case 1:
-                this.onClickAddCooperation()
+                this.onClickAddCorporation()
                 break;
             }
         }
@@ -532,21 +532,21 @@ export default class extends React.Component {
                         <div className="checkbox-list">
                             <div className="form-head">기업 서명자 정보</div>
                             <div className="form-check-list">
-                                {this.state.cooperation.map((e,k)=>{
+                                {this.state.corporation.map((e,k)=>{
                                     return <div className="item" key={k}>
-                                        <CheckBox2 size={18} disabled={e.force} on={e.force || e.checked} onClick={this.onToggleSignInfo.bind(this,"cooperation",k)}/>
+                                        <CheckBox2 size={18} disabled={e.force} on={e.force || e.checked} onClick={this.onToggleSignInfo.bind(this,"corporation",k)}/>
                                         <div className="name">{e.title}</div>
-                                        {e.deletable ? <div className="delete" onClick={this.onClickRemoveSignInfo.bind(this,"cooperation", k)}><i className="fal fa-times"></i></div> : null}
+                                        {e.deletable ? <div className="delete" onClick={this.onClickRemoveSignInfo.bind(this,"corporation", k)}><i className="fal fa-times"></i></div> : null}
                                     </div>
                                 })}
                                 <div className="bottom">
                                     <input className="text-box common-textbox"
                                         placeholder="항목 입력"
                                         type="text"
-                                        value={this.state.add_cooperation_info || ""}
-                                        onChange={e=>this.setState({add_cooperation_info:e.target.value})}
+                                        value={this.state.add_corporation_info || ""}
+                                        onChange={e=>this.setState({add_corporation_info:e.target.value})}
                                         onKeyDown={this.keyPress.bind(this, 1)}/>
-                                    <div className="add-btn" onClick={this.onClickAddCooperation}>
+                                    <div className="add-btn" onClick={this.onClickAddCorporation}>
                                         <div>서명 정보 추가</div>
                                         <i className="fal fa-plus"></i>
                                     </div>
