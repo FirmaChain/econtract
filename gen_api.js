@@ -18,10 +18,7 @@ export async function api_new_contract(subject,counterparties,counterparties_eck
     let __data = new FormData();
 
     __data.append('subject', subject);
-	for(let k in counterparties){
-        __data.append('counterparties:'+k,counterparties[k])
-    }
-    __data.append('counterparties',counterparties.length);
+	__data.append('counterparties', counterparties);
 	for(let k in counterparties_eckai){
         __data.append('counterparties_eckai:'+k,counterparties_eckai[k])
     }

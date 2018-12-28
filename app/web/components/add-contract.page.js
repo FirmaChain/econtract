@@ -280,7 +280,7 @@ export default class extends React.Component {
 
         let necessary_info = {individual: individual_info, corporation: corporation_info};
         let pin = "000000";
-        let resp =  await this.props.new_contract(contract_name, counterparties, counterparties_public, pin, necessary_info);
+        let resp =  await this.props.new_contract(contract_name, JSON.stringify(counterparties), counterparties_public, pin, necessary_info);
 /*
         console.log(
             contract_name,
