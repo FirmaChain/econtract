@@ -1,5 +1,6 @@
 import {
     api_new_contract,
+    api_get_contracts,
 /*    api_load_contract,
     api_load_contract_info,
     api_folder_list,
@@ -42,6 +43,18 @@ import Web3 from "../Web3"
 export const LOAD_FODLERS = "LOAD_FODLERS"
 export const LOAD_CONTRACT_LIST = "LOAD_CONTRACT_LIST"*/
 
+export const GET_CONTRACTS = "GET_CONTRACTS"
+
+export function genPIN(digit=6) {
+    let text = "";
+    let possible = "0123456789";
+  
+    for (let i = 0; i < digit; i++)
+      text += possible.charAt(Math.floor(Math.random() * possible.length));
+  
+    return text;
+}
+
 export function new_contract(subject, counterparties, publickey_contract_list, set_pin, necessary_info) {
     return async function(dispatch){
         let pin = set_pin ? set_pin : genPIN();
@@ -62,14 +75,17 @@ export function new_contract(subject, counterparties, publickey_contract_list, s
     }
 }
 
-export function genPIN(digit=6) {
-    let text = "";
-    let possible = "0123456789";
-  
-    for (let i = 0; i < digit; i++)
-      text += possible.charAt(Math.floor(Math.random() * possible.length));
-  
-    return text;
+export function get_contracts(type, status, page, display_count = 10, sub_status = -1, group_id = -1) {
+    return async function(dispatch) {
+        let resp = await api_get_contracts(type, status, page, display_count, sub_status, group_id)
+        if(resp.code == 1) {
+            dispatch({
+                type:GET_CONTRACTS,
+                payload:resp.payload
+            })
+        }
+        return resp
+    }
 }
 
 // function removePIN(contract_id){

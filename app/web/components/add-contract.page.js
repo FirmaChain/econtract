@@ -103,7 +103,6 @@ export default class extends React.Component {
 
 	componentDidMount(){
         (async()=>{
-            await window.showIndicator()
             let user = await this.props.fetch_user_info()
 
             if(!user) {
@@ -159,7 +158,6 @@ export default class extends React.Component {
 
             }
 
-            await window.hideIndicator()
 
         })()
 
@@ -275,7 +273,7 @@ export default class extends React.Component {
     onClickRegister = async ()=>{
         this.blockFlag = true;
         let contract_name = this.state.contract_name;
-        let counterparties = this.state.target_list.map(e=>{email:e.email, role:e.role});
+        let counterparties = this.state.target_list.map(e=>{return {email:e.email, role:e.role}});
         let counterparties_public = this.state.target_list.map(e=>e.public_key);
         let individual_info = this.state.individual.filter(e=>e.force||e.checked).map(e=>e.title);
         let corporation_info = this.state.corporation.filter(e=>e.force||e.checked).map(e=>e.title);

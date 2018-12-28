@@ -17,7 +17,7 @@ import {
     new_folder,
     remove_folder,
     move_to_folder,
-    recently_contracts,
+    get_contracts,
     get_group_info,
     update_group_public_key,
     create_group,
@@ -27,7 +27,7 @@ let mapStateToProps = (state)=>{
 	return {
         folders:state.contract.folders,
         user_info: state.user.info,
-        board:state.contract.board,
+        contracts:state.contract.contracts,
         groups: state.group.groups,
 	}
 }
@@ -37,11 +37,13 @@ let mapDispatchToProps = {
     new_folder,
     remove_folder,
     move_to_folder,
-    recently_contracts,
+    get_contracts,
     get_group_info,
     update_group_public_key,
     create_group,
 }
+
+const LIST_DISPLAY_COUNT = 10
 
 @connect(mapStateToProps, mapDispatchToProps )
 export default class extends React.Component {
@@ -49,10 +51,10 @@ export default class extends React.Component {
 	constructor(props) {
         super(props);
         this.state = {
-            board_checks : [],
+            contracts_checks : [],
             showGroupMenu: false,
             showOptions: null,
-            cur_page:1
+            cur_page:0
         };
 	}
 
@@ -100,8 +102,14 @@ export default class extends React.Component {
             }
         }
 
-        if(this.getTitle(nextProps).id == "recently")
-            await this.props.recently_contracts()
+        await this.setState({
+            contracts_checks : [],
+            showGroupMenu: false,
+            showOptions: null,
+            cur_page:0
+        })
+
+        await this.loadContracts(0, nextProps)
     }
 
     componentWillReceiveProps(nextProps){
@@ -114,6 +122,47 @@ export default class extends React.Component {
         if(prevMenu != menu){
             this.onRefresh(nextProps)
         }
+    }
+
+    loadContracts = async (page, props) => {
+        props = !!props ? props : this.props
+
+        let menu = props.match.params.menu || "recently"
+        let group_id = props.match.params.group_id || -1
+
+        let result
+        if(menu == "recently") {
+            result = await this.props.get_contracts(0, -1, page, LIST_DISPLAY_COUNT, -1, group_id)
+        }
+        else if(menu == "lock") {
+            result = await this.props.get_contracts(3, -1, page, LIST_DISPLAY_COUNT, -1, group_id)
+        }
+        else if(menu == "requested") {
+            result = await this.props.get_contracts(2, -1, page, LIST_DISPLAY_COUNT, -1, group_id)
+        }
+        else if(menu == "created") {
+            result = await this.props.get_contracts(1, -1, page, LIST_DISPLAY_COUNT, -1, group_id)
+        }
+        else if(menu == "typing") {
+            result = await this.props.get_contracts(0, 0, page, LIST_DISPLAY_COUNT, -1, group_id)
+        }
+        else if(menu == "beforeMySign") {
+            result = await this.props.get_contracts(1, 0, page, LIST_DISPLAY_COUNT, 0, group_id)
+        }
+        else if(menu == "beforeOtherSign") {
+            result = await this.props.get_contracts(1, 0, page, LIST_DISPLAY_COUNT, 1, group_id)
+        }
+        else if(menu == "completed") {
+            result = await this.props.get_contracts(2, 0, page, LIST_DISPLAY_COUNT, -1, group_id)
+        }
+        else if(menu == "view") {
+            result = await this.props.get_contracts(3, 0, page, LIST_DISPLAY_COUNT, -1, group_id)
+        }
+        else if(menu == "deleted") {
+            result = await this.props.get_contracts(4, 0, page, LIST_DISPLAY_COUNT, -1, group_id)
+        }
+
+        return result
     }
 
 	onClickAddContract() {
@@ -182,10 +231,10 @@ export default class extends React.Component {
     	if(this.state.cur_page == page)
     		return;
 
-        await this.props.recently_contracts(page - 1);
+        await this.loadContracts(page - 1)
         this.setState({
-            cur_page:page,
-            board_checks:[]
+            cur_page:page - 1,
+            contracts_checks:[]
         })
     }
 
@@ -258,7 +307,7 @@ export default class extends React.Component {
     }
 
     checkBoard(contract_id) {
-        let l = [...this.state.board_checks], isCheckAll = false
+        let l = [...this.state.contracts_checks], isCheckAll = false
 
         let push_flag = true
         for(let i in l) {
@@ -273,30 +322,28 @@ export default class extends React.Component {
             l.push(contract_id)
 
         this.setState({
-            board_checks:l
+            contracts_checks:l
         })
     }
 
     checkAll = () => {
-        let board = this.props.board ? this.props.board : { list:[ {contract_id:0}, {contract_id:1}, {contract_id:2}, {contract_id:3}] }
-        board = { list:[ {contract_id:0}, {contract_id:1}, {contract_id:2}, {contract_id:3}] }
-        let check_list = board.list.map( (e) => e.contract_id )
+        let contracts = this.props.contracts ? this.props.contracts : { list:[] }
+        let check_list = contracts.list.map( (e) => e.contract_id )
 
         if(this.isCheckAll())
             check_list = []
 
         this.setState({
-            board_checks:check_list
+            contracts_checks:check_list
         })
     }
 
     isCheckAll = () => {
-        let board = this.props.board ? this.props.board : { list:[ {contract_id:0}, {contract_id:1}, {contract_id:2}, {contract_id:3}] }
-        board = { list:[ {contract_id:0}, {contract_id:1}, {contract_id:2}, {contract_id:3}] }
-        return this.state.board_checks.length == board.list.length 
+        let contracts = this.props.contracts ? this.props.contracts : { list:[] }
+        return this.state.contracts_checks.length == contracts.list.length 
     }
 
-    render_board_slot(e,k){
+    render_contract_slot(e,k){
         let status_text = (status)=>{
             if(status == 0) {
                 return "내용 입력 중"
@@ -314,7 +361,7 @@ export default class extends React.Component {
         return (<div key={e.contract_id} className="item">
             <div className="list-body-item list-chkbox">
                 <CheckBox2 size={18}
-                    on={this.state.board_checks.includes(e.contract_id) || false}
+                    on={this.state.contracts_checks.includes(e.contract_id) || false}
                     onClick={this.checkBoard.bind(this, e.contract_id)}/>
             </div>
             <div className="list-body-item list-name">
@@ -348,12 +395,11 @@ export default class extends React.Component {
         //     return <div />
 
         let folders = this.props.folders ? this.props.folders : { list: [] }
-        let board = this.props.board ? this.props.board : { list:[] }
+        let contracts = this.props.contracts ? this.props.contracts : { list:[] }
         let groups = this.props.groups ? this.props.groups : []
 
         let account_type = this.props.user_info.account_type
-        let total_cnt = board.total_cnt
-        let page_num = board.page_num
+        let total_cnt = contracts.total_cnt
 
 		return (<div className="contract-page">
 			<div className="contract-group-menu">
@@ -421,13 +467,13 @@ export default class extends React.Component {
                         <div className="list-head-item list-date">마지막 활동 시간</div>
                         <div className="list-head-item list-action"></div>
                     </div>
-                    {board.list.map((e,k)=>{
-                        return this.render_board_slot(e,k)
+                    {contracts.list.map((e,k)=>{
+                        return this.render_contract_slot(e,k)
                     })}
-                    {board.list.length == 0 ? <div className="empty-contract">계약서가 없습니다.</div> : null}
+                    {contracts.list.length == 0 ? <div className="empty-contract">계약서가 없습니다.</div> : null}
                 </div>
                 
-                <Pager max={Math.ceil(total_cnt/page_num)} cur={this.state.cur_page||1} onClick={this.onClickPage} />
+                <Pager max={Math.ceil(total_cnt/LIST_DISPLAY_COUNT)} cur={this.state.cur_page||1} onClick={this.onClickPage} />
 			</div>
 		</div>)
 	}

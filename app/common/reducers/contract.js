@@ -1,6 +1,6 @@
 import {
     LOAD_FODLERS,
-    LOAD_CONTRACT_LIST
+    GET_CONTRACTS
 } from '../actions';
 
 let _ = {
@@ -13,10 +13,10 @@ export default function (state=_, action){
                     ...state,
                     folders: action.payload
                 }
-            case LOAD_CONTRACT_LIST:
+            case GET_CONTRACTS:
                 return {
                     ...state,
-                    board: action.payload
+                    contracts: action.payload
                 }
           default:
               return state;

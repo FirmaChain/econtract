@@ -32,7 +32,7 @@ export async function api_new_contract(subject,counterparties,counterparties_eck
         session:window.getCookie("session")
     });
 }
-export async function api_contracts(type,status,page,display_count,sub_status,group_id){
+export async function api_get_contracts(type,status,page,display_count,sub_status,group_id){
     let __data = new FormData();
 
     __data.append('type', type);
@@ -42,7 +42,7 @@ export async function api_contracts(type,status,page,display_count,sub_status,gr
 	__data.append('sub_status', sub_status);
 	__data.append('group_id', group_id)
 
-    return await post("/contracts", __data,{
+    return await post("/get_contracts", __data,{
         session:window.getCookie("session")
     });
 }
