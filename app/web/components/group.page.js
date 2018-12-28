@@ -31,6 +31,7 @@ import {
     get_corp_member_info_all,
     get_corp_member_info,
     update_group_public_key,
+    fetch_user_info,
 } from "../../common/actions"
 
 let mapStateToProps = (state)=>{
@@ -56,6 +57,7 @@ let mapDispatchToProps = {
     get_corp_member_info_all,
     get_corp_member_info,
     update_group_public_key,
+    fetch_user_info,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -120,6 +122,7 @@ export default class extends React.Component {
                 
                 if(resp) {
                     await this.props.get_group_info(0)
+                    await this.props.fetch_user_info()
                     alert("성공적으로 그룹이 추가되었습니다.")
                 }
             }

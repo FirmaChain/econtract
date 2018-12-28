@@ -16,6 +16,7 @@ import {
     update_user_info,
     new_corp,
     consume_invitation,
+    update_user_public_info,
 } from "../../common/actions"
 import Web3 from "../../common/Web3"
 
@@ -55,6 +56,7 @@ let mapDispatchToProps = {
     update_user_info,
     new_corp,
     consume_invitation,
+    update_user_public_info,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
