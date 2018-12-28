@@ -17,6 +17,7 @@ import {
     list_template,
     select_userinfo_with_email,
     new_contract,
+    update_epin_account,
     genPIN,
 } from "../../common/actions"
 import CheckBox2 from "./checkbox2"
@@ -32,6 +33,7 @@ let mapDispatchToProps = {
     list_template,
     select_userinfo_with_email,
     new_contract,
+    update_epin_account,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -304,10 +306,14 @@ export default class extends React.Component {
             corporation_info,
         )*/
 
-        console.log(resp)
+        console.log(resp);
 
         if(resp.code == 1) {
             let contract_id = resp.payload.contract_id
+            if (is_pin_used) {
+                let resp_pin = await this.props.update_epin_account(contract_id, pin);
+                console.log(resp_pin);
+            }
             history.replace(`/edit-contract/${contract_id}`)
         }
 

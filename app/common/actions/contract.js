@@ -1,6 +1,7 @@
 import {
     api_new_contract,
     api_get_contracts,
+    api_update_epin_account,
 /*    api_load_contract,
     api_load_contract_info,
     api_folder_list,
@@ -89,6 +90,13 @@ export function get_contracts(type, status, page, display_count = 10, sub_status
         }
         return resp
     }
+}
+
+export function update_epin_account(contract_id, pin){
+    return async function(){
+        let epin = encryptPIN(pin);
+        return (await api_update_epin(contract_id, epin)).payload;
+    };
 }
 
 // function removePIN(contract_id){
@@ -355,13 +363,6 @@ export function move_to_folder(folder_id,contract_ids){
     return async function(dispatch){
         return (await api_move_to_folder(folder_id,contract_ids)).payload
     }
-}
-
-export function update_epin(contract_id, pin){
-    return async function(){
-        let epin = encryptPIN(pin);
-        return (await api_update_epin(contract_id, epin)).payload;
-    };
 }
 
 export function clear_epin(contract_id){
