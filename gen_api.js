@@ -14,7 +14,7 @@ export async function api_convert_doc(file){
         session:window.getCookie("session")
     });
 }
-export async function api_new_contract(subject,counterparties,counterparties_eckai,necessary_info_string,is_pin_used){
+export async function api_new_contract(subject,counterparties,counterparties_eckai,necessary_info_string){
     let __data = new FormData();
 
     __data.append('subject', subject);
@@ -23,8 +23,7 @@ export async function api_new_contract(subject,counterparties,counterparties_eck
         __data.append('counterparties_eckai:'+k,counterparties_eckai[k])
     }
     __data.append('counterparties_eckai',counterparties_eckai.length);
-	__data.append('necessary_info_string', necessary_info_string);
-	__data.append('is_pin_used', is_pin_used)
+	__data.append('necessary_info_string', necessary_info_string)
 
     return await post("/new_contract", __data,{
         session:window.getCookie("session")

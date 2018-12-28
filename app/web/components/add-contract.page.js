@@ -17,6 +17,7 @@ import {
     list_template,
     select_userinfo_with_email,
     new_contract,
+    get_group_info,
     genPIN,
 } from "../../common/actions"
 import CheckBox2 from "./checkbox2"
@@ -32,6 +33,7 @@ let mapDispatchToProps = {
     list_template,
     select_userinfo_with_email,
     new_contract,
+    get_group_info,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -328,8 +330,31 @@ export default class extends React.Component {
         })
     }
 
-    onAddGroup = () => {
-        
+    onAddGroup = async () => {
+        let data = await this.props.get_group_info(0)
+        data = data.map((e) => {
+            return {
+                user_type:2,
+                corp: e.corp_id,
+                group_id : e.group_id,
+                title : e.title,
+                group_public_key : Buffer.from(e.group_public_key).toString("hex"),
+                company_name:this.props.user_info.company_name,
+                role:[2],
+            }
+        })
+        window.openModal("OneAddModal", {
+            icon:"fal fa-users",
+            title:"사용자에 그룹 추가하기",
+            subTitle:"그룹 선택",
+            desc:`선택하신 그룹의 그룹원들이 해당 계약에 보기 가능 사용자로 추가됩니다`,
+            data,
+            onConfirm:(group)=>{
+                this.setState({
+                    target_list:[...this.state.target_list, group]
+                })
+            }
+        })
     }
 
     openServiceNoRegisterModal = () => {
@@ -533,8 +558,8 @@ export default class extends React.Component {
                                                     </div>
                                                 case 2:
                                                     return <div className="desc">
-                                                        <div className="username">{e.group_name}<span>{e.company_name}</span></div>
-                                                        <div className="email">{e.count}명의 그룹원</div>
+                                                        <div className="username">#{e.title}<span>{e.company_name}</span></div>
+                                                        <div className="email"></div>
                                                     </div>
                                             } })()
                                         }

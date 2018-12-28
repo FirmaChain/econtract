@@ -124,8 +124,69 @@ class RemoveCommonModal extends React.Component {
 
 @modal
 class OneAddModal extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {}
+    }
 
+    componentDidMount() {
+    }
+
+    closeSelf = () => {
+        window.closeModal(this.props.modalId)
+    }
+
+    onConfirm = (e) => {
+        this.props.onConfirm && this.props.onConfirm(e)
+        this.closeSelf();
+    }
+
+    render() {
+        return <div className="one-add-modal">
+            <div className="container">
+                <div className="icon"><i className={this.props.icon}></i></div>
+                <div className="title">{this.props.title}</div>
+                <div className="sub-title">{this.props.subTitle}</div>
+                <div className="content">
+                {this.props.data.map( (e, k) => {
+                    return <div className="item" key={k} onClick={this.onConfirm.bind(this, e)}>
+                        {e.title}
+                    </div>
+                })}
+                </div>
+                <div className="desc" dangerouslySetInnerHTML={{__html:this.props.desc}}>
+                </div>
+                <div className="button">
+                    
+                    <div className="cancel" onClick={this.closeSelf}>취소</div>
+                </div>
+            </div>
+        </div>
+    }
 }
+
+// <div className="submit" onClick={this.onConfirm}>추가</div>
+
+/*<div className="one-add-modal">
+    <div className="container">
+        <div className="data">
+            <div className="icon"><i className={this.props.icon}></i></div>
+            <div className="desc-container">
+                <div className="place">
+                    <div className="title">{this.props.title}</div>
+                </div>
+                <div className="content">
+                </div>
+                <div className="desc" dangerouslySetInnerHTML={{__html:this.props.desc}}>
+                </div>
+            </div>
+        </div>
+        <div className="button">
+            <div className="confirm" onClick={this.onConfirm}>{this.props.confirmText || "추가"}</div>
+            <div className="cancel" onClick={this.closeSelf}>취소</div>
+        </div>
+    </div>
+</div>*/
 
 @modal
 class CommonModal extends React.Component {
