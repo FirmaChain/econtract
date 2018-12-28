@@ -55,7 +55,7 @@ export function genPIN(digit=6) {
     return text;
 }
 
-export function new_contract(subject, counterparties, publickey_contract_list, set_pin, necessary_info) {
+export function new_contract(subject, counterparties, publickey_contract_list, set_pin, necessary_info, is_pin_used) {
     return async function(dispatch){
         let pin = set_pin ? set_pin : genPIN();
         let counterparties_eckai = [];
@@ -67,7 +67,7 @@ export function new_contract(subject, counterparties, publickey_contract_list, s
             counterparties_eckai.push(sealContractAuxKey(v, shared_key ));
         }
 
-        let resp = await api_new_contract( subject, counterparties, counterparties_eckai, JSON.stringify(necessary_info) )
+        let resp = await api_new_contract( subject, counterparties, counterparties_eckai, JSON.stringify(necessary_info), is_pin_used )
         if(resp.code == 1){
             sessionStorage.setItem(`contract:${resp.payload.contract_id}`, encryptPIN(pin))
         }
