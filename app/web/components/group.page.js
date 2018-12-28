@@ -110,16 +110,9 @@ export default class extends React.Component {
             subTitle:"새 그룹명",
             placeholder:"그룹명을 입력해주세요.",
             onConfirm: async (group_name) => {
-                //TODO 그룹 생성 api
                 let resp = await this.props.create_group(group_name);
+                await this.props.update_group_public_key(resp.group_id, this.props.user_info.corp_master_key);
 
-                let group_id = resp.group_id;
-                let group_key = get256bitDerivedPublicKey(Buffer.from(this.props.user_info.corp_master_key, 'hex'), "m/0'/"+group_id+"'").toString('hex');
-                let group_key2 = hmac_sha256("FirmaChain Group Key", group_key);
-                let group_master_key = Buffer.concat([Buffer.from(group_key, "hex"), group_key2]);
-                let group_public_key_for_contract = bip32_from_512bit(group_master_key).derivePath("m/2'/0'").publicKey;
-                await this.props.update_group_public_key(group_id, group_public_key_for_contract.toString('hex'));
-                
                 if(resp) {
                     await this.props.get_group_info(0)
                     await this.props.fetch_user_info()

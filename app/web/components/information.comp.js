@@ -103,18 +103,12 @@ export default class extends React.Component{
     }
 
     deleteSession = () => {
-        window.eraseCookie("session")
-        window.eraseCookie("session_update")
-        sessionStorage.removeItem("user_id");
-        sessionStorage.removeItem("entropy");
-        let keys = Object.keys(sessionStorage);
-        for (let i = 0; i < keys.length; i++) {
-            sessionStorage.removeItem(keys[i]);
-        }
+        window.logout()
     }
 
     onLogout = () => {
         this.deleteSession()
+
         location.reload(true)
     }
     

@@ -17,6 +17,8 @@ import {
     new_corp,
     consume_invitation,
     update_user_public_info,
+    create_group,
+    update_group_public_key,
 } from "../../common/actions"
 import Web3 from "../../common/Web3"
 
@@ -57,6 +59,8 @@ let mapDispatchToProps = {
     new_corp,
     consume_invitation,
     update_user_public_info,
+    create_group,
+    update_group_public_key,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -638,6 +642,9 @@ export default class extends React.Component {
             if (!updateResp) {
                 return alert("공개 정보 저장에 실패하였습니다.");
             }
+
+            let resp = await this.props.create_group("기본 그룹");
+            await this.props.update_group_public_key(resp.group_id, info['corp_master_key']);
 
         } else if (resp.code == 1 && account_type == 2) {
             let encryptedPublicInfo = aes_encrypt(JSON.stringify(public_info), Buffer.from(info['corp_key'], 'hex'));

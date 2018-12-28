@@ -68,6 +68,7 @@ class AddCommonModal extends React.Component {
     }
 
     render() {
+        let cancelable = this.props.cancelable == undefined ? true : this.props.cancelable
         return <div className="add-common-modal">
             <div className="container">
                 <div className="icon"><i className={this.props.icon}></i></div>
@@ -81,7 +82,7 @@ class AddCommonModal extends React.Component {
                 </div>
                 <div className="button">
                     <div className="confirm" onClick={this.onConfirm}>{this.props.confirmText || "생성"}</div>
-                    <div className="cancel" onClick={this.closeSelf}>취소</div>
+                    { cancelable ? <div className="cancel" onClick={this.closeSelf}>취소</div> : null }
                 </div>
             </div>
         </div>
@@ -123,7 +124,7 @@ class RemoveCommonModal extends React.Component {
 
 @modal
 class OneAddModal extends React.Component {
-    
+
 }
 
 @modal

@@ -124,9 +124,13 @@ export function create_group(group_name) {
     }
 }
 
-export function update_group_public_key(group_id, encrypted_group_key) {
+export function update_group_public_key(group_id, corp_master_key) {
     return async function() {
-        let resp = await api_update_group_public_key(group_id, encrypted_group_key)
+        let group_key = get256bitDerivedPublicKey(Buffer.from(corp_master_key, 'hex'), "m/0'/"+group_id+"'").toString('hex');
+        let group_key2 = hmac_sha256("FirmaChain Group Key", group_key);
+        let group_master_key = Buffer.concat([Buffer.from(group_key, "hex"), group_key2]);
+        let group_public_key_for_contract = bip32_from_512bit(group_master_key).derivePath("m/2'/0'").publicKey;
+        let resp = await api_update_group_public_key(group_id, group_public_key_for_contract.toString('hex'))
         return resp
     }
 }

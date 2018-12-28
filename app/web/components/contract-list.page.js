@@ -19,6 +19,8 @@ import {
     move_to_folder,
     recently_contracts,
     get_group_info,
+    update_group_public_key,
+    create_group,
 } from "../../common/actions"
 
 let mapStateToProps = (state)=>{
@@ -37,6 +39,8 @@ let mapDispatchToProps = {
     move_to_folder,
     recently_contracts,
     get_group_info,
+    update_group_public_key,
+    create_group,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -66,8 +70,36 @@ export default class extends React.Component {
 
             let group_id = this.props.match.params.group_id || null
             if(!group_id) {
-                if(groups_info)
-                    history.replace(`/home/${groups_info[0].group_id}/recently`)
+                    console.log("groups_info", groups_info)
+                if(groups_info) {
+                    if(groups_info.length == 0) {
+                        if(this.props.user_info.account_type == 1) {
+                            window.openModal("AddCommonModal", {
+                                icon:"fas fa-users",
+                                title:"첫 그룹 추가",
+                                subTitle:"첫 번째 그룹 추가는 필수입니다.",
+                                placeholder:"그룹명을 입력해주세요.",
+                                cancelable:false,
+                                onConfirm: async (group_name) => {
+                                    let resp = await this.props.create_group(group_name);
+                                    await this.props.update_group_public_key(resp.group_id, this.props.user_info.corp_master_key);
+                                    
+                                    if(resp) {
+                                        await this.props.get_group_info(0)
+                                        await this.props.fetch_user_info()
+                                        alert("성공적으로 그룹이 추가되었습니다.")
+                                    }
+                                }
+                            })
+                        } else if(this.props.user_info.account_type == 2) {
+                            alert("할당된 그룹이 없습니다. 관리자에게 그룹 추가를 요청해주세요.")
+                            window.logout()
+                            location.reload(true)
+                        }
+                    } else {
+                        history.replace(`/home/${groups_info[0].group_id}/recently`)
+                    }
+                }
                 //else
                 //그룹 추가해달라는 팝업
             }

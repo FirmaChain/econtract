@@ -223,6 +223,17 @@ if((navigator.appName == 'Netscape' && agent.indexOf('trident') != -1) || (agent
 else
   window.isIE = false;
 
+window.logout = async function() {
+  window.eraseCookie("session")
+  window.eraseCookie("session_update")
+  sessionStorage.removeItem("user_id");
+  sessionStorage.removeItem("entropy");
+  let keys = Object.keys(sessionStorage);
+  for (let i = 0; i < keys.length; i++) {
+      sessionStorage.removeItem(keys[i]);
+  }
+}
+
 window.toPdf = async function(file){
   let data = new FormData();
   data.append('file', file)
