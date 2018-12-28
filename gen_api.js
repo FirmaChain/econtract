@@ -43,6 +43,16 @@ export async function api_get_contracts(type,status,page,display_count,sub_statu
         session:window.getCookie("session")
     });
 }
+export async function api_update_epin_account(contract_id,epin){
+    let __data = new FormData();
+
+    __data.append('contract_id', contract_id);
+	__data.append('epin', epin)
+
+    return await post("/update_epin_account", __data,{
+        session:window.getCookie("session")
+    });
+}
 export async function api_invite_information(registration_code){
     let __data = new FormData();
 

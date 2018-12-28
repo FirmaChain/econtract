@@ -18,6 +18,7 @@ import {
     select_userinfo_with_email,
     new_contract,
     get_group_info,
+    update_epin_account,
     genPIN,
 } from "../../common/actions"
 import CheckBox2 from "./checkbox2"
@@ -34,6 +35,7 @@ let mapDispatchToProps = {
     select_userinfo_with_email,
     new_contract,
     get_group_info,
+    update_epin_account,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -295,8 +297,8 @@ export default class extends React.Component {
         let corporation_info = this.state.corporation.filter(e=>e.force||e.checked).map(e=>e.title);
 
         let necessary_info = {individual: individual_info, corporation: corporation_info};
-        let pin = "000000";
-        let is_pin_used = false;
+        let is_pin_used = this.state.is_use_pin;
+        let pin = is_pin_used ? this.state.pin_number : "000000";
         let resp =  await this.props.new_contract(contract_name, JSON.stringify(counterparties), counterparties_public, pin, necessary_info, !!is_pin_used ? 1 : 0);
 /*
         console.log(
@@ -306,10 +308,14 @@ export default class extends React.Component {
             corporation_info,
         )*/
 
-        console.log(resp)
+        console.log(resp);
 
         if(resp.code == 1) {
             let contract_id = resp.payload.contract_id
+            if (is_pin_used) {
+                let resp_pin = await this.props.update_epin_account(contract_id, pin);
+                console.log(resp_pin);
+            }
             history.replace(`/edit-contract/${contract_id}`)
         }
 
