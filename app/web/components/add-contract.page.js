@@ -17,6 +17,7 @@ import {
     list_template,
     select_userinfo_with_email,
     new_contract,
+    genPIN,
 } from "../../common/actions"
 import CheckBox2 from "./checkbox2"
 
@@ -48,6 +49,7 @@ export default class extends React.Component {
             target_list:[], // type 0 : 개인, type 1 : 기업 담당자, type 2 : 기업 그룹
             target_me:true,
             target_other:true,
+            is_use_pin:false,
             individual:[{
                 deletable:false,
                 title:"성함",
@@ -273,7 +275,19 @@ export default class extends React.Component {
     onClickRegister = async ()=>{
         this.blockFlag = true;
         let contract_name = this.state.contract_name;
-        let counterparties = this.state.target_list;
+        let counterparties = this.state.target_list.map(e=> {
+            let role
+            for(let v of e.role) {
+                if(v != 0) {
+                    role = v
+                    break
+                }
+            }
+            return {
+                ...e,
+                role
+            }
+        });
         let counterparties_public = this.state.target_list.map(e=>e.public_key);
         let individual_info = this.state.individual.filter(e=>e.force||e.checked).map(e=>e.title);
         let corporation_info = this.state.corporation.filter(e=>e.force||e.checked).map(e=>e.title);
@@ -406,6 +420,41 @@ export default class extends React.Component {
                     </div>
                 </div>
 
+                <div className="row">
+                    <div className="left-desc">
+                        <div className="desc-head">보안 설정</div>
+                        <div className="desc-content">계약 열람시 PIN 입력 여부를 선택할 수 있습니다</div>
+                    </div>
+                    <div className="right-form">
+                        <div className="column">
+                            <div className="form-head">계약 PIN 사용 여부</div>
+                            <div className="form-input">
+                                <CheckBox2 on={this.state.is_use_pin}
+                                    size={18}
+                                    onClick={()=>{
+                                        this.setState({
+                                            is_use_pin:!this.state.is_use_pin,
+                                            pin_number:genPIN()
+                                        })
+                                    }}
+                                    text={"PIN 보안 사용"}/>
+                            </div>
+                        </div>
+                        {this.state.is_use_pin ? <div className="column column-flex-2">
+                            <div className="form-head">PIN 설정</div>
+                            <div className="form-input">
+                                <input className="common-textbox" id="pin" type="text"
+                                    placeholder="원하시는 PIN 번호를 입력해주세요 ( 숫자로 구성된 6자리 번호 )"
+                                    value={this.state.pin_number || ""}
+                                    onChange={e=>{
+                                        if(!isNaN(e.target.value) && e.target.value.length < 7)
+                                            this.setState({pin_number:e.target.value})
+                                    }}/>
+                            </div>
+                        </div> : null}
+                    </div>
+                </div>
+
                 <div className="row" style={{display:this.state.target_other ? "flex" : "none"}}>
                     <div className="left-desc">
                         <div className="desc-head">사용자 추가</div>
@@ -440,7 +489,7 @@ export default class extends React.Component {
                     <div className="row">
                         <div className="left-desc">
                         </div>
-                        <div className="right-form">
+                        <div className="right-form small-right-form">
                             <div className="group-add-button" onClick={this.onAddGroup}>그룹 추가하기</div>
                         </div>
                     </div> : null

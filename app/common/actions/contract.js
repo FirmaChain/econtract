@@ -79,6 +79,9 @@ export function get_contracts(type, status, page, display_count = 10, sub_status
     return async function(dispatch) {
         let resp = await api_get_contracts(type, status, page, display_count, sub_status, group_id)
         if(resp.code == 1) {
+            for(let v of resp.payload.list) {
+                v.user_infos = v.user_infos.split(window.SEPERATOR).map(e=>JSON.parse(e))
+            }
             dispatch({
                 type:GET_CONTRACTS,
                 payload:resp.payload

@@ -119,7 +119,11 @@ export default class extends React.Component {
 
         let prevMenu = nextProps.match.params.menu || "recently"
         let menu = this.props.match.params.menu || "recently"
-        if(prevMenu != menu){
+
+        let prev_group_id = nextProps.match.params.group_id || null
+        let group_id = this.props.match.params.group_id || null
+
+        if(prevMenu != menu || prev_group_id != group_id){
             this.onRefresh(nextProps)
         }
     }
@@ -147,19 +151,19 @@ export default class extends React.Component {
             result = await this.props.get_contracts(0, 0, page, LIST_DISPLAY_COUNT, -1, group_id)
         }
         else if(menu == "beforeMySign") {
-            result = await this.props.get_contracts(1, 0, page, LIST_DISPLAY_COUNT, 0, group_id)
+            result = await this.props.get_contracts(0, 1, page, LIST_DISPLAY_COUNT, 0, group_id)
         }
         else if(menu == "beforeOtherSign") {
-            result = await this.props.get_contracts(1, 0, page, LIST_DISPLAY_COUNT, 1, group_id)
+            result = await this.props.get_contracts(0, 1, page, LIST_DISPLAY_COUNT, 1, group_id)
         }
         else if(menu == "completed") {
-            result = await this.props.get_contracts(2, 0, page, LIST_DISPLAY_COUNT, -1, group_id)
+            result = await this.props.get_contracts(0, 2, page, LIST_DISPLAY_COUNT, -1, group_id)
         }
         else if(menu == "view") {
-            result = await this.props.get_contracts(3, 0, page, LIST_DISPLAY_COUNT, -1, group_id)
+            result = await this.props.get_contracts(0, 3, page, LIST_DISPLAY_COUNT, -1, group_id)
         }
         else if(menu == "deleted") {
-            result = await this.props.get_contracts(4, 0, page, LIST_DISPLAY_COUNT, -1, group_id)
+            result = await this.props.get_contracts(0, 4, page, LIST_DISPLAY_COUNT, -1, group_id)
         }
 
         return result
@@ -358,6 +362,10 @@ export default class extends React.Component {
             	return "보기 가능"
             }
         }
+
+        let usernames = e.user_infos.map(ee => ee.username)
+        usernames = usernames.join(", ")
+
         return (<div key={e.contract_id} className="item">
             <div className="list-body-item list-chkbox">
                 <CheckBox2 size={18}
@@ -366,11 +374,11 @@ export default class extends React.Component {
             </div>
             <div className="list-body-item list-name">
                 {e.name}
-                <div className="sub">서명 : 홍길동(생성자), 누구누구 외 2명</div>
+                <div className="sub">{usernames}</div>
             </div>
             <div className="list-body-item list-status">
                 {status_text(e.status)}
-                <div className="sub">새로운 메시지가 도착했습니다.</div>
+                <div className="sub">{/*새로운 메시지가 도착했습니다.*/}</div>
             </div>
             <div className="list-body-item list-date">{moment(e.updatedAt).format("YYYY-MM-DD HH:mm:ss")}</div>
             <div className="list-body-item list-action">

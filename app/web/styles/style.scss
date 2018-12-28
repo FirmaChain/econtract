@@ -1718,6 +1718,7 @@ div.checkbox2-comp{
                 display: flex;
                 align-items: center;
                 width:100%;
+                min-height: 65px;
 
                 >.group-add-button {
                     display: inline-block;
@@ -1925,6 +1926,7 @@ div.checkbox2-comp{
                     display: flex;
                     flex-direction: row;
                     max-width:400px;
+                    min-height: 39px;
 
                     >.btn-add-user {
                         display: inline-block;
@@ -1952,6 +1954,11 @@ div.checkbox2-comp{
                 .checkbox-list {
                     flex:1;
                 }
+            }
+
+            >.small-right-form {
+                margin-top: -40px;
+                margin-bottom: -40px;
             }
 
             >.align-normal {
