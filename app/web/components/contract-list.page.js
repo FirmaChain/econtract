@@ -63,8 +63,6 @@ export default class extends React.Component {
 	}
 
     onRefresh = async (nextProps) => {
-        await this.props.folder_list()
-
         let account_type = this.props.user_info.account_type
 
         if(account_type == 1 || account_type == 2) {
@@ -232,7 +230,7 @@ export default class extends React.Component {
                 console.log(resp)
 
                 if(resp) {
-                    await this.props.folder_list()
+                    //await this.props.folder_list()
                 }
             }
         })
@@ -241,7 +239,7 @@ export default class extends React.Component {
     onRemoveFolder = async (folder_id, folder_name) => {
         if( await window.confirm("폴더 삭제", `<b>${folder_name}</b> 를 정말 삭제하시겠습니까?`) ){
             await this.props.remove_folder([folder_id])
-            await this.props.folder_list()
+            //await this.props.folder_list()
         }
     }
 
@@ -388,8 +386,8 @@ export default class extends React.Component {
 						<div className={"item" + (this.getTitle().id == "typing" ? " selected" : "")} onClick={this.move.bind(this, "typing")}><i className="icon fal fa-keyboard"></i> <div className="text">내용 입력 중</div></div>
 						<div className={"item" + (this.getTitle().id == "beforeMySign" ? " selected" : "")} onClick={this.move.bind(this, "beforeMySign")}><i className="icon far fa-file-import"></i> <div className="text">내 서명 전</div></div>
 						<div className={"item" + (this.getTitle().id == "beforeOtherSign" ? " selected" : "")} onClick={this.move.bind(this, "beforeOtherSign")}><i className="icon far fa-file-export"></i> <div className="text">상대방 서명 전</div></div>
-						<div className={"item" + (this.getTitle().id == "view" ? " selected" : "")} onClick={this.move.bind(this, "view")}><i className="icon fas fa-eye"></i> <div className="text">보기 가능</div></div>
 						<div className={"item" + (this.getTitle().id == "completed" ? " selected" : "")} onClick={this.move.bind(this, "completed")}><i className="icon fal fa-check-circle"></i> <div className="text">완료됨</div></div>
+                        <div className={"item" + (this.getTitle().id == "view" ? " selected" : "")} onClick={this.move.bind(this, "view")}><i className="icon fas fa-eye"></i> <div className="text">보기 가능</div></div>
 						<div className={"item" + (this.getTitle().id == "deleted" ? " selected" : "")} onClick={this.move.bind(this, "deleted")}><i className="icon fal fa-trash-alt"></i> <div className="text">삭제됨</div></div>
 					</div>
 					<div className="list">
