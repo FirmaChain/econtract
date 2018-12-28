@@ -65,43 +65,40 @@ export default class extends React.Component {
     onRefresh = async (nextProps) => {
         await this.props.folder_list()
 
-        if(this.props.user_info.account_type == 1 || this.props.user_info.account_type == 2) {
-            let groups_info = await this.props.get_group_info(0)
+        let account_type = this.props.user_info.account_type
 
+        if(account_type == 1 || account_type == 2) {
+            let groups_info = await this.props.get_group_info(0)
             let group_id = this.props.match.params.group_id || null
-            if(!group_id) {
-                    console.log("groups_info", groups_info)
-                if(groups_info) {
-                    if(groups_info.length == 0) {
-                        if(this.props.user_info.account_type == 1) {
-                            window.openModal("AddCommonModal", {
-                                icon:"fas fa-users",
-                                title:"첫 그룹 추가",
-                                subTitle:"첫 번째 그룹 추가는 필수입니다.",
-                                placeholder:"그룹명을 입력해주세요.",
-                                cancelable:false,
-                                onConfirm: async (group_name) => {
-                                    let resp = await this.props.create_group(group_name);
-                                    await this.props.update_group_public_key(resp.group_id, this.props.user_info.corp_master_key);
-                                    
-                                    if(resp) {
-                                        await this.props.get_group_info(0)
-                                        await this.props.fetch_user_info()
-                                        alert("성공적으로 그룹이 추가되었습니다.")
-                                    }
-                                }
-                            })
-                        } else if(this.props.user_info.account_type == 2) {
-                            alert("할당된 그룹이 없습니다. 관리자에게 그룹 추가를 요청해주세요.")
-                            window.logout()
-                            location.reload(true)
+
+            if(groups_info.length == 0) {
+                if(account_type == 1) {
+                    window.openModal("AddCommonModal", {
+                        icon:"fas fa-users",
+                        title:"첫 그룹 추가",
+                        subTitle:"첫 번째 그룹 추가는 필수입니다.",
+                        placeholder:"그룹명을 입력해주세요.",
+                        cancelable:false,
+                        onConfirm: async (group_name) => {
+                            let resp = await this.props.create_group(group_name);
+                            await this.props.update_group_public_key(resp.group_id, this.props.user_info.corp_master_key);
+                            
+                            if(resp) {
+                                await this.props.get_group_info(0)
+                                await this.props.fetch_user_info()
+                                alert("성공적으로 그룹이 추가되었습니다.")
+                            }
                         }
-                    } else {
-                        history.replace(`/home/${groups_info[0].group_id}/recently`)
-                    }
+                    })
+                } else if(account_type == 2) {
+                    alert("할당된 그룹이 없습니다. 관리자에게 그룹 추가를 요청해주세요.")
+                    window.logout()
+                    location.reload(true)
                 }
-                //else
-                //그룹 추가해달라는 팝업
+            } else if(!group_id) {
+                if(groups_info) {
+                    history.replace(`/home/${groups_info[0].group_id}/recently`)
+                }
             }
         }
 
@@ -430,126 +427,6 @@ export default class extends React.Component {
                         return this.render_board_slot(e,k)
                     })}
                     {board.list.length == 0 ? <div className="empty-contract">계약서가 없습니다.</div> : null}
-                    <div className="item">
-                        <div className="list-body-item list-chkbox">
-                            <CheckBox2 size={18}
-                                on={this.state.board_checks.includes(0) || false}
-                                onClick={this.checkBoard.bind(this, 0)}/>
-                        </div>
-                        <div className="list-body-item list-name">
-                            계약서 테스트 11111
-                            <div className="sub">서명자 : 홍길동(생성자), 누구누구 외 2명</div>
-                        </div>
-                        <div className="list-body-item list-status">
-                            내 서명 전
-                            <div className="sub">새로운 메시지가 도착했습니다.</div>
-                        </div>
-                        <div className="list-body-item list-date">{moment().format("YYYY-MM-DD HH:mm:ss")}</div>
-                        <div className="list-body-item list-action">
-                            <div className="button-container">
-                                <div className="action-button action-blue-but">서명</div>
-                                <div className="arrow-button arrow-blue-but" onClick={this.onClickOption.bind(this, 0/*contract_id*/)} >
-                                    <i className="fas fa-caret-down"></i>
-                                    <div className="arrow-dropdown" style={{display:!!this.isOpenOption(0/*contract_id*/) ? "initial" : "none"}}>
-                                        <div className="container">
-                                            <div className="detail">상세 정보</div>
-                                            <div className="move">이동</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="item">
-                        <div className="list-body-item list-chkbox">
-                            <CheckBox2 size={18}
-                                on={this.state.board_checks.includes(1) || false}
-                                onClick={this.checkBoard.bind(this, 1)}/>
-                        </div>
-                        <div className="list-body-item list-name">
-                            계약서 테스트 11111
-                            <div className="sub">서명자 : 홍길동(생성자), 누구누구 외 2명</div>
-                        </div>
-                        <div className="list-body-item list-status">
-                            내 서명 전
-                            <div className="sub">새로운 메시지가 도착했습니다.</div>
-                        </div>
-                        <div className="list-body-item list-date">{moment().format("YYYY-MM-DD HH:mm:ss")}</div>
-                        <div className="list-body-item list-action">
-                            <div className="button-container">
-                                <div className="action-button action-blue-but">서명</div>
-                                <div className="arrow-button arrow-blue-but" onClick={this.onClickOption.bind(this, 1/*contract_id*/)} >
-                                    <i className="fas fa-caret-down"></i>
-                                    <div className="arrow-dropdown" style={{display:!!this.isOpenOption(1/*contract_id*/) ? "initial" : "none"}}>
-                                        <div className="container">
-                                            <div className="detail">상세 정보</div>
-                                            <div className="move">이동</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="item">
-                        <div className="list-body-item list-chkbox">
-                            <CheckBox2 size={18}
-                                on={this.state.board_checks.includes(2) || false}
-                                onClick={this.checkBoard.bind(this, 2)}/>
-                        </div>
-                        <div className="list-body-item list-name">
-                            계약서 테스트 11111
-                            <div className="sub">서명자 : 홍길동(생성자), 누구누구 외 2명</div>
-                        </div>
-                        <div className="list-body-item list-status">
-                            내 서명 전
-                            <div className="sub">새로운 메시지가 도착했습니다.</div>
-                        </div>
-                        <div className="list-body-item list-date">{moment().format("YYYY-MM-DD HH:mm:ss")}</div>
-                        <div className="list-body-item list-action">
-                            <div className="button-container">
-                                <div className="action-button action-blue-but">서명</div>
-                                <div className="arrow-button arrow-blue-but" onClick={this.onClickOption.bind(this, 2/*contract_id*/)} >
-                                    <i className="fas fa-caret-down"></i>
-                                    <div className="arrow-dropdown" style={{display:!!this.isOpenOption(2/*contract_id*/) ? "initial" : "none"}}>
-                                        <div className="container">
-                                            <div className="detail">상세 정보</div>
-                                            <div className="move">이동</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="item">
-                        <div className="list-body-item list-chkbox">
-                            <CheckBox2 size={18}
-                                on={this.state.board_checks.includes(3) || false}
-                                onClick={this.checkBoard.bind(this, 3)}/>
-                        </div>
-                        <div className="list-body-item list-name">
-                            계약서 테스트 11111
-                            <div className="sub">서명자 : 홍길동(생성자), 누구누구 외 2명</div>
-                        </div>
-                        <div className="list-body-item list-status">
-                            내 서명 전
-                            <div className="sub">새로운 메시지가 도착했습니다.</div>
-                        </div>
-                        <div className="list-body-item list-date">{moment().format("YYYY-MM-DD HH:mm:ss")}</div>
-                        <div className="list-body-item list-action">
-                            <div className="button-container">
-                                <div className="action-button action-blue-but">서명</div>
-                                <div className="arrow-button arrow-blue-but" onClick={this.onClickOption.bind(this, 3/*contract_id*/)} >
-                                    <i className="fas fa-caret-down"></i>
-                                    <div className="arrow-dropdown" style={{display:!!this.isOpenOption(3/*contract_id*/) ? "initial" : "none"}}>
-                                        <div className="container">
-                                            <div className="detail">상세 정보</div>
-                                            <div className="move">이동</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
                 
                 <Pager max={Math.ceil(total_cnt/page_num)} cur={this.state.cur_page||1} onClick={this.onClickPage} />

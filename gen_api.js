@@ -14,7 +14,7 @@ export async function api_convert_doc(file){
         session:window.getCookie("session")
     });
 }
-export async function api_new_contract(subject,counterparties,counterparties_eckai){
+export async function api_new_contract(subject,counterparties,counterparties_eckai,necessary_info_string){
     let __data = new FormData();
 
     __data.append('subject', subject);
@@ -25,175 +25,10 @@ export async function api_new_contract(subject,counterparties,counterparties_eck
 	for(let k in counterparties_eckai){
         __data.append('counterparties_eckai:'+k,counterparties_eckai[k])
     }
-    __data.append('counterparties_eckai',counterparties_eckai.length)
+    __data.append('counterparties_eckai',counterparties_eckai.length);
+	__data.append('necessary_info_string', necessary_info_string)
 
     return await post("/new_contract", __data,{
-        session:window.getCookie("session")
-    });
-}
-export async function api_update_epin(contract_id,epin){
-    let __data = new FormData();
-
-    __data.append('contract_id', contract_id);
-	__data.append('epin', epin)
-
-    return await post("/update_epin", __data,{
-        session:window.getCookie("session")
-    });
-}
-export async function api_clear_epin(contract_id){
-    let __data = new FormData();
-
-    __data.append('contract_id', contract_id)
-
-    return await post("/clear_epin", __data,{
-        session:window.getCookie("session")
-    });
-}
-export async function api_load_contract_info(contract_id){
-    let __data = new FormData();
-
-    __data.append('contract_id', contract_id)
-
-    return await post("/load_contract_info", __data,{
-        session:window.getCookie("session")
-    });
-}
-export async function api_load_contract(contract_id){
-    let __data = new FormData();
-
-    __data.append('contract_id', contract_id)
-
-    return await post("/load_contract", __data,{
-        session:window.getCookie("session")
-    });
-}
-export async function api_recently_contracts(page){
-    let __data = new FormData();
-
-    __data.append('page', page)
-
-    return await post("/recently_contracts", __data,{
-        session:window.getCookie("session")
-    });
-}
-export async function api_all_folders(page){
-    let __data = new FormData();
-
-    __data.append('page', page)
-
-    return await post("/all_folders", __data,{
-        session:window.getCookie("session")
-    });
-}
-export async function api_folder_list(page){
-    let __data = new FormData();
-
-    __data.append('page', page)
-
-    return await post("/folder_list", __data,{
-        session:window.getCookie("session")
-    });
-}
-export async function api_new_folder(name){
-    let __data = new FormData();
-
-    __data.append('name', name)
-
-    return await post("/new_folder", __data,{
-        session:window.getCookie("session")
-    });
-}
-export async function api_remove_folder(idx){
-    let __data = new FormData();
-
-    for(let k in idx){
-        __data.append('idx:'+k,idx[k])
-    }
-    __data.append('idx',idx.length)
-
-    return await post("/remove_folder", __data,{
-        session:window.getCookie("session")
-    });
-}
-export async function api_move_to_folder(folder_id,contract_ids){
-    let __data = new FormData();
-
-    __data.append('folder_id', folder_id);
-	for(let k in contract_ids){
-        __data.append('contract_ids:'+k,contract_ids[k])
-    }
-    __data.append('contract_ids',contract_ids.length)
-
-    return await post("/move_to_folder", __data,{
-        session:window.getCookie("session")
-    });
-}
-export async function api_folder_in_contracts(folder_id,page){
-    let __data = new FormData();
-
-    __data.append('folder_id', folder_id);
-	__data.append('page', page)
-
-    return await post("/folder_in_contracts", __data,{
-        session:window.getCookie("session")
-    });
-}
-export async function api_edit_contract(contract_id,encrypt_data,edit){
-    let __data = new FormData();
-
-    __data.append('contract_id', contract_id);
-	for(let k in encrypt_data){
-        __data.append('encrypt_data:'+k,encrypt_data[k])
-    }
-    __data.append('encrypt_data',encrypt_data.length);
-	__data.append('edit', edit)
-
-    return await post("/edit_contract", __data,{
-        session:window.getCookie("session")
-    });
-}
-export async function api_send_chat(contract_id,msg){
-    let __data = new FormData();
-
-    __data.append('contract_id', contract_id);
-	__data.append('msg', msg)
-
-    return await post("/send_chat", __data,{
-        session:window.getCookie("session")
-    });
-}
-export async function api_fetch_chat(contract_id,cursor){
-    let __data = new FormData();
-
-    __data.append('contract_id', contract_id);
-	__data.append('cursor', cursor)
-
-    return await post("/fetch_chat", __data,{
-        session:window.getCookie("session")
-    });
-}
-export async function api_confirm_contract(contract_id,original,signTx,revision,encrypt){
-    let __data = new FormData();
-
-    __data.append('contract_id', contract_id);
-	__data.append('original', original);
-	__data.append('signTx', signTx);
-	__data.append('revision', revision);
-	__data.append('encrypt', encrypt)
-
-    return await post("/confirm_contract", __data,{
-        session:window.getCookie("session")
-    });
-}
-export async function api_reject_contract(contract_id,msg,revision){
-    let __data = new FormData();
-
-    __data.append('contract_id', contract_id);
-	__data.append('msg', msg);
-	__data.append('revision', revision)
-
-    return await post("/reject_contract", __data,{
         session:window.getCookie("session")
     });
 }

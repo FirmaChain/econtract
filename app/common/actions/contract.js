@@ -1,6 +1,6 @@
 import {
     api_new_contract,
-    api_load_contract,
+/*    api_load_contract,
     api_load_contract_info,
     api_folder_list,
     api_recently_contracts,
@@ -16,7 +16,7 @@ import {
     api_all_folders,
     api_update_epin,
     api_clear_epin,
-    api_convert_doc,
+    api_convert_doc,*/
 } from "../../../gen_api"
 
 import {
@@ -38,12 +38,31 @@ import {
 
 import { sha256 } from 'js-sha256'
 import Web3 from "../Web3"
-
-export const NEW_CONTRACT = "NEW_CONTRACT"
+/*
 export const LOAD_FODLERS = "LOAD_FODLERS"
-export const LOAD_CONTRACT_LIST = "LOAD_CONTRACT_LIST"
+export const LOAD_CONTRACT_LIST = "LOAD_CONTRACT_LIST"*/
 
-function genPIN(digit=6) {
+export function new_contract(subject, counterparties, publickey_contract_list, set_pin, necessary_info) {
+    return async function(dispatch){
+        let pin = set_pin ? set_pin : genPIN();
+        let counterparties_eckai = [];
+        let shared_key = generate_random(31);
+        let the_key = getContractKey(pin, shared_key);
+
+        for (let v of publickey_contract_list) {
+            console.log(publickey_contract_list)
+            counterparties_eckai.push(sealContractAuxKey(v, shared_key ));
+        }
+
+        let resp = await api_new_contract( subject, counterparties, counterparties_eckai, JSON.stringify(necessary_info) )
+        if(resp.code == 1){
+            sessionStorage.setItem(`contract:${resp.payload.contract_id}`, encryptPIN(pin))
+        }
+        return resp
+    }
+}
+
+export function genPIN(digit=6) {
     let text = "";
     let possible = "0123456789";
   
@@ -56,7 +75,7 @@ function genPIN(digit=6) {
 // function removePIN(contract_id){
 //     sessionStorage.removeItem(`contract:${contract_id}`);
 // }
-
+/*
 async function getPIN(contract_id) {
     let epin = sessionStorage.getItem(`contract:${contract_id}`);
     if (!epin) {
@@ -113,35 +132,6 @@ async function fetch_img(name, the_key){
     var url = URL.createObjectURL(blob);
     return url;
 }
-
-export function new_contract(subject, counterparties, publickey_contract_list, set_pin, necessary_info) {
-    return async function(dispatch){
-        let pin = set_pin ? set_pin : genPIN();
-        let counterparties_eckai = [];
-        let shared_key = generate_random(31);
-        let the_key = getContractKey(pin, shared_key);
-
-        for (let i = 0; i < publickey_contract_list.length; i++) {
-            counterparties_eckai.push(sealContractAuxKey(publickey_contract_list[i], shared_key));
-        }
-
-        let resp = (await api_new_contract( subject, counterparties, counterparties_eckai, JSON.stringify(necessary_info) )).payload
-        if(resp){
-            sessionStorage.setItem(`contract:${resp}`, encryptPIN(pin))
-            dispatch({
-                type:NEW_CONTRACT,
-                payload:{
-                    subject, 
-                    counterparties,
-                    counterparties_eckai,
-                    pin
-                }
-            })
-        }
-        return resp
-    }
-}
-
 export function get_pin_from_storage(contract_id){
     return async function(){
         return await getPIN(contract_id);
@@ -385,5 +375,5 @@ export function decrypt_contract_hexstring(contract_id, hexstring){
         let decrypted = aes_decrypt(hexstring, thekey, true);
         return decrypted;
     }
-}
+}*/
 

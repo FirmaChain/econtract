@@ -24,6 +24,8 @@ import {
     aes_encrypt_async,
     aes_decrypt,
     hmac_sha256,
+    get256bitDerivedPublicKey,
+    bip32_from_512bit,
 } from "../../common/crypto_test"
 
 import Web3 from "../Web3"

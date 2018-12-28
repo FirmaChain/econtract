@@ -106,50 +106,32 @@ export default class extends React.Component {
             await window.showIndicator()
             let user = await this.props.fetch_user_info()
 
-            if(!user)
-                return;
+            if(!user) {
+                return history.push("/login")
+            }
 
             if(user.account_type == 0) {
                 this.setState({
-                    template_list:await this.props.list_template(),
                     target_list:[{
                         user_type:0,
+                        account_id: user.account_id,
                         username:user.username,
                         email:user.email,
+                        public_key:user.publickey_contract,
                         role:[0, 1]
-                    },{
-                        user_type:0,
-                        username:user.username,
-                        email:user.email,
-                        role:[1]
-                    },{
-                        user_type:0,
-                        username:user.username,
-                        email:user.email,
-                        role:[1]
-                    },{
-                        user_type:1,
-                        username:"김정완",
-                        email:"jwkim@firma-solutions.com",
-                        company_name:"피르마 솔루션즈",
-                        role:[1],
-                    },{
-                        user_type:2,
-                        company_name:"피르마 솔루션즈",
-                        group_name:"사업1팀",
-                        count:5,
-                        role:[2],
                     }]
                 })
             } else if(user.account_type == 1 || user.account_type == 2) {
                 this.setState({
-                    template_list:await this.props.list_template(),
                     target_list:[{
                         user_type:1,
+                        account_id: user.account_id,
                         username:user.username,
                         email:user.email,
+                        public_key:user.publickey_contract,
+                        company_name:"피르마 솔루션즈",
                         role:[0, 1]
-                    },{
+                    }/*,{
                         user_type:0,
                         username:user.username,
                         email:user.email,
@@ -171,7 +153,7 @@ export default class extends React.Component {
                         group_name:"사업1팀",
                         count:5,
                         role:[2],
-                    }]
+                    }*/]
                 })
             } else {
 
@@ -297,20 +279,25 @@ export default class extends React.Component {
         let counterparties_public = this.state.target_list.map(e=>e.public_key);
         let individual_info = this.state.individual.filter(e=>e.force||e.checked).map(e=>e.title);
         let corporation_info = this.state.corporation.filter(e=>e.force||e.checked).map(e=>e.title);
+
         let necessary_info = {individual: individual_info, corporation: corporation_info};
         let pin = "000000";
-        await this.props.new_contract(subject, counterparties, counterparties_public, pin, necessary_info);
-
+        let resp =  await this.props.new_contract(contract_name, counterparties, counterparties_public, pin, necessary_info);
+/*
         console.log(
             contract_name,
-            sign_target_me,
-            sign_target_other,
             counterparties,
             individual_info,
             corporation_info,
-        )
+        )*/
 
-        history.push("/edit-contract/1")
+        console.log(resp)
+
+        if(resp.code == 1) {
+            let contract_id = resp.payload.contract_id
+            history.replace(`/edit-contract/${contract_id}`)
+        }
+
     }
 
     onClickRemoveCounterparty = (k)=>{

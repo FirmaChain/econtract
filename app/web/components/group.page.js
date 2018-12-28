@@ -209,30 +209,63 @@ export default class extends React.Component {
         return false;
     }
 
+
+    isOpenOption(contract_id) {
+        return this.state.showOption == contract_id;
+    }
+    
+    onClickOption(contract_id) {
+        if(this.state.showOption == contract_id) {
+            return this.setState({
+                showOption:null
+            })
+        }
+
+        this.setState({
+            showOption:contract_id
+        })
+    }
+
+    checkBoard(contract_id) {
+        let l = [...this.state.board_checks], isCheckAll = false
+
+        let push_flag = true
+        for(let i in l) {
+            if(l[i] == contract_id) {
+                l.splice(i, 1)
+                push_flag = false
+                break;
+            }
+        }
+
+        if(push_flag)
+            l.push(contract_id)
+
+        this.setState({
+            board_checks:l
+        })
+    }
+
     render_board_slot(e,k){
         let status_text = (status)=>{
             if(status == 0) {
                 return "내용 입력 중"
             } else if(status == 1) {
-            	if("내가 서명 했다면")
-            		return "상대방 서명 전"
-            	else if("나는 서명 안했고 상대방중 하나라도 서명 했다면")
-            		return "내 서명 전"
+                if("내가 서명 했다면")
+                    return "상대방 서명 전"
+                else if("나는 서명 안했고 상대방중 하나라도 서명 했다면")
+                    return "내 서명 전"
             } else if(status == 2) {
                 return "계약 완료"
             } else if(status == 3) {
-            	return "보기 가능"
+                return "보기 가능"
             }
         }
         return (<div key={e.contract_id} className="item">
             <div className="list-body-item list-chkbox">
                 <CheckBox2 size={18}
-                    on={this.state.board_checks[e.contract_id] || false}
-                    onClick={()=> {
-                        let l = [...this.state.board_checks]
-                        l[e.contract_id] = !l[e.contract_id]
-                        this.setState({board_checks:l})
-                    }}/>
+                    on={this.state.board_checks.includes(e.contract_id) || false}
+                    onClick={this.checkBoard.bind(this, e.contract_id)}/>
             </div>
             <div className="list-body-item list-name">
                 {e.name}
@@ -244,8 +277,18 @@ export default class extends React.Component {
             </div>
             <div className="list-body-item list-date">{moment(e.updatedAt).format("YYYY-MM-DD HH:mm:ss")}</div>
             <div className="list-body-item list-action">
-                <div className="action-button blue-but">서명</div>
-                <div className="arrow-button blue-but"><i className="fas fa-caret-down"></i></div>
+                <div className="button-container">
+                    <div className="action-button action-blue-but">서명</div>
+                    <div className="arrow-button arrow-blue-but" onClick={this.onClickOption.bind(this, e.contract_id)} >
+                        <i className="fas fa-caret-down"></i>
+                        <div className="arrow-dropdown" style={{display:!!this.isOpenOption(e.contract_id) ? "initial" : "none"}}>
+                            <div className="container">
+                                <div className="detail">상세 정보</div>
+                                <div className="move">이동</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>)
     }
