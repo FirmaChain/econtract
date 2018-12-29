@@ -223,6 +223,12 @@ export default class extends React.Component {
         let resp = await this.props.select_userinfo_with_email(this.state.add_email)
 
         if(resp){
+
+            for(let v of this.state.target_list) {
+                if( !!v.account_id && v.account_id == resp.account_id ) {
+                    return alert("이미 추가된 유저입니다.")
+                }
+            }
             this.setState({
                 target_list:[...this.state.target_list, {
                     user_type:resp.account_type != 0 ? 1 : 0,
@@ -301,13 +307,6 @@ export default class extends React.Component {
         let pin = is_pin_used ? this.state.pin_number : "000000";
         let resp =  await this.props.new_contract(contract_name, JSON.stringify(counterparties),
             counterparties_public, pin, necessary_info, !!is_pin_used ? 1 : 0);
-/*
-        console.log(
-            contract_name,
-            counterparties,
-            individual_info,
-            corporation_info,
-        )*/
 
         console.log(resp);
 
@@ -357,6 +356,12 @@ export default class extends React.Component {
             desc:`선택하신 그룹의 그룹원들이 해당 계약에 보기 가능 사용자로 추가됩니다`,
             data,
             onConfirm:(group)=>{
+                for(let v of this.state.target_list) {
+                    if( !!v.corp_id && !!v.group_id && v.corp_id == group.corp_id && v.group_id == group.group_id) {
+                        return alert("이미 추가된 그룹입니다.")
+                    }
+                }
+
                 this.setState({
                     target_list:[...this.state.target_list, group]
                 })
