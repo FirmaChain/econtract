@@ -341,7 +341,7 @@ export default class extends React.Component {
         data = data.map((e) => {
             return {
                 user_type:2,
-                corp: e.corp_id,
+                corp_id: e.corp_id,
                 group_id : e.group_id,
                 title : e.title,
                 group_public_key : Buffer.from(e.group_public_key).toString("hex"),
