@@ -53,7 +53,6 @@ export function folder_list_template() {
 export function add_folder_template(folder_name) {
     return async function() {
         let resp = await api_add_folder_template(folder_name)
-        console.log(resp)
         return resp.payload
     }
 }

@@ -363,7 +363,7 @@ export default class extends React.Component {
             }
         }
 
-        let usernames = e.user_infos.map(ee => ee.username)
+        let usernames = e.user_infos.map(ee => ee.username).filter( ee => !!ee)
         usernames = usernames.join(", ")
 
         return (<div key={e.contract_id} className="item">
