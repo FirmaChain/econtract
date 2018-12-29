@@ -14,7 +14,7 @@ export async function api_convert_doc(file){
         session:window.getCookie("session")
     });
 }
-export async function api_new_contract(subject,counterparties,counterparties_eckai,necessary_info_string){
+export async function api_new_contract(subject,counterparties,counterparties_eckai,necessary_info_string,is_pin_used){
     let __data = new FormData();
 
     __data.append('subject', subject);
@@ -23,7 +23,8 @@ export async function api_new_contract(subject,counterparties,counterparties_eck
         __data.append('counterparties_eckai:'+k,counterparties_eckai[k])
     }
     __data.append('counterparties_eckai',counterparties_eckai.length);
-	__data.append('necessary_info_string', necessary_info_string)
+	__data.append('necessary_info_string', necessary_info_string);
+	__data.append('is_pin_used', is_pin_used)
 
     return await post("/new_contract", __data,{
         session:window.getCookie("session")
@@ -40,6 +41,16 @@ export async function api_get_contracts(type,status,page,display_count,sub_statu
 	__data.append('group_id', group_id)
 
     return await post("/get_contracts", __data,{
+        session:window.getCookie("session")
+    });
+}
+export async function api_update_epin_account(contract_id,epin){
+    let __data = new FormData();
+
+    __data.append('contract_id', contract_id);
+	__data.append('epin', epin)
+
+    return await post("/update_epin_account", __data,{
         session:window.getCookie("session")
     });
 }

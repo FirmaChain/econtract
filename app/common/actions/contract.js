@@ -56,7 +56,7 @@ export function genPIN(digit=6) {
     return text;
 }
 
-export function new_contract(subject, counterparties, publickey_contract_list, set_pin, necessary_info, is_pin_used) {
+export function new_contract(subject, counterparties, publickey_contract_list, set_pin, necessary_info, is_pin_used = false) {
     return async function(dispatch){
         let pin = set_pin ? set_pin : genPIN();
         let counterparties_eckai = [];

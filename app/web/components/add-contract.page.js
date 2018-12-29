@@ -299,7 +299,8 @@ export default class extends React.Component {
         let necessary_info = {individual: individual_info, corporation: corporation_info};
         let is_pin_used = this.state.is_use_pin;
         let pin = is_pin_used ? this.state.pin_number : "000000";
-        let resp =  await this.props.new_contract(contract_name, JSON.stringify(counterparties), counterparties_public, pin, necessary_info, !!is_pin_used ? 1 : 0);
+        let resp =  await this.props.new_contract(contract_name, JSON.stringify(counterparties),
+            counterparties_public, pin, necessary_info, !!is_pin_used ? 1 : 0);
 /*
         console.log(
             contract_name,
@@ -344,7 +345,7 @@ export default class extends React.Component {
                 corp_id: e.corp_id,
                 group_id : e.group_id,
                 title : e.title,
-                group_public_key : Buffer.from(e.group_public_key).toString("hex"),
+                public_key : Buffer.from(e.group_public_key).toString("hex"),
                 company_name:this.props.user_info.company_name,
                 role:[2],
             }
