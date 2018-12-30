@@ -67,7 +67,7 @@ export function new_contract(subject, counterparties, set_pin, necessary_info, i
             return {
                 user_type: e.user_type,
                 entity_id: e.user_type == 2 ? e.group_id : e.account_id,
-                corp_id: e.user_type = 2 ? e.corp_id : DUMMY_CORP_ID,
+                corp_id: e.user_type == 2 ? e.corp_id : DUMMY_CORP_ID,
                 role: e.role,
                 eckai: sealContractAuxKey(e.public_key, shared_key),
                 user_info: aes_encrypt(JSON.stringify(e), the_key),
