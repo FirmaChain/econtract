@@ -63,8 +63,7 @@ export function new_contract(subject, counterparties, set_pin, necessary_info, i
         let pin = set_pin ? set_pin : genPIN();
         let shared_key = generate_random(31);
         let the_key = getContractKey(pin, shared_key);
-
-        counterparties_mapped = counterparties.map(e=>{
+        let counterparties_mapped = counterparties.map(e=>{
             return {
                 user_type: e.user_type,
                 entity_id: e.user_type == 2 ? e.group_id : e.account_id,
