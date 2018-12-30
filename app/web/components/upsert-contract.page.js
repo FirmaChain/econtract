@@ -165,8 +165,18 @@ export default class extends React.Component {
 
     onToggleUser = (entity_id, corp_id) => {
         let _ = [...this.state.open_users]
-        let check = _[entity_id+" "+corp_id] || false
-        _[entity_id+" "+corp_id] = !check
+        
+        let checkFlag = false
+        for(let i in _) {
+            let v = _[i]
+            if(v.l == entity_id+"_"+corp_id) {
+                checkFlag = true
+                _.splice(i, 1)
+            }
+        }
+
+        if(!checkFlag)
+            _.push({l:entity_id+"_"+corp_id})
 
         this.setState({
             open_users:_
@@ -174,8 +184,12 @@ export default class extends React.Component {
     }
 
     isOpenUser = (entity_id, corp_id) => {
-        let check = this.state.open_users[entity_id+" "+corp_id] || false
-        return check
+        for(let v of this.state.open_users) {
+            if(v.l == entity_id+"_"+corp_id) {
+                return true;
+            }
+        }
+        return false 
     }
 
     onClickSubmit = async () => {

@@ -47,6 +47,39 @@ export const LOAD_CONTRACT_LIST = "LOAD_CONTRACT_LIST"*/
 
 export const GET_CONTRACTS = "GET_CONTRACTS"
 
+export function select_subject(infos, groups, account_id, corp_id) {
+    let my_info = null
+    let isAccount = false
+
+    groups = groups.map((e) => {
+        return {
+            ...e,
+            public_key : Buffer.from(e.group_public_key).toString("hex"),
+        }
+    })
+
+    for(let contract_info of infos) {
+        if(contract_info.corp_id == 0 && contract_info.entity_id == account_id) {
+            my_info = contract_info
+            isAccount = true
+            break;
+        } else if(contract_info.corp_id == corp_id) {
+            let flag = false;
+            for(let w of groups) {
+                if(w.group_id == contract_info.entity_id) {
+                    flag = w.group_id;
+                    break;
+                }
+            }
+            if(flag) {
+                my_info = contract_info
+            }
+        }
+    }
+
+    return {my_info, isAccount}
+}
+
 export function genPIN(digit=6) {
     let text = "";
     let possible = "0123456789";
@@ -82,12 +115,43 @@ export function new_contract(subject, counterparties, set_pin, necessary_info, i
     }
 }
 
-export function get_contracts(type, status, page, display_count = 10, sub_status = -1, group_id = -1) {
+export function get_contracts(type, status, page, display_count = 10, sub_status = -1, group_id = -1, user_info, groups = []) {
     return async function(dispatch) {
         let resp = await api_get_contracts(type, status, page, display_count, sub_status, group_id)
         if(resp.code == 1) {
+
             for(let v of resp.payload.list) {
-                v.user_infos = v.user_infos.split(window.SEPERATOR).map(e=>JSON.parse(e))
+                v.user_infos = v.user_infos.split(window.SEPERATOR).map( e => {
+                    let corp_id = user_info.corp_id || -1
+                    let infos = [{
+                        entity_id:v.entity_id,
+                        corp_id:v.corp_id,
+                    }]
+                    let subject = select_subject(infos, groups, user_info.account_id, corp_id)
+                    console.log("subject", subject)
+
+                    let the_key
+                    if(subject.isAccount) {
+                        let entropy = sessionStorage.getItem("entropy");
+                        if (!subject.my_info || !entropy) return null;
+                        let pin = resp.payload.is_pin_used ? decryptPIN(Buffer.from(subject.my_info.epin, 'hex').toString('hex')) : "000000";
+                        let shared_key = unsealContractAuxKey(entropy, Buffer.from(subject.my_info.eckai, 'hex').toString('hex'));
+                        the_key = getContractKey(pin, shared_key);
+                    } else {
+                        //group the key
+                    }
+
+                    let result
+                    try{
+                        result = JSON.parse(aes_decrypt(e/*Buffer.from(e, 'hex').toString('hex')*/, the_key))
+                    } catch(err) {
+                        result = {
+                            err:"not decrypt",
+                            text:subject.my_info
+                        }
+                    }
+                    return result
+                })
             }
             dispatch({
                 type:GET_CONTRACTS,
@@ -103,39 +167,19 @@ export function get_contract(contract_id, user_info, groups = []) {
         let resp = await api_get_contract(contract_id)
         if(resp.code == 1) {
             let corp_id = user_info.corp_id || -1
-            let my_info = null
+            let subject = select_subject(resp.payload.infos, groups, user_info.account_id, corp_id)
 
-            groups = groups.map((e) => {
-                return {
-                    ...e,
-                    public_key : Buffer.from(e.group_public_key).toString("hex"),
-                }
-            })
-
-            for(let v of resp.payload.infos) {
-                if(v.corp_id == 0 && v.entity_id == user_info.account_id) {
-                    my_info = v
-                    break;
-                } else if(v.corp_id == corp_id) {
-                    let flag = false;
-                    for(let w of groups) {
-                        if(w.group_id == v.entity_id) {
-                            flag = w.group_id;
-                            break;
-                        }
-                    }
-                    if(flag) {
-                        my_info = v
-                    }
-                }
+            let the_key
+            if(subject.isAccount) {
+                let entropy = sessionStorage.getItem("entropy");
+                if (!subject.my_info || !entropy) return null;
+                let pin = resp.payload.is_pin_used ? decryptPIN(Buffer.from(subject.my_info.epin, 'hex').toString('hex')) : "000000";
+                let shared_key = unsealContractAuxKey(entropy, Buffer.from(subject.my_info.eckai, 'hex').toString('hex'));
+                the_key = getContractKey(pin, shared_key);
+            } else {
+                //group the key
             }
 
-
-            let entropy = sessionStorage.getItem("entropy");
-            if (!my_info || !entropy) return null;
-            let pin = resp.payload.is_pin_used ? decryptPIN(Buffer.from(my_info.epin, 'hex').toString('hex')) : "000000";
-            let shared_key = unsealContractAuxKey(entropy, Buffer.from(my_info.eckai, 'hex').toString('hex'));
-            let the_key = getContractKey(pin, shared_key);
             resp.payload.infos = resp.payload.infos.map( (e) => {
                 return {
                     ...e,

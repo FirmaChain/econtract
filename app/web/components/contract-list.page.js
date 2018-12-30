@@ -135,37 +135,42 @@ export default class extends React.Component {
 
         let menu = props.match.params.menu || "recently"
         let group_id = props.match.params.group_id || -1
+        
+        let groups = []
+
+        if(group_id != -1)
+            groups = await this.props.get_group_info(0)
 
         let result
         if(menu == "recently") {
-            result = await this.props.get_contracts(0, -1, page, LIST_DISPLAY_COUNT, -1, group_id)
+            result = await this.props.get_contracts(0, -1, page, LIST_DISPLAY_COUNT, -1, group_id, this.props.user_info, groups)
         }
         else if(menu == "lock") {
-            result = await this.props.get_contracts(3, -1, page, LIST_DISPLAY_COUNT, -1, group_id)
+            result = await this.props.get_contracts(3, -1, page, LIST_DISPLAY_COUNT, -1, group_id, this.props.user_info, groups)
         }
         else if(menu == "requested") {
-            result = await this.props.get_contracts(2, -1, page, LIST_DISPLAY_COUNT, -1, group_id)
+            result = await this.props.get_contracts(2, -1, page, LIST_DISPLAY_COUNT, -1, group_id, this.props.user_info, groups)
         }
         else if(menu == "created") {
-            result = await this.props.get_contracts(1, -1, page, LIST_DISPLAY_COUNT, -1, group_id)
+            result = await this.props.get_contracts(1, -1, page, LIST_DISPLAY_COUNT, -1, group_id, this.props.user_info, groups)
         }
         else if(menu == "typing") {
-            result = await this.props.get_contracts(0, 0, page, LIST_DISPLAY_COUNT, -1, group_id)
+            result = await this.props.get_contracts(0, 0, page, LIST_DISPLAY_COUNT, -1, group_id, this.props.user_info, groups)
         }
         else if(menu == "beforeMySign") {
-            result = await this.props.get_contracts(0, 1, page, LIST_DISPLAY_COUNT, 0, group_id)
+            result = await this.props.get_contracts(0, 1, page, LIST_DISPLAY_COUNT, 0, group_id, this.props.user_info, groups)
         }
         else if(menu == "beforeOtherSign") {
-            result = await this.props.get_contracts(0, 1, page, LIST_DISPLAY_COUNT, 1, group_id)
+            result = await this.props.get_contracts(0, 1, page, LIST_DISPLAY_COUNT, 1, group_id, this.props.user_info, groups)
         }
         else if(menu == "completed") {
-            result = await this.props.get_contracts(0, 2, page, LIST_DISPLAY_COUNT, -1, group_id)
+            result = await this.props.get_contracts(0, 2, page, LIST_DISPLAY_COUNT, -1, group_id, this.props.user_info, groups)
         }
         else if(menu == "group_view") {
-            result = await this.props.get_contracts(0, 3, page, LIST_DISPLAY_COUNT, 0, group_id)
+            result = await this.props.get_contracts(0, 3, page, LIST_DISPLAY_COUNT, 0, group_id, this.props.user_info, groups)
         }
         else if(menu == "my_view") {
-            result = await this.props.get_contracts(0, 3, page, LIST_DISPLAY_COUNT, 1, group_id)
+            result = await this.props.get_contracts(0, 3, page, LIST_DISPLAY_COUNT, 1, group_id, this.props.user_info, groups)
         }
 
         return result

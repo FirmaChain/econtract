@@ -16,6 +16,7 @@ import 'react-dropdown/style.css'
 import {
     fetch_user_info,
     get_contract,
+    get_group_info,
 } from "../../common/actions"
 import CheckBox2 from "./checkbox2"
 
@@ -28,6 +29,7 @@ let mapStateToProps = (state)=>{
 let mapDispatchToProps = {
     fetch_user_info,
     get_contract,
+    get_group_info,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -45,11 +47,12 @@ export default class extends React.Component {
         (async()=>{
             await this.props.fetch_user_info()
             let contract_id = this.props.match.params.contract_id || 0
+            let contract
             if(this.props.user_info.account_type != 0) {
                 let groups = await this.props.get_group_info(0)
-                let contract = await this.props.get_contract(contract_id, this.props.user_info, groups)
+                contract = await this.props.get_contract(contract_id, this.props.user_info, groups)
             } else {
-                let contract = await this.props.get_contract(contract_id, this.props.user_info)
+                contract = await this.props.get_contract(contract_id, this.props.user_info)
             }
 
             if(contract.payload.contract) {
