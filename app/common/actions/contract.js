@@ -105,13 +105,13 @@ export function get_contract(contract_id, entity_id, corp_id=0) {
             let my_info = resp.payload.infos.filter(e=>e.entity_id == entity_id && e.corp_id == corp_id);
             let entropy = sessionStorage.getItem("entropy");
             if (!my_info || !entropy) return null;
-            let pin = resp.payload.is_pin_used ? decryptPIN(my_info.epin) : "000000";
-            let shared_key = unsealContractAuxKey(entropy, my_info.eckai);
+            let pin = resp.payload.is_pin_used ? decryptPIN(Buffer.from(my_info.epin, 'hex').toString('hex')) : "000000";
+            let shared_key = unsealContractAuxKey(entropy, Buffer.from(my_info.eckai, 'hex').toString('hex'));
             let the_key = getContractKey(pin, shared_key);
             resp.payload.infos = resp.payload.infos.map( (e) => {
                 return {
                     ...e,
-                    user_info : JSON.parse(aes_decrypt(Buffer.from(e.user_info).toString('hex'), the_key)),
+                    user_info : JSON.parse(aes_decrypt(Buffer.from(e.user_info, 'hex').toString('hex'), the_key)),
                 }
             })
         }
