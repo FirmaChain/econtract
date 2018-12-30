@@ -312,15 +312,13 @@ export default class extends React.Component {
         }
 
 
-        let counterparties_public = this.state.target_list.map(e=>e.public_key);
         let individual_info = this.state.individual.filter(e=>e.force||e.checked).map(e=>e.title);
         let corporation_info = this.state.corporation.filter(e=>e.force||e.checked).map(e=>e.title);
 
         let necessary_info = {individual: individual_info, corporation: corporation_info};
         let is_pin_used = this.state.is_use_pin;
         let pin = is_pin_used ? this.state.pin_number : "000000";
-        let resp =  await this.props.new_contract(contract_name, JSON.stringify(counterparties),
-            counterparties_public, pin, necessary_info, !!is_pin_used ? 1 : 0);
+        let resp =  await this.props.new_contract(contract_name, counterparties, pin, necessary_info, !!is_pin_used ? 1 : 0);
 
         console.log(resp);
 
