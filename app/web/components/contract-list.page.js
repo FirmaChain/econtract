@@ -442,7 +442,7 @@ export default class extends React.Component {
 						<div className={"item" + (this.getTitle().id == "beforeMySign" ? " selected" : "")} onClick={this.move.bind(this, "beforeMySign")}><i className="icon far fa-file-import"></i> <div className="text">내 서명 전</div></div>
 						<div className={"item" + (this.getTitle().id == "beforeOtherSign" ? " selected" : "")} onClick={this.move.bind(this, "beforeOtherSign")}><i className="icon far fa-file-export"></i> <div className="text">상대방 서명 전</div></div>
 						<div className={"item" + (this.getTitle().id == "completed" ? " selected" : "")} onClick={this.move.bind(this, "completed")}><i className="icon fal fa-check-circle"></i> <div className="text">완료됨</div></div>
-                        <div className={"item" + (this.getTitle().id == "group_view" ? " selected" : "")} onClick={this.move.bind(this, "group_view")}><i className="icon fas fa-eye"></i> <div className="text">그룹 보기 가능</div></div>
+                        {account_type != 0 ? <div className={"item" + (this.getTitle().id == "group_view" ? " selected" : "")} onClick={this.move.bind(this, "group_view")}><i className="icon fas fa-eye"></i> <div className="text">그룹 보기 가능</div></div> : null}
 					</div>
 					<div className="list">
 						<div className="title">

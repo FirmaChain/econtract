@@ -2874,6 +2874,8 @@ div.checkbox2-comp{
                     }
 
                     >.informations {
+                        border-top: 1px solid $gray;
+                        border-bottom: 1px solid $gray;
                         padding: 30px;
 
                         >.item {
@@ -2898,6 +2900,8 @@ div.checkbox2-comp{
                     }
 
                     >.logs {
+                        border-top: 1px solid $gray;
+                        border-bottom: 1px solid $gray;
 
                         >.clickable{
                             cursor: pointer;
