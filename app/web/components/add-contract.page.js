@@ -286,29 +286,30 @@ export default class extends React.Component {
         this.blockFlag = true;
         let contract_name = this.state.contract_name;
         let counterparties = this.state.target_list.map(e=> {
-            let role
+            let role;
             for(let v of e.role) {
                 if(v != 0) {
-                    role = v
-                    break
+                    role = v;
+                    break;
                 }
             }
             return {
                 ...e,
-                role
-            }
+                role,
+            };
         });
 
         let includeGroup = false;
         for( let v of counterparties ) {
             if( v.user_type == 2 ) {
-                includeGroup = true
-                break
+                includeGroup = true;
+                break;
             }
         }
 
-        if(this.props.user_info.account_type != 0 && includeGroup == false)
-            return alert("기업 계정으로 계약 생성 시, 그룹을 최소한 하나는 추가해야 합니다.")
+        if(this.props.user_info.account_type != 0 && includeGroup == false) {
+            return alert("기업 계정으로 계약 생성 시, 그룹을 최소한 하나는 추가해야 합니다.");
+        }
 
 
         let counterparties_public = this.state.target_list.map(e=>e.public_key);
