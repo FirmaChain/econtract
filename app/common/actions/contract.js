@@ -95,7 +95,16 @@ export function get_contracts(type, status, page, display_count = 10, sub_status
 
 export function get_contract(contract_id) {
     return async function(dispatch) {
-        return await api_get_contract(contract_id)
+        let resp = await api_get_contract(contract_id)
+        if(resp.code == 1) {
+            resp.payload.infos = resp.payload.infos.map( (e) => {
+                return {
+                    ...e,
+                    user_info : JSON.parse(e.user_info)
+                }
+            })
+        }
+        return resp
     }
 }
 

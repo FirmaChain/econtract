@@ -584,7 +584,7 @@ export default class extends React.Component {
                                                 case 2:
                                                     return <div className="desc">
                                                         <div className="username">#{e.title}<span>{e.company_name}</span></div>
-                                                        <div className="email"></div>
+                                                        <div className="email">&nbsp;</div>
                                                     </div>
                                             } })()
                                         }

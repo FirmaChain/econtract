@@ -1520,17 +1520,6 @@ div.checkbox2-comp{
             }
         }
 
-
-        td{
-            border-bottom: 1px solid $gray;
-            color: $black;
-            font-weight: 400;
-            color: #7F7F7F;
-            font-size: 15px;
-            text-align: left;
-            padding: 15px 0 15px 20px;
-        }
-
         .empty-contract {
             font-size: $font3;
             text-align: center;
@@ -2701,11 +2690,11 @@ div.checkbox2-comp{
 
                     margin-top: 15px;
 
-                    >.modify {
+                    >.blue-button {
                         display: inline-block;
-                        font-size: $font3;
+                        font-size: $font1;
                         cursor: pointer;
-                        padding:10px 20px;
+                        padding:10px 10px;
                         background-color: $blue;
                         color:white;
                         margin-right: 10px;
@@ -2713,15 +2702,15 @@ div.checkbox2-comp{
                         text-align: center;
                     }
 
-                    >.setting {
+                    >.transparent-button {
                         display: inline-block;
                         background-color: white;
                         border: 1px solid $blue;
-                        font-size: $font3;
+                        font-size: $font1;
                         color: $black;
                         cursor: pointer;
                         width:80px;
-                        padding:10px 20px;
+                        padding:10px 10px;
                         text-align: center;
                     }
                 }
@@ -2793,6 +2782,207 @@ div.checkbox2-comp{
                         color: white;
                         font-size:$font4;
                         font-weight: bold;
+                    }
+                }
+
+                >.information-deck {
+
+                    >.tab-container {
+                        border-bottom:1px solid $blue;
+
+                        >.tab {
+                            display: inline-block;
+                            width:100px;
+                            font-size:$font2;
+                            color:$gray;
+
+                            text-align: center;
+                            padding:15px 10px;
+                            cursor: pointer;
+                        }
+
+                        >.selected {
+                            color:white;
+                            background-color:$blue;
+                        }
+                    }
+
+                    >.deck {
+                        border-bottom:1px solid $middlegray;
+                        border-left:1px solid $middlegray;
+                        border-right:1px solid $middlegray;
+                    }
+
+                    >.users {
+                        border-top: 1px solid $gray;
+                        border-bottom: 1px solid $gray;
+
+                        >.item {
+                            display: flex;
+                            flex-direction: row;
+                            align-items: center;
+
+                            padding:20px 20px;
+                            border-bottom:1px solid $lightgray;
+
+                            &:last-child {
+                                border-bottom: 0;
+                            }
+
+                            &:hover {
+                                background-color: $lightgray;
+                            }
+
+                            >.icon {
+                                width:40px;
+                                padding-right: 10px;
+                                text-align: center;
+
+                                >i {
+                                    font-size: 22px;
+                                    color: $black;
+                                }
+                            }
+
+                            >.desc {
+                                flex:1;
+
+                                >.username {
+                                    color: $black;
+                                    font-weight: bold;
+                                    font-size: $font2;
+
+                                    >span {
+                                        color: $gray;
+                                        font-size: $font0;
+                                        margin-left:10px;
+                                    }
+                                }
+
+                                >.email {
+                                    color: $black;
+                                    font-size: $font1;
+                                }
+                            }
+
+                            >.privilege {
+                                width:120px;
+                                font-size: $font1;
+                                color:$black;
+                            }
+                        }
+                    }
+
+                    >.informations {
+                        padding: 30px;
+
+                        >.item {
+                            display: inline-block;
+                            width:200px;
+                            padding-left:40px;
+                            margin-top:15px;
+                            margin-bottom:15px;
+
+                            >.title {
+                                font-size: $font2;
+                                font-weight: bold;
+                                color:$black;
+                            }
+
+                            >.desc {
+                                font-size: $font1;
+                                color:$black;
+                                margin-top:5px;
+                            }
+                        }
+                    }
+
+                    >.logs {
+
+                        >.clickable{
+                            cursor: pointer;
+
+                            &:hover{
+                                background-color: $lightgray;
+                            }
+                        }
+
+                        >.head {
+                            display: flex;
+                            flex-direction: row;
+
+                            border-bottom: 1px solid $middlegray;
+                            color: $black;
+                            text-align: left;
+                            padding: 10px 0 10px 20px;
+                        }
+
+                        >.item {
+                            display: flex;
+                            flex-direction: row;
+
+                            border-bottom: 1px solid $middlegray;
+                            color: $black;
+                            text-align: left;
+                            padding: 10px 0 10px 20px;
+
+                            cursor: pointer;
+
+                            &:hover {
+                                background-color: $lightgray;
+                            }
+                        }
+
+                        .list-head-item {
+                            padding-left:5px;
+                            padding-right:5px;
+
+                            font-size: $font2;
+                            font-weight: bold;
+                        }
+
+                        .list-body-item {
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: center;
+
+                            padding:10px 5px;
+
+                            font-size: $font1;
+
+                            >.sub {
+                                font-size: $font0;
+                                color: $gray;
+                                margin-top:5px;
+                            }
+                        }
+
+                        .list-name {
+                            flex: 1;
+                            min-width:200px;
+                        }
+
+                        .list-user {
+                            width:240px;
+                        }
+
+                        .list-date {
+                            width:180px;
+                        }
+
+                        .empty-log {
+                            font-size: $font3;
+                            text-align: center;
+                            margin-top: 20px;
+                            margin-bottom: 20px;
+                        }
+
+                        .date-cell{
+                            padding: 15px 0 15px 20px;
+                            text-align: center;
+                            width: 130px;
+                        }
+
                     }
                 }
             }

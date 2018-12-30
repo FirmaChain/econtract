@@ -366,7 +366,7 @@ export default class extends React.Component {
         let usernames = e.user_infos.map(ee => ee.username).filter( ee => !!ee)
         usernames = usernames.join(", ")
 
-        return (<div key={e.contract_id} className="item" onClick={v=>history.push(`/contract-info/${e.contract_id}`)}>
+        return <div key={e.contract_id} className="item" onClick={v=>history.push(`/contract-info/${e.contract_id}`)}>
             <div className="list-body-item list-chkbox">
                 <CheckBox2 size={18}
                     on={this.state.contracts_checks.includes(e.contract_id) || false}
@@ -395,7 +395,7 @@ export default class extends React.Component {
                     </div>
                 </div>
             </div>
-        </div>)
+        </div>
     }
 
 	render() {
