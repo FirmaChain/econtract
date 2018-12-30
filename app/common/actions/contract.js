@@ -57,23 +57,29 @@ export function genPIN(digit=6) {
     return text;
 }
 
-export function new_contract(subject, counterparties, publickey_contract_list, set_pin, necessary_info, is_pin_used = false) {
+export function new_contract(subject, counterparties, set_pin, necessary_info, is_pin_used = false) {
     return async function(dispatch){
+        const DUMMY_CORP_ID = 0;
         let pin = set_pin ? set_pin : genPIN();
-        let counterparties_eckai = [];
         let shared_key = generate_random(31);
         let the_key = getContractKey(pin, shared_key);
 
-        for (let v of publickey_contract_list) {
-            console.log(publickey_contract_list)
-            counterparties_eckai.push(sealContractAuxKey(v, shared_key ));
-        }
+        counterparties_mapped = counterparties.map(e=>{
+            return {
+                user_type: e.user_type,
+                entity_id: e.user_type == 2 ? e.group_id : e.account_id,
+                corp_id: e.user_type = 2 ? e.corp_id : DUMMY_CORP_ID,
+                role: e.role,
+                eckai: sealContractAuxKey(e.public_key, shared_key),
+                user_info: aes_encrypt(JSON.stringify(e), the_key),
+            };
+        });
 
-        let resp = await api_new_contract( subject, counterparties, counterparties_eckai, JSON.stringify(necessary_info), is_pin_used )
+        let resp = await api_new_contract(subject, counterparties_mapped, JSON.stringify(necessary_info), is_pin_used);
         if(resp.code == 1){
-            sessionStorage.setItem(`contract:${resp.payload.contract_id}`, encryptPIN(pin))
+            sessionStorage.setItem(`contract:${resp.payload.contract_id}`, encryptPIN(pin));
         }
-        return resp
+        return resp;
     }
 }
 
