@@ -98,11 +98,39 @@ export function get_contracts(type, status, page, display_count = 10, sub_status
     }
 }
 
-export function get_contract(contract_id, entity_id, corp_id=0) {
+export function get_contract(contract_id, user_info, groups = []) {
     return async function(dispatch) {
         let resp = await api_get_contract(contract_id)
         if(resp.code == 1) {
-            let my_info = resp.payload.infos.filter(e=>e.entity_id == entity_id && e.corp_id == corp_id);
+            let corp_id = user_info.corp_id || -1
+            let my_info = null
+
+            groups = groups.map((e) => {
+                return {
+                    ...e,
+                    public_key : Buffer.from(e.group_public_key).toString("hex"),
+                }
+            })
+
+            for(let v of resp.payload.infos) {
+                if(v.corp_id == 0 && v.entity_id == user_info.account_id) {
+                    my_info = v
+                    break;
+                } else if(v.corp_id == corp_id) {
+                    let flag = false;
+                    for(let w of groups) {
+                        if(w.group_id == v.entity_id) {
+                            flag = w.group_id;
+                            break;
+                        }
+                    }
+                    if(flag) {
+                        my_info = v
+                    }
+                }
+            }
+
+
             let entropy = sessionStorage.getItem("entropy");
             if (!my_info || !entropy) return null;
             let pin = resp.payload.is_pin_used ? decryptPIN(Buffer.from(my_info.epin, 'hex').toString('hex')) : "000000";

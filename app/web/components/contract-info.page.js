@@ -45,7 +45,13 @@ export default class extends React.Component {
         (async()=>{
             await this.props.fetch_user_info()
             let contract_id = this.props.match.params.contract_id || 0
-            let contract = await this.props.get_contract(contract_id)
+            if(this.props.user_info.account_type != 0) {
+                let groups = await this.props.get_group_info(0)
+                let contract = await this.props.get_contract(contract_id, this.props.user_info, groups)
+            } else {
+                let contract = await this.props.get_contract(contract_id, this.props.user_info)
+            }
+
             if(contract.payload.contract) {
                 console.log(contract.payload)
                 this.setState({

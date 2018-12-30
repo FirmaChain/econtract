@@ -105,15 +105,22 @@ export default class extends React.Component {
         (async()=>{
             await this.props.fetch_user_info()
             let contract_id = this.props.match.params.contract_id || 0
-            let contract = await this.props.get_contract(contract_id)
+            let groups;
+            let _state = {}
+            if(this.props.user_info.account_type != 0) {
+                groups = await this.props.get_group_info(0)
+                _state.groups = groups
+            }
+
+            let contract = await this.props.get_contract(contract_id, this.props.user_info, groups)
             if(contract.payload.contract) {
                 console.log(contract.payload)
-                let groups = await this.props.get_group_info(0)
-
-                this.setState({
+                _state = {
+                    ..._state,
                     ...contract.payload,
-                    groups,
-                })
+                }
+
+                this.setState(_state)
             } else {
                 alert("계약이 존재하지 않습니다.")
                 history.goBack()
@@ -210,15 +217,15 @@ export default class extends React.Component {
         let user_infos = this.state.infos;
 
         let corp_id = this.props.user_info.corp_id || -1
+        let meOrGroup = null
 
-        let groups = this.state.groups.map((e) => {
+        let groups = this.state.groups ? this.state.groups.map((e) => {
             return {
                 ...e,
                 public_key : Buffer.from(e.group_public_key).toString("hex"),
             }
-        })
+        }) : []
 
-        let meOrGroup = null
         for(let v of user_infos) {
             if(v.corp_id == 0 && v.entity_id == this.props.user_info.account_id) {
                 meOrGroup = v
