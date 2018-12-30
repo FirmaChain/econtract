@@ -102,7 +102,7 @@ select:focus { outline:none; }
 
 .fr-wrapper {
     background-color: $gray !important;
-    max-height: calc(100% - 77px) !important;
+    max-height: calc(100% - 111px) !important;
     padding: 0 20px !important;
 }
 .fr-view {
@@ -2113,8 +2113,13 @@ div.checkbox2-comp{
         >.editor {
             flex:1;
 
-            >.preview {
+            >.title {
+                padding:8px 20px;
+                border-bottom:1px solid $middlegray;
 
+                font-size: $font1;
+                font-weight: bold;
+                color:$black;
             }
         }
 
@@ -2123,47 +2128,114 @@ div.checkbox2-comp{
             max-width:300px;
             width:25%;
 
-            >.title {
-                text-align: center;
-                border-bottom: 1px solid $middlegray;
+            >.top {
+                display: flex;
+                flex-direction: row;
 
-                >i {
-                    font-size: 20px;
-                    color: $gray;
-                    margin-top: 10px;
+                >.menu {
+                    text-align: center;
+                    border-bottom: 1px solid $middlegray;
+                    flex:1;
+
+                    cursor:pointer;
+
+                    >i {
+                        font-size: 20px;
+                        color: $gray;
+                        margin-top: 10px;
+                    }
+
+                    >.text {
+                        font-size: $font1;
+                        color: $gray;
+                        margin-top: 5px;
+                        margin-bottom: 10px;
+                    }
                 }
 
-                >.text {
-                    font-size: $font1;
-                    color: $gray;
-                    margin-top: 5px;
-                    margin-bottom: 10px;
+                >.enable-menu {
+                    background-color:$blue;
+
+                    >i {
+                        color:white;
+                    }
+
+                    >.text {
+                        color:white;
+                    }
                 }
             }
 
-            >.desc {
-                margin-top:30px;
-                padding:0 10px;
+            >.bottom {
+                box-sizing:border-box;
+            }
+
+            >.signs {
 
                 >.title {
-                    font-size: $font2;
+                    font-size: $font1;
+                    font-weight: bold;
                     color: $black;
+                    margin-top:20px;
+                    margin-bottom:10px;
+                    margin-left:10px;
+                    margin-right:10px;
                 }
 
-                >.text-box {
-                    margin-top: 10px;
+                >.user-container {
 
-                    >input {
-                        font-size: $font2;
-                        color: $black;
-                    }
+                    >.user {
+                        display: flex;
+                        flex-direction:row;
+                        align-items: center;
 
-                    >.common-select {
-                        .control {
-                            width:100% !important;
+                        padding: 20px;
+                        cursor:pointer;
+
+                        >.icon {
+                            font-size: 20px;
+                            margin-right:10px;
+                        }
+
+                        >.user-info {
+                            flex:1;
+
+                            >.name {
+                                font-size:$font2;
+                                font-weight: bold;
+                                color:$black;
+
+                                >span {
+                                    font-size:$font0;
+                                    color:$gray;
+                                    margin-left:10px;
+                                }
+                            }
+
+                            >.email {
+                                font-size:$font0;
+                                color:$gray;
+                                margin-top:5px;
+                            }
+                        }
+
+                        >.arrow {
+                            font-size:15px;
+                        }
+
+                        &:hover {
+                            background-color:$lightgray;
                         }
                     }
+                }  
+
+                >.me {
+                    border-bottom: 1px solid $gray;
                 }
+            }
+
+            >.chat {
+
             }
         }
     }
@@ -2778,10 +2850,10 @@ div.checkbox2-comp{
                         width:20px;
                     }
 
-                    >.enable{
-                        color: white;
-                        font-size:$font4;
+                    >.enable-item{
+                        font-size:$font2;
                         font-weight: bold;
+                        color: $blue;
                     }
                 }
 

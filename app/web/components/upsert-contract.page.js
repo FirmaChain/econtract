@@ -27,6 +27,8 @@ import {
     fetch_user_info,
     add_folder_template,
     get_template,
+    get_contract,
+    get_group_info,
 } from "../../common/actions"
 import CheckBox2 from "./checkbox2"
 
@@ -44,6 +46,8 @@ let mapDispatchToProps = {
     fetch_user_info,
     add_folder_template,
     get_template,
+    get_contract,
+    get_group_info,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -90,40 +94,30 @@ export default class extends React.Component {
 
         this.state = {
             model:"",
-            title:"",
             editMode:false,
             select_folder_id:null,
+            selected_menu:0,
+            open_users:[],
         }
     }
 
     componentDidMount() {
         (async()=>{
-            await window.showIndicator()
             await this.props.fetch_user_info()
-            /*let folders = await this.props.folder_list_template()
-            folders = folders ? folders : []*/
+            let contract_id = this.props.match.params.contract_id || 0
+            let contract = await this.props.get_contract(contract_id)
+            if(contract.payload.contract) {
+                console.log(contract.payload)
+                let groups = await this.props.get_group_info(0)
 
-            let contractId = this.props.match.params.contract_id
-
-            /*if(!!templateId) {
-                let templateData = await this.props.get_template(templateId)
-                let select_folder_label = null;
-                for(let v of folders) {
-                    if(v.folder_id == templateData.folder_id) {
-                        select_folder_label = v.subject
-                        break;
-                    }
-                }
                 this.setState({
-                    editMode: true,
-                    template_id : templateId,
-                    model:Buffer.from(templateData.html).toString(),
-                    title:templateData.subject,
-                    select_folder_id:templateData.folder_id,
-                    select_folder_label:select_folder_label,
+                    ...contract.payload,
+                    groups,
                 })
-            }*/
-            await window.hideIndicator()
+            } else {
+                alert("계약이 존재하지 않습니다.")
+                history.goBack()
+            }
         })()
 
         history.block( (targetLocation) => {
@@ -162,6 +156,21 @@ export default class extends React.Component {
 
     }
 
+    onToggleUser = (entity_id, corp_id) => {
+        let _ = [...this.state.open_users]
+        let check = _[entity_id+" "+corp_id] || false
+        _[entity_id+" "+corp_id] = !check
+
+        this.setState({
+            open_users:_
+        })
+    }
+
+    isOpenUser = (entity_id, corp_id) => {
+        let check = this.state.open_users[entity_id+" "+corp_id] || false
+        return check
+    }
+
     onClickSubmit = async () => {
         if(this.state.title == "")
             return alert("게약서 제목을 입력해주세요.")
@@ -187,8 +196,100 @@ export default class extends React.Component {
         }
     }
 
+    render_info() {
+        switch(this.state.selected_menu) {
+            case 0:
+                return this.render_sign()
+            case 1:
+                return this.render_chat()
+        }
+    }
+
+    render_sign() {
+        let contract = this.state.contract;
+        let user_infos = this.state.infos;
+
+        let corp_id = this.props.user_info.corp_id || -1
+
+        let groups = this.state.groups.map((e) => {
+            return {
+                ...e,
+                public_key : Buffer.from(e.group_public_key).toString("hex"),
+            }
+        })
+
+        let meOrGroup = null
+        for(let v of user_infos) {
+            if(v.corp_id == 0 && v.entity_id == this.props.user_info.account_id) {
+                meOrGroup = v
+                break;
+            } else if(v.corp_id == corp_id) {
+                let flag = false;
+                for(let w of groups) {
+                    if(w.group_id == v.entity_id) {
+                        flag = w.group_id;
+                        break;
+                    }
+                }
+                if(flag) {
+                    meOrGroup = v
+                }
+            }
+        }
+
+        return <div className="bottom signs">
+            <div className="title">총 {user_infos.length}명</div>
+
+            <div className="user-container me">
+                <div className="user" onClick={this.onToggleUser.bind(this, meOrGroup.entity_id, meOrGroup.corp_id)}>
+                    <i className="icon fas fa-user-edit"></i>
+                    <div className="user-info">
+                        <div className="name">{meOrGroup.user_info.username ? meOrGroup.user_info.username : meOrGroup.user_info.title}<span>서명 전</span></div>
+                        <div className="email">{meOrGroup.user_info.email ? meOrGroup.user_info.email : meOrGroup.user_info.company_name}</div>
+                    </div>
+                    <i className="arrow fas fa-caret-down"></i>
+                </div>
+                {this.isOpenUser(meOrGroup.entity_id, meOrGroup.corp_id) ? <div className="user-detail">
+                    asdasd
+                </div> : null}
+            </div>
+            {user_infos.map( (e, k) => {
+                let info = e
+                if(e.corp_id == 0) {
+                    info.name = e.user_info.username
+                    info.sub = e.user_info.email
+                } else {
+                    info.name = e.user_info.title
+                    info.sub = e.user_info.company_name
+                }
+
+                if(e == meOrGroup)
+                    return null
+
+                return <div className="user-container" key={e.entity_id+"_"+e.corp_id}>
+                    <div className="user" onClick={this.onToggleUser.bind(this, e.entity_id, e.corp_id)}>
+                        <div className="user-info">
+                            <div className="name">{info.name}<span>서명 전</span></div>
+                            <div className="email">{info.sub}</div>
+                        </div>
+                        <i className="arrow fas fa-caret-down"></i>
+                    </div>
+                    {this.isOpenUser(e.entity_id, e.corp_id) ? <div className="user-detail">
+                    </div> : null}
+                </div>
+            })}
+        </div>
+    }
+
+    render_chat() {
+        return <div className="bottom chat">
+        </div>
+    }
+
 	render() {
-        let folders = this.props.template_folders ? this.props.template_folders : []
+        if(!this.props.user_info || !this.state.contract)
+            return <div></div>
+
         return (<div className="upsert-contract-page">
             <div className="header-page">
                 <div className="header">
@@ -200,6 +301,7 @@ export default class extends React.Component {
                 </div>
                 <div className="container">
                     <div className="editor">
+                        <div className="title"><i className="fas fa-keyboard"></i> &nbsp;웹 에디터 모드</div>
                         <FroalaEditor
                             tag='textarea'
                             config={this.config}
@@ -207,30 +309,17 @@ export default class extends React.Component {
                             onModelChange={(model) => this.setState({model})} />
                     </div>
                     <div className="info">
-                        <div className="title">
-                            <i className="far fa-file-contract"></i>
-                            <div className="text">정보 입력</div>
-                        </div>
-                        <div className="desc">
-                            <div className="title">템플릿명</div>
-                            <div className="text-box">
-                                <input className="common-textbox"
-                                    type="text"
-                                    value={this.state.title}
-                                    onChange={(e) => this.setState({title:e.target.value})} />
+                        <div className="top">
+                            <div className={"menu" + (this.state.selected_menu == 0 ? " enable-menu" : "")} onClick={e=>this.setState({selected_menu:0})}>
+                                <i className="far fa-signature"></i>
+                                <div className="text">서명 정보</div>
+                            </div>
+                            <div className={"menu" + (this.state.selected_menu == 1 ? " enable-menu" : "")} onClick={e=>this.setState({selected_menu:1})}>
+                                <i className="far fa-comments"></i>
+                                <div className="text">대화</div>
                             </div>
                         </div>
-                        <div className="desc">
-                            <div className="title">폴더 지정</div>
-                            <div className="text-box">
-                                <Dropdown className="common-select"
-                                    controlClassName="control"
-                                    menuClassName="item"
-                                    options={folders.map((e,k) => {return {value:e.folder_id, label:e.subject}})}
-                                    onChange={e=>{this.setState({select_folder_id:e.value, select_folder_label: e.label})}}
-                                    value={this.state.select_folder_label} placeholder="저장할 폴더를 골라주세요" />
-                            </div>
-                        </div>
+                        {this.render_info()}
                     </div>
                 </div>
             </div>

@@ -307,13 +307,13 @@ export default class extends React.Component {
                             </div>
                             <div className="step-text">
                                 <div className="corner-space"></div>
-                                <div className="item">계약 정보 등록</div>
+                                <div className="item enable-item">계약 정보 등록</div>
                                 <div className="space"></div>
-                                <div className="item">내용 입력중</div>
+                                <div className="item enable-item">내용 입력중</div>
                                 <div className="space"></div>
-                                <div className="item">서명 대기중</div>
+                                <div className={"item" + (this.state.contract.status > 0 ? "enable-item" : "")}>서명 대기중</div>
                                 <div className="space"></div>
-                                <div className="item">계약 완료</div>
+                                <div className={"item" + (this.state.contract.status > 1 ? "enable-item" : "")}>계약 완료</div>
                                 <div className="corner-space"></div>
                             </div>
 
