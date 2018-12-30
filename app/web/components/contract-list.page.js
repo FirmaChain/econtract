@@ -161,11 +161,11 @@ export default class extends React.Component {
         else if(menu == "completed") {
             result = await this.props.get_contracts(0, 2, page, LIST_DISPLAY_COUNT, -1, group_id)
         }
-        else if(menu == "view") {
-            result = await this.props.get_contracts(0, 3, page, LIST_DISPLAY_COUNT, -1, group_id)
+        else if(menu == "group_view") {
+            result = await this.props.get_contracts(0, 3, page, LIST_DISPLAY_COUNT, 0, group_id)
         }
-        else if(menu == "deleted") {
-            result = await this.props.get_contracts(0, 4, page, LIST_DISPLAY_COUNT, -1, group_id)
+        else if(menu == "my_view") {
+            result = await this.props.get_contracts(0, 3, page, LIST_DISPLAY_COUNT, 1, group_id)
         }
 
         return result
@@ -209,14 +209,14 @@ export default class extends React.Component {
 		else if(menu == "beforeOtherSign") {
 			result = { id:"beforeOtherSign", title : "상대방 서명 전"}
 		}
-		else if(menu == "view") {
-			result = { id:"view", title : "보기 가능"}
-		}
 		else if(menu == "completed") {
 			result = { id:"completed", title : "완료됨"}
 		}
-		else if(menu == "deleted") {
-			result = { id:"deleted", title : "삭제됨"}
+        else if(menu == "group_view") {
+            result = { id:"group_view", title : "그룹 보기 가능"}
+        }
+		else if(menu == "my_view") {
+			result = { id:"my_view", title : "내 보기 가능"}
 		}
 		else
             result = { id:"recently", title : "최근 사용"}
@@ -368,7 +368,7 @@ export default class extends React.Component {
         let usernames = e.user_infos.map(ee => ee.username).filter( ee => !!ee)
         usernames = usernames.join(", ")
 
-        return (<div key={e.contract_id} className="item">
+        return (<div key={e.contract_id} className="item" onClick={v=>history.push(`/contract-info/${e.contract_id}`)}>
             <div className="list-body-item list-chkbox">
                 <CheckBox2 size={18}
                     on={this.state.contracts_checks.includes(e.contract_id) || false}
@@ -417,6 +417,7 @@ export default class extends React.Component {
 				<div className="menu-list">
                     <div className="list">
                         <div className={"item" + (this.getTitle().id == "lock" ? " selected" : "")} onClick={this.move.bind(this, "lock")}><i className="icon fas fa-lock-alt"></i> <div className="text">잠김</div></div>
+                        <div className={"item" + (this.getTitle().id == "my_view" ? " selected" : "")} onClick={this.move.bind(this, "my_view")}><i className="icon far fa-eye"></i> <div className="text">내 보기 가능</div></div>
                     </div>
                     { account_type != 0 ? (<div className="list">
                         <div className="item group-item" onClick={this.onClickGroupMenu}>
@@ -443,8 +444,7 @@ export default class extends React.Component {
 						<div className={"item" + (this.getTitle().id == "beforeMySign" ? " selected" : "")} onClick={this.move.bind(this, "beforeMySign")}><i className="icon far fa-file-import"></i> <div className="text">내 서명 전</div></div>
 						<div className={"item" + (this.getTitle().id == "beforeOtherSign" ? " selected" : "")} onClick={this.move.bind(this, "beforeOtherSign")}><i className="icon far fa-file-export"></i> <div className="text">상대방 서명 전</div></div>
 						<div className={"item" + (this.getTitle().id == "completed" ? " selected" : "")} onClick={this.move.bind(this, "completed")}><i className="icon fal fa-check-circle"></i> <div className="text">완료됨</div></div>
-                        <div className={"item" + (this.getTitle().id == "view" ? " selected" : "")} onClick={this.move.bind(this, "view")}><i className="icon fas fa-eye"></i> <div className="text">보기 가능</div></div>
-						<div className={"item" + (this.getTitle().id == "deleted" ? " selected" : "")} onClick={this.move.bind(this, "deleted")}><i className="icon fal fa-trash-alt"></i> <div className="text">삭제됨</div></div>
+                        <div className={"item" + (this.getTitle().id == "group_view" ? " selected" : "")} onClick={this.move.bind(this, "group_view")}><i className="icon fas fa-eye"></i> <div className="text">그룹 보기 가능</div></div>
 					</div>
 					<div className="list">
 						<div className="title">

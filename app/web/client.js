@@ -28,6 +28,7 @@ import UpsertTemplatePage from "./components/upsert-template.page"
 
 import AddContractPage from "./components/add-contract.page"
 import UpsertContractPage from "./components/upsert-contract.page"
+import ContractInfoPage from "./components/contract-info.page"
 
 import InformationPage from "./components/information.page"
 
@@ -92,6 +93,7 @@ window.addEventListener("load",()=>{
 
 					<Route onEnter={resolver} exact path="/add-contract" component={AddContractPage} />
 					<Route onEnter={resolver} exact path="/edit-contract/:contract_id" component={UpsertContractPage} />
+					<Route onEnter={resolver} exact path="/contract-info/:contract_id" component={ContractInfoPage} />
 
 					<Route onEnter={resolver} exact path="/folder" component={FolderPage} />
 					<Route onEnter={resolver} exact path="/folder/:id" component={InFolderPage} />
