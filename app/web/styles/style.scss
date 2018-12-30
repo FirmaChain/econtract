@@ -388,7 +388,6 @@ div.checkbox2-comp{
                     font-size:$font4;
                     font-weight: bold;
                 }
-
             }
         }
 
@@ -924,7 +923,7 @@ div.checkbox2-comp{
             padding-top:10px;
             min-width:200px;
 
-            >.container {
+            >.info-container {
                 background-color: white;
                 box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
 
@@ -2640,6 +2639,174 @@ div.checkbox2-comp{
 
 }
 
+.contract-info-page {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+
+    >.header-page .container {
+        display: flex;
+        flex-direction: row;
+
+        height: 100%;
+        max-height: calc(100% - 131px);
+        overflow-y: auto;
+
+        box-sizing: border-box;
+        position: relative;
+
+        >.content {
+            flex:1;
+            padding-left:70px;
+            padding-right:20px;
+            padding-top:50px;
+
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+
+            .flex1 {
+                flex:1;
+            }
+
+            >.wrapper {
+                width:100%;
+                max-width:800px;
+
+                >.top {
+                    display: flex;
+                    flex-direction:row;
+                    align-items: center;
+                    width: 100%;
+
+                    >.title {
+                        font-size:$font5;
+                        font-weight: bold;
+                        color:$black;
+
+                        margin-right:20px;
+                    }
+
+                    >.date {
+                        font-size: $font1;
+                        color: $gray;
+                    }
+                }
+
+                >.buttons {
+                    display: flex;
+                    flex-direction:row;
+                    align-items: center;
+                    width: 100%;
+
+                    margin-top: 15px;
+
+                    >.modify {
+                        display: inline-block;
+                        font-size: $font3;
+                        cursor: pointer;
+                        padding:10px 20px;
+                        background-color: $blue;
+                        color:white;
+                        margin-right: 10px;
+                        width:80px;
+                        text-align: center;
+                    }
+
+                    >.setting {
+                        display: inline-block;
+                        background-color: white;
+                        border: 1px solid $blue;
+                        font-size: $font3;
+                        color: $black;
+                        cursor: pointer;
+                        width:80px;
+                        padding:10px 20px;
+                        text-align: center;
+                    }
+                }
+
+                >.indicator{
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: center;
+                    align-items:center;
+                    margin-top: 50px;
+                    width:100%;
+
+                    >.circle {
+                        width:10px;
+                        height:10px;
+                        border-radius:50%;
+                        background-color: $gray;
+                    }
+
+                    >.enable-circle {
+                        width:12px;
+                        height:12px;
+                        background-color: $blue;
+                    }
+
+                    >.corner-line {
+                        width:90px;
+                        height:1px;
+                        background-color:gray;
+                    }
+
+                    >.line {
+                        flex:1;
+                        height:1px;
+                        background-color:gray;
+                    }
+
+                    >.enable-line {
+                        background-color:$blue;
+                    }
+                }
+
+                >.step-text {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: center;
+                    align-items:center;
+                    margin-top: 20px;
+                    margin-bottom:50px;
+
+                    >.item{
+                        font-size: $font2;
+                        font-weight: bold;
+                        width:150px;
+                        box-sizing: border-box;
+                        color: $gray;
+                        text-align: center;
+                    }
+
+                    >.space {
+                        flex:1;
+                    }
+
+                    >.corner-space {
+                        width:20px;
+                    }
+
+                    >.enable{
+                        color: white;
+                        font-size:$font4;
+                        font-weight: bold;
+                    }
+                }
+            }
+        }
+
+        >.chat {
+            min-width:150px;
+            max-width:300px;
+            width:25%;
+
+            border-left: 1px solid $middlegray;
+        }
+    }
+}
 
 
 

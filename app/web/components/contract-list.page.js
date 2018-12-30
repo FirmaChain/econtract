@@ -360,9 +360,7 @@ export default class extends React.Component {
             		return "내 서명 전"
             } else if(status == 2) {
                 return "계약 완료"
-            } else if(status == 3) {
-            	return "보기 가능"
-            }
+            } 
         }
 
         let usernames = e.user_infos.map(ee => ee.username).filter( ee => !!ee)

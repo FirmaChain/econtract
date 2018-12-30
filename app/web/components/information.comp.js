@@ -126,7 +126,7 @@ export default class extends React.Component{
                 </div>
                 <div className="email">{info.email}</div>
                 <div className="profile-dropdown">
-                    <div className="container">
+                    <div className="info-container">
                         <div className="login-session" onClick={this.onClickUpdateLogin}>
                             <div className="text">로그인 세션 연장</div>
                             <div className="time">

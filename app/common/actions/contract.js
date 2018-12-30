@@ -2,6 +2,7 @@ import {
     api_new_contract,
     api_get_contracts,
     api_update_epin_account,
+    api_get_contract,
 /*    api_load_contract,
     api_load_contract_info,
     api_folder_list,
@@ -89,6 +90,12 @@ export function get_contracts(type, status, page, display_count = 10, sub_status
             })
         }
         return resp
+    }
+}
+
+export function get_contract(contract_id) {
+    return async function(dispatch) {
+        return await api_get_contract(contract_id)
     }
 }
 
