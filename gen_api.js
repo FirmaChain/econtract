@@ -14,15 +14,14 @@ export async function api_convert_doc(file){
         session:window.getCookie("session")
     });
 }
-export async function api_new_contract(subject,counterparties,counterparties_eckai,necessary_info_string,is_pin_used){
+export async function api_new_contract(subject,counterparties,necessary_info_string,is_pin_used){
     let __data = new FormData();
 
     __data.append('subject', subject);
-	__data.append('counterparties', counterparties);
-	for(let k in counterparties_eckai){
-        __data.append('counterparties_eckai:'+k,counterparties_eckai[k])
+	for(let k in counterparties){
+        __data.append('counterparties:'+k,counterparties[k])
     }
-    __data.append('counterparties_eckai',counterparties_eckai.length);
+    __data.append('counterparties',counterparties.length);
 	__data.append('necessary_info_string', necessary_info_string);
 	__data.append('is_pin_used', is_pin_used)
 
