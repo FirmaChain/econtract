@@ -18,10 +18,7 @@ export async function api_new_contract(subject,counterparties,necessary_info_str
     let __data = new FormData();
 
     __data.append('subject', subject);
-	for(let k in counterparties){
-        __data.append('counterparties:'+k,counterparties[k])
-    }
-    __data.append('counterparties',counterparties.length);
+	__data.append('counterparties', counterparties);
 	__data.append('necessary_info_string', necessary_info_string);
 	__data.append('is_pin_used', is_pin_used)
 
