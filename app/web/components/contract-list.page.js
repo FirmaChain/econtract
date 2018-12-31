@@ -362,11 +362,12 @@ export default class extends React.Component {
             if(contract.is_pin_used == 1 && !contract.is_pin_null) {
                 let result = await new Promise(r=>window.openModal("TypingPin",{
                     onFinish:(pin)=>{
-                        r([pin])
+                        r(pin)
                         //return await this.props.update_epin(contract_id, pin_input);
                     },
                 }))
                 console.log(result)
+                if(!result) return
             } else if(contract.is_pin_used == 0) {
                 history.push(`/contract-info/${contract.contract_id}`)
             }
@@ -392,11 +393,12 @@ export default class extends React.Component {
             if(contract.is_pin_used == 1 && contract.is_pin_null == 1) {
                 let result = await new Promise(r=>window.openModal("TypingPin",{
                     onFinish:(pin)=>{
-                        r([pin])
+                        r(pin)
                         //return await this.props.update_epin(contract_id, pin_input);
                     },
                 }))
                 console.log(result)
+                if(!result) return
             }
 
             if(!isGroup) {
@@ -412,9 +414,6 @@ export default class extends React.Component {
                     }
                 })
             }
-
-            console.log(contract.is_pin_null)
-            console.log(contract)
         }
 
     }

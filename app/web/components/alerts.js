@@ -741,9 +741,8 @@ class TypingPin extends React.Component{
     }
 
     onClickCancel = () => {
+        this.props.onFinish && this.props.onFinish(false)
         this.closeSelf()
-        window.hideIndicator()
-        history.goBack()
     }
 
     keydown = (e)=>{
