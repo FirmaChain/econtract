@@ -125,8 +125,6 @@ export function get_contracts(type, status, page, display_count = 10, sub_status
                             //TODO: necessary to decryptPIN for group key
                             pin = pin;
                         }
-                        console.log("user_info", user_info)
-                        console.log("subject.my_info.entity_id", subject.my_info.entity_id)
                         shared_key = unsealContractAuxKeyGroup(user_info.group_keys[subject.my_info.entity_id], Buffer.from(subject.my_info.eckai, 'hex').toString('hex'));
                     }
                     let the_key = getContractKey(pin, shared_key);

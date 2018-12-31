@@ -403,6 +403,17 @@ export default class extends React.Component {
 
             if(!isGroup) {
                 let data = await this.props.get_group_info(0)
+                data = data.map((e) => {
+                    return {
+                        user_type:2,
+                        corp_id: e.corp_id,
+                        group_id : e.group_id,
+                        title : e.title,
+                        public_key : Buffer.from(e.group_public_key).toString("hex"),
+                        company_name:this.props.user_info.company_name,
+                        role:2,
+                    }
+                })
                 window.openModal("OneAddModal", {
                     icon:"fal fa-users",
                     title:"계약에 그룹 추가하기",
