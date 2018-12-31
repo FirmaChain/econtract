@@ -253,10 +253,9 @@ export function update_epin_account(contract_id, pin){
     };
 }
 
-export function update_epin_group(corp_id, group_id, contract_id, pin){
+export function update_epin_group(corp_id, group_id, contract_id, user_info, pin){
     return async function(){
         //group용 encrypt PIN
-        let user_info = {}; // TEMP!!
         let group_key = getGroupKey(user_info, group_id);
         let epin = encryptPINAux(pin, group_key);
         return (await api_update_epin_group(corp_id, group_id, contract_id, epin)).payload;
