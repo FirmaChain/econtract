@@ -29,6 +29,7 @@ import {
     get_template,
     get_contract,
     get_group_info,
+    select_subject,
 } from "../../common/actions"
 import CheckBox2 from "./checkbox2"
 
@@ -199,7 +200,7 @@ export default class extends React.Component {
             return alert("게약서을 저장할 폴더를 선택해주세요.")
 
         if(this.state.editMode) {
-            if(await window.confirm("계약서 수정", `해당 계약서을 수정하시겠습니까?`)){
+            if(await window.confirm("계약서 수정", `해당 계약서를 수정하시겠습니까?`)){
                 this.blockFlag = true
                 await window.showIndicator()
                 //await this.props.update_template(this.state.template_id, this.state.select_folder_id, this.state.title, this.state.model)
@@ -207,7 +208,7 @@ export default class extends React.Component {
                 history.goBack()
             }
         } else {
-            if(await window.confirm("계약서 등록", `해당 계약서을 등록하시겠습니까?`)){
+            if(await window.confirm("계약서 등록", `해당 계약서를 등록하시겠습니까?`)){
                 this.blockFlag = true
                 await window.showIndicator()
                 //await this.props.add_template(this.state.title, this.state.select_folder_id, this.state.model)
@@ -216,6 +217,17 @@ export default class extends React.Component {
             }
         }
     }
+
+    textPrivilege(privilege) {
+        switch(privilege) {
+            case 1:
+                return "서명자"
+                break;
+            case 2:
+                return "보기 전용"
+                break;
+        }
+    } 
 
     render_info() {
         switch(this.state.selected_menu) {
@@ -231,36 +243,13 @@ export default class extends React.Component {
         let user_infos = this.state.infos;
 
         let corp_id = this.props.user_info.corp_id || -1
-        let meOrGroup = null
+        let meOrGroup = select_subject(user_infos, this.state.groups, this.props.user_info.account_id, corp_id).my_info
 
-        let groups = this.state.groups ? this.state.groups.map((e) => {
-            return {
-                ...e,
-                public_key : Buffer.from(e.group_public_key).toString("hex"),
-            }
-        }) : []
-
-        for(let v of user_infos) {
-            if(v.corp_id == 0 && v.entity_id == this.props.user_info.account_id) {
-                meOrGroup = v
-                break;
-            } else if(v.corp_id == corp_id) {
-                let flag = false;
-                for(let w of groups) {
-                    if(w.group_id == v.entity_id) {
-                        flag = w.group_id;
-                        break;
-                    }
-                }
-                if(flag) {
-                    meOrGroup = v
-                }
-            }
-        }
+        console.log(contract)
+        console.log(user_infos)
 
         return <div className="bottom signs">
             <div className="title">총 {user_infos.length}명</div>
-
             <div className="user-container me">
                 <div className="user" onClick={this.onToggleUser.bind(this, meOrGroup.entity_id, meOrGroup.corp_id)}>
                     <i className="icon fas fa-user-edit"></i>
@@ -271,7 +260,26 @@ export default class extends React.Component {
                     <i className="arrow fas fa-caret-down"></i>
                 </div>
                 {this.isOpenUser(meOrGroup.entity_id, meOrGroup.corp_id) ? <div className="user-detail">
-                    asdasd
+                    <div className="text-place">
+                        <div className="title">역할</div>
+                        <div className="desc">{this.textPrivilege(meOrGroup.privilege)}</div>
+                    </div>
+                    <div className="text-place">
+                        <div className="title">주소</div>
+                        <div className="desc">{meOrGroup.user_info.address}</div>
+                    </div>
+                    <div className="text-place">
+                        <div className="title">휴대폰 번호</div>
+                        <div className="desc">{meOrGroup.user_info.phone_number}</div>
+                    </div>
+                    <div className="text-place">
+                        <div className="title">주민등록번호</div>
+                        <div className="desc">{meOrGroup.user_info.RRN}</div>
+                    </div>
+                    <div className="text-place">
+                        <div className="title">서명</div>
+                        <div className="desc">{meOrGroup.sign ? <div></div>: "서명 하기 전"}</div>
+                    </div>
                 </div> : null}
             </div>
             {user_infos.map( (e, k) => {

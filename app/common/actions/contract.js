@@ -153,6 +153,8 @@ export function get_contracts(type, status, page, display_count = 10, sub_status
                     }
                     return result
                 })
+
+                v.necessary_info = JSON.parse(v.necessary_info)
             }
             dispatch({
                 type:GET_CONTRACTS,
@@ -195,6 +197,7 @@ export function get_contract(contract_id, user_info, groups = []) {
                     user_info : JSON.parse(aes_decrypt(Buffer.from(e.user_info, 'hex').toString('hex'), the_key)),
                 }
             })
+            resp.payload.contract.necessary_info = JSON.parse(resp.payload.contract.necessary_info)
         }
         return resp
     }
