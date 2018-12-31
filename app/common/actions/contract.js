@@ -108,18 +108,25 @@ export function get_contracts(type, status, page, display_count = 10, sub_status
                     let subject = select_subject(infos, groups, user_info.account_id, corp_id)
                     console.log("subject", subject)
 
-                    let the_key
+                    let shared_key;
+                    let pin = "000000";
                     if(subject.isAccount) {
                         let entropy = sessionStorage.getItem("entropy");
-                        if (!subject.my_info || !entropy) return null;
-                        let pin = resp.payload.is_pin_used ? decryptPIN(Buffer.from(subject.my_info.epin, 'hex').toString('hex')) : "000000";
-                        let shared_key = unsealContractAuxKey(entropy, Buffer.from(subject.my_info.eckai, 'hex').toString('hex'));
-                        the_key = getContractKey(pin, shared_key);
+                        if (!entropy) return null;
+                        if (resp.payload.is_pin_used) {
+                            pin = decryptPIN(Buffer.from(subject.my_info.epin, 'hex').toString('hex'));
+                        }
+                        shared_key = unsealContractAuxKey(entropy, Buffer.from(subject.my_info.eckai, 'hex').toString('hex'));
                     } else {
-                        //group the key
+                        if (resp.payload.is_pin_used) {
+                            //TODO: necessary to decryptPIN for group key
+                            pin = pin;
+                        }
+                        shared_key = unsealContractAuxKeyGroup(user_info.group_keys[subject.my_info.entity_id], Buffer.from(subject.my_info.eckai, 'hex').toString('hex'));
                     }
+                    let the_key = getContractKey(pin, shared_key);
 
-                    let result
+                    let result;
                     try{
                         result = JSON.parse(aes_decrypt(e/*Buffer.from(e, 'hex').toString('hex')*/, the_key))
                     } catch(err) {
