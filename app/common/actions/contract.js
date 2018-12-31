@@ -2,7 +2,7 @@ import {
     api_new_contract,
     api_get_contracts,
     api_update_epin_account,
-    update_epin_group,
+    api_update_epin_group,
     api_get_contract,
     api_add_counterparties,
 /*    api_load_contract,
