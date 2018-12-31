@@ -14,12 +14,13 @@ export async function api_convert_doc(file){
         session:window.getCookie("session")
     });
 }
-export async function api_new_contract(subject,counterparties,necessary_info_string,is_pin_used){
+export async function api_new_contract(subject,counterparties,necessary_info_string,can_edit_account_id,is_pin_used){
     let __data = new FormData();
 
     __data.append('subject', subject);
 	__data.append('counterparties', counterparties);
 	__data.append('necessary_info_string', necessary_info_string);
+	__data.append('can_edit_account_id', can_edit_account_id);
 	__data.append('is_pin_used', is_pin_used)
 
     return await post("/new_contract", __data,{

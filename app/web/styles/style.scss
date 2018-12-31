@@ -1653,7 +1653,7 @@ div.checkbox2-comp{
 
     >.content {
         margin: auto;
-        max-width:900px;
+        max-width:1000px;
         width:100%;
         padding:20px 10px;
         padding-top: 50px;
@@ -1795,6 +1795,19 @@ div.checkbox2-comp{
                             width:120px;
                             font-size: $font1;
                             color:$black;
+                        }
+
+                        >.can-edit {
+                            width:120px;
+                            display: flex;
+                            flex-direction:row;
+                            align-items: center;
+
+                            >.name {
+                                margin-left:10px;
+                                font-size: $font1;
+                                color:$black;
+                            }
                         }
 
                         >.action {

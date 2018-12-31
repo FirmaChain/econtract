@@ -119,17 +119,19 @@ export default class extends React.Component {
 
             if(user.account_type == 0) {
                 this.setState({
+                    can_edit_account_id:this.props.user_info.account_id,
                     target_list:[{
                         user_type:0,
                         account_id: user.account_id,
                         username:user.username,
                         email:user.email,
                         public_key:user.publickey_contract,
-                        role:[0, 1]
+                        role:[0, 1],
                     }]
                 })
             } else if(user.account_type == 1 || user.account_type == 2) {
                 this.setState({
+                    can_edit_account_id:this.props.user_info.account_id,
                     target_list:[{
                         user_type:1,
                         account_id: user.account_id,
@@ -137,7 +139,7 @@ export default class extends React.Component {
                         email:user.email,
                         public_key:user.publickey_contract,
                         company_name:"피르마 솔루션즈",
-                        role:[0, 1]
+                        role:[0, 1],
                     }/*,{
                         user_type:0,
                         username:user.username,
@@ -283,7 +285,12 @@ export default class extends React.Component {
     }
 
     onClickRegister = async ()=>{
+
+        if(this.state.can_edit_account_id == null)
+            return alert("첫 수정 권한을 지정해주세요")
+
         this.blockFlag = true;
+
         let contract_name = this.state.contract_name;
         let counterparties = this.state.target_list.map(e=> {
             let role;
@@ -308,6 +315,7 @@ export default class extends React.Component {
         }
 
         if(this.props.user_info.account_type != 0 && includeGroup == false) {
+            this.blockFlag = false;
             return alert("기업 계정으로 계약 생성 시, 그룹을 최소한 하나는 추가해야 합니다.");
         }
 
@@ -333,9 +341,11 @@ export default class extends React.Component {
 
     }
 
-    onClickRemoveCounterparty = (k)=>{
+    onClickRemoveCounterparty = (k, e)=>{
         let _list = [...this.state.target_list]
         _list.splice(k,1)
+        if(e.account_id == this.state.can_edit_account_id)
+            this.setState({can_edit_account_id:this.props.user_info.account_id})
         this.setState({
             target_list:_list
         })
@@ -553,6 +563,7 @@ export default class extends React.Component {
                             <div className="form-head">사용자 리스트</div>
                             <div className="form-list">
                                 {this.state.target_list.map((e, k)=>{
+                                    console.log(this.state.can_edit_account_id)
                                     return <div className="item" key={k}>
                                         <div className="icon">
                                         {
@@ -588,10 +599,18 @@ export default class extends React.Component {
                                             } })()
                                         }
                                         <div className="privilege">{this.getRoleText(e.role)}</div>
+                                        <div className="can-edit">
+                                            <CheckBox2 size={18} disabled={e.role.includes(2)}
+                                                on={this.state.can_edit_account_id == e.account_id}
+                                                onClick={ v => {
+                                                    this.setState({can_edit_account_id:e.account_id})
+                                                }} />
+                                            <div className="name">수정 권한</div>
+                                        </div>
                                         <div className="action">
                                             {k == 0 ?
                                                 null:
-                                                <div className="delete" onClick={this.onClickRemoveCounterparty.bind(this, k)}>삭제</div>
+                                                <div className="delete" onClick={this.onClickRemoveCounterparty.bind(this, k, e)}>삭제</div>
                                             }
                                         </div>
                                     </div>

@@ -82,7 +82,7 @@ function getGroupKey(user_info, group_id) {
     }
 }
 
-export function new_contract(subject, counterparties, set_pin, necessary_info, is_pin_used = false) {
+export function new_contract(subject, counterparties, set_pin, necessary_info, can_edit_account_id, is_pin_used = false) {
     return async function(dispatch){
         let pin = set_pin ? set_pin : genPIN();
         let shared_key = generate_random(31);
@@ -98,7 +98,7 @@ export function new_contract(subject, counterparties, set_pin, necessary_info, i
             };
         });
 
-        let resp = await api_new_contract(subject, JSON.stringify(counterparties_mapped), JSON.stringify(necessary_info), is_pin_used);
+        let resp = await api_new_contract(subject, JSON.stringify(counterparties_mapped), JSON.stringify(necessary_info), can_edit_account_id, is_pin_used);
         if(resp.code == 1){
             sessionStorage.setItem(`contract:${resp.payload.contract_id}`, encryptPIN(pin));
         }
