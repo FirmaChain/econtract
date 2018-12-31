@@ -328,13 +328,10 @@ export default class extends React.Component {
         let pin = is_pin_used ? this.state.pin_number : "000000";
         let resp =  await this.props.new_contract(contract_name, counterparties, pin, necessary_info, this.state.can_edit_account_id, !!is_pin_used ? 1 : 0);
 
-        console.log(resp);
-
         if(resp.code == 1) {
             let contract_id = resp.payload.contract_id
             if (is_pin_used) {
                 let resp_pin = await this.props.update_epin_account(contract_id, pin);
-                console.log(resp_pin);
             }
             history.replace(`/edit-contract/${contract_id}`)
         }
