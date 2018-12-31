@@ -29,6 +29,7 @@ import {
     getContractKey,
     sealContractAuxKey,
     unsealContractAuxKey,
+    unsealContractAuxKeyGroup,
     encryptPIN,
     decryptPIN,
     decrypt_user_info,
@@ -45,7 +46,8 @@ import Web3 from "../Web3"
 export const LOAD_FODLERS = "LOAD_FODLERS"
 export const LOAD_CONTRACT_LIST = "LOAD_CONTRACT_LIST"*/
 
-export const GET_CONTRACTS = "GET_CONTRACTS"
+export const GET_CONTRACTS = "GET_CONTRACTS";
+const DUMMY_CORP_ID = 0;
 
 export function select_subject(infos, groups, account_id, corp_id) {
     let my_info = null
@@ -92,7 +94,6 @@ export function genPIN(digit=6) {
 
 export function new_contract(subject, counterparties, set_pin, necessary_info, is_pin_used = false) {
     return async function(dispatch){
-        const DUMMY_CORP_ID = 0;
         let pin = set_pin ? set_pin : genPIN();
         let shared_key = generate_random(31);
         let the_key = getContractKey(pin, shared_key);
@@ -168,19 +169,27 @@ export function get_contract(contract_id, user_info, groups = []) {
     return async function(dispatch) {
         let resp = await api_get_contract(contract_id)
         if(resp.code == 1) {
-            let corp_id = user_info.corp_id || -1
-            let subject = select_subject(resp.payload.infos, groups, user_info.account_id, corp_id)
+            let corp_id = user_info.corp_id || -1;
+            let subject = select_subject(resp.payload.infos, groups, user_info.account_id, corp_id);
+            if (!subject.my_info) return null;
 
-            let the_key
+            let shared_key;
+            let pin = "000000";
             if(subject.isAccount) {
                 let entropy = sessionStorage.getItem("entropy");
-                if (!subject.my_info || !entropy) return null;
-                let pin = resp.payload.is_pin_used ? decryptPIN(Buffer.from(subject.my_info.epin, 'hex').toString('hex')) : "000000";
-                let shared_key = unsealContractAuxKey(entropy, Buffer.from(subject.my_info.eckai, 'hex').toString('hex'));
-                the_key = getContractKey(pin, shared_key);
+                if (!entropy) return null;
+                if (resp.payload.is_pin_used) {
+                    pin = decryptPIN(Buffer.from(subject.my_info.epin, 'hex').toString('hex'));
+                }
+                shared_key = unsealContractAuxKey(entropy, Buffer.from(subject.my_info.eckai, 'hex').toString('hex'));
             } else {
-                //group the key
+                if (resp.payload.is_pin_used) {
+                    //TODO: necessary to decryptPIN for group key
+                    pin = pin;
+                }
+                shared_key = unsealContractAuxKeyGroup(user_info.group_keys[subject.my_info.entity_id], Buffer.from(subject.my_info.eckai, 'hex').toString('hex'));
             }
+            let the_key = getContractKey(pin, shared_key);
 
             resp.payload.infos = resp.payload.infos.map( (e) => {
                 return {
