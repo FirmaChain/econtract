@@ -49,13 +49,15 @@ export const LOAD_CONTRACT_LIST = "LOAD_CONTRACT_LIST"*/
 export const GET_CONTRACTS = "GET_CONTRACTS";
 const DUMMY_CORP_ID = 0;
 
-export function select_subject(infos, groups, account_id, corp_id) {
+export function select_subject(infos, groups = [], account_id, corp_id) {
+    groups = groups ? groups : []
     let my_infos = infos.filter(e=>e.corp_id == DUMMY_CORP_ID && e.entity_id == account_id || e.corp_id == corp_id);
-    let my_info = my_infos.find(e=>e.corp_id == DUMMY_CORP_ID) || my_infos.find(e=>groups.indexOf(e.entity_id) != -1);
+    let group_ids = groups.map(e=>e.group_id)
+    let my_info = my_infos.find(e=>e.corp_id == DUMMY_CORP_ID) || my_infos.find(e=>group_ids.indexOf(e.entity_id) != -1);
     my_info = my_info ? my_info : null;
     return {
         my_info,
-        isAccount: my_info.corp_id == DUMMY_CORP_ID,
+        isAccount: my_info && my_info.corp_id == DUMMY_CORP_ID,
     };
 }
 
@@ -104,9 +106,10 @@ export function get_contracts(type, status, page, display_count = 10, sub_status
                     let infos = [{
                         entity_id:v.entity_id,
                         corp_id:v.corp_id,
+                        epin:v.epin,
+                        eckai:v.eckai,
                     }]
                     let subject = select_subject(infos, groups, user_info.account_id, corp_id)
-                    console.log("subject", subject)
 
                     let the_key
                     if(subject.isAccount) {
@@ -130,8 +133,6 @@ export function get_contracts(type, status, page, display_count = 10, sub_status
                     }
                     return result
                 })
-
-                v.necessary_info = JSON.parse(v.necessary_info)
             }
             dispatch({
                 type:GET_CONTRACTS,

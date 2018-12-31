@@ -105,6 +105,9 @@ select:focus { outline:none; }
     max-height: calc(100% - 111px) !important;
     padding: 0 20px !important;
 }
+.fr-box {
+    //height:calc(100% - 38px);
+}
 .fr-view {
     margin: 20px auto !important;
     max-width: 900px;
@@ -2104,7 +2107,7 @@ div.checkbox2-comp{
         flex-direction: row;
 
         height: 100%;
-        max-height: calc(100% - 131px);
+        max-height: calc(100% - 132px);
         overflow-y: auto;
 
         box-sizing: border-box;
