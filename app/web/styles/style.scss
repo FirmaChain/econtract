@@ -2227,6 +2227,28 @@ div.checkbox2-comp{
                             background-color:$lightgray;
                         }
                     }
+
+                    >.user-detail {
+                        padding:10px;
+
+                        >.text-place {
+                            padding-left:10px;
+                            padding-right:20px;
+
+                            >.title {
+                                font-size: $font1;
+                                font-weight:bold;
+                                color:$black;
+                            }
+
+                            >.desc {
+                                font-size: $font1;
+                                color:$black;
+                                margin-top:5px;
+                                margin-bottom:20px;
+                            }
+                        }
+                    }
                 }  
 
                 >.me {
