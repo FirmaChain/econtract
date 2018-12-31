@@ -136,8 +136,8 @@ export function get_contracts(type, status, page, display_count = 10, sub_status
                         shared_key = unsealContractAuxKey(entropy, Buffer.from(subject.my_info.eckai, 'hex').toString('hex'));
                     } else {
                         if (resp.payload.is_pin_used) {
-                            //TODO: necessary to decryptPIN for group key
-                            pin = pin;
+                            let group_key = getGroupKey(user_info, subject.entity_id);
+                            pin = decryptPINAux(subject.my_info.epin, group_key);
                         }
                         shared_key = unsealContractAuxKeyGroup(getGroupKey(user_info, subject.my_info.entity_id), Buffer.from(subject.my_info.eckai, 'hex').toString('hex'));
                     }
@@ -184,8 +184,8 @@ export function get_contract(contract_id, user_info, groups = []) {
                 shared_key = unsealContractAuxKey(entropy, Buffer.from(subject.my_info.eckai, 'hex').toString('hex'));
             } else {
                 if (resp.payload.contract.is_pin_used) {
-                    //TODO: necessary to decryptPIN for group key
-                    pin = pin;
+                    let group_key = getGroupKey(user_info, subject.entity_id);
+                    pin = decryptPINAux(subject.my_info.epin, group_key);
                 }
                 shared_key = unsealContractAuxKeyGroup(getGroupKey(user_info, subject.my_info.entity_id), Buffer.from(subject.my_info.eckai, 'hex').toString('hex'));
             }
@@ -220,8 +220,8 @@ export function add_counterparties(contract_id, counterparties, groups, user_inf
             shared_key = unsealContractAuxKey(entropy, Buffer.from(subject.my_info.eckai, 'hex').toString('hex'));
         } else {
             if (resp.payload.is_pin_used) {
-                //TODO: necessary to decryptPIN for group key
-                pin = pin;
+                let group_key = getGroupKey(user_info, subject.entity_id);
+                pin = decryptPINAux(subject.my_info.epin, group_key);
             }
             shared_key = unsealContractAuxKeyGroup(getGroupKey(user_info, subject.my_info.entity_id), Buffer.from(subject.my_info.eckai, 'hex').toString('hex'));
         }
@@ -251,9 +251,8 @@ export function update_epin_account(contract_id, pin){
 
 export function update_epin_group(corp_id, group_id, contract_id, user_info, pin){
     return async function(){
-        //group용 encrypt PIN
         let group_key = getGroupKey(user_info, group_id);
-        let epin = encryptPINAux(pin, group_key);
+        let epin = encryptPINAux(pin, Buffer.from(group_key));
         return (await api_update_epin_group(corp_id, group_id, contract_id, epin)).payload;
     };
 }

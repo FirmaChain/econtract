@@ -210,7 +210,7 @@ export default class extends React.Component {
             </div>
             <div className="item">
                 <div className="title">PIN 번호</div>
-                <div className="desc">{contract.is_pin_used == 0 ? "PIN이 없습니다." : (decryptPIN(creator.epin) || "000000")}</div>
+                <div className="desc">{contract.is_pin_used == 0 ? "PIN이 없습니다." : (decryptPIN(Buffer.from(creator.epin, 'hex').toString('hex')) || "000000")}</div>
             </div>
             <div className="item">
                 <div className="title">IPFS ID</div>

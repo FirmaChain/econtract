@@ -380,11 +380,9 @@ export default class extends React.Component {
                 await this.props.update_epin_account(contract.contract_id, result);
 
                 history.push(`/contract-info/${contract.contract_id}`)
-            } else if(contract.is_pin_used == 0) {
+            } else if(contract.is_pin_used == 0 || (contract.is_pin_used == 1 && contract.is_pin_null == 0)) {
                 history.push(`/contract-info/${contract.contract_id}`)
-            } else if(contract.is_pin_used == 1 && contract.is_pin_null == 0) {
-                history.push(`/contract-info/${contract.contract_id}`)
-            }
+            } 
         } else {
             let corps_id = contract.corps_id.split(",")
             let entities_id = contract.entities_id.split(",")
@@ -398,8 +396,8 @@ export default class extends React.Component {
 
             let isGroup = false
             for(let v of list) {
-                if(v.corp_id != 0) {
-                    isGroup = true
+                if(v.corp_id == this.props.user_info.corp_id) {
+                    isGroup = v.entity_id
                     break
                 }
             }
@@ -413,6 +411,11 @@ export default class extends React.Component {
                 if(!result) return
 
                 await this.props.update_epin_account(contract.contract_id, result);
+
+                console.log("isGroup", isGroup)
+                if(isGroup) {
+                    await this.props.update_epin_group(this.props.user_info.corp_id, isGroup, contract.contract_id, this.props.user_info, result)
+                }
             }
 
             if(!isGroup) {
@@ -438,7 +441,7 @@ export default class extends React.Component {
                         // add_contract_info group
                         // let detail_contract = await this.props.get_contract(contract.contract_id, this.props.user_info, groups)
                         let result = await this.props.add_counterparties(contract.contract_id, [group], groups, this.props.user_info, [contract], contract.is_pin_used)
-                        await this.props.update_epin_group(corp_id, group_id, contract_id, this.props.user_info, pin)
+                        await this.props.update_epin_group(group.corp_id, group.group_id, contract.contract_id, this.props.user_info, result)
                         r(result)
                     }
                 }))
