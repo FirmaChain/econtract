@@ -18,6 +18,7 @@ import {
     remove_folder,
     move_to_folder,
     get_contracts,
+    get_contract,
     get_group_info,
     update_group_public_key,
     create_group,
@@ -41,6 +42,7 @@ let mapDispatchToProps = {
     remove_folder,
     move_to_folder,
     get_contracts,
+    get_contract,
     get_group_info,
     update_group_public_key,
     create_group,
@@ -409,8 +411,8 @@ export default class extends React.Component {
             }
 
             if(!isGroup) {
-                let data = await this.props.get_group_info(0)
-                data = data.map((e) => {
+                let groups = await this.props.get_group_info(0)
+                let data = groups.map((e) => {
                     return {
                         user_type:2,
                         corp_id: e.corp_id,
@@ -429,12 +431,12 @@ export default class extends React.Component {
                     data,
                     onConfirm:async (group)=>{
                         // add_contract_info group
-                        let result = await this.props.add_counterparties(contract.contract_id, [group])
+                        // let detail_contract = await this.props.get_contract(contract.contract_id, this.props.user_info, groups)
+                        let result = await this.props.add_counterparties(contract.contract_id, [group], groups, this.props.user_info, [contract], contract.is_pin_used)
                         // await this.props.update_epin_group(corp_id, group_id, contract_id, pin)
                         r(result)
                     }
                 }))
-                console.log(result)
             }
             history.push(`/contract-info/${contract.contract_id}`)
 

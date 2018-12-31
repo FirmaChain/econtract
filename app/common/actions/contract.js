@@ -188,6 +188,8 @@ export function get_contract(contract_id, user_info, groups = []) {
             }
             let the_key = getContractKey(pin, shared_key);
 
+            console.log(the_key)
+            console.log(resp.payload.infos)
             resp.payload.infos = resp.payload.infos.map( (e) => {
                 return {
                     ...e,
@@ -200,10 +202,30 @@ export function get_contract(contract_id, user_info, groups = []) {
     }
 }
 
-export function add_counterparties(contract_id, counterparties, pin = "000000") {
+export function add_counterparties(contract_id, counterparties, groups, user_info, infos, is_pin_used) {
     return async function() {
-        let shared_key = generate_random(31);
+        let corp_id = user_info.corp_id || -1;
+        let subject = select_subject(infos, groups, user_info.account_id, corp_id);
+        if (!subject.my_info) return null;
+
+        let shared_key;
+        let pin = "000000";
+        if(subject.isAccount) {
+            let entropy = sessionStorage.getItem("entropy");
+            if (!entropy) return null;
+            if (is_pin_used) {
+                pin = decryptPIN(Buffer.from(subject.my_info.epin, 'hex').toString('hex'));
+            }
+            shared_key = unsealContractAuxKey(entropy, Buffer.from(subject.my_info.eckai, 'hex').toString('hex'));
+        } else {
+            if (resp.payload.is_pin_used) {
+                //TODO: necessary to decryptPIN for group key
+                pin = pin;
+            }
+            shared_key = unsealContractAuxKeyGroup(getGroupKey(user_info, subject.my_info.entity_id), Buffer.from(subject.my_info.eckai, 'hex').toString('hex'));
+        }
         let the_key = getContractKey(pin, shared_key);
+
         let counterparties_mapped = counterparties.map(e=>{
             return {
                 user_type: e.user_type,
@@ -214,14 +236,16 @@ export function add_counterparties(contract_id, counterparties, pin = "000000") 
                 user_info: aes_encrypt(JSON.stringify(e), the_key),
             };
         });
-        return await api_add_counterparties(contract_id, counterparties_mapped)
+        let res = await api_add_counterparties( contract_id, JSON.stringify(counterparties_mapped) )
+        console.log(res)
+        return res
     }
 }
 
 export function update_epin_account(contract_id, pin){
     return async function(){
         let epin = encryptPIN(pin);
-        return (await api_update_epin(contract_id, epin)).payload;
+        return (await api_update_epin_account(contract_id, epin)).payload;
     };
 }
 
@@ -229,7 +253,7 @@ export function update_epin_group(corp_id, group_id, contract_id, pin){
     return async function(){
         //group용 encrypt PIN
         let epin = encryptPIN(pin);
-        return (await update_epin_group(corp_id, group_id, contract_id, epin)).payload;
+        return (await api_update_epin_group(corp_id, group_id, contract_id, epin)).payload;
     };
 }
 
