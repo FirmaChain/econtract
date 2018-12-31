@@ -115,7 +115,6 @@ export default class extends React.Component {
 
             let contract = await this.props.get_contract(contract_id, this.props.user_info, groups)
             if(contract.payload.contract) {
-                console.log(contract.payload)
                 _state = {
                     ..._state,
                     ...contract.payload,

@@ -141,6 +141,7 @@ export default class extends React.Component {
         if(group_id != -1)
             groups = await this.props.get_group_info(0)
 
+        await window.showIndicator()
         let result
         if(menu == "recently") {
             result = await this.props.get_contracts(0, -1, page, LIST_DISPLAY_COUNT, -1, group_id, this.props.user_info, groups)
@@ -172,6 +173,7 @@ export default class extends React.Component {
         else if(menu == "my_view") {
             result = await this.props.get_contracts(0, 3, page, LIST_DISPLAY_COUNT, 1, group_id, this.props.user_info, groups)
         }
+        await window.hideIndicator()
 
         return result
     }
@@ -239,7 +241,7 @@ export default class extends React.Component {
 	}
 
     onClickPage = async(page)=>{
-    	if(this.state.cur_page == page)
+    	if(this.state.cur_page == page - 1)
     		return;
 
         await this.loadContracts(page - 1)
@@ -354,6 +356,25 @@ export default class extends React.Component {
         return this.state.contracts_checks.length == contracts.list.length 
     }
 
+    openContract = async (contract) => {
+
+        if(this.props.user_info.account_type == 0 ) {
+            if(contract.is_pin_used == 1 && !contract.is_pin_null) {
+                alert("핀 입력해야합니다.")
+            } else if(contract.is_pin_used == 0) {
+                history.push(`/contract-info/${contract.contract_id}`)
+            }
+        } else {
+            if(contract.is_pin_used == 1 && contract.is_pin_null) {
+                alert("핀 입력해야합니다.")
+            }
+
+            console.log(contract.is_pin_null)
+            console.log(contract)
+        }
+
+    }
+
     render_contract_slot(e,k){
         let status_text = (status)=>{
             if(status == 0) {
@@ -371,7 +392,7 @@ export default class extends React.Component {
         let usernames = e.user_infos.map(ee => ee.username).filter( ee => !!ee)
         usernames = usernames.join(", ")
 
-        return <div key={e.contract_id} className="item" onClick={v=>history.push(`/contract-info/${e.contract_id}`)}>
+        return <div key={e.contract_id} className="item" onClick={this.openContract.bind(this, e)}>
             <div className="list-body-item list-chkbox">
                 <CheckBox2 size={18}
                     on={this.state.contracts_checks.includes(e.contract_id) || false}
@@ -486,7 +507,7 @@ export default class extends React.Component {
                     {contracts.list.length == 0 ? <div className="empty-contract">계약서가 없습니다.</div> : null}
                 </div>
                 
-                <Pager max={Math.ceil(total_cnt/LIST_DISPLAY_COUNT)} cur={this.state.cur_page||1} onClick={this.onClickPage} />
+                <Pager max={Math.ceil(total_cnt/LIST_DISPLAY_COUNT)} cur={this.state.cur_page+1||1} onClick={this.onClickPage} />
 			</div>
 		</div>)
 	}
