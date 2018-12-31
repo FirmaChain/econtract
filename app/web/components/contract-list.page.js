@@ -13,6 +13,10 @@ import Route from "./custom_route"
 import moment from "moment"
 
 import {
+    decryptPIN,
+} from "../../common/crypto_test"
+
+import {
     folder_list,
     new_folder,
     remove_folder,
@@ -416,6 +420,7 @@ export default class extends React.Component {
                 if(isGroup) {
                     await this.props.update_epin_group(this.props.user_info.corp_id, isGroup, contract.contract_id, this.props.user_info, result)
                 }
+                console.log("end")
             }
 
             if(!isGroup) {
@@ -441,8 +446,8 @@ export default class extends React.Component {
                         // add_contract_info group
                         // let detail_contract = await this.props.get_contract(contract.contract_id, this.props.user_info, groups)
                         let result = await this.props.add_counterparties(contract.contract_id, [group], groups, this.props.user_info, [contract], contract.is_pin_used)
-                        await this.props.update_epin_group(group.corp_id, group.group_id, contract.contract_id, this.props.user_info, result)
-                        r(result)
+                        await this.props.update_epin_group(group.corp_id, group.group_id, contract.contract_id, this.props.user_info, decryptPIN(Buffer.from(contract.epin, 'hex').toString('hex')))
+                        r(group)
                     }
                 }))
             }
