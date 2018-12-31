@@ -109,7 +109,8 @@ export function get_contracts(type, status, page, display_count = 10, sub_status
                         epin:v.epin,
                         eckai:v.eckai,
                     }]
-                    let subject = select_subject(infos, groups, user_info.account_id, corp_id)
+                    let subject = select_subject(infos, groups, user_info.account_id, corp_id);
+                    if (!subject.my_info) continue;
 
                     let shared_key;
                     let pin = "000000";
