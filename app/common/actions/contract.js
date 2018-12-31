@@ -46,7 +46,8 @@ import Web3 from "../Web3"
 export const LOAD_FODLERS = "LOAD_FODLERS"
 export const LOAD_CONTRACT_LIST = "LOAD_CONTRACT_LIST"*/
 
-export const GET_CONTRACTS = "GET_CONTRACTS"
+export const GET_CONTRACTS = "GET_CONTRACTS";
+const DUMMY_CORP_ID = 0;
 
 export function select_subject(infos, groups, account_id, corp_id) {
     let my_info = null
@@ -93,7 +94,6 @@ export function genPIN(digit=6) {
 
 export function new_contract(subject, counterparties, set_pin, necessary_info, is_pin_used = false) {
     return async function(dispatch){
-        const DUMMY_CORP_ID = 0;
         let pin = set_pin ? set_pin : genPIN();
         let shared_key = generate_random(31);
         let the_key = getContractKey(pin, shared_key);
