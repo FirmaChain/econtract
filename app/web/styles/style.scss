@@ -2168,6 +2168,8 @@ div.checkbox2-comp{
 
             >.bottom {
                 box-sizing:border-box;
+                height: calc(100% - 80px);
+                overflow-y: auto;
             }
 
             >.signs {
@@ -2229,6 +2231,7 @@ div.checkbox2-comp{
                     }
 
                     >.user-detail {
+                        border-top: 1px solid $lightgray;
                         padding:10px;
 
                         >.text-place {

@@ -245,9 +245,6 @@ export default class extends React.Component {
         let corp_id = this.props.user_info.corp_id || -1
         let meOrGroup = select_subject(user_infos, this.state.groups, this.props.user_info.account_id, corp_id).my_info
 
-        console.log(contract)
-        console.log(user_infos)
-
         return <div className="bottom signs">
             <div className="title">총 {user_infos.length}명</div>
             <div className="user-container me">
@@ -264,18 +261,27 @@ export default class extends React.Component {
                         <div className="title">역할</div>
                         <div className="desc">{this.textPrivilege(meOrGroup.privilege)}</div>
                     </div>
-                    <div className="text-place">
-                        <div className="title">주소</div>
-                        <div className="desc">{meOrGroup.user_info.address}</div>
-                    </div>
-                    <div className="text-place">
-                        <div className="title">휴대폰 번호</div>
-                        <div className="desc">{meOrGroup.user_info.phone_number}</div>
-                    </div>
-                    <div className="text-place">
-                        <div className="title">주민등록번호</div>
-                        <div className="desc">{meOrGroup.user_info.RRN}</div>
-                    </div>
+                    {(()=> {
+                        let account_type = meOrGroup.account_type || 2
+
+                        let divs = []
+                        if(account_type == 0) {
+                            for(let v of contract.necessary_info.indivisual) {
+                                divs.push(<div className="text-place" key={v}>
+                                    <div className="title">{v}</div>
+                                    <div className="desc">{meOrGroup.user_info["#"+v] || "미등록"}</div>
+                                </div>)
+                            }
+                        } else {
+                            for(let v of contract.necessary_info.corporation) {
+                                divs.push(<div className="text-place" key={v}>
+                                    <div className="title">{v}</div>
+                                    <div className="desc">{meOrGroup.user_info["#"+v] || "미등록"}</div>
+                                </div>)
+                            }
+                        }
+                        return divs
+                    })()}
                     <div className="text-place">
                         <div className="title">서명</div>
                         <div className="desc">{meOrGroup.sign ? <div></div>: "서명 하기 전"}</div>
@@ -304,6 +310,35 @@ export default class extends React.Component {
                         <i className="arrow fas fa-caret-down"></i>
                     </div>
                     {this.isOpenUser(e.entity_id, e.corp_id) ? <div className="user-detail">
+                        <div className="text-place">
+                            <div className="title">역할</div>
+                            <div className="desc">{this.textPrivilege(e.privilege)}</div>
+                        </div>
+                        {(()=> {
+                            let account_type = meOrGroup.account_type || 2
+
+                            let divs = []
+                            if(account_type == 0) {
+                                for(let v of contract.necessary_info.indivisual) {
+                                    divs.push(<div className="text-place" key={v}>
+                                        <div className="title">{v}</div>
+                                        <div className="desc">{meOrGroup.user_info["#"+v] || "미등록"}</div>
+                                    </div>)
+                                }
+                            } else {
+                                for(let v of contract.necessary_info.corporation) {
+                                    divs.push(<div className="text-place" key={v}>
+                                        <div className="title">{v}</div>
+                                        <div className="desc">{meOrGroup.user_info["#"+v] || "미등록"}</div>
+                                    </div>)
+                                }
+                            }
+                            return divs
+                        })()}
+                        <div className="text-place">
+                            <div className="title">서명</div>
+                            <div className="desc">{e.sign ? <div></div>: "서명 하기 전"}</div>
+                        </div>
                     </div> : null}
                 </div>
             })}
