@@ -367,17 +367,22 @@ export default class extends React.Component {
     openContract = async (contract) => {
 
         if(this.props.user_info.account_type == 0 ) {
-            if(contract.is_pin_used == 1 && !contract.is_pin_null) {
+            if(contract.is_pin_used == 1 && contract.is_pin_null == 1) {
                 let result = await new Promise(r=>window.openModal("TypingPin",{
                     onFinish:(pin)=>{
                         r(pin)
                     },
                 }))
-                if(!result) return
+                if(!result) return;
 
-                await this.props.update_epin_account(contract_id, pin);
+                // pin 제대로 된지 확인
 
+                await this.props.update_epin_account(contract.contract_id, result);
+
+                history.push(`/contract-info/${contract.contract_id}`)
             } else if(contract.is_pin_used == 0) {
+                history.push(`/contract-info/${contract.contract_id}`)
+            } else if(contract.is_pin_used == 1 && contract.is_pin_null == 0) {
                 history.push(`/contract-info/${contract.contract_id}`)
             }
         } else {
@@ -407,7 +412,7 @@ export default class extends React.Component {
                 }))
                 if(!result) return
 
-                await this.props.update_epin_account(contract_id, result);
+                await this.props.update_epin_account(contract.contract_id, result);
             }
 
             if(!isGroup) {
@@ -433,7 +438,7 @@ export default class extends React.Component {
                         // add_contract_info group
                         // let detail_contract = await this.props.get_contract(contract.contract_id, this.props.user_info, groups)
                         let result = await this.props.add_counterparties(contract.contract_id, [group], groups, this.props.user_info, [contract], contract.is_pin_used)
-                        // await this.props.update_epin_group(corp_id, group_id, contract_id, pin)
+                        await this.props.update_epin_group(corp_id, group_id, contract_id, this.props.user_info, pin)
                         r(result)
                     }
                 }))

@@ -177,17 +177,19 @@ export function get_contract(contract_id, user_info, groups = []) {
             if(subject.isAccount) {
                 let entropy = sessionStorage.getItem("entropy");
                 if (!entropy) return null;
-                if (resp.payload.is_pin_used) {
+                if (resp.payload.contract.is_pin_used) {
+                    console.log("subject.my_info", subject.my_info)
                     pin = decryptPIN(Buffer.from(subject.my_info.epin, 'hex').toString('hex'));
                 }
                 shared_key = unsealContractAuxKey(entropy, Buffer.from(subject.my_info.eckai, 'hex').toString('hex'));
             } else {
-                if (resp.payload.is_pin_used) {
+                if (resp.payload.contract.is_pin_used) {
                     //TODO: necessary to decryptPIN for group key
                     pin = pin;
                 }
                 shared_key = unsealContractAuxKeyGroup(getGroupKey(user_info, subject.my_info.entity_id), Buffer.from(subject.my_info.eckai, 'hex').toString('hex'));
             }
+            console.log("pin", pin)
             let the_key = getContractKey(pin, shared_key);
 
             console.log(the_key)
