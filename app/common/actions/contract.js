@@ -35,6 +35,8 @@ import {
     get256bitDerivedPublicKey,
     encryptPIN,
     decryptPIN,
+    encryptPINAux,
+    decryptPINAux,
     decrypt_user_info,
     aes_decrypt,
     aes_encrypt,
@@ -252,7 +254,9 @@ export function update_epin_account(contract_id, pin){
 export function update_epin_group(corp_id, group_id, contract_id, pin){
     return async function(){
         //group용 encrypt PIN
-        let epin = encryptPIN(pin);
+        let user_info = {}; // TEMP!!
+        let group_key = getGroupKey(user_info, group_id);
+        let epin = encryptPINAux(pin, group_key);
         return (await api_update_epin_group(corp_id, group_id, contract_id, epin)).payload;
     };
 }
