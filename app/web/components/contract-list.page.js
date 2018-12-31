@@ -360,13 +360,57 @@ export default class extends React.Component {
 
         if(this.props.user_info.account_type == 0 ) {
             if(contract.is_pin_used == 1 && !contract.is_pin_null) {
-                alert("핀 입력해야합니다.")
+                let result = await new Promise(r=>window.openModal("TypingPin",{
+                    onFinish:(pin)=>{
+                        r([pin])
+                        //return await this.props.update_epin(contract_id, pin_input);
+                    },
+                }))
+                console.log(result)
             } else if(contract.is_pin_used == 0) {
                 history.push(`/contract-info/${contract.contract_id}`)
             }
         } else {
-            if(contract.is_pin_used == 1 && contract.is_pin_null) {
-                alert("핀 입력해야합니다.")
+            let corps_id = contract.corps_id.split(",")
+            let entities_id = contract.entities_id.split(",")
+
+            let list = corps_id.map( (e, k) => {
+                return {
+                    corp_id:e,
+                    entity_id: entities_id[k]
+                }
+            })
+
+            let isGroup = false
+            for(let v of corps_id) {
+                if(v != 0) {
+                    isGroup = true
+                    break
+                }
+            }
+
+            if(contract.is_pin_used == 1 && contract.is_pin_null == 1) {
+                let result = await new Promise(r=>window.openModal("TypingPin",{
+                    onFinish:(pin)=>{
+                        r([pin])
+                        //return await this.props.update_epin(contract_id, pin_input);
+                    },
+                }))
+                console.log(result)
+            }
+
+            if(!isGroup) {
+                let data = await this.props.get_group_info(0)
+                window.openModal("OneAddModal", {
+                    icon:"fal fa-users",
+                    title:"계약에 그룹 추가하기",
+                    subTitle:"그룹 선택",
+                    desc:`해당 계약이 선택하신 그룹에 추가됩니다.`,
+                    data,
+                    onConfirm:(group)=>{
+                        // add_contract_info group
+                    }
+                })
             }
 
             console.log(contract.is_pin_null)
