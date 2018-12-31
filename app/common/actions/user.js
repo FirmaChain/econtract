@@ -39,14 +39,15 @@ export function fetch_user_info(){
             let resp = await api_encrypted_user_info()
             if(resp.payload){
                 let user_info = decrypt_user_info(entropy, new Buffer(resp.payload.info.data) )
-                let corp_info = {}, public_info = {}, group_public_keys = {}
+                let corp_info = {}, public_info = {}
+                let _ = {}
                 if(resp.payload.account_type != 0) {
                     corp_info = decrypt_corp_info(Buffer.from(user_info.corp_key, 'hex'), new Buffer(resp.payload.corp_info.data) )
                     let keys = {}
                     for(let v of resp.payload.group_public_keys) {
                         keys[v.group_id] = Buffer.from(v.group_public_key)
                     }
-                    group_public_keys = keys
+                    _.group_public_keys = keys
                 }
                 if(!!resp.payload.public_info)
                     public_info = decrypt_corp_info(Buffer.from(user_info.corp_key, 'hex'), new Buffer(resp.payload.public_info.data) )
@@ -56,11 +57,11 @@ export function fetch_user_info(){
 
                 Web3.addAccount(privateKey)
                 let wallet = Web3.walletWithPK(privateKey)
-                let _ = {
+                _ = {
+                    ..._,
                     ...user_info,
                     ...corp_info, // It should be removed and the following line is used
                     ...public_info,
-                    group_public_keys,
                     eth_address: wallet.address,
                     account_id: resp.payload.account_id,
                     publickey_contract: resp.payload.publickey_contract,
