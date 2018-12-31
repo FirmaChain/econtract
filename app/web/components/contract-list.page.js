@@ -21,6 +21,9 @@ import {
     get_group_info,
     update_group_public_key,
     create_group,
+    add_counterparties,
+    update_epin_group,
+    update_epin_account,
 } from "../../common/actions"
 
 let mapStateToProps = (state)=>{
@@ -41,6 +44,9 @@ let mapDispatchToProps = {
     get_group_info,
     update_group_public_key,
     create_group,
+    add_counterparties,
+    update_epin_group,
+    update_epin_account,
 }
 
 const LIST_DISPLAY_COUNT = 10
@@ -363,11 +369,12 @@ export default class extends React.Component {
                 let result = await new Promise(r=>window.openModal("TypingPin",{
                     onFinish:(pin)=>{
                         r(pin)
-                        //return await this.props.update_epin(contract_id, pin_input);
                     },
                 }))
-                console.log(result)
                 if(!result) return
+
+                await this.props.update_epin_account(contract_id, pin);
+
             } else if(contract.is_pin_used == 0) {
                 history.push(`/contract-info/${contract.contract_id}`)
             }
@@ -394,11 +401,11 @@ export default class extends React.Component {
                 let result = await new Promise(r=>window.openModal("TypingPin",{
                     onFinish:(pin)=>{
                         r(pin)
-                        //return await this.props.update_epin(contract_id, pin_input);
                     },
                 }))
-                console.log(result)
                 if(!result) return
+
+                await this.props.update_epin_account(contract_id, result);
             }
 
             if(!isGroup) {
@@ -420,10 +427,14 @@ export default class extends React.Component {
                     subTitle:"그룹 선택",
                     desc:`해당 계약이 선택하신 그룹에 추가됩니다.`,
                     data,
-                    onConfirm:(group)=>{
+                    onConfirm:async (group)=>{
                         // add_contract_info group
+                        let result = await this.props.add_counterparties(contract.contract_id, [group])
+                        // await this.props.update_epin_group(corp_id, group_id, contract_id, pin)
+                        r(result)
                     }
                 }))
+                console.log(result)
             }
             history.push(`/contract-info/${contract.contract_id}`)
 

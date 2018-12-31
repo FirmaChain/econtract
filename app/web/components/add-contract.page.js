@@ -19,6 +19,7 @@ import {
     new_contract,
     get_group_info,
     update_epin_account,
+    update_epin_group,
     genPIN,
 } from "../../common/actions"
 import CheckBox2 from "./checkbox2"
@@ -36,6 +37,7 @@ let mapDispatchToProps = {
     new_contract,
     get_group_info,
     update_epin_account,
+    update_epin_group,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )

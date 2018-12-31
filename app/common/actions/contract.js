@@ -2,7 +2,9 @@ import {
     api_new_contract,
     api_get_contracts,
     api_update_epin_account,
+    update_epin_group,
     api_get_contract,
+    api_add_counterparties,
 /*    api_load_contract,
     api_load_contract_info,
     api_folder_list,
@@ -198,12 +200,40 @@ export function get_contract(contract_id, user_info, groups = []) {
     }
 }
 
+export function add_counterparties(contract_id, counterparties, pin = "000000") {
+    return async function() {
+        let shared_key = generate_random(31);
+        let the_key = getContractKey(pin, shared_key);
+        let counterparties_mapped = counterparties.map(e=>{
+            return {
+                user_type: e.user_type,
+                entity_id: e.user_type == 2 ? e.group_id : e.account_id,
+                corp_id: e.user_type == 2 ? e.corp_id : DUMMY_CORP_ID,
+                role: e.role,
+                eckai: sealContractAuxKey(e.public_key, shared_key),
+                user_info: aes_encrypt(JSON.stringify(e), the_key),
+            };
+        });
+        return await api_add_counterparties(contract_id, counterparties_mapped)
+    }
+}
+
 export function update_epin_account(contract_id, pin){
     return async function(){
         let epin = encryptPIN(pin);
         return (await api_update_epin(contract_id, epin)).payload;
     };
 }
+
+export function update_epin_group(corp_id, group_id, contract_id, pin){
+    return async function(){
+        //group용 encrypt PIN
+        let epin = encryptPIN(pin);
+        return (await update_epin_group(corp_id, group_id, contract_id, epin)).payload;
+    };
+}
+
+
 
 // function removePIN(contract_id){
 //     sessionStorage.removeItem(`contract:${contract_id}`);
