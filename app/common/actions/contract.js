@@ -73,7 +73,7 @@ export function genPIN(digit=6) {
 }
 
 function getGroupKey(user_info, group_id) {
-    if (user_info.account_type == 2) {
+    if (user_info.account_type == 1) {
         return get256bitDerivedPublicKey(Buffer.from(user_info.corp_master_key, 'hex'), "m/0'/"+group_id+"'").toString('hex');
     } else {
         return user_info.group_keys[group_id];
@@ -119,7 +119,7 @@ export function get_contracts(type, status, page, display_count = 10, sub_status
                         eckai:v.eckai,
                     }]
                     let subject = select_subject(infos, groups, user_info.account_id, corp_id);
-                    if (!subject.my_info) continue;
+                    if (!subject.my_info) return
 
                     let shared_key;
                     let pin = "000000";
