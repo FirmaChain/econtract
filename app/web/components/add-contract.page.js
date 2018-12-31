@@ -326,7 +326,7 @@ export default class extends React.Component {
         let necessary_info = {individual: individual_info, corporation: corporation_info};
         let is_pin_used = this.state.is_use_pin;
         let pin = is_pin_used ? this.state.pin_number : "000000";
-        let resp =  await this.props.new_contract(contract_name, counterparties, pin, necessary_info, !!is_pin_used ? 1 : 0);
+        let resp =  await this.props.new_contract(contract_name, counterparties, pin, necessary_info, this.state.can_edit_account_id, !!is_pin_used ? 1 : 0);
 
         console.log(resp);
 
@@ -616,6 +616,7 @@ export default class extends React.Component {
                                     </div>
                                 })}
                             </div>
+                            <div className="explain">* 수정 권한은 처음에 편집할 사람을 지정하는 것입니다. 동시에 계약서를 여러명이 편집할 수 없습니다.</div>
                         </div>
                     </div>
                 </div>
