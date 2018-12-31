@@ -72,10 +72,10 @@ export default class extends React.Component {
             history.push('/login')
         let info = await this.props.get_group_info(this.getGroupId(), 0, true )
         for(let v of info.invite_list) 
-            if(v.data_for_inviter) v.data_for_inviter = decrypt_corp_info(Buffer.from(this.props.user_info.corp_key, 'hex'), new Buffer(v.data_for_inviter) )
-        
+            if(v.data_for_inviter) v.data_for_inviter = decrypt_corp_info(this.props.user_info.corp_key, new Buffer(v.data_for_inviter) )
+
         for(let v of info.members) 
-            if(v.info) v.info = decrypt_corp_info(Buffer.from(this.props.user_info.corp_key, 'hex'), new Buffer(v.info) )
+            if(v.info) v.info = decrypt_corp_info(this.props.user_info.corp_key, new Buffer(v.info) )
 
         await this.setState({...info})
         await window.hideIndicator()
@@ -301,7 +301,7 @@ export default class extends React.Component {
                                 {this.state.invite_list.map((e, k)=>{
                                     return <div className="item" key={k}>
                                         <div className="desc">
-                                            <div className="email">{e.email}</div>
+                                            <div className="email">{e.data_for_inviter.email}</div>
                                         </div>
                                         <div className="action">
                                             <div className="delete" onClick={this.onRemoveInviteList.bind(this, e.invite_id)}>취소</div>
