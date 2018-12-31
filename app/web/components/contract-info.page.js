@@ -12,6 +12,9 @@ import moment from "moment"
 
 import Dropdown from "react-dropdown"
 import 'react-dropdown/style.css'
+import {
+    decryptPIN,
+} from "../../common/crypto_test"
 
 import {
     fetch_user_info,
@@ -207,7 +210,7 @@ export default class extends React.Component {
             </div>
             <div className="item">
                 <div className="title">PIN 번호</div>
-                <div className="desc">{contract.is_pin_used == 0 ? "PIN이 없습니다." : (contract.pin || "000000")}</div>
+                <div className="desc">{contract.is_pin_used == 0 ? "PIN이 없습니다." : (decryptPIN(creator.epin) || "000000")}</div>
             </div>
             <div className="item">
                 <div className="title">IPFS ID</div>
