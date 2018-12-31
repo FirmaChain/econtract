@@ -1723,6 +1723,15 @@ div.checkbox2-comp{
                     text-align: center;
                 }
 
+                .explain {
+                    margin-top:10px;
+                    margin-bottom:20px;
+
+                    font-size:$font2;
+                    font-weight:bold;
+                    color:$black;
+                }
+
                 >.column {
                     flex:1;
                     margin-left: 10px;
