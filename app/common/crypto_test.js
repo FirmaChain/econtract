@@ -213,11 +213,8 @@ export function sealContractAuxKey(publicKeyHex, sharedAuxKey) {
     return sharedAuxKeyEncryptedHex;
 }
 
-export function unsealContractAuxKey(entropy, eckaiHex){
-    try{
-        let mnemonic = bip39.entropyToMnemonic(entropy);
-        let seed = bip39.mnemonicToSeed(mnemonic);
-        let masterKey = hmac_sha512("FirmaChain master seed", seed);
+function unsealContractAuxKeyAux(masterKey, eckaiHex){
+    try {
         let private_key = ec_key_from_private(bip32_from_512bit(masterKey).derivePath("m/2'/0'").privateKey, undefined, 1);
 
         let eckai = Buffer.from(eckaiHex, "hex");
@@ -229,6 +226,29 @@ export function unsealContractAuxKey(entropy, eckaiHex){
         var sharedAuxKeyDecrypted = ecaes_decrypt(cipher_text, private_key, true);
 
         return sharedAuxKeyDecrypted;
+    }catch(err){
+        console.log(err);
+        return null;
+    }
+}
+
+export function unsealContractAuxKey(entropy, eckaiHex){
+    try{
+        let mnemonic = bip39.entropyToMnemonic(entropy);
+        let seed = bip39.mnemonicToSeed(mnemonic);
+        let masterKey = hmac_sha512("FirmaChain master seed", seed);
+        return unsealContractAuxKeyAux(masterKey, eckaiHex);
+    }catch(err){
+        console.log(err);
+        return null;
+    }
+}
+
+export function unsealContractAuxKeyGroup(group_key, eckaiHex){
+    try{
+        let group_key2 = hmac_sha256("FirmaChain Group Key", group_key);
+        let group_master_key = Buffer.concat([Buffer.from(group_key, "hex"), group_key2]);
+        return unsealContractAuxKeyAux(group_master_key, eckaiHex);
     }catch(err){
         console.log(err);
         return null;
