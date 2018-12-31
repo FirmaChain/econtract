@@ -50,36 +50,13 @@ export const GET_CONTRACTS = "GET_CONTRACTS";
 const DUMMY_CORP_ID = 0;
 
 export function select_subject(infos, groups, account_id, corp_id) {
-    let my_info = null
-    let isAccount = false
-
-    groups = groups.map((e) => {
-        return {
-            ...e,
-            public_key : Buffer.from(e.group_public_key).toString("hex"),
-        }
-    })
-
-    for(let contract_info of infos) {
-        if(contract_info.corp_id == 0 && contract_info.entity_id == account_id) {
-            my_info = contract_info
-            isAccount = true
-            break;
-        } else if(contract_info.corp_id == corp_id) {
-            let flag = false;
-            for(let w of groups) {
-                if(w.group_id == contract_info.entity_id) {
-                    flag = w.group_id;
-                    break;
-                }
-            }
-            if(flag) {
-                my_info = contract_info
-            }
-        }
-    }
-
-    return {my_info, isAccount}
+    let my_infos = infos.filter(e=>e.corp_id == DUMMY_CORP_ID && e.entity_id == account_id || e.corp_id == corp_id);
+    let my_info = my_infos.find(e=>e.corp_id == DUMMY_CORP_ID) || my_infos.find(e=>groups.indexOf(e.entity_id) != -1);
+    my_info = my_info ? my_info : null;
+    return {
+        my_info,
+        isAccount: my_info.corp_id == DUMMY_CORP_ID,
+    };
 }
 
 export function genPIN(digit=6) {
