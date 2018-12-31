@@ -377,14 +377,14 @@ export default class extends React.Component {
 
             let list = corps_id.map( (e, k) => {
                 return {
-                    corp_id:e,
-                    entity_id: entities_id[k]
+                    corp_id:Number(e),
+                    entity_id: Number(entities_id[k])
                 }
             })
 
             let isGroup = false
-            for(let v of corps_id) {
-                if(v != 0) {
+            for(let v of list) {
+                if(v.corp_id != 0) {
                     isGroup = true
                     break
                 }
@@ -414,7 +414,7 @@ export default class extends React.Component {
                         role:2,
                     }
                 })
-                window.openModal("OneAddModal", {
+                let result = await new Promise(r=>window.openModal("OneAddModal", {
                     icon:"fal fa-users",
                     title:"계약에 그룹 추가하기",
                     subTitle:"그룹 선택",
@@ -423,8 +423,10 @@ export default class extends React.Component {
                     onConfirm:(group)=>{
                         // add_contract_info group
                     }
-                })
+                }))
             }
+            history.push(`/contract-info/${contract.contract_id}`)
+
         }
 
     }

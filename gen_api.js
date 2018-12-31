@@ -26,6 +26,16 @@ export async function api_new_contract(subject,counterparties,necessary_info_str
         session:window.getCookie("session")
     });
 }
+export async function api_add_counterparties(contract_id,counterparties){
+    let __data = new FormData();
+
+    __data.append('contract_id', contract_id);
+	__data.append('counterparties', counterparties)
+
+    return await post("/add_counterparties", __data,{
+        session:window.getCookie("session")
+    });
+}
 export async function api_get_contracts(type,status,page,display_count,sub_status,group_id){
     let __data = new FormData();
 
@@ -56,6 +66,18 @@ export async function api_update_epin_account(contract_id,epin){
 	__data.append('epin', epin)
 
     return await post("/update_epin_account", __data,{
+        session:window.getCookie("session")
+    });
+}
+export async function api_update_epin_group(corp_id,group_id,contract_id,epin){
+    let __data = new FormData();
+
+    __data.append('corp_id', corp_id);
+	__data.append('group_id', group_id);
+	__data.append('contract_id', contract_id);
+	__data.append('epin', epin)
+
+    return await post("/update_epin_group", __data,{
         session:window.getCookie("session")
     });
 }
