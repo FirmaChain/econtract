@@ -132,15 +132,18 @@ export function get_contracts(type, status, page, display_count = 10, sub_status
                     if(subject.isAccount) {
                         let entropy = sessionStorage.getItem("entropy");
                         if (!entropy) return null;
-                        if (e.is_pin_used) {
+                        if (v.is_pin_used) {
                             pin = decryptPIN(Buffer.from(subject.my_info.epin, 'hex').toString('hex'));
                         }
                         shared_key = unsealContractAuxKey(entropy, Buffer.from(subject.my_info.eckai, 'hex').toString('hex'));
                     } else {
                         let group_key = getGroupKey(user_info, subject.my_info.entity_id);
-                        if (e.is_pin_used) {
+                        if (v.is_pin_used) {
                             pin = decryptPINAux(subject.my_info.epin, group_key);
                         }
+                        console.log("group_key", group_key)
+                        console.log("PIN", pin)
+                        console.log("subject.my_info.eckai", subject.my_info.eckai)
                         shared_key = unsealContractAuxKeyGroup(group_key, Buffer.from(subject.my_info.eckai, 'hex').toString('hex'));
                     }
                     let the_key = getContractKey(pin, shared_key);
@@ -191,6 +194,7 @@ export function get_contract(contract_id, user_info, groups = []) {
                 }
                 console.log("group_key", group_key)
                 console.log("PIN", pin)
+                console.log("subject.my_info.eckai", subject.my_info.eckai)
                 shared_key = unsealContractAuxKeyGroup(group_key, Buffer.from(subject.my_info.eckai, 'hex').toString('hex'));
             }
             let the_key = getContractKey(pin, shared_key);
@@ -202,6 +206,7 @@ export function get_contract(contract_id, user_info, groups = []) {
                 }
             })
             resp.payload.contract.necessary_info = JSON.parse(resp.payload.contract.necessary_info)
+            resp.payload.the_key = the_key
         }
         return resp
     }

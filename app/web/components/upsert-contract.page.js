@@ -114,6 +114,7 @@ export default class extends React.Component {
             model:"",
             select_folder_id:null,
             selected_menu:0,
+            sign_mode:false,
             open_users:[],
         }
     }
@@ -185,15 +186,9 @@ export default class extends React.Component {
     }
 
     onClickRegisterSign = () => {
-
-        window.openModal("RegisterSignContract", {
-            onClick:async(sign_data)=>{
-                let sign = sign_data
-                //encrypt model
-                this.props.update_contract_sign(this.state.contract.contract_id, sign)
-            }
-        })
-
+        let sign = sign_data
+        //encrypt model
+        this.props.update_contract_sign(this.state.contract.contract_id, sign)
     }
 
     onToggleUser = (entity_id, corp_id) => {
