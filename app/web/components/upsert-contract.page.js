@@ -185,10 +185,14 @@ export default class extends React.Component {
     }
 
     onClickRegisterSign = () => {
-        let sign = this.state.sign_data
-        //encrypt model
 
-        this.props.update_contract_sign(this.state.contract.contract_id, sign)
+        window.openModal("RegisterSignContract", {
+            onClick:async(sign_data)=>{
+                let sign = sign_data
+                //encrypt model
+                this.props.update_contract_sign(this.state.contract.contract_id, sign)
+            }
+        })
 
     }
 
