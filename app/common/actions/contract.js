@@ -141,6 +141,8 @@ export function get_contracts(type, status, page, display_count = 10, sub_status
                         if (v.is_pin_used) {
                             pin = decryptPINAux(Buffer.from(subject.my_info.epin, 'hex').toString('hex'), Buffer.from(group_key, 'hex'));
                         }
+                        //temporary
+                        pin="000000"
                         console.log("group_key", group_key)
                         console.log("PIN", pin)
                         console.log("subject.my_info.eckai", subject.my_info.eckai)
