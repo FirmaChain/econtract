@@ -7,6 +7,7 @@ import {
     api_add_counterparties,
     api_update_contract_model,
     api_update_contract_sign,
+    api_update_contract_sign_info,
     api_move_contract_can_edit_account_id,
 /*    api_load_contract,
     api_load_contract_info,
@@ -271,21 +272,27 @@ export function update_epin_group(corp_id, group_id, contract_id, user_info, pin
 
 export function update_contract_model(contract_id, model){
     return async function(){
-        return (await api_update_epin_group(contract_id, model)).payload;
+        return (await api_update_contract_model(contract_id, model)).payload;
     };
 }
 
 
 export function update_contract_sign(contract_id, sign){
     return async function(){
-        return (await api_update_epin_group(contract_id, sign)).payload;
+        return (await api_update_contract_sign(contract_id, sign)).payload;
     };
+}
+
+export function update_contract_sign_info(contract_id, sign_info) {
+    return async function() {
+        return (await api_update_contract_sign_info(contract_id, sign_info)).payload;
+    }
 }
 
 
 export function move_contract_can_edit_account_id(contract_id, move_account_id){
     return async function(){
-        return (await api_update_epin_group(contract_id, move_account_id)).payload;
+        return (await api_move_contract_can_edit_account_id(contract_id, move_account_id)).payload;
     };
 }
 

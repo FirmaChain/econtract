@@ -2152,12 +2152,18 @@ div.checkbox2-comp{
 
             >.can-edit-text {
                 position:absolute;
-                right:25px;
-                bottom:25px;
-
-                font-size:$font1;
-                color:$gray;
+                right:30px;
+                bottom:30px;
                 z-index: 9999;
+                width:100%;
+
+                >div {
+                    max-width:900px;
+                    margin:auto;
+                    font-size:$font1;
+                    color:$gray;
+                    text-align: right;
+                }
             }
         }
 
@@ -2165,6 +2171,8 @@ div.checkbox2-comp{
             min-width:150px;
             max-width:300px;
             width:25%;
+
+            border-left: 1px solid $middlegray;
 
             >.top {
                 display: flex;
@@ -2327,6 +2335,20 @@ div.checkbox2-comp{
                             }
                         }
                     }
+                }
+
+                >.button-save-sign-info {
+                    font-size: $font3;
+                    font-weight: bold;
+                    cursor: pointer;
+                    padding:10px 20px;
+                    background-color: $blue;
+                    color:white;
+                    text-align: center;
+
+                    margin-top:30px;
+                    margin-left:10px;
+                    margin-right:10px;
                 }
             }
         }
@@ -3354,7 +3376,7 @@ div.checkbox2-comp{
                 }
 
                 &:hover {
-                    background-color: $lightgray
+                    background-color: $lightgray;
                 }
             }
         }
@@ -4154,6 +4176,130 @@ div.checkbox2-comp{
             }
         }
     }
+}
+
+.move-can-edit-account-modal {
+    background-color: #fff;
+    min-width: 200px;
+    width:400px;
+
+    .container {
+        padding:55px;
+        text-align: center;
+
+        >.icon {
+            >i { 
+                font-size: 30px;
+            }
+        }
+
+        >.title {
+            font-size: $font5;
+            font-weight: bold;
+            color: $black;
+            margin-top: 18px;
+        }
+
+        >.sub-title {
+            text-align: left;
+            font-size: $font2;
+            color: $black;
+            margin-bottom: 10px;
+            margin-top: 40px;
+        }
+
+        >.content {
+            border: 1px solid $gray;
+
+            max-height:350px;
+            overflow-y: auto;
+
+
+            >.item {
+                padding:10px 20px;
+                border-bottom: 1px solid $middlegray;
+                cursor: pointer;
+                text-align: left;
+
+                >.name {
+                    font-size: $font2;
+                    font-weight: bold;
+                    color:$black;
+                }
+
+                >.email {
+                    font-size: $font1;
+                    color:$gray;
+
+                    margin-top:5px;
+                }
+
+                &:last-child {
+                    border-bottom:none;
+                }
+
+                &:hover {
+                    background-color: $lightgray;
+                }
+            }
+
+            >.enable {
+                background-color:$blue;
+
+                >.name {
+                    color:white;
+                }
+
+                >.email {
+                    color:$lightgray;
+                }
+
+                &:hover {
+                    background-color: $blue;
+                }
+            }
+        }
+
+        >.desc {
+            font-size:$font1;
+            color: $gray;
+            margin-top: 30px;
+        }
+
+        >.button {
+            margin-top: 20px;
+
+            >.confirm {
+                margin: auto;
+                margin-top:10px;
+
+                font-size: $font4;
+                font-weight: bold;
+                color: white;
+                cursor: pointer;
+
+                background-color: $blue;
+                border:1px solid $blue;
+                padding:15px;
+                width:250px;
+            }
+
+            >.cancel {
+                margin: auto;
+                margin-top:10px;
+
+                font-size: $font4;
+                font-weight: bold;
+                color: $blue;
+                cursor: pointer;
+
+                border:1px solid $blue;
+                padding:15px;
+                width:250px;
+            }
+        }
+    }
+
 }
 
 

@@ -31,6 +31,7 @@ import {
     get_group_info,
     update_contract_model,
     update_contract_sign,
+    update_contract_sign_info,
     move_contract_can_edit_account_id,
     select_subject,
 
@@ -115,7 +116,7 @@ export default class extends React.Component {
             select_folder_id:null,
             selected_menu:0,
             sign_mode:false,
-            sign_info:[],
+            sign_info:{},
             open_users:[],
         }
     }
@@ -123,26 +124,7 @@ export default class extends React.Component {
     componentDidMount() {
         (async()=>{
             await this.props.fetch_user_info()
-            let contract_id = this.props.match.params.contract_id || 0
-            let groups = [];
-            let _state = {}
-            if(this.props.user_info.account_type != 0) {
-                groups = await this.props.get_group_info(0)
-                _state.groups = groups
-            }
-
-            let contract = await this.props.get_contract(contract_id, this.props.user_info, groups)
-            if(contract.payload.contract) {
-                _state = {
-                    ..._state,
-                    ...contract.payload,
-                }
-
-                this.setState(_state)
-            } else {
-                alert("계약이 존재하지 않습니다.")
-                history.goBack()
-            }
+            await this.onRefresh()
         })()
 
         history.block( (targetLocation) => {
@@ -153,6 +135,29 @@ export default class extends React.Component {
                 history.block( () => true )
             return out_flag
         })
+    }
+
+    onRefresh = async () => {
+        let contract_id = this.props.match.params.contract_id || 0
+        let groups = [];
+        let _state = {}
+        if(this.props.user_info.account_type != 0) {
+            groups = await this.props.get_group_info(0)
+            _state.groups = groups
+        }
+
+        let contract = await this.props.get_contract(contract_id, this.props.user_info, groups)
+        if(contract.payload.contract) {
+            _state = {
+                ..._state,
+                ...contract.payload,
+            }
+
+            this.setState(_state)
+        } else {
+            alert("계약이 존재하지 않습니다.")
+            history.goBack()
+        }
     }
 
     componentWillReceiveProps(props){
@@ -173,16 +178,27 @@ export default class extends React.Component {
         window.html2Doc(document.getElementsByClassName('fr-view')[0], `[계약서] ${this.state.contract.name}`)
     }
 
-    onClickContractSave = () => {
+    onClickContractSave = async () => {
         let model = this.state.model
         //encrypt model
 
-        this.props.update_contract_model(this.state.contract.contract_id, model)
+        await window.showIndicator()
+        await this.props.update_contract_model(this.state.contract.contract_id, model)
+        await this.onRefresh()
+        await window.hideIndicator()
     }
 
     onClickMoveEditPrivilege = () => {
-        let move_account_id
-        this.props.move_contract_can_edit_account_id(this.state.contract.contract_id, move_account_id)
+        window.openModal("MoveCanEditAccount",{
+            user_infos: this.state.infos,
+            my_account_id: this.props.user_info.account_id,
+            onConfirm : async (user)=>{
+                await window.showIndicator()
+                await this.props.move_contract_can_edit_account_id(this.state.contract.contract_id, user.entity_id)
+                await this.onRefresh()
+                await window.hideIndicator()
+            }
+        })
     }
 
     onToggleRegisterSignForm = () => {
@@ -191,12 +207,12 @@ export default class extends React.Component {
         let wrapper = document.getElementsByClassName("fr-wrapper")[0]
         this.state.sign_mode ? 
             wrapper.setAttribute('style', `max-height: 100%; overflow: auto; height: 100%;`) :
-            wrapper.setAttribute('style', `max-height: 100%; overflow: auto; height: 100%; max-height: calc(100% - 33px) !important`);
+            wrapper.setAttribute('style', `max-height: 100%; overflow: auto; height: 100%; max-height: calc(100% - 34px) !important`);
 
-        
         if( !!this.state.contract && this.props.user_info.account_id == this.state.contract.can_edit_account_id ) {
             this.state.sign_mode ? this.editor.edit.on() : this.editor.edit.off()
         }
+
         this.setState({
             sign_mode: !this.state.sign_mode
         })
@@ -204,9 +220,15 @@ export default class extends React.Component {
 
     onClickRegisterSign = () => {
 
-        let sign = sign_data
-        //encrypt model
-        this.props.update_contract_sign(this.state.contract.contract_id, sign)
+        window.openModal("DrawSign",{
+            onFinish : async (sign_blob)=>{
+                let sign = this.state.sign_info
+                sign.sign = sign_blob
+                console.log(sign)
+                //encrypt model
+                //await this.props.update_contract_sign(this.state.contract.contract_id, sign)
+            }
+        })
     }
 
     onToggleUser = (entity_id, corp_id) => {
@@ -269,7 +291,6 @@ export default class extends React.Component {
 
     render_sign_form() {
         let sign_info_list
-        console.log(this.state.contract)
         if(this.props.user_info.account_type == 0) {
             sign_info_list = this.state.contract.necessary_info.individual
         } else {
@@ -283,15 +304,16 @@ export default class extends React.Component {
                     <div className="text-box">
                         <input className="common-textbox"
                             type="text"
-                            value={this.state.sign_info[e] || ""}
+                            value={this.state.sign_info["#"+e]}
                             onChange={(ee) => {
-                                let _ = this.state.sign_info ? [...this.state.sign_info] : []
-                                _[e] = ee.target.value
-                                this.setState({sign_info:_}) 
+                                let _ = {...this.state.sign_info}
+                                _["#"+e] = ee.target.value
+                                this.setState({sign_info:_})
                             }} />
                     </div>
                 </div>
             })}
+            <div className="button-save-sign-info" onClick={this.onClickRegisterSign}>서명하기</div>
         </div>
     }
 
@@ -435,7 +457,9 @@ export default class extends React.Component {
                             config={this.config}
                             model={this.state.model}
                             onModelChange={(model) => this.setState({model})} />
-                        <div className="can-edit-text">현재 {can_edit_name} 님이 수정권한을 갖고 있습니다.</div>
+                        <div className="can-edit-text">
+                            <div>현재 {can_edit_name} 님이 수정권한을 갖고 있습니다.</div>
+                        </div>
                     </div>
                     {!this.state.sign_mode ? <div className="info">
                         <div className="top">
@@ -462,11 +486,11 @@ export default class extends React.Component {
             </div>
             <div className="bottom-container">
                 <div className="left">
-                    {this.state.contract.can_edit_account_id == this.props.user_info.account_id ? [<div className="but" onClick={this.onClickContractSave}>
+                    {this.state.contract.can_edit_account_id == this.props.user_info.account_id ? [<div className="but" onClick={this.onClickContractSave} key={"contract_save"}>
                         <i className="far fa-save"></i>
                         수정한 내용 저장하기
                     </div>,
-                    <div className="but" onClick={this.onClickMoveEditPrivilege}>
+                    <div className="but" onClick={this.onClickMoveEditPrivilege} key={"edit_privilege"}>
                         <i className="far fa-arrow-to-right"></i>
                         수정 권한 넘기기
                     </div>] : null}

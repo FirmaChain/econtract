@@ -165,29 +165,6 @@ class OneAddModal extends React.Component {
     }
 }
 
-// <div className="submit" onClick={this.onConfirm}>추가</div>
-
-/*<div className="one-add-modal">
-    <div className="container">
-        <div className="data">
-            <div className="icon"><i className={this.props.icon}></i></div>
-            <div className="desc-container">
-                <div className="place">
-                    <div className="title">{this.props.title}</div>
-                </div>
-                <div className="content">
-                </div>
-                <div className="desc" dangerouslySetInnerHTML={{__html:this.props.desc}}>
-                </div>
-            </div>
-        </div>
-        <div className="button">
-            <div className="confirm" onClick={this.onConfirm}>{this.props.confirmText || "추가"}</div>
-            <div className="cancel" onClick={this.closeSelf}>취소</div>
-        </div>
-    </div>
-</div>*/
-
 @modal
 class CommonModal extends React.Component {
     constructor(props) {
@@ -634,6 +611,66 @@ class Confirm extends React.Component{
     }
 }
 
+@modal
+class MoveCanEditAccount extends React.Component {
+
+    constructor(props) {
+        super(props)
+        this.state = {
+            select:null
+        }
+    }
+
+    componentDidMount() {
+    }
+
+    closeSelf = () => {
+        window.closeModal(this.props.modalId)
+    }
+
+    onConfirm = () => {
+        if(!this.state.select)
+            return alert("권한을 넘길 사용자를 선택해주세요.")
+
+        this.props.onConfirm && this.props.onConfirm(this.state.select)
+        this.closeSelf();
+    }
+
+    onSelect = (e) => {
+        this.setState({select:e})
+    }
+
+    render() {
+        return <div className="move-can-edit-account-modal">
+            <div className="container">
+                <div className="icon"><i className="fas fa-arrow-alt-right"></i></div>
+                <div className="title">수정 권한 넘기기</div>
+                <div className="sub-title">계약서 수정 권한을 타인에게 넘깁니다.</div>
+                <div className="content">
+                {this.props.user_infos.map( (e, k) => {
+                    if(e.privilege != 1 || this.props.my_account_id == e.entity_id)
+                        return
+
+                    return <div className={"item" + (this.state.select == e ? " enable" : "")} key={k} onClick={this.onSelect.bind(this, e)}>
+                        <div className="name">{e.user_info.username ? e.user_info.username : e.user_info.title}</div>
+                        <div className="email">{e.user_info.email ? e.user_info.email : e.user_info.company_name}</div>
+                    </div>
+                })}
+                </div>
+                <div className="button">
+                    <div className="confirm" onClick={this.onConfirm}>수정 권한 넘기기</div>
+                    <div className="cancel" onClick={this.closeSelf}>취소</div>
+                </div>
+            </div>
+        </div>        
+    }
+}
+
+
+
+
+
+
 
 
 
@@ -793,8 +830,24 @@ class DrawSign extends React.Component{
     }
 
     finishDraw = ()=>{
-        this.props.onFinish(this.refs.canvas.toDataURL("image/png"))
+        let dataUrl = this.refs.canvas.toDataURL("image/jpeg")
+        var blob = this.dataURItoBlob(dataUrl);
+        this.props.onFinish(blob)
         window.closeModal(this.props.modalId)
+    }
+
+    dataURItoBlob(dataURI) {
+        let byteString = atob(dataURI.split(',')[1]);
+        let mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
+        let ab = new ArrayBuffer(byteString.length);
+        let ia = new Uint8Array(ab);
+        for (let i = 0; i < byteString.length; i++)
+        {
+            ia[i] = byteString.charCodeAt(i);
+        }
+
+        let bb = new Blob([ab], { "type": mimeString });
+        return bb;
     }
 
     closeSelf = ()=>{
