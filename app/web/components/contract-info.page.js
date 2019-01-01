@@ -50,9 +50,9 @@ export default class extends React.Component {
         (async()=>{
             await this.props.fetch_user_info()
             let contract_id = this.props.match.params.contract_id || 0
-            let contract
+            let contract, groups = []
             if(this.props.user_info.account_type != 0) {
-                let groups = await this.props.get_group_info(0)
+                groups = await this.props.get_group_info(0)
                 contract = await this.props.get_contract(contract_id, this.props.user_info, groups)
             } else {
                 contract = await this.props.get_contract(contract_id, this.props.user_info)
@@ -61,7 +61,8 @@ export default class extends React.Component {
             if(contract.payload.contract) {
                 console.log(contract.payload)
                 this.setState({
-                    ...contract.payload
+                    ...contract.payload,
+                    groups
                 })
             } else {
                 alert("계약이 존재하지 않습니다.")
@@ -184,10 +185,18 @@ export default class extends React.Component {
         let creator;
         let users = [];
         for(let v of this.state.infos) {
-            if(v.corp_id == 0 && v.entity_id == contract.account_id) {
+            if(v.corp_id == 0 && v.entity_id == this.props.user_info.account_id) {
                 creator = v
             }
             users.push(v.user_info.username ? v.user_info.username : v.user_info.title)
+        }
+
+        if(!creator && this.props.user_info.account_type != 0) {
+            for(let v of this.state.infos) {
+                if(v.corp_id == this.props.user_info.corp_id && !this.state.groups.find(e=>e.group_id == v.entity_id)  ) {
+                    creator = v
+                }
+            }
         }
         users = users.join(", ")
 

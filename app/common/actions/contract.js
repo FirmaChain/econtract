@@ -138,11 +138,11 @@ export function get_contracts(type, status, page, display_count = 10, sub_status
                         }
                         shared_key = unsealContractAuxKey(entropy, Buffer.from(subject.my_info.eckai, 'hex').toString('hex'));
                     } else {
+                        let group_key = getGroupKey(user_info, subject.my_info.entity_id);
                         if (resp.payload.is_pin_used) {
-                            let group_key = getGroupKey(user_info, subject.entity_id);
                             pin = decryptPINAux(subject.my_info.epin, group_key);
                         }
-                        shared_key = unsealContractAuxKeyGroup(getGroupKey(user_info, subject.my_info.entity_id), Buffer.from(subject.my_info.eckai, 'hex').toString('hex'));
+                        shared_key = unsealContractAuxKeyGroup(group_key, Buffer.from(subject.my_info.eckai, 'hex').toString('hex'));
                     }
                     let the_key = getContractKey(pin, shared_key);
 
@@ -186,11 +186,12 @@ export function get_contract(contract_id, user_info, groups = []) {
                 }
                 shared_key = unsealContractAuxKey(entropy, Buffer.from(subject.my_info.eckai, 'hex').toString('hex'));
             } else {
+                let group_key = getGroupKey(user_info, subject.my_info.entity_id);
                 if (resp.payload.contract.is_pin_used) {
-                    let group_key = getGroupKey(user_info, subject.entity_id);
                     pin = decryptPINAux(subject.my_info.epin, group_key);
                 }
-                shared_key = unsealContractAuxKeyGroup(getGroupKey(user_info, subject.my_info.entity_id), Buffer.from(subject.my_info.eckai, 'hex').toString('hex'));
+                console.log(group_key, Buffer.from(subject.my_info.eckai, 'hex').toString('hex'))
+                shared_key = unsealContractAuxKeyGroup(group_key, Buffer.from(subject.my_info.eckai, 'hex').toString('hex'));
             }
             let the_key = getContractKey(pin, shared_key);
 
