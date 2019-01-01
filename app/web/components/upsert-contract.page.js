@@ -115,6 +115,7 @@ export default class extends React.Component {
             select_folder_id:null,
             selected_menu:0,
             sign_mode:false,
+            sign_info:[],
             open_users:[],
         }
     }
@@ -136,7 +137,6 @@ export default class extends React.Component {
                     ..._state,
                     ...contract.payload,
                 }
-                console.log(contract)
 
                 this.setState(_state)
             } else {
@@ -185,7 +185,25 @@ export default class extends React.Component {
         this.props.move_contract_can_edit_account_id(this.state.contract.contract_id, move_account_id)
     }
 
+    onToggleRegisterSignForm = () => {
+        this.state.sign_mode ? this.editor.toolbar.show() : this.editor.toolbar.hide()
+
+        let wrapper = document.getElementsByClassName("fr-wrapper")[0]
+        this.state.sign_mode ? 
+            wrapper.setAttribute('style', `max-height: 100%; overflow: auto; height: 100%;`) :
+            wrapper.setAttribute('style', `max-height: 100%; overflow: auto; height: 100%; max-height: calc(100% - 33px) !important`);
+
+        
+        if( !!this.state.contract && this.props.user_info.account_id == this.state.contract.can_edit_account_id ) {
+            this.state.sign_mode ? this.editor.edit.on() : this.editor.edit.off()
+        }
+        this.setState({
+            sign_mode: !this.state.sign_mode
+        })
+    }
+
     onClickRegisterSign = () => {
+
         let sign = sign_data
         //encrypt model
         this.props.update_contract_sign(this.state.contract.contract_id, sign)
@@ -247,6 +265,34 @@ export default class extends React.Component {
             case 2:
                 return "보기 전용"
         }
+    }
+
+    render_sign_form() {
+        let sign_info_list
+        console.log(this.state.contract)
+        if(this.props.user_info.account_type == 0) {
+            sign_info_list = this.state.contract.necessary_info.individual
+        } else {
+            sign_info_list = this.state.contract.necessary_info.corporation
+        }
+
+        return <div className="bottom sign-form">
+            {sign_info_list.map( (e, k) => {
+                return <div className="desc" key={e}>
+                    <div className="title">{e}</div>
+                    <div className="text-box">
+                        <input className="common-textbox"
+                            type="text"
+                            value={this.state.sign_info[e] || ""}
+                            onChange={(ee) => {
+                                let _ = this.state.sign_info ? [...this.state.sign_info] : []
+                                _[e] = ee.target.value
+                                this.setState({sign_info:_}) 
+                            }} />
+                    </div>
+                </div>
+            })}
+        </div>
     }
 
     render_sign() {
@@ -391,7 +437,7 @@ export default class extends React.Component {
                             onModelChange={(model) => this.setState({model})} />
                         <div className="can-edit-text">현재 {can_edit_name} 님이 수정권한을 갖고 있습니다.</div>
                     </div>
-                    <div className="info">
+                    {!this.state.sign_mode ? <div className="info">
                         <div className="top">
                             <div className={"menu" + (this.state.selected_menu == 0 ? " enable-menu" : "")} onClick={e=>this.setState({selected_menu:0})}>
                                 <i className="far fa-signature"></i>
@@ -403,7 +449,15 @@ export default class extends React.Component {
                             </div>
                         </div>
                         {this.render_info()}
-                    </div>
+                    </div> : <div className="info">
+                        <div className="top">
+                            <div className="menu">
+                                <i className="far fa-signature"></i>
+                                <div className="text">서명 하기</div>
+                            </div>
+                        </div>
+                        {this.render_sign_form()}
+                    </div>}
                 </div>
             </div>
             <div className="bottom-container">
@@ -421,8 +475,8 @@ export default class extends React.Component {
                         계약 미리보기
                     </div>
                 </div>
-                <div className="sign" onClick={this.onClickRegisterSign}>
-                    서명 정보 등록
+                <div className="sign" onClick={this.onToggleRegisterSignForm}>
+                    {this.state.sign_mode ? "편집 모드" : "서명 정보 등록"}
                 </div>
             </div>
 		</div>);
