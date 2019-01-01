@@ -59,7 +59,6 @@ export default class extends React.Component {
             }
 
             if(contract.payload.contract) {
-                console.log(contract.payload)
                 this.setState({
                     ...contract.payload,
                     groups
