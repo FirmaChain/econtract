@@ -151,8 +151,10 @@ export default class extends React.Component {
         if(contract.payload.contract) {
             let sign_info = {}
             let me = select_subject(contract.payload.infos, groups, this.props.user_info.account_id, 0).my_info
-            if(me)
-                sign_info = me.sign_info
+            if(me) {
+                sign_info = me.sign_info;
+                this.onToggleUser(me.entity_id, me.corp_id, true)
+            }
             _state = {
                 ..._state,
                 ...contract.payload,
@@ -246,7 +248,7 @@ export default class extends React.Component {
         })*/
     }
 
-    onToggleUser = (entity_id, corp_id) => {
+    onToggleUser = (entity_id, corp_id, force_add = false) => {
         let _ = [...this.state.open_users]
         
         let checkFlag = false
@@ -254,7 +256,7 @@ export default class extends React.Component {
             let v = _[i]
             if(v.l == entity_id+"_"+corp_id) {
                 checkFlag = true
-                _.splice(i, 1)
+                if(!force_add) _.splice(i, 1)
             }
         }
 
