@@ -248,7 +248,7 @@ export default class extends React.Component {
         })*/
     }
 
-    onToggleUser = (entity_id, corp_id, force_add) => {
+    onToggleUser = (entity_id, corp_id, force_open) => {
         let _ = [...this.state.open_users]
         
         let checkFlag = false
@@ -256,7 +256,7 @@ export default class extends React.Component {
             let v = _[i]
             if(v.l == entity_id+"_"+corp_id) {
                 checkFlag = true;
-                if(!force_add) _.splice(i, 1)
+                if(!force_open) _.splice(i, 1)
             }
         }
 
