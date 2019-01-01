@@ -248,14 +248,14 @@ export default class extends React.Component {
         })*/
     }
 
-    onToggleUser = (entity_id, corp_id, force_add = false) => {
+    onToggleUser = (entity_id, corp_id, force_add) => {
         let _ = [...this.state.open_users]
         
         let checkFlag = false
         for(let i in _) {
             let v = _[i]
             if(v.l == entity_id+"_"+corp_id) {
-                checkFlag = true
+                checkFlag = true;
                 if(!force_add) _.splice(i, 1)
             }
         }
@@ -344,7 +344,7 @@ export default class extends React.Component {
         return <div className="bottom signs">
             <div className="title">총 {user_infos.length}명</div>
             <div className="user-container me">
-                <div className="user" onClick={this.onToggleUser.bind(this, meOrGroup.entity_id, meOrGroup.corp_id)}>
+                <div className="user" onClick={this.onToggleUser.bind(this, meOrGroup.entity_id, meOrGroup.corp_id, false)}>
                     <i className="icon fas fa-user-edit"></i>
                     <div className="user-info">
                         <div className="name">{meOrGroup.user_info.username ? meOrGroup.user_info.username : meOrGroup.user_info.title}<span>{this.text_status(meOrGroup)}</span></div>
@@ -400,7 +400,7 @@ export default class extends React.Component {
                     return null
 
                 return <div className="user-container" key={e.entity_id+"_"+e.corp_id}>
-                    <div className="user" onClick={this.onToggleUser.bind(this, e.entity_id, e.corp_id)}>
+                    <div className="user" onClick={this.onToggleUser.bind(this, e.entity_id, e.corp_id, false)}>
                         <div className="user-info">
                             <div className="name">{info.name}<span>{this.text_status(e)}</span></div>
                             <div className="email">{info.sub}</div>
