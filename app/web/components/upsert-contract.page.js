@@ -57,6 +57,7 @@ let mapDispatchToProps = {
     update_contract_model,
     update_contract_sign,
     move_contract_can_edit_account_id,
+    update_contract_sign_info,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -151,6 +152,7 @@ export default class extends React.Component {
             _state = {
                 ..._state,
                 ...contract.payload,
+                model:Buffer.from(contract.payload.contract.html).toString()
             }
 
             this.setState(_state)
@@ -201,7 +203,7 @@ export default class extends React.Component {
         })
     }
 
-    onToggleRegisterSignForm = () => {
+    onToggleRegisterSignForm = async () => {
         this.state.sign_mode ? this.editor.toolbar.show() : this.editor.toolbar.hide()
 
         let wrapper = document.getElementsByClassName("fr-wrapper")[0]
@@ -213,13 +215,21 @@ export default class extends React.Component {
             this.state.sign_mode ? this.editor.edit.on() : this.editor.edit.off()
         }
 
+        if(this.state.sign_mode) {
+            await window.showIndicator()
+            await this.props.update_contract_sign_info(this.state.contract.contract_id, this.state.sign_info)
+            await this.onRefresh()
+            await window.hideIndicator()
+        }
+
         this.setState({
             sign_mode: !this.state.sign_mode
         })
     }
 
-    onClickRegisterSign = () => {
-
+    onClickRegisterSign = async () => {
+        
+        /*
         window.openModal("DrawSign",{
             onFinish : async (sign_blob)=>{
                 let sign = this.state.sign_info
@@ -228,7 +238,7 @@ export default class extends React.Component {
                 //encrypt model
                 //await this.props.update_contract_sign(this.state.contract.contract_id, sign)
             }
-        })
+        })*/
     }
 
     onToggleUser = (entity_id, corp_id) => {
@@ -348,14 +358,14 @@ export default class extends React.Component {
                             for(let v of contract.necessary_info.indivisual) {
                                 divs.push(<div className="text-place" key={v}>
                                     <div className="title">{v}</div>
-                                    <div className="desc">{meOrGroup.user_info["#"+v] || "미등록"}</div>
+                                    <div className="desc">{meOrGroup.sign_info ? meOrGroup.sign_info["#"+v] || "미등록" : "미등록"}</div>
                                 </div>)
                             }
                         } else {
                             for(let v of contract.necessary_info.corporation) {
                                 divs.push(<div className="text-place" key={v}>
                                     <div className="title">{v}</div>
-                                    <div className="desc">{meOrGroup.user_info["#"+v] || "미등록"}</div>
+                                    <div className="desc">{meOrGroup.sign_info ? meOrGroup.sign_info["#"+v] || "미등록" : "미등록"}</div>
                                 </div>)
                             }
                         }
@@ -500,7 +510,7 @@ export default class extends React.Component {
                     </div>
                 </div>
                 <div className="sign" onClick={this.onToggleRegisterSignForm}>
-                    {this.state.sign_mode ? "편집 모드" : "서명 정보 등록"}
+                    {this.state.sign_mode ? "저장하기" : "서명 정보 등록"}
                 </div>
             </div>
 		</div>);
