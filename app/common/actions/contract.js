@@ -206,6 +206,7 @@ export function get_contract(contract_id, user_info, groups = []) {
                 return {
                     ...e,
                     user_info : JSON.parse(aes_decrypt(Buffer.from(e.user_info, 'hex').toString('hex'), the_key)),
+                    sign_info : JSON.parse(e.sign_info),
                 }
             })
             resp.payload.contract.necessary_info = JSON.parse(resp.payload.contract.necessary_info)
@@ -285,7 +286,7 @@ export function update_contract_sign(contract_id, sign){
 
 export function update_contract_sign_info(contract_id, sign_info) {
     return async function() {
-        return (await api_update_contract_sign_info(contract_id, sign_info)).payload;
+        return (await api_update_contract_sign_info(contract_id, JSON.stringify(sign_info) )).payload;
     }
 }
 
