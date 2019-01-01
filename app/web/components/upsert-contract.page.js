@@ -149,10 +149,15 @@ export default class extends React.Component {
 
         let contract = await this.props.get_contract(contract_id, this.props.user_info, groups)
         if(contract.payload.contract) {
+            let sign_info = {}
+            let me = select_subject(contract.payload.infos, groups, this.props.user_info.account_id, 0).my_info
+            if(me)
+                sign_info = me.sign_info
             _state = {
                 ..._state,
                 ...contract.payload,
-                model:Buffer.from(contract.payload.contract.html).toString()
+                model:Buffer.from(contract.payload.contract.html).toString(),
+                sign_info,
             }
 
             this.setState(_state)
@@ -215,16 +220,16 @@ export default class extends React.Component {
             this.state.sign_mode ? this.editor.edit.on() : this.editor.edit.off()
         }
 
-        if(this.state.sign_mode) {
-            await window.showIndicator()
-            await this.props.update_contract_sign_info(this.state.contract.contract_id, this.state.sign_info)
-            await this.onRefresh()
-            await window.hideIndicator()
-        }
-
         this.setState({
             sign_mode: !this.state.sign_mode
         })
+    }
+
+    onClickRegiserSignInfo = async () => {
+        await window.showIndicator()
+        await this.props.update_contract_sign_info(this.state.contract.contract_id, this.state.sign_info)
+        await this.onRefresh()
+        await window.hideIndicator()
     }
 
     onClickRegisterSign = async () => {
@@ -323,7 +328,7 @@ export default class extends React.Component {
                     </div>
                 </div>
             })}
-            <div className="button-save-sign-info" onClick={this.onClickRegisterSign}>서명하기</div>
+            <div className="button-save-sign-info" onClick={this.onClickRegiserSignInfo}>서명 정보 저장</div>
         </div>
     }
 
@@ -331,7 +336,7 @@ export default class extends React.Component {
         let contract = this.state.contract;
         let user_infos = this.state.infos;
 
-        let corp_id = this.props.user_info.corp_id || -1
+        let corp_id = this.props.user_info.corp_id || 0
         let meOrGroup = select_subject(user_infos, this.state.groups, this.props.user_info.account_id, corp_id).my_info
 
         return <div className="bottom signs">
@@ -375,6 +380,8 @@ export default class extends React.Component {
                         <div className="title">서명</div>
                         <div className="desc">{meOrGroup.sign ? <div></div>: "서명 하기 전"}</div>
                     </div>
+
+                    {meOrGroup.privilege == 1 ? <div className="modify-button" onClick={this.onToggleRegisterSignForm}> 서명 정보 수정 </div> : null}
                 </div> : null}
             </div>
             {user_infos.map( (e, k) => {
@@ -509,9 +516,12 @@ export default class extends React.Component {
                         계약 미리보기
                     </div>
                 </div>
-                <div className="sign" onClick={this.onToggleRegisterSignForm}>
-                    {this.state.sign_mode ? "저장하기" : "서명 정보 등록"}
-                </div>
+                {this.state.sign_mode ? <div className="sign" onClick={this.onToggleRegisterSignForm}>
+                    편집 모드
+                </div> : <div className="sign" onClick={this.onClickRegisterSign}>
+                    서명 하기
+                </div>}
+                
             </div>
 		</div>);
 	}

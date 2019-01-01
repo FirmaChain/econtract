@@ -2298,6 +2298,15 @@ div.checkbox2-comp{
                                 margin-bottom:20px;
                             }
                         }
+
+                        >.modify-button {
+                            font-size: $font2;
+                            cursor: pointer;
+                            padding:10px 20px;
+                            background-color: $blue;
+                            color:white;
+                            text-align: center;
+                        }
                     }
                 }  
 
