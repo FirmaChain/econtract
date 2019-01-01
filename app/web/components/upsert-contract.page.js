@@ -496,7 +496,7 @@ export default class extends React.Component {
                         <div className="top">
                             <div className="menu">
                                 <i className="far fa-signature"></i>
-                                <div className="text">서명 하기</div>
+                                <div className="text">서명 정보 등록</div>
                             </div>
                         </div>
                         {this.render_sign_form()}
