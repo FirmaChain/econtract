@@ -2137,6 +2137,7 @@ div.checkbox2-comp{
 
         >.editor {
             flex:1;
+            position: relative;
 
             >.title {
                 padding:8px 20px;
@@ -2145,6 +2146,16 @@ div.checkbox2-comp{
                 font-size: $font1;
                 font-weight: bold;
                 color:$black;
+            }
+
+            >.can-edit-text {
+                position:absolute;
+                right:25px;
+                bottom:10px;
+
+                font-size:$font1;
+                color:$gray;
+                z-index: 9999;
             }
         }
 
@@ -2257,6 +2268,7 @@ div.checkbox2-comp{
 
                     >.user-detail {
                         border-top: 1px solid $lightgray;
+                        border-bottom: 1px solid $lightgray;
                         padding:10px;
 
                         >.text-place {

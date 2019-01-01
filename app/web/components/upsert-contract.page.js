@@ -90,12 +90,21 @@ export default class extends React.Component {
                 'subscript', 'superscript', 'quote', 'paragraphStyle', '-',
                 'insertLink', 'insertImage', 'insertTable', '|',
                 'specialCharacters', 'insertHR', 'selectAll', 'clearFormatting', '|',
-                'print', /*'getPDF', */'spellChecker', 'help', '|', 'undo', 'redo','fullscreen']
+                'print', /*'getPDF', */'spellChecker', 'help', '|', 'undo', 'redo','fullscreen'],
+
+            events : {
+                'froalaEditor.initialized' : (e, editor) => {
+                    this.editor = editor;
+                    if( !!this.state.contract && this.props.user_info.account_id != this.state.contract.can_edit_account_id ) {
+                        this.editor.edit.off()
+                    }
+                }
+            }
         }
+
 
         this.state = {
             model:"",
-            editMode:false,
             select_folder_id:null,
             selected_menu:0,
             open_users:[],
@@ -119,6 +128,7 @@ export default class extends React.Component {
                     ..._state,
                     ...contract.payload,
                 }
+                console.log(contract)
 
                 this.setState(_state)
             } else {
@@ -152,7 +162,7 @@ export default class extends React.Component {
             pagebreak:{ mode: ['avoid-all'] }
         }
         //html2pdf().set(savePdfOption).from(document.getElementsByClassName('fr-view')[0]).save()
-        window.html2Doc(document.getElementsByClassName('fr-view')[0], `[계약서] ${this.state.title}`)
+        window.html2Doc(document.getElementsByClassName('fr-view')[0], `[계약서] ${this.state.contract.name}`)
     }
 
     onClickContractSave = () => {
@@ -192,31 +202,6 @@ export default class extends React.Component {
         return false 
     }
 
-    onClickSubmit = async () => {
-        if(this.state.title == "")
-            return alert("게약서 제목을 입력해주세요.")
-        else if(this.state.select_folder_id == null)
-            return alert("게약서을 저장할 폴더를 선택해주세요.")
-
-        if(this.state.editMode) {
-            if(await window.confirm("계약서 수정", `해당 계약서를 수정하시겠습니까?`)){
-                this.blockFlag = true
-                await window.showIndicator()
-                //await this.props.update_template(this.state.template_id, this.state.select_folder_id, this.state.title, this.state.model)
-                await window.hideIndicator()
-                history.goBack()
-            }
-        } else {
-            if(await window.confirm("계약서 등록", `해당 계약서를 등록하시겠습니까?`)){
-                this.blockFlag = true
-                await window.showIndicator()
-                //await this.props.add_template(this.state.title, this.state.select_folder_id, this.state.model)
-                await window.hideIndicator()
-                history.goBack()
-            }
-        }
-    }
-
     textPrivilege(privilege) {
         switch(privilege) {
             case 1:
@@ -237,6 +222,15 @@ export default class extends React.Component {
         }
     }
 
+    text_status(v) {
+        switch(v.privilege) {
+            case 1:
+                return v.sign ? "서명 완료" : "서명 전"
+            case 2:
+                return "보기 전용"
+        }
+    }
+
     render_sign() {
         let contract = this.state.contract;
         let user_infos = this.state.infos;
@@ -250,10 +244,10 @@ export default class extends React.Component {
                 <div className="user" onClick={this.onToggleUser.bind(this, meOrGroup.entity_id, meOrGroup.corp_id)}>
                     <i className="icon fas fa-user-edit"></i>
                     <div className="user-info">
-                        <div className="name">{meOrGroup.user_info.username ? meOrGroup.user_info.username : meOrGroup.user_info.title}<span>서명 전</span></div>
+                        <div className="name">{meOrGroup.user_info.username ? meOrGroup.user_info.username : meOrGroup.user_info.title}<span>{this.text_status(meOrGroup)}</span></div>
                         <div className="email">{meOrGroup.user_info.email ? meOrGroup.user_info.email : meOrGroup.user_info.company_name}</div>
                     </div>
-                    <i className="arrow fas fa-caret-down"></i>
+                    {this.isOpenUser(meOrGroup.entity_id, meOrGroup.corp_id) ? <i className="arrow fas fa-caret-up"></i> : <i className="arrow fas fa-caret-down"></i>}
                 </div>
                 {this.isOpenUser(meOrGroup.entity_id, meOrGroup.corp_id) ? <div className="user-detail">
                     <div className="text-place">
@@ -303,10 +297,10 @@ export default class extends React.Component {
                 return <div className="user-container" key={e.entity_id+"_"+e.corp_id}>
                     <div className="user" onClick={this.onToggleUser.bind(this, e.entity_id, e.corp_id)}>
                         <div className="user-info">
-                            <div className="name">{info.name}<span>서명 전</span></div>
+                            <div className="name">{info.name}<span>{this.text_status(e)}</span></div>
                             <div className="email">{info.sub}</div>
                         </div>
-                        <i className="arrow fas fa-caret-down"></i>
+                        {this.isOpenUser(e.entity_id, e.corp_id) ? <i className="arrow fas fa-caret-up"></i> : <i className="arrow fas fa-caret-down"></i>}
                     </div>
                     {this.isOpenUser(e.entity_id, e.corp_id) ? <div className="user-detail">
                         <div className="text-place">
@@ -353,6 +347,13 @@ export default class extends React.Component {
         if(!this.props.user_info || !this.state.contract)
             return <div></div>
 
+        let can_edit_name
+        for(let v of this.state.infos) {
+            if(v.corp_id == 0 && v.entity_id == this.state.contract.can_edit_account_id) {
+                can_edit_name = v.user_info.username
+            }
+        }
+
         return (<div className="upsert-contract-page">
             <div className="header-page">
                 <div className="header">
@@ -370,6 +371,7 @@ export default class extends React.Component {
                             config={this.config}
                             model={this.state.model}
                             onModelChange={(model) => this.setState({model})} />
+                        <div className="can-edit-text">현재 {can_edit_name} 님이 수정권한을 갖고 있습니다.</div>
                     </div>
                     <div className="info">
                         <div className="top">
@@ -388,14 +390,14 @@ export default class extends React.Component {
             </div>
             <div className="bottom-container">
                 <div className="left">
-                    <div className="but" onClick={this.onClickContractSave}>
+                    {this.state.contract.can_edit_account_id == this.props.user_info.account_id ? [<div className="but" onClick={this.onClickContractSave}>
                         <i className="far fa-save"></i>
                         수정한 내용 저장하기
-                    </div>
+                    </div>,
                     <div className="but" onClick={this.onClickMoveEditPrivilege}>
                         <i className="far fa-arrow-to-right"></i>
                         수정 권한 넘기기
-                    </div>
+                    </div>] : null}
                     <div className="but" onClick={this.onClickPreview}>
                         <i className="fal fa-eye"></i>
                         계약 미리보기
