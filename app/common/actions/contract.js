@@ -141,7 +141,7 @@ export function get_contracts(type, status, page, display_count = 10, sub_status
                     } else {
                         let group_key = getGroupKey(user_info, subject.my_info.entity_id);
                         if (e.is_pin_used) {
-                            pin = decryptPINAux(subject.my_info.epin, group_key);
+                            pin = decryptPINAux(subject.my_info.epin, Buffer.from(group_key, 'hex'));
                         }
                         shared_key = unsealContractAuxKeyGroup(group_key, Buffer.from(subject.my_info.eckai, 'hex').toString('hex'));
                     }
@@ -189,7 +189,7 @@ export function get_contract(contract_id, user_info, groups = []) {
             } else {
                 let group_key = getGroupKey(user_info, subject.my_info.entity_id);
                 if (resp.payload.is_pin_used) {
-                    pin = decryptPINAux(subject.my_info.epin, group_key);
+                    pin = decryptPINAux(subject.my_info.epin, Buffer.from(group_key, 'hex'));
                 }
                 shared_key = unsealContractAuxKeyGroup(group_key, Buffer.from(subject.my_info.eckai, 'hex').toString('hex'));
             }
@@ -225,7 +225,7 @@ export function add_counterparties(contract_id, counterparties, groups, user_inf
         } else {
             if (resp.payload.is_pin_used) {
                 let group_key = getGroupKey(user_info, subject.entity_id);
-                pin = decryptPINAux(subject.my_info.epin, group_key);
+                pin = decryptPINAux(subject.my_info.epin, Buffer.from(group_key, 'hex'));
             }
             shared_key = unsealContractAuxKeyGroup(getGroupKey(user_info, subject.my_info.entity_id), Buffer.from(subject.my_info.eckai, 'hex').toString('hex'));
         }
@@ -256,7 +256,7 @@ export function update_epin_account(contract_id, pin){
 export function update_epin_group(corp_id, group_id, contract_id, user_info, pin){
     return async function(){
         let group_key = getGroupKey(user_info, group_id);
-        let epin = encryptPINAux(pin, Buffer.from(group_key));
+        let epin = encryptPINAux(pin, Buffer.from(group_key, 'hex'));
         return (await api_update_epin_group(corp_id, group_id, contract_id, epin)).payload;
     };
 }
