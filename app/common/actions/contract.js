@@ -206,7 +206,8 @@ export function get_contract(contract_id, user_info, groups = []) {
                 return {
                     ...e,
                     user_info : JSON.parse(aes_decrypt(Buffer.from(e.user_info, 'hex').toString('hex'), the_key)),
-                    sign_info : JSON.parse(e.sign_info),
+                    sign_info : e.sign_info ? JSON.parse(Buffer.from(e.sign_info).toString()) : e.sign_info,
+                    signature : e.signature ? JSON.parse(Buffer.from(e.signature).toString()) : e.signature,
                 }
             })
             resp.payload.contract.necessary_info = JSON.parse(resp.payload.contract.necessary_info)
