@@ -29,7 +29,11 @@ import {
     get_template,
     get_contract,
     get_group_info,
+    update_contract_model,
+    update_contract_sign,
+    move_contract_can_edit_account_id,
     select_subject,
+
 } from "../../common/actions"
 import CheckBox2 from "./checkbox2"
 
@@ -49,6 +53,9 @@ let mapDispatchToProps = {
     get_template,
     get_contract,
     get_group_info,
+    update_contract_model,
+    update_contract_sign,
+    move_contract_can_edit_account_id,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -166,10 +173,22 @@ export default class extends React.Component {
     }
 
     onClickContractSave = () => {
+        let model = this.state.model
+        //encrypt model
 
+        this.props.update_contract_model(this.state.contract.contract_id, model)
     }
 
     onClickMoveEditPrivilege = () => {
+        let move_account_id
+        this.props.move_contract_can_edit_account_id(this.state.contract.contract_id, move_account_id)
+    }
+
+    onClickRegisterSign = () => {
+        let sign = this.state.sign_data
+        //encrypt model
+
+        this.props.update_contract_sign(this.state.contract.contract_id, sign)
 
     }
 
@@ -403,7 +422,7 @@ export default class extends React.Component {
                         계약 미리보기
                     </div>
                 </div>
-                <div className="sign" onClick={this.onClickSubmit}>
+                <div className="sign" onClick={this.onClickRegisterSign}>
                     서명 정보 등록
                 </div>
             </div>

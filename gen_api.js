@@ -92,22 +92,20 @@ export async function api_update_contract_model(contract_id,model){
         session:window.getCookie("session")
     });
 }
-export async function api_update_contract_sign(account_id,contract_id,sign){
+export async function api_update_contract_sign(contract_id,sign){
     let __data = new FormData();
 
-    __data.append('account_id', account_id);
-	__data.append('contract_id', contract_id);
+    __data.append('contract_id', contract_id);
 	__data.append('sign', sign)
 
     return await post("/update_contract_sign", __data,{
         session:window.getCookie("session")
     });
 }
-export async function api_move_contract_can_edit_account_id(account_id,contract_id,move_account_id){
+export async function api_move_contract_can_edit_account_id(contract_id,move_account_id){
     let __data = new FormData();
 
-    __data.append('account_id', account_id);
-	__data.append('contract_id', contract_id);
+    __data.append('contract_id', contract_id);
 	__data.append('move_account_id', move_account_id)
 
     return await post("/move_contract_can_edit_account_id", __data,{
