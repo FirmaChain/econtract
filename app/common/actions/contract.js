@@ -139,7 +139,7 @@ export function get_contracts(type, status, page, display_count = 10, sub_status
                     } else {
                         let group_key = getGroupKey(user_info, subject.my_info.entity_id);
                         if (v.is_pin_used) {
-                            pin = decryptPINAux(subject.my_info.epin, Buffer.from(group_key, 'hex'));
+                            pin = decryptPINAux(Buffer.from(subject.my_info.epin, 'hex').toString('hex'), Buffer.from(group_key, 'hex'));
                         }
                         console.log("group_key", group_key)
                         console.log("PIN", pin)
@@ -190,7 +190,7 @@ export function get_contract(contract_id, user_info, groups = []) {
             } else {
                 let group_key = getGroupKey(user_info, subject.my_info.entity_id);
                 if (resp.payload.contract.is_pin_used) {
-                    pin = decryptPINAux(subject.my_info.epin, Buffer.from(group_key, 'hex'));
+                    pin = decryptPINAux(Buffer.from(subject.my_info.epin, 'hex').toString('hex'), Buffer.from(group_key, 'hex'));
                 }
                 console.log("group_key", group_key)
                 console.log("PIN", pin)
