@@ -2301,6 +2301,7 @@ div.checkbox2-comp{
 
                         >.modify-button {
                             font-size: $font2;
+                            font-weight: bold;
                             cursor: pointer;
                             padding:10px 20px;
                             background-color: $blue;
@@ -2412,8 +2413,11 @@ div.checkbox2-comp{
 
             border-top: 1px solid $middlegray;
             background-color:$blue;
-            color: white;
             cursor: pointer;
+
+            font-weight: bold;
+            font-size: $font3;
+            color: white;
         }
     }
 }
