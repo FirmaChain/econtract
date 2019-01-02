@@ -233,14 +233,32 @@ export default class extends React.Component {
         await window.showIndicator()
         await this.props.update_contract_sign_info(this.state.contract.contract_id, this.state.sign_info)
         await this.onRefresh()
+        this.setState({sign_mode:false})
         await window.hideIndicator()
     }
 
     onClickRegisterSign = async () => {
+        let me = select_subject(this.state.infos, [], this.props.user_info.account_id, -1).my_info
+
+        let sign_info_list
+        if(this.props.user_info.account_type == 0) {
+            sign_info_list = this.state.contract.necessary_info.individual
+        } else {
+            sign_info_list = this.state.contract.necessary_info.corporation
+        }
+
+        let sign_info = me.sign_info || {}
+
+        for(let v of sign_info_list) {
+            if(!sign_info["#"+v] || sign_info["#"+v] == "") {
+                return alert("서명 정보를 모두 입력해주세요. " + v)
+            }
+        }
+
         window.openModal("DrawSign",{
             onFinish : async (sign)=>{
                 console.log(sign)
-                //encrypt model
+                //encrypt sign
                 await window.showIndicator()
                 await this.props.update_contract_sign(this.state.contract.contract_id, sign)
                 alert("서명 등록이 완료되었습니다.")
@@ -422,6 +440,9 @@ export default class extends React.Component {
                         {(()=> {
                             let user_type = e.user_info.user_type || 0
 
+                            if(e.privilege != 1)
+                                return
+
                             let divs = []
                             if(user_type == 0) {
                                 for(let v of contract.necessary_info.individual) {
@@ -443,7 +464,7 @@ export default class extends React.Component {
                         { e.privilege == 1 ? <div className="text-place">
                             <div className="title">서명</div>
                             <div className="desc">
-                                {e.signature ? <img src={e.signature}/> : "서명 하기 전"}
+                                {e.signature != null ? <img src={e.signature}/> : "서명 하기 전"}
                             </div>
                         </div> : null }
                     </div> : null}

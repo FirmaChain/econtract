@@ -2858,6 +2858,9 @@ div.checkbox2-comp{
             flex-direction: column;
             align-items: flex-end;
 
+            overflow-y:auto;
+            max-height:100%;
+
             .flex1 {
                 flex:1;
             }
@@ -3016,6 +3019,7 @@ div.checkbox2-comp{
                         border-bottom:1px solid $middlegray;
                         border-left:1px solid $middlegray;
                         border-right:1px solid $middlegray;
+                        margin-bottom:100px;
                     }
 
                     >.users {

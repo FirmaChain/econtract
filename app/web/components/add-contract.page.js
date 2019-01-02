@@ -562,7 +562,6 @@ export default class extends React.Component {
                             <div className="form-head">사용자 리스트</div>
                             <div className="form-list">
                                 {this.state.target_list.map((e, k)=>{
-                                    console.log(this.state.can_edit_account_id)
                                     return <div className="item" key={k}>
                                         <div className="icon">
                                         {

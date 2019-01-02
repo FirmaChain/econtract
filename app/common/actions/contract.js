@@ -321,7 +321,7 @@ export function update_contract_model(contract_id, model){
 export function update_contract_user_info(contract_id, entity_id, corp_id, e, user_info, isAccount, pin = "000000"){
     return async function(){
         let the_key = getContractKey(pin, shared_key);
-        let encrypted_user_info = aes_encrypt(JSON.stringify(e), the_key),
+        let encrypted_user_info = aes_encrypt(JSON.stringify(e), the_key)
         return (await api_update_contract_user_info(contract_id, entity_id, corp_id, encrypted_user_info)).payload;
     };
 }
