@@ -410,7 +410,7 @@ export default class extends React.Component {
                         </div>
                     </div> : null }
 
-                    {meOrGroup.privilege == 1 ? <div className="modify-button" onClick={this.onToggleRegisterSignForm}> 서명 정보 수정 </div> : null}
+                    { (meOrGroup.privilege == 1 && this.state.contract.status != 2) ? <div className="modify-button" onClick={this.onToggleRegisterSignForm}> 서명 정보 수정 </div> : null}
                 </div> : null}
             </div>
             {user_infos.map( (e, k) => {
@@ -499,7 +499,7 @@ export default class extends React.Component {
                     <div className="left-icon">
                         <i className="fal fa-times" onClick={()=>history.goBack()}></i>
                     </div>
-                    <div className="title">계약 내용 입력 #{this.state.contract.name}</div>
+                    <div className="title">#{this.state.contract.name}</div>
                     { !!this.props.user_info ? <Information /> : null }
                 </div>
                 <div className="container">
@@ -553,7 +553,7 @@ export default class extends React.Component {
                     </div>
                 </div>
                 {(()=>{
-                    if(meOrGroup.privilege == 2) {
+                    if(meOrGroup.privilege == 2 || this.state.contract.status == 2) {
                         return <div className="sign" onClick={(e)=>history.goBack()}>
                             돌아가기
                         </div>
