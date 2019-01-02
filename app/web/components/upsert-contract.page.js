@@ -239,6 +239,8 @@ export default class extends React.Component {
 
     onClickRegisterSign = async () => {
         let me = select_subject(this.state.infos, [], this.props.user_info.account_id, -1).my_info
+        if(me == null)
+            return;
 
         let sign_info_list
         if(this.props.user_info.account_type == 0) {
@@ -488,6 +490,8 @@ export default class extends React.Component {
                 can_edit_name = v.user_info.username
             }
         }
+        let corp_id = this.props.user_info.corp_id || -1
+        let meOrGroup = select_subject(this.state.infos, this.state.groups, this.props.user_info.account_id, corp_id).my_info
 
         return (<div className="upsert-contract-page">
             <div className="header-page">
@@ -495,7 +499,7 @@ export default class extends React.Component {
                     <div className="left-icon">
                         <i className="fal fa-times" onClick={()=>history.goBack()}></i>
                     </div>
-                    <div className="title">계약 내용 입력</div>
+                    <div className="title">계약 내용 입력 #{this.state.contract.name}</div>
                     { !!this.props.user_info ? <Information /> : null }
                 </div>
                 <div className="container">
@@ -548,11 +552,19 @@ export default class extends React.Component {
                         계약 미리보기
                     </div>
                 </div>
-                {this.state.sign_mode ? <div className="sign" onClick={this.onToggleRegisterSignForm}>
-                    편집 모드
-                </div> : <div className="sign" onClick={this.onClickRegisterSign}>
-                    서명 하기
-                </div>}
+                {(()=>{
+                    if(meOrGroup.privilege == 2) {
+                        return <div className="sign" onClick={(e)=>history.goBack()}>
+                            돌아가기
+                        </div>
+                    }
+
+                    return this.state.sign_mode ? <div className="sign" onClick={this.onToggleRegisterSignForm}>
+                        편집 모드
+                    </div> : <div className="sign" onClick={this.onClickRegisterSign}>
+                        서명 하기
+                    </div>
+                })()}
                 
             </div>
 		</div>);

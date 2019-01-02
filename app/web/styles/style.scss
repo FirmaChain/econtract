@@ -2868,6 +2868,7 @@ div.checkbox2-comp{
             >.wrapper {
                 width:100%;
                 max-width:800px;
+                margin: auto;
 
                 >.top {
                     display: flex;
@@ -3077,6 +3078,13 @@ div.checkbox2-comp{
                             >.privilege {
                                 width:120px;
                                 font-size: $font1;
+                                color:$black;
+                            }
+
+                            >.is-sign {
+                                width:120px;
+                                font-size: $font1;
+                                font-weight: bold;
                                 color:$black;
                             }
                         }
@@ -4324,6 +4332,79 @@ div.checkbox2-comp{
     }
 
 }
+
+.draw-sign-modal {
+    background-color: #fff;
+    min-width: 400px;
+
+    >.container{
+        padding:55px;
+        text-align: center;
+
+        >.icon {
+            >i { 
+                font-size: 30px;
+            }
+        }
+
+        >.title {
+            font-size: $font5;
+            font-weight: bold;
+            color: $black;
+            margin-top: 18px;
+        }
+
+        >.desc {
+            text-align: center;
+            font-size: $font2;
+            color: $black;
+            margin-bottom: 20px;
+            margin-top: 20px;
+        }
+
+        >.button {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+
+            margin-top: 40px;
+
+            >.submit {
+                margin: auto;
+                margin-right:10px;
+
+                font-size: $font4;
+                font-weight: bold;
+                color: white;
+                cursor: pointer;
+
+                background-color: $blue;
+                border:1px solid $blue;
+                padding:15px;
+                flex:1;
+            }
+
+            >.cancel {
+                margin: auto;
+
+                font-size: $font4;
+                font-weight: bold;
+                color: $blue;
+                cursor: pointer;
+
+                border:1px solid $blue;
+                padding:15px;
+                flex:1;
+            }
+        }
+    }
+
+    canvas {
+        border:1px solid #dadadc;
+    }
+}
+
 
 
 
@@ -5884,14 +5965,6 @@ div.checkbox-comp{
             color: RGB(106, 106, 106);
             font-size: 12px;
         }
-    }
-}
-
-.draw-sign-modal{
-    canvas {
-        width: 300px;
-        height: 150px;
-        border:1px solid #dadadc;
     }
 }
 

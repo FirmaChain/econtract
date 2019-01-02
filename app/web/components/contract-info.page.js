@@ -176,6 +176,7 @@ export default class extends React.Component {
                         } })()
                     }
                     <div className="privilege">{this.getRoleText(e.entity_id, e.corp_id, e.privilege)}</div>
+                    <div className="is-sign">{e.privilege != 1 ? "" : (e.signature ? "서명 완료" : "서명 전")}</div>
                 </div>
             })}
         </div>
@@ -218,8 +219,6 @@ export default class extends React.Component {
                 pin = decryptPIN(Buffer.from(meOrGroup.epin, 'hex').toString('hex'), Buffer.from(group_key, 'hex'))
             }
         }
-
-        console.log(creator)
 
         return <div className="deck informations">
             <div className="item">
@@ -332,7 +331,7 @@ export default class extends React.Component {
                             </div>
                             <div className="buttons">
                                 <div className="flex1">&nbsp;</div>
-                                <div className="blue-button" onClick={(e)=>history.push(`/edit-contract/${this.state.contract.contract_id}`)}>편집</div>
+                                {this.state.contract.status != 2 ? <div className="blue-button" onClick={(e)=>history.push(`/edit-contract/${this.state.contract.contract_id}`)}>편집</div> : null}
                                 <div className="blue-button">다운로드</div>
                                 <div className="transparent-button">설정</div>
                             </div>
@@ -353,9 +352,9 @@ export default class extends React.Component {
                                 <div className="space"></div>
                                 <div className="item enable-item">내용 입력중</div>
                                 <div className="space"></div>
-                                <div className={"item" + (this.state.contract.status > 0 ? "enable-item" : "")}>서명 대기중</div>
+                                <div className={"item" + (this.state.contract.status > 0 ? " enable-item" : "")}>서명 대기중</div>
                                 <div className="space"></div>
-                                <div className={"item" + (this.state.contract.status > 1 ? "enable-item" : "")}>계약 완료</div>
+                                <div className={"item" + (this.state.contract.status > 1 ? " enable-item" : "")}>계약 완료</div>
                                 <div className="corner-space"></div>
                             </div>
 

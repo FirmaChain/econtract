@@ -769,12 +769,16 @@ class DrawSign extends React.Component{
         let ctx = this.refs.canvas.getContext('2d');
 
         this.isDrawing = true;
+        console.log("c",e.clientX - e.target.offsetLeft)
+        console.log("a",e.clientY - e.target.offsetTop)
         ctx.moveTo(e.clientX - e.target.offsetLeft, e.clientY - e.target.offsetTop);
     }
 
     onmousemove = (e)=>{
         let ctx = this.refs.canvas.getContext('2d');
         if (this.isDrawing) {
+            console.log("e.clientX", e.clientX)
+            console.log("e.clientY", e.clientY)
             ctx.lineTo(e.clientX - e.target.offsetLeft, e.clientY - e.target.offsetTop);
             ctx.stroke();
         }
@@ -786,17 +790,23 @@ class DrawSign extends React.Component{
 
     render(){
         return <div className="default-modal draw-sign-modal">
-            <div className="contents">
+            <div className="container">
+
+                <div className="icon"><i className="far fa-file-signature"></i></div>
                 <div className="title">서명 그리기</div>
+                <div className="desc">다른 사람들이 모두 서명을 했다면 계약이 완료됩니다.<br/>서명을 하기전에 신중하게 계약서 내용을 검토해주세요.</div>
                 
                 <canvas ref="canvas" 
+                    width="500"
+                    height="250"
                     onMouseDown={this.onmousedown} 
                     onMouseMove={this.onmousemove}
                     onMouseUp={this.onmouseup} />
-            </div>
-            <div className="buttons">
-                <button onClick={this.finishDraw}>완료</button>
-                <button onClick={this.closeSelf}>취소</button>
+
+                <div className="button">
+                    <div className="submit" onClick={this.finishDraw}>서명</div>
+                    <div className="cancel" onClick={this.closeSelf}>취소</div>
+                </div>
             </div>
         </div>
     }

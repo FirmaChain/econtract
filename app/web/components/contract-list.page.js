@@ -282,7 +282,8 @@ export default class extends React.Component {
         history.push(`/home/${group_id}/${this.getTitle().id}`)
     }
 
-    onClickOption(contract_id) {
+    onClickOption(contract_id, e) {
+        e.stopPropagation();
         if(this.state.showOption == contract_id) {
             return this.setState({
                 showOption:null
@@ -292,6 +293,11 @@ export default class extends React.Component {
         this.setState({
             showOption:contract_id
         })
+    }
+
+    onClickSign(contract_id, e) {
+        e.stopPropagation();
+        history.push(`/edit-contract/${contract_id}`)
     }
 
     onAddFolder = () => {
@@ -374,7 +380,7 @@ export default class extends React.Component {
         return this.state.contracts_checks.length == contracts.list.length 
     }
 
-    openContract = async (contract) => {
+    openContract = async (contract, type = 0) => {
 
         if(this.props.user_info.account_type == 0 ) {
             if(contract.is_pin_used == 1 && contract.is_pin_null == 1) {
@@ -401,9 +407,9 @@ export default class extends React.Component {
                 }
 
 
-                history.push(`/contract-info/${contract.contract_id}`)
+                history.push(type==0?`/contract-info/${contract.contract_id}`:`/edit-contract/${contract.contract_id}`)
             } else if(contract.is_pin_used == 0 || (contract.is_pin_used == 1 && contract.is_pin_null == 0)) {
-                history.push(`/contract-info/${contract.contract_id}`)
+                history.push(type==0?`/contract-info/${contract.contract_id}`:`/edit-contract/${contract.contract_id}`)
             } 
         } else {
             let corps_id = contract.corps_id.split(",")
@@ -488,7 +494,7 @@ export default class extends React.Component {
                     }
                 }))
             }
-            history.push(`/contract-info/${contract.contract_id}`)
+            history.push(type==0?`/contract-info/${contract.contract_id}`:`/edit-contract/${contract.contract_id}`)
 
         }
 
@@ -511,7 +517,7 @@ export default class extends React.Component {
         let usernames = e.user_infos.map(ee => ee.username).filter( ee => !!ee)
         usernames = usernames.join(", ")
 
-        return <div key={e.contract_id} className="item" onClick={this.openContract.bind(this, e)}>
+        return <div key={e.contract_id} className="item" onClick={this.openContract.bind(this, e, 0)}>
             <div className="list-body-item list-chkbox">
                 <CheckBox2 size={18}
                     on={this.state.contracts_checks.includes(e.contract_id) || false}
@@ -528,13 +534,13 @@ export default class extends React.Component {
             <div className="list-body-item list-date">{moment(e.updatedAt).format("YYYY-MM-DD HH:mm:ss")}</div>
             <div className="list-body-item list-action">
                 <div className="button-container">
-                    <div className="action-button action-blue-but">서명</div>
+                    <div className="action-button action-blue-but" onClick={this.openContract.bind(this, e, 1)}>서명</div>
                     <div className="arrow-button arrow-blue-but" onClick={this.onClickOption.bind(this, e.contract_id)} >
                         <i className="fas fa-caret-down"></i>
                         <div className="arrow-dropdown" style={{display:!!this.isOpenOption(e.contract_id) ? "initial" : "none"}}>
                             <div className="container">
-                                <div className="detail">상세 정보</div>
-                                <div className="move">이동</div>
+                                <div className="detail" onClick={this.openContract.bind(this, e, 0)}>상세 정보</div>
+                                <div className="move" onClick={this.openContract.bind(this, e, 1)}>이동</div>
                             </div>
                         </div>
                     </div>
