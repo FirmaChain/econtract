@@ -20,6 +20,7 @@ import {
     fetch_user_info,
     get_contract,
     get_group_info,
+    getGroupKey,
 } from "../../common/actions"
 import CheckBox2 from "./checkbox2"
 
@@ -56,6 +57,11 @@ export default class extends React.Component {
                 contract = await this.props.get_contract(contract_id, this.props.user_info, groups)
             } else {
                 contract = await this.props.get_contract(contract_id, this.props.user_info)
+            }
+
+            if(contract === false) {
+                alert("계약이 암호화되어 있어 접근할 수 없습니다.")
+                return history.goBack()
             }
 
             if(contract.payload.contract) {
@@ -181,23 +187,41 @@ export default class extends React.Component {
         let contract = this.state.contract
         let review = this.state.review || {}
 
-        let creator;
+        let meOrGroup, creator;
         let users = [];
+        let isAccount = false
         for(let v of this.state.infos) {
             if(v.corp_id == 0 && v.entity_id == this.props.user_info.account_id) {
-                creator = v
+                meOrGroup = v
+                isAccount = true
             }
+
+            if(v.corp_id == 0 && v.entity_id == contract.account_id)
+                creator = v
+
             users.push(v.user_info.username ? v.user_info.username : v.user_info.title)
         }
 
-        if(!creator && this.props.user_info.account_type != 0) {
+        if(!meOrGroup && this.props.user_info.account_type != 0) {
             for(let v of this.state.infos) {
-                if(v.corp_id == this.props.user_info.corp_id && !this.state.groups.find(e=>e.group_id == v.entity_id)  ) {
-                    creator = v
+                if(v.corp_id == this.props.user_info.corp_id && !!this.state.groups.find(e=>e.group_id == v.entity_id) ) {
+                    meOrGroup = v
                 }
             }
         }
         users = users.join(", ")
+
+        let pin = "000000"
+        if(contract.is_pin_used) {
+            if(isAccount)
+                pin = decryptPIN(Buffer.from(meOrGroup.epin, 'hex').toString('hex'))
+            else {
+                let group_key = getGroupKey(this.props.user_info, meOrGroup.entity_id)
+                pin = decryptPIN(Buffer.from(meOrGroup.epin, 'hex').toString('hex'), Buffer.from(group_key, 'hex'))
+            }
+        }
+
+        console.log(creator)
 
         return <div className="deck informations">
             <div className="item">
@@ -218,7 +242,7 @@ export default class extends React.Component {
             </div>
             <div className="item">
                 <div className="title">PIN 번호</div>
-                <div className="desc">{contract.is_pin_used == 0 ? "PIN이 없습니다." : (decryptPIN(Buffer.from(creator.epin, 'hex').toString('hex')) || "000000")}</div>
+                <div className="desc">{contract.is_pin_used == 0 ? "PIN이 없습니다." : pin}</div>
             </div>
             <div className="item">
                 <div className="title">IPFS ID</div>

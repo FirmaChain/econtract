@@ -78,7 +78,7 @@ export function genPIN(digit=6) {
     return text;
 }
 
-function getGroupKey(user_info, group_id) {
+export function getGroupKey(user_info, group_id) {
     if (user_info.account_type == 1) {
         return get256bitDerivedPublicKey(Buffer.from(user_info.corp_master_key, 'hex'), "m/0'/"+group_id+"'").toString('hex');
     } else {
@@ -114,48 +114,44 @@ export function get_contracts(type, status, page, display_count = 10, sub_status
     return async function(dispatch) {
         let resp = await api_get_contracts(type, status, page, display_count, sub_status, group_id)
         if(resp.code == 1) {
+            let corp_id = user_info.corp_id || -1
             for(let v of resp.payload.list) {
-                v.user_infos = v.user_infos.split(window.SEPERATOR).map( e => {
-                    let corp_id = user_info.corp_id || -1
-                    let infos = [{
-                        entity_id:v.entity_id,
-                        corp_id:v.corp_id,
-                        epin:v.epin,
-                        eckai:v.eckai,
-                    }]
-                    let subject = select_subject(infos, groups, user_info.account_id, corp_id);
-                    if (!subject.my_info) return
+                let infos = [{
+                    entity_id:v.entity_id,
+                    corp_id:v.corp_id,
+                    epin:v.epin,
+                    eckai:v.eckai,
+                }]
+                let subject = select_subject(infos, groups, user_info.account_id, corp_id);
+                if (!subject.my_info) continue
 
-                    let shared_key;
-                    let pin = "000000";
-                    if(subject.isAccount) {
-                        let entropy = sessionStorage.getItem("entropy");
-                        if (!entropy) return null;
-                        if (v.is_pin_used) {
-                            pin = decryptPIN(Buffer.from(subject.my_info.epin, 'hex').toString('hex'));
-                        }
-                        shared_key = unsealContractAuxKey(entropy, Buffer.from(subject.my_info.eckai, 'hex').toString('hex'));
-                    } else {
-                        let group_key = getGroupKey(user_info, subject.my_info.entity_id);
-                        if (v.is_pin_used) {
-                            pin = decryptPIN(Buffer.from(subject.my_info.epin, 'hex').toString('hex'), Buffer.from(group_key, 'hex'));
-                        }
-                        //temporary
-                        pin="000000"
-                        console.log("group_key", group_key)
-                        console.log("PIN", pin)
-                        console.log("subject.my_info.eckai", subject.my_info.eckai)
-                        shared_key = unsealContractAuxKeyGroup(group_key, Buffer.from(subject.my_info.eckai, 'hex').toString('hex'));
+                let shared_key;
+                let pin = "000000";
+                if(subject.isAccount) {
+                    let entropy = sessionStorage.getItem("entropy");
+                    if (!entropy) return null;
+                    if (v.is_pin_used && v.is_pin_null == 0) {
+                        pin = decryptPIN(Buffer.from(subject.my_info.epin, 'hex').toString('hex'));
                     }
-                    let the_key = getContractKey(pin, shared_key);
+                    shared_key = unsealContractAuxKey(entropy, Buffer.from(subject.my_info.eckai, 'hex').toString('hex'));
+                } else {
+                    let group_key = getGroupKey(user_info, subject.my_info.entity_id);
+                    if (v.is_pin_used && v.is_pin_null == 0) {
+                        pin = decryptPIN(Buffer.from(subject.my_info.epin, 'hex').toString('hex'), Buffer.from(group_key, 'hex'));
+                    }
+                    shared_key = unsealContractAuxKeyGroup(group_key, Buffer.from(subject.my_info.eckai, 'hex').toString('hex'));
+                }
+                let the_key = getContractKey(pin, shared_key);
 
+
+                v.user_infos = v.user_infos.split(window.SEPERATOR).map( e => {
                     let result;
                     try{
                         result = JSON.parse(aes_decrypt(e/*Buffer.from(e, 'hex').toString('hex')*/, the_key))
                     } catch(err) {
                         result = {
                             err:"not decrypt",
-                            text:subject.my_info
+                            data:e
                         }
                     }
                     return result
@@ -184,26 +180,31 @@ export function get_contract(contract_id, user_info, groups = []) {
             if(subject.isAccount) {
                 let entropy = sessionStorage.getItem("entropy");
                 if (!entropy) return null;
-                if (resp.payload.contract.is_pin_used) {
+                if (resp.payload.contract.is_pin_used && subject.my_info.is_pin_null == 0) {
                     pin = decryptPIN(Buffer.from(subject.my_info.epin, 'hex').toString('hex'));
                 }
                 shared_key = unsealContractAuxKey(entropy, Buffer.from(subject.my_info.eckai, 'hex').toString('hex'));
             } else {
                 let group_key = getGroupKey(user_info, subject.my_info.entity_id);
-                if (resp.payload.contract.is_pin_used) {
+                if (resp.payload.contract.is_pin_used && subject.my_info.is_pin_null == 0) {
                     pin = decryptPIN(Buffer.from(subject.my_info.epin, 'hex').toString('hex'), Buffer.from(group_key, 'hex'));
                 }
-                console.log("group_key", group_key)
-                console.log("PIN", pin)
-                console.log("subject.my_info.eckai", subject.my_info.eckai)
                 shared_key = unsealContractAuxKeyGroup(group_key, Buffer.from(subject.my_info.eckai, 'hex').toString('hex'));
             }
             let the_key = getContractKey(pin, shared_key);
 
+            try {
+                JSON.parse(aes_decrypt(Buffer.from(resp.payload.infos[0].user_info, 'hex').toString('hex'), the_key))
+            } catch( err ) {
+                return false
+            }
+                
+
             resp.payload.infos = resp.payload.infos.map( (e) => {
+                let user_info = JSON.parse(aes_decrypt(Buffer.from(e.user_info, 'hex').toString('hex'), the_key))
                 return {
                     ...e,
-                    user_info : JSON.parse(aes_decrypt(Buffer.from(e.user_info, 'hex').toString('hex'), the_key)),
+                    user_info,
                     sign_info : e.sign_info ? JSON.parse(Buffer.from(e.sign_info).toString()) : e.sign_info,
                     signature : e.signature ? JSON.parse(Buffer.from(e.signature).toString()) : e.signature,
                 }
@@ -212,6 +213,44 @@ export function get_contract(contract_id, user_info, groups = []) {
             resp.payload.the_key = the_key
         }
         return resp
+    }
+}
+
+export function is_correct_pin(contract, pin_to_be_verified, infos, user_info, groups = []) {
+    return async function() {
+        let corp_id = user_info.corp_id || -1;
+        let subject = select_subject(infos, groups, user_info.account_id, corp_id);
+        if (!subject.my_info) return null
+
+        let shared_key;
+        let pin = "000000";
+        if(subject.isAccount) {
+            let entropy = sessionStorage.getItem("entropy");
+            if (!entropy) return null;
+            if (contract.is_pin_used) {
+                pin = pin_to_be_verified
+            }
+            shared_key = unsealContractAuxKey(entropy, Buffer.from(subject.my_info.eckai, 'hex').toString('hex'));
+        } else {
+            let group_key = getGroupKey(user_info, subject.my_info.entity_id);
+            if (contract.is_pin_used) {
+                pin = pin_to_be_verified
+            }
+            shared_key = unsealContractAuxKeyGroup(group_key, Buffer.from(subject.my_info.eckai, 'hex').toString('hex'));
+        }
+        let the_key = getContractKey(pin, shared_key);
+        let _ = [...contract.user_infos]
+
+        if( typeof(_) != "object" ) {
+            _ = _.split(window.SEPERATOR)
+        }
+
+        try {
+            JSON.parse(aes_decrypt(_[0].data, the_key))
+            return true
+        } catch(err) {
+            return false
+        }
     }
 }
 

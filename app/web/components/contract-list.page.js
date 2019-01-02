@@ -29,6 +29,7 @@ import {
     add_counterparties,
     update_epin_group,
     update_epin_account,
+    is_correct_pin,
 } from "../../common/actions"
 
 let mapStateToProps = (state)=>{
@@ -53,6 +54,7 @@ let mapDispatchToProps = {
     add_counterparties,
     update_epin_group,
     update_epin_account,
+    is_correct_pin,
 }
 
 const LIST_DISPLAY_COUNT = 10
@@ -79,11 +81,11 @@ export default class extends React.Component {
     onRefresh = async (nextProps) => {
         let account_type = this.props.user_info.account_type
 
-        if(account_type == 1 || account_type == 2) {
-            let groups_info = await this.props.get_group_info(0)
+        if(account_type != 0) {
+            let groups = await this.props.get_group_info(0)
             let group_id = this.props.match.params.group_id || null
 
-            if(groups_info.length == 0) {
+            if(groups.length == 0) {
                 if(account_type == 1) {
                     window.openModal("AddCommonModal", {
                         icon:"fas fa-users",
@@ -108,10 +110,11 @@ export default class extends React.Component {
                     location.reload(true)
                 }
             } else if(!group_id) {
-                if(groups_info) {
-                    history.replace(`/home/${groups_info[0].group_id}/recently`)
+                if(groups) {
+                    history.replace(`/home/${groups[0].group_id}/recently`)
                 }
             }
+            await this.setState({groups})
         }
 
         await this.setState({
@@ -380,8 +383,20 @@ export default class extends React.Component {
                 if(!result) return;
 
                 // pin 제대로 된지 확인
+                let infos = [{
+                    entity_id:contract.entity_id,
+                    corp_id:contract.corp_id,
+                    epin:contract.epin,
+                    eckai:contract.eckai,
+                }]
+                let correct_pin = await this.props.is_correct_pin(contract, result, infos, this.props.user_info)
+                console.log("correct_pin", correct_pin)
+                if( correct_pin ) {
+                    await this.props.update_epin_account(contract.contract_id, result);
+                } else {
+                    return alert("잘못된 핀 번호를 입력했습니다.")
+                }
 
-                await this.props.update_epin_account(contract.contract_id, result);
 
                 history.push(`/contract-info/${contract.contract_id}`)
             } else if(contract.is_pin_used == 0 || (contract.is_pin_used == 1 && contract.is_pin_null == 0)) {
@@ -414,13 +429,24 @@ export default class extends React.Component {
                 }))
                 if(!result) return
 
-                await this.props.update_epin_account(contract.contract_id, result);
+                let infos = [{
+                    entity_id:contract.entity_id,
+                    corp_id:contract.corp_id,
+                    epin:contract.epin,
+                    eckai:contract.eckai,
+                }]
+                let correct_pin = await this.props.is_correct_pin(contract, result, infos, this.props.user_info, this.state.groups)
+                console.log("correct_pin", correct_pin)
+                if( correct_pin ) {
+                    await this.props.update_epin_account(contract.contract_id, result);
+                } else {
+                    return alert("잘못된 핀 번호를 입력했습니다.")
+                }
 
-                console.log("isGroup", isGroup)
+
                 if(isGroup) {
                     await this.props.update_epin_group(this.props.user_info.corp_id, isGroup, contract.contract_id, this.props.user_info, result)
                 }
-                console.log("end")
             }
 
             if(!isGroup) {
@@ -519,7 +545,7 @@ export default class extends React.Component {
 
 		return (<div className="contract-page">
 			<div className="contract-group-menu">
-				<div className="left-top-button" onClick={this.onClickAddContract}>시작하기</div>
+				<div className="left-top-button" onClick={this.onClickAddContract}>계약 만들기</div>
 				<div className="menu-list">
                     <div className="list">
                         <div className={"item" + (this.getTitle().id == "lock" ? " selected" : "")} onClick={this.move.bind(this, "lock")}><i className="icon fas fa-lock-alt"></i> <div className="text">잠김</div></div>
