@@ -60,7 +60,7 @@ export default class extends React.Component {
                 contract = await this.props.get_contract(contract_id, this.props.user_info)
             }
 
-            if(contract === false) {
+            if(!contract) {
                 alert("계약이 암호화되어 있어 접근할 수 없습니다.")
                 return history.goBack()
             }
@@ -106,16 +106,31 @@ export default class extends React.Component {
         return text.join(", ")
     }
 
-    status_text = (contract, status)=>{
+    status_text = ( status)=>{
+        let contract = this.state.contract
+        let infos = this.state.infos
+
         let corp_id = this.props.user_info.corp_id || -1
         let me = select_subject(this.state.infos, this.state.groups, this.props.user_info.account_id, corp_id).my_info
         if(status == 0) {
             return "내용 입력 중"
         } else if(status == 1) {
-            if(me.signature != null)
+
+            console.log(infos)
+
+            let sign_user = infos.map( (v, k) => {
+                return {
+                    corp_id : v.corp_id,
+                    entity_id : v.entity_id,
+                    signature : v.signature,
+                }
+            }).find(v => {
+                return v.corp_id == 0 && v.entity_id == this.props.user_info.account_id
+            })
+            if(sign_user && sign_user.sign == "true") {
                 return "상대방 서명 전"
-            else
-                return "내 서명 전"
+            }
+            return "내 서명 전"
         } else if(status == 2) {
             return "계약 완료"
         } 
@@ -230,7 +245,7 @@ export default class extends React.Component {
             </div>
             <div className="item">
                 <div className="title">계약 상태</div>
-                <div className="desc">{this.status_text(contract, contract.status)}</div>
+                <div className="desc">{this.status_text(contract.status)}</div>
             </div>
             <div className="item">
                 <div className="title">계약 고유 식별 값</div>

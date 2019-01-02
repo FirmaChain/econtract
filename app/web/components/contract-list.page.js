@@ -380,7 +380,8 @@ export default class extends React.Component {
         return this.state.contracts_checks.length == contracts.list.length 
     }
 
-    openContract = async (contract, type = 0) => {
+    openContract = async (contract, type = 0, e) => {
+        e.stopPropagation()
 
         if(this.props.user_info.account_type == 0 ) {
             if(contract.is_pin_used == 1 && contract.is_pin_null == 1) {
@@ -505,7 +506,19 @@ export default class extends React.Component {
             if(status == 0) {
                 return "내용 입력 중"
             } else if(status == 1) {
-            	return "서명 전"
+                let sign_user = e.is_signature.split(",").map( (v, k) => {
+                    return {
+                        corp_id : e.corps_id.split(",")[k],
+                        entity_id : e.entities_id.split(",")[k],
+                        signature : v,
+                    }
+                }).find(v => {
+                    return v.corp_id == 0 && v.entity_id == this.props.user_info.account_id
+                })
+                if(sign_user.signature == "true") {
+                    return "상대방 서명 전"
+                }
+            	return "내 서명 전"
             } else if(status == 2) {
                 return "계약 완료"
             } 

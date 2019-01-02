@@ -157,6 +157,7 @@ export function get_contracts(type, status, page, display_count = 10, sub_status
                     }
                     return result
                 })
+                v.the_key = the_key
             }
             dispatch({
                 type:GET_CONTRACTS,
@@ -197,10 +198,10 @@ export function get_contract(contract_id, user_info, groups = []) {
             try {
                 JSON.parse(aes_decrypt(Buffer.from(resp.payload.infos[0].user_info, 'hex').toString('hex'), the_key))
             } catch( err ) {
+                console.log(err)
                 return false
             }
                 
-
             resp.payload.infos = resp.payload.infos.map( (e) => {
                 let user_info = JSON.parse(aes_decrypt(Buffer.from(e.user_info, 'hex').toString('hex'), the_key))
                 return {
