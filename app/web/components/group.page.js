@@ -251,10 +251,7 @@ export default class extends React.Component {
             if(status == 0) {
                 return "내용 입력 중"
             } else if(status == 1) {
-                if(e.signature != null)
-                    return "상대방 서명 전"
-                else
-                    return "내 서명 전"
+                return "서명 전"
             } else if(status == 2) {
                 return "계약 완료"
             } else if(status == 3) {

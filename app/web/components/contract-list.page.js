@@ -179,9 +179,9 @@ export default class extends React.Component {
         else if(menu == "beforeMySign") {
             result = await this.props.get_contracts(0, 1, page, LIST_DISPLAY_COUNT, 0, group_id, this.props.user_info, groups)
         }
-        else if(menu == "beforeOtherSign") {
+        /*else if(menu == "beforeOtherSign") {
             result = await this.props.get_contracts(0, 1, page, LIST_DISPLAY_COUNT, 1, group_id, this.props.user_info, groups)
-        }
+        }*/
         else if(menu == "completed") {
             result = await this.props.get_contracts(0, 2, page, LIST_DISPLAY_COUNT, -1, group_id, this.props.user_info, groups)
         }
@@ -229,11 +229,11 @@ export default class extends React.Component {
 			result = { id:"typing", title : "내용 입력중"}
 		}
 		else if(menu == "beforeMySign") {
-			result = { id:"beforeMySign", title : "내 서명 전"}
+			result = { id:"beforeMySign", title : "서명 전"}
 		}
-		else if(menu == "beforeOtherSign") {
+		/*else if(menu == "beforeOtherSign") {
 			result = { id:"beforeOtherSign", title : "상대방 서명 전"}
-		}
+		}*/
 		else if(menu == "completed") {
 			result = { id:"completed", title : "완료됨"}
 		}
@@ -400,7 +400,6 @@ export default class extends React.Component {
                 }]
                 let correct_pin = await this.props.is_correct_pin(contract, result, infos, this.props.user_info)
                 if( correct_pin ) {
-                    update_user_info
                     await this.props.update_epin_account(contract.contract_id, result);
                 } else {
                     return alert("잘못된 핀 번호를 입력했습니다.")
@@ -430,13 +429,14 @@ export default class extends React.Component {
                 }
             }
 
+            let correct_pin, pin
             if(contract.is_pin_used == 1 && contract.is_pin_null == 1) {
-                let result = await new Promise(r=>window.openModal("TypingPin",{
+                pin = await new Promise(r=>window.openModal("TypingPin",{
                     onFinish:(pin)=>{
                         r(pin)
                     },
                 }))
-                if(!result) return
+                if(!pin) return
 
                 let infos = [{
                     entity_id:contract.entity_id,
@@ -444,8 +444,9 @@ export default class extends React.Component {
                     epin:contract.epin,
                     eckai:contract.eckai,
                 }]
-                let correct_pin = await this.props.is_correct_pin(contract, result, infos, this.props.user_info, this.state.groups)
-                if( correct_pin ) {
+                correct_pin = await this.props.is_correct_pin(contract, pin, infos, this.props.user_info, this.state.groups)
+                if( !correct_pin ) {
+                    return alert("잘못된 핀 번호를 입력했습니다.")
                     /*let user_info = {
                         user_type:1,
                         account_id: user.account_id,
@@ -455,14 +456,12 @@ export default class extends React.Component {
                         company_name:user.company_name,
                     }
                     await this.props.update_contract_user_info(contract.contract_id, this.props.user_info.account_id, this.props.user_info.corp_id, user_info, this.props.user_info, true, correct_pin)*/
-                    await this.props.update_epin_account(contract.contract_id, result);
-                } else {
-                    return alert("잘못된 핀 번호를 입력했습니다.")
                 }
 
 
                 if(isGroup) {
-                    await this.props.update_epin_group(this.props.user_info.corp_id, isGroup, contract.contract_id, this.props.user_info, result)
+                    await this.props.update_epin_group(this.props.user_info.corp_id, isGroup, contract.contract_id, this.props.user_info, pin)
+                    await this.props.update_epin_account(contract.contract_id, pin);
                 }
             }
 
@@ -487,9 +486,10 @@ export default class extends React.Component {
                     data,
                     onConfirm:async (group)=>{
                         // add_contract_info group
-                        // let detail_contract = await this.props.get_contract(contract.contract_id, this.props.user_info, groups)
-                        let result = await this.props.add_counterparties(contract.contract_id, [group], groups, this.props.user_info, [contract], contract.is_pin_used)
-                        await this.props.update_epin_group(group.corp_id, group.group_id, contract.contract_id, this.props.user_info, decryptPIN(Buffer.from(contract.epin, 'hex').toString('hex')))
+                        //let detail_contract = await this.props.get_contract(contract.contract_id, this.props.user_info, groups)
+                        let result = await this.props.add_counterparties(contract.contract_id, [group], groups, this.props.user_info, [contract], contract.is_pin_used, pin)
+                        await this.props.update_epin_account(contract.contract_id, pin);
+                        await this.props.update_epin_group(group.corp_id, group.group_id, contract.contract_id, this.props.user_info, pin)
                         r(group)
                     }
                 }))
@@ -505,10 +505,7 @@ export default class extends React.Component {
             if(status == 0) {
                 return "내용 입력 중"
             } else if(status == 1) {
-            	if(e.signature != null)
-            		return "상대방 서명 전"
-            	else
-            		return "내 서명 전"
+            	return "서명 전"
             } else if(status == 2) {
                 return "계약 완료"
             } 
@@ -590,8 +587,8 @@ export default class extends React.Component {
 					<div className="list">
 						<div className="title">모아보기</div>
 						<div className={"item" + (this.getTitle().id == "typing" ? " selected" : "")} onClick={this.move.bind(this, "typing")}><i className="icon fal fa-keyboard"></i> <div className="text">내용 입력 중</div></div>
-						<div className={"item" + (this.getTitle().id == "beforeMySign" ? " selected" : "")} onClick={this.move.bind(this, "beforeMySign")}><i className="icon far fa-file-import"></i> <div className="text">내 서명 전</div></div>
-						<div className={"item" + (this.getTitle().id == "beforeOtherSign" ? " selected" : "")} onClick={this.move.bind(this, "beforeOtherSign")}><i className="icon far fa-file-export"></i> <div className="text">상대방 서명 전</div></div>
+						<div className={"item" + (this.getTitle().id == "beforeMySign" ? " selected" : "")} onClick={this.move.bind(this, "beforeMySign")}><i className="icon far fa-file-import"></i> <div className="text">서명 전</div></div>
+						{/*<div className={"item" + (this.getTitle().id == "beforeOtherSign" ? " selected" : "")} onClick={this.move.bind(this, "beforeOtherSign")}><i className="icon far fa-file-export"></i> <div className="text">상대방 서명 전</div></div>*/}
 						<div className={"item" + (this.getTitle().id == "completed" ? " selected" : "")} onClick={this.move.bind(this, "completed")}><i className="icon fal fa-check-circle"></i> <div className="text">완료됨</div></div>
                         {account_type != 0 ? <div className={"item" + (this.getTitle().id == "group_view" ? " selected" : "")} onClick={this.move.bind(this, "group_view")}><i className="icon fas fa-eye"></i> <div className="text">그룹 보기 가능</div></div> : null}
 					</div>

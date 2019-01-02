@@ -255,23 +255,23 @@ export function is_correct_pin(contract, pin_to_be_verified, infos, user_info, g
     }
 }
 
-export function add_counterparties(contract_id, counterparties, groups, user_info, infos, is_pin_used) {
+export function add_counterparties(contract_id, counterparties, groups, user_info, infos, is_pin_used, real_pin = "000000") {
     return async function() {
         let corp_id = user_info.corp_id || -1;
         let subject = select_subject(infos, groups, user_info.account_id, corp_id);
         if (!subject.my_info) return null;
 
         let shared_key;
-        let pin = "000000";
+        let pin = real_pin;
         if(subject.isAccount) {
             let entropy = sessionStorage.getItem("entropy");
             if (!entropy) return null;
-            if (is_pin_used) {
+            if (is_pin_used && pin == "000000") {
                 pin = decryptPIN(Buffer.from(subject.my_info.epin, 'hex').toString('hex'));
             }
             shared_key = unsealContractAuxKey(entropy, Buffer.from(subject.my_info.eckai, 'hex').toString('hex'));
         } else {
-            if (is_pin_used) {
+            if (is_pin_used && pin == "000000") {
                 let group_key = getGroupKey(user_info, subject.entity_id);
                 pin = decryptPIN(Buffer.from(subject.my_info.epin, 'hex').toString('hex'), Buffer.from(group_key, 'hex'));
             }

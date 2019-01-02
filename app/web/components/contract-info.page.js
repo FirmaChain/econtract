@@ -106,7 +106,7 @@ export default class extends React.Component {
         return text.join(", ")
     }
 
-    status_text = (status)=>{
+    status_text = (contract, status)=>{
         let corp_id = this.props.user_info.corp_id || -1
         let me = select_subject(this.state.infos, this.state.groups, this.props.user_info.account_id, corp_id).my_info
         if(status == 0) {
