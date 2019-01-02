@@ -56,9 +56,9 @@ export const LOAD_CONTRACT_LIST = "LOAD_CONTRACT_LIST"*/
 export const GET_CONTRACTS = "GET_CONTRACTS";
 const DUMMY_CORP_ID = 0;
 
-export function select_subject(infos, groups = [], account_id, corp_id) {
+export function select_subject(infos, groups, account_id, corp_id) {
     groups = groups ? groups : []
-    let my_infos = infos.filter(e=>e.corp_id == DUMMY_CORP_ID && e.entity_id == account_id || e.corp_id == corp_id);
+    let my_infos = infos.filter(e=>(e.corp_id == DUMMY_CORP_ID && e.entity_id == account_id) || e.corp_id == corp_id);
     let group_ids = groups.map(e=>e.group_id)
     let my_info = my_infos.find(e=>e.corp_id == DUMMY_CORP_ID) || my_infos.find(e=>group_ids.indexOf(e.entity_id) != -1);
     my_info = my_info ? my_info : null;
@@ -270,7 +270,7 @@ export function add_counterparties(contract_id, counterparties, groups, user_inf
             }
             shared_key = unsealContractAuxKey(entropy, Buffer.from(subject.my_info.eckai, 'hex').toString('hex'));
         } else {
-            if (resp.payload.is_pin_used) {
+            if (is_pin_used) {
                 let group_key = getGroupKey(user_info, subject.entity_id);
                 pin = decryptPIN(Buffer.from(subject.my_info.epin, 'hex').toString('hex'), Buffer.from(group_key, 'hex'));
             }

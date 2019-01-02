@@ -150,15 +150,17 @@ export default class extends React.Component {
         let contract = await this.props.get_contract(contract_id, this.props.user_info, groups)
         if(contract.payload.contract) {
             let sign_info = {}
-            let me = select_subject(contract.payload.infos, groups, this.props.user_info.account_id, 0).my_info
+            let me = select_subject(contract.payload.infos, groups, this.props.user_info.account_id, -1).my_info
             if(me) {
-                sign_info = me.sign_info;
+                sign_info = me.sign_info || {};
                 this.onToggleUser(me.entity_id, me.corp_id, true)
             }
+
+            let model = contract.payload.contract.html != null ? Buffer.from(contract.payload.contract.html).toString() : ""
             _state = {
                 ..._state,
                 ...contract.payload,
-                model:Buffer.from(contract.payload.contract.html).toString(),
+                model,
                 sign_info,
             }
 
@@ -338,8 +340,17 @@ export default class extends React.Component {
         let contract = this.state.contract;
         let user_infos = this.state.infos;
 
-        let corp_id = this.props.user_info.corp_id || 0
+        let corp_id = this.props.user_info.corp_id || -1
+
+        console.log('=========start===========')
+        console.log('=========start===========')
+        console.log('=========start===========')
+        console.log(user_infos, this.state.groups, this.props.user_info.account_id, corp_id)
         let meOrGroup = select_subject(user_infos, this.state.groups, this.props.user_info.account_id, corp_id).my_info
+
+        console.log(this.props.user_info.account_id)
+        console.log("corp_id", corp_id)
+        console.log(meOrGroup)
 
         return <div className="bottom signs">
             <div className="title">총 {user_infos.length}명</div>
@@ -413,21 +424,21 @@ export default class extends React.Component {
                             <div className="desc">{this.textPrivilege(e.privilege)}</div>
                         </div>
                         {(()=> {
-                            let account_type = meOrGroup.account_type || 2
+                            let account_type = e.account_type || 2
 
                             let divs = []
                             if(account_type == 0) {
                                 for(let v of contract.necessary_info.indivisual) {
                                     divs.push(<div className="text-place" key={v}>
                                         <div className="title">{v}</div>
-                                        <div className="desc">{meOrGroup.user_info["#"+v] || "미등록"}</div>
+                                        <div className="desc">{e.sign_info ? e.sign_info["#"+v] || "미등록" : "미등록"}</div>
                                     </div>)
                                 }
                             } else {
                                 for(let v of contract.necessary_info.corporation) {
                                     divs.push(<div className="text-place" key={v}>
                                         <div className="title">{v}</div>
-                                        <div className="desc">{meOrGroup.user_info["#"+v] || "미등록"}</div>
+                                        <div className="desc">{e.sign_info ? e.sign_info["#"+v] || "미등록" : "미등록"}</div>
                                     </div>)
                                 }
                             }
