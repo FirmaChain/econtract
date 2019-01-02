@@ -350,7 +350,6 @@ export default class extends React.Component {
 
         console.log(this.props.user_info.account_id)
         console.log("corp_id", corp_id)
-        console.log(meOrGroup)
 
         return <div className="bottom signs">
             <div className="title">총 {user_infos.length}명</div>
@@ -370,6 +369,8 @@ export default class extends React.Component {
                     </div>
                     {(()=> {
                         let account_type = meOrGroup.account_type || 2
+
+                        console.log("meOrGroup", meOrGroup)
 
                         let divs = []
                         if(account_type == 0) {
