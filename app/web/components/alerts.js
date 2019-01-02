@@ -667,6 +667,143 @@ class MoveCanEditAccount extends React.Component {
 }
 
 
+@modal
+class TypingPin extends React.Component{
+    constructor(){
+        super()
+        this.state = { 
+            value : ""
+        }
+    }
+    closeSelf = ()=>{
+        window.closeModal(this.props.modalId)
+    }
+
+    onClickOK = ()=>{
+        if(this.state.value.length == 6){
+            this.props.onFinish && this.props.onFinish(this.state.value)
+            this.closeSelf()
+        } else {
+            alert("핀번호는 6자리입니다. 정확히 입력해주세요.")
+        }
+    }
+
+    onClickCancel = () => {
+        this.props.onFinish && this.props.onFinish(false)
+        this.closeSelf()
+    }
+
+    keydown = (e)=>{
+        if(e.key == "Backspace") {
+            this.setState({
+                value: this.state.value.slice(0,this.state.value.length-1)
+            })
+        } else if(e.key == "Enter" || e.keyCode == 13) {
+            this.onClickOK()
+        }
+        let key = Number(e.key)
+        if( 0 <= key && key <= 9 ){
+            if(this.state.value.length < 6){
+                this.setState({
+                    value: this.state.value + "" + key
+                })
+            }
+        }
+    }
+
+    componentDidMount(){
+        document.addEventListener("keydown", this.keydown);
+    }
+
+    componentWillUnmount(){
+        document.removeEventListener("keydown", this.keydown);
+    }
+
+    render(){
+        return <div className="default-modal type-pin-modal">
+            <div className="contents">
+                <div className="title">PIN을 입력해주세요</div>
+                <div className="pin-box">
+                    {this.state.value}
+                </div>
+            </div>
+            <div className="buttons">
+                <button onClick={this.onClickCancel}>취소</button>
+                <button onClick={this.onClickOK}>확인</button>
+            </div>
+        </div>
+    }
+}
+
+
+@modal
+class DrawSign extends React.Component{
+    componentDidMount(){
+    }
+
+    finishDraw = ()=>{
+        let dataUrl = this.refs.canvas.toDataURL("image/jpeg")
+        this.props.onFinish(dataUrl)
+        window.closeModal(this.props.modalId)
+    }
+
+    dataURItoBlob(dataURI) {
+        let byteString = atob(dataURI.split(',')[1]);
+        let mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
+        let ab = new ArrayBuffer(byteString.length);
+        let ia = new Uint8Array(ab);
+        for (let i = 0; i < byteString.length; i++)
+        {
+            ia[i] = byteString.charCodeAt(i);
+        }
+
+        let bb = new Blob([ab], { "type": mimeString });
+        return bb;
+    }
+
+    closeSelf = ()=>{
+        this.props.onFinish(null)
+        window.closeModal(this.props.modalId)
+    }
+    
+    onmousedown = (e)=>{
+        let ctx = this.refs.canvas.getContext('2d');
+
+        this.isDrawing = true;
+        ctx.moveTo(e.clientX - e.target.offsetLeft, e.clientY - e.target.offsetTop);
+    }
+
+    onmousemove = (e)=>{
+        let ctx = this.refs.canvas.getContext('2d');
+        if (this.isDrawing) {
+            ctx.lineTo(e.clientX - e.target.offsetLeft, e.clientY - e.target.offsetTop);
+            ctx.stroke();
+        }
+    }
+
+    onmouseup = ()=>{
+        this.isDrawing = false;
+    }
+
+    render(){
+        return <div className="default-modal draw-sign-modal">
+            <div className="contents">
+                <div className="title">서명 그리기</div>
+                
+                <canvas ref="canvas" 
+                    onMouseDown={this.onmousedown} 
+                    onMouseMove={this.onmousemove}
+                    onMouseUp={this.onmouseup} />
+            </div>
+            <div className="buttons">
+                <button onClick={this.finishDraw}>완료</button>
+                <button onClick={this.closeSelf}>취소</button>
+            </div>
+        </div>
+    }
+}
+
+
 
 
 
@@ -755,143 +892,6 @@ class RegistContract extends React.Component{
         </div>
     }
 }
-
-@modal
-class TypingPin extends React.Component{
-    constructor(){
-        super()
-        this.state = { 
-            value : ""
-        }
-    }
-    closeSelf = ()=>{
-        window.closeModal(this.props.modalId)
-    }
-
-    onClickOK = ()=>{
-        if(this.state.value.length == 6){
-            this.props.onFinish && this.props.onFinish(this.state.value)
-            this.closeSelf()
-        } else {
-            alert("핀번호는 6자리입니다. 정확히 입력해주세요.")
-        }
-    }
-
-    onClickCancel = () => {
-        this.props.onFinish && this.props.onFinish(false)
-        this.closeSelf()
-    }
-
-    keydown = (e)=>{
-        if(e.key == "Backspace") {
-            this.setState({
-                value: this.state.value.slice(0,this.state.value.length-1)
-            })
-        } else if(e.key == "Enter" || e.keyCode == 13) {
-            this.onClickOK()
-        }
-        let key = Number(e.key)
-        if( 0 <= key && key <= 9 ){
-            if(this.state.value.length < 6){
-                this.setState({
-                    value: this.state.value + "" + key
-                })
-            }
-        }
-    }
-
-    componentDidMount(){
-        document.addEventListener("keydown", this.keydown);
-    }
-
-    componentWillUnmount(){
-        document.removeEventListener("keydown", this.keydown);
-    }
-
-    render(){
-        return <div className="default-modal type-pin-modal">
-            <div className="contents">
-                <div className="title">PIN을 입력해주세요</div>
-                <div className="pin-box">
-                    {this.state.value}
-                </div>
-            </div>
-            <div className="buttons">
-                <button onClick={this.onClickCancel}>취소</button>
-                <button onClick={this.onClickOK}>확인</button>
-            </div>
-        </div>
-    }
-}
-
-@modal
-class DrawSign extends React.Component{
-    componentDidMount(){
-    }
-
-    finishDraw = ()=>{
-        let dataUrl = this.refs.canvas.toDataURL("image/jpeg")
-        var blob = this.dataURItoBlob(dataUrl);
-        this.props.onFinish(blob)
-        window.closeModal(this.props.modalId)
-    }
-
-    dataURItoBlob(dataURI) {
-        let byteString = atob(dataURI.split(',')[1]);
-        let mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
-        let ab = new ArrayBuffer(byteString.length);
-        let ia = new Uint8Array(ab);
-        for (let i = 0; i < byteString.length; i++)
-        {
-            ia[i] = byteString.charCodeAt(i);
-        }
-
-        let bb = new Blob([ab], { "type": mimeString });
-        return bb;
-    }
-
-    closeSelf = ()=>{
-        this.props.onFinish(null)
-        window.closeModal(this.props.modalId)
-    }
-    
-    onmousedown = (e)=>{
-        let ctx = this.refs.canvas.getContext('2d');
-
-        this.isDrawing = true;
-        ctx.moveTo(e.clientX - e.target.offsetLeft, e.clientY - e.target.offsetTop);
-    }
-
-    onmousemove = (e)=>{
-        let ctx = this.refs.canvas.getContext('2d');
-        if (this.isDrawing) {
-            ctx.lineTo(e.clientX - e.target.offsetLeft, e.clientY - e.target.offsetTop);
-            ctx.stroke();
-        }
-    }
-
-    onmouseup = ()=>{
-        this.isDrawing = false;
-    }
-
-    render(){
-        return <div className="default-modal draw-sign-modal">
-            <div className="contents">
-                <div className="title">서명 그리기</div>
-                
-                <canvas ref="canvas" 
-                    onMouseDown={this.onmousedown} 
-                    onMouseMove={this.onmousemove}
-                    onMouseUp={this.onmouseup} />
-            </div>
-            <div className="buttons">
-                <button onClick={this.finishDraw}>완료</button>
-                <button onClick={this.closeSelf}>취소</button>
-            </div>
-        </div>
-    }
-}
-
 @modal
 class MoveToFolder extends React.Component{
 

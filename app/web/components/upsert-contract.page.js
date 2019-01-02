@@ -237,17 +237,19 @@ export default class extends React.Component {
     }
 
     onClickRegisterSign = async () => {
-        
-        /*
         window.openModal("DrawSign",{
-            onFinish : async (sign_blob)=>{
-                let sign = this.state.sign_info
-                sign.sign = sign_blob
+            onFinish : async (sign)=>{
                 console.log(sign)
                 //encrypt model
-                //await this.props.update_contract_sign(this.state.contract.contract_id, sign)
+                await window.showIndicator()
+                await this.props.update_contract_sign(this.state.contract.contract_id, sign)
+                alert("서명 등록이 완료되었습니다.")
+                this.blockFlag = true
+                history.replace(`/contract-info/${this.props.match.params.contract_id}`)
+                await this.onRefresh()
+                await window.hideIndicator()
             }
-        })*/
+        })
     }
 
     onToggleUser = (entity_id, corp_id, force_open) => {
@@ -302,7 +304,7 @@ export default class extends React.Component {
     text_status(v) {
         switch(v.privilege) {
             case 1:
-                return v.sign ? "서명 완료" : "서명 전"
+                return v.signature ? "서명 완료" : "서명 전"
             case 2:
                 return "보기 전용"
         }
@@ -342,14 +344,7 @@ export default class extends React.Component {
 
         let corp_id = this.props.user_info.corp_id || -1
 
-        console.log('=========start===========')
-        console.log('=========start===========')
-        console.log('=========start===========')
-        console.log(user_infos, this.state.groups, this.props.user_info.account_id, corp_id)
         let meOrGroup = select_subject(user_infos, this.state.groups, this.props.user_info.account_id, corp_id).my_info
-
-        console.log(this.props.user_info.account_id)
-        console.log("corp_id", corp_id)
 
         return <div className="bottom signs">
             <div className="title">총 {user_infos.length}명</div>
@@ -368,13 +363,11 @@ export default class extends React.Component {
                         <div className="desc">{this.textPrivilege(meOrGroup.privilege)}</div>
                     </div>
                     {(()=> {
-                        let account_type = meOrGroup.account_type || 2
-
-                        console.log("meOrGroup", meOrGroup)
+                        let user_type = meOrGroup.user_info.user_type || 0
 
                         let divs = []
-                        if(account_type == 0) {
-                            for(let v of contract.necessary_info.indivisual) {
+                        if(user_type == 0) {
+                            for(let v of contract.necessary_info.individual) {
                                 divs.push(<div className="text-place" key={v}>
                                     <div className="title">{v}</div>
                                     <div className="desc">{meOrGroup.sign_info ? meOrGroup.sign_info["#"+v] || "미등록" : "미등록"}</div>
@@ -392,7 +385,9 @@ export default class extends React.Component {
                     })()}
                     <div className="text-place">
                         <div className="title">서명</div>
-                        <div className="desc">{meOrGroup.sign ? <div></div>: "서명 하기 전"}</div>
+                        <div className="desc">
+                            {meOrGroup.signature ? <canvas ref="" /> : "서명 하기 전"}
+                        </div>
                     </div>
 
                     {meOrGroup.privilege == 1 ? <div className="modify-button" onClick={this.onToggleRegisterSignForm}> 서명 정보 수정 </div> : null}
@@ -425,11 +420,11 @@ export default class extends React.Component {
                             <div className="desc">{this.textPrivilege(e.privilege)}</div>
                         </div>
                         {(()=> {
-                            let account_type = e.account_type || 2
+                            let user_type = e.user_info.user_type || 0
 
                             let divs = []
-                            if(account_type == 0) {
-                                for(let v of contract.necessary_info.indivisual) {
+                            if(user_type == 0) {
+                                for(let v of contract.necessary_info.individual) {
                                     divs.push(<div className="text-place" key={v}>
                                         <div className="title">{v}</div>
                                         <div className="desc">{e.sign_info ? e.sign_info["#"+v] || "미등록" : "미등록"}</div>
@@ -447,7 +442,7 @@ export default class extends React.Component {
                         })()}
                         <div className="text-place">
                             <div className="title">서명</div>
-                            <div className="desc">{e.sign ? <div></div>: "서명 하기 전"}</div>
+                            <div className="desc">{e.signature ? <div></div>: "서명 하기 전"}</div>
                         </div>
                     </div> : null}
                 </div>

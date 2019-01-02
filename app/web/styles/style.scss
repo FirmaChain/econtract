@@ -2013,7 +2013,7 @@ div.checkbox2-comp{
         flex-direction: row;
 
         height: 100%;
-        max-height: calc(100% - 131px);
+        max-height: calc(100% - 132px);
         overflow-y: auto;
 
         box-sizing: border-box;
@@ -2131,7 +2131,7 @@ div.checkbox2-comp{
         flex-direction: row;
 
         height: 100%;
-        max-height: calc(100% - 131px);
+        max-height: calc(100% - 132px);
         overflow-y: auto;
 
         box-sizing: border-box;
@@ -2296,6 +2296,12 @@ div.checkbox2-comp{
                                 color:$black;
                                 margin-top:5px;
                                 margin-bottom:20px;
+
+                                >canvas {
+                                    width:200px;
+                                    height: 100px;
+                                    border:1px solid $gray;
+                                }
                             }
                         }
 
@@ -5878,7 +5884,7 @@ div.checkbox-comp{
 }
 
 .draw-sign-modal{
-    canvas{
+    canvas {
         width: 300px;
         height: 150px;
         border:1px solid #dadadc;
