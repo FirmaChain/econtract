@@ -21,6 +21,7 @@ import {
     get_contract,
     get_group_info,
     getGroupKey,
+    select_subject,
 } from "../../common/actions"
 import CheckBox2 from "./checkbox2"
 
@@ -106,12 +107,14 @@ export default class extends React.Component {
     }
 
     status_text = (status)=>{
+        let corp_id = this.props.user_info.corp_id || -1
+        let me = select_subject(this.state.infos, this.state.groups, this.props.user_info.account_id, corp_id).my_info
         if(status == 0) {
             return "내용 입력 중"
         } else if(status == 1) {
-            if("내가 서명 했다면")
+            if(me.signature != null)
                 return "상대방 서명 전"
-            else if("나는 서명 안했고 상대방중 하나라도 서명 했다면")
+            else
                 return "내 서명 전"
         } else if(status == 2) {
             return "계약 완료"
@@ -227,7 +230,7 @@ export default class extends React.Component {
             </div>
             <div className="item">
                 <div className="title">계약 상태</div>
-                <div className="desc">{this.status_text(contract.status)}</div>
+                <div className="desc">{this.status_text(contract, contract.status)}</div>
             </div>
             <div className="item">
                 <div className="title">계약 고유 식별 값</div>
