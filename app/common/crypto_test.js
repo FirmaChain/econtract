@@ -206,6 +206,9 @@ export function getContractKey(pin, sharedAuxKey) {
     return hmac_sha256("FirmaChain New Contract", Buffer.concat([Buffer.from(pin), sharedAuxKey]));
 }
 
+// sealContractAuxKey
+// publicKeyHex : hexstring
+// sharedAuxKey : Buffer[31]
 export function sealContractAuxKey(publicKeyHex, sharedAuxKey) {
     let publicKey = ec_key_from_public(Buffer.from(publicKeyHex,'hex'), undefined, 1);
     let sharedAuxKeyEncrypted = ecaes_encrypt(sharedAuxKey, publicKey, 1);
@@ -213,6 +216,9 @@ export function sealContractAuxKey(publicKeyHex, sharedAuxKey) {
     return sharedAuxKeyEncryptedHex;
 }
 
+// unsealContractAuxKeyAux
+// masterKey : Buffer[64]
+// eckaiHex : hexstring
 function unsealContractAuxKeyAux(masterKey, eckaiHex){
     try {
         let private_key = ec_key_from_private(bip32_from_512bit(masterKey).derivePath("m/2'/0'").privateKey, undefined, 1);
@@ -232,6 +238,9 @@ function unsealContractAuxKeyAux(masterKey, eckaiHex){
     }
 }
 
+// unsealContractAuxKey
+// entropy : hexstring
+// eckaiHex : hexstring
 export function unsealContractAuxKey(entropy, eckaiHex){
     try{
         let mnemonic = bip39.entropyToMnemonic(entropy);
@@ -244,19 +253,24 @@ export function unsealContractAuxKey(entropy, eckaiHex){
     }
 }
 
+// unsealContractAuxKeyGroup
+// group_key : hexstring 256bit
+// eckaiHex : hexstring
 export function unsealContractAuxKeyGroup(group_key, eckaiHex){
     try{
-        let group_key2 = hmac_sha256("FirmaChain Group Key", group_key);
-        let group_master_key = Buffer.concat([Buffer.from(group_key, "hex"), group_key2]);
-        return unsealContractAuxKeyAux(group_master_key, eckaiHex);
+        return unsealContractAuxKeyAux(getGroupMasterKey(group_key), eckaiHex);
     }catch(err){
         console.log(err);
         return null;
     }
 }
 
-export function encryptPINAux(pin, masterKey){
+// encryptPIN
+// pin : string
+// group_key (optional) : 
+export function encryptPIN(pin, group_key=null){
     try{
+        let masterKey = group_key ? getGroupMasterKey(group_key) : getAccountMasterKey();
         return dkaes_encrypt(masterKey, "m/3'/0'", pin);
     }catch(err){
         console.log(err);
@@ -264,35 +278,13 @@ export function encryptPINAux(pin, masterKey){
     }
 }
 
-export function decryptPINAux(epin, masterKey){
+// decryptPIN
+// epin: hexstring
+// group_key (optional) : 
+export function decryptPIN(epin, group_key=null){
     try{
+        let masterKey = group_key ? getGroupMasterKey(group_key) : getAccountMasterKey();
         return dkaes_decrypt(masterKey, "m/3'/0'", epin);
-    }catch(err){
-        console.log(err);
-        return null;
-    }
-}
-
-export function encryptPIN(pin){
-    try{
-        let entropy = sessionStorage.getItem("entropy");
-        let mnemonic = bip39.entropyToMnemonic(entropy);
-        let seed = bip39.mnemonicToSeed(mnemonic);
-        let masterKey = hmac_sha512("FirmaChain master seed", seed);
-        return encryptPINAux(pin, masterKey);
-    }catch(err){
-        console.log(err);
-        return null;
-    }
-}
-
-export function decryptPIN(epin){
-    try{
-        let entropy = sessionStorage.getItem("entropy");
-        let mnemonic = bip39.entropyToMnemonic(entropy);
-        let seed = bip39.mnemonicToSeed(mnemonic);
-        let masterKey = hmac_sha512("FirmaChain master seed", seed);
-        return decryptPINAux(epin, masterKey);
     }catch(err){
         console.log(err);
         return null;
@@ -310,3 +302,18 @@ export function getMasterSeed() {
         return null;
     }
 }
+
+// getGroupMasterKey
+// group_key : hexstring
+function getGroupMasterKey(group_key) {
+    let group_key2 = hmac_sha256("FirmaChain Group Key", group_key);
+    let group_master_key = Buffer.concat([Buffer.from(group_key, "hex"), group_key2]);
+    return group_master_key;
+}
+
+// getAccountMasterKey
+function getAccountMasterKey() {
+    let seed = getMasterSeed();
+    return hmac_sha512("FirmaChain master seed", seed);
+}
+
