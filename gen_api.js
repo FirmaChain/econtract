@@ -92,6 +92,18 @@ export async function api_update_contract_model(contract_id,model){
         session:window.getCookie("session")
     });
 }
+export async function api_update_contract_user_info(contract_id,entity_id,corp_id,user_info){
+    let __data = new FormData();
+
+    __data.append('contract_id', contract_id);
+	__data.append('entity_id', entity_id);
+	__data.append('corp_id', corp_id);
+	__data.append('user_info', user_info)
+
+    return await post("/update_contract_user_info", __data,{
+        session:window.getCookie("session")
+    });
+}
 export async function api_update_contract_sign(contract_id,signature){
     let __data = new FormData();
 

@@ -742,7 +742,7 @@ class DrawSign extends React.Component{
     }
 
     finishDraw = ()=>{
-        let dataUrl = this.refs.canvas.toDataURL("image/jpeg")
+        let dataUrl = this.refs.canvas.toDataURL("image/png")
         this.props.onFinish(dataUrl)
         window.closeModal(this.props.modalId)
     }
@@ -762,7 +762,6 @@ class DrawSign extends React.Component{
     }
 
     closeSelf = ()=>{
-        this.props.onFinish(null)
         window.closeModal(this.props.modalId)
     }
     

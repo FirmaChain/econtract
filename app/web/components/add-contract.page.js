@@ -138,7 +138,7 @@ export default class extends React.Component {
                         username:user.username,
                         email:user.email,
                         public_key:user.publickey_contract,
-                        company_name:"피르마 솔루션즈",
+                        company_name:user.company_name,
                         role:[0, 1],
                     }/*,{
                         user_type:0,
@@ -231,15 +231,17 @@ export default class extends React.Component {
                     return alert("이미 추가된 유저입니다.")
                 }
             }
+            let info = {
+                user_type:resp.account_type != 0 ? 1 : 0,
+                username:resp.username,
+                email:resp.email,
+                account_id:resp.account_id,
+                role:[this.state.add_role],
+                public_key:resp.publickey_contract,
+            }
+
             this.setState({
-                target_list:[...this.state.target_list, {
-                    user_type:resp.account_type != 0 ? 1 : 0,
-                    username:resp.username,
-                    email:resp.email,
-                    account_id:resp.account_id,
-                    role:[this.state.add_role],
-                    public_key:resp.publickey_contract,
-                }],
+                target_list:[...this.state.target_list, info],
                 add_email:""
             })
         }else{

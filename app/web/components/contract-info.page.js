@@ -89,9 +89,9 @@ export default class extends React.Component {
     getRoleText = (entity_id, corp_id, privilege) => {
         let text = []
 
-        if(corp_id == 0 && entity_id == this.props.user_info.account_id) {
+        /*if(corp_id == 0 && this.state.contract.account_id == entity_id) {
             text.push("생성자")
-        }
+        }*/
 
         switch(privilege) {
             case 1:
@@ -153,7 +153,6 @@ export default class extends React.Component {
                                 return <i className="fas fa-user-tie"></i>
                             case 2:
                                 return <i className="fas fa-users"></i>
-                            break;
                         } })()
                     }
                     </div>
@@ -164,7 +163,6 @@ export default class extends React.Component {
                                     <div className="username">{e.user_info.username}</div>
                                     <div className="email">{e.user_info.email}</div>
                                 </div>
-                                break;
                             case 1:
                                 return <div className="desc">
                                     <div className="username">{e.user_info.username}<span>{e.user_info.company_name}</span></div>
@@ -327,10 +325,10 @@ export default class extends React.Component {
                         <div className="wrapper">
                             <div className="top">
                                 <div className="title">{this.state.contract.name}</div>
-                                <div className="date">
-                                    마지막 활동 시간 : {moment(this.state.contract.updatedAt).format("YYYY-MM-DD HH:mm:ss")}<br/>
-                                    계약 등록 일자 : {moment(this.state.contract.addedAt).format("YYYY-MM-DD HH:mm:ss")}
-                                </div>
+                            </div>
+                            <div className="date">
+                                마지막 활동 시간 : {moment(this.state.contract.updatedAt).format("YYYY-MM-DD HH:mm:ss")}<br/>
+                                계약 등록 일자 : {moment(this.state.contract.addedAt).format("YYYY-MM-DD HH:mm:ss")}
                             </div>
                             <div className="buttons">
                                 <div className="flex1">&nbsp;</div>

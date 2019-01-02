@@ -2297,7 +2297,7 @@ div.checkbox2-comp{
                                 margin-top:5px;
                                 margin-bottom:20px;
 
-                                >canvas {
+                                >img {
                                     width:200px;
                                     height: 100px;
                                     border:1px solid $gray;
@@ -2830,7 +2830,6 @@ div.checkbox2-comp{
 }
 
 .group-manage-page {
-
 }
 
 .contract-info-page {
@@ -2880,11 +2879,12 @@ div.checkbox2-comp{
 
                         margin-right:20px;
                     }
+                }
 
-                    >.date {
-                        font-size: $font1;
-                        color: $gray;
-                    }
+                >.date {
+                    font-size: $font1;
+                    color: $gray;
+                    margin-top: 15px;
                 }
 
                 >.buttons {

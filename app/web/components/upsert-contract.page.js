@@ -383,12 +383,12 @@ export default class extends React.Component {
                         }
                         return divs
                     })()}
-                    <div className="text-place">
+                    { meOrGroup.privilege == 1 ? <div className="text-place">
                         <div className="title">서명</div>
                         <div className="desc">
-                            {meOrGroup.signature ? <canvas ref="" /> : "서명 하기 전"}
+                            {meOrGroup.signature ? <img src={meOrGroup.signature}/> : "서명 하기 전"}
                         </div>
-                    </div>
+                    </div> : null }
 
                     {meOrGroup.privilege == 1 ? <div className="modify-button" onClick={this.onToggleRegisterSignForm}> 서명 정보 수정 </div> : null}
                 </div> : null}
@@ -440,10 +440,12 @@ export default class extends React.Component {
                             }
                             return divs
                         })()}
-                        <div className="text-place">
+                        { e.privilege == 1 ? <div className="text-place">
                             <div className="title">서명</div>
-                            <div className="desc">{e.signature ? <div></div>: "서명 하기 전"}</div>
-                        </div>
+                            <div className="desc">
+                                {e.signature ? <img src={e.signature}/> : "서명 하기 전"}
+                            </div>
+                        </div> : null }
                     </div> : null}
                 </div>
             })}

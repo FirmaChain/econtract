@@ -14,6 +14,7 @@ import moment from "moment"
 
 import {
     decryptPIN,
+    aes_encrypt,
 } from "../../common/crypto_test"
 
 import {
@@ -29,6 +30,7 @@ import {
     add_counterparties,
     update_epin_group,
     update_epin_account,
+    update_contract_user_info,
     is_correct_pin,
 } from "../../common/actions"
 
@@ -54,6 +56,7 @@ let mapDispatchToProps = {
     add_counterparties,
     update_epin_group,
     update_epin_account,
+    update_contract_user_info,
     is_correct_pin,
 }
 
@@ -390,8 +393,8 @@ export default class extends React.Component {
                     eckai:contract.eckai,
                 }]
                 let correct_pin = await this.props.is_correct_pin(contract, result, infos, this.props.user_info)
-                console.log("correct_pin", correct_pin)
                 if( correct_pin ) {
+                    update_user_info
                     await this.props.update_epin_account(contract.contract_id, result);
                 } else {
                     return alert("잘못된 핀 번호를 입력했습니다.")
@@ -436,8 +439,16 @@ export default class extends React.Component {
                     eckai:contract.eckai,
                 }]
                 let correct_pin = await this.props.is_correct_pin(contract, result, infos, this.props.user_info, this.state.groups)
-                console.log("correct_pin", correct_pin)
                 if( correct_pin ) {
+                    /*let user_info = {
+                        user_type:1,
+                        account_id: user.account_id,
+                        username:user.username,
+                        email:user.email,
+                        public_key:user.publickey_contract,
+                        company_name:user.company_name,
+                    }
+                    await this.props.update_contract_user_info(contract.contract_id, this.props.user_info.account_id, this.props.user_info.corp_id, user_info, this.props.user_info, true, correct_pin)*/
                     await this.props.update_epin_account(contract.contract_id, result);
                 } else {
                     return alert("잘못된 핀 번호를 입력했습니다.")
