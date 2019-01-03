@@ -1,6 +1,6 @@
 import React from "react"
 import ReactDOM from "react-dom"
-import config from "../../config"
+import config from "../../../config"
 
 import 'froala-editor/js/froala_editor.pkgd.min.js';
 import 'froala-editor/js/languages/ko.js';
@@ -405,9 +405,9 @@ export default class extends React.Component {
 
         let result = await this.props.send_chat(this.state.contract.contract_id, meOrGroup.entity_id, meOrGroup.corp_id, text)
         if(result.code == 1) {
-            let all_chats = [...this.state.chat_list, result.payload]
+            /*let all_chats = [...this.state.chat_list, result.payload]
             all_chats = all_chats.sort( (a, b) => a.chat_id - b.chat_id )
-            await this.setState({chat_list:all_chats})
+            await this.setState({chat_list:all_chats})*/
             return true
         }
         return false
@@ -415,6 +415,10 @@ export default class extends React.Component {
 
     onReceiveChat = async (chat) => {
         console.log(chat)
+
+        let all_chats = [...this.state.chat_list, chat]
+        all_chats = all_chats.sort( (a, b) => a.chat_id - b.chat_id )
+        await this.setState({chat_list:all_chats})
     }
 
     render_info() {
