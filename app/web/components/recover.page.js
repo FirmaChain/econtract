@@ -157,7 +157,7 @@ export default class extends React.Component {
                 </div>
 
                 <textarea className="masterkeyword-input-slot"
-                    placeholder="마스터 키워드를 입력해주세요."
+                    placeholder="마스터 키워드를 입력해주세요. 예시 ) poem outdoor burn gadget bubble head liar rubber fire honey ghost grape"
                     value={this.state.mnemonic || ""}
                     onKeyDown={this.keyPress.bind(this, 0)}
                     onChange={e=>this.setState({mnemonic:e.target.value.replace(/\r\n|\r|\n|<br>/g, " ")})}></textarea>
