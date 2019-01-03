@@ -337,7 +337,7 @@ class PurchaseGroupMemberAdd extends React.Component {
                 </div>
                 <div className="sub-title">현재 계정 수 : 마스터 계정 1 + 서브 계정 5</div>
                 <div className="sub-desc">
-                    추가하신 인원은 바로 등록이 가능하며, 결제는 등록하신 결제 정보로 다음달 %일에 진행됩니다
+                    추가하신 인원은 바로 등록이 가능하며, 결제는 등록하신 결제 정보로 다음달 결제일에 진행됩니다
                 </div>
                 <div className="button">
                     <div className="submit" onClick={this.onResponse}>추가</div>
