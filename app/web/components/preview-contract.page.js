@@ -57,14 +57,18 @@ export default class extends React.Component {
         if(!this.state.contract || !this.state.infos)
             return <div></div>
 		
-        return (<div className="preview-contract-page header-page">
-            <div className="header">
-                <div className="left-logo">
-                    <img src="/static/logo_blue.png" onClick={()=>history.push("/home")}/>
+        return (<div className="preview-contract-page">
+            <div className="header-page">
+                <div className="header">
+                    <div className="left-icon">
+                        <i className="fal fa-times" onClick={()=>history.goBack()}></i>
+                    </div>
+                    <div className="title">{this.state.contract.name}</div>
+                    { !!this.props.user_info ? <Information /> : null }
                 </div>
-            </div>
-            <div className="container">
-                <div className="contract-main-text" dangerouslySetInnerHTML={{__html:this.state.contract.html}}>
+                <div className="container">
+                    <div className="contract-main-text" dangerouslySetInnerHTML={{__html:this.state.contract.html}}>
+                    </div>
                 </div>
             </div>
         </div>)

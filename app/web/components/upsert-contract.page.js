@@ -522,7 +522,7 @@ export default class extends React.Component {
                     <div className="left-icon">
                         <i className="fal fa-times" onClick={()=>history.goBack()}></i>
                     </div>
-                    <div className="title">#{this.state.contract.name}</div>
+                    <div className="title">{this.state.contract.name}</div>
                     { !!this.props.user_info ? <Information /> : null }
                 </div>
                 <div className="container">

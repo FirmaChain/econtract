@@ -8,8 +8,8 @@ $font5: 22px;
 $font4: 19px;
 $font3: 16px;
 $font2: 15px;
-$font1: 14px;
-$font0: 12px;
+$font1: 13px;
+$font0: 11px;
 
 $blue : #324b5f;
 $middleblack : #555555;
@@ -134,21 +134,21 @@ a.fr-command {
 
     .left {
         flex:1;
-        font-size: $font1;
+        font-size: $font0;
         color:$gray;
         margin-left:20px;
     }
 
     .middle {
         flex:1;
-        font-size: $font2;
+        font-size: $font0;
         color:$gray;
         text-align:center;
     }
 
     .right {
         flex:1;
-        font-size: $font1;
+        font-size: $font0;
         color:$gray;
         text-align: right;
         margin-right:20px;
@@ -3221,8 +3221,18 @@ div.checkbox2-comp{
 
 .preview-contract-page {
 
-    >.container {
-        
+    >.header-page .container {
+        background-color:$gray;
+        padding:40px 0;
+
+        >.contract-main-text {
+            margin:auto;
+            max-width: 1000px;
+            min-height: 100%;
+            padding:55px;
+            background-color: white;
+            box-sizing:border-box;
+        }
     }
 }
 
