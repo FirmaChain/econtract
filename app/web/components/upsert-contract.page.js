@@ -420,6 +420,7 @@ export default class extends React.Component {
         let all_chats = [...this.state.chat_list, chat]
         all_chats = all_chats.sort( (a, b) => a.chat_id - b.chat_id )
         await this.setState({chat_list:all_chats})
+        this.state.scrollBottom && this.state.scrollBottom()
     }
 
     render_info() {
@@ -595,6 +596,9 @@ export default class extends React.Component {
                 onSend={this.onClickSendChat}
                 onLoadMore={this.onChatLoadMore}
                 isSendable={true}
+                initialize={(scrollBottom) => {
+                    this.setState({scrollBottom})
+                }}
             />
         </div>
     }

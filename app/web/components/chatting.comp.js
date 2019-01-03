@@ -49,6 +49,7 @@ export default class extends React.Component {
                 this.block_scroll = false
             }
         })
+        this.props.initialize && this.props.initialize(()=>this.refs.bottom.scrollIntoView())
     }
 
     componentWillReceiveProps(nextProps){
