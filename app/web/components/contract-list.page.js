@@ -460,7 +460,7 @@ export default class extends React.Component {
                 }
 
 
-                if(isGroup) {
+                if(isGroup && contract.is_pin_used == 1) {
                     await this.props.update_epin_group(this.props.user_info.corp_id, isGroup, contract.contract_id, this.props.user_info, pin)
                     await this.props.update_epin_account(contract.contract_id, pin);
                 }
@@ -489,8 +489,11 @@ export default class extends React.Component {
                         // add_contract_info group
                         //let detail_contract = await this.props.get_contract(contract.contract_id, this.props.user_info, groups)
                         let result = await this.props.add_counterparties(contract.contract_id, [group], groups, this.props.user_info, [contract], contract.is_pin_used, pin)
-                        await this.props.update_epin_account(contract.contract_id, pin);
-                        await this.props.update_epin_group(group.corp_id, group.group_id, contract.contract_id, this.props.user_info, pin)
+                        
+                        if(contract.is_pin_used == 1) {
+                            await this.props.update_epin_account(contract.contract_id, pin);
+                            await this.props.update_epin_group(group.corp_id, group.group_id, contract.contract_id, this.props.user_info, pin)
+                        }
                         r(group)
                     }
                 }))
