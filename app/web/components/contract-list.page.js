@@ -60,7 +60,7 @@ let mapDispatchToProps = {
     is_correct_pin,
 }
 
-const LIST_DISPLAY_COUNT = 10
+const LIST_DISPLAY_COUNT = 6
 
 @connect(mapStateToProps, mapDispatchToProps )
 export default class extends React.Component {

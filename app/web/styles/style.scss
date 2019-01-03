@@ -52,6 +52,7 @@ body{
     padding:0;
     margin: 0;
     color:$black;
+    font-size:$font2;
 }
 
 a{
@@ -120,6 +121,9 @@ select:focus { outline:none; }
 }
 a.fr-command {
     padding: 10px 24px !important;
+}
+.fr-element table td {
+    padding:10px;
 }
 
 
@@ -3220,6 +3224,10 @@ div.checkbox2-comp{
 }
 
 .preview-contract-page {
+    height:100%;
+    width:100%;
+    background: white;
+    overflow-y:auto;
 
     >.header-page .container {
         background-color:$gray;
@@ -3232,6 +3240,57 @@ div.checkbox2-comp{
             padding:55px;
             background-color: white;
             box-sizing:border-box;
+
+            >.sign-info {
+                margin-bottom:50px;
+
+                >.item {
+                    display: inline-block;
+                    width:50%;
+                    box-sizing: border-box;
+                    padding:0 40px;
+                    margin-top:70px;
+
+                    font-size:$font3;
+                    color:$black;
+
+                    >.title {
+                        font-weight: bold;
+                    }
+
+                    >.info {
+                        margin-top:10px;
+                        display: flex;
+                        flex-direction:row;
+
+                        >.first {
+                            margin-right:10px;
+                        }
+
+                        >.last {
+                            flex:1;
+                            margin-left:10px;
+                        }
+                    }
+
+                    >.signature {
+                        position:relative;
+                        display: flex;
+                        flex-direction: row;
+                        align-items: center;
+
+                        margin-top: 10px;
+                        
+                        >img {
+                            /*position:absolute;
+                            left:50px;
+                            top:-40px;*/
+                            margin-left:20px;
+                            height:100px;
+                        }
+                    }
+                }
+            }
         }
     }
 }

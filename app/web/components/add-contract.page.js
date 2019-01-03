@@ -92,7 +92,7 @@ export default class extends React.Component {
             },{
                 deletable:false,
                 title:"대표자 성함",
-                checked:false
+                force:true
             },{
                 deletable:false,
                 title:"담당자 성함",

@@ -192,10 +192,15 @@ export default class extends React.Component {
         if( this.state.contract.can_edit_account_id != this.props.user_info.account_id)
             this.blockFlag = true
 
-        history.push({pathname:"/preview-contract", state:{
+        window.openModal("PreviewContract",{
+            contract:this.state.contract,
+            infos: this.state.infos
+        })
+
+        /*history.push({pathname:"/preview-contract", state:{
             contract:this.state.contract,
             infos:this.state.infos,
-        }})
+        }})*/
     }
 
     onClickContractSave = async () => {
@@ -564,18 +569,19 @@ export default class extends React.Component {
             </div>
             <div className="bottom-container">
                 <div className="left">
-                    {this.state.contract.can_edit_account_id == this.props.user_info.account_id ? [<div className="but" onClick={this.onClickContractSave} key={"contract_save"}>
-                        <i className="far fa-save"></i>
-                        수정한 내용 저장하기
-                    </div>,
-                    <div className="but" onClick={this.onClickMoveEditPrivilege} key={"edit_privilege"}>
-                        <i className="far fa-arrow-to-right"></i>
-                        수정 권한 넘기기
-                    </div>] : null}
                     <div className="but" onClick={this.onClickPreview}>
                         <i className="fal fa-eye"></i>
                         계약 미리보기
                     </div>
+                    {this.state.contract.can_edit_account_id == this.props.user_info.account_id ? [
+                        <div className="but" onClick={this.onClickMoveEditPrivilege} key={"edit_privilege"}>
+                            <i className="far fa-arrow-to-right"></i>
+                            수정 권한 넘기기
+                        </div>, <div className="but" onClick={this.onClickContractSave} key={"contract_save"}>
+                            <i className="far fa-save"></i>
+                            수정한 내용 저장하기
+                        </div>]
+                    : null}
                 </div>
                 {(()=>{
                     if(meOrGroup.privilege == 2 || this.state.contract.status == 2) {
