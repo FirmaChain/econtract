@@ -114,6 +114,8 @@ export default class extends React.Component {
                     this.editor = editor;
                     if( !!this.state.contract && this.props.user_info.account_id != this.state.contract.can_edit_account_id ) {
                         this.editor.edit.off()
+                    } else {
+                        this.editor.edit.on()
                     }
                 }
             }
@@ -192,6 +194,12 @@ export default class extends React.Component {
             }
 
             await this.setState(_state)
+
+            if( !!this.editor && !!this.state.contract && this.props.user_info.account_id != this.state.contract.can_edit_account_id ) {
+                this.editor.edit.off()
+            } else {
+                this.editor.edit.on()
+            }
         } else {
             alert("계약이 존재하지 않습니다.")
             history.goBack()
