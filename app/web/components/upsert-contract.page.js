@@ -34,6 +34,8 @@ import {
     update_contract_sign,
     update_contract_sign_info,
     move_contract_can_edit_account_id,
+    get_chats,
+    send_chat,
     select_subject,
 
 } from "../../common/actions"
@@ -58,6 +60,8 @@ let mapDispatchToProps = {
     update_contract_model,
     update_contract_sign,
     move_contract_can_edit_account_id,
+    get_chats,
+    send_chat,
     update_contract_sign_info,
 }
 
@@ -112,56 +116,7 @@ export default class extends React.Component {
             }
         }
 
-        let t = [{
-                chat_id:1,
-                corp_id:0,
-                entity_id:7,
-                type:0,
-                msg:"하이하이"
-            },{
-                chat_id:2,
-                corp_id:0,
-                entity_id:7,
-                type:0,
-                msg:"하이하이111111"
-            },{
-                chat_id:3,
-                corp_id:0,
-                entity_id:0,
-                type:1,
-                msg:"누구누구님이 계약을 수저했습니다."
-            },{
-                chat_id:4,
-                corp_id:0,
-                entity_id:7,
-                type:0,
-                msg:"하이하이222"
-            },{
-                chat_id:5,
-                corp_id:0,
-                entity_id:8,
-                type:0,
-                msg:"하이하이33333"
-            },{
-                chat_id:6,
-                corp_id:0,
-                entity_id:8,
-                type:0,
-                msg:"이이이이"
-            },{
-                chat_id:7,
-                corp_id:0,
-                entity_id:7,
-                type:0,
-                msg:"하이하이"
-            },{
-                chat_id:8,
-                corp_id:0,
-                entity_id:7,
-                type:0,
-                msg:"하이하이"
-            }]
-
+        this.end_chat = false
 
         this.state = {
             model:"",
@@ -170,17 +125,21 @@ export default class extends React.Component {
             sign_mode:false,
             sign_info:{},
             open_users:[],
-            chat_list:[...t, ...t, ...t ]
+
+            page_chat:0,
+            last_chat_id:0,
+            chat_list:[],
         }
     }
 
     componentDidMount() {
-        (async()=>{
+        setTimeout(async()=>{
             await window.showIndicator("계약서 상세 데이터 불러오는 중...")
             await this.props.fetch_user_info()
             await this.onRefresh()
+            await this.onChatLoadMore()
             await window.hideIndicator()
-        })()
+        })
 
         history.block( (targetLocation) => {
             if(this.blockFlag)
@@ -221,7 +180,7 @@ export default class extends React.Component {
                 sign_info,
             }
 
-            this.setState(_state)
+            await this.setState(_state)
         } else {
             alert("계약이 존재하지 않습니다.")
             history.goBack()
@@ -399,12 +358,48 @@ export default class extends React.Component {
         }
     } 
 
-    onClickSendChat = async (text)=>{
-        if(text.length == 0)
-            return alert("메세지를 입력해주세요");
+    onChatLoadMore = async () => {
+        if(this.end_chat)
+            return false
 
-        console.log("send")
-        //await this.send()
+        let chats = await this.props.get_chats(this.state.contract.contract_id, this.state.page_chat, 30, this.state.last_chat_id)
+        if(chats.code == 1) {
+            if(chats.payload.length == 0) {
+                this.end_chat = true
+                return false
+            }
+            let all_chats = [...chats.payload, ...this.state.chat_list]
+            all_chats = all_chats.sort( (a, b) => a.chat_id - b.chat_id )
+            
+
+            let _ = {
+                chat_list:all_chats,
+                page_chat:this.state.page_chat + 1,
+            }
+            if(this.state.last_chat_id == 0 && all_chats.length > 0) _.last_chat_id = all_chats[all_chats.length - 1].chat_id
+            await this.setState(_);
+            return true
+        }
+        return false
+    }
+
+    onClickSendChat = async (text)=>{
+        if(text.length == 0) {
+            alert("메세지를 입력해주세요");
+            return false
+        }
+
+        let corp_id = this.props.user_info.corp_id || -1
+        let meOrGroup = select_subject(this.state.infos, this.state.groups, this.props.user_info.account_id, corp_id).my_info
+
+        let result = await this.props.send_chat(this.state.contract.contract_id, meOrGroup.entity_id, meOrGroup.corp_id, text)
+        if(result.code == 1) {
+            let all_chats = [...this.state.chat_list, result.payload]
+            all_chats = all_chats.sort( (a, b) => a.chat_id - b.chat_id )
+            await this.setState({chat_list:all_chats})
+            return true
+        }
+        return false
     }
 
     render_info() {
@@ -578,7 +573,7 @@ export default class extends React.Component {
                 groups={this.state.groups}
                 chat_list={this.state.chat_list}
                 onSend={this.onClickSendChat}
-                onLoadMore={async ()=>await this.setState({chat_list:[...this.state.chat_list,...this.state.chat_list]})}
+                onLoadMore={this.onChatLoadMore}
                 isSendable={true}
             />
         </div>

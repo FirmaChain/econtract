@@ -32,6 +32,7 @@ export default class extends React.Component {
             chat_text:""
         }
         this.block_scroll = false
+        this.block_chat = false
     }
 
     componentDidMount() {
@@ -40,7 +41,9 @@ export default class extends React.Component {
             if(e.target.scrollTop < 50 && this.props.onLoadMore && !this.block_scroll) {
                 let prevScrollHeight = e.target.scrollHeight
                 this.block_scroll = true
-                await this.props.onLoadMore()
+                let resp = await this.props.onLoadMore()
+                if(!resp)
+                    return
                 let diffScrollHeight = e.target.scrollHeight - prevScrollHeight
                 e.target.scrollTop = diffScrollHeight
                 this.block_scroll = false
@@ -51,12 +54,26 @@ export default class extends React.Component {
     componentWillReceiveProps(nextProps){
     }
 
+    onClickSendChat = async() => {
+
+        if(this.state.chat_text.length == 0 || this.block_chat)
+            return
+
+        this.block_chat = true
+
+        let success_send_chat = await this.props.onSend(this.state.chat_text)
+
+        if(success_send_chat) {
+            await this.setState({chat_text:""})
+            this.refs.bottom.scrollIntoView(/*{ behavior: "smooth" }*/);
+        }
+
+        this.block_chat = false
+    }
+
     onKeyDownChat = async (e)=>{
         if(e.key == "Enter"){
-            if(this.state.chat_text.length == 0)
-                return
-
-            await this.props.onSend(this.state.chat_text)
+            this.onClickSendChat()
         }
     }
 

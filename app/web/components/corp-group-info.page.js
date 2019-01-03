@@ -60,9 +60,9 @@ export default class extends React.Component {
             return history.goBack()
         }
 
-        (async()=>{
+        setTimeout(async()=>{
             await this.onRefresh()
-        })()
+        })
     }
 
     onRefresh = async () => {

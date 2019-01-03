@@ -78,9 +78,10 @@ export default class extends React.Component {
             if(account_id) {
                 let member = await this.props.get_corp_member_info(account_id, this.props.user_info.corp_key)
                 this.props.openGroup(member.group_id)
-                this.setState({
+                this.state = {
+                    ...this.state,
                     member
-                })
+                }
             }
 
         })()

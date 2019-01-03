@@ -10,6 +10,8 @@ import {
     api_update_contract_sign,
     api_update_contract_sign_info,
     api_move_contract_can_edit_account_id,
+    api_get_chats,
+    api_send_chat,
 /*    api_load_contract,
     api_load_contract_info,
     api_folder_list,
@@ -348,6 +350,19 @@ export function update_contract_sign_info(contract_id, sign_info, the_key) {
 export function move_contract_can_edit_account_id(contract_id, move_account_id){
     return async function(){
         return (await api_move_contract_can_edit_account_id(contract_id, move_account_id));
+    };
+}
+
+
+export function get_chats(contract_id, page = 0, display_count = 20, last_chat_id = 0){
+    return async function(){
+        return (await api_get_chats(contract_id, page, display_count, last_chat_id));
+    };
+}
+
+export function send_chat(contract_id, entity_id, corp_id, message){
+    return async function(){
+        return (await api_send_chat(contract_id, entity_id, corp_id, message));
     };
 }
 

@@ -134,6 +134,30 @@ export async function api_move_contract_can_edit_account_id(contract_id,move_acc
         session:window.getCookie("session")
     });
 }
+export async function api_get_chats(contract_id,page,display_count,last_chat_id){
+    let __data = new FormData();
+
+    __data.append('contract_id', contract_id);
+	__data.append('page', page);
+	__data.append('display_count', display_count);
+	__data.append('last_chat_id', last_chat_id)
+
+    return await post("/get_chats", __data,{
+        session:window.getCookie("session")
+    });
+}
+export async function api_send_chat(contract_id,entity_id,corp_id,message){
+    let __data = new FormData();
+
+    __data.append('contract_id', contract_id);
+	__data.append('entity_id', entity_id);
+	__data.append('corp_id', corp_id);
+	__data.append('message', message)
+
+    return await post("/send_chat", __data,{
+        session:window.getCookie("session")
+    });
+}
 export async function api_invite_information(registration_code){
     let __data = new FormData();
 
