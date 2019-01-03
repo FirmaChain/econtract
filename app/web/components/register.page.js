@@ -445,7 +445,7 @@ export default class extends React.Component {
             this.setState({
                 verificated_phone:true
             })
-        }else{
+        } else {
             alert("잘못된 인증번호입니다.")
         }
         await window.hideIndicator();
@@ -476,6 +476,9 @@ export default class extends React.Component {
         }
         if(this.state.password !== this.state.password2){
             return alert("비밀번호가 일치하지 않습니다.")
+        }
+        if(!this.state.email_verification) {
+            return alert("이메일을 인증을 진행해주세요.")
         }
 
         this.setState({
