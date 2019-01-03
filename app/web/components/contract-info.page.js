@@ -50,6 +50,7 @@ export default class extends React.Component {
 
 	componentDidMount(){
         (async()=>{
+            await window.showIndicator("계약서 불러오는 중...")
             await this.props.fetch_user_info()
             let contract_id = this.props.match.params.contract_id || 0
             let contract, groups = []
@@ -59,6 +60,7 @@ export default class extends React.Component {
             } else {
                 contract = await this.props.get_contract(contract_id, this.props.user_info)
             }
+            await window.hideIndicator()
 
             if(!contract) {
                 alert("계약이 암호화되어 있어 접근할 수 없습니다.")

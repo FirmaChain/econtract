@@ -315,7 +315,7 @@ export function update_epin_group(corp_id, group_id, contract_id, user_info, pin
 export function update_contract_model(contract_id, model, the_key){
     return async function(){
         let encrypted_model = aes_encrypt(model, the_key)
-        return (await api_update_contract_model(contract_id, encrypted_model)).payload;
+        return (await api_update_contract_model(contract_id, encrypted_model));
     };
 }
 
@@ -333,21 +333,21 @@ export function update_contract_user_info(contract_id, entity_id, corp_id, e, us
 export function update_contract_sign(contract_id, signature, the_key){
     return async function(){
         let encrypted_signature = aes_encrypt(signature, the_key)
-        return (await api_update_contract_sign(contract_id, encrypted_signature)).payload;
+        return (await api_update_contract_sign(contract_id, encrypted_signature));
     };
 }
 
 export function update_contract_sign_info(contract_id, sign_info, the_key) {
     return async function() {
         let encrypted_sign_info = aes_encrypt(JSON.stringify(sign_info), the_key)
-        return (await api_update_contract_sign_info(contract_id, encrypted_sign_info )).payload;
+        return (await api_update_contract_sign_info(contract_id, encrypted_sign_info ));
     }
 }
 
 
 export function move_contract_can_edit_account_id(contract_id, move_account_id){
     return async function(){
-        return (await api_move_contract_can_edit_account_id(contract_id, move_account_id)).payload;
+        return (await api_move_contract_can_edit_account_id(contract_id, move_account_id));
     };
 }
 

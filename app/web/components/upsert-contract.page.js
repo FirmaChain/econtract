@@ -124,7 +124,7 @@ export default class extends React.Component {
 
     componentDidMount() {
         (async()=>{
-            await window.showIndicator()
+            await window.showIndicator("계약서 상세 데이터 불러오는 중...")
             await this.props.fetch_user_info()
             await this.onRefresh()
             await window.hideIndicator()
@@ -208,7 +208,8 @@ export default class extends React.Component {
         //encrypt model
 
         await window.showIndicator()
-        await this.props.update_contract_model(this.state.contract.contract_id, model, this.state.contract.the_key)
+        let r = await this.props.update_contract_model(this.state.contract.contract_id, model, this.state.contract.the_key)
+        if(r.code == -9) alert("이미 완료된 계약은 내용을 업데이트할 수 없습니다.")
         await this.onRefresh()
         await window.hideIndicator()
     }
@@ -261,7 +262,8 @@ export default class extends React.Component {
         }
 
         await window.showIndicator()
-        await this.props.update_contract_sign_info(this.state.contract.contract_id, this.state.sign_info, this.state.contract.the_key)
+        let r = await this.props.update_contract_sign_info(this.state.contract.contract_id, this.state.sign_info, this.state.contract.the_key)
+        if(r.code == -9) alert("이미 완료된 계약은 서명 정보를 업데이트할 수 없습니다.")
         await this.onRefresh()
         this.setState({sign_mode:false})
         await window.hideIndicator()
@@ -292,12 +294,12 @@ export default class extends React.Component {
                 console.log(signature)
                 //encrypt signature
                 await window.showIndicator()
-                await this.props.update_contract_sign(this.state.contract.contract_id, signature, this.state.contract.the_key)
-                alert("서명 등록이 완료되었습니다.")
+                let r = await this.props.update_contract_sign(this.state.contract.contract_id, signature, this.state.contract.the_key)
+                if(r.code == -9) alert("이미 완료된 계약은 서명을 업데이트할 수 없습니다.")
+                else alert("서명 등록이 완료되었습니다.")
                 this.blockFlag = true
-                history.replace(`/contract-info/${this.props.match.params.contract_id}`)
-                await this.onRefresh()
                 await window.hideIndicator()
+                history.replace(`/contract-info/${this.props.match.params.contract_id}`)
             }
         })
     }
