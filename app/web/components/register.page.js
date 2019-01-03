@@ -773,7 +773,7 @@ export default class extends React.Component {
                         value={this.state.password2 || ""}
                         onChange={e=>this.setState({password2:e.target.value})}
                         onKeyDown={this.keyPress.bind(this, 1)}
-                        placeholder="입력하신 패스워드를 다시 입력해주세요"/>
+                        placeholder="입력하신 비밀번호를 다시 입력해주세요"/>
                 </div>
             </div>
 
