@@ -8,6 +8,7 @@ import pdfjsLib from "pdfjs-dist"
 import translate from "../../common/translate"
 import Information from "./information.comp"
 import Footer from "./footer.comp"
+import Chatting from "./chatting.comp"
 import moment from "moment"
 
 import Dropdown from "react-dropdown"
@@ -20,6 +21,7 @@ import {
     fetch_user_info,
     get_contract,
     get_group_info,
+    get_chats,
     getGroupKey,
     select_subject,
 } from "../../common/actions"
@@ -35,6 +37,7 @@ let mapDispatchToProps = {
     fetch_user_info,
     get_contract,
     get_group_info,
+    get_chats,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -42,9 +45,14 @@ export default class extends React.Component {
 	constructor(){
         super();
         this.blockFlag = false
+        this.end_chat = false
 
 		this.state={
-            select_tab:0
+            select_tab:0,
+
+            page_chat:0,
+            last_chat_id:0,
+            chat_list:[],
         };
 	}
 
@@ -64,7 +72,7 @@ export default class extends React.Component {
 
             if(!contract) {
                 alert("계약이 암호화되어 있어 접근할 수 없습니다.")
-                return history.goBack()
+                return history.replace("/login")
             }
 
             if(contract.payload.contract) {
@@ -76,6 +84,8 @@ export default class extends React.Component {
                 alert("계약이 존재하지 않습니다.")
                 history.goBack()
             }
+
+            await this.onChatLoadMore()
         })()
     }
 
@@ -87,6 +97,31 @@ export default class extends React.Component {
 
     onClickBack = ()=>{
         history.goBack();
+    }
+
+    onChatLoadMore = async () => {
+        if(this.end_chat)
+            return false
+
+        let chats = await this.props.get_chats(this.state.contract.contract_id, this.state.page_chat, 30, this.state.last_chat_id)
+        if(chats.code == 1) {
+            if(chats.payload.length == 0) {
+                this.end_chat = true
+                return false
+            }
+            let all_chats = [...chats.payload, ...this.state.chat_list]
+            all_chats = all_chats.sort( (a, b) => a.chat_id - b.chat_id )
+            
+
+            let _ = {
+                chat_list:all_chats,
+                page_chat:this.state.page_chat + 1,
+            }
+            if(this.state.last_chat_id == 0 && all_chats.length > 0) _.last_chat_id = all_chats[all_chats.length - 1].chat_id
+            await this.setState(_);
+            return true
+        }
+        return false
     }
 
     getRoleText = (entity_id, corp_id, privilege) => {
@@ -389,7 +424,21 @@ export default class extends React.Component {
                             </div>
                         </div>
                     </div>
-                    <div className="chat"></div>
+                    <div className="chat">
+                        {this.state.chat_list.length > 0 ? <Chatting 
+                            contract={this.state.contract}
+                            infos={this.state.infos}
+                            user_info={this.state.user_info}
+                            groups={this.state.groups}
+                            chat_list={this.state.chat_list}
+                            onSend={this.onClickSendChat}
+                            onLoadMore={this.onChatLoadMore}
+                            isSendable={false}
+                            initialize={(scrollBottom) => {
+                                this.setState({scrollBottom})
+                            }}
+                        /> : null }
+                    </div>
                 </div>
             </div>
             <Footer />
