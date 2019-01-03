@@ -140,6 +140,9 @@ export default class extends React.Component {
             await window.showIndicator("계약서 상세 데이터 불러오는 중...")
             await this.props.fetch_user_info()
             await this.onRefresh()
+            this.socket.emit('subscribe_channel', this.state.contract.contract_id)
+            this.socket.on("receive_chat_"+this.state.contract.contract_id, this.onReceiveChat)
+            this.socket.on("refresh_contract_"+this.state.contract.contract_id, this.onRefresh)
             await this.onChatLoadMore()
             await window.hideIndicator()
         })
@@ -179,10 +182,6 @@ export default class extends React.Component {
                 sign_info = me.sign_info || {};
                 this.onToggleUser(me.entity_id, me.corp_id, true)
             }
-
-            this.socket.emit('subscribe_channel', contract.payload.contract.contract_id)
-            this.socket.on("receive_chat_"+contract.payload.contract.contract_id, this.onReceiveChat)
-            this.socket.on("refresh_contract_"+contract.payload.contract.contract_id, this.onRefresh)
 
             let model = contract.payload.contract.html != null ? Buffer.from(contract.payload.contract.html).toString() : ""
             _state = {
@@ -231,6 +230,9 @@ export default class extends React.Component {
 
     onClickContractSave = async () => {
         let model = this.state.model
+
+        if(Buffer.from(this.state.contract.html).toString() == this.state.model)
+            return;
         //encrypt model
 
         await window.showIndicator()
