@@ -494,7 +494,7 @@ export default class extends React.Component {
                 onclose:r
             }).open();
         }));
-        if(!!address) {
+        if(!!address || !!address.roadAddress) {
             if(type == 0) {
                 this.setState({
                     useraddress: address.roadAddress + " "
