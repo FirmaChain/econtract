@@ -79,11 +79,7 @@ export default class extends React.Component {
 
     render_chat_slot(e){
         switch(e.type) {
-            case 1:
-                return <div key={e.chat_id} className="notice">
-                    {e.msg}
-                </div>
-            default: {
+            case 0: {
                 let user = this.props.infos.find(v=>v.corp_id == e.corp_id && v.entity_id == e.entity_id)
 
                 let corp_id = this.props.user_info.corp_id || -1
@@ -99,6 +95,10 @@ export default class extends React.Component {
                     </div>
                 </div>
             }
+            default:
+                return <div key={e.chat_id} className="notice">
+                    {e.msg}
+                </div>
         }
     }
 
