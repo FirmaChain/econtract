@@ -17,7 +17,7 @@ import {
     update_epin,
     clear_epin,
 } from "../../common/actions"
-import Chatting from "./chatting"
+import Chatting from "./old-chatting"
 import CancelablePromise from 'cancelable-promise';
 import Item from "./editor-item.comp"
 

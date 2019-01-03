@@ -2,8 +2,6 @@ import React from "react"
 import ReactDOM from "react-dom"
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom'
-import ContractMenu from "./contract-menu"
-import UserStatusBar from "./user-state-bar"
 import CheckBox2 from "./checkbox2"
 import translate from "../../common/translate"
 import Pager from "./pager"

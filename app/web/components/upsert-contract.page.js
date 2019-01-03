@@ -16,6 +16,7 @@ import pdfjsLib from "pdfjs-dist"
 import translate from "../../common/translate"
 import Information from "./information.comp"
 import Footer from "./footer.comp"
+import Chatting from "./chatting.comp"
 
 import Dropdown from "react-dropdown"
 import 'react-dropdown/style.css'
@@ -111,6 +112,56 @@ export default class extends React.Component {
             }
         }
 
+        let t = [{
+                chat_id:1,
+                corp_id:0,
+                entity_id:7,
+                type:0,
+                msg:"하이하이"
+            },{
+                chat_id:2,
+                corp_id:0,
+                entity_id:7,
+                type:0,
+                msg:"하이하이111111"
+            },{
+                chat_id:3,
+                corp_id:0,
+                entity_id:0,
+                type:1,
+                msg:"누구누구님이 계약을 수저했습니다."
+            },{
+                chat_id:4,
+                corp_id:0,
+                entity_id:7,
+                type:0,
+                msg:"하이하이222"
+            },{
+                chat_id:5,
+                corp_id:0,
+                entity_id:8,
+                type:0,
+                msg:"하이하이33333"
+            },{
+                chat_id:6,
+                corp_id:0,
+                entity_id:8,
+                type:0,
+                msg:"이이이이"
+            },{
+                chat_id:7,
+                corp_id:0,
+                entity_id:7,
+                type:0,
+                msg:"하이하이"
+            },{
+                chat_id:8,
+                corp_id:0,
+                entity_id:7,
+                type:0,
+                msg:"하이하이"
+            }]
+
 
         this.state = {
             model:"",
@@ -119,6 +170,7 @@ export default class extends React.Component {
             sign_mode:false,
             sign_info:{},
             open_users:[],
+            chat_list:[...t, ...t, ...t ]
         }
     }
 
@@ -133,6 +185,9 @@ export default class extends React.Component {
         history.block( (targetLocation) => {
             if(this.blockFlag)
                 return true
+            if(Buffer.from(this.state.contract.html).toString() == this.state.model)
+                return true
+            
             let out_flag = window._confirm("계약서 수정 작업을 중단하고 현재 페이지를 나가시겠습니까?")
             if(out_flag)
                 history.block( () => true )
@@ -344,6 +399,14 @@ export default class extends React.Component {
         }
     } 
 
+    onClickSendChat = async (text)=>{
+        if(text.length == 0)
+            return alert("메세지를 입력해주세요");
+
+        console.log("send")
+        //await this.send()
+    }
+
     render_info() {
         switch(this.state.selected_menu) {
             case 0:
@@ -395,7 +458,6 @@ export default class extends React.Component {
         let user_infos = this.state.infos;
 
         let corp_id = this.props.user_info.corp_id || -1
-
         let meOrGroup = select_subject(user_infos, this.state.groups, this.props.user_info.account_id, corp_id).my_info
 
         return <div className="bottom signs">
@@ -509,6 +571,16 @@ export default class extends React.Component {
 
     render_chat() {
         return <div className="bottom chat">
+            <Chatting 
+                contract={this.state.contract}
+                infos={this.state.infos}
+                user_info={this.state.user_info}
+                groups={this.state.groups}
+                chat_list={this.state.chat_list}
+                onSend={this.onClickSendChat}
+                onLoadMore={async ()=>await this.setState({chat_list:[...this.state.chat_list,...this.state.chat_list]})}
+                isSendable={true}
+            />
         </div>
     }
 

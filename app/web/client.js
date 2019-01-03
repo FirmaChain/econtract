@@ -33,12 +33,12 @@ import PreviewCOntractPage from "./components/preview-contract.page"
 
 import InformationPage from "./components/information.page"
 
-import FolderPage from "./components/contract-folder-list.page"
-import InFolderPage from "./components/home.page"
-//import AddTemplatePage from "./components/old-add-template.page"
+// import FolderPage from "./components/contract-folder-list.page"
+// import InFolderPage from "./components/home.page"
+// import AddTemplatePage from "./components/old-add-template.page"
 // import EditTemplatePage from "./components/edit-template.page"
-import ContractEditorPage from "./components/contract-editor.page"
-import ContractConfirmPage from "./components/contract-confirm.page"
+// import ContractEditorPage from "./components/contract-editor.page"
+// import ContractConfirmPage from "./components/contract-confirm.page"
 import VerificationPage from "./components/verification.page"
 import CorpGroupInfoPage from "./components/corp-group-info.page"
 import GroupPage from "./components/group.page"
@@ -97,12 +97,12 @@ window.addEventListener("load",()=>{
 					<Route onEnter={resolver} exact path="/contract-info/:contract_id" component={ContractInfoPage} />
 					<Route onEnter={resolver} exact path="/preview-contract" component={PreviewCOntractPage} />
 
-					<Route onEnter={resolver} exact path="/folder" component={FolderPage} />
+					{/*<Route onEnter={resolver} exact path="/folder" component={FolderPage} />
 					<Route onEnter={resolver} exact path="/folder/:id" component={InFolderPage} />
 					<Route onEnter={resolver} exact path="/contract-editor/:id" component={ContractEditorPage} />
 					<Route onEnter={resolver} exact path="/contract-confirm/:id/:revision" component={ContractConfirmPage} />
 
-{/*					<Route onEnter={resolver} exact path="/template" component={TemplatePage} />
+					<Route onEnter={resolver} exact path="/template" component={TemplatePage} />
 					<Route onEnter={resolver} exact path="/add-template" component={AddTemplatePage} />
 					<Route onEnter={resolver} exact path="/template-edit/:id" component={EditTemplatePage} />*/}
 

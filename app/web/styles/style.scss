@@ -2327,7 +2327,9 @@ div.checkbox2-comp{
             }
 
             >.chat {
-
+                display: flex;
+                flex-direction: column;
+                height:calc(100% - 61px);
             }
 
             >.sign-form {
@@ -3291,6 +3293,104 @@ div.checkbox2-comp{
                     }
                 }
             }
+        }
+    }
+}
+
+.chat-component {
+    display: flex;
+    flex-direction: column;
+    height:100%;
+
+    >.chat-text-container{
+        flex:1;
+        border-bottom: 1px solid $middlegray;
+        padding: 5px;
+        overflow-y: auto;
+
+        >.bar {
+            float:left;
+            clear:both;
+        }
+
+        .notice{
+            padding:10px 5px;
+            margin:20px 5px;
+            border-radius: 5px;
+            text-align: center;
+
+            border: 1px solid $middlegray;
+            font-size: $font1;
+            color:$middleblack;
+        }
+
+        >.left{
+            .msg-text{
+                background-color: white;
+                font-size:$font1;
+                color:$black;
+            }
+        }
+
+        >.right{
+            flex-direction: row-reverse;
+
+            .msg-text{
+                background-color: $blue;
+                color: white;
+                font-size:$font1;
+            }
+            .name{  
+                display: none;
+            }
+            .profile{
+                display: none;
+            }
+        }
+
+        >.chat-slot{
+            display: flex;
+            margin: 15px 0;
+            .profile{
+                width: 30px;
+                height: 30px;
+            }
+            .name{
+                margin:5px;
+                font-size: 13px;
+            }
+            .msg-text{
+                padding: 6px;
+                box-shadow: 0px 4px 12px 0px rgba(0,0,0,0.2);
+                word-break: break-all;
+                margin: 0 5px;
+            }
+        }
+    }
+
+    >.input-container{
+        display: flex;
+
+        .text-box {
+            flex:1;
+            padding:15px 10px;
+            border: 0;
+            background-color: white;
+
+            font-size: $font1;
+            color:$black;
+        }
+        .send-btn {
+            display: inline-block;
+            cursor: pointer;
+            padding:10px 20px;
+            background-color: $blue;
+            color:white;
+            width:30px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
     }
 }

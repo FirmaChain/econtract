@@ -16,7 +16,6 @@ import {
     update_epin,
     clear_epin,
 } from "../../common/actions"
-import Chatting from "./chatting"
 import CancelablePromise from 'cancelable-promise';
 
 @connect((state)=>{return {user:state.user.info}}, {} )
