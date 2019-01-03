@@ -207,12 +207,13 @@ export function get_contract(contract_id, user_info, groups = []) {
                 return {
                     ...e,
                     user_info,
-                    sign_info : e.sign_info ? JSON.parse(Buffer.from(e.sign_info).toString()) : e.sign_info,
-                    signature : e.signature ? Buffer.from(e.signature).toString() : e.signature,
+                    sign_info : e.sign_info ? JSON.parse(aes_decrypt(Buffer.from(e.sign_info, 'hex').toString('hex'), the_key)) : e.sign_info,
+                    signature : e.signature ? aes_decrypt(Buffer.from(e.signature, 'hex').toString('hex'), the_key) : e.signature,
                 }
             })
+            resp.payload.contract.html = resp.payload.contract.html ? aes_decrypt(Buffer.from(resp.payload.contract.html, 'hex').toString('hex'), the_key) : resp.payload.contract.html
             resp.payload.contract.necessary_info = JSON.parse(resp.payload.contract.necessary_info)
-            resp.payload.the_key = the_key
+            resp.payload.contract.the_key = the_key
         }
         return resp
     }
@@ -311,9 +312,10 @@ export function update_epin_group(corp_id, group_id, contract_id, user_info, pin
 }
 
 
-export function update_contract_model(contract_id, model){
+export function update_contract_model(contract_id, model, the_key){
     return async function(){
-        return (await api_update_contract_model(contract_id, model)).payload;
+        let encrypted_model = aes_encrypt(model, the_key)
+        return (await api_update_contract_model(contract_id, encrypted_model)).payload;
     };
 }
 
@@ -321,21 +323,26 @@ export function update_contract_model(contract_id, model){
 //unused
 export function update_contract_user_info(contract_id, entity_id, corp_id, e, user_info, isAccount, pin = "000000"){
     return async function(){
-        let the_key = getContractKey(pin, shared_key);
+        /*let the_key = getContractKey(pin, shared_key);
         let encrypted_user_info = aes_encrypt(JSON.stringify(e), the_key)
-        return (await api_update_contract_user_info(contract_id, entity_id, corp_id, encrypted_user_info)).payload;
+        return (await api_update_contract_user_info(contract_id, entity_id, corp_id, encrypted_user_info)).payload;*/
+        return false
     };
 }
 
-export function update_contract_sign(contract_id, sign){
+export function update_contract_sign(contract_id, signature, the_key){
     return async function(){
-        return (await api_update_contract_sign(contract_id, sign)).payload;
+        let encrypted_signature = aes_encrypt(signature, the_key)
+        return (await api_update_contract_sign(contract_id, encrypted_signature)).payload;
     };
 }
 
-export function update_contract_sign_info(contract_id, sign_info) {
+export function update_contract_sign_info(contract_id, sign_info, the_key) {
     return async function() {
-        return (await api_update_contract_sign_info(contract_id, JSON.stringify(sign_info) )).payload;
+        console.log(JSON.stringify(sign_info))
+        console.log("the_key", the_key)
+        let encrypted_sign_info = aes_encrypt(JSON.stringify(sign_info), the_key)
+        return (await api_update_contract_sign_info(contract_id, encrypted_sign_info )).payload;
     }
 }
 

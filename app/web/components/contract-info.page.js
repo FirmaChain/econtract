@@ -352,7 +352,7 @@ export default class extends React.Component {
                                 <div className="blue-button" 
                                     onClick={(e)=>history.push(`/edit-contract/${this.state.contract.contract_id}`)}>{this.state.contract.status != 2 ? "편집":"계약서 보기"}</div>
                                 <div className="blue-button">다운로드</div>
-                                <div className="transparent-button">설정</div>
+                                {/*<div className="transparent-button">설정</div>*/}
                             </div>
                             <div className="indicator">
                                 <div className="corner-line enable-line"></div>

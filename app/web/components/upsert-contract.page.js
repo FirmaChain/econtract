@@ -186,7 +186,14 @@ export default class extends React.Component {
             pagebreak:{ mode: ['avoid-all'] }
         }
         //html2pdf().set(savePdfOption).from(document.getElementsByClassName('fr-view')[0]).save()
-        window.html2Doc(document.getElementsByClassName('fr-view')[0], `[계약서] ${this.state.contract.name}`)
+        //window.html2Doc(document.getElementsByClassName('fr-view')[0], `[계약서] ${this.state.contract.name}`)
+        if( this.state.contract.can_edit_account_id != this.props.user_info.account_id)
+            this.blockFlag = true
+
+        history.push({pathname:"/preview-contract", state:{
+            contract:this.state.contract,
+            infos:this.state.infos,
+        }})
     }
 
     onClickContractSave = async () => {
@@ -194,7 +201,7 @@ export default class extends React.Component {
         //encrypt model
 
         await window.showIndicator()
-        await this.props.update_contract_model(this.state.contract.contract_id, model)
+        await this.props.update_contract_model(this.state.contract.contract_id, model, this.state.contract.the_key)
         await this.onRefresh()
         await window.hideIndicator()
     }
@@ -230,8 +237,24 @@ export default class extends React.Component {
     }
 
     onClickRegiserSignInfo = async () => {
+
+        let sign_info = this.state.sign_info || {}
+        let sign_info_list
+
+        if(this.props.user_info.account_type == 0) {
+            sign_info_list = this.state.contract.necessary_info.individual
+        } else {
+            sign_info_list = this.state.contract.necessary_info.corporation
+        }
+
+        for(let v of sign_info_list) {
+            if(!sign_info["#"+v] || sign_info["#"+v] == "") {
+                return alert("서명 정보를 모두 입력해주세요. " + v)
+            }
+        }
+
         await window.showIndicator()
-        await this.props.update_contract_sign_info(this.state.contract.contract_id, this.state.sign_info)
+        await this.props.update_contract_sign_info(this.state.contract.contract_id, this.state.sign_info, this.state.contract.the_key)
         await this.onRefresh()
         this.setState({sign_mode:false})
         await window.hideIndicator()
@@ -258,11 +281,11 @@ export default class extends React.Component {
         }
 
         window.openModal("DrawSign",{
-            onFinish : async (sign)=>{
-                console.log(sign)
-                //encrypt sign
+            onFinish : async (signature)=>{
+                console.log(signature)
+                //encrypt signature
                 await window.showIndicator()
-                await this.props.update_contract_sign(this.state.contract.contract_id, sign)
+                await this.props.update_contract_sign(this.state.contract.contract_id, signature, this.state.contract.the_key)
                 alert("서명 등록이 완료되었습니다.")
                 this.blockFlag = true
                 history.replace(`/contract-info/${this.props.match.params.contract_id}`)
@@ -562,7 +585,7 @@ export default class extends React.Component {
                     return this.state.sign_mode ? <div className="sign" onClick={this.onToggleRegisterSignForm}>
                         편집 모드
                     </div> : <div className="sign" onClick={this.onClickRegisterSign}>
-                        서명 하기
+                        {meOrGroup.signature ? "재서명" : "서명 하기"}
                     </div>
                 })()}
                 
