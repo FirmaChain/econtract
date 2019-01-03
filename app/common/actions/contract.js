@@ -339,8 +339,6 @@ export function update_contract_sign(contract_id, signature, the_key){
 
 export function update_contract_sign_info(contract_id, sign_info, the_key) {
     return async function() {
-        console.log(JSON.stringify(sign_info))
-        console.log("the_key", the_key)
         let encrypted_sign_info = aes_encrypt(JSON.stringify(sign_info), the_key)
         return (await api_update_contract_sign_info(contract_id, encrypted_sign_info )).payload;
     }
