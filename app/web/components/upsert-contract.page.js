@@ -124,8 +124,10 @@ export default class extends React.Component {
 
     componentDidMount() {
         (async()=>{
+            await window.showIndicator()
             await this.props.fetch_user_info()
             await this.onRefresh()
+            await window.hideIndicator()
         })()
 
         history.block( (targetLocation) => {
