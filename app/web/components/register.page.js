@@ -406,6 +406,7 @@ export default class extends React.Component {
 
         await window.showIndicator();
         let resp = await this.props.check_email_verification_code(this.state.email, this.state.verification_code)
+        console.log(resp)
         if(resp.code == 1){
             this.setState({
                 email_verification:true
@@ -440,6 +441,7 @@ export default class extends React.Component {
         }
         await window.showIndicator();
         let resp = await this.props.check_phone_verification_code(this.state.userphone, this.state.phone_verification_code)
+        console.log(resp)
         if(resp.code == 1){
             alert("정상적으로 인증되었습니다.")
             this.setState({
