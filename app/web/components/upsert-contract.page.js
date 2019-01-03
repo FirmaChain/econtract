@@ -301,7 +301,7 @@ export default class extends React.Component {
         let r = await this.props.update_contract_sign_info(this.state.contract.contract_id, this.state.sign_info, this.state.contract.the_key)
         if(r.code == -9) alert("이미 완료된 계약은 서명 정보를 업데이트할 수 없습니다.")
         //await this.onRefresh()
-        this.setState({sign_mode:false})
+        this.onToggleRegisterSignForm()
         await window.hideIndicator()
     }
 
