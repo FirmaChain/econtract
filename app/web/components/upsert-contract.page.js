@@ -152,7 +152,7 @@ export default class extends React.Component {
         history.block( (targetLocation) => {
             if(this.blockFlag)
                 return true
-            if(Buffer.from(this.state.contract.html).toString() == this.state.model)
+            if(this.state.contract.html== this.state.model)
                 return true
             
             let out_flag = window._confirm("계약서 수정 작업을 중단하고 현재 페이지를 나가시겠습니까?")
@@ -185,7 +185,7 @@ export default class extends React.Component {
                 this.onToggleUser(me.entity_id, me.corp_id, true)
             }
 
-            let model = contract.payload.contract.html != null ? Buffer.from(contract.payload.contract.html).toString() : ""
+            let model = contract.payload.contract.html != null ? contract.payload.contract.html : ""
             _state = {
                 ..._state,
                 ...contract.payload,
@@ -239,7 +239,7 @@ export default class extends React.Component {
     onClickContractSave = async () => {
         let model = this.state.model
 
-        if(Buffer.from(this.state.contract.html).toString() == this.state.model)
+        if(this.state.contract.html == this.state.model)
             return;
         //encrypt model
 
