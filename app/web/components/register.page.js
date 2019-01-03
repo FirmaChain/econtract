@@ -741,7 +741,7 @@ export default class extends React.Component {
                 <div className="text-place">
                     <div className="name">이메일 인증</div>
                     <div className="textbox">
-                        <input className="common-textbox" type="number"
+                        <input className="common-textbox" type="text"
                             value={this.state.verification_code || ""}
                             onKeyDown={this.keyPress.bind(this, 0)}
                             onChange={e=>this.setState({verification_code:e.target.value})}
@@ -816,7 +816,7 @@ export default class extends React.Component {
             <div className="text-place">
                 <div className="name">인증번호</div>
                 <div className="textbox">
-                    <input className="common-textbox" type="number"
+                    <input className="common-textbox" type="text"
                         value={this.state.phone_verification_code || ""} 
                         onChange={e=>this.setState({phone_verification_code:e.target.value})} 
                         disabled={this.state.verificated_phone}
@@ -940,7 +940,7 @@ export default class extends React.Component {
             <div className="text-place">
                 <div className="name">인증번호</div>
                 <div className="textbox">
-                    <input className="common-textbox" type="number"
+                    <input className="common-textbox" type="text"
                         value={this.state.phone_verification_code || ""} 
                         onChange={e=>this.setState({phone_verification_code:e.target.value})} 
                         disabled={this.state.verificated_phone}
