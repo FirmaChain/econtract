@@ -182,6 +182,7 @@ export default class extends React.Component {
 
             this.socket.emit('subscribe_channel', contract.payload.contract.contract_id)
             this.socket.on("receive_chat_"+contract.payload.contract.contract_id, this.onReceiveChat)
+            this.socket.on("refresh_contract_"+contract.payload.contract.contract_id, this.onRefresh)
 
             let model = contract.payload.contract.html != null ? Buffer.from(contract.payload.contract.html).toString() : ""
             _state = {
@@ -235,7 +236,7 @@ export default class extends React.Component {
         await window.showIndicator()
         let r = await this.props.update_contract_model(this.state.contract.contract_id, model, this.state.contract.the_key)
         if(r.code == -9) alert("이미 완료된 계약은 내용을 업데이트할 수 없습니다.")
-        await this.onRefresh()
+        //await this.onRefresh()
         await window.hideIndicator()
     }
 
@@ -246,7 +247,7 @@ export default class extends React.Component {
             onConfirm : async (user)=>{
                 await window.showIndicator()
                 await this.props.move_contract_can_edit_account_id(this.state.contract.contract_id, user.entity_id)
-                await this.onRefresh()
+                //await this.onRefresh()
                 await window.hideIndicator()
             }
         })
@@ -289,7 +290,7 @@ export default class extends React.Component {
         await window.showIndicator()
         let r = await this.props.update_contract_sign_info(this.state.contract.contract_id, this.state.sign_info, this.state.contract.the_key)
         if(r.code == -9) alert("이미 완료된 계약은 서명 정보를 업데이트할 수 없습니다.")
-        await this.onRefresh()
+        //await this.onRefresh()
         this.setState({sign_mode:false})
         await window.hideIndicator()
     }
@@ -414,8 +415,6 @@ export default class extends React.Component {
     }
 
     onReceiveChat = async (chat) => {
-        console.log(chat)
-
         let all_chats = [...this.state.chat_list, chat]
         all_chats = all_chats.sort( (a, b) => a.chat_id - b.chat_id )
         await this.setState({chat_list:all_chats})
