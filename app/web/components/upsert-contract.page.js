@@ -1,5 +1,6 @@
 import React from "react"
 import ReactDOM from "react-dom"
+import config from "../../config"
 
 import 'froala-editor/js/froala_editor.pkgd.min.js';
 import 'froala-editor/js/languages/ko.js';
@@ -7,6 +8,7 @@ import 'froala-editor/css/froala_style.min.css';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
 
 import FroalaEditor from 'react-froala-wysiwyg';
+import socketIOClient from 'socket.io-client'
  
 import { connect } from 'react-redux';
 import { Link, Prompt } from 'react-router-dom'
@@ -80,6 +82,7 @@ export default class extends React.Component {
             }
         })*/
         this.blockFlag = false;
+        this.socket = socketIOClient(config.HOST)
 
         this.config = {
             key:"YD3H5F3F3c1A6B5B4E2A3C2C2G3C5B1D-17mB5idbyC-22nseB1zH-9==",
@@ -154,6 +157,11 @@ export default class extends React.Component {
         })
     }
 
+    componentWillUnmount() {
+        if(this.socket)
+            this.socket.disconnect()
+    }
+
     onRefresh = async () => {
         let contract_id = this.props.match.params.contract_id || 0
         let groups = [];
@@ -171,6 +179,9 @@ export default class extends React.Component {
                 sign_info = me.sign_info || {};
                 this.onToggleUser(me.entity_id, me.corp_id, true)
             }
+
+            this.socket.emit('subscribe_channel', contract.payload.contract.contract_id)
+            this.socket.on("receive_chat_"+contract.payload.contract.contract_id, this.onReceiveChat)
 
             let model = contract.payload.contract.html != null ? Buffer.from(contract.payload.contract.html).toString() : ""
             _state = {
@@ -400,6 +411,10 @@ export default class extends React.Component {
             return true
         }
         return false
+    }
+
+    onReceiveChat = async (chat) => {
+        console.log(chat)
     }
 
     render_info() {
