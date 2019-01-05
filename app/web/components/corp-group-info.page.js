@@ -76,15 +76,16 @@ export default class extends React.Component {
         if(!user_info)
             history.push('/login')
         let info = await this.props.get_group_info(this.getGroupId(), 0, true )
+        console.log(info)
         for(let v of info.invite_list) {
             if(v.data_for_inviter) {
-                v.data_for_inviter = JSON.parse(aes_decrypt(Buffer.from(v.data_for_inviter), Buffer.from(this.props.user_info.corp_key) ))
+                v.data_for_inviter = JSON.parse(aes_decrypt(Buffer.from(v.data_for_inviter), Buffer.from(this.props.user_info.corp_key, "hex") ))
             }
         }
 
         for(let v of info.members) {
             if(v.info) {
-                v.info = JSON.parse(aes_decrypt(Buffer.from(v.info), Buffer.from(this.props.user_info.corp_key) ))
+                v.info = JSON.parse(aes_decrypt(Buffer.from(v.info), Buffer.from(this.props.user_info.corp_key, "hex") ))
             }
         }
 
@@ -207,6 +208,10 @@ export default class extends React.Component {
                 group_key,
             }
             let result = await this.props.add_member_group_exist(exist.payload.account_id, this.getGroupId(), email, data)
+            console.log(result)
+            this.setState({
+                add_email:""
+            })
             alert("성공적으로 그룹에 초대하였습니다.")
 
         } else if(exist.code == -6) {
