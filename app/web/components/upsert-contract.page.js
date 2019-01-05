@@ -83,6 +83,7 @@ export default class extends React.Component {
         })*/
         this.blockFlag = false;
         this.socket = socketIOClient(config.HOST)
+        //reconect
 
         this.config = {
             key:"YD3H5F3F3c1A6B5B4E2A3C2C2G3C5B1D-17mB5idbyC-22nseB1zH-9==",
@@ -674,7 +675,7 @@ export default class extends React.Component {
                         <i className="fal fa-eye"></i>
                         계약 미리보기
                     </div>
-                    {this.state.contract.can_edit_account_id == this.props.user_info.account_id ? [
+                    { ( this.state.contract.status < 2 && this.state.contract.can_edit_account_id == this.props.user_info.account_id) ? [
                         <div className="but" onClick={this.onClickMoveEditPrivilege} key={"edit_privilege"}>
                             <i className="far fa-arrow-to-right"></i>
                             수정 권한 넘기기
