@@ -24,6 +24,7 @@ import {
     remove_group_member,
     remove_group_member_all,
     change_group_title,
+    exist_group_member,
     all_invite_list,
 } from "../../common/actions"
 
@@ -42,6 +43,7 @@ let mapDispatchToProps = {
     remove_group_member,
     remove_group_member_all,
     change_group_title,
+    exist_group_member,
     all_invite_list,
 }
 
@@ -76,10 +78,7 @@ export default class extends React.Component {
             if(v.data_for_inviter) v.data_for_inviter = JSON.parse(aes_decrypt(new Buffer(v.data_for_inviter), this.props.user_info.corp_key))
         }
 
-        console.log(this.props.user_info.corp_key)
-        console.log(info.members) 
         for(let v of info.members) {
-            console.log(v.info)
             if(v.info) v.info = JSON.parse(aes_decrypt(new Buffer(v.info), this.props.user_info.corp_key))
         }
 
@@ -143,6 +142,8 @@ export default class extends React.Component {
 
         if(!window.email_regex.test(email))
             return alert("이메일이 형식에 맞지 않습니다.")
+
+        this.props.exist_group_member(group_id, email)
 
         let group_key = get256bitDerivedPublicKey(Buffer.from(this.props.user_info.corp_master_key, 'hex'), "m/0'/"+this.getGroupId()+"'").toString('hex');
 

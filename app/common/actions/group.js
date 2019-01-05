@@ -17,6 +17,7 @@ import {
     api_get_corp_member_info_all,
     api_all_invite_list,
     api_update_group_public_key,
+    api_exist_group_member,
 } from "../../../gen_api"
 
 import {
@@ -228,6 +229,13 @@ export function all_invite_list() {
     return async function() {
         let resp = await api_all_invite_list();
         return resp.payload
+    }
+}
+
+export function exist_group_member(group_id, email) {
+    return async function() {
+        let resp = (await api_exist_group_member(group_id, email)).code
+        return resp
     }
 }
 
