@@ -205,9 +205,9 @@ export function invite_information(email, registration_code) {
         if (!info) return null;
         let email_hashed = md5(email+info.passphrase1);
         try {
-            let passphrase2 = (await aes_decrypt_async(Buffer.from(info.encrypted_passphrase2, 'hex'), email_hashed));
+            let passphrase2 = (await aes_decrypt_async(Buffer.from(info.encrypted_passphrase2, 'hex'), Buffer.from(email_hashed) ));
             let key = hmac_sha256("", Buffer.from(email+passphrase2));
-            let data = JSON.parse(await aes_decrypt_async(Buffer.from(info.encrypted_data, 'hex'), key));
+            let data = JSON.parse(await aes_decrypt_async(Buffer.from(info.encrypted_data, 'hex'), key ));
             return data;
         } catch(e) {
             return null;
@@ -254,7 +254,7 @@ export function all_invite_list() {
 
 export function exist_group_member(group_id, email) {
     return async function() {
-        let resp = (await api_exist_group_member(group_id, email)).code
+        let resp = await api_exist_group_member(group_id, email)
         return resp
     }
 }

@@ -25,6 +25,7 @@ import {
     remove_group_member_all,
     change_group_title,
     exist_group_member,
+    add_member_group_exist,
     all_invite_list,
 } from "../../common/actions"
 
@@ -44,6 +45,7 @@ let mapDispatchToProps = {
     remove_group_member_all,
     change_group_title,
     exist_group_member,
+    add_member_group_exist,
     all_invite_list,
 }
 
@@ -199,11 +201,12 @@ export default class extends React.Component {
                 await this.onRefresh()
             }
         } else if(exist.code == 1) {
+            console.log("exist", exist)
             let data = {
                 group_id:this.getGroupId(),
                 group_key,
             }
-            await this.props.add_member_group_exist(exist.payload.account_id, this.getGroupId(), email, data)
+            let result = await this.props.add_member_group_exist(exist.payload.account_id, this.getGroupId(), email, data)
             alert("성공적으로 그룹에 초대하였습니다.")
 
         } else if(exist.code == -6) {
