@@ -75,11 +75,15 @@ export default class extends React.Component {
             history.push('/login')
         let info = await this.props.get_group_info(this.getGroupId(), 0, true )
         for(let v of info.invite_list) {
-ㅣ            if(v.data_for_inviter) v.data_for_inviter = JSON.parse(aes_decrypt(Buffer.from(v.data_for_inviter, 'hex'), this.props.user_info.corp_key))
+            if(v.data_for_inviter) {
+                v.data_for_inviter = JSON.parse(aes_decrypt(Buffer.from(v.data_for_inviter), this.props.user_info.corp_key))
+            }
         }
 
         for(let v of info.members) {
-            if(v.info) v.info = JSON.parse(aes_decrypt(Buffer.from(v.info, 'hex'), this.props.user_info.corp_key))
+            if(v.info) {
+                v.info = JSON.parse(aes_decrypt(Buffer.from(v.info), this.props.user_info.corp_key))
+            }
         }
 
         await this.setState({...info})
