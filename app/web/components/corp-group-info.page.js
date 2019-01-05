@@ -75,11 +75,11 @@ export default class extends React.Component {
             history.push('/login')
         let info = await this.props.get_group_info(this.getGroupId(), 0, true )
         for(let v of info.invite_list) {
-            if(v.data_for_inviter) v.data_for_inviter = JSON.parse(aes_decrypt(new Buffer(v.data_for_inviter), this.props.user_info.corp_key))
+ㅣ            if(v.data_for_inviter) v.data_for_inviter = JSON.parse(aes_decrypt(Buffer.from(v.data_for_inviter, 'hex'), this.props.user_info.corp_key))
         }
 
         for(let v of info.members) {
-            if(v.info) v.info = JSON.parse(aes_decrypt(new Buffer(v.info), this.props.user_info.corp_key))
+            if(v.info) v.info = JSON.parse(aes_decrypt(Buffer.from(v.info, 'hex'), this.props.user_info.corp_key))
         }
 
         await this.setState({...info})
@@ -143,7 +143,7 @@ export default class extends React.Component {
         if(!window.email_regex.test(email))
             return alert("이메일이 형식에 맞지 않습니다.")
 
-        this.props.exist_group_member(group_id, email)
+        let exist = await this.props.exist_group_member(this.getGroupId(), email)
 
         let group_key = get256bitDerivedPublicKey(Buffer.from(this.props.user_info.corp_master_key, 'hex'), "m/0'/"+this.getGroupId()+"'").toString('hex');
 
@@ -158,37 +158,44 @@ export default class extends React.Component {
             group_key,
         }
 
-        let data_for_inviter = {
-            email
-        }
+        if(exist == -5) {
 
-        let all_invite_list = await this.props.all_invite_list()
-
-        for(let v of all_invite_list) {
-            if(v.email_hashed == md5(email+v.passphrase1) ) {
-                await window.hideIndicator()
-                if(v.group_id == this.getGroupId())
-                    return alert("이미 해당 그룹에 초대중인 사용자입니다.")
-                else
-                    return alert("이미 다른 그룹에서 초대중인 사용자입니다.")
+            let data_for_inviter = {
+                email
             }
-        }
 
-        let resp = await this.props.add_member_group(this.getGroupId(), email, this.props.user_info.corp_key, data, data_for_inviter);
-        if(resp) {
-            if(resp.code == 1) {
-                this.setState({
-                    add_email:""
-                })
-                alert("성공적으로 그룹에 초대하였습니다.")
-            } else if(resp.code == 2) {
-                alert("이미 해당 그룹에 속해있는 사용자 입니다.")
-            } else if(resp.code == -5) {
-                alert("이메일이 형식에 맞지 않습니다.")
-            } else if(resp.code == -7) {
-                alert("가입은 되었으나 초대 이메일을 보내지 못했습니다. 초대 코드는 " + resp.invite_code + " 입니다.")
+            let all_invite_list = await this.props.all_invite_list()
+
+            for(let v of all_invite_list) {
+                if(v.email_hashed == md5(email+v.passphrase1) ) {
+                    await window.hideIndicator()
+                    if(v.group_id == this.getGroupId())
+                        return alert("이미 해당 그룹에 초대중인 사용자입니다.")
+                    else
+                        return alert("이미 다른 그룹에서 초대중인 사용자입니다.")
+                }
             }
-            await this.onRefresh()
+
+            let resp = await this.props.add_member_group(this.getGroupId(), email, this.props.user_info.corp_key, data, data_for_inviter);
+            if(resp) {
+                if(resp.code == 1) {
+                    this.setState({
+                        add_email:""
+                    })
+                    alert("성공적으로 그룹에 초대하였습니다.")
+                } else if(resp.code == 2) {
+                    alert("이미 해당 그룹에 속해있는 사용자 입니다.")
+                } else if(resp.code == -5) {
+                    alert("이메일이 형식에 맞지 않습니다.")
+                } else if(resp.code == -7) {
+                    alert("가입은 되었으나 초대 이메일을 보내지 못했습니다. 초대 코드는 " + resp.invite_code + " 입니다.")
+                }
+                await this.onRefresh()
+            }
+        } else if(exist == 1) {
+            // TODO 이미 속해있는 놈은 그룹 키만 잘 전달 해야 한다
+        } else if(exist == -6) {
+            alert("이미 해당 그룹에 속해있는 사용자 입니다.")
         }
         await window.hideIndicator()
     }
