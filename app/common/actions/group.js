@@ -18,6 +18,7 @@ import {
     api_all_invite_list,
     api_update_group_public_key,
     api_exist_group_member,
+    api_add_member_group_exist,
 } from "../../../gen_api"
 
 import {
@@ -160,6 +161,7 @@ export function add_member_group(group_id, email, corp_key, data_plain, data_for
         for (let i = 0; i < passphrase2_length; i++)
             passphrase2 += possible.charAt(Math.floor(Math.random() * possible.length));
         let key = hmac_sha256("", Buffer.from(email+passphrase2));
+
         let data_plain_buffered = Buffer.from(JSON.stringify(data_plain));
         let data = Buffer.from((await aes_encrypt_async(data_plain_buffered, key)), 'binary').toString('hex');
 
@@ -168,6 +170,24 @@ export function add_member_group(group_id, email, corp_key, data_plain, data_for
         let data_for_inviter = Buffer.from((await aes_encrypt_async(data_for_inviter_plain_buffered, Buffer.from(corp_key))), 'binary').toString('hex');
 
         let resp = await api_add_member_group(group_id, email, passphrase2, data, data_for_inviter);
+        return resp
+    }
+}
+
+export function add_member_group_exist(account_id, group_id, email, data_plain) {
+    return async function() {
+
+        const possible = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
+        let passphrase2_length = 32;
+        let passphrase2 = "";
+        for (let i = 0; i < passphrase2_length; i++)
+            passphrase2 += possible.charAt(Math.floor(Math.random() * possible.length));
+        let key = hmac_sha256("", Buffer.from(email+passphrase2));
+
+        let data_plain_buffered = Buffer.from(JSON.stringify(data_plain));
+        let data = Buffer.from((await aes_encrypt_async(data_plain_buffered, key)), 'binary').toString('hex');
+
+        let resp = await api_add_member_group_exist(account_id, group_id, email, passphrase2, data)
         return resp
     }
 }

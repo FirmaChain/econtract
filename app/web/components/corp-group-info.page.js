@@ -140,12 +140,14 @@ export default class extends React.Component {
         if(this.state.add_email == "")
             return alert("초대하려는 그룹원의 이메일을 입력해주세요.")
         
-        await window.showIndicator()
 
         let email = this.state.add_email.trim()
 
         if(!window.email_regex.test(email))
             return alert("이메일이 형식에 맞지 않습니다.")
+        
+
+        await window.showIndicator()
 
         let exist = await this.props.exist_group_member(this.getGroupId(), email)
 
@@ -162,7 +164,7 @@ export default class extends React.Component {
             group_key,
         }
 
-        if(exist == -5) {
+        if(exist.code == -5) {
 
             let data_for_inviter = {
                 email
@@ -196,9 +198,15 @@ export default class extends React.Component {
                 }
                 await this.onRefresh()
             }
-        } else if(exist == 1) {
-            // TODO 이미 속해있는 놈은 그룹 키만 잘 전달 해야 한다
-        } else if(exist == -6) {
+        } else if(exist.code == 1) {
+            let data = {
+                group_id:this.getGroupId(),
+                group_key,
+            }
+            await this.props.add_member_group_exist(exist.payload.account_id, this.getGroupId(), email, data)
+            alert("성공적으로 그룹에 초대하였습니다.")
+
+        } else if(exist.code == -6) {
             alert("이미 해당 그룹에 속해있는 사용자 입니다.")
         }
         await window.hideIndicator()

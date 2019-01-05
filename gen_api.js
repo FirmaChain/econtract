@@ -276,6 +276,19 @@ export async function api_add_member_group(group_id,email,passphrase2,data,data_
         session:window.getCookie("session")
     });
 }
+export async function api_add_member_group_exist(account_id,group_id,email,passphrase2,data){
+    let __data = new FormData();
+
+    __data.append('account_id', account_id);
+	__data.append('group_id', group_id);
+	__data.append('email', email);
+	__data.append('passphrase2', passphrase2);
+	__data.append('data', data)
+
+    return await post("/add_member_group_exist", __data,{
+        session:window.getCookie("session")
+    });
+}
 export async function api_remove_invite_group(group_id,invite_id){
     let __data = new FormData();
 
