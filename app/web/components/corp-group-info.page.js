@@ -11,6 +11,7 @@ import md5 from 'md5'
 import {
     get256bitDerivedPublicKey,
     aes_encrypt,
+    aes_decrypt,
     decrypt_corp_info,
 } from "../../common/crypto_test"
 
@@ -71,11 +72,16 @@ export default class extends React.Component {
         if(!user_info)
             history.push('/login')
         let info = await this.props.get_group_info(this.getGroupId(), 0, true )
-        for(let v of info.invite_list) 
-            if(v.data_for_inviter) v.data_for_inviter = decrypt_corp_info(this.props.user_info.corp_key, new Buffer(v.data_for_inviter) )
+        for(let v of info.invite_list) {
+            if(v.data_for_inviter) v.data_for_inviter = JSON.parse(aes_decrypt(new Buffer(v.data_for_inviter), this.props.user_info.corp_key))
+        }
 
-        for(let v of info.members) 
-            if(v.info) v.info = decrypt_corp_info(this.props.user_info.corp_key, new Buffer(v.info) )
+        console.log(this.props.user_info.corp_key)
+        console.log(info.members) 
+        for(let v of info.members) {
+            console.log(v.info)
+            if(v.info) v.info = JSON.parse(aes_decrypt(new Buffer(v.info), this.props.user_info.corp_key))
+        }
 
         await this.setState({...info})
         await window.hideIndicator()
@@ -173,7 +179,7 @@ export default class extends React.Component {
                 this.setState({
                     add_email:""
                 })
-                alert("성공적으로 그룹에 추가하였습니다.")
+                alert("성공적으로 그룹에 초대하였습니다.")
             } else if(resp.code == 2) {
                 alert("이미 해당 그룹에 속해있는 사용자 입니다.")
             } else if(resp.code == -5) {
