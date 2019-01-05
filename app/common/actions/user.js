@@ -1,3 +1,5 @@
+import md5 from 'md5'
+
 import {
     api_request_email_verification,
     api_check_email_verification_code,
@@ -24,6 +26,10 @@ import {
     SeedToEthKey,
     getMasterSeed,
     entropyToMnemonic,
+    aes_decrypt_async,
+    hmac_sha256,
+    SeedToMasterKeyPublic,
+    getMasterSeed,
 } from "../../common/crypto_test"
 
 import Web3 from "../Web3"
@@ -55,8 +61,6 @@ export function fetch_user_info(){
                 let keyPair = SeedToEthKey(seed, "0'/0/0");
                 let privateKey = "0x"+keyPair.privateKey.toString('hex');
 
-                console.log(resp.payload.encrypted_group_keys)
-
                 Web3.addAccount(privateKey)
                 let wallet = Web3.walletWithPK(privateKey)
                 _ = {
@@ -69,6 +73,36 @@ export function fetch_user_info(){
                     publickey_contract: resp.payload.publickey_contract,
                     account_type: resp.payload.account_type,
                 }
+
+                if(resp.payload.encrypted_group_keys) {
+                    let encrypted_group_keys = resp.payload.encrypted_group_keys
+                    let email = _.email
+
+                    let update_group_keys = {}
+                    for(let v of encrypted_group_keys) {
+
+                        let email_hashed = md5(email+v.passphrase1);
+                        try {
+                            let passphrase2 = (await aes_decrypt_async(Buffer.from(v.encrypted_passphrase2, 'hex'), Buffer.from(email_hashed) ));
+                            let key = hmac_sha256("", Buffer.from(email+passphrase2));
+                            let data = JSON.parse(await aes_decrypt_async(Buffer.from(v.encrypted_data, 'hex'), key ));
+                            _.group_keys[data.group_id] = data.group_key
+
+                            update_group_keys[data.group_id] = data.group_key
+                        } catch(e) {
+                            console.log("encrypted_group_key"+e)
+                        }
+                    }
+
+                    let u = {
+                        ...user_info,
+                        group_keys: {...group_keys, ...update_group_keys}
+                    }
+                    let masterKeyPublic = SeedToMasterKeyPublic(getMasterSeed())
+                    let encryptedUserInfo = aes_encrypt(JSON.stringify(u), masterKeyPublic);
+                    await api_update_user_info(encryptedUserInfo)
+                }
+
                 dispatch({
                     type:RELOAD_USERINFO,
                     payload:_

@@ -167,6 +167,15 @@ export async function api_invite_information(registration_code){
         session:window.getCookie("session")
     });
 }
+export async function api_delete_invite_group_member(registration_code){
+    let __data = new FormData();
+
+    __data.append('registration_code', registration_code)
+
+    return await post("/delete_invite_group_member", __data,{
+        session:window.getCookie("session")
+    });
+}
 export async function api_new_corp(data){
     let __data = new FormData();
 
