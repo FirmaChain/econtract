@@ -95,7 +95,7 @@ export function fetch_user_info(){
 
                     let u = {
                         ...user_info,
-                        group_keys: {...group_keys, ...update_group_keys}
+                        group_keys: {..._.group_keys, ...update_group_keys}
                     }
                     let masterKeyPublic = SeedToMasterKeyPublic(getMasterSeed())
                     let encryptedUserInfo = aes_encrypt(JSON.stringify(u), masterKeyPublic);
