@@ -58,7 +58,7 @@ export function ecaes_decrypt(c, keyPair, output_buffer=false) {
 }
 
 export async function aes_encrypt_async(m, k, is_legacy=true) {
-	if(typeof k != "buffer") {
+	if(typeof k != "object") {
 		console.log("key is not buffer")
 		throw "key is not buffer"
 	}
@@ -78,7 +78,7 @@ export async function aes_encrypt_async(m, k, is_legacy=true) {
 }
 
 export async function aes_decrypt_async(c, k, output_buffer=false, is_legacy=true) {
-	if(typeof k != "buffer") {
+	if(typeof k != "object") {
 		console.log("key is not buffer")
 		throw "key is not buffer"
 	}
@@ -102,7 +102,7 @@ export async function aes_decrypt_async(c, k, output_buffer=false, is_legacy=tru
 }
 
 export function aes_encrypt(m, k) {
-	if(typeof k != "buffer") {
+	if(typeof k != "object") {
 		console.log("key is not buffer")
 		throw "key is not buffer"
 	}
@@ -112,8 +112,8 @@ export function aes_encrypt(m, k) {
 	return c;
 }
 
-export function aes_decrypt(c, k, output_buffer=false) {
-	if(typeof k != "buffer") {
+export function aes_decrypt(c, k, output_buffer=false) 
+	if(typeof k != "object") {
 		console.log("key is not buffer")
 		throw "key is not buffer"
 	}
