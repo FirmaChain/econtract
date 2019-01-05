@@ -202,16 +202,15 @@ export default class extends React.Component {
                 await this.onRefresh()
             }
         } else if(exist.code == 1) {
-            console.log("exist", exist)
             let data = {
                 group_id:this.getGroupId(),
                 group_key,
             }
             let result = await this.props.add_member_group_exist(exist.payload.account_id, this.getGroupId(), email, data)
-            console.log(result)
             this.setState({
                 add_email:""
             })
+            await this.onRefresh()
             alert("성공적으로 그룹에 초대하였습니다.")
 
         } else if(exist.code == -6) {

@@ -55,7 +55,7 @@ export function fetch_user_info(){
                 let keyPair = SeedToEthKey(seed, "0'/0/0");
                 let privateKey = "0x"+keyPair.privateKey.toString('hex');
 
-                //console.log(resp.payload.encrypted_group_keys)
+                console.log(resp.payload.encrypted_group_keys)
 
                 Web3.addAccount(privateKey)
                 let wallet = Web3.walletWithPK(privateKey)
