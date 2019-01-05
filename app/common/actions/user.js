@@ -29,6 +29,7 @@ import {
     aes_decrypt_async,
     hmac_sha256,
     SeedToMasterKeyPublic,
+    aes_encrypt,
 } from "../../common/crypto_test"
 
 import Web3 from "../Web3"
