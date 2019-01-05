@@ -88,10 +88,12 @@ export default class extends React.Component {
 
                 let isMine = meOrGroup == user
 
+                console.log(user)
+
                 return <div key={e.chat_id} className={isMine ? "chat-slot right" : "chat-slot left"}>
                     { !isMine ? <img className="profile" src={`https://identicon-api.herokuapp.com/${user.corp_id+"_"+user.entity_id}/70?format=png`}/> : null }
                     <div className="msg">
-                        <div className="name">{user.name ? user.name : user.company_name}</div>
+                        <div className="name">{user.user_info.username ? user.user_info.username : user.user_info.title}</div>
                         <div className="msg-text">{e.msg}</div>
                     </div>
                 </div>

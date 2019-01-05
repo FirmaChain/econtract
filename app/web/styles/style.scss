@@ -3340,9 +3340,6 @@ div.checkbox2-comp{
                 color: white;
                 font-size:$font1;
             }
-            >.msg {
-                flex:1;
-            }
             .name{  
                 display: none;
             }
@@ -3355,13 +3352,11 @@ div.checkbox2-comp{
             display: flex;
             margin: 15px 0;
             .profile{
-                width: 30px;
+                min-width: 30px;
+                width:30px;
                 height: 30px;
             }
 
-            >.msg {
-                flex:1;
-            }
             .name{
                 margin:5px;
                 font-size: 13px;
