@@ -53,7 +53,7 @@ export default class PreviewContract extends React.Component {
                     return
                 
                 return <div className="item" key={k}>
-                    <div className="title">계약 주체 {k+1}</div>
+                    <div className="title">계약자 {k+1}</div>
                     {e.sign_info ? Object.entries(e.sign_info).map( (ee, kk) => {
                         let title = ee[0].substring(1, ee[0].length)
                         return <div className="info" key={kk}><span className="first">{title}</span> : <span className="last">{ee[1]}</span></div>
@@ -82,7 +82,7 @@ export default class PreviewContract extends React.Component {
                 </div>
                 <div className="container">
                     <div className="contract-main-text">
-                        <div dangerouslySetInnerHTML={{__html:this.props.contract.html}} />
+                        <div dangerouslySetInnerHTML={{__html:this.props.model}} />
                         {this.render_sign_info()}
                     </div>
                 </div>

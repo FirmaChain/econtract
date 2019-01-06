@@ -291,8 +291,13 @@ export default class extends React.Component {
         if(this.state.can_edit_account_id == null)
             return alert("첫 수정 권한을 지정해주세요.")
 
-        if(this.state.is_use_pin && (this.state.pin_number == "" || this.state.pin_number.length != 6) )
-            return alert("핀 번호를 입력해주세요.")
+        if(this.state.is_use_pin) {
+            if(this.state.pin_number == "" || this.state.pin_number.length != 6) {
+                return alert("핀 번호를 입력해주세요.")
+            } else if(this.state.pin_number == "000000") {
+                return alert("핀 번호는 000000 으로 설정할 수 없습니다.")
+            }
+        }
 
         this.blockFlag = true;
 

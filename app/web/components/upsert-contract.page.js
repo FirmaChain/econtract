@@ -153,7 +153,7 @@ export default class extends React.Component {
         history.block( (targetLocation) => {
             if(this.blockFlag)
                 return true
-            if(this.state.contract.html== this.state.model)
+            if(this.state.contract.html == this.state.model)
                 return true
             
             let out_flag = window._confirm("계약서 수정 작업을 중단하고 현재 페이지를 나가시겠습니까?")
@@ -228,7 +228,8 @@ export default class extends React.Component {
 
         window.openModal("PreviewContract",{
             contract:this.state.contract,
-            infos: this.state.infos
+            infos: this.state.infos,
+            model: this.state.model,
         })
 
         /*history.push({pathname:"/preview-contract", state:{
@@ -251,7 +252,13 @@ export default class extends React.Component {
         await window.hideIndicator()
     }
 
-    onClickMoveEditPrivilege = () => {
+    onClickMoveEditPrivilege = async () => {
+
+        if(this.state.contract.html != this.state.model)
+            if(window._confirm("수정중인 내용이 있습니다. 저장하고 수정 권한을 넘기시겠습니까?"))
+                await this.onClickContractSave()
+        
+
         window.openModal("MoveCanEditAccount",{
             user_infos: this.state.infos,
             my_account_id: this.props.user_info.account_id,
@@ -298,6 +305,10 @@ export default class extends React.Component {
             }
         }
 
+        if(this.state.contract.html != this.state.model)
+            if(window._confirm("수정중인 내용이 있습니다. 저장하고 서명 정보를 등록하시겠습니까?"))
+                await this.onClickContractSave()
+
         await window.showIndicator()
         let r = await this.props.update_contract_sign_info(this.state.contract.contract_id, this.state.sign_info, this.state.contract.the_key)
         if(r.code == -9) alert("이미 완료된 계약은 서명 정보를 업데이트할 수 없습니다.")
@@ -307,6 +318,10 @@ export default class extends React.Component {
     }
 
     onClickRegisterSign = async () => {
+
+        if(this.state.contract.html != this.state.model)
+            return alert("수정중인 내용이 있으면 서명할 수 없습니다.")
+
         let me = select_subject(this.state.infos, [], this.props.user_info.account_id, -1).my_info
         if(me == null)
             return;
