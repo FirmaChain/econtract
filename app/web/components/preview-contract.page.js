@@ -1,5 +1,11 @@
 import React from "react"
 import ReactDOM from "react-dom"
+
+import 'froala-editor/js/froala_editor.pkgd.min.js';
+import 'froala-editor/js/languages/ko.js';
+import 'froala-editor/css/froala_style.min.css';
+import 'froala-editor/css/froala_editor.pkgd.min.css';
+
 import { connect } from 'react-redux';
 import { Link, Prompt } from 'react-router-dom'
 import history from '../history';
@@ -85,7 +91,7 @@ export default class PreviewContract extends React.Component {
                 </div>
                 <div className="container">
                     <div className="contract-main-text">
-                        <div dangerouslySetInnerHTML={{__html:this.props.model}} />
+                        <div className="fr-element fr-view" dangerouslySetInnerHTML={{__html:this.props.model}} />
                         {this.render_sign_info()}
                     </div>
                 </div>
