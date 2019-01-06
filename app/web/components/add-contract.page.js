@@ -351,7 +351,7 @@ export default class extends React.Component {
 
         let template_model = null
         if(this.state.template) {
-            template_model = this.state.template.html
+            template_model = Buffer.from(this.state.template.html).toString()
         }
 
         let resp =  await this.props.new_contract(contract_name, counterparties, pin, necessary_info, this.state.can_edit_account_id, !!is_pin_used ? 1 : 0, template_model);
