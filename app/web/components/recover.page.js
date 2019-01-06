@@ -38,7 +38,10 @@ export default class extends React.Component {
 		super();
 		this.state={
             step:0,
-            sort_test:[]
+            sort_test:[],
+            password:"",
+            password2:"",
+            email:"",
         };
 	}
 
@@ -87,13 +90,13 @@ export default class extends React.Component {
     };
 
     onClickRecoverMyAccount = async()=>{
-        if(!this.state.email){
+        if(!this.state.email || this.state.email == ""){
             return alert("이메일을 입력해주세요!")
         }
         if(this.state.password.length < 8){
             return alert("비밀번호는 최소 8글자입니다.")
         }
-        if(this.state.password !== this.state.password2){
+        if(this.state.password != this.state.password2){
             return alert("비밀번호가 일치하지 않습니다.")
         }
 
