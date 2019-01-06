@@ -289,7 +289,10 @@ export default class extends React.Component {
     onClickRegister = async ()=>{
 
         if(this.state.can_edit_account_id == null)
-            return alert("첫 수정 권한을 지정해주세요")
+            return alert("첫 수정 권한을 지정해주세요.")
+
+        if(this.state.is_use_pin && (this.state.pin_number == "" || this.state.pin_number.length != 6) )
+            return alert("핀 번호를 입력해주세요.")
 
         this.blockFlag = true;
 
@@ -333,7 +336,14 @@ export default class extends React.Component {
         if(resp.code == 1) {
             let contract_id = resp.payload.contract_id
             if (is_pin_used) {
-                let resp_pin = await this.props.update_epin_account(contract_id, pin);
+                await this.props.update_epin_account(contract_id, pin);
+                if( includeGroup ) {
+                    for( let v of counterparties ) {
+                        if( v.user_type == 2 ) {
+                            await this.props.update_epin_group(v.corp_id, v.group_id, contract_id, v, pin)
+                        }
+                    }
+                }
             }
             history.replace(`/edit-contract/${contract_id}`)
         }
