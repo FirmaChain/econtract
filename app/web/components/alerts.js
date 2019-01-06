@@ -738,10 +738,21 @@ class TypingPin extends React.Component{
 
 @modal
 class DrawSign extends React.Component{
+    constructor(props) {
+        super(props);
+        
+        this.first_drawing = false
+
+        this.state = {};
+    }
+
     componentDidMount(){
     }
 
     finishDraw = ()=>{
+        if(!this.first_drawing)
+            return alert("서명을 그려주세요.")
+
         let dataUrl = this.refs.canvas.toDataURL("image/png")
         this.props.onFinish(dataUrl)
         window.closeModal(this.props.modalId)
@@ -769,16 +780,16 @@ class DrawSign extends React.Component{
         let ctx = this.refs.canvas.getContext('2d');
 
         this.isDrawing = true;
-        console.log("c",e.clientX - e.target.offsetLeft)
-        console.log("a",e.clientY - e.target.offsetTop)
         ctx.moveTo(e.clientX - e.target.offsetLeft, e.clientY - e.target.offsetTop);
     }
 
     onmousemove = (e)=>{
         let ctx = this.refs.canvas.getContext('2d');
+
+        if(!this.first_drawing)
+            this.first_drawing = true
+
         if (this.isDrawing) {
-            console.log("e.clientX", e.clientX)
-            console.log("e.clientY", e.clientY)
             ctx.lineTo(e.clientX - e.target.offsetLeft, e.clientY - e.target.offsetTop);
             ctx.stroke();
         }
