@@ -106,7 +106,7 @@ export default class extends React.Component {
             toolbarButtons:['paragraphFormat', 'fontFamily', 'fontSize', 'bold', 'italic', 'underline', 'strikeThrough', '|',
                 'color', 'align', 'outdent', 'indent', 'formatOL', 'formatUL', 'lineHeight', '|',
                 'subscript', 'superscript', 'quote', 'paragraphStyle', '-',
-                'insertLink', 'insertImage', 'insertTable', '|',
+                'insertLink', /*'insertImage'*/, 'insertTable', '|',
                 'specialCharacters', 'insertHR', 'selectAll', 'clearFormatting', '|',
                 'print', /*'getPDF', */'spellChecker', 'help', '|', 'undo', 'redo','fullscreen'],
 

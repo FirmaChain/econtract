@@ -379,9 +379,13 @@ export default class extends React.Component {
         return this.state.contracts_checks.length == contracts.list.length 
     }
 
-    openContract = async (contract, type = 0, e) => {
+    openContract = async (contract, type, select_tab = 0, e) => {
         e.stopPropagation()
-
+        select_tab = select_tab ? select_tab : 0
+        let move_info = {
+            pathname:type==0 ? `/contract-info/${contract.contract_id}` : `/edit-contract/${contract.contract_id}`,
+            state:{ select_tab }
+        }
         if(this.props.user_info.account_type == 0 ) {
             if(contract.is_pin_used == 1 && contract.is_pin_null == 1) {
                 let result = await new Promise(r=>window.openModal("TypingPin",{
@@ -405,10 +409,9 @@ export default class extends React.Component {
                     return alert("잘못된 핀 번호를 입력했습니다.")
                 }
 
-
-                history.push(type==0?`/contract-info/${contract.contract_id}`:`/edit-contract/${contract.contract_id}`)
+                history.push(move_info)
             } else if(contract.is_pin_used == 0 || (contract.is_pin_used == 1 && contract.is_pin_null == 0)) {
-                history.push(type==0?`/contract-info/${contract.contract_id}`:`/edit-contract/${contract.contract_id}`)
+                history.push(move_info)
             } 
         } else {
             let corps_id = contract.corps_id.split(",")
@@ -497,10 +500,12 @@ export default class extends React.Component {
                     }
                 }))
             }
-            history.push(type==0?`/contract-info/${contract.contract_id}`:`/edit-contract/${contract.contract_id}`)
-
+            history.push(move_info)
         }
+    }
 
+    onClickOpenContract = async (contract, type = 0, e) => {
+        await this.openContract(contract, type, 0, e)
     }
 
     render_contract_slot(e,k){
@@ -529,7 +534,7 @@ export default class extends React.Component {
         let usernames = e.user_infos.map(ee => ee.username).filter( ee => !!ee)
         usernames = usernames.join(", ")
 
-        return <div key={e.contract_id} className="item" onClick={this.openContract.bind(this, e, 0)}>
+        return <div key={e.contract_id} className="item" onClick={this.onClickOpenContract.bind(this, e, 0)}>
             <div className="list-body-item list-chkbox">
                 <CheckBox2 size={18}
                     on={this.state.contracts_checks.includes(e.contract_id) || false}
@@ -546,13 +551,13 @@ export default class extends React.Component {
             <div className="list-body-item list-date">{moment(e.updatedAt).format("YYYY-MM-DD HH:mm:ss")}</div>
             <div className="list-body-item list-action">
                 <div className="button-container">
-                    <div className="action-button action-blue-but" onClick={this.openContract.bind(this, e, 1)}>서명</div>
+                    <div className="action-button action-blue-but" onClick={this.onClickOpenContract.bind(this, e, 1)}>서명</div>
                     <div className="arrow-button arrow-blue-but" onClick={this.onClickOption.bind(this, e.contract_id)} >
                         <i className="fas fa-caret-down"></i>
                         <div className="arrow-dropdown" style={{display:!!this.isOpenOption(e.contract_id) ? "initial" : "none"}}>
                             <div className="container">
-                                <div className="detail" onClick={this.openContract.bind(this, e, 0)}>상세 정보</div>
-                                <div className="move" onClick={this.openContract.bind(this, e, 1)}>이동</div>
+                                <div className="detail" onClick={this.openContract.bind(this, e, 0, 1)}>상세 정보</div>
+                                <div className="move" onClick={this.onClickOpenContract.bind(this, e, 1)}>이동</div>
                             </div>
                         </div>
                     </div>

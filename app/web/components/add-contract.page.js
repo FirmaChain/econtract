@@ -345,7 +345,7 @@ export default class extends React.Component {
                 if( includeGroup ) {
                     for( let v of counterparties ) {
                         if( v.user_type == 2 ) {
-                            await this.props.update_epin_group(v.corp_id, v.group_id, contract_id, v, pin)
+                            await this.props.update_epin_group(v.corp_id, v.group_id, contract_id, this.props.user_info, pin)
                         }
                     }
                 }

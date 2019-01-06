@@ -70,6 +70,12 @@ export default class extends React.Component {
             }
             await window.hideIndicator()
 
+            if( this.props.location.state && this.props.location.state.select_tab ) {
+                this.setState({
+                    select_tab:this.props.location.state.select_tab
+                })
+            }
+
             if(!contract) {
                 alert("계약이 암호화되어 있어 접근할 수 없습니다.")
                 return history.replace("/login")
