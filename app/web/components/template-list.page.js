@@ -123,8 +123,8 @@ export default class extends React.Component {
         })
     }
 
-    move = (pageName) => {
-        history.push(`/template/${pageName}`)
+    move = (folder_id) => {
+        history.push(`/template/${folder_id}`)
     }
 
     isOpenOption(template_id) {
@@ -179,6 +179,26 @@ export default class extends React.Component {
             await this.props.remove_folder_template([folder_id])
             history.push("/template")
         }
+    }
+
+    onChangeFolderName = async () => {
+
+        window.openModal("AddCommonModal", {
+            icon:"fas fa-folder",
+            title:"템플릿 폴더 이름 변경",
+            subTitle:"새 폴더 이름",
+            placeholder:"(기존 폴더명 : " + this.getTitle().title + ")",
+            onConfirm: async (folder_name) => {
+                if(!folder_name || folder_name == "") {
+                    return alert("폴더 이름을 입력해주세요")
+                }
+                let resp = await this.props.change_folder_template(this.getTitle().id, folder_name)
+
+                if(resp) {
+                    await this.props.folder_list_template()
+                }
+            }
+        })
     }
 
     checkTemplate(template_id) {
@@ -282,7 +302,10 @@ export default class extends React.Component {
                 </div>
             </div>
             <div className="contract-list">
-                <div className="title">{this.getTitle().title}</div>
+                <div className="title">
+                    { this.getTitle().title} &nbsp;
+                    { !isNaN(this.getTitle().id) ? <i className="fas fa-cog" onClick={this.onChangeFolderName}></i> : null }
+                </div>
                 <div className="list" style={{marginTop:"20px"}}>
                     <div className="head">
                         <div className="list-head-item list-chkbox">

@@ -66,7 +66,7 @@ export function remove_folder_template(folder_ids) {
 
 export function change_folder_template(folder_id, folder_name) {
     return async function() {
-        let resp = await api_rchange_folder_template(folder_id, folder_name)
+        let resp = await api_change_folder_template(folder_id, folder_name)
         return resp.payload
     }
 }
