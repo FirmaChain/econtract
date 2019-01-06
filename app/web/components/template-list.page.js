@@ -303,7 +303,7 @@ export default class extends React.Component {
             </div>
             <div className="contract-list">
                 <div className="title">
-                    { this.getTitle().title} &nbsp;
+                    { this.getTitle().title } &nbsp;
                     { !isNaN(this.getTitle().id) ? <i className="fas fa-cog" onClick={this.onChangeFolderName}></i> : null }
                 </div>
                 <div className="list" style={{marginTop:"20px"}}>

@@ -517,7 +517,7 @@ export default class extends React.Component {
                 }).find(v => {
                     return v.corp_id == 0 && v.entity_id == this.props.user_info.account_id
                 })
-                if(sign_user.signature == "true") {
+                if(sign_user && sign_user.signature == "true") {
                     return "상대방 서명 전"
                 }
             	return "내 서명 전"
