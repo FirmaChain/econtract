@@ -89,9 +89,11 @@ export function getGroupKey(user_info, group_id) {
     }
 }
 
-export function new_contract(subject, counterparties, set_pin, necessary_info, can_edit_account_id, is_pin_used = false) {
+export function new_contract(subject, counterparties, set_pin, necessary_info, can_edit_account_id, is_pin_used = false, model = null) {
     return async function(dispatch){
-        let pin = set_pin ? set_pin : genPIN();
+        let pin = set_pin ? set_pin : "000000";
+        if(!set_pin)
+            is_pin_used = false
         let shared_key = generate_random(31);
         let the_key = getContractKey(pin, shared_key);
         let counterparties_mapped = counterparties.map(e=>{
@@ -105,7 +107,12 @@ export function new_contract(subject, counterparties, set_pin, necessary_info, c
             };
         });
 
-        let resp = await api_new_contract(subject, JSON.stringify(counterparties_mapped), JSON.stringify(necessary_info), can_edit_account_id, is_pin_used);
+        let encrypted_model = null
+        if(!!model) {
+            encrypted_model = aes_encrypt(model, the_key)
+        }
+
+        let resp = await api_new_contract(subject, JSON.stringify(counterparties_mapped), JSON.stringify(necessary_info), can_edit_account_id, is_pin_used, encrypted_model);
         if(resp.code == 1){
             sessionStorage.setItem(`contract:${resp.payload.contract_id}`, encryptPIN(pin));
         }
@@ -139,15 +146,12 @@ export function get_contracts(type, status, page, display_count = 10, sub_status
                     shared_key = unsealContractAuxKey(entropy, Buffer.from(subject.my_info.eckai, 'hex').toString('hex'));
                 } else {
                     let group_key = getGroupKey(user_info, subject.my_info.entity_id);
-                    console.log(group_key, v)
                     if (v.is_pin_used && v.is_pin_null == 0) {
                         pin = decryptPIN(Buffer.from(subject.my_info.epin, 'hex').toString('hex'), Buffer.from(group_key, 'hex'));
                     }
                     shared_key = unsealContractAuxKeyGroup(group_key, Buffer.from(subject.my_info.eckai, 'hex').toString('hex'));
                 }
                 let the_key = getContractKey(pin, shared_key);
-
-                console.log(the_key)
 
                 v.user_infos = v.user_infos.split(window.SEPERATOR).map( e => {
                     let result;

@@ -201,7 +201,7 @@ export default class extends React.Component {
                 if(type == 1) {
                     history.push("/add-contract")
                 } else if(type == 2) {
-
+                    history.push("/template")
                 }
             }
         })
@@ -619,9 +619,13 @@ export default class extends React.Component {
                             <div className="text">폴더</div>
                             <i className="angle far fa-plus" onClick={this.onAddFolder}></i>
                         </div>
+                        <div className="item">
+                            <i className="fas icon fa-thumbtack" />
+                            <div className="text">분류되지 않은 계약</div>
+                        </div>
 						{folders.list.map((e,k)=>{
-                            let subject = e.subject || "분류되지 않은 계약"
-                            let folder_id = e.folder_id || 0
+                            let subject = e.subject
+                            let folder_id = e.folder_id
                             return <div className="item" key={e+k}>
                                 <i className={`fas icon ${folder_id == 0 ? "fa-thumbtack":"fa-folder"}`} />
                                 <div className="text">{subject}</div>

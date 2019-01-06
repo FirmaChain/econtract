@@ -145,6 +145,11 @@ export default class extends React.Component {
         })
     }
 
+    useTemplate = async (template_id, e) => {
+        e.stopPropagation()
+        history.push({pathname:"/add-contract", search:"?template_id="+template_id})
+    }
+
     async onRemoveTemplate(template_id, subject, e) {
         e.stopPropagation()
 
@@ -251,7 +256,7 @@ export default class extends React.Component {
             <div className="list-body-item list-date">{moment(e.addedAt).format("YYYY-MM-DD HH:mm:ss")}</div>
             <div className="list-body-item list-action">
                 <div className="button-container">
-                    <div className="action-button action-blue-but">사용</div>
+                    <div className="action-button action-blue-but" onClick={this.useTemplate.bind(this, e.template_id)}>사용</div>
                     <div className="arrow-button arrow-blue-but" onClick={this.onClickOption.bind(this, e.template_id)} >
                         <i className="fas fa-caret-down"></i>
                     <div className="arrow-dropdown" style={{display:!!this.isOpenOption(e.template_id) ? "initial" : "none"}}>

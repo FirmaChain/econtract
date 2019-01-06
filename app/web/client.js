@@ -95,9 +95,9 @@ window.addEventListener("load",()=>{
 					<Route onEnter={resolver} exact path="/add-contract" component={AddContractPage} />
 					<Route onEnter={resolver} exact path="/edit-contract/:contract_id" component={UpsertContractPage} />
 					<Route onEnter={resolver} exact path="/contract-info/:contract_id" component={ContractInfoPage} />
-					<Route onEnter={resolver} exact path="/preview-contract" component={PreviewCOntractPage} />
+					{/*<Route onEnter={resolver} exact path="/preview-contract" component={PreviewCOntractPage} />
 
-					{/*<Route onEnter={resolver} exact path="/folder" component={FolderPage} />
+					<Route onEnter={resolver} exact path="/folder" component={FolderPage} />
 					<Route onEnter={resolver} exact path="/folder/:id" component={InFolderPage} />
 					<Route onEnter={resolver} exact path="/contract-editor/:id" component={ContractEditorPage} />
 					<Route onEnter={resolver} exact path="/contract-confirm/:id/:revision" component={ContractConfirmPage} />

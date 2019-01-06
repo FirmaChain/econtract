@@ -1214,6 +1214,12 @@ div.checkbox2-comp{
             margin-bottom: 20px;
             margin-top: 20px;
 
+            >.empty-person {
+                padding:10px 0;
+                font-size:$font2;
+                text-align:center;
+            }
+
             >.title {
                 display: flex;
                 flex-direction: row;

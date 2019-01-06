@@ -28,18 +28,10 @@ export default class PreviewContract extends React.Component {
     }
 
     componentDidMount() {
-        if(!this.props.contract || !this.props.infos) {
+        if(!this.props.model) {
             alert("잘못된 경로로 들어왔습니다.")
-            return history.goBack()
+            return this.closeSelf()
         }
-
-        (async()=>{
-            await this.onRefresh()
-        })()
-    }
-
-    onRefresh = async () => {
-
     }
 
     closeSelf = () => {
@@ -47,6 +39,9 @@ export default class PreviewContract extends React.Component {
     }
 
     render_sign_info = () => {
+        if(!this.props.infos && !this.props.contract)
+            return
+
         return <div className="sign-info">
             {this.props.infos.map( (e, k) => {
                 if(e.privilege != 1)
@@ -67,8 +62,16 @@ export default class PreviewContract extends React.Component {
         </div>
     }
 
+    getTitle() {
+        if(this.props.contract && this.props.contract.name) {
+            return this.props.contract.name
+        } else {
+            return this.props.title || "제목이 없습니다"
+        }
+    }
+
 	render() {
-        if(!this.props.contract || !this.props.infos)
+        if(!this.props.model)
             return <div></div>
 
         return (<div className="preview-contract-page">
@@ -77,7 +80,7 @@ export default class PreviewContract extends React.Component {
                     <div className="left-icon">
                         <i className="fal fa-times" onClick={()=>this.closeSelf()}></i>
                     </div>
-                    <div className="title">{this.props.contract.name}</div>
+                    <div className="title">{this.getTitle()}</div>
                     { !!this.props.user_info ? <Information /> : null }
                 </div>
                 <div className="container">

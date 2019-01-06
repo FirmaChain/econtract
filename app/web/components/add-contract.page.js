@@ -8,6 +8,7 @@ import pdfjsLib from "pdfjs-dist"
 import translate from "../../common/translate"
 import Information from "./information.comp"
 import Footer from "./footer.comp"
+import queryString from "query-string"
 
 import Dropdown from "react-dropdown"
 import 'react-dropdown/style.css'
@@ -20,6 +21,7 @@ import {
     get_group_info,
     update_epin_account,
     update_epin_group,
+    get_template,
     genPIN,
 } from "../../common/actions"
 import CheckBox2 from "./checkbox2"
@@ -38,6 +40,7 @@ let mapDispatchToProps = {
     get_group_info,
     update_epin_account,
     update_epin_group,
+    get_template,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -112,6 +115,7 @@ export default class extends React.Component {
 	componentDidMount(){
         (async()=>{
             let user = await this.props.fetch_user_info()
+            let params = queryString.parse(this.props.location.search)
 
             if(!user) {
                 return history.push("/login")
@@ -167,6 +171,14 @@ export default class extends React.Component {
             } else {
 
             }
+
+            if( params.template_id && !isNaN(params.template_id) ) {
+                let template = await this.props.get_template(params.template_id)
+                this.setState({
+                    template
+                })
+            }
+
         })()
 
 
@@ -336,7 +348,13 @@ export default class extends React.Component {
         let necessary_info = {individual: individual_info, corporation: corporation_info};
         let is_pin_used = this.state.is_use_pin;
         let pin = is_pin_used ? this.state.pin_number : "000000";
-        let resp =  await this.props.new_contract(contract_name, counterparties, pin, necessary_info, this.state.can_edit_account_id, !!is_pin_used ? 1 : 0);
+
+        let template_model = null
+        if(this.state.template) {
+            template_model = this.state.template.html
+        }
+
+        let resp =  await this.props.new_contract(contract_name, counterparties, pin, necessary_info, this.state.can_edit_account_id, !!is_pin_used ? 1 : 0, template_model);
 
         if(resp.code == 1) {
             let contract_id = resp.payload.contract_id
@@ -352,6 +370,18 @@ export default class extends React.Component {
             }
             history.replace(`/edit-contract/${contract_id}`)
         }
+
+    }
+
+    onViewTemplate = () => {
+        if(!this.state.template)
+            return;
+
+
+        window.openModal("PreviewContract",{
+            title: this.state.template.subject,
+            model: Buffer.from(this.state.template.html).toString(),
+        })
 
     }
 
@@ -470,6 +500,29 @@ export default class extends React.Component {
                         </div>
                     </div>
                 </div>
+
+                {this.state.template ? <div className="row">
+                    <div className="left-desc">
+                        <div className="desc-head">선택된 템플릿</div>
+                        <div className="desc-content">해당 계약에 사용될 템플릿입니다.</div>
+                    </div>
+                    <div className="right-form">
+                        <div className="column">
+                            <div className="form-head"></div>
+                            <div className="form-input">
+                                <input className="common-textbox" type="text"
+                                    value={this.state.template.subject || ""}
+                                    disabled />
+                            </div>
+                        </div>
+                        <div className="column">
+                            <div className="form-head"></div>
+                            <div className="form-input">
+                                <div className="btn-add-user btn-add-user-active" onClick={this.onViewTemplate}>템플릿 미리보기</div>
+                            </div>
+                        </div>
+                    </div>
+                </div> : null}
 
                 <div className="row">
                     <div className="left-desc">

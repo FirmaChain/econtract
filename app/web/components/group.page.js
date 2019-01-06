@@ -322,6 +322,9 @@ export default class extends React.Component {
                                     </div>)
                                 }
                             }
+                            if(memberList.length == 0) {
+                                memberList.push(<div key={"nothing"} className={"empty-person" + (this.isOpenGroup(e.group_id) ? "" : " hide")}>그룹원이 없습니다</div>)
+                            }
                             return [<div key={e.group_id} className={"item" + (this.getTitle().id == e.group_id ? " selected" : "")}
                                 onClick={this.moveGroup.bind(this, e.group_id)}>
                                 <div className="text">#{e.title}</div>
@@ -336,15 +339,14 @@ export default class extends React.Component {
                             <div className="text">분류되지 않은 그룹원</div>
                             <i className={"angle far "  + ( this.isOpenGroup("unclassified") ? "fa-angle-down" : "fa-angle-up")} onClick={this.openCloseGroup.bind(this, "unclassified")}></i>
                         </div>
-                        {members.map((e,k)=>{
-                            if(e.group_ids == null) {
-                                return <div key={"unclassified "+e.account_id} className={"item sub" + (this.isOpenGroup("unclassified") ? "" : " hide")} onClick={this.moveGroupMember.bind(this, "unclassified", e.account_id)}>
-                                    <i className="icon fas fa-user"></i>
-                                    <div className="text">{e.data.username}</div>
-                                    <i className="setting far fa-ellipsis-h"></i>
-                                </div>
-                            }
+                        {members.filter(e=>e.group_ids == null).map((e,k)=>{
+                            return <div key={"unclassified "+e.account_id} className={"item sub" + (this.isOpenGroup("unclassified") ? "" : " hide")} onClick={this.moveGroupMember.bind(this, "unclassified", e.account_id)}>
+                                <i className="icon fas fa-user"></i>
+                                <div className="text">{e.data.username}</div>
+                                <i className="setting far fa-ellipsis-h"></i>
+                            </div>
                         })}
+                        {members.filter(e=>e.group_ids == null).length == 0 ? <div className={"empty-person" + (this.isOpenGroup("unclassified") ? "" : " hide")}>그룹원이 없습니다</div> : null}
 
 						<div className={"item" + (this.getTitle().id == "withdraw" ? " selected" : "")} onClick={this.moveGroup.bind(this, "withdraw")}>
                             <i className="icon fas fa-handshake-alt"></i>
