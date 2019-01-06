@@ -254,15 +254,15 @@ export default class extends React.Component {
 
     onClickMoveEditPrivilege = async () => {
 
-        if(this.state.contract.html != this.state.model)
-            if(window._confirm("수정중인 내용이 있습니다. 저장하고 수정 권한을 넘기시겠습니까?"))
-                await this.onClickContractSave()
-        
-
         window.openModal("MoveCanEditAccount",{
             user_infos: this.state.infos,
             my_account_id: this.props.user_info.account_id,
             onConfirm : async (user)=>{
+
+                if(this.state.contract.html != this.state.model)
+                    if(window._confirm("수정중인 내용이 있습니다. 저장하고 수정 권한을 넘기시겠습니까?"))
+                        await this.onClickContractSave()
+                    
                 await window.showIndicator()
                 await this.props.move_contract_can_edit_account_id(this.state.contract.contract_id, user.entity_id)
                 //await this.onRefresh()
