@@ -151,7 +151,9 @@ export default class extends React.Component {
         let group_id = this.props.match.params.group_id || null
 
         if(prevMenu != menu || prev_group_id != group_id){
-            await this.onRefresh(nextProps)
+            (async()=>{
+                await this.onRefresh(nextProps)
+            })()
         }
     }
 
