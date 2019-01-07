@@ -171,7 +171,12 @@ export default class extends React.Component {
         }
         //html2pdf().set(savePdfOption).from(document.getElementsByClassName('fr-view')[0]).save()
 
-        window.html2Doc(document.getElementsByClassName('fr-view')[0], `[템플릿] ${this.state.title}`)
+        //window.html2Doc(document.getElementsByClassName('fr-view')[0], `[템플릿] ${this.state.title}`)
+        
+        window.openModal("PreviewContract",{
+            title: this.state.title,
+            model: this.state.model,
+        })
     }
 
     onClickSubmit = async () => {

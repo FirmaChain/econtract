@@ -382,7 +382,6 @@ export default class extends React.Component {
         if(!this.state.template)
             return;
 
-
         window.openModal("PreviewContract",{
             title: this.state.template.subject,
             model: Buffer.from(this.state.template.html).toString(),
