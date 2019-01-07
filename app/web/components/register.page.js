@@ -837,7 +837,7 @@ export default class extends React.Component {
                         onChange={e=>this.setState({useraddress:e.target.value})}
                         placeholder="주소를 정확하게 입력해주세요"/>
                 </div>
-                <div className="blue-but" onClick={this.onClickFindAddress.bind(this, 1)}>
+                <div className="blue-but" onClick={this.onClickFindAddress.bind(this, 0)}>
                     검색
                 </div>
             </div>
@@ -894,7 +894,7 @@ export default class extends React.Component {
                         placeholder="주소를 정확하게 입력해주세요"
                         disabled={this.getAccountType() == 2}/>
                 </div>
-                { this.getAccountType() == 2 ? null : <div className="blue-but" onClick={this.onClickFindAddress.bind(this, 2)}>
+                { this.getAccountType() == 2 ? null : <div className="blue-but" onClick={this.onClickFindAddress.bind(this, 1)}>
                     검색
                 </div>}
             </div>
