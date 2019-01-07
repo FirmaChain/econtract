@@ -17,6 +17,7 @@ $black : #181818;
 $gray : #a7a4a5;
 $lightgray : #f4f4f4;
 $middlegray : #dadadc;
+$red : #cc0000;
 
 .font0 {
     font-size: $font0;
@@ -1278,6 +1279,13 @@ div.checkbox2-comp{
                     &:hover {
                         color:$gray;
                     }
+                }
+
+                >.count {
+                    background-color:$red;
+                    font-size:$font0;
+                    color:white;
+                    padding:5px;
                 }
 
                 >.angle {

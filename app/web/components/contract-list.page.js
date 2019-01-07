@@ -31,6 +31,7 @@ import {
     add_folder_in_contract,
     remove_folder_contract,
     change_folder_contract,
+    get_lock_count,
     is_correct_pin,
 } from "../../common/actions"
 
@@ -58,6 +59,7 @@ let mapDispatchToProps = {
     add_folder_in_contract,
     remove_folder_contract,
     change_folder_contract,
+    get_lock_count,
     is_correct_pin,
 }
 
@@ -72,7 +74,8 @@ export default class extends React.Component {
             contracts_checks : [],
             showGroupMenu: false,
             showOptions: null,
-            cur_page:0
+            cur_page:0,
+            lock_count:0,
         };
 	}
 
@@ -122,12 +125,14 @@ export default class extends React.Component {
         }
 
         await this.props.folder_list_contract(group_id)
+        let lock_count = await this.props.get_lock_count(group_id)
 
         await this.setState({
             contracts_checks : [],
             showGroupMenu: false,
             showOptions: null,
-            cur_page:0
+            cur_page:0,
+            lock_count:lock_count.payload.count
         })
 
         await this.loadContracts(0, nextProps)
@@ -629,10 +634,15 @@ export default class extends React.Component {
 				<div className="left-top-button" onClick={this.onClickAddContract}>계약 만들기</div>
 				<div className="menu-list">
                     <div className="list">
-                        <div className={"item" + (this.getTitle().id == "lock" ? " selected" : "")} onClick={this.move.bind(this, "lock")}><i className="icon fas fa-lock-alt"></i> <div className="text">잠김</div></div>
+                        <div className={"item" + (this.getTitle().id == "lock" ? " selected" : "")} onClick={this.move.bind(this, "lock")}>
+                            <i className="icon fas fa-lock-alt"></i> 
+                            <div className="text">잠김</div>
+                            {this.state.lock_count > 0 ? <div className="count">{this.state.lock_count}</div> : null}
+                        </div>
                         <div className={"item" + (this.getTitle().id == "my_view" ? " selected" : "")} onClick={this.move.bind(this, "my_view")}><i className="icon far fa-eye"></i> <div className="text">내 보기 가능</div></div>
                     </div>
                     { account_type != 0 ? (<div className="list">
+                        <div className="title">그룹 선택</div>
                         <div className="item group-item" onClick={this.onClickGroupMenu}>
                             <div className="text">{this.getTitle().groupName}</div>
                             <i className={"angle far " + (!!this.isOpenGroupMenu() ? "fa-angle-down" : "fa-angle-up")}></i>

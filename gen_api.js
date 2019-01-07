@@ -210,6 +210,15 @@ export async function api_add_folder_in_contract(folder_id,contract_ids,group_id
         session:window.getCookie("session")
     });
 }
+export async function api_get_lock_count(group_id){
+    let __data = new FormData();
+
+    __data.append('group_id', group_id)
+
+    return await post("/get_lock_count", __data,{
+        session:window.getCookie("session")
+    });
+}
 export async function api_invite_information(registration_code){
     let __data = new FormData();
 

@@ -16,6 +16,7 @@ import {
     api_remove_folder_contract,
     api_change_folder_contract,
     api_add_folder_in_contract,
+    api_get_lock_count,
     api_send_chat,
 /*    api_load_contract,
     api_load_contract_info,
@@ -413,6 +414,13 @@ export function change_folder_contract(folder_id, folder_name, group_id = null) 
 export function add_folder_in_contract(folder_id, contract_ids, group_id = null) {
     return async function() {
         let resp = await api_add_folder_in_contract(folder_id, JSON.stringify(contract_ids), group_id)
+        return resp
+    }
+}
+
+export function get_lock_count(group_id) {
+    return async function() {
+        let resp = await api_get_lock_count(group_id)
         return resp
     }
 }
