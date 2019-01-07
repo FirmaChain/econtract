@@ -868,7 +868,7 @@ class MoveToFolder extends React.Component{
                 <div className="msg"><b>{this.props.contract_ids.length}</b>건의 계약이 선택하신 폴더로 이동합니다.</div>
 
                 <div className="button">
-                    <div className="submit" onClick={this.finishDraw}>이동</div>
+                    <div className="submit" onClick={this.onClickMove}>이동</div>
                     <div className="cancel" onClick={this.closeSelf}>취소</div>
                 </div>
 
