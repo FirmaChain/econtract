@@ -826,35 +826,52 @@ class DrawSign extends React.Component{
 @modal
 class MoveToFolder extends React.Component{
 
+    constructor(props) {
+        super(props);
+
+        this.state = {};
+    }
+
+    componentDidMount() {
+
+    }
+
     closeSelf = ()=>{
         window.closeModal(this.props.modalId)
     }
 
     onClickMove = ()=>{
-        let folder_id = this.refs.sel.value
+        if(!this.state.select_folder_id) {
+            return alert("계약이 이동될 폴더를 지정해주세요")
+        }
         
-        this.props.onClickMove && this.props.onClickMove(folder_id)
+        this.props.onClickMove && this.props.onClickMove(this.state.select_folder_id)
         this.closeSelf()
     }
 
     render(){
-        return <div className="default-modal">
-            <div className="contents">
-                <div className="title">폴더 선택 이동</div>
+        return <div className="move-folder">
+            <div className="container">
+
+                <div className="icon"><i className="far fa-folder"></i></div>
+                <div className="title">폴더 지정</div>
                 
                 <div className="select">
-                    <select ref="sel">
-                        {this.props.folders.map((e,k)=>{
-                            return <option key={k} value={e.folder_id}>{e.subject}</option>
-                        })}
-                    </select>
+                    <Dropdown className="folder-dropdown"
+                        controlClassName="control"
+                        menuClassName="item"
+                        options={this.props.folders.map(e=>{ return {value:e.folder_id, label:e.subject} })}
+                        onChange={e=>{this.setState({select_folder_id:e.value, select_folder_title:e.label})}}
+                        value={this.state.select_folder_title} placeholder="이동할 폴더 선택" />
                 </div>
 
                 <div className="msg"><b>{this.props.contract_ids.length}</b>건의 계약이 선택하신 폴더로 이동합니다.</div>
-            </div>
-            <div className="buttons">
-                <button onClick={this.onClickMove}>확인</button>
-                <button onClick={this.closeSelf}>취소</button>
+
+                <div className="button">
+                    <div className="submit" onClick={this.finishDraw}>이동</div>
+                    <div className="cancel" onClick={this.closeSelf}>취소</div>
+                </div>
+
             </div>
         </div>
     }
