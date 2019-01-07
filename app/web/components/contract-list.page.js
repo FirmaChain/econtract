@@ -238,7 +238,7 @@ export default class extends React.Component {
         let result = {}
 
 		if(menu == "lock") {
-			result = { id:"lock", title : "잠김"}
+			result = { id:"lock", title : this.props.user_info.account_type != 0 ? "미분류 계약":"잠김"}
         }
 		else if(menu == "requested") {
 			result = { id:"requested", title : "요청받음"}
@@ -637,7 +637,7 @@ export default class extends React.Component {
                     <div className="list">
                         <div className={"item" + (this.getTitle().id == "lock" ? " selected" : "")} onClick={this.move.bind(this, "lock")}>
                             <i className="icon fas fa-lock-alt"></i> 
-                            <div className="text">잠김</div>
+                            <div className="text">{this.props.user_info.account_type != 0 ? "미분류 계약":"잠김"}</div>
                             {this.state.lock_count > 0 ? <div className="count">{this.state.lock_count}</div> : null}
                         </div>
                         <div className={"item" + (this.getTitle().id == "my_view" ? " selected" : "")} onClick={this.move.bind(this, "my_view")}><i className="icon far fa-eye"></i> <div className="text">내 보기 가능</div></div>
