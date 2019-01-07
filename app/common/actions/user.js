@@ -180,11 +180,11 @@ export function register_new_account(account, info, email, name, eth, type){
     }
 }
 
-export function login_account(email, password){
+export function login_account(user_id, password){
     return async function(dispatch){
 
         let nonce = Date.now();
-        let auth = makeAuth(email, password);
+        let auth = makeAuth(user_id, password);
         let sign = makeSignData("FirmaChain Login", auth, nonce);
 
         let resp = (await api_login_account(
