@@ -123,6 +123,12 @@ export default class extends React.Component {
                     } else {
                         this.editor.edit.on()
                     }
+
+
+                    if(!!this.editor && !!this.state.contract && this.state.contract.status == 2) {
+                        this.onToggleRegisterSignForm()
+                        this.editor.edit.off()
+                    }
                 }
             }
         }
@@ -208,10 +214,15 @@ export default class extends React.Component {
 
             await this.setState(_state)
 
-            if( !!this.editor && !!this.state.contract && this.props.user_info.account_id != this.state.contract.can_edit_account_id ) {
+            if( !!this.editor && !!contract.payload.contract && this.props.user_info.account_id != contract.payload.contract.can_edit_account_id ) {
                 this.editor.edit.off()
             } else {
                 this.editor.edit.on()
+            }
+
+            if(!!this.editor && !!contract.payload.contract && contract.payload.contract.status == 2) {
+                this.onToggleRegisterSignForm()
+                this.editor.edit.off()
             }
         } else {
             alert("계약이 존재하지 않습니다.")

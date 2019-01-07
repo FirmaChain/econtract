@@ -59,6 +59,7 @@ export default class extends React.Component {
             target_me:true,
             target_other:true,
             is_use_pin:false,
+            contract_name:"",
             individual:[{
                 deletable:false,
                 title:"성함",
