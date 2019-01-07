@@ -311,6 +311,10 @@ export default class extends React.Component {
             }
         }
 
+        if(!this.state.contract_name || this.state.contract_name == "") {
+            return alert("계약서명을 입력해주세요.")
+        }
+
         this.blockFlag = true;
 
         let contract_name = this.state.contract_name;
