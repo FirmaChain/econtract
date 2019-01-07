@@ -83,6 +83,10 @@ export default class extends React.Component {
         })*/
         this.blockFlag = false;
         this.socket = socketIOClient(config.HOST)
+        socket.on('disconnect', () => {
+            socket.open();
+            this.subscribeChannel()
+        })
         //reconect
 
         this.config = {
@@ -143,9 +147,7 @@ export default class extends React.Component {
             await window.showIndicator("계약서 상세 데이터 불러오는 중...")
             await this.props.fetch_user_info()
             await this.onRefresh()
-            this.socket.emit('subscribe_channel', this.state.contract.contract_id)
-            this.socket.on("receive_chat_"+this.state.contract.contract_id, this.onReceiveChat)
-            this.socket.on("refresh_contract_"+this.state.contract.contract_id, this.onRefresh)
+            this.subscribeChannel()
             await this.onChatLoadMore()
             await window.hideIndicator()
         })
@@ -166,6 +168,15 @@ export default class extends React.Component {
     componentWillUnmount() {
         if(this.socket)
             this.socket.disconnect()
+    }
+
+    subscribeChannel() {
+        if(!this.state.contract)
+            return
+
+        this.socket.emit('subscribe_channel', this.state.contract.contract_id)
+        this.socket.on("receive_chat_"+this.state.contract.contract_id, this.onReceiveChat)
+        this.socket.on("refresh_contract_"+this.state.contract.contract_id, this.onRefresh)
     }
 
     onRefresh = async () => {
