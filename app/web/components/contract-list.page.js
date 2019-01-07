@@ -366,6 +366,7 @@ export default class extends React.Component {
             onClickMove:async(folder_id)=>{
                 await window.showIndicator("폴더로 계약 이동중");
                 await this.props.add_folder_in_contract(folder_id, contract_ids, this.props.match.params.group_id || null)
+                await this.onRefresh()
                 await window.hideIndicator();
                 return true;
             }
