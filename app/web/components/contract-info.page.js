@@ -10,6 +10,7 @@ import Information from "./information.comp"
 import Footer from "./footer.comp"
 import Chatting from "./chatting.comp"
 import moment from "moment"
+import UAParser from "ua-parser-js"
 
 import Dropdown from "react-dropdown"
 import 'react-dropdown/style.css'
@@ -330,17 +331,51 @@ export default class extends React.Component {
     }
 
     render_logs() {
-        let logs = this.state.logs || [
-            {
-                log_id:1,
-                text:"윤대현님이 계약을 수정했습니다.",
-                name:"윤대현",
-                email:"pbes0707@firma-solutions.com",
-                addedAt:"2019-01-11 23:11:23",
-                browser:"Chrome",
-                ip:"172.30.1.28"
+        let logs = this.state.logs
+        logs = logs.map(e=>{
+            let msg
+
+            let user = this.state.infos.find(c=>{
+                if(c.corp_id == 0) return c.entity_id == e.account_id
+                else return c.entity_id == e.group_id && c.corp_id == e.corp_id
+            })
+
+            let name = user.user_info.username ? user.user_info.username : user.user_info.title
+            let email = user.user_info.email ? user.user_info.email : user.user_info.company_name
+
+            switch(e.code) {
+                case 1:
+                    msg = `${name}님이 계약서를 생성하셨습니다.`
+                    break;
+                case 2:
+                    msg = `${name}님이 계약서를 열람하셨습니다.`
+                    break;
+                case 3:
+                    msg = `${name}님이 계약서를 수정하셨습니다.`
+                    break;
+                case 4:
+                    msg = `${name}님이 서명 정보를 변경하셨습니다.`
+                    break;
+                case 5:
+                    msg = `${name}님이 계약서에 서명하셨습니다.`
+                    break;
+                case 6: {
+                    let next_account_id = JSON.parse(e.data).to_account_id
+                    let next = this.state.infos.find(c=>c.corp_id == 0 && c.entity_id == e.next_account_id)
+                    msg = `${name}님이 수정 권한을 ${next.user_info.username} 생성하셨습니다.`
+                    break;
+                }
             }
-        ]
+            let user_agent = UAParser(e.ua)
+
+            return {
+                ...e,
+                text:msg,
+                name,
+                email,
+                ua:user_agent.os.name + " " + user_agent.browser.name
+            }
+        })
 
         return <div className="deck logs">
             <div className="head">
@@ -358,8 +393,8 @@ export default class extends React.Component {
                         <div className="sub">{e.email}</div>
                     </div>
                     <div className="list-body-item list-date">
-                        {moment(e.addedAt).format("YYYY-MM-DD HH:mm:ss")}
-                        <div className="sub">{e.browser}/{e.ip}</div>
+                        {moment(e.logdate).format("YYYY-MM-DD HH:mm:ss")}
+                        <div className="sub">{e.ua}/{e.ip}</div>
                     </div>
                 </div>
             })}
