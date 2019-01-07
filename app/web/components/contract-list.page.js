@@ -17,10 +17,6 @@ import {
 } from "../../common/crypto_test"
 
 import {
-    folder_list,
-    new_folder,
-    remove_folder,
-    move_to_folder,
     get_contracts,
     get_contract,
     get_group_info,
@@ -30,6 +26,10 @@ import {
     update_epin_group,
     update_epin_account,
     update_contract_user_info,
+    folder_list_contract,
+    add_folder_contract,
+    remove_folder_contract,
+    change_folder_contract,
     is_correct_pin,
 } from "../../common/actions"
 
@@ -43,10 +43,6 @@ let mapStateToProps = (state)=>{
 }
 
 let mapDispatchToProps = {
-    folder_list,
-    new_folder,
-    remove_folder,
-    move_to_folder,
     get_contracts,
     get_contract,
     get_group_info,
@@ -56,6 +52,10 @@ let mapDispatchToProps = {
     update_epin_group,
     update_epin_account,
     update_contract_user_info,
+    folder_list_contract,
+    add_folder_contract,
+    remove_folder_contract,
+    change_folder_contract,
     is_correct_pin,
 }
 
@@ -82,10 +82,10 @@ export default class extends React.Component {
 
     onRefresh = async (nextProps) => {
         let account_type = this.props.user_info.account_type
+        let group_id = this.props.match.params.group_id || null
 
         if(account_type != 0) {
             let groups = await this.props.get_group_info(0)
-            let group_id = this.props.match.params.group_id || null
 
             if(groups.length == 0) {
                 if(account_type == 1) {
@@ -118,6 +118,8 @@ export default class extends React.Component {
             }
             await this.setState({groups})
         }
+
+        await this.props.folder_list_contract(group_id)
 
         await this.setState({
             contracts_checks : [],
@@ -152,7 +154,10 @@ export default class extends React.Component {
 
         let menu = props.match.params.menu || "recently"
         let group_id = props.match.params.group_id || -1
-        
+
+        let is_folder = false
+        if(props.match.path.includes("/folder/")) is_folder = true
+
         let groups = []
 
         if(group_id != -1)
@@ -190,6 +195,12 @@ export default class extends React.Component {
         else if(menu == "my_view") {
             result = await this.props.get_contracts(0, 3, page, LIST_DISPLAY_COUNT, 1, group_id, this.props.user_info, groups)
         }
+
+        if(is_folder) {
+            let folder_id = menu
+            result = await this.props.get_contracts(4, folder_id, page, LIST_DISPLAY_COUNT, -1, group_id, this.props.user_info, groups)
+        }
+
         await window.hideIndicator()
 
         return result
@@ -311,11 +322,11 @@ export default class extends React.Component {
                 if(!folder_name || folder_name == "") {
                     return alert("폴더명을 입력해주세요")
                 }
-                let resp = await this.props.new_folder(folder_name)
+                let resp = await this.props.add_folder_contract(folder_name, this.props.match.params.group_id || null)
                 console.log(resp)
 
                 if(resp) {
-                    //await this.props.folder_list()
+                    await this.props.folder_list_contract(this.props.match.params.group_id || null)
                 }
             }
         })
@@ -323,8 +334,8 @@ export default class extends React.Component {
 
     onRemoveFolder = async (folder_id, folder_name) => {
         if( await window.confirm("폴더 삭제", `<b>${folder_name}</b> 를 정말 삭제하시겠습니까?`) ){
-            await this.props.remove_folder([folder_id])
-            //await this.props.folder_list()
+            await this.props.remove_folder_contract([folder_id], this.props.match.params.group_id || null)
+            await this.props.folder_list_contract(this.props.match.params.group_id || null)
         }
     }
 
@@ -572,7 +583,9 @@ export default class extends React.Component {
         // if(!this.props.folders)
         //     return <div />
 
-        let folders = this.props.folders ? this.props.folders : { list: [] }
+        console.log(this.props.folders)
+
+        let folders = this.props.folders ? this.props.folders : []
         let contracts = this.props.contracts ? this.props.contracts : { list:[] }
         let groups = this.props.groups ? this.props.groups : []
 
@@ -619,14 +632,14 @@ export default class extends React.Component {
                             <div className="text">폴더</div>
                             <i className="angle far fa-plus" onClick={this.onAddFolder}></i>
                         </div>
-                        <div className="item">
+                        <div className="item" onClick={this.move.bind(this, `folder/0`)}>
                             <i className="fas icon fa-thumbtack" />
                             <div className="text">분류되지 않은 계약</div>
                         </div>
-						{folders.list.map((e,k)=>{
+						{folders.map((e,k)=>{
                             let subject = e.subject
                             let folder_id = e.folder_id
-                            return <div className="item" key={e+k}>
+                            return <div className="item" key={e+k} onClick={this.move.bind(this, `folder/${folder_id}`)}>
                                 <i className="icon fas fa-folder" />
                                 <div className="text">{subject}</div>
                                 <i className="angle fal fa-trash" onClick={this.onRemoveFolder.bind(this, folder_id, subject)}></i>

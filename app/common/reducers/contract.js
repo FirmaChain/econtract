@@ -1,9 +1,11 @@
 import {
     LOAD_FODLERS,
-    GET_CONTRACTS
+    GET_CONTRACTS,
+    FOLDER_LIST_CONTRACT,
 } from '../actions';
 
 let _ = {
+  folders:[]
 }
 
 export default function (state=_, action){
@@ -17,6 +19,11 @@ export default function (state=_, action){
                 return {
                     ...state,
                     contracts: action.payload
+                }
+            case FOLDER_LIST_CONTRACT:
+                return {
+                    ...state,
+                    folders: action.payload
                 }
           default:
               return state;

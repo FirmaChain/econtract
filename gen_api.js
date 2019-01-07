@@ -199,6 +199,17 @@ export async function api_change_folder_contract(folder_id,name,group_id){
         session:window.getCookie("session")
     });
 }
+export async function api_add_folder_in_contract(folder_id,contract_ids,group_id){
+    let __data = new FormData();
+
+    __data.append('folder_id', folder_id);
+	__data.append('contract_ids', contract_ids);
+	__data.append('group_id', group_id)
+
+    return await post("/add_folder_in_contract", __data,{
+        session:window.getCookie("session")
+    });
+}
 export async function api_invite_information(registration_code){
     let __data = new FormData();
 

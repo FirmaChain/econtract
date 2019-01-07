@@ -11,6 +11,11 @@ import {
     api_update_contract_sign_info,
     api_move_contract_can_edit_account_id,
     api_get_chats,
+    api_folder_list_contract,
+    api_add_folder_contract,
+    api_remove_folder_contract,
+    api_change_folder_contract,
+    api_add_folder_in_contract,
     api_send_chat,
 /*    api_load_contract,
     api_load_contract_info,
@@ -57,6 +62,7 @@ export const LOAD_FODLERS = "LOAD_FODLERS"
 export const LOAD_CONTRACT_LIST = "LOAD_CONTRACT_LIST"*/
 
 export const GET_CONTRACTS = "GET_CONTRACTS";
+export const FOLDER_LIST_CONTRACT = "FOLDER_LIST_CONTRACT";
 const DUMMY_CORP_ID = 0;
 
 export function select_subject(infos, groups, account_id, corp_id) {
@@ -370,6 +376,45 @@ export function send_chat(contract_id, entity_id, corp_id, message){
     return async function(){
         return (await api_send_chat(contract_id, entity_id, corp_id, message));
     };
+}
+
+export function folder_list_contract(group_id = null) {
+    return async function(dispatch) {
+        let resp = await api_folder_list_contract(group_id)
+        dispatch({
+            type:FOLDER_LIST_CONTRACT,
+            payload:resp.payload
+        })
+        return resp
+    }
+}
+
+export function add_folder_contract(folder_name, group_id = null) {
+    return async function() {
+        let resp = await api_add_folder_contract(folder_name, group_id)
+        return resp
+    }
+}
+
+export function remove_folder_contract(folder_ids, group_id = null) {
+    return async function() {
+        let resp = await api_remove_folder_contract(JSON.stringify(folder_ids), group_id)
+        return resp
+    }
+}
+
+export function change_folder_contract(folder_id, folder_name, group_id = null) {
+    return async function() {
+        let resp = await api_change_folder_contract(folder_id, folder_name, group_id)
+        return resp
+    }
+}
+
+export function add_folder_in_contract(folder_id, contract_ids, group_id = null) {
+    return async function() {
+        let resp = await api_add_folder_in_contract(folder_id, JSON.stringify(contract_ids), group_id)
+        return resp
+    }
 }
 
 

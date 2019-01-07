@@ -73,10 +73,10 @@ window.addEventListener("load",()=>{
 
 					<Route onEnter={resolver} exact path="/home" component={HomePage} />
 					<Route onEnter={resolver} exact path="/home/:menu" component={HomePage} />
-					<Route onEnter={resolver} exact path="/home/folder/:folder_id" component={HomePage} />
+					<Route onEnter={resolver} exact path="/home/folder/:menu" component={HomePage} />
 
 					<Route onEnter={resolver} exact path="/home/:group_id/:menu" component={HomePage} />
-					<Route onEnter={resolver} exact path="/home/:group_id/folder/:folder_id" component={HomePage} />
+					<Route onEnter={resolver} exact path="/home/:group_id/folder/:menu" component={HomePage} />
 
 					<Route onEnter={resolver} exact path="/template" component={HomePage} />
 					<Route onEnter={resolver} exact path="/template/:menu" component={HomePage} />
