@@ -126,7 +126,6 @@ export default class extends React.Component {
 
 
                     if(!!this.editor && !!this.state.contract && this.state.contract.status == 2) {
-                        this.onToggleRegisterSignForm()
                         this.editor.edit.off()
                     }
                 }
@@ -221,7 +220,6 @@ export default class extends React.Component {
             }
 
             if(!!this.editor && !!contract.payload.contract && contract.payload.contract.status == 2) {
-                this.onToggleRegisterSignForm()
                 this.editor.edit.off()
             }
         } else {
