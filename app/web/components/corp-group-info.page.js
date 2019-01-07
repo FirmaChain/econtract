@@ -198,6 +198,10 @@ export default class extends React.Component {
                     alert("이메일이 형식에 맞지 않습니다.")
                 } else if(resp.code == -7) {
                     alert("가입은 되었으나 초대 이메일을 보내지 못했습니다. 초대 코드는 " + resp.invite_code + " 입니다.")
+                } else if(resp.code == -8) {
+                    alert("이미 개인 계정으로 가입되어 있습니다.")
+                } else if(resp.code == -9) {
+                    alert("이미 기업 계정으로 가입되어 있습니다.")
                 }
                 await this.onRefresh()
             }
