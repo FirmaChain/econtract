@@ -361,7 +361,7 @@ export default class extends React.Component {
                     break;
                 case 6: {
                     let next_account_id = JSON.parse(e.data).to_account_id
-                    let next = this.state.infos.find(c=>c.corp_id == 0 && c.entity_id == e.next_account_id)
+                    let next = this.state.infos.find(c=>c.corp_id == 0 && c.entity_id == next_account_id)
                     msg = `${name}님이 수정 권한을 ${next.user_info.username} 생성하셨습니다.`
                     break;
                 }
