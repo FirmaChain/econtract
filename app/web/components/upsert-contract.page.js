@@ -23,6 +23,8 @@ import Chatting from "./chatting.comp"
 import Dropdown from "react-dropdown"
 import 'react-dropdown/style.css'
 
+import moment from 'moment'
+
 import {
     add_template,
     update_template,
@@ -138,6 +140,7 @@ export default class extends React.Component {
             model:"",
             select_folder_id:null,
             selected_menu:0,
+            contract_modify_status:"",
             sign_mode:false,
             sign_info:{},
             open_users:[],
@@ -266,11 +269,15 @@ export default class extends React.Component {
             return;
         //encrypt model
 
-        await window.showIndicator()
         let r = await this.props.update_contract_model(this.state.contract.contract_id, model, this.state.contract.the_key)
-        if(r.code == -9) alert("이미 완료된 계약은 내용을 업데이트할 수 없습니다.")
-        //await this.onRefresh()
-        await window.hideIndicator()
+        console.log(r)
+        if(r.code == 1) {
+            this.setState({
+                contract_modify_status:"마지막으로 수정한 내용이 저장되었습니다. " + moment().format("YYYY-MM-DD HH:mm:ss")
+            })
+        } else if(r.code == -9) {
+            alert("이미 완료된 계약은 내용을 업데이트할 수 없습니다.")
+        }
     }
 
     onClickMoveEditPrivilege = async () => {
@@ -671,12 +678,15 @@ export default class extends React.Component {
                 </div>
                 <div className="container">
                     <div className="editor">
-                        <div className="title"><i className="fas fa-keyboard"></i> &nbsp;웹 에디터 모드</div>
+                        <div className="title">
+                            <span> <i className="fas fa-keyboard"></i> &nbsp;웹 에디터 모드 </span>
+                            <span className="modify-status">{this.state.contract_modify_status}</span>
+                        </div>
                         <FroalaEditor
                             tag='textarea'
                             config={this.config}
                             model={this.state.model}
-                            onModelChange={(model) => this.setState({model})} />
+                            onModelChange={(model) => this.setState({model, contract_modify_status:"계약서가 수정되었습니다."})} />
                         <div className="can-edit-text">
                             <div>현재 {can_edit_name} 님이 수정권한을 갖고 있습니다.</div>
                         </div>

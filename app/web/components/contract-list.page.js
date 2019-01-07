@@ -451,7 +451,7 @@ export default class extends React.Component {
                 if( correct_pin ) {
                     await this.props.update_epin_account(contract.contract_id, result);
                 } else {
-                    return alert("잘못된 핀 번호를 입력했습니다.")
+                    return alert("잘못된 PIN 번호를 입력했습니다.")
                 }
 
                 history.push(move_info)
@@ -494,7 +494,7 @@ export default class extends React.Component {
                 }]
                 correct_pin = await this.props.is_correct_pin(contract, pin, infos, this.props.user_info, this.state.groups)
                 if( !correct_pin ) {
-                    return alert("잘못된 핀 번호를 입력했습니다.")
+                    return alert("잘못된 PIN 번호를 입력했습니다.")
                     /*let user_info = {
                         user_type:1,
                         account_id: user.account_id,

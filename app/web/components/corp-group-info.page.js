@@ -210,7 +210,17 @@ export default class extends React.Component {
                 group_id:this.getGroupId(),
                 group_key,
             }
-            let result = await this.props.add_member_group_exist(exist.payload.account_id, this.getGroupId(), email, data)
+            let resp = await this.props.add_member_group_exist(exist.payload.account_id, this.getGroupId(), email, data)
+
+            console.log(resp)
+            if(resp.code == 1) {
+
+            } else if(resp.code == -8) {
+                alert("이미 개인 계정으로 가입되어 있습니다.")
+            } else if(resp.code == -9) {
+                alert("이미 기업 계정으로 가입되어 있습니다.")
+            }
+
             this.setState({
                 add_email:""
             })

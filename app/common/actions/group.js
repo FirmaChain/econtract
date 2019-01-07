@@ -163,10 +163,10 @@ export function add_member_group(group_id, email, corp_key, data_plain, data_for
         let key = hmac_sha256("", Buffer.from(email+passphrase2));
 
         let data_plain_buffered = Buffer.from(JSON.stringify(data_plain));
-        let data             = Buffer.from((await aes_encrypt_async(data_plain_buffered, key)), 'binary').toString('hex');
+        let data = Buffer.from((await aes_encrypt_async(data_plain_buffered, key)), 'binary').toString('hex');
 
         let data_for_inviter_plain_buffered = Buffer.from(JSON.stringify(data_for_inviter_plain));
-        let data_for_inviter = Buffer.from((await aes_encrypt_async(data_for_inviter_plain_buffered, Buffer.from(corp_key, 'hex'))), 'binary').toString('hex');
+        let data_for_inviter = Buffer.from( await aes_encrypt_async( data_for_inviter_plain_buffered, Buffer.from(corp_key, 'hex') ), 'binary').toString('hex');
 
         let resp = await api_add_member_group(group_id, email, passphrase2, data, data_for_inviter);
         return resp
