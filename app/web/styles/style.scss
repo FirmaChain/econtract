@@ -2566,6 +2566,16 @@ div.checkbox2-comp{
                         width:90%;
                     }
 
+                    >.master-keyword {
+                        font-size: $font1;
+                        color: $black;
+                        width:300px;
+                    }
+
+                    >.hide {
+                        display: none;
+                    }
+
                     >.blue-but {
                         display: inline-block;
                         font-size: $font1;

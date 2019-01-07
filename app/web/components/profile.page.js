@@ -23,6 +23,7 @@ import {
     SeedToMasterKeyPublic,
     getMasterSeed,
     aes_encrypt,
+    entropyToMnemonic,
 } from "../../common/crypto_test"
 
 import {
@@ -156,6 +157,12 @@ export default class extends React.Component {
         await window.hideIndicator()
     }
 
+    onClickViewMasterkeyword = async () => {
+        this.setState({
+            show_mnemonic:!this.state.show_mnemonic
+        })
+    }
+
 	render() {
         if(!this.props.user_info || !this.state.username)
             return <div />
@@ -191,6 +198,14 @@ export default class extends React.Component {
 	            			<div className="blue-but" onClick={this.onClickFindAddress.bind(this, "personal")}>찾기</div>
 	            		</div>
 	            	</div> : null}
+                    <div className="text-place">
+                        <div className="title">마스터 키워드</div>
+                        <div className="text-box">
+                            <div className={"master-keyword" + (this.state.show_mnemonic ? "" : " hide")}>{entropyToMnemonic(sessionStorage.getItem("entropy"))}</div>
+                            <div className="blue-but" onClick={this.onClickViewMasterkeyword}>{this.state.show_mnemonic ? "닫기" : "보기"}</div>
+                        </div>
+                    </div>
+
 	            </div>
 	            {account_type != 0 ? <div className="info">
 	            	<div className="title">기업 정보</div>
