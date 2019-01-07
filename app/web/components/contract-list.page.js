@@ -126,6 +126,7 @@ export default class extends React.Component {
 
         await this.props.folder_list_contract(group_id)
         let lock_count = await this.props.get_lock_count(group_id)
+        console.log(lock_count)
 
         await this.setState({
             contracts_checks : [],
