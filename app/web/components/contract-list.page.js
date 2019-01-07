@@ -28,6 +28,7 @@ import {
     update_contract_user_info,
     folder_list_contract,
     add_folder_contract,
+    add_folder_in_contract,
     remove_folder_contract,
     change_folder_contract,
     is_correct_pin,
@@ -54,6 +55,7 @@ let mapDispatchToProps = {
     update_contract_user_info,
     folder_list_contract,
     add_folder_contract,
+    add_folder_in_contract,
     remove_folder_contract,
     change_folder_contract,
     is_correct_pin,
@@ -224,6 +226,9 @@ export default class extends React.Component {
         let menu = props.match.params.menu || "recently"
 		let group_id = props.match.params.group_id || null
 
+        let is_folder = false
+        if(props.match.path.includes("/folder/")) is_folder = true
+
         let result = {}
 
 		if(menu == "lock") {
@@ -255,6 +260,15 @@ export default class extends React.Component {
 		}
 		else
             result = { id:"recently", title : "최근 사용"}
+
+        if(is_folder) {
+            if(menu == 0) {
+                result = { id : "folder", folder_id: 0, title : "분류되지 않은 계약"}
+            } else {
+                let folder = this.props.folders.find(e=>e.folder_id == menu)
+                if(folder) result = { id : "folder", folder_id: folder.folder_id, title : folder.subject}
+            }
+        }
 
         if(!!group_id) {
             let groups = this.props.groups ? this.props.groups : []
@@ -337,6 +351,25 @@ export default class extends React.Component {
             await this.props.remove_folder_contract([folder_id], this.props.match.params.group_id || null)
             await this.props.folder_list_contract(this.props.match.params.group_id || null)
         }
+    }
+
+    onMoveContract = async (contract_ids) => {
+        let folders = this.props.folders
+
+        if(folders.length == 0){
+            return alert("생성된 폴더가 없습니다.")
+        }
+
+        await window.openModal("MoveToFolder",{
+            contract_ids,
+            folders,
+            onClickMove:async(folder_id)=>{
+                await window.showIndicator("폴더로 계약 이동중");
+                await this.props.add_folder_in_contract(folder_id, contract_ids, this.props.match.params.group_id || null)
+                await window.hideIndicator();
+                return true;
+            }
+        })
     }
 
     onClickGroupMenu = () => {
@@ -570,7 +603,7 @@ export default class extends React.Component {
                         <div className="arrow-dropdown" style={{display:!!this.isOpenOption(e.contract_id) ? "initial" : "none"}}>
                             <div className="container">
                                 <div className="detail" onClick={this.openContract.bind(this, e, 0, 1)}>상세 정보</div>
-                                <div className="move" onClick={this.onClickOpenContract.bind(this, e, 1)}>이동</div>
+                                <div className="move" onClick={this.onMoveContract.bind(this, [e.contract_id])}>폴더 이동</div>
                             </div>
                         </div>
                     </div>
@@ -582,8 +615,6 @@ export default class extends React.Component {
 	render() {
         // if(!this.props.folders)
         //     return <div />
-
-        console.log(this.props.folders)
 
         let folders = this.props.folders ? this.props.folders : []
         let contracts = this.props.contracts ? this.props.contracts : { list:[] }
@@ -632,14 +663,14 @@ export default class extends React.Component {
                             <div className="text">폴더</div>
                             <i className="angle far fa-plus" onClick={this.onAddFolder}></i>
                         </div>
-                        <div className="item" onClick={this.move.bind(this, `folder/0`)}>
+                        <div className={"item" + ( (this.getTitle().id == "folder" && this.getTitle().folder_id == 0) ? " selected" : "")} onClick={this.move.bind(this, `folder/0`)}>
                             <i className="fas icon fa-thumbtack" />
                             <div className="text">분류되지 않은 계약</div>
                         </div>
 						{folders.map((e,k)=>{
                             let subject = e.subject
                             let folder_id = e.folder_id
-                            return <div className="item" key={e+k} onClick={this.move.bind(this, `folder/${folder_id}`)}>
+                            return <div className={"item" + ( (this.getTitle().id == "folder" && this.getTitle().folder_id == folder_id) ? " selected" : "")} key={e+k} onClick={this.move.bind(this, `folder/${folder_id}`)}>
                                 <i className="icon fas fa-folder" />
                                 <div className="text">{subject}</div>
                                 <i className="angle fal fa-trash" onClick={this.onRemoveFolder.bind(this, folder_id, subject)}></i>
