@@ -579,22 +579,22 @@ export default class extends React.Component {
 
         if(account_type == 0) { // 개인 계정
             info = {
-                email: this.state.email,
-                username: this.state.username,
+                email: this.state.email.trim(),
+                username: this.state.username.trim(),
                 userphone: this.state.userphone,
-                useraddress: this.state.useraddress,
+                useraddress: this.state.useraddress.trim(),
             }
         } else if(account_type == 1) { // 기업 관리자 계정
             corp_info = {
-                company_name: this.state.company_name,
-                duns_number: this.state.duns_number,
-                company_ceo: this.state.company_ceo,
-                company_address: this.state.company_address,
+                company_name: this.state.company_name.trim(),
+                duns_number: this.state.duns_number.trim(),
+                company_ceo: this.state.company_ceo.trim(),
+                company_address: this.state.company_address.trim(),
             }
             public_info = {
-                email: this.state.email,
-                username: this.state.username,
-                job: this.state.job,
+                email: this.state.email.trim(),
+                username: this.state.username.trim(),
+                job: this.state.job.trim(),
                 userphone: this.state.userphone,
             }
             info = {}
@@ -606,9 +606,9 @@ export default class extends React.Component {
             }
 
             public_info = {
-                email: this.state.email,
-                username: this.state.username,
-                job: this.state.job,
+                email: this.state.email.trim(),
+                username: this.state.username.trim(),
+                job: this.state.job.trim(),
                 userphone: this.state.userphone,
             }
         }
