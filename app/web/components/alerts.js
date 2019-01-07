@@ -141,6 +141,11 @@ class OneAddModal extends React.Component {
         this.closeSelf();
     }
 
+    onCancel = () => {
+        this.props.onCancel && this.props.onCancel()
+        this.closeSelf()
+    }
+
     render() {
         return <div className="one-add-modal">
             <div className="container">
@@ -158,7 +163,7 @@ class OneAddModal extends React.Component {
                 </div>
                 <div className="button">
                     
-                    <div className="cancel" onClick={this.closeSelf}>취소</div>
+                    <div className="cancel" onClick={this.onCancel}>취소</div>
                 </div>
             </div>
         </div>
