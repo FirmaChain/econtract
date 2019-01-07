@@ -1857,6 +1857,25 @@ div.checkbox2-comp{
                                 width:100px;
                             }
                         }
+
+                        >.long-action {
+                            width:180px;
+                            text-align: center;
+
+                            >.copy {
+                                display: inline-block;
+                                background-color: $blue;
+                                font-size: $font1;
+                                font-weight: bold;
+                                color: white;
+                                border: 1px solid $blue;
+                                cursor: pointer;
+                                padding: 10px 15px;
+                                text-align: center;
+                                box-sizing: border-box;
+                                width:150px;
+                            }
+                        }
                     }
 
                     >.empty {
@@ -1869,6 +1888,10 @@ div.checkbox2-comp{
 
                 .form-list-400 {
                     max-width:400px;
+                }
+
+                .form-list-600 {
+                    max-width:600px;
                 }
 
                 .form-check-list {

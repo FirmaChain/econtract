@@ -264,6 +264,17 @@ export default class extends React.Component {
         })
     }
 
+    onCopyRegisterLink = async (invite) => {
+        var dummy = document.createElement("textarea");
+        document.body.appendChild(dummy);
+        dummy.value = `https://e-contract.io/register?registration_code=${invite.invite_code}&email_address=${invite.data_for_inviter.email}`;
+        dummy.select();
+        document.execCommand("copy");
+        document.body.removeChild(dummy);
+
+        alert("링크가 복사되었습니다.")
+    }
+
     onAllRemoveGroupMembers = async () => {
 
         window.openModal("RemoveCommonModal", {
@@ -344,11 +355,15 @@ export default class extends React.Component {
                     <div className="right-form">
                         <div className="column">
                             <div className="form-head">초대한 그룹원 리스트</div>
-                            <div className="form-list form-list-400">
+                            <div className="form-list form-list-600">
                                 {this.state.invite_list.map((e, k)=>{
+                                    console.log(e)
                                     return <div className="item" key={k}>
                                         <div className="desc">
                                             <div className="email">{e.data_for_inviter.email}</div>
+                                        </div>
+                                        <div className="long-action">
+                                            <div className="copy" onClick={this.onCopyRegisterLink.bind(this, e)}>가입 링크 복사</div>
                                         </div>
                                         <div className="action">
                                             <div className="delete" onClick={this.onRemoveInviteList.bind(this, e.invite_id)}>취소</div>
