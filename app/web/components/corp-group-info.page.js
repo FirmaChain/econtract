@@ -214,18 +214,18 @@ export default class extends React.Component {
 
             console.log(resp)
             if(resp.code == 1) {
-
+                this.setState({
+                    add_email:""
+                })
+                await this.onRefresh()
+                alert("성공적으로 그룹에 초대하였습니다.")
+            } else if(resp.code == -7) {
+                alert("해당 이메일로 가입한 계정이 없습니다.")
             } else if(resp.code == -8) {
                 alert("이미 개인 계정으로 가입되어 있습니다.")
             } else if(resp.code == -9) {
                 alert("이미 기업 계정으로 가입되어 있습니다.")
             }
-
-            this.setState({
-                add_email:""
-            })
-            await this.onRefresh()
-            alert("성공적으로 그룹에 초대하였습니다.")
 
         } else if(exist.code == -6) {
             alert("이미 해당 그룹에 속해있는 사용자 입니다.")
