@@ -159,6 +159,46 @@ export async function api_send_chat(contract_id,entity_id,corp_id,message){
         session:window.getCookie("session")
     });
 }
+export async function api_folder_list_contract(group_id){
+    let __data = new FormData();
+
+    __data.append('group_id', group_id)
+
+    return await post("/folder_list_contract", __data,{
+        session:window.getCookie("session")
+    });
+}
+export async function api_add_folder_contract(name,group_id){
+    let __data = new FormData();
+
+    __data.append('name', name);
+	__data.append('group_id', group_id)
+
+    return await post("/add_folder_contract", __data,{
+        session:window.getCookie("session")
+    });
+}
+export async function api_remove_folder_contract(folder_ids,group_id){
+    let __data = new FormData();
+
+    __data.append('folder_ids', folder_ids);
+	__data.append('group_id', group_id)
+
+    return await post("/remove_folder_contract", __data,{
+        session:window.getCookie("session")
+    });
+}
+export async function api_change_folder_contract(folder_id,name,group_id){
+    let __data = new FormData();
+
+    __data.append('folder_id', folder_id);
+	__data.append('name', name);
+	__data.append('group_id', group_id)
+
+    return await post("/change_folder_contract", __data,{
+        session:window.getCookie("session")
+    });
+}
 export async function api_invite_information(registration_code){
     let __data = new FormData();
 

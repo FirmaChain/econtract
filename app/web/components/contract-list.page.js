@@ -627,9 +627,9 @@ export default class extends React.Component {
                             let subject = e.subject
                             let folder_id = e.folder_id
                             return <div className="item" key={e+k}>
-                                <i className={`fas icon ${folder_id == 0 ? "fa-thumbtack":"fa-folder"}`} />
+                                <i className="icon fas fa-folder" />
                                 <div className="text">{subject}</div>
-                                {folder_id != 0 ? <i className="angle fal fa-trash" onClick={this.onRemoveFolder.bind(this, folder_id, subject)}></i> : null }
+                                <i className="angle fal fa-trash" onClick={this.onRemoveFolder.bind(this, folder_id, subject)}></i>
                             </div>
                         })}
 					</div>
