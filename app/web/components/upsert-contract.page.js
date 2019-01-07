@@ -83,7 +83,8 @@ export default class extends React.Component {
         })*/
         this.blockFlag = false;
         this.socket = socketIOClient(config.HOST)
-        socket.on('disconnect', () => {
+        socket.on('disconnect', async () => {
+            await new Promise(r=>setTimeout(r, 1000))
             socket.open();
             this.subscribeChannel()
         })
