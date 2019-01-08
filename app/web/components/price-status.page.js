@@ -21,6 +21,8 @@ import translate from "../../common/translate"
 import {
     fetch_user_info,
     get_subscribe_plan,
+    get_current_subscription,
+    get_current_onetime_ticket,
 } from "../../common/actions"
 
 let mapStateToProps = (state)=>{
@@ -32,6 +34,8 @@ let mapStateToProps = (state)=>{
 let mapDispatchToProps = {
     fetch_user_info,
     get_subscribe_plan,
+    get_current_subscription,
+    get_current_onetime_ticket,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
