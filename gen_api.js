@@ -451,6 +451,15 @@ export async function api_get_current_total_ticket(){
         session:window.getCookie("session")
     });
 }
+export async function api_get_current_onetime_ticket_within(days){
+    let __data = new FormData();
+
+    __data.append('days', days)
+
+    return await post("/get_current_onetime_ticket_within", __data,{
+        session:window.getCookie("session")
+    });
+}
 export async function api_add_template(subject,folder_id,html){
     let __data = new FormData();
 
