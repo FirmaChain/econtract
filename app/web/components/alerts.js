@@ -419,9 +419,6 @@ class PurchaseRegularPayment extends React.Component {
         let yearly_id = this.props.selectedYearlyIndex;
         let select_monthly_plan = this.props.planMonthly.filter(e=>e.plan_id==monthly_id)[0];
         let select_yearly_plan = this.props.planYearly.filter(e=>e.plan_id==yearly_id)[0];
-        console.log("test");
-        console.log(monthly_id);
-        console.log(select_monthly_plan);
         this.setState({
             monthly_id,
             yearly_id,
@@ -457,9 +454,9 @@ class PurchaseRegularPayment extends React.Component {
                                 value={this.state.select_monthly_plan.data.title} placeholder="건수" />
                             <span className="last"> 건 사용 / 월</span>
                         </div>
-                        <div className="price-info">{"12500".number_format()}<span className="last">원 / 월</span></div>
+                        <div className="price-info">{(this.state.select_monthly_plan.total_price ? this.state.select_monthly_plan.total_price : 0).number_format()}<span className="last">원 / 월</span></div>
                         <div className="sub">
-                            1250 원 / 건당<br/>
+                        {(this.state.select_monthly_plan.total_price ? this.state.select_monthly_plan.total_price : 0) / (this.state.select_monthly_plan.ticket_count ? this.state.select_monthly_plan.ticket_count : 1)} 원 / 건당<br/>
                             + 마스터 계정 1명, 서브 계정 4명
                         </div>
                     </div>
@@ -469,14 +466,14 @@ class PurchaseRegularPayment extends React.Component {
                             <Dropdown className="common-select"
                                 controlClassName="control"
                                 menuClassName="item"
-                                options={this.state.yearly_count}
-                                onChange={e=>{this.setState({select_yearly_count:e.value, select_yearly_count_label:e.label})}}
-                                value={this.state.select_yearly_count_label} placeholder="건수" />
+                                options={this.props.planYearlyOptions}
+                                onChange={e=>{this.setState({select_yearly_plan:this.props.planYearly.filter(f=>e.value==f.plan_id)[0]})}}
+                                value={this.state.select_yearly_plan.data.title} placeholder="건수" />
                             <span className="last"> 건 사용 / 월</span>
                         </div>
-                        <div className="price-info">{"12500".number_format()}<span className="last">원 / 월</span></div>
+                        <div className="price-info">{(this.state.select_yearly_plan.total_price ? this.state.select_yearly_plan.total_price : 0).number_format()}<span className="last">원 / 년</span></div>
                         <div className="sub">
-                            1125 원 / 건당<br/>
+                            {(this.state.select_yearly_plan.total_price ? this.state.select_yearly_plan.total_price : 0) / (this.state.select_yearly_plan.ticket_count ? this.state.select_yearly_plan.ticket_count : 1)} 원 / 건당<br/>
                             + 마스터 계정 1명, 서브 계정 4명
                         </div>
                     </div>
