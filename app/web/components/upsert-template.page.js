@@ -252,6 +252,12 @@ export default class extends React.Component {
                                     value={this.state.select_folder_label} placeholder="저장할 폴더를 골라주세요" />
                             </div>
                         </div>
+                        <div className="desc">
+                            <div className="title">폴더 생성</div>
+                            <div className="text-box">
+                                <div className="blue-but" onClick={this.onAddFolder}>새 폴더 만들기</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

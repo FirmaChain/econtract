@@ -2052,6 +2052,18 @@ div.checkbox2-comp{
                             width:100% !important;
                         }
                     }
+
+                    >.blue-but {
+                        display: block;
+                        font-size: $font2;
+                        cursor: pointer;
+                        padding:10px 25px;
+                        background-color: $blue;
+                        color:white;
+                        margin-left: 10px;
+                        box-sizing:border-box;
+                        text-align: center;
+                    }
                 }
             }
         }
