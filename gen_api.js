@@ -38,7 +38,7 @@ export async function api_add_counterparties(contract_id,counterparties){
         session:window.getCookie("session")
     });
 }
-export async function api_get_contracts(type,status,page,display_count,sub_status,group_id){
+export async function api_get_contracts(type,status,page,display_count,sub_status,group_id,search_text){
     let __data = new FormData();
 
     __data.append('type', type);
@@ -46,7 +46,8 @@ export async function api_get_contracts(type,status,page,display_count,sub_statu
 	__data.append('page', page);
 	__data.append('display_count', display_count);
 	__data.append('sub_status', sub_status);
-	__data.append('group_id', group_id)
+	__data.append('group_id', group_id);
+	__data.append('search_text', search_text)
 
     return await post("/get_contracts", __data,{
         session:window.getCookie("session")
