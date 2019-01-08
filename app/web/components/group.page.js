@@ -101,11 +101,14 @@ export default class extends React.Component {
             _.member = member
         }
 
-        this.setState({
+        await this.setState({
             ..._,
             contracts_checks : [],
             cur_page:Number(params.page) || 0,
         })
+
+        await this.loadContracts(Number(params.page) || 0, nextProps)
+
     }
 
     componentWillReceiveProps(nextProps) {

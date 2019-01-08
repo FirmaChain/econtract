@@ -88,6 +88,7 @@ export default class extends React.Component {
         this.socket.on('disconnect', async () => {
             await new Promise(r=>setTimeout(r, 1000))
             this.socket.open();
+            this.socket.removeAllListeners()
             this.subscribeChannel()
         })
         //reconect
