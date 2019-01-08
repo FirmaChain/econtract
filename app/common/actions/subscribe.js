@@ -4,7 +4,7 @@ import {
 
 export function get_subscribe_plan(){
     return async function(){
-        return (await api_get_subscribe_plan());
+        return (await api_get_subscribe_plan()).payload;
     };
 }
 
