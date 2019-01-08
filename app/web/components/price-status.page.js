@@ -21,6 +21,8 @@ import translate from "../../common/translate"
 import {
     fetch_user_info,
     get_subscribe_plan,
+    get_current_subscription,
+    get_current_onetime_ticket,
 } from "../../common/actions"
 
 let mapStateToProps = (state)=>{
@@ -32,6 +34,8 @@ let mapStateToProps = (state)=>{
 let mapDispatchToProps = {
     fetch_user_info,
     get_subscribe_plan,
+    get_current_subscription,
+    get_current_onetime_ticket,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -56,7 +60,7 @@ export default class extends React.Component {
     }
 
     onClickChangeRegularPayment = async () => {
-        let subscribe_plans = (await this.props.get_subscribe_plan()).map((e)=>{e.data = JSON.parse(e.data); return e});
+        let subscribe_plans = this.state.subscription_plans;
         let plan_monthly = subscribe_plans.filter(e=>e.type==2);
         let plan_yearly = subscribe_plans.filter(e=>e.type==3);
         let plan_monthly_options = plan_monthly.map((e)=>{return {value: e.plan_id, label: e.data.title}});
@@ -112,7 +116,7 @@ export default class extends React.Component {
                 accountTypeText = "기업 회원";
                 break;
         }
-        if (current_subscription.length > 0) {
+        if (current_subscription) {
             let current_subscription_info = subscription_plans.find(e=>e.plan_id == current_subscription.plan_id);
             if (current_subscription_info) {
                 subscriptionText = current_subscription_info.type == 1 ? "월간 결제" : "연간 결제";
