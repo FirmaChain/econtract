@@ -88,6 +88,23 @@ select:focus { outline:none; }
     color: $gray;
 }
 
+::-webkit-scrollbar {
+    position:absolute;
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: $lightgray; 
+}
+
+::-webkit-scrollbar-thumb {
+    background: $middlegray; 
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: $gray; 
+}
+
 .fr-toolbar {
     border-top: none !important;
     border-radius: 0 !important;
@@ -3523,6 +3540,7 @@ div.checkbox2-comp{
                 .form-list {
                     border-top: 1px solid $gray;
                     border-bottom: 1px solid $gray;
+                    margin-bottom:30px;
 
                     >.item {
                         display: flex;
@@ -3668,6 +3686,8 @@ div.checkbox2-comp{
         }
     }
 }
+
+
 
 
 
