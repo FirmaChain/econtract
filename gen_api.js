@@ -424,12 +424,12 @@ export async function api_get_subscribe_plan(){
         session:window.getCookie("session")
     });
 }
-export async function api_get_current_regular_subscription(){
+export async function api_get_current_subscription(){
     let __data = new FormData();
 
     
 
-    return await post("/get_current_regular_subscription", __data,{
+    return await post("/get_current_subscription", __data,{
         session:window.getCookie("session")
     });
 }
@@ -442,12 +442,12 @@ export async function api_get_current_onetime_ticket(){
         session:window.getCookie("session")
     });
 }
-export async function api_get_current_ticket(){
+export async function api_get_current_total_ticket(){
     let __data = new FormData();
 
     
 
-    return await post("/get_current_ticket", __data,{
+    return await post("/get_current_total_ticket", __data,{
         session:window.getCookie("session")
     });
 }

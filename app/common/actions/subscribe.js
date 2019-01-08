@@ -11,9 +11,9 @@ export function get_subscribe_plan(){
     };
 }
 
-export function get_current_regular_subscription(){
+export function get_current_subscription(){
     return async function(){
-        return (await api_get_current_regular_subscription()).payload;
+        return (await api_get_current_subscription()).payload;
     };
 }
 
@@ -23,9 +23,9 @@ export function get_current_onetime_ticket(){
     };
 }
 
-export function get_current_ticket(){
+export function get_current_total_ticket(){
     return async function(){
-        return (await api_get_current_ticket()).payload;
+        return (await api_get_current_total_ticket()).payload;
     };
 }
 
