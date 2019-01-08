@@ -32,6 +32,7 @@ import {
     get_corp_member_info_all,
     get_corp_member_info,
     update_group_public_key,
+    get_contracts,
     fetch_user_info,
 } from "../../common/actions"
 
@@ -58,6 +59,7 @@ let mapDispatchToProps = {
     get_corp_member_info_all,
     get_corp_member_info,
     update_group_public_key,
+    get_contracts,
     fetch_user_info,
 }
 
@@ -271,6 +273,29 @@ export default class extends React.Component {
         this.setState({
             contracts_checks:l
         })
+    }
+
+
+    loadContracts = async (page, props) => {
+        props = !!props ? props : this.props
+
+        let group_id = this.props.match.params.menu || "all"
+        let account_id = this.props.match.params.account_id || null
+
+        let groups = await this.props.get_group_info(0)
+
+        await window.showIndicator()
+        
+        let result
+        if(group_id == "all") {
+            result = await this.props.get_contracts(0, -1, page, LIST_DISPLAY_COUNT, -1, group_id, this.props.user_info, groups)
+        } else if( !isNaN(group_id) ) {
+
+        }
+
+        await window.hideIndicator()
+
+        return result
     }
 
     onClickOpenContract = async (contract, type = 0, e) => {

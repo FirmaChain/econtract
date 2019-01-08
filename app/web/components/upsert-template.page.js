@@ -173,8 +173,12 @@ export default class extends React.Component {
 
         //window.html2Doc(document.getElementsByClassName('fr-view')[0], `[템플릿] ${this.state.title}`)
         
+        if(!this.state.model || this.state.model == "") {
+            return alert("내용을 작성해주세요.")
+        }
+
         window.openModal("PreviewContract",{
-            title: this.state.title,
+            title: this.state.title || "",
             model: this.state.model,
         })
     }

@@ -248,8 +248,10 @@ export default class extends React.Component {
         }
         //html2pdf().set(savePdfOption).from(document.getElementsByClassName('fr-view')[0]).save()
         //window.html2Doc(document.getElementsByClassName('fr-view')[0], `[계약서] ${this.state.contract.name}`)
-        if( this.state.contract.can_edit_account_id != this.props.user_info.account_id)
-            this.blockFlag = true
+
+        if(!this.state.model || this.state.model == "") {
+            return alert("내용을 작성해주세요.")
+        }
 
         window.openModal("PreviewContract",{
             contract:this.state.contract,
