@@ -447,6 +447,7 @@ class PurchaseRegularPayment extends React.Component {
     }
 
     render() {
+        console.log(this.props.planInfo);
         return <div className="purchase-regular-payment-modal">
             <div className="container">
                 <div className="icon"><i className="fas fa-credit-card"></i></div>

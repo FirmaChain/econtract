@@ -20,6 +20,7 @@ import Web3 from "../../common/Web3"
 import translate from "../../common/translate"
 import {
     fetch_user_info,
+    get_subscribe_plan,
 } from "../../common/actions"
 
 let mapStateToProps = (state)=>{
@@ -29,7 +30,8 @@ let mapStateToProps = (state)=>{
 }
 
 let mapDispatchToProps = {
-    fetch_user_info
+    fetch_user_info,
+    get_subscribe_plan,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -43,10 +45,12 @@ export default class extends React.Component {
     }
 
     onClickChangeRegularPayment = async () => {
+        let subscribe_plans = await this.props.get_subscribe_plan();
         window.openModal("PurchaseRegularPayment", {
+            planInfo: subscribe_plans.payload,
             onResponse: async (purchase_type, give_count) => {
             }
-        })
+        });
     }
 
     onBuyTicket = async () => {
@@ -71,13 +75,25 @@ export default class extends React.Component {
     }
 
 	render() {
+        let accountTypeText;
+        switch (this.props.user_info.account_type) {
+            case 0:
+                accountTypeText = "개인 회원";
+                break;
+            case 1:
+                accountTypeText = "기업 회원";
+                break;
+            case 2:
+                accountTypeText = "기업 회원";
+                break;
+        }
 		return (<div className="right-desc price-status-page">
             <div className="title">요금 정보</div>
             <div className="container">
                 <div className="cluster">
                     <div className="box blue-box">
                         <div className="icon"><i className="fas fa-credit-card"></i></div>
-                        <div className="title">기업 회원 | 연간 결제 30</div>
+                        <div className="title">{accountTypeText} | 연간 결제 30</div>
                         <div className="desc">00 / 00 건</div>
                         <div className="sub">결제일 : {moment().format("YYYY-MM-DD HH:mm:ss")}</div>
                         <div className="button-container">
