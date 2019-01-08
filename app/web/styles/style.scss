@@ -1403,6 +1403,27 @@ div.checkbox2-comp{
         color:$blue;
     }
 
+    >.search {
+        text-align: right;
+
+        >input {
+            width:240px;
+        }
+
+        >.blue-but {
+            display: inline-block;
+            font-size: $font2;
+            cursor: pointer;
+            padding:11px 20px;
+            background-color: $blue;
+            color:white;
+            margin-left: 20px;
+            margin-right: 10px;
+            width:50px;
+            text-align: center;
+        }
+    }
+
     >.list {
         width: calc(100% - 40px);
         margin: 40px 20px;
