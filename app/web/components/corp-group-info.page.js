@@ -66,16 +66,18 @@ export default class extends React.Component {
         }*/
         if(this.getGroupId() != null && !isNaN(this.getGroupId()) ) {
             setTimeout(async()=>{
+                this.props.onRefresh && (await this.props.onRefresh());
                 await this.onRefresh()
             })
         }
     }
 
-    onRefresh = async () => {
+    onRefresh = async (nextProps) => {
+        nextProps = !!nextProps ? nextProps : this.props
+        
         await window.showIndicator()
-        this.props.onRefresh && (await this.props.onRefresh());
 
-        let info = await this.props.get_group_info(this.getGroupId(), 0, true )
+        let info = await this.props.get_group_info(this.getGroupId(nextProps), 0, true )
 
         for(let v of info.invite_list) {
             if(v.data_for_inviter) {
@@ -94,12 +96,22 @@ export default class extends React.Component {
 
     }
 
-    componentWillReceiveProps(props) {
+    componentWillReceiveProps(nextProps) {
+        let prev_group_id = nextProps.group_id || null
+        let group_id = this.props.group_id || null
+
+        if(prev_group_id != group_id) {
+            (async()=>{
+                await this.onRefresh(nextProps)
+            })()
+        }
     }
 
-    getGroupId() {
-        let group_id = this.props.group_id
-        if(!group_id) group_id = this.props.match.params.menu ? this.props.match.params.menu : null
+    getGroupId(nextProps) {
+        let props = !!nextProps ? nextProps : this.props
+
+        let group_id = props.group_id
+        if(!group_id) group_id = props.match.params.menu ? props.match.params.menu : null
         return group_id
     }
 
