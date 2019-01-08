@@ -23,6 +23,7 @@ import {
     get_subscribe_plan,
     get_current_subscription,
     get_current_onetime_ticket,
+    input_payment_info,
 } from "../../common/actions"
 
 let mapStateToProps = (state)=>{
@@ -36,6 +37,7 @@ let mapDispatchToProps = {
     get_subscribe_plan,
     get_current_subscription,
     get_current_onetime_ticket,
+    input_payment_info,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -87,6 +89,10 @@ export default class extends React.Component {
     onChangeCardInfo = async () => {
         window.openModal("CardInfo", {
             onResponse: async (card_info) => {
+                //TODO: necessary to encrypt via firma's private key
+                let data = JSON.stringify({card_number:"1234-1234-1234-1234"});
+                let preview_data = JSON.stringify({partial_card_number:"1234-xxxx-xxxx-xxxx"});
+                await this.props.input_payment_info(data, preview_data);
             }
         })
     }
