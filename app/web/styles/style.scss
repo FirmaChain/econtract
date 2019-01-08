@@ -1560,6 +1560,8 @@ div.checkbox2-comp{
 
 .upsert-contract-group-page{
 
+    padding:0 20px;
+
     >.head {
         display: flex;
         flex-direction: row;
@@ -1608,66 +1610,6 @@ div.checkbox2-comp{
             font-size: $font4;
             font-weight: bold;
             margin-right: 145px;
-        }
-    }
-
-    >.group-head {
-        background-color: white;
-        align-items: flex-start;
-
-        >.back {
-            margin-top: 10px;
-        }
-
-        >.info {
-            flex:1;
-            text-align: center;
-            margin-right: 145px;
-
-            >.title {
-                margin-top: 10px;
-                font-size: $font6;
-
-                >i {
-                    margin-right: 10px;
-                }
-
-                >span {
-                    color:$black;
-                    font-weight: bold;
-                }
-            }
-
-            >.date {
-                font-size: $font0;
-                color: $gray;
-                margin-top: 10px;
-            }
-
-            >.button-container {
-                font-size: $font1;
-                margin-top: 30px;
-                margin-bottom: 10px;
-
-                >.button {
-                    display: inline-block;
-                    font-size: $font2;
-                    cursor: pointer;
-                    padding:10px 20px;
-                    background-color: $blue;
-                    color: white;
-                    width:100px;
-                    text-align: center;
-                    border: 1px solid $blue;
-                }
-
-                >.delete {
-                    background-color:white;
-                    border: 1px solid $blue;
-                    color: $blue;
-                    margin-left: 15px;
-                }
-            }
         }
     }
 
@@ -1855,25 +1797,6 @@ div.checkbox2-comp{
                                 text-align: center;
                                 box-sizing: border-box;
                                 width:100px;
-                            }
-                        }
-
-                        >.long-action {
-                            width:180px;
-                            text-align: center;
-
-                            >.copy {
-                                display: inline-block;
-                                background-color: $blue;
-                                font-size: $font1;
-                                font-weight: bold;
-                                color: white;
-                                border: 1px solid $blue;
-                                cursor: pointer;
-                                padding: 10px 15px;
-                                text-align: center;
-                                box-sizing: border-box;
-                                width:150px;
                             }
                         }
                     }
@@ -3447,6 +3370,385 @@ div.checkbox2-comp{
             display: flex;
             align-items: center;
             justify-content: center;
+        }
+    }
+}
+
+.corp-group-info {
+    flex:1;
+    height:100%;
+    max-height: calc(100% - 131px);
+    overflow-y: auto;
+    max-width:1000px;
+
+
+    >.group-head {
+        background-color: white;
+        align-items: flex-start;
+        min-width: 700px;
+
+        margin-top:50px;
+        margin-left:5px;
+
+        padding-left:15px;
+        padding-bottom:25px;
+        border-bottom: 1px solid $middlegray;
+
+        >.back {
+            margin-top: 10px;
+        }
+
+        >.info {
+            flex:1;
+            margin-right: 145px;
+
+            >.title {
+                margin-top: 10px;
+                font-size: $font6;
+
+                >i {
+                    margin-right: 10px;
+                }
+
+                >span {
+                    color:$black;
+                    font-weight: bold;
+                }
+            }
+
+            >.date {
+                font-size: $font0;
+                color: $gray;
+                margin-top: 10px;
+            }
+
+            >.button-container {
+                font-size: $font1;
+                margin-top: 30px;
+                margin-bottom: 10px;
+
+                >.button {
+                    display: inline-block;
+                    font-size: $font2;
+                    cursor: pointer;
+                    padding:10px 20px;
+                    background-color: $blue;
+                    color: white;
+                    width:100px;
+                    text-align: center;
+                    border: 1px solid $blue;
+                }
+
+                >.delete {
+                    background-color:white;
+                    border: 1px solid $blue;
+                    color: $blue;
+                    margin-left: 15px;
+                }
+            }
+        }
+    }
+
+    >.content {
+        padding:10px 30px;
+
+        >.title {
+            margin-left:10px;
+            margin-top:30px;
+
+            >.head {
+                font-size:$font4;
+                font-weight:bold;
+                color:$black;
+            }
+
+            >.desc {
+                font-size:$font1;
+                margin-top:10px;
+                margin-bottom:25px;
+                margin-left:5px;
+            }
+        }
+
+        >.row {
+            display: flex;
+            flex-direction: row;
+            margin-bottom: 30px;
+            max-width:600px;
+
+            >.right-form {
+                flex: 1;
+                display: flex;
+                align-items: center;
+                width:100%;
+                min-height: 65px;
+
+                >.group-add-button {
+                    display: inline-block;
+                    font-size: $font1;
+                    cursor: pointer;
+                    padding:10px 20px;
+                    background-color: $blue;
+                    color:white;
+                    margin-left: 10px;
+                    width:100px;
+                    text-align: center;
+                }
+
+                .explain {
+                    margin-top:10px;
+                    margin-bottom:20px;
+
+                    font-size:$font2;
+                    font-weight:bold;
+                    color:$black;
+                }
+
+                >.column {
+                    flex:1;
+                    margin-left: 10px;
+                }
+
+                >.column-flex-2 {
+                    flex:2;
+                }
+
+                .form-head {
+                    color: $black;
+                    font-size: $font1;
+                    margin-bottom:10px;
+                    padding-left: 5px;
+                }
+
+                .form-list {
+                    border-top: 1px solid $gray;
+                    border-bottom: 1px solid $gray;
+
+                    >.item {
+                        display: flex;
+                        flex-direction: row;
+                        align-items: center;
+
+                        padding:20px 20px;
+                        border-bottom:1px solid $lightgray;
+
+                        &:last-child {
+                            border-bottom: 0;
+                        }
+
+                        &:hover {
+                            background-color: $lightgray;
+                        }
+
+                        >.icon {
+                            width:40px;
+                            padding-right: 10px;
+                            text-align: center;
+
+                            >i {
+                                font-size: 22px;
+                                color: $black;
+                            }
+                        }
+
+                        >.desc {
+                            flex:1;
+
+                            >.username {
+                                color: $black;
+                                font-weight: bold;
+                                font-size: $font2;
+
+                                >span {
+                                    color: $gray;
+                                    font-size: $font0;
+                                    margin-left:10px;
+                                }
+                            }
+
+                            >.email {
+                                color: $black;
+                                font-size: $font1;
+                            }
+                        }
+
+                        >.privilege {
+                            width:120px;
+                            font-size: $font1;
+                            color:$black;
+                        }
+
+                        >.action {
+                            width:120px;
+                            text-align: center;
+
+                            >.delete {
+                                display: inline-block;
+                                font-size: $font1;
+                                font-weight: bold;
+                                color: $blue;
+                                border: 1px solid $blue;
+                                cursor: pointer;
+                                padding: 10px 15px;
+                                text-align: center;
+                                box-sizing: border-box;
+                                width:100px;
+                            }
+                        }
+
+                        >.long-action {
+                            width:180px;
+                            text-align: center;
+
+                            >.copy {
+                                display: inline-block;
+                                background-color: $blue;
+                                font-size: $font1;
+                                font-weight: bold;
+                                color: white;
+                                border: 1px solid $blue;
+                                cursor: pointer;
+                                padding: 10px 15px;
+                                text-align: center;
+                                box-sizing: border-box;
+                                width:150px;
+                            }
+                        }
+                    }
+
+                    >.empty {
+                        font-size: $font3;
+                        text-align: center;
+                        margin-top:30px;
+                        margin-bottom:30px;
+                    }
+                }
+
+                .form-list-400 {
+                    max-width:400px;
+                }
+
+                .form-list-600 {
+                    max-width:600px;
+                }
+
+                .form-check-list {
+
+                    >.item {
+                        display: flex;
+                        flex-direction: row;
+                        padding-left: 5px;
+                        padding-bottom:10px;
+                        padding-top:10px;
+
+                        >.name {
+                            margin-left:10px;
+                            color: $black;
+                            font-size: $font1;
+                        }
+
+                        >.delete {
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+
+                            margin-left: 5px;
+                            cursor: pointer;
+
+                            >i {
+                                font-size: 18px;
+                                padding-bottom:3px;
+                                color:$black;
+
+                                &:hover {
+                                    color: $gray;
+                                }
+                            }
+                        }
+                    }
+
+                    >.bottom {
+                        display: flex;
+                        flex-direction: column;
+
+                        padding-left: 5px;
+                        padding-bottom:5px;
+                        padding-top:5px;
+
+                        >.text-box {
+                            width:150px;
+                            padding:5px 10px;
+                            border: 0;
+                            border-bottom: 1px solid $gray;
+
+                            &:disabled {
+                                background-color: $middlegray;
+                            }
+
+                            &:focus {
+                                border-bottom:1px solid $blue;
+                                outline: none;
+                            }
+                        }
+
+                        >.add-btn {
+                            display: inline-flex;
+                            flex-direction: row;
+                            align-items: center;
+                            width:150px;
+                            margin-top:10px;
+
+                            background-color: $blue;
+                            font-size: $font1;
+                            font-weight: bold;
+                            color: white;
+                            border: 1px solid $blue;
+                            cursor: pointer;
+                            padding: 10px 15px;
+                            text-align: center;
+                            box-sizing: border-box;
+
+                            >div {
+                                flex:1;
+                                text-align:left;
+                            }
+                        }
+                    }
+                }
+
+                .form-input {
+                    display: flex;
+                    flex-direction: row;
+                    max-width:400px;
+                    min-height: 39px;
+
+                    >.btn-add-user {
+                        display: inline-block;
+                        background-color: $lightgray;
+                        font-size: $font1;
+                        font-weight: bold;
+                        color: $gray;
+                        border: 1px solid $lightgray;
+
+                        cursor: pointer;
+                        width:130px;
+                        max-width:40%;
+                        padding: 10px 15px;
+                        text-align: center;
+                        margin-left:10px;
+                    }
+
+                    >.btn-add-user-active {
+                        background-color: $blue;
+                        border: 1px solid $blue;
+                        color: white;
+                    }
+                }
+
+                .checkbox-list {
+                    flex:1;
+                }
+            }
         }
     }
 }

@@ -60,14 +60,15 @@ export default class extends React.Component {
     }
 
     componentDidMount() {
-        if(this.getGroupId() == null) {
+        /*if(this.getGroupId() == null) {
             alert("잘못된 경로로 들어왔습니다.")
             return history.goBack()
+        }*/
+        if(this.getGroupId() != null) {
+            setTimeout(async()=>{
+                await this.onRefresh()
+            })
         }
-
-        setTimeout(async()=>{
-            await this.onRefresh()
-        })
     }
 
     onRefresh = async () => {
@@ -101,9 +102,7 @@ export default class extends React.Component {
     }
 
     getGroupId() {
-        let group_id = this.props.match.params.group_id || null
-        group_id = group_id == null ? this.props.match.params.menu : group_id
-        console.log(this.props)
+        let group_id = this.props.match.params.menu ? this.props.match.params.menu : null
         return group_id
     }
 
@@ -297,18 +296,18 @@ export default class extends React.Component {
     }
 
 	render() {
-        if(!this.state.group)
+        if(!this.state.group || this.getGroupId() == null )
             return <div></div>
 		
-        return (<div className="upsert-contract-group-page header-page">
-            <div className="head group-head">
+        return (<div className="corp-group-info">
+            <div className="group-head">
                 <div className="info">
                     <div className="title">
                         <i className="fal fa-building"></i>
                         <span>{this.state.group.title}</span>
                     </div>
                     <div className="date">
-                        {moment(this.state.group.added_at).toString()}
+                        생성일 : {moment(this.state.group.added_at).format("YYYY-MM-DD HH:mm:ss")}
                     </div>
                     <div className="button-container">
                         <div className="button" onClick={this.onChangeGroupTitle}>그룹명 변경</div>
@@ -317,63 +316,11 @@ export default class extends React.Component {
                 </div>
             </div>
             <div className="content">
-                <div className="row">
-                    <div className="left-desc">
-                        <div className="desc-head">그룹원 초대하기</div>
-                        <div className="desc-content">추가하실 그룹원의 정보를 입력하여 추가하세요</div>
-                    </div>
-                    <div className="right-form">
-                        <div className="column column-flex-2">
-                            <div className="form-head">그룹원 이메일</div>
-                            <div className="form-input">
-                                <input className="common-textbox" id="email" type="email"
-                                    placeholder="이메일을 입력해주세요"
-                                    value={this.state.add_email || ""}
-                                    onChange={e=>this.setState({add_email:e.target.value})}/>
-                            </div>
-                        </div>
-                        <div className="column">
-                            <div className="form-head">&nbsp;</div>
-                            <div className="form-input">
-                                <div className={"btn-add-user" + ( (this.state.add_email || "").length==0 ? "" : " btn-add-user-active" )} onClick={this.onAddMember}>추가</div>
-                            </div>
-                        </div>
-                    </div>
+                <div className="title">
+                    <div className="head">그룹원 관리</div>
+                    <div className="desc">해당 그룹에서 그룹 변경 및 삭제 처리하실 수 있습니다</div>
                 </div>
                 <div className="row">
-                    <div className="left-desc">
-                        <div className="desc-head"></div>
-                        <div className="desc-content"></div>
-                    </div>
-                    <div className="right-form">
-                        <div className="column">
-                            <div className="form-head">초대한 그룹원 리스트</div>
-                            <div className="form-list form-list-600">
-                                {this.state.invite_list.map((e, k)=>{
-                                    console.log(e)
-                                    return <div className="item" key={k}>
-                                        <div className="desc">
-                                            <div className="email">{e.data_for_inviter.email}</div>
-                                        </div>
-                                        <div className="long-action">
-                                            <div className="copy" onClick={this.onCopyRegisterLink.bind(this, e)}>가입 링크 복사</div>
-                                        </div>
-                                        <div className="action">
-                                            <div className="delete" onClick={this.onRemoveInviteList.bind(this, e.invite_id)}>취소</div>
-                                        </div>
-                                    </div>
-                                })}
-                                {this.state.invite_list.length == 0 ? <div className="empty">초대한 그룹원이 없습니다.</div> : null}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="left-desc">
-                        <div className="desc-head">그룹원 관리</div>
-                        <div className="desc-content">해당 그룹에서 그룹 변경 및 삭제 처리하실 수 있습니다</div>
-                        <div className="desc-button" onClick={this.onAllRemoveGroupMembers}>그룹원 전체 삭제</div>
-                    </div>
                     <div className="right-form">
                         <div className="column">
                             <div className="form-head">그룹원 리스트</div>
@@ -396,6 +343,53 @@ export default class extends React.Component {
                                     </div>
                                 })}
                                 {this.state.members.length == 0 ? <div className="empty">그룹원이 없습니다.</div> : null}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="title">
+                    <div className="head">그룹원 초대하기</div>
+                    <div className="desc">추가하실 그룹원의 정보를 입력하여 추가하세요</div>
+                </div>
+                <div className="row">
+                    <div className="right-form">
+                        <div className="column column-flex-2">
+                            <div className="form-head">그룹원 이메일</div>
+                            <div className="form-input">
+                                <input className="common-textbox" id="email" type="email"
+                                    placeholder="이메일을 입력해주세요"
+                                    value={this.state.add_email || ""}
+                                    onChange={e=>this.setState({add_email:e.target.value})}/>
+                            </div>
+                        </div>
+                        <div className="column">
+                            <div className="form-head">&nbsp;</div>
+                            <div className="form-input">
+                                <div className={"btn-add-user" + ( (this.state.add_email || "").length==0 ? "" : " btn-add-user-active" )} onClick={this.onAddMember}>추가</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="right-form">
+                        <div className="column">
+                            <div className="form-head">초대한 그룹원 리스트</div>
+                            <div className="form-list form-list-600">
+                                {this.state.invite_list.map((e, k)=>{
+                                    console.log(e)
+                                    return <div className="item" key={k}>
+                                        <div className="desc">
+                                            <div className="email">{e.data_for_inviter.email}</div>
+                                        </div>
+                                        <div className="long-action">
+                                            <div className="copy" onClick={this.onCopyRegisterLink.bind(this, e)}>가입 링크 복사</div>
+                                        </div>
+                                        <div className="action">
+                                            <div className="delete" onClick={this.onRemoveInviteList.bind(this, e.invite_id)}>취소</div>
+                                        </div>
+                                    </div>
+                                })}
+                                {this.state.invite_list.length == 0 ? <div className="empty">초대한 그룹원이 없습니다.</div> : null}
                             </div>
                         </div>
                     </div>

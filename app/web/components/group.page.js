@@ -184,10 +184,10 @@ export default class extends React.Component {
         this.props.openGroup(group_id)
     }
 
-    openGroupInfo(group_id, e) {
+    /*openGroupInfo(group_id, e) {
         e.stopPropagation()
         history.push(`/group-info/${group_id}`)
-    }
+    }*/
 
     openCloseGroup(group_id, e) {
         e.stopPropagation()
@@ -329,7 +329,7 @@ export default class extends React.Component {
                             return [<div key={e.group_id} className={"item" + (this.getTitle().id == e.group_id ? " selected" : "")}
                                 onClick={this.moveGroup.bind(this, e.group_id)}>
                                 <div className="text">#{e.title}</div>
-                                <i className="setting fas fa-cog" onClick={this.openGroupInfo.bind(this, e.group_id)}></i>
+                                {/*<i className="setting fas fa-cog" onClick={this.openGroupInfo.bind(this, e.group_id)}></i>*/}
                                 <i className={"angle far " + ( this.isOpenGroup(e.group_id) ? "fa-angle-down" : "fa-angle-up" )} onClick={this.openCloseGroup.bind(this, e.group_id)}></i>
                             </div>, ...memberList]
                         })}
