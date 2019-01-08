@@ -75,9 +75,6 @@ export default class extends React.Component {
         await window.showIndicator()
         this.props.onRefresh && (await this.props.onRefresh());
 
-        let user_info = await this.props.fetch_user_info()
-        if(!user_info)
-            history.push('/login')
         let info = await this.props.get_group_info(this.getGroupId(), 0, true )
 
         for(let v of info.invite_list) {
@@ -98,9 +95,6 @@ export default class extends React.Component {
     }
 
     componentWillReceiveProps(props) {
-        if(props.user_info === false) {
-            history.replace("/login")
-        }
     }
 
     getGroupId() {
@@ -216,7 +210,6 @@ export default class extends React.Component {
             }
             let resp = await this.props.add_member_group_exist(exist.payload.account_id, this.getGroupId(), email, data)
 
-            console.log(resp)
             if(resp.code == 1) {
                 this.setState({
                     add_email:""
@@ -379,7 +372,6 @@ export default class extends React.Component {
                             <div className="form-head">초대한 그룹원 리스트</div>
                             <div className="form-list form-list-600">
                                 {this.state.invite_list.map((e, k)=>{
-                                    console.log(e)
                                     return <div className="item" key={k}>
                                         <div className="desc">
                                             <div className="email">{e.data_for_inviter.email}</div>

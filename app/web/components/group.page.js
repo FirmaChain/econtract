@@ -74,21 +74,33 @@ export default class extends React.Component {
 
 	componentDidMount() {
         (async()=>{
-            await this.props.get_group_info(0)
-            //let dodo = await this.props.get_corp_member_info(128, this.props.user_info.corp_key)
-            await this.props.get_corp_member_info_all(this.props.user_info.corp_key)
-            let account_id = this.props.match.params.account_id || null
-            if(account_id) {
-                let member = await this.props.get_corp_member_info(account_id, this.props.user_info.corp_key)
-                this.props.openGroup(member.group_id)
-                this.setState({member})
-            }
+            await this.onRefresh()
         })()
 	}
 
+    onRefresh = async () => {
+        await this.props.get_group_info(0)
+        //let dodo = await this.props.get_corp_member_info(128, this.props.user_info.corp_key)
+        await this.props.get_corp_member_info_all(this.props.user_info.corp_key)
+        let menu = this.props.match.params.menu || "all"
+        let account_id = this.props.match.params.account_id || null
+        
+        let _ = {
+            _group_id:menu,
+            _account_id:account_id,
+        }
+
+        if(account_id) {
+            let member = await this.props.get_corp_member_info(account_id, this.props.user_info.corp_key)
+            this.props.openGroup(member.group_id)
+            _.member = member
+        }
+        this.setState(_)
+    }
+
     componentWillReceiveProps(props) {
         if(props.user_info === false) {
-            history.replace("/login")
+            return history.replace("/login")
         }
 
         let prevMenu = this.props.match.params.menu || "all"
@@ -98,7 +110,9 @@ export default class extends React.Component {
         let account_id = props.match.params.account_id || null
 
         if(prevMenu != menu || prev_account_id != account_id) {
-            this.componentDidMount()
+            (async()=>{
+                await this.onRefresh()
+            })();
         }
     }
 
@@ -173,38 +187,19 @@ export default class extends React.Component {
     }
 
     moveGroup(group_id) {
-        history.push(`/group/${group_id}`)
         this.props.openGroup(group_id)
+        history.push(`/group/${group_id}`)
     }
 
     moveGroupMember(group_id, account_id) {
-        history.push(`/group/${group_id}/${account_id}`)
         this.props.openGroup(group_id)
+        history.push(`/group/${group_id}/${account_id}`)
     }
 
     /*openGroupInfo(group_id, e) {
         e.stopPropagation()
         history.push(`/group-info/${group_id}`)
     }*/
-    onMoveContract = async (contract_ids) => {
-        let folders = this.props.folders
-
-        if(folders.length == 0){
-            return alert("생성된 폴더가 없습니다.")
-        }
-
-        await window.openModal("MoveToFolder",{
-            contract_ids,
-            folders,
-            onClickMove:async(folder_id)=>{
-                await window.showIndicator("폴더로 계약 이동중");
-                await this.props.add_folder_in_contract(folder_id, contract_ids, this.props.match.params.group_id || null)
-                await this.onRefresh()
-                await window.hideIndicator();
-                return true;
-            }
-        })
-    }
 
     openCloseGroup(group_id, e) {
         e.stopPropagation()
@@ -261,26 +256,6 @@ export default class extends React.Component {
 
         this.setState({
             contracts_checks:l
-        })
-    }
-
-    onMoveContract = async (contract_ids) => {
-        let folders = this.props.folders
-
-        if(folders.length == 0){
-            return alert("생성된 폴더가 없습니다.")
-        }
-
-        await window.openModal("MoveToFolder",{
-            contract_ids,
-            folders,
-            onClickMove:async(folder_id)=>{
-                await window.showIndicator("폴더로 계약 이동중");
-                await this.props.add_folder_in_contract(folder_id, contract_ids, this.props.match.params.group_id || null)
-                await this.onRefresh()
-                await window.hideIndicator();
-                return true;
-            }
         })
     }
 
@@ -366,7 +341,7 @@ export default class extends React.Component {
                         <div className="arrow-dropdown" style={{display:!!this.isOpenOption(e.contract_id) ? "initial" : "none"}}>
                             <div className="container">
                                 <div className="detail" onClick={this.openContract.bind(this, e, 0, 1)}>상세 정보</div>
-                                <div className="move" onClick={this.onMoveContract.bind(this, [e.contract_id])}>폴더 이동</div>
+                                {/*<div className="move" onClick={this.onMoveContract.bind(this, [e.contract_id])}>폴더 이동</div>*/}
                             </div>
                         </div>
                     </div>
@@ -384,8 +359,8 @@ export default class extends React.Component {
         let total_cnt = contracts.total_cnt
         let page_num = contracts.page_num
 
-        let group_id = this.props.match.params.menu || "all"
-        let account_id = this.props.match.params.account_id || null
+        let group_id = this.state._group_id || "all"
+        let account_id = this.state._account_id || null
 
 		return (<div className="group-page">
 			<div className="contract-group-menu">
