@@ -453,7 +453,7 @@ class PurchaseRegularPayment extends React.Component {
                                 controlClassName="control"
                                 menuClassName="item"
                                 options={this.props.planMonthlyOptions}
-                                onChange={e=>{this.setState({select_monthly_plan:this.props.planMonthlyOptions.filter(f=>e.value==f.plan_id)[0]})}}
+                                onChange={e=>{this.setState({select_monthly_plan:this.props.planMonthly.filter(f=>e.value==f.plan_id)[0]})}}
                                 value={this.state.select_monthly_plan.data.title} placeholder="건수" />
                             <span className="last"> 건 사용 / 월</span>
                         </div>
