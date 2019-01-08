@@ -133,12 +133,21 @@ export function get_contracts(type, status, page, display_count = 10, sub_status
         if(resp.code == 1) {
             let corp_id = user_info.corp_id || -1
             for(let v of resp.payload.list) {
-                let infos = [{
+                let infos = []
+                v.entities_id.split(",").map( (entity_id, k) => {
+                    infos.push({
+                        entity_id:entity_id,
+                        corp_id:v.corps_id[k],
+                        epin:v.epins[k],
+                        eckai:v.eckais[k],
+                    })
+                })
+                /*let infos = [{
                     entity_id:v.entity_id,
                     corp_id:v.corp_id,
                     epin:v.epin,
                     eckai:v.eckai,
-                }]
+                }]*/
                 let subject = select_subject(infos, groups, user_info.account_id, corp_id);
                 if (!subject.my_info) continue
 

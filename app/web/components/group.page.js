@@ -352,7 +352,7 @@ export default class extends React.Component {
             } 
         }
 
-        let usernames = e.user_infos.map(ee => ee.username).filter( ee => !!ee)
+        let usernames = e.user_infos.map(ee => ee.username).filter(ee => !!ee)
         usernames = usernames.join(", ")
 
         return <div key={e.contract_id} className="item" onClick={this.onClickOpenContract.bind(this, e, 0)}>
