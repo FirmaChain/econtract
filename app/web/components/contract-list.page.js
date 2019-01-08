@@ -525,6 +525,8 @@ export default class extends React.Component {
                 if(isGroup && contract.is_pin_used == 1) {
                     await this.props.update_epin_group(this.props.user_info.corp_id, isGroup, contract.contract_id, this.props.user_info, pin)
                     await this.props.update_epin_account(contract.contract_id, pin);
+                } else if(contract.privilege == 2) {
+                    await this.props.update_epin_account(contract.contract_id, pin);
                 }
             }
 
