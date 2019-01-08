@@ -46,8 +46,13 @@ export default class extends React.Component {
 
     onClickChangeRegularPayment = async () => {
         let subscribe_plans = await this.props.get_subscribe_plan();
+        let plan_monthly = subscribe_plans.filter(e=>e.type==2);
+        let plan_yearly = subscribe_plans.filter(e=>e.type==3);
         window.openModal("PurchaseRegularPayment", {
-            planInfo: subscribe_plans.payload,
+            planMonthly: plan_monthly,
+            planYearly: plan_yearly,
+            selectedMonthlyIndex: plan_monthly[0].plan_id,
+            selectedYearlyIndex: plan_yearly[0].plan_id,
             onResponse: async (purchase_type, give_count) => {
             }
         });
