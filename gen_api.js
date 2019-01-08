@@ -424,6 +424,33 @@ export async function api_get_subscribe_plan(){
         session:window.getCookie("session")
     });
 }
+export async function api_get_current_regular_subscription(){
+    let __data = new FormData();
+
+    
+
+    return await post("/get_current_regular_subscription", __data,{
+        session:window.getCookie("session")
+    });
+}
+export async function api_get_current_onetime_ticket(){
+    let __data = new FormData();
+
+    
+
+    return await post("/get_current_onetime_ticket", __data,{
+        session:window.getCookie("session")
+    });
+}
+export async function api_get_current_ticket(){
+    let __data = new FormData();
+
+    
+
+    return await post("/get_current_ticket", __data,{
+        session:window.getCookie("session")
+    });
+}
 export async function api_add_template(subject,folder_id,html){
     let __data = new FormData();
 
