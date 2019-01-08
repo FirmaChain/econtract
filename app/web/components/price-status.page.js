@@ -55,8 +55,7 @@ export default class extends React.Component {
             let current_subscription = await this.props.get_current_subscription();
             let current_onetime_ticket = await this.props.get_current_onetime_ticket();
             let payment_info = await this.props.get_payment_info();
-            console.log(payment_info);
-            let partial_payment_info = payment_info;
+            let partial_payment_info = payment_info.preview_data;
 
             this.setState({
                 subscription_plans,
