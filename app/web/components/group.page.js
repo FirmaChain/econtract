@@ -288,8 +288,8 @@ export default class extends React.Component {
         
         let result
         if(group_id == "all") {
-            //result = await this.props.get_contracts(5, -1, page, LIST_DISPLAY_COUNT, account_id, group_id, this.props.user_info, groups)
-        } else if( !isNaN(group_id) ) {
+            result = await this.props.get_contracts(5, -1, page, LIST_DISPLAY_COUNT, -1, group_id, this.props.user_info, groups)
+        } else if( !isNaN(group_id) && account_id != null ) {
             result = await this.props.get_contracts(5, -1, page, LIST_DISPLAY_COUNT, account_id, group_id, this.props.user_info, groups)
         }
 
