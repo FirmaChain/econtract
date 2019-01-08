@@ -419,8 +419,8 @@ class PurchaseRegularPayment extends React.Component {
     componentDidMount() {
         let monthly_id = this.props.selectedMonthlyIndex;
         let yearly_id = this.props.selectedYearlyIndex;
-        let monthly_plans = this.props.planMonthly.map((e)=>{return {value: e.plan_id, label: JSON.stringify(e.data).title}});
-        let yearly_plans = this.props.planYearly.map((e)=>{return {value: e.plan_id, label: JSON.stringify(e.data).title}});
+        let monthly_plans = this.props.planMonthly.map((e)=>{return {value: e.plan_id, label: e.data.title}});
+        let yearly_plans = this.props.planYearly.map((e)=>{return {value: e.plan_id, label: e.data.title}});
         let select_monthly_plan = this.props.planMonthly.filter(e=>e.plan_id==monthly_id)[0];
         let select_yearly_plan = this.props.planYearly.filter(e=>e.plan_id==yearly_id)[0];
         this.setState({
