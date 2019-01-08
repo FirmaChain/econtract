@@ -1,8 +1,8 @@
 import {
     api_get_subscribe_plan,
-    api_get_current_regular_subscription,
+    api_get_current_subscription,
     api_get_current_onetime_ticket,
-    api_get_current_ticket,
+    api_get_current_total_ticket,
 } from "../../../gen_api"
 
 export function get_subscribe_plan(){
