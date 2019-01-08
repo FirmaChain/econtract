@@ -64,7 +64,7 @@ export default class extends React.Component {
             alert("잘못된 경로로 들어왔습니다.")
             return history.goBack()
         }*/
-        if(this.getGroupId() != null) {
+        if(this.getGroupId() != null && !isNaN(this.getGroupId()) ) {
             setTimeout(async()=>{
                 await this.onRefresh()
             })
@@ -73,6 +73,8 @@ export default class extends React.Component {
 
     onRefresh = async () => {
         await window.showIndicator()
+        this.props.onRefresh && (await this.props.onRefresh());
+
         let user_info = await this.props.fetch_user_info()
         if(!user_info)
             history.push('/login')
@@ -102,7 +104,8 @@ export default class extends React.Component {
     }
 
     getGroupId() {
-        let group_id = this.props.match.params.menu ? this.props.match.params.menu : null
+        let group_id = this.props.group_id
+        if(!group_id) group_id = this.props.match.params.menu ? this.props.match.params.menu : null
         return group_id
     }
 
