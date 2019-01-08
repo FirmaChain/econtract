@@ -134,6 +134,8 @@ export function get_contracts(type, status, page, display_count = 10, sub_status
             let corp_id = user_info.corp_id || -1
             for(let v of resp.payload.list) {
                 let infos = []
+                console.log(Buffer.from(v.epins).toString("hex"))
+                console.log(v.eckais)
                 v.entities_id.split(",").map( (entity_id, k) => {
                     infos.push({
                         entity_id:entity_id,
