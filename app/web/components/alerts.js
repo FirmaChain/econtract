@@ -405,35 +405,20 @@ class PurchaseTicket extends React.Component {
 @modal
 class PurchaseRegularPayment extends React.Component {
     constructor() {
-        super()
-        this.state = {
-            select_monthly_count:10,
-            select_yearly_count:30,
-            select_monthly_count_label:"10건",
-            select_yearly_count_label:"30건",
-            monthly_count:[
-                {value:10, label:"10건"},
-                {value:20, label:"20건"},
-                {value:30, label:"30건"},
-                {value:40, label:"40건"},
-                {value:50, label:"50건"},
-                {value:100, label:"100건"},
-                {value:500, label:"500건"},
-            ],
-            yearly_count:[
-                {value:30, label:"30건"},
-                {value:50, label:"50건"},
-                {value:70, label:"70건"},
-                {value:100, label:"100건"},
-                {value:150, label:"150건"},
-                {value:200, label:"200건"},
-                {value:250, label:"250건"},
-                {value:300, label:"300건"},
-                {value:500, label:"500건"},
-                {value:1000, label:"1000건"},
-                {value:2000, label:"2000건"},
-                {value:3000, label:"3000건"},
-            ],
+        super();
+        let monthly_id = this.props.selectedMonthlyIndex;
+        let yearly_id = this.props.selectedYearlyIndex;
+        let monthly_count = this.props.planMonthly.map(e=>{value: e.plan_id, label: JSON.stringify(e.data).title});
+        let yearly_count = this.props.planYearly.map(e=>{value: e.plan_id, label: JSON.stringify(e.data).title});
+        let select_monthly_plan = this.props.planMonthly.filter(e=>e.plan_id==monthly_id)[0];
+        let select_yearly_plan = this.props.planYearly.filter(e=>e.plan_id==yearly_id)[0];
+        this.state = { 
+            monthly_id,
+            yearly_id,
+            monthly_count,
+            yearly_count,
+            select_monthly_plan,
+            select_yearly_plan,
         }
     }
 
@@ -460,9 +445,9 @@ class PurchaseRegularPayment extends React.Component {
                             <Dropdown className="common-select"
                                 controlClassName="control"
                                 menuClassName="item"
-                                options={this.state.monthly_count}
-                                onChange={e=>{this.setState({select_monthly_count:e.value, select_monthly_count_label:e.label})}}
-                                value={this.state.select_monthly_count_label} placeholder="건수" />
+                                options={this.state.monthly_id}
+                                onChange={e=>{this.setState({select_monthly_plan:this.props.planMonthly.filter(f=>e.value==f.plan_id)[0]})}}
+                                value={JSON.parse(this.state.select_monthly_plan.data).title} placeholder="건수" />
                             <span className="last"> 건 사용 / 월</span>
                         </div>
                         <div className="price-info">{"12500".number_format()}<span className="last">원 / 월</span></div>
