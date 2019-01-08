@@ -102,6 +102,10 @@ export default class extends React.Component{
         history.push("/price-status")
     }
 
+    onGroupInfo = () => {
+        history.push("/group-manage")
+    }
+
     deleteSession = () => {
         window.logout()
     }
@@ -146,6 +150,7 @@ export default class extends React.Component{
                         </div>
                         <div className="line"></div>
                         <div className="my-info" onClick={this.onMyInfo}>내 정보</div>
+                        {info.account_type == 1 ? <div className="my-info" onClick={this.onGroupInfo}>그룹 관리</div> : null}
                         <div className="logout" onClick={this.onLogout}>로그아웃</div>
                     </div>
                 </div>
