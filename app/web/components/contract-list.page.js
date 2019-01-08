@@ -90,7 +90,7 @@ export default class extends React.Component {
         nextProps = !!nextProps ? nextProps : this.props
 
         let account_type = this.props.user_info.account_type
-        let group_id = this.props.match.params.group_id || null
+        let group_id = nextProps.match.params.group_id || null
         let params = queryString.parse(nextProps.location.search)
 
         if(account_type != 0) {
@@ -127,8 +127,8 @@ export default class extends React.Component {
             }
             await this.setState({groups})
         }
+        let resp = await this.props.folder_list_contract(group_id)
 
-        await this.props.folder_list_contract(group_id)
         let lock_count = await this.props.get_lock_count(group_id)
 
         await this.setState({
@@ -637,8 +637,6 @@ export default class extends React.Component {
     }
 
 	render() {
-        /*if(!this.props.folders || !this.props.contracts)
-            return <div />*/
 
         let folders = this.props.folders ? this.props.folders : []
         let contracts = this.props.contracts ? this.props.contracts : { list:[] }
@@ -700,7 +698,7 @@ export default class extends React.Component {
 						{folders.map((e,k)=>{
                             let subject = e.subject
                             let folder_id = e.folder_id
-                            return <div className={"item" + ( (this.getTitle().id == "folder" && this.getTitle().folder_id == folder_id) ? " selected" : "")} key={e+k} onClick={this.move.bind(this, `folder/${folder_id}`)}>
+                            return <div className={"item" + ( (this.getTitle().id == "folder" && this.getTitle().folder_id == folder_id) ? " selected" : "")} key={folder_id} onClick={this.move.bind(this, `folder/${folder_id}`)}>
                                 <i className="icon fas fa-folder" />
                                 <div className="text">{subject}</div>
                                 <i className="angle fal fa-trash" onClick={this.onRemoveFolder.bind(this, folder_id, subject)}></i>
