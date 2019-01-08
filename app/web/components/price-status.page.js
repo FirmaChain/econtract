@@ -42,6 +42,17 @@ export default class extends React.Component {
 	}
 
 	componentDidMount(){
+        (async() => {
+            let subscription_plans = (await this.props.get_subscribe_plan()).map((e)=>{e.data = JSON.parse(e.data); return e});
+            let current_subscription = await this.props.get_current_subscription();
+            let current_onetime_ticket = await this.props.get_current_onetime_ticket();
+
+            this.setState({
+                subscription_plans,
+                current_subscription,
+                current_onetime_ticket,
+            })
+        })()
     }
 
     onClickChangeRegularPayment = async () => {
@@ -84,9 +95,10 @@ export default class extends React.Component {
     }
 
 	render() {
-        let subscription_plans = (await this.props.get_subscribe_plan()).map((e)=>{e.data = JSON.parse(e.data); return e});
-        let current_subscription = await this.props.get_current_subscription();
-        let current_onetime_ticket = await this.props.get_current_onetime_ticket();
+        let subscription_plans = this.state.subscription_plans ? this.state.subscription_plans : []
+        let current_subscription = this.state.current_subscription ? this.state.current_subscription : null
+        let current_onetime_ticket = this.state.current_onetime_ticket ? this.state.current_onetime_ticket : null
+
         let accountTypeText;
         let subscriptionText;
         switch (this.props.user_info.account_type) {
@@ -101,7 +113,7 @@ export default class extends React.Component {
                 break;
         }
         if (current_subscription.length > 0) {
-            let current_subscription_info = subscription_plans.filter(e=>e.plan_id == current_subscription.plan_id)[0];
+            let current_subscription_info = subscription_plans.find(e=>e.plan_id == current_subscription.plan_id);
             if (current_subscription_info) {
                 subscriptionText = current_subscription_info.type == 1 ? "월간 결제" : "연간 결제";
                 subscriptionText += " ";
