@@ -3,7 +3,7 @@ import {
     api_get_current_subscription,
     api_get_current_onetime_ticket,
     api_get_current_total_ticket,
-    api_get_input_payment_info,
+    api_input_payment_info,
 } from "../../../gen_api"
 
 export function get_subscribe_plan(){
