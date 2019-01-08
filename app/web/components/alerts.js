@@ -407,29 +407,21 @@ class PurchaseRegularPayment extends React.Component {
     constructor() {
         super();
         this.state = {
-            select_monthly_plan: {},
-            select_yearly_plan: {},
+            select_monthly_plan: {data:{title:null}},
+            select_yearly_plan: {data:{title:null}},
             monthly_id: 0,
             yearly_id: 0,
-            monthly_plans: [],
-            yearly_plans: [],
         };
     }
 
     componentDidMount() {
         let monthly_id = this.props.selectedMonthlyIndex;
         let yearly_id = this.props.selectedYearlyIndex;
-        let monthly_plans = this.props.planMonthly.map((e)=>{return {value: e.plan_id, label: e.data.title}});
-        let yearly_plans = this.props.planYearly.map((e)=>{return {value: e.plan_id, label: e.data.title}});
         let select_monthly_plan = this.props.planMonthly.filter(e=>e.plan_id==monthly_id)[0];
         let select_yearly_plan = this.props.planYearly.filter(e=>e.plan_id==yearly_id)[0];
-        console.log(select_monthly_plan);
-        console.log(this.props.playMonthly);
         this.setState({
             monthly_id,
             yearly_id,
-            monthly_plans,
-            yearly_plans,
             select_monthly_plan,
             select_yearly_plan,
         });
@@ -445,7 +437,6 @@ class PurchaseRegularPayment extends React.Component {
     }
 
     render() {
-        console.log(this.props.planInfo);
         return <div className="purchase-regular-payment-modal">
             <div className="container">
                 <div className="icon"><i className="fas fa-credit-card"></i></div>
@@ -458,7 +449,7 @@ class PurchaseRegularPayment extends React.Component {
                             <Dropdown className="common-select"
                                 controlClassName="control"
                                 menuClassName="item"
-                                options={this.state.monthly_plans}
+                                options={this.props.planMonthly}
                                 onChange={e=>{this.setState({select_monthly_plan:this.props.planMonthly.filter(f=>e.value==f.plan_id)[0]})}}
                                 value={this.state.select_monthly_plan.data.title} placeholder="건수" />
                             <span className="last"> 건 사용 / 월</span>

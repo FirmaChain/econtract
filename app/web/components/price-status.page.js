@@ -46,11 +46,9 @@ export default class extends React.Component {
 
     onClickChangeRegularPayment = async () => {
         let subscribe_plans = (await this.props.get_subscribe_plan()).map((e)=>{e.data = JSON.parse(e.data); return e});
-        let plan_monthly = subscribe_plans.filter(e=>e.type==2);
-        let plan_yearly = subscribe_plans.filter(e=>e.type==3);
         window.openModal("PurchaseRegularPayment", {
-            planMonthly: plan_monthly,
-            planYearly: plan_yearly,
+            planMonthly: subscribe_plans.filter(e=>e.type==2).map((e)=>{return {value: e.plan_id, label: e.data.title}}),
+            planYearly: subscribe_plans.filter(e=>e.type==3).map((e)=>{return {value: e.plan_id, label: e.data.title}}),
             selectedMonthlyIndex: plan_monthly[0].plan_id,
             selectedYearlyIndex: plan_yearly[0].plan_id,
             onResponse: async (purchase_type, give_count) => {
