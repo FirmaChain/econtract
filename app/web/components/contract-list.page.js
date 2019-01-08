@@ -136,10 +136,11 @@ export default class extends React.Component {
             showGroupMenu: false,
             showOptions: null,
             cur_page:Number(params.page) || 0,
-            lock_count:lock_count.payload.count
+            lock_count:lock_count.payload.count,
+            search_text: params.search_text || "",
         })
 
-        await this.loadContracts(Number(params.page) || 0, nextProps)
+        await this.loadContracts(Number(params.page) || 0, params.search_text || null, nextProps)
     }
 
     componentWillReceiveProps(nextProps){
@@ -157,14 +158,18 @@ export default class extends React.Component {
         let prev_page = queryString.parse(nextProps.location.search).page || 0
         let page = queryString.parse(this.props.location.search).page || 0 
 
-        if(prevMenu != menu || prev_group_id != group_id || prev_page != page){
+        let prev_search_text = queryString.parse(this.props.location.search).search_text || ""
+        let search_text = queryString.parse(nextProps.location.search).search_text || ""
+
+        if(prevMenu != menu || prev_group_id != group_id 
+            || prev_page != page || prev_search_text != search_text){
             (async()=>{
                 await this.onRefresh(nextProps)
             })()
         }
     }
 
-    loadContracts = async (page, props) => {
+    loadContracts = async (page, search_text, props) => {
         props = !!props ? props : this.props
 
         let menu = props.match.params.menu || "recently"
@@ -181,39 +186,39 @@ export default class extends React.Component {
         await window.showIndicator()
         let result
         if(menu == "recently") {
-            result = await this.props.get_contracts(0, -1, page, LIST_DISPLAY_COUNT, -1, group_id, this.props.user_info, groups)
+            result = await this.props.get_contracts(0, -1, page, LIST_DISPLAY_COUNT, -1, group_id, this.props.user_info, groups, search_text)
         }
         else if(menu == "lock") {
-            result = await this.props.get_contracts(3, -1, page, LIST_DISPLAY_COUNT, -1, group_id, this.props.user_info, groups)
+            result = await this.props.get_contracts(3, -1, page, LIST_DISPLAY_COUNT, -1, group_id, this.props.user_info, groups, search_text)
         }
         else if(menu == "requested") {
-            result = await this.props.get_contracts(2, -1, page, LIST_DISPLAY_COUNT, -1, group_id, this.props.user_info, groups)
+            result = await this.props.get_contracts(2, -1, page, LIST_DISPLAY_COUNT, -1, group_id, this.props.user_info, groups, search_text)
         }
         else if(menu == "created") {
-            result = await this.props.get_contracts(1, -1, page, LIST_DISPLAY_COUNT, -1, group_id, this.props.user_info, groups)
+            result = await this.props.get_contracts(1, -1, page, LIST_DISPLAY_COUNT, -1, group_id, this.props.user_info, groups, search_text)
         }
         else if(menu == "typing") {
-            result = await this.props.get_contracts(0, 0, page, LIST_DISPLAY_COUNT, -1, group_id, this.props.user_info, groups)
+            result = await this.props.get_contracts(0, 0, page, LIST_DISPLAY_COUNT, -1, group_id, this.props.user_info, groups, search_text)
         }
         else if(menu == "beforeMySign") {
-            result = await this.props.get_contracts(0, 1, page, LIST_DISPLAY_COUNT, 0, group_id, this.props.user_info, groups)
+            result = await this.props.get_contracts(0, 1, page, LIST_DISPLAY_COUNT, 0, group_id, this.props.user_info, groups, search_text)
         }
         /*else if(menu == "beforeOtherSign") {
-            result = await this.props.get_contracts(0, 1, page, LIST_DISPLAY_COUNT, 1, group_id, this.props.user_info, groups)
+            result = await this.props.get_contracts(0, 1, page, LIST_DISPLAY_COUNT, 1, group_id, this.props.user_info, groups, search_text)
         }*/
         else if(menu == "completed") {
-            result = await this.props.get_contracts(0, 2, page, LIST_DISPLAY_COUNT, -1, group_id, this.props.user_info, groups)
+            result = await this.props.get_contracts(0, 2, page, LIST_DISPLAY_COUNT, -1, group_id, this.props.user_info, groups, search_text)
         }
         else if(menu == "group_view") {
-            result = await this.props.get_contracts(0, 3, page, LIST_DISPLAY_COUNT, 0, group_id, this.props.user_info, groups)
+            result = await this.props.get_contracts(0, 3, page, LIST_DISPLAY_COUNT, 0, group_id, this.props.user_info, groups, search_text)
         }
         else if(menu == "my_view") {
-            result = await this.props.get_contracts(0, 3, page, LIST_DISPLAY_COUNT, 1, group_id, this.props.user_info, groups)
+            result = await this.props.get_contracts(0, 3, page, LIST_DISPLAY_COUNT, 1, group_id, this.props.user_info, groups, search_text)
         }
 
         if(is_folder) {
             let folder_id = menu
-            result = await this.props.get_contracts(4, folder_id, page, LIST_DISPLAY_COUNT, -1, group_id, this.props.user_info, groups)
+            result = await this.props.get_contracts(4, folder_id, page, LIST_DISPLAY_COUNT, -1, group_id, this.props.user_info, groups, search_text)
         }
 
         await window.hideIndicator()
@@ -299,14 +304,10 @@ export default class extends React.Component {
     	if(this.state.cur_page == page - 1)
     		return;
 
-        //await this.loadContracts(page - 1)
+        let params = queryString.parse(this.props.location.search)
+        params.page = page - 1
 
-        history.push({pathname:this.props.match.url, search:`?page=${page-1}`})
-/*
-        this.setState({
-            cur_page:page - 1,
-            contracts_checks:[]
-        })*/
+        history.push({pathname:this.props.match.url, search:`?${queryString.stringify(params)}`})
     }
 
     move(pageName) {
@@ -338,6 +339,32 @@ export default class extends React.Component {
     onClickSign(contract_id, e) {
         e.stopPropagation();
         history.push(`/edit-contract/${contract_id}`)
+    }
+
+    onClickSearch = async () => {
+        if(!!this.state.search_text && this.state.search_text != "" && this.state.search_text.length < 2) {
+            return alert("검색어는 2글자 이상 입력해주세요.")
+        }
+
+        if(!!this.state.search_text && this.state.search_text == "") {
+            return history.push(this.props.match.url)
+        }
+
+        let params = queryString.parse(this.props.location.search)
+        delete params.page
+        params.search_text = this.state.search_text
+
+        history.push({pathname:this.props.match.url, search:`?${queryString.stringify(params)}`})
+    }
+
+    onKeyPress = async (type, e) => {
+        if(e.keyCode == 13){
+            switch(type) {
+                case "search":
+                    await this.onClickSearch()
+                    break;
+            }
+        }
     }
 
     onAddFolder = () => {
@@ -708,7 +735,15 @@ export default class extends React.Component {
 				</div>
 			</div>
 			<div className="contract-list">
-				<div className="title">{this.getTitle().title}</div>
+                <div className="title">{this.getTitle().title}</div>
+				<div className="search">
+                    <input className="common-textbox" type="text"
+                        placeholder="검색어를 2자 이상 입력해주세요."
+                        onKeyDown={this.onKeyPress.bind(this, "search")}
+                        value={this.state.search_text || ""}
+                        onChange={e=>this.setState({search_text:e.target.value})}/>
+                    <div className="blue-but" onClick={this.onClickSearch}>검색</div>
+                </div>
 				<div className="list" style={{marginTop:"20px"}}>
                     <div className="head">
                         <div className="list-head-item list-chkbox">

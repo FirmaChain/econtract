@@ -107,9 +107,10 @@ export default class extends React.Component {
             ..._,
             contracts_checks : [],
             cur_page:Number(params.page) || 0,
+            search_text: params.search_text || "",
         })
 
-        await this.loadContracts(Number(params.page) || 0, nextProps)
+        await this.loadContracts(Number(params.page) || 0, params.search_text || null, nextProps)
 
     }
 
@@ -127,7 +128,11 @@ export default class extends React.Component {
         let prev_page = queryString.parse(this.props.location.search).page || 0
         let page = queryString.parse(nextProps.location.search).page || 0 
 
-        if(prevMenu != menu || prev_account_id != account_id || prev_page != page) {
+        let prev_search_text = queryString.parse(this.props.location.search).search_text || ""
+        let search_text = queryString.parse(nextProps.location.search).search_text || ""
+
+        if(prevMenu != menu || prev_account_id != account_id 
+            || prev_page != page || prev_search_text != search_text) {
             (async()=>{
                 await this.onRefresh(nextProps)
             })();
@@ -188,15 +193,6 @@ export default class extends React.Component {
         }
 		return { id:"all", title : "모든 계약"}
 	} 
-
-    onClickPage = async(page)=>{
-        if(this.state.cur_page == page - 1)
-            return;
-
-        //await this.loadContracts(page - 1)
-
-        history.push({pathname:this.props.match.url, search:`?page=${page-1}`})
-    }
 
     move(pageName) {
         history.push(`/group/${pageName}`)
@@ -276,7 +272,7 @@ export default class extends React.Component {
     }
 
 
-    loadContracts = async (page, props) => {
+    loadContracts = async (page, search_text, props) => {
         props = !!props ? props : this.props
 
         let group_id = this.props.match.params.menu || "all"
@@ -288,14 +284,50 @@ export default class extends React.Component {
         
         let result
         if(group_id == "all") {
-            result = await this.props.get_contracts(5, -1, page, LIST_DISPLAY_COUNT, -1, -1, this.props.user_info, groups)
+            result = await this.props.get_contracts(5, -1, page, LIST_DISPLAY_COUNT, -1, -1, this.props.user_info, groups, search_text)
         } else if( !isNaN(group_id) && account_id != null ) {
-            result = await this.props.get_contracts(5, -1, page, LIST_DISPLAY_COUNT, account_id, group_id, this.props.user_info, groups)
+            result = await this.props.get_contracts(5, -1, page, LIST_DISPLAY_COUNT, account_id, group_id, this.props.user_info, groups, search_text)
         }
 
         await window.hideIndicator()
 
         return result
+    }
+
+    onClickPage = async (page) => {
+        if(this.state.cur_page == page - 1)
+            return;
+
+        let params = queryString.parse(this.props.location.search)
+        params.page = page - 1
+
+        history.push({pathname:this.props.match.url, search:`?${queryString.stringify(params)}`})
+    }
+
+    onClickSearch = async () => {
+        if(!!this.state.search_text && this.state.search_text != "" && this.state.search_text.length < 2) {
+            return alert("검색어는 2글자 이상 입력해주세요.")
+        }
+
+        if(!!this.state.search_text && this.state.search_text == "") {
+            return history.push(this.props.match.url)
+        }
+
+        let params = queryString.parse(this.props.location.search)
+        delete params.page
+        params.search_text = this.state.search_text
+
+        history.push({pathname:this.props.match.url, search:`?${queryString.stringify(params)}`})
+    }
+
+    onKeyPress = async (type, e) => {
+        if(e.keyCode == 13){
+            switch(type) {
+                case "search":
+                    await this.onClickSearch()
+                    break;
+            }
+        }
     }
 
     onClickOpenContract = async (contract, type = 0, e) => {
@@ -462,6 +494,14 @@ export default class extends React.Component {
             <CorpGroupInfoPage {...this.props} group_id={group_id} onRefresh={this.onRefresh}/> :
             <div className="contract-list">
                 <div className="title">{this.getTitle().title}</div>
+                <div className="search">
+                    <input className="common-textbox" type="text"
+                        placeholder="검색어를 2자 이상 입력해주세요."
+                        onKeyDown={this.onKeyPress.bind(this, "search")}
+                        value={this.state.search_text || ""}
+                        onChange={e=>this.setState({search_text:e.target.value})}/>
+                    <div className="blue-but" onClick={this.onClickSearch}>검색</div>
+                </div>
                 <div className="list" style={{marginTop:"20px"}}>
                     <div className="head">
                         <div className="list-head-item list-chkbox">

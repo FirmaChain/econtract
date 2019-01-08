@@ -127,9 +127,9 @@ export function new_contract(subject, counterparties, set_pin, necessary_info, c
     }
 }
 
-export function get_contracts(type, status, page, display_count = 10, sub_status = -1, group_id = -1, user_info, groups = []) {
+export function get_contracts(type, status, page, display_count = 10, sub_status = -1, group_id = -1, user_info, groups = [], search_text = "") {
     return async function(dispatch) {
-        let resp = await api_get_contracts(type, status, page, display_count, sub_status, group_id)
+        let resp = await api_get_contracts(type, status, page, display_count, sub_status, group_id, search_text)
         if(resp.code == 1) {
             let corp_id = user_info.corp_id || -1
             for(let v of resp.payload.list) {
