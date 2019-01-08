@@ -415,6 +415,15 @@ export async function api_all_invite_list(){
         session:window.getCookie("session")
     });
 }
+export async function api_get_subscribe_plan(){
+    let __data = new FormData();
+
+    
+
+    return await post("/get_subscribe_plan", __data,{
+        session:window.getCookie("session")
+    });
+}
 export async function api_add_template(subject,folder_id,html){
     let __data = new FormData();
 
