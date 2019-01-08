@@ -84,12 +84,22 @@ export default class extends React.Component {
             }
         })*/
         this.blockFlag = false;
+        this.disconnect = false
         this.socket = socketIOClient(config.HOST)
         this.socket.on('disconnect', async () => {
-            await new Promise(r=>setTimeout(r, 1000))
-            this.socket.open();
-            this.socket.removeAllListeners()
-            this.subscribeChannel()
+            console.log("disconnect socket")
+            this.disconnect = true
+            for(let i in [0,0,0,0,0]) {
+                await new Promise(r=>setTimeout(r, 2000))
+                try{
+                    let result = this.socket.open();
+                    this.socket.removeAllListeners()
+                    this.subscribeChannel()
+                    this.disconnect = false
+                }catch(err) {
+                    continue
+                }
+            }
         })
         //reconect
 
@@ -452,6 +462,11 @@ export default class extends React.Component {
     }
 
     onClickSendChat = async (text)=>{
+        if(this.disconnect) {
+            alert("채팅 연결이 끊겼습니다. 새로고침 해주세요")
+            return false
+        }
+        
         if(text.length == 0) {
             alert("메세지를 입력해주세요");
             return false
