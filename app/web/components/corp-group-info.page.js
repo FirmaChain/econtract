@@ -349,7 +349,7 @@ export default class extends React.Component {
                 </div>
                 <div className="title">
                     <div className="head">그룹원 초대하기</div>
-                    <div className="desc">추가하실 그룹원의 정보를 입력하여 추가하세요</div>
+                    <div className="desc">추가하실 그룹원의 정보를 입력하여 추가하세요.<br/>다른 기업의 서브 계정 혹은 개인 계정은 초대할 수 없습니다.</div>
                 </div>
                 <div className="row">
                     <div className="right-form">
