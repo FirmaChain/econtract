@@ -140,8 +140,8 @@ export function get_contracts(type, status, page, display_count = 10, sub_status
                     infos.push({
                         entity_id:entity_id,
                         corp_id:v.corps_id.split(",")[k],
-                        epin:v.epins.split(window.SEPERATOR)[k],
-                        eckai:v.eckais.split(window.SEPERATOR)[k],
+                        epin:Buffer.from(v.epins.split(window.SEPERATOR)[k], "hex"),
+                        eckai:Buffer.from(v.eckais.split(window.SEPERATOR)[k], "hex"),
                     })
                 })
                 /*let infos = [{
