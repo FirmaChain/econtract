@@ -137,9 +137,9 @@ export function get_contracts(type, status, page, display_count = 10, sub_status
                 v.entities_id.split(",").map( (entity_id, k) => {
                     infos.push({
                         entity_id:entity_id,
-                        corp_id:v.corps_id[k],
-                        epin:v.epins[k],
-                        eckai:v.eckais[k],
+                        corp_id:v.corps_id.split(",")[k],
+                        epin:v.epins.split(window.SEPERATOR)[k],
+                        eckai:v.eckais.split(window.SEPERATOR)[k],
                     })
                 })
                 /*let infos = [{
@@ -148,6 +148,7 @@ export function get_contracts(type, status, page, display_count = 10, sub_status
                     epin:v.epin,
                     eckai:v.eckai,
                 }]*/
+                console.log(infos)
                 let subject = select_subject(infos, groups, user_info.account_id, corp_id);
                 if (!subject.my_info) continue
 
