@@ -4,6 +4,7 @@ import {
     api_get_current_onetime_ticket,
     api_get_current_total_ticket,
     api_input_payment_info,
+    api_get_payment_info,
 } from "../../../gen_api"
 
 export function get_subscribe_plan(){
@@ -33,6 +34,12 @@ export function get_current_total_ticket(){
 export function input_payment_info(data, preview_data){
     return async function(){
         return (await api_input_payment_info(data, preview_data)).payload;
+    };
+}
+
+export function get_payment_info(){
+    return async function(){
+        return (await api_get_payment_info()).payload;
     };
 }
 
