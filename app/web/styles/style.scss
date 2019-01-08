@@ -145,6 +145,33 @@ a.fr-command {
 }
 
 
+.modal-manager{
+    
+    >div.modal-container{
+        z-index: 100000;
+        position: fixed;
+        left:0;
+        right: 0;
+        bottom: 0;
+        top: 0;
+        background-color: rgba(0,0,0,0.3);
+        opacity: 0;
+        transition: all 500ms;
+
+        >div.modal-content-container{
+            position: fixed;
+            left:0;
+            right: 0;
+            bottom: 0;
+            top: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+        }
+    }
+}
+
 .footer {
     display: flex;
     flex-direction:row;
@@ -3704,7 +3731,10 @@ div.checkbox2-comp{
 
 
 
-
+.default-modal-container {
+    overflow: auto;
+    max-height: 100%;
+}
 
 .common-modal {
     background-color: #fff;
@@ -6211,29 +6241,6 @@ table.table{
     text-align: center !important;
 }
 
-.modal-manager{
-    >div.modal-container{
-        z-index: 100000;
-        position: fixed;
-        left:0;
-        right: 0;
-        bottom: 0;
-        top: 0;
-        background-color: rgba(0,0,0,0.3);
-        opacity: 0;
-        transition: all 500ms;
-        >div.modal-content-container{
-            position: fixed;
-            left:0;
-            right: 0;
-            bottom: 0;
-            top: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-    }
-}
 
 div.checkbox-comp{
     display: inline-flex;

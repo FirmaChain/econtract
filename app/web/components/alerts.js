@@ -69,7 +69,7 @@ class AddCommonModal extends React.Component {
 
     render() {
         let cancelable = this.props.cancelable == undefined ? true : this.props.cancelable
-        return <div className="add-common-modal">
+        return <div className="add-common-modal default-modal-container">
             <div className="container">
                 <div className="icon"><i className={this.props.icon}></i></div>
                 <div className="title">{this.props.title}</div>
@@ -107,7 +107,7 @@ class RemoveCommonModal extends React.Component {
     }
 
     render() {
-        return <div className="remove-common-modal">
+        return <div className="remove-common-modal default-modal-container">
             <div className="container">
                 <div className="icon"><i className={this.props.icon}></i></div>
                 <div className="title">{this.props.title}</div>
@@ -147,7 +147,7 @@ class OneAddModal extends React.Component {
     }
 
     render() {
-        return <div className="one-add-modal">
+        return <div className="one-add-modal default-modal-container">
             <div className="container">
                 <div className="icon"><i className={this.props.icon}></i></div>
                 <div className="title">{this.props.title}</div>
@@ -182,7 +182,7 @@ class CommonModal extends React.Component {
     }
 
     render() {
-        return <div className="common-modal">
+        return <div className="common-modal default-modal-container">
             <div className="container">
                 <div className="data">
                     <div className="icon"><i className={this.props.icon}></i></div>
@@ -255,7 +255,7 @@ class CardInfo extends React.Component {
     }
 
     render() {
-        return <div className="card-info-modal">
+        return <div className="card-info-modal default-modal-container">
             <div className="container">
                 <div className="icon"><i className="far fa-credit-card"></i></div>
                 <div className="title">결제 정보 입력 / 변경</div>
@@ -327,7 +327,7 @@ class PurchaseGroupMemberAdd extends React.Component {
     }
 
     render() {
-        return <div className="purchase-group-member-add">
+        return <div className="purchase-group-member-add default-modal-container">
             <div className="container">
                 <div className="icon"><i className="fal fa-ticket-alt"></i></div>
                 <div className="title">그룹 계정 추가</div>
@@ -376,7 +376,7 @@ class PurchaseTicket extends React.Component {
     }
 
     render() {
-        return <div className="purchase-ticket">
+        return <div className="purchase-ticket default-modal-container">
             <div className="container">
                 <div className="icon"><i className="fal fa-ticket-alt"></i></div>
                 <div className="title">건별 이용권 구매</div>
@@ -437,7 +437,7 @@ class PurchaseRegularPayment extends React.Component {
     }
 
     render() {
-        return <div className="purchase-regular-payment-modal">
+        return <div className="purchase-regular-payment-modal default-modal-container">
             <div className="container">
                 <div className="icon"><i className="fas fa-credit-card"></i></div>
                 <div className="title">정기 결제 이용권 선택</div>
@@ -505,7 +505,7 @@ class StartContract extends React.Component{
     }
 
     render(){
-        return <div className="start-contract-modal">
+        return <div className="start-contract-modal default-modal-container">
             <div className="container">
                 <div className="icon"><i className="fal fa-file-code"></i></div>
                 <div className="title">시작하기</div>
@@ -543,7 +543,7 @@ class BrowserNotVerified extends React.Component{
     }
 
     render(){
-        return <div className="browser-not-verified-modal">
+        return <div className="browser-not-verified-modal default-modal-container">
             <div className="container">
                 <div className="icon"><i className="fal fa-browser"></i></div>
                 <div className="title">브라우저 미인증이란?</div>
@@ -591,7 +591,7 @@ class Confirm extends React.Component{
     }
 
     render(){
-        return <div className="confirm-modal">
+        return <div className="confirm-modal default-modal-container">
             <div className="container">
                 <div className="icon"><i className="fal fa-user-check"></i></div>
                 <div className="title" dangerouslySetInnerHTML={{__html:this.props.title||"타이틀"}}></div>
@@ -636,7 +636,7 @@ class MoveCanEditAccount extends React.Component {
     }
 
     render() {
-        return <div className="move-can-edit-account-modal">
+        return <div className="move-can-edit-account-modal default-modal-container">
             <div className="container">
                 <div className="icon"><i className="fas fa-arrow-alt-right"></i></div>
                 <div className="title">수정 권한 넘기기</div>
@@ -715,7 +715,7 @@ class TypingPin extends React.Component{
     }
 
     render(){
-        return <div className="default-modal type-pin-modal">
+        return <div className="default-modal type-pin-modal default-modal-container">
             <div className="contents">
                 <div className="title">PIN을 입력해주세요</div>
                 <div className="pin-box">
@@ -795,7 +795,7 @@ class DrawSign extends React.Component{
     }
 
     render(){
-        return <div className="default-modal draw-sign-modal">
+        return <div className="default-modal draw-sign-modal default-modal-container">
             <div className="container">
 
                 <div className="icon"><i className="far fa-file-signature"></i></div>
@@ -845,7 +845,7 @@ class MoveToFolder extends React.Component{
     }
 
     render(){
-        return <div className="move-folder">
+        return <div className="move-folder default-modal-container">
             <div className="container">
 
                 <div className="icon"><i className="far fa-folder"></i></div>
@@ -871,6 +871,16 @@ class MoveToFolder extends React.Component{
         </div>
     }
 }
+
+
+
+
+
+
+
+
+
+
 
 
 
