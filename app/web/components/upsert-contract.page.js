@@ -458,9 +458,19 @@ export default class extends React.Component {
         }
 
         let corp_id = this.props.user_info.corp_id || -1
-        let meOrGroup = select_subject(this.state.infos, this.state.groups, this.props.user_info.account_id, corp_id).my_info
+        let meOrGroup = select_subject(this.state.infos, this.state.groups, this.props.user_info.account_id, corp_id)
 
-        let result = await this.props.send_chat(this.state.contract.contract_id, meOrGroup.entity_id, meOrGroup.corp_id, text)
+        let msg = {
+            text
+        }
+
+        if(!meOrGroup.isAccount) {
+            msg.username = this.props.user_info.username;
+            msg.account_id = this.props.user_info.account_id;
+        }
+        meOrGroup = meOrGroup.my_info
+
+        let result = await this.props.send_chat(this.state.contract.contract_id, meOrGroup.entity_id, meOrGroup.corp_id, JSON.stringify(msg))
         if(result.code == 1) {
             /*let all_chats = [...this.state.chat_list, result.payload]
             all_chats = all_chats.sort( (a, b) => a.chat_id - b.chat_id )
@@ -548,6 +558,8 @@ export default class extends React.Component {
                     </div>
                     {(()=> {
                         let user_type = meOrGroup.user_info.user_type || 0
+
+                        if( meOrGroup.privilege != 1 ) return
 
                         let divs = []
                         if(user_type == 0) {
