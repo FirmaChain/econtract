@@ -9,6 +9,7 @@ import CheckBox2 from "./checkbox2"
 import history from '../history'
 import Route from "./custom_route"
 import moment from "moment"
+import CorpGroupInfoPage from "./corp-group-info.page"
 
 
 import {
@@ -356,7 +357,8 @@ export default class extends React.Component {
 					</div>
 				</div>
 			</div>
-            <div className="contract-list">
+            {<CorpGroupInfoPage {...this.props}/>}
+            {/*<div className="contract-list">
                 <div className="title">{this.getTitle().title}</div>
                 <div className="list" style={{marginTop:"20px"}}>
                     <div className="head">
@@ -377,7 +379,7 @@ export default class extends React.Component {
                 </div>
                 
                 <Pager max={Math.ceil(total_cnt/page_num)} cur={this.state.cur_page||1} onClick={this.onClickPage} />
-            </div>
+            </div>*/}
 		</div>)
 	}
 }

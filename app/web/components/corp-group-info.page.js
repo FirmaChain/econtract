@@ -102,6 +102,8 @@ export default class extends React.Component {
 
     getGroupId() {
         let group_id = this.props.match.params.group_id || null
+        group_id = group_id == null ? this.props.match.params.menu : group_id
+        console.log(this.props)
         return group_id
     }
 
@@ -299,16 +301,7 @@ export default class extends React.Component {
             return <div></div>
 		
         return (<div className="upsert-contract-group-page header-page">
-            <div className="header">
-                <div className="left-logo">
-                    <img src="/static/logo_blue.png" onClick={()=>history.push("/home")}/>
-                </div>
-                { !!this.props.user_info ? <Information /> : null }
-            </div>
             <div className="head group-head">
-                <span className="back" onClick={()=> history.goBack()}>
-                    <i className="fal fa-chevron-left"></i> <span>뒤로가기</span>
-                </span>
                 <div className="info">
                     <div className="title">
                         <i className="fal fa-building"></i>

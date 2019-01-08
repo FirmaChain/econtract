@@ -86,7 +86,7 @@ window.addEventListener("load",()=>{
 					<Route onEnter={resolver} exact path="/group" component={HomePage} />
 					<Route onEnter={resolver} exact path="/group/:menu" component={HomePage} />
 					<Route onEnter={resolver} exact path="/group/:menu/:account_id" component={HomePage} />
-					<Route onEnter={resolver} exact path="/group-info/:group_id" component={CorpGroupInfoPage} />
+					{/*<Route onEnter={resolver} exact path="/group-info/:group_id" component={CorpGroupInfoPage} />*/}
 
 					<Route onEnter={resolver} exact path="/profile" component={InformationPage} />
 					<Route onEnter={resolver} exact path="/price-status" component={InformationPage} />
