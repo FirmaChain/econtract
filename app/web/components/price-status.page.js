@@ -54,7 +54,7 @@ export default class extends React.Component {
             let subscription_plans = (await this.props.get_subscribe_plan()).map((e)=>{e.data = JSON.parse(e.data); return e});
             let current_subscription = await this.props.get_current_subscription();
             let current_onetime_ticket = await this.props.get_current_onetime_ticket();
-            let payment_info = await this.get_payment_info();
+            let payment_info = await this.props.get_payment_info();
 
             this.setState({
                 subscription_plans,
