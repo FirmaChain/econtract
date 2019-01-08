@@ -464,7 +464,10 @@ export default class extends React.Component {
             text
         }
 
-        if(!meOrGroup.isAccount) msg.username = this.props.user_info.username;
+        if(!meOrGroup.isAccount) {
+            msg.username = this.props.user_info.username;
+            msg.account_id = this.props.user_info.account_id;
+        }
         meOrGroup = meOrGroup.my_info
 
         let result = await this.props.send_chat(this.state.contract.contract_id, meOrGroup.entity_id, meOrGroup.corp_id, JSON.stringify(msg))
