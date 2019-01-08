@@ -10,6 +10,7 @@ import history from '../history'
 import Route from "./custom_route"
 import moment from "moment"
 import CorpGroupInfoPage from "./corp-group-info.page"
+import queryString from "query-string"
 
 
 import {
@@ -69,36 +70,65 @@ export default class extends React.Component {
         super(props);
         this.state = {
             contracts_checks : [],
+            cur_page:0,
         };
 	}
 
 	componentDidMount() {
         (async()=>{
-            await this.props.get_group_info(0)
-            //let dodo = await this.props.get_corp_member_info(128, this.props.user_info.corp_key)
-            await this.props.get_corp_member_info_all(this.props.user_info.corp_key)
-            let account_id = this.props.match.params.account_id || null
-            if(account_id) {
-                let member = await this.props.get_corp_member_info(account_id, this.props.user_info.corp_key)
-                this.props.openGroup(member.group_id)
-                this.setState({member})
-            }
+            await this.onRefresh()
         })()
 	}
 
-    componentWillReceiveProps(props) {
-        if(props.user_info === false) {
-            history.replace("/login")
+    onRefresh = async (nextProps) => {
+        nextProps = !!nextProps ? nextProps : this.props
+
+        await this.props.get_group_info(0)
+        //let dodo = await this.props.get_corp_member_info(128, this.props.user_info.corp_key)
+        await this.props.get_corp_member_info_all(this.props.user_info.corp_key)
+        let menu = nextProps.match.params.menu || "all"
+        let account_id = nextProps.match.params.account_id || null
+        let params = queryString.parse(nextProps.location.search)
+
+        let _ = {
+            _group_id:menu,
+            _account_id:account_id,
+        }
+
+        if(account_id) {
+            let member = await this.props.get_corp_member_info(account_id, this.props.user_info.corp_key)
+            await this.props.openGroup(member.group_id)
+            _.member = member
+        }
+
+        await this.setState({
+            ..._,
+            contracts_checks : [],
+            cur_page:Number(params.page) || 0,
+        })
+
+        await this.loadContracts(Number(params.page) || 0, nextProps)
+
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if(nextProps.user_info === false) {
+            return history.replace("/login")
         }
 
         let prevMenu = this.props.match.params.menu || "all"
-        let menu = props.match.params.menu || "all"
+        let menu = nextProps.match.params.menu || "all"
 
         let prev_account_id = this.props.match.params.account_id || null
-        let account_id = props.match.params.account_id || null
+        let account_id = nextProps.match.params.account_id || null
 
-        if(prevMenu != menu || prev_account_id != account_id) {
-            this.componentDidMount()
+        let prev_page = queryString.parse(this.props.location.search).page || 0
+        let page = queryString.parse(nextProps.location.search).page || 0 
+
+        if(prevMenu != menu || prev_account_id != account_id || prev_page != page) {
+            (async()=>{
+                await this.onRefresh(nextProps)
+            })();
         }
     }
 
@@ -158,65 +188,44 @@ export default class extends React.Component {
 	} 
 
     onClickPage = async(page)=>{
-    	if(this.state.cur_page == page)
-    		return;
+        if(this.state.cur_page == page - 1)
+            return;
 
-        await this.props.recently_contracts(page - 1);
-        this.setState({
-            cur_page:page,
-            contracts_checks:[]
-        })
+        //await this.loadContracts(page - 1)
+
+        history.push({pathname:this.props.match.url, search:`?page=${page-1}`})
     }
 
     move(pageName) {
         history.push(`/group/${pageName}`)
     }
 
-    moveGroup(group_id) {
+    async moveGroup(group_id) {
+        await this.props.openGroup(group_id)
         history.push(`/group/${group_id}`)
-        this.props.openGroup(group_id)
     }
 
-    moveGroupMember(group_id, account_id) {
+    async moveGroupMember(group_id, account_id) {
+        await this.props.openGroup(group_id)
         history.push(`/group/${group_id}/${account_id}`)
-        this.props.openGroup(group_id)
     }
 
     /*openGroupInfo(group_id, e) {
         e.stopPropagation()
         history.push(`/group-info/${group_id}`)
     }*/
-    onMoveContract = async (contract_ids) => {
-        let folders = this.props.folders
 
-        if(folders.length == 0){
-            return alert("생성된 폴더가 없습니다.")
-        }
-
-        await window.openModal("MoveToFolder",{
-            contract_ids,
-            folders,
-            onClickMove:async(folder_id)=>{
-                await window.showIndicator("폴더로 계약 이동중");
-                await this.props.add_folder_in_contract(folder_id, contract_ids, this.props.match.params.group_id || null)
-                await this.onRefresh()
-                await window.hideIndicator();
-                return true;
-            }
-        })
-    }
-
-    openCloseGroup(group_id, e) {
+    async openCloseGroup(group_id, e) {
         e.stopPropagation()
         let list = [...this.props.isOpenGroupList]
 
         for(let v of list) {
             if(v == group_id) {
-                this.props.closeGroup(group_id)
+                await this.props.closeGroup(group_id)
                 return;
             }
         }
-        this.props.openGroup(group_id)
+        await this.props.openGroup(group_id)
     }
 
     isOpenGroup(group_id) {
@@ -261,26 +270,6 @@ export default class extends React.Component {
 
         this.setState({
             contracts_checks:l
-        })
-    }
-
-    onMoveContract = async (contract_ids) => {
-        let folders = this.props.folders
-
-        if(folders.length == 0){
-            return alert("생성된 폴더가 없습니다.")
-        }
-
-        await window.openModal("MoveToFolder",{
-            contract_ids,
-            folders,
-            onClickMove:async(folder_id)=>{
-                await window.showIndicator("폴더로 계약 이동중");
-                await this.props.add_folder_in_contract(folder_id, contract_ids, this.props.match.params.group_id || null)
-                await this.onRefresh()
-                await window.hideIndicator();
-                return true;
-            }
         })
     }
 
@@ -366,7 +355,7 @@ export default class extends React.Component {
                         <div className="arrow-dropdown" style={{display:!!this.isOpenOption(e.contract_id) ? "initial" : "none"}}>
                             <div className="container">
                                 <div className="detail" onClick={this.openContract.bind(this, e, 0, 1)}>상세 정보</div>
-                                <div className="move" onClick={this.onMoveContract.bind(this, [e.contract_id])}>폴더 이동</div>
+                                {/*<div className="move" onClick={this.onMoveContract.bind(this, [e.contract_id])}>폴더 이동</div>*/}
                             </div>
                         </div>
                     </div>
@@ -384,8 +373,8 @@ export default class extends React.Component {
         let total_cnt = contracts.total_cnt
         let page_num = contracts.page_num
 
-        let group_id = this.props.match.params.menu || "all"
-        let account_id = this.props.match.params.account_id || null
+        let group_id = this.state._group_id || "all"
+        let account_id = this.state._account_id || null
 
 		return (<div className="group-page">
 			<div className="contract-group-menu">

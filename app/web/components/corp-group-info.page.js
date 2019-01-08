@@ -66,19 +66,18 @@ export default class extends React.Component {
         }*/
         if(this.getGroupId() != null && !isNaN(this.getGroupId()) ) {
             setTimeout(async()=>{
+                this.props.onRefresh && (await this.props.onRefresh());
                 await this.onRefresh()
             })
         }
     }
 
-    onRefresh = async () => {
+    onRefresh = async (nextProps) => {
+        nextProps = !!nextProps ? nextProps : this.props
+        
         await window.showIndicator()
-        this.props.onRefresh && (await this.props.onRefresh());
 
-        let user_info = await this.props.fetch_user_info()
-        if(!user_info)
-            history.push('/login')
-        let info = await this.props.get_group_info(this.getGroupId(), 0, true )
+        let info = await this.props.get_group_info(this.getGroupId(nextProps), 0, true )
 
         for(let v of info.invite_list) {
             if(v.data_for_inviter) {
@@ -97,15 +96,22 @@ export default class extends React.Component {
 
     }
 
-    componentWillReceiveProps(props) {
-        if(props.user_info === false) {
-            history.replace("/login")
+    componentWillReceiveProps(nextProps) {
+        let prev_group_id = nextProps.group_id || null
+        let group_id = this.props.group_id || null
+
+        if(prev_group_id != group_id) {
+            (async()=>{
+                await this.onRefresh(nextProps)
+            })()
         }
     }
 
-    getGroupId() {
-        let group_id = this.props.group_id
-        if(!group_id) group_id = this.props.match.params.menu ? this.props.match.params.menu : null
+    getGroupId(nextProps) {
+        let props = !!nextProps ? nextProps : this.props
+
+        let group_id = props.group_id
+        if(!group_id) group_id = props.match.params.menu ? props.match.params.menu : null
         return group_id
     }
 
@@ -216,7 +222,6 @@ export default class extends React.Component {
             }
             let resp = await this.props.add_member_group_exist(exist.payload.account_id, this.getGroupId(), email, data)
 
-            console.log(resp)
             if(resp.code == 1) {
                 this.setState({
                     add_email:""
@@ -379,7 +384,6 @@ export default class extends React.Component {
                             <div className="form-head">초대한 그룹원 리스트</div>
                             <div className="form-list form-list-600">
                                 {this.state.invite_list.map((e, k)=>{
-                                    console.log(e)
                                     return <div className="item" key={k}>
                                         <div className="desc">
                                             <div className="email">{e.data_for_inviter.email}</div>
