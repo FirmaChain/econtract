@@ -342,8 +342,12 @@ export default class extends React.Component {
     }
 
     onClickSearch = async () => {
-        if(!this.state.search_text || this.state.search_text.length < 2) {
+        if(!!this.state.search_text && this.state.search_text != "" && this.state.search_text.length < 2) {
             return alert("검색어는 2글자 이상 입력해주세요.")
+        }
+
+        if(!!this.state.search_text && this.state.search_text == "") {
+            return history.push(this.props.match.url)
         }
 
         let params = queryString.parse(this.props.location.search)
