@@ -84,7 +84,11 @@ export default class extends React.Component {
     }
 
 	render() {
+        let subscription_plans = (await this.props.get_subscribe_plan()).map((e)=>{e.data = JSON.parse(e.data); return e});
+        let current_subscription = await this.props.get_current_subscription();
+        let current_onetime_ticket = await this.props.get_current_onetime_ticket();
         let accountTypeText;
+        let subscriptionText;
         switch (this.props.user_info.account_type) {
             case 0:
                 accountTypeText = "개인 회원";
@@ -96,13 +100,21 @@ export default class extends React.Component {
                 accountTypeText = "기업 회원";
                 break;
         }
+        if (current_subscription.length > 0) {
+            let current_subscription_info = subscription_plans.filter(e=>e.plan_id == current_subscription.plan_id)[0];
+            if (current_subscription_info) {
+                subscriptionText = current_subscription_info.type == 1 ? "월간 결제" : "연간 결제";
+                subscriptionText += " ";
+                subscriptionText += current_subscription_info.data.title;
+            }
+        }
 		return (<div className="right-desc price-status-page">
             <div className="title">요금 정보</div>
             <div className="container">
                 <div className="cluster">
                     <div className="box blue-box">
                         <div className="icon"><i className="fas fa-credit-card"></i></div>
-                        <div className="title">{accountTypeText} | 연간 결제 30</div>
+                        <div className="title">{accountTypeText} | {subscriptionText}</div>
                         <div className="desc">00 / 00 건</div>
                         <div className="sub">결제일 : {moment().format("YYYY-MM-DD HH:mm:ss")}</div>
                         <div className="button-container">
