@@ -406,20 +406,33 @@ class PurchaseTicket extends React.Component {
 class PurchaseRegularPayment extends React.Component {
     constructor() {
         super();
+        this.state = {
+            select_monthly_plan: {},
+            select_yearly_plan: {},
+            monthly_id: 0,
+            yearly_id: 0,
+            monthly_plans: [],
+            yearly_plans: [],
+        };
+    }
+
+    componentDidMount() {
         let monthly_id = this.props.selectedMonthlyIndex;
         let yearly_id = this.props.selectedYearlyIndex;
-        let monthly_count = this.props.planMonthly.map((e)=>{return {value: e.plan_id, label: JSON.stringify(e.data).title}});
-        let yearly_count = this.props.planYearly.map((e)=>{return {value: e.plan_id, label: JSON.stringify(e.data).title}});
+        let monthly_plans = this.props.planMonthly.map((e)=>{return {value: e.plan_id, label: e.data.title}});
+        let yearly_plans = this.props.planYearly.map((e)=>{return {value: e.plan_id, label: e.data.title}});
         let select_monthly_plan = this.props.planMonthly.filter(e=>e.plan_id==monthly_id)[0];
         let select_yearly_plan = this.props.planYearly.filter(e=>e.plan_id==yearly_id)[0];
-        this.state = { 
+        console.log(select_monthly_plan);
+        console.log(this.props.playMonthly);
+        this.setState({
             monthly_id,
             yearly_id,
-            monthly_count,
-            yearly_count,
+            monthly_plans,
+            yearly_plans,
             select_monthly_plan,
             select_yearly_plan,
-        }
+        });
     }
 
     closeSelf = ()=>{
@@ -445,9 +458,9 @@ class PurchaseRegularPayment extends React.Component {
                             <Dropdown className="common-select"
                                 controlClassName="control"
                                 menuClassName="item"
-                                options={this.state.monthly_id}
+                                options={this.state.monthly_plans}
                                 onChange={e=>{this.setState({select_monthly_plan:this.props.planMonthly.filter(f=>e.value==f.plan_id)[0]})}}
-                                value={JSON.parse(this.state.select_monthly_plan.data).title} placeholder="건수" />
+                                value={this.state.select_monthly_plan.data.title} placeholder="건수" />
                             <span className="last"> 건 사용 / 월</span>
                         </div>
                         <div className="price-info">{"12500".number_format()}<span className="last">원 / 월</span></div>
