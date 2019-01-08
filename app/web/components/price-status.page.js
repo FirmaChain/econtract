@@ -55,12 +55,14 @@ export default class extends React.Component {
             let current_subscription = await this.props.get_current_subscription();
             let current_onetime_ticket = await this.props.get_current_onetime_ticket();
             let payment_info = await this.props.get_payment_info();
+            console.log(payment_info);
+            let partial_payment_info = payment_info;
 
             this.setState({
                 subscription_plans,
                 current_subscription,
                 current_onetime_ticket,
-                payment_info,
+                partial_payment_info,
             })
         })()
     }
@@ -171,7 +173,7 @@ export default class extends React.Component {
                         <div className="bar gray-bar">
                             <div className="left">
                                 <div className="title">결제 정보</div>
-                                <div className="desc">{this.state.payment_info ? this.state.payment_info : "null"}</div>
+                                <div className="desc">{this.state.partial_payment_info}</div>
                             </div>
                             <div className="right">
                                 <div className="button" onClick={this.onChangeCardInfo}>변경</div>
