@@ -10,6 +10,7 @@ import CheckBox2 from "./checkbox2"
 import history from '../history'
 import Route from "./custom_route"
 import moment from "moment"
+import queryString from "query-string"
 
 import {
     decryptPIN,
@@ -86,8 +87,11 @@ export default class extends React.Component {
 	}
 
     onRefresh = async (nextProps) => {
+        nextProps = !!nextProps ? nextProps : this.props
+
         let account_type = this.props.user_info.account_type
         let group_id = this.props.match.params.group_id || null
+        let params = queryString.parse(nextProps.location.search)
 
         if(account_type != 0) {
             let groups = await this.props.get_group_info(0)
@@ -126,17 +130,16 @@ export default class extends React.Component {
 
         await this.props.folder_list_contract(group_id)
         let lock_count = await this.props.get_lock_count(group_id)
-        console.log(lock_count)
 
         await this.setState({
             contracts_checks : [],
             showGroupMenu: false,
             showOptions: null,
-            cur_page:0,
+            cur_page:Number(params.page) || 0,
             lock_count:lock_count.payload.count
         })
 
-        await this.loadContracts(0, nextProps)
+        await this.loadContracts(Number(params.page) || 0, nextProps)
     }
 
     componentWillReceiveProps(nextProps){
@@ -150,7 +153,11 @@ export default class extends React.Component {
         let prev_group_id = nextProps.match.params.group_id || null
         let group_id = this.props.match.params.group_id || null
 
-        if(prevMenu != menu || prev_group_id != group_id){
+
+        let prev_page = queryString.parse(nextProps.location.search).page || 0
+        let page = queryString.parse(this.props.location.search).page || 0 
+
+        if(prevMenu != menu || prev_group_id != group_id || prev_page != page){
             (async()=>{
                 await this.onRefresh(nextProps)
             })()
@@ -262,7 +269,7 @@ export default class extends React.Component {
             result = { id:"group_view", title : "그룹 보기 가능"}
         }
 		else if(menu == "my_view") {
-			result = { id:"my_view", title : "내 보기 가능"}
+			result = { id:"my_view", title : "개인 문서함"}
 		}
 		else
             result = { id:"recently", title : "최근 사용"}
@@ -292,11 +299,14 @@ export default class extends React.Component {
     	if(this.state.cur_page == page - 1)
     		return;
 
-        await this.loadContracts(page - 1)
+        //await this.loadContracts(page - 1)
+
+        history.push({pathname:this.props.match.url, search:`?page=${page-1}`})
+/*
         this.setState({
             cur_page:page - 1,
             contracts_checks:[]
-        })
+        })*/
     }
 
     move(pageName) {
@@ -343,7 +353,6 @@ export default class extends React.Component {
                     return alert("폴더명을 입력해주세요")
                 }
                 let resp = await this.props.add_folder_contract(folder_name, this.props.match.params.group_id || null)
-                console.log(resp)
 
                 if(resp) {
                     await this.props.folder_list_contract(this.props.match.params.group_id || null)
@@ -519,7 +528,7 @@ export default class extends React.Component {
                 }
             }
 
-            if(!isGroup) {
+            if(!isGroup && contract.privilege != 2) {
                 let groups = await this.props.get_group_info(0)
                 let data = groups.map((e) => {
                     return {
@@ -548,8 +557,14 @@ export default class extends React.Component {
                             await this.props.update_epin_group(group.corp_id, group.group_id, contract.contract_id, this.props.user_info, pin)
                         }
                         r(group)
+                    },
+                    onCancel: async () => {
+                        r(false)
                     }
                 }))
+                if(!result) {
+                    return alert("그룹을 지정해야 계약이 분류될 수 있습니다.")
+                }
             }
             history.push(move_info)
         }
@@ -620,8 +635,8 @@ export default class extends React.Component {
     }
 
 	render() {
-        // if(!this.props.folders)
-        //     return <div />
+        /*if(!this.props.folders || !this.props.contracts)
+            return <div />*/
 
         let folders = this.props.folders ? this.props.folders : []
         let contracts = this.props.contracts ? this.props.contracts : { list:[] }
@@ -635,12 +650,13 @@ export default class extends React.Component {
 				<div className="left-top-button" onClick={this.onClickAddContract}>계약 만들기</div>
 				<div className="menu-list">
                     <div className="list">
+                        <div className="title">개인</div>
                         <div className={"item" + (this.getTitle().id == "lock" ? " selected" : "")} onClick={this.move.bind(this, "lock")}>
                             <i className="icon fas fa-lock-alt"></i> 
                             <div className="text">{this.props.user_info.account_type != 0 ? "미분류 계약":"잠김"}</div>
                             {this.state.lock_count > 0 ? <div className="count">{this.state.lock_count}</div> : null}
                         </div>
-                        <div className={"item" + (this.getTitle().id == "my_view" ? " selected" : "")} onClick={this.move.bind(this, "my_view")}><i className="icon far fa-eye"></i> <div className="text">내 보기 가능</div></div>
+                        <div className={"item" + (this.getTitle().id == "my_view" ? " selected" : "")} onClick={this.move.bind(this, "my_view")}><i className="icon far fa-eye"></i> <div className="text">개인 문서함</div></div>
                     </div>
                     { account_type != 0 ? (<div className="list">
                         <div className="title">그룹 선택</div>
@@ -711,7 +727,7 @@ export default class extends React.Component {
                     {contracts.list.length == 0 ? <div className="empty-contract">계약서가 없습니다.</div> : null}
                 </div>
                 
-                <Pager max={Math.ceil(total_cnt/LIST_DISPLAY_COUNT)} cur={this.state.cur_page+1||1} onClick={this.onClickPage} />
+                <Pager max={Math.ceil(total_cnt/LIST_DISPLAY_COUNT)} cur={this.state.cur_page + 1 ||1} onClick={this.onClickPage} />
 			</div>
 		</div>)
 	}
