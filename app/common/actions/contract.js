@@ -133,12 +133,24 @@ export function get_contracts(type, status, page, display_count = 10, sub_status
         if(resp.code == 1) {
             let corp_id = user_info.corp_id || -1
             for(let v of resp.payload.list) {
-                let infos = [{
+                let infos = []
+                console.log(Buffer.from(v.epins).toString("hex"))
+                console.log(v.eckais)
+                v.entities_id.split(",").map( (entity_id, k) => {
+                    infos.push({
+                        entity_id:entity_id,
+                        corp_id:v.corps_id.split(",")[k],
+                        epin:Buffer.from(v.epins.split(window.SEPERATOR)[k], "hex"),
+                        eckai:Buffer.from(v.eckais.split(window.SEPERATOR)[k], "hex"),
+                    })
+                })
+                /*let infos = [{
                     entity_id:v.entity_id,
                     corp_id:v.corp_id,
                     epin:v.epin,
                     eckai:v.eckai,
-                }]
+                }]*/
+                console.log(infos)
                 let subject = select_subject(infos, groups, user_info.account_id, corp_id);
                 if (!subject.my_info) continue
 
