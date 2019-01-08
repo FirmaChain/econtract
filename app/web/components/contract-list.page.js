@@ -136,7 +136,8 @@ export default class extends React.Component {
             showGroupMenu: false,
             showOptions: null,
             cur_page:Number(params.page) || 0,
-            lock_count:lock_count.payload.count
+            lock_count:lock_count.payload.count,
+            search_text: params.search_text || "",
         })
 
         await this.loadContracts(Number(params.page) || 0, params.search_text || null, nextProps)
