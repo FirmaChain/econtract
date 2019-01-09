@@ -2892,6 +2892,125 @@ div.checkbox2-comp{
 }
 
 .group-manage-page {
+
+    >.container {
+
+        >.row {
+            margin-top:30px;
+
+            >.title {
+                font-size:$font2;
+                color:$black;
+                margin-bottom:15px;
+            }
+
+            >.desc {
+                font-size:$font3;
+                color:$black;
+                margin-left:15px;
+
+                >.blue-but {
+                    display: inline-block;
+                    font-size: $font1;
+                    cursor: pointer;
+                    padding:10px 10px;
+                    background-color: $blue;
+                    color:white;
+
+                    margin-left: 20px;
+                    width:80px;
+                    text-align: center;
+                }
+
+                >.form-list {
+                    border-top: 1px solid $gray;
+                    border-bottom: 1px solid $gray;
+                    margin-bottom:30px;
+                    max-width:850px;
+
+                    >.item {
+                        display: flex;
+                        flex-direction: row;
+                        align-items: center;
+
+                        padding:20px 20px;
+                        border-bottom:1px solid $lightgray;
+
+                        &:last-child {
+                            border-bottom: 0;
+                        }
+
+                        &:hover {
+                            background-color: $lightgray;
+                        }
+
+                        >.icon {
+                            width:40px;
+                            padding-right: 10px;
+                            text-align: center;
+
+                            >i {
+                                font-size: 22px;
+                                color: $black;
+                            }
+                        }
+
+                        >.desc {
+                            flex:1;
+
+                            >.username {
+                                color: $black;
+                                font-weight: bold;
+                                font-size: $font2;
+
+                                >span {
+                                    color: $gray;
+                                    font-size: $font0;
+                                    margin-left:10px;
+                                }
+                            }
+
+                            >.email {
+                                color: $black;
+                                font-size: $font1;
+                            }
+                        }
+
+                        >.group {
+                            width:300px;
+                            font-size: $font1;
+                            color: $black;
+                        }
+
+                        >.action {
+                            width:120px;
+                            text-align: center;
+
+                            >.delete {
+                                display: inline-block;
+                                font-size: $font1;
+                                font-weight: bold;
+                                color: $blue;
+                                border: 1px solid $blue;
+                                cursor: pointer;
+                                padding: 10px 15px;
+                                text-align: center;
+                                box-sizing: border-box;
+                                width:100px;
+                            }
+                        }
+                    }
+
+                    >.empty {
+                        font-size: $font3;
+                        text-align: center;
+                        margin-top:30px;
+                        margin-bottom:30px;
+                    }
+                }
+            }
+        }
+    }
 }
 
 .contract-info-page {

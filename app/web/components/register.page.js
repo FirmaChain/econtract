@@ -452,7 +452,7 @@ export default class extends React.Component {
         }
         await window.showIndicator();
         let resp = await this.props.check_phone_verification_code(this.state.userphone, this.state.phone_verification_code)
-        if(resp.code == 1){
+        if(resp.code == 1 && resp.payload == true){
             alert("정상적으로 인증되었습니다.")
             this.setState({
                 verificated_phone:true
@@ -483,13 +483,13 @@ export default class extends React.Component {
         if(!this.state.email){
             return alert("이메일을 입력해주세요!")
         }
-        if(!this.state.password || this.state.password.length < 8){
+        else if(!this.state.password || this.state.password.length < 8){
             return alert("비밀번호는 최소 8글자입니다.")
         }
-        if(this.state.password !== this.state.password2){
+        else if(this.state.password !== this.state.password2){
             return alert("비밀번호가 일치하지 않습니다.")
         }
-        if(!this.state.email_verification) {
+        else if(!this.state.email_verification) {
             return alert("이메일을 인증을 진행해주세요.")
         }
 
