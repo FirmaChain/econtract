@@ -66,9 +66,14 @@ export const GET_CONTRACTS = "GET_CONTRACTS";
 export const FOLDER_LIST_CONTRACT = "FOLDER_LIST_CONTRACT";
 const DUMMY_CORP_ID = 0;
 
-export function select_subject(infos, groups, account_id, corp_id) {
+export function select_subject(infos, groups, account_id, corp_id, is_pin_used = false) {
     groups = groups ? groups : []
-    let my_infos = infos.filter(e=>(e.corp_id == DUMMY_CORP_ID && e.entity_id == account_id) || e.corp_id == corp_id);
+    let my_infos = infos.filter(e=>{
+        if(is_pin_used && e.is_pin_null == 1)
+            return false
+        return (e.corp_id == DUMMY_CORP_ID && e.entity_id == account_id) || e.corp_id == corp_id
+    });
+
     let group_ids = groups.map(e=>e.group_id)
     let my_info = my_infos.find(e=>e.corp_id == DUMMY_CORP_ID) || my_infos.find(e=>group_ids.indexOf(e.entity_id) != -1);
     my_info = my_info ? my_info : null;
@@ -140,16 +145,21 @@ export function get_contracts(type, status, page, display_count = 10, sub_status
                         corp_id:Number(v.corps_id.split(",")[k]),
                         epin:Buffer.from(v.epins.split(window.SEPERATOR)[k], "hex"),
                         eckai:Buffer.from(v.eckais.split(window.SEPERATOR)[k], "hex"),
+                        is_pin_null:Number(v.is_pin_nulls.split(",")[k])
                     })
                 })
-                /*let infos = [{
+
+                let my_info = [{
                     entity_id:v.entity_id,
                     corp_id:v.corp_id,
                     epin:v.epin,
                     eckai:v.eckai,
-                }]*/
-                let subject = select_subject(infos, groups, user_info.account_id, corp_id);
-                if (!subject.my_info) continue
+                    is_pin_null:v.is_pin_null
+                }]
+
+                let subject = select_subject(my_info, groups, user_info.account_id, corp_id, v.is_pin_used);
+                if (!subject.my_info) continue;
+
 
                 let shared_key;
                 let pin = "000000";
@@ -197,7 +207,7 @@ export function get_contract(contract_id, user_info, groups = []) {
         let resp = await api_get_contract(contract_id)
         if(resp.code == 1) {
             let corp_id = user_info.corp_id || -1;
-            let subject = select_subject(resp.payload.infos, groups, user_info.account_id, corp_id);
+            let subject = select_subject(resp.payload.infos, groups, user_info.account_id, corp_id, v.is_pin_used);
             if (!subject.my_info) return null;
 
             let shared_key;
