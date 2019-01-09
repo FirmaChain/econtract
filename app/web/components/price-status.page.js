@@ -55,7 +55,7 @@ export default class extends React.Component {
             let current_subscription = await this.props.get_current_subscription();
             let current_onetime_ticket = await this.props.get_current_onetime_ticket();
             let payment_info = await this.props.get_payment_info();
-            let partial_payment_info = payment_info.preview_data;
+            let partial_payment_info = JSON.parse(payment_info.preview_data);
 
             console.log("subscription_plans", subscription_plans)
             console.log("current_subscription", current_subscription)
@@ -142,6 +142,8 @@ export default class extends React.Component {
                 subscriptionText += " ";
                 subscriptionText += current_subscription_info.data.title;
             }
+        } else {
+            subscriptionText = "미 구독 상태";
         }
 		return (<div className="right-desc price-status-page">
             <div className="title">요금 정보</div>
@@ -180,7 +182,7 @@ export default class extends React.Component {
                         <div className="bar gray-bar">
                             <div className="left">
                                 <div className="title">결제 정보</div>
-                                <div className="desc">{this.state.partial_payment_info}</div>
+                                <div className="desc">{this.state.partial_payment_info.partial_card_number}</div>
                             </div>
                             <div className="right">
                                 <div className="button" onClick={this.onChangeCardInfo}>변경</div>
