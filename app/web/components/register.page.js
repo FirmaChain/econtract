@@ -1042,11 +1042,11 @@ export default class extends React.Component {
                 <div className="list">
                     {shuffled_mnemonic.map((e, k)=>{
                         console.log(e, k)
-                        return <div key={k} 
+                        return <div key={e.idx} 
                                     className={`item cursored ${this.state.sort_test.find( v => v.word == e.word && v.idx == e.idx) ? "selected" : ""}`}
                                     onClick={this.onClickSortTest.bind(this,e)}
                                 >
-                            {e}
+                            {e.word}
                         </div>
                     })}
                 </div>
