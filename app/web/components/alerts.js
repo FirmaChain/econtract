@@ -208,41 +208,38 @@ class CardInfo extends React.Component {
     constructor() {
         super();
         this.state = {
-            select_card_month:1,
-            select_card_year:2020,
-            select_card_month_label:"1월",
-            select_card_year_label:"2020년",
-            card_validation_month:[
-                {value:1, label:"1월"},
-                {value:2, label:"2월"},
-                {value:3, label:"3월"},
-                {value:4, label:"4월"},
-                {value:5, label:"5월"},
-                {value:6, label:"6월"},
-                {value:7, label:"7월"},
-                {value:8, label:"8월"},
-                {value:9, label:"9월"},
-                {value:10, label:"10월"},
-                {value:11, label:"11월"},
-                {value:12, label:"12월"},
-            ],
-            card_validation_year:[
-                {value:2019, label:"2019년"},
-                {value:2020, label:"2020년"},
-                {value:2021, label:"2021년"},
-                {value:2022, label:"2022년"},
-                {value:2023, label:"2023년"},
-                {value:2024, label:"2024년"},
-                {value:2025, label:"2025년"},
-                {value:2026, label:"2026년"},
-                {value:2027, label:"2027년"},
-                {value:2028, label:"2028년"},
-            ]
-        }
+            expiration_month_options: [],
+            expiration_year_options: [],
+            selected_expiration_month: 0,
+            selected_expiration_year: 0,
+            selected_expiration_month_label: "",
+            selected_expiration_year_label: "",
+            card_number: "",
+            social_number_front: "",
+        };
     }
 
     componentDidMount() {
-
+        let expiration_month_options = [];
+        let expiration_year_options = [];
+        for (let i = 1; i <= 12; i++) {
+            expiration_month_options.push({value: i, label: i+"월"});
+        }
+        for (let i = 2019; i <= 2028; i++) {
+            expiration_year_options.push({value: i, label: i+"년"});
+        }
+        let selected_expiration_month = this.props.selected_expiration_month || expiration_month_options[0].value;
+        let selected_expiration_year = this.props.selected_expiration_year || expiration_year_options[0].value;
+        let selected_expiration_month_label = expiration_month_options.find(e => e.value == selected_expiration_month).label;
+        let selected_expiration_year_label = expiration_year_options.find(e => e.value == selected_expiration_year).label;
+        this.setState({
+            expiration_month_options,
+            expiration_year_options,
+            selected_expiration_month,
+            selected_expiration_year,
+            selected_expiration_month_label,
+            selected_expiration_year_label,
+        });
     }
 
     closeSelf = ()=>{
@@ -250,7 +247,14 @@ class CardInfo extends React.Component {
     }
 
     onResponse = () => {
-        this.props.onResponse && this.props.onResponse()
+        // Input validation check
+        this.props.onResponse && this.props.onResponse({
+            card_number: this.state.card_number,
+            cvc: this.state.cvc,
+            month: this.state.selected_expiration_month,
+            year: this.state.selected_expiration_year,
+            id_number: this.state.social_number_front,
+        });
         this.closeSelf();
     }
 
@@ -278,15 +282,15 @@ class CardInfo extends React.Component {
                     <Dropdown className="common-select"
                         controlClassName="control"
                         menuClassName="item"
-                        options={this.state.card_validation_month}
-                        onChange={e=>{this.setState({select_card_month:e.value, select_card_month_label:e.label})}}
-                        value={this.state.select_card_month_label} placeholder="월" />
+                        options={this.state.expiration_month_options}
+                        onChange={e=>{this.setState({selected_expiration_month:e.value, selected_expiration_month_label:e.label})}}
+                        value={this.state.selected_expiration_month_label} placeholder="월" />
                     <Dropdown className="common-select"
                         controlClassName="control"
                         menuClassName="item"
-                        options={this.state.card_validation_year}
-                        onChange={e=>{this.setState({select_card_year:e.value, select_card_year_label:e.label})}}
-                        value={this.state.select_card_year_label} placeholder="년도" />
+                        options={this.state.expiration_year_options}
+                        onChange={e=>{this.setState({selected_expiration_year:e.value, selected_expiration_year_label:e.label})}}
+                        value={this.state.selected_expiration_year_label} placeholder="년도" />
                 </div>
                 <div className="text-box">
                     <div className="sub-title">주민등록번호 앞자리</div>
@@ -407,10 +411,10 @@ class PurchaseRegularPayment extends React.Component {
     constructor() {
         super();
         this.state = {
-            select_monthly_plan: {data:{title:null}},
-            select_yearly_plan: {data:{title:null}},
             monthly_id: 0,
             yearly_id: 0,
+            select_monthly_plan: {data:{title:null}},
+            select_yearly_plan: {data:{title:null}},
         };
     }
 
@@ -432,7 +436,7 @@ class PurchaseRegularPayment extends React.Component {
     }
 
     onResponse = () => {
-        this.props.onResponse && this.props.onResponse()
+        this.props.onResponse && this.props.onResponse(this.state);
         this.closeSelf();
     }
 
