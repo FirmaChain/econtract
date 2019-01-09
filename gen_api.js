@@ -480,6 +480,24 @@ export async function api_get_payment_info(){
         session:window.getCookie("session")
     });
 }
+export async function api_select_subscription_plan(plan_id){
+    let __data = new FormData();
+
+    if(plan_id != null) __data.append('plan_id', plan_id)
+
+    return await post("/select_subscription_plan", __data,{
+        session:window.getCookie("session")
+    });
+}
+export async function api_get_scheduled_subscription(){
+    let __data = new FormData();
+
+    
+
+    return await post("/get_scheduled_subscription", __data,{
+        session:window.getCookie("session")
+    });
+}
 export async function api_add_template(subject,folder_id,html){
     let __data = new FormData();
 
