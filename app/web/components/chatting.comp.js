@@ -82,6 +82,7 @@ export default class extends React.Component {
         switch(e.type) {
             case 0: {
                 let user = this.props.infos.find(v=>v.corp_id == e.corp_id && v.entity_id == e.entity_id)
+                if(!user) return
 
                 let corp_id = this.props.user_info.corp_id || -1
                 let meOrGroup = select_subject(this.props.infos, this.props.groups, this.props.user_info.account_id, corp_id).my_info
@@ -115,6 +116,7 @@ export default class extends React.Component {
                 // 계약서 내용 바꼈을때
                 let data = JSON.parse(e.msg)
                 let entity = this.props.infos.find(e=>e.entity_id == data.entity_id && e.corp_id == data.corp_id)
+                if(!entity) return
                 let text = `${entity.user_info.username}님이 계약서를 수정하였습니다.`
                 return <div key={e.chat_id} className="notice">
                     {text}
@@ -124,6 +126,7 @@ export default class extends React.Component {
                 // 서명 했을때
                 let data = JSON.parse(e.msg)
                 let entity = this.props.infos.find(e=>e.entity_id == data.entity_id && e.corp_id == data.corp_id)
+                if(!entity) return
                 let text = `${entity.user_info.username}님이 해당 계약서에 서명하였습니다.`
                 return <div key={e.chat_id} className="notice">
                     {text}
@@ -133,6 +136,7 @@ export default class extends React.Component {
                 // 서명 정보 바꿨을때
                 let data = JSON.parse(e.msg)
                 let entity = this.props.infos.find(e=>e.entity_id == data.entity_id && e.corp_id == data.corp_id)
+                if(!entity) return
                 let text = `${entity.user_info.username}님이 서명에 필요한 정보를 수정하였습니다.`
                 return <div key={e.chat_id} className="notice">
                     {text}
@@ -142,6 +146,7 @@ export default class extends React.Component {
                 // 수정 권한 옮겼을 때
                 let data = JSON.parse(e.msg)
                 let entity = this.props.infos.find(e=>e.entity_id == data.account_id && e.corp_id == 0)
+                if(!entity) return
                 let move_entity = this.props.infos.find(e=>e.entity_id == data.move_account_id && e.corp_id == 0)
                 let text = `${entity.user_info.username}님이 ${move_entity.user_info.username}님에게 수정 권한을 넘겼습니다.`
                 return <div key={e.chat_id} className="notice">

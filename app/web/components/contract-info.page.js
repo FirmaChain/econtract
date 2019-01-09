@@ -309,7 +309,7 @@ export default class extends React.Component {
             </div>
             <div className="item">
                 <div className="title">계약 생성자</div>
-                <div className="desc">{creator.user_info.username}</div>
+                <div className="desc">{creator ? creator.user_info.username : "알 수 없음"}</div>
             </div>
             <div className="item">
                 <div className="title">트랜잭션 ID</div>
@@ -335,6 +335,8 @@ export default class extends React.Component {
                 if(c.corp_id == 0) return c.entity_id == e.account_id
                 else return c.entity_id == e.group_id && c.corp_id == e.corp_id
             })
+            if(!user) return
+
 
             let name = user.user_info.username ? user.user_info.username : user.user_info.title
             let email = user.user_info.email ? user.user_info.email : user.user_info.company_name
@@ -380,6 +382,7 @@ export default class extends React.Component {
                 <div className="list-head-item list-date">일자</div>
             </div>
             {logs.map((e, k) => {
+                if(!e) return
                 return <div key={e.log_id} className="item">
                     <div className="list-body-item list-name">
                         {e.text}

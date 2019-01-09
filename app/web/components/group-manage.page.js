@@ -76,7 +76,10 @@ export default class extends React.Component {
     			list:exist_contract.payload,
     			onConfirm: async () => {
     				let resp = await this.props.remove_corp_member(account_id)
-    				if(resp.code == 1) alert("해당 그룹원이 탈퇴되었습니다.")
+    				if(resp.code == 1) {
+    					await this.onRefresh()
+    					alert("해당 그룹원이 탈퇴되었습니다.")
+    				}
     				else alert("삭제에 실패하였습니다.")
     			}
     		})
@@ -111,7 +114,7 @@ export default class extends React.Component {
             		<div className="desc">
             			<div className="form-list">
                         {this.props.members.map((e, k)=>{
-                        	let group_id_list = e.group_ids.split(",")
+                        	let group_id_list = e.group_ids ? e.group_ids.split(",") : []
                         	let user_groups = []
                         	
                         	group_id_list.map( (e, k) => {
