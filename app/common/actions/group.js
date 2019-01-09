@@ -233,9 +233,9 @@ export function get_corp_member_info(account_id, corp_key) {
     }
 }
 
-export function get_corp_member_info_all(corp_key) {
+export function get_corp_member_info_all(corp_key, show_all = 1) {
     return async function(dispatch) {
-        let resp = await api_get_corp_member_info_all();
+        let resp = await api_get_corp_member_info_all(show_all);
         let list = [...resp.payload]
         for(let v of list) {
             let data = await aes_decrypt_async(new Buffer(v.info), Buffer.from(corp_key, 'hex') )

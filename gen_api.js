@@ -388,10 +388,10 @@ export async function api_get_corp_member_info(target_account_id){
         session:window.getCookie("session")
     });
 }
-export async function api_get_corp_member_info_all(){
+export async function api_get_corp_member_info_all(show_all){
     let __data = new FormData();
 
-    
+    if(show_all != null) __data.append('show_all', show_all)
 
     return await post("/get_corp_member_info_all", __data,{
         session:window.getCookie("session")

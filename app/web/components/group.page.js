@@ -96,7 +96,7 @@ export default class extends React.Component {
 
         await this.props.get_group_info(0)
         //let dodo = await this.props.get_corp_member_info(128, this.props.user_info.corp_key)
-        await this.props.get_corp_member_info_all(this.props.user_info.corp_key)
+        await this.props.get_corp_member_info_all(this.props.user_info.corp_key, 1)
         let menu = nextProps.match.params.menu || "all"
         let account_id = nextProps.match.params.account_id || null
         let params = queryString.parse(nextProps.location.search)

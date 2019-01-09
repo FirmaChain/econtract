@@ -60,7 +60,7 @@ export default class extends React.Component {
         nextProps = !!nextProps ? nextProps : this.props
 
         await this.props.get_group_info(0)
-        await this.props.get_corp_member_info_all(this.props.user_info.corp_key)
+        await this.props.get_corp_member_info_all(this.props.user_info.corp_key, 0)
     }
 
     onRemoveGroupMember = async (account_id, name) => {
