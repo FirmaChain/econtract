@@ -770,11 +770,45 @@ class DrawSign extends React.Component{
     closeSelf = ()=>{
         window.closeModal(this.props.modalId)
     }
+
+    onUploadSignImage = async (e) => {
+        let file = e.target.files[0];
+        if(!file)
+            return
+
+        await window.showIndicator()
+
+        let names = file.name.split(".");
+        let ext = names[names.length - 1];
+
+        let reader = new FileReader();
+        reader.onload = () => {
+            let img = new Image()
+            img.onload = () => {
+                this.refs.canvas.getContext('2d').save();
+                this.refs.canvas.getContext('2d').setTransform(1, 0, 0, 1, 0, 0);
+                this.refs.canvas.getContext('2d').clearRect(0, 0, this.refs.canvas.width, this.refs.canvas.height)
+                this.refs.canvas.getContext('2d').restore();
+
+                let max = Math.max(img.width / 490, img.height / 240)
+                let width = img.width / max
+                let height = img.height / max
+
+                this.refs.canvas.getContext('2d').drawImage(img, 500 / 2 - width / 2, 250 / 2 - height / 2, width, height);
+                this.isDrawing = false;
+            }
+            img.src = reader.result
+        }
+        reader.readAsDataURL(file);
+
+        await window.hideIndicator()
+    }
     
     onmousedown = (e)=>{
         let ctx = this.refs.canvas.getContext('2d');
 
         this.isDrawing = true;
+        ctx.beginPath();
         ctx.moveTo(e.clientX - e.target.offsetLeft, e.clientY - e.target.offsetTop);
     }
 
@@ -792,10 +826,13 @@ class DrawSign extends React.Component{
 
     onmouseup = ()=>{
         this.isDrawing = false;
+        let ctx = this.refs.canvas.getContext('2d');
+
+        ctx.closePath();
     }
 
     render(){
-        return <div className="default-modal draw-sign-modal default-modal-container">
+        return <div className="draw-sign-modal default-modal-container">
             <div className="container">
 
                 <div className="icon"><i className="far fa-file-signature"></i></div>
@@ -808,6 +845,11 @@ class DrawSign extends React.Component{
                     onMouseDown={this.onmousedown} 
                     onMouseMove={this.onmousemove}
                     onMouseUp={this.onmouseup} />
+
+                <div className="image-upload">
+                    <div className="button" onClick={()=>this.refs['sign-image'].click()}>이미지 업로드</div>
+                    <input ref="sign-image" type="file" accept=".png, .jpg, .jpeg" onChange={this.onUploadSignImage} style={{display:"none"}}/>
+                </div>
 
                 <div className="button">
                     <div className="submit" onClick={this.finishDraw}>서명</div>

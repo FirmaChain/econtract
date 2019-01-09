@@ -369,8 +369,18 @@ export default class extends React.Component {
     }
 
     next_term = ()=>{
-        this.setState({
+        let _ = {
             step: this.state.step + 1
+        }
+        if(this.state.step == 3) {
+            _.shuffled_mnemonic = this.state.mnemonic.split(" ").shuffle()
+        }
+        this.setState(_)
+    }
+
+    prev_term = () => {
+        this.setState({
+            step: this.state.step - 1
         })
     }
 
@@ -383,7 +393,8 @@ export default class extends React.Component {
         if(resp.code == 1){
             alert("이메일이 발송되었습니다!")
             this.setState({
-                step1:1
+                step1:1,
+                email_verification:false
             })
         }else if(resp.code == -1){
             alert("이미 가입 된 이메일입니다!")
@@ -419,14 +430,15 @@ export default class extends React.Component {
 
     onClickRequestPhone = async ()=>{
         if(this.state.userphone == null || this.state.userphone.length != 13 || !/^0\d{2}-\d{4}-\d{4}$/.test(this.state.userphone))
-            return alert("전화번호를 정확히 입력해주세요!")
+            return alert("휴대폰 번호를 정확히 입력해주세요!")
             
         await window.showIndicator();
         let resp = await this.props.request_phone_verification_code(this.state.userphone)
         if(resp.code == 1 && resp.payload == true){
             alert("인증번호가 발송되었습니다!")
             this.setState({
-                phone_verification_code_sent:true
+                phone_verification_code_sent:true,
+                verificated_phone:false
             })
         }else{
             alert("인증번호 전송에 문제가 생겼습니다!\n계속 문제가 발생할 경우 관리자에게 문의해주세요.")
@@ -572,6 +584,10 @@ export default class extends React.Component {
 
     onClickFinishSortTest = async ()=>{
         if(this.state.sort_test.map(e=>this.state.mnemonic.split(" ")[e]).join(" ") !== this.state.mnemonic){
+            this.setState({
+                shuffled_mnemonic:this.state.mnemonic.split(" ").shuffle(),
+                sort_test:[],
+            })
             return alert("순서가 맞지 않습니다. 다시 한번 확인해주세요!")
         }
         let account_type = this.getAccountType()
@@ -727,10 +743,10 @@ export default class extends React.Component {
                     <input className="common-textbox" type="email"
                         value={this.state.email || ""} 
                         onChange={e=>this.setState({email:e.target.value})}
-                        disabled={this.getAccountType() == 2 || this.state.step1 == 1}
+                        disabled={this.getAccountType() == 2 || this.state.email_verification}
                         placeholder="이메일을 정확하게 입력해주세요"/>
                 </div>
-                { type == 2 ? null : (this.state.step1 == 1 ?
+                { type == 2 ? null : (this.state.email_verification ?
                     <div className="gray-but">발송 완료</div> : 
                     <div className="blue-but" onClick={this.onClickRequestEmail}>인증메일 발송</div>)
                 }
@@ -801,12 +817,12 @@ export default class extends React.Component {
                 <div className="name">휴대폰 번호</div>
                 <div className="textbox">
                     <input className="common-textbox" type="text"
-                       value={this.state.userphone || ""} 
-                       onChange={this.onChangePhoneForm.bind(this,"userphone")}
-                       disabled={this.state.phone_verification_code_sent}
+                        value={this.state.userphone || ""} 
+                        onChange={this.onChangePhoneForm.bind(this,"userphone")}
+                        disabled={this.state.verificated_phone}
                         placeholder="휴대폰 번호를 정확하게 입력해주세요"/>
                 </div>
-                { this.state.phone_verification_code_sent ? null :
+                { this.state.verificated_phone ? null :
                     <div className="blue-but" onClick={this.onClickRequestPhone}>
                         발송
                     </div>
@@ -1001,6 +1017,7 @@ export default class extends React.Component {
     }
 
     render_confirm_masterkey(){
+        let shuffled_mnemonic = this.state.shuffled_mnemonic
         return (<div className="content">
             <div className="master-keyword-container">
                 <div className="sub-title-container">
@@ -1008,18 +1025,19 @@ export default class extends React.Component {
                 </div>
                 <div className="selection-list">
                     {this.state.sort_test.map((e,k)=>{
-                        return <div className="item" key={k}>{this.state.mnemonic.split(" ")[e]}</div>
+                        return <div className="item" key={k}>{e}</div>
                     })}
                     {this.render_empty_slot()}
                 </div>
                 <div className="split-line"></div>
                 <div className="list">
-                    {this.state.mnemonic.split(" ").map((e,k)=>[e,k]).shuffle().map((e,k)=>{
+                    {shuffled_mnemonic.map((e, k)=>{
+                        console.log(e, k)
                         return <div key={k} 
-                                    className={`item cursored ${this.state.sort_test.indexOf(e[1]) >= 0 ? "selected" : ""}`}
-                                    onClick={this.onClickSortTest.bind(this,e[1])}
+                                    className={`item cursored ${this.state.sort_test.indexOf(e) >= 0 ? "selected" : ""}`}
+                                    onClick={this.onClickSortTest.bind(this,e)}
                                 >
-                            {e[0]}
+                            {e}
                         </div>
                     })}
                 </div>
@@ -1028,6 +1046,7 @@ export default class extends React.Component {
                 <div className="confirm-button" onClick={this.onClickFinishSortTest}>
                     가입완료
                 </div>
+                <div className="transparent-button" onClick={this.prev_term}>뒤로가기</div>
             </div>
         </div>)
     }

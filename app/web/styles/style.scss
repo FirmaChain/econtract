@@ -167,7 +167,6 @@ a.fr-command {
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 10px;
         }
     }
 }
@@ -4893,6 +4892,21 @@ div.checkbox2-comp{
             color: $black;
             margin-bottom: 20px;
             margin-top: 20px;
+        }
+
+        >.image-upload {
+            text-align: center;
+
+            >.button {
+                font-size: $font2;
+                font-weight: bold;
+                color: white;
+                cursor: pointer;
+
+                background-color: $blue;
+                border:1px solid $blue;
+                padding:15px 20px;
+            }
         }
 
         >.button {

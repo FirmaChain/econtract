@@ -37,7 +37,7 @@ Number.prototype.number_format = function(){
 String.prototype.number_format = function(){
   return this.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
 }
-Array.prototype.suffle = function() {
+Array.prototype.shuffle = function() {
   let currentIndex = this.length, temporaryValue, randomIndex;
 
   while (0 !== currentIndex) {
