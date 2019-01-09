@@ -115,12 +115,12 @@ window.addEventListener("load",()=>{
 	);
 })
 
-fs.init().then(async()=>{
+/*fs.init().then(async()=>{
 	console.log("fs ready")
 }).catch(()=>{
 	// alert("파일 권한을 승인해주셔야 사용하실 수 있습니다.")
 	// location.reload()
-})
+})*/
 // fs.init().then(async()=>{
 // 	await fs.write("test",{ test:"test" })
 // 	console.log(await fs.read("test"))
