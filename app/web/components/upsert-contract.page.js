@@ -87,7 +87,7 @@ export default class extends React.Component {
         this.disconnect = false
         this.socket = socketIOClient(config.HOST)
         this.socket.on('disconnect', async () => {
-            console.log("disconnect socket")
+            //console.log("disconnect socket")
             this.disconnect = true
             for(let i in [0,0,0,0,0]) {
                 await new Promise(r=>setTimeout(r, 2000))
@@ -124,7 +124,7 @@ export default class extends React.Component {
             toolbarButtons:['paragraphFormat', 'fontFamily', 'fontSize', 'bold', 'italic', 'underline', 'strikeThrough', '|',
                 'color', 'align', 'outdent', 'indent', 'formatOL', 'formatUL', 'lineHeight', '|',
                 'subscript', 'superscript', 'quote', 'paragraphStyle', '-',
-                'insertLink', /*'insertImage'*/, 'insertTable', '|',
+                /*'insertLink', */'insertImage', 'insertTable', '|',
                 'specialCharacters', 'insertHR', 'selectAll', 'clearFormatting', '|',
                 'print', /*'getPDF', */'spellChecker', 'help', '|', 'undo', 'redo','fullscreen'],
 
@@ -141,7 +141,11 @@ export default class extends React.Component {
                     if(!!this.editor && !!this.state.contract && this.state.contract.status == 2) {
                         this.editor.edit.off()
                     }
-                }
+                },
+                'froalaEditor.image.inserted' : async (e, editor, $img, response) => {
+                    $img[0].src = window.getImageBase64Uri($img[0])
+                    return false;
+                },
             }
         }
 
@@ -283,7 +287,6 @@ export default class extends React.Component {
         //encrypt model
 
         let r = await this.props.update_contract_model(this.state.contract.contract_id, model, this.state.contract.the_key)
-        console.log(r)
         if(r.code == 1) {
             this.setState({
                 contract_modify_status:"마지막으로 수정한 내용이 저장되었습니다. " + moment().format("YYYY-MM-DD HH:mm:ss")
@@ -383,7 +386,6 @@ export default class extends React.Component {
 
         window.openModal("DrawSign",{
             onFinish : async (signature)=>{
-                console.log(signature)
                 //encrypt signature
                 await window.showIndicator()
                 let r = await this.props.update_contract_sign(this.state.contract.contract_id, signature, this.state.contract.the_key)

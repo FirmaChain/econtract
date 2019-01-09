@@ -173,6 +173,19 @@ window.eraseCookie = function(name) {
   document.cookie = name+'=; Max-Age=-99999999;';  
 }
 
+window.getImageBase64Uri = function (img) {
+    var canvas = document.createElement("canvas");
+    canvas.width = img.width;
+    canvas.height = img.height;
+
+    var ctx = canvas.getContext("2d");
+    ctx.drawImage(img, 0, 0, img.width, img.height);
+
+    var dataURL = canvas.toDataURL("image/png");
+
+    return dataURL;
+}
+
 window.clone_object = function (obj) {
   if (obj === null || typeof(obj) !== 'object')
   return obj;
