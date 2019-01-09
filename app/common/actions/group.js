@@ -19,6 +19,8 @@ import {
     api_update_group_public_key,
     api_exist_group_member,
     api_add_member_group_exist,
+    api_exist_in_progress_contract,
+    api_remove_corp_member,
 } from "../../../gen_api"
 
 import {
@@ -254,6 +256,20 @@ export function all_invite_list() {
 export function exist_group_member(group_id, email) {
     return async function() {
         let resp = await api_exist_group_member(group_id, email)
+        return resp
+    }
+}
+
+export function exist_in_progress_contract(account_id) {
+    return async function() {
+        let resp = await api_exist_in_progress_contract(account_id)
+        return resp
+    }
+}
+
+export function remove_corp_member(account_id) {
+    return async function() {
+        let resp = await api_remove_corp_member(account_id)
         return resp
     }
 }

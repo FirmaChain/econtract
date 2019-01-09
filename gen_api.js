@@ -416,6 +416,15 @@ export async function api_all_invite_list(){
         session:window.getCookie("session")
     });
 }
+export async function api_exist_in_progress_contract(account_id){
+    let __data = new FormData();
+
+    if(account_id != null) __data.append('account_id', account_id)
+
+    return await post("/exist_in_progress_contract", __data,{
+        session:window.getCookie("session")
+    });
+}
 export async function api_remove_corp_member(account_id){
     let __data = new FormData();
 
