@@ -786,18 +786,21 @@ class DrawSign extends React.Component{
         reader.onload = () => {
             let img = new Image()
             img.onload = () => {
-                this.refs.canvas.getContext('2d').save();
-                this.refs.canvas.getContext('2d').setTransform(1, 0, 0, 1, 0, 0);
-                this.refs.canvas.getContext('2d').clearRect(0, 0, this.refs.canvas.width, this.refs.canvas.height)
-                this.refs.canvas.getContext('2d').restore();
+                let ctx = this.refs.canvas.getContext('2d');
+
+                ctx.save();
+                ctx.setTransform(1, 0, 0, 1, 0, 0);
+                ctx.clearRect(0, 0, this.refs.canvas.width, this.refs.canvas.height)
+                ctx.restore();
 
                 let max = Math.max(img.width / 490, img.height / 240)
                 let width = img.width / max
                 let height = img.height / max
 
-                this.refs.canvas.getContext('2d').drawImage(img, 500 / 2 - width / 2, 250 / 2 - height / 2, width, height);
-                this.isDrawing = false;
+                ctx.drawImage(img, 500 / 2 - width / 2, 250 / 2 - height / 2, width, height);
+                this.isDrawing = false
                 this.isImage = true
+                this.first_drawing = true
             }
             img.src = reader.result
         }
@@ -807,12 +810,14 @@ class DrawSign extends React.Component{
     }
 
     onClear = () => {
-        this.refs.canvas.getContext('2d').save();
-        this.refs.canvas.getContext('2d').setTransform(1, 0, 0, 1, 0, 0);
-        this.refs.canvas.getContext('2d').clearRect(0, 0, this.refs.canvas.width, this.refs.canvas.height)
-        this.refs.canvas.getContext('2d').restore();
+        let ctx = this.refs.canvas.getContext('2d');
+        ctx.save();
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+        ctx.clearRect(0, 0, this.refs.canvas.width, this.refs.canvas.height)
+        ctx.restore();
         this.isImage = false
-        this.isDrawing = false;
+        this.isDrawing = false
+        this.first_drawing = false
     }
     
     onmousedown = (e)=>{
@@ -823,6 +828,7 @@ class DrawSign extends React.Component{
 
         this.isDrawing = true;
         ctx.moveTo(e.clientX - e.target.offsetLeft, e.clientY - e.target.offsetTop);
+        ctx.closePath()
     }
 
     onmousemove = (e)=>{
@@ -846,6 +852,7 @@ class DrawSign extends React.Component{
 
         this.isDrawing = false;
         let ctx = this.refs.canvas.getContext('2d');
+        ctx.beginPath()
     }
 
     render(){
@@ -857,14 +864,14 @@ class DrawSign extends React.Component{
                 <div className="desc">다른 사람들이 모두 서명을 했다면 계약이 완료됩니다.<br/>서명을 하기전에 신중하게 계약서 내용을 검토해주세요.</div>
                 
                 <div className="canvas">
-                    <canvas ref="canvas" 
-                        width="500"
-                        height="250"
-                        onMouseDown={this.onmousedown} 
-                        onMouseMove={this.onmousemove}
-                        onMouseUp={this.onmouseup} />
                     <div className="clear" onClick={this.onClear}>초기화</div>
                 </div>
+                <canvas ref="canvas" 
+                    width="500"
+                    height="250"
+                    onMouseDown={this.onmousedown} 
+                    onMouseMove={this.onmousemove}
+                    onMouseUp={this.onmouseup} />
 
                 <div className="image-upload">
                     <div className="button" onClick={()=>this.refs['sign-image'].click()}>이미지 업로드</div>
