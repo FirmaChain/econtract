@@ -626,8 +626,11 @@ export default class extends React.Component {
             } 
         }
 
-        let usernames = e.user_infos.map(ee => ee.username).filter( ee => !!ee)
-        usernames = usernames.join(", ")
+        let usernames = ""
+        if(typeof(e.user_infos) == "object") {
+            usernames = e.user_infos.map(ee => ee.username).filter( ee => !!ee)
+            usernames = usernames.join(", ")
+        }
 
         return <div key={e.contract_id} className="item" onClick={this.onClickOpenContract.bind(this, e, 0)}>
             <div className="list-body-item list-chkbox">

@@ -565,7 +565,7 @@ export default class extends React.Component {
 
 		return (<div className="group-page">
 			<div className="contract-group-menu">
-				<div className="left-top-button" onClick={this.onClickAddGroupMember}>직원 계정 추가하기</div>
+				<div className="left-top-button" onClick={this.onClickAddGroupMember}>그룹원 계정 추가하기</div>
 				<div className="menu-list">
                     <div className="list">
                         <div className={"item" + (this.getTitle().id == "all" ? " selected" : "")} onClick={this.moveGroup.bind(this, "")}>

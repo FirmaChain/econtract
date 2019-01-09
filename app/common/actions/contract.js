@@ -149,15 +149,7 @@ export function get_contracts(type, status, page, display_count = 10, sub_status
                     })
                 })
 
-                let my_info = [{
-                    entity_id:v.entity_id,
-                    corp_id:v.corp_id,
-                    epin:v.epin,
-                    eckai:v.eckai,
-                    is_pin_null:v.is_pin_null
-                }]
-
-                let subject = select_subject(my_info, groups, user_info.account_id, corp_id, v.is_pin_used);
+                let subject = select_subject(infos, groups, user_info.account_id, corp_id, v.is_pin_used);
                 if (!subject.my_info) continue;
 
 
