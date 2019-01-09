@@ -207,7 +207,7 @@ export function get_contract(contract_id, user_info, groups = []) {
         let resp = await api_get_contract(contract_id)
         if(resp.code == 1) {
             let corp_id = user_info.corp_id || -1;
-            let subject = select_subject(resp.payload.infos, groups, user_info.account_id, corp_id, resp.payload.is_pin_used);
+            let subject = select_subject(resp.payload.infos, groups, user_info.account_id, corp_id, resp.payload.contract.is_pin_used);
             if (!subject.my_info) return null;
 
             let shared_key;
