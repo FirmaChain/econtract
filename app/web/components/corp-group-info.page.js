@@ -153,7 +153,6 @@ export default class extends React.Component {
         if(this.state.add_email == "")
             return alert("초대하려는 그룹원의 이메일을 입력해주세요.")
         
-
         let email = this.state.add_email.trim()
 
         if(!window.email_regex.test(email))

@@ -1004,6 +1004,67 @@ class ContractListModal extends React.Component {
     }
 }
 
+@modal
+class AddGroupMember extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            email:"",
+            selected_group:null
+        };
+    }
+
+    componentDidMount() {
+
+    }
+
+    closeSelf = ()=>{
+        window.closeModal(this.props.modalId)
+    }
+
+    onConfirm = (group)=>{
+        if(!this.state.selected_group)
+            return alert("그룹을 선택해주세요.")
+
+        this.props.onConfirm && this.props.onConfirm(this.state.email, group)
+        this.closeSelf()
+    }
+
+    render() {
+        return <div className="add-group-member-modal default-modal-container">
+            <div className="container">
+                <div className="icon"><i className="fas fa-users"></i></div>
+                <div className="title">직원 계정 추가하기</div>
+                <div className="desc">직원 계정을 추가합니다.<br/>이미 직원인 계정을 추가하면 지정하신 그룹에 할당됩니다.</div>
+
+                <div className="text-box">
+                    <div className="sub-title">이메일</div>
+                    <input type="text" className="common-textbox"
+                        onChange={(e)=>this.setState({email:e.target.value})}
+                        value={this.state.email}
+                        placeholder="초대하실 이메일을 입력해주세요."/>
+                </div>
+                <div className="text-box">
+                    <div className="sub-title">그룹</div>
+                    <Dropdown className="common-select"
+                        controlClassName="control"
+                        menuClassName="item"
+                        options={this.props.list}
+                        onChange={e=>{this.setState({selected_group:e, selected_group_label:e.label})}}
+                        value={this.state.selected_group_label} placeholder="그룹" />
+                </div>
+                
+
+                <div className="button">
+                    <div className="submit" onClick={this.onConfirm}>추가</div>
+                    <div className="cancel" onClick={this.closeSelf}>취소</div>
+                </div>
+            </div>
+        </div>
+    }
+
+}
+
 
 
 

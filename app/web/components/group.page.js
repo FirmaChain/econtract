@@ -34,6 +34,10 @@ import {
     update_group_public_key,
     get_contracts,
     fetch_user_info,
+    exist_group_member,
+    add_member_group,
+    add_member_group_exist,
+    all_invite_list,
 } from "../../common/actions"
 
 let mapStateToProps = (state)=>{
@@ -61,6 +65,10 @@ let mapDispatchToProps = {
     update_group_public_key,
     get_contracts,
     fetch_user_info,
+    exist_group_member,
+    add_member_group,
+    add_member_group_exist,
+    all_invite_list,
 }
 
 const LIST_DISPLAY_COUNT = 6
@@ -158,8 +166,102 @@ export default class extends React.Component {
         })
 	}
 
-    onClickAddGroupMember = () => {
-        // window.openModal("")
+    onClickAddGroupMember = async () => {
+        let groups = await this.props.get_group_info(0)
+        window.openModal("AddGroupMember", {
+            list: groups.map(e=>{return {...e, value:e.group_id, label:e.title}}),
+            onConfirm: async (email, group) => {
+
+                if(email == "")
+                    return alert("초대하려는 그룹원의 이메일을 입력해주세요.")
+                
+                email = email.trim()
+
+                if(!window.email_regex.test(email))
+                    return alert("이메일이 형식에 맞지 않습니다.")
+
+                await window.showIndicator()
+
+                let exist = await this.props.exist_group_member(group.group_id, email)
+
+                let group_key = get256bitDerivedPublicKey(Buffer.from(this.props.user_info.corp_master_key, 'hex'), "m/0'/"+group.group_id+"'").toString('hex');
+
+                let data = {
+                    company_name: this.props.user_info.company_name,
+                    duns_number: this.props.user_info.duns_number,
+                    company_ceo: this.props.user_info.company_ceo,
+                    company_address: this.props.user_info.company_address,
+                    corp_key:this.props.user_info.corp_key,
+                    corp_id:this.props.user_info.corp_id,
+                    group_id:group.group_id,
+                    group_key,
+                }
+
+                if(exist.code == -5) {
+
+                    let data_for_inviter = {
+                        email
+                    }
+
+                    let all_invite_list = await this.props.all_invite_list()
+
+                    for(let v of all_invite_list) {
+                        if(v.email_hashed == md5(email+v.passphrase1) ) {
+                            await window.hideIndicator()
+                            if(v.group_id == this.getGroupId())
+                                return alert("이미 해당 그룹에 초대중인 사용자입니다.")
+                            else
+                                return alert("이미 다른 그룹에서 초대중인 사용자입니다.")
+                        }
+                    }
+
+                    let resp = await this.props.add_member_group(this.getGroupId(), email, this.props.user_info.corp_key, data, data_for_inviter);
+                    if(resp) {
+                        if(resp.code == 1) {
+                            this.setState({
+                                add_email:""
+                            })
+                            alert("성공적으로 그룹에 초대하였습니다.")
+                        } else if(resp.code == 2) {
+                            alert("이미 해당 그룹에 속해있는 사용자 입니다.")
+                        } else if(resp.code == -5) {
+                            alert("이메일이 형식에 맞지 않습니다.")
+                        } else if(resp.code == -7) {
+                            alert("가입은 되었으나 초대 이메일을 보내지 못했습니다. 초대 코드는 " + resp.invite_code + " 입니다.")
+                        } else if(resp.code == -8) {
+                            alert("이미 개인 계정으로 가입되어 있습니다.")
+                        } else if(resp.code == -9) {
+                            alert("이미 기업 계정으로 가입되어 있습니다.")
+                        }
+                        await this.onRefresh()
+                    }
+                } else if(exist.code == 1) {
+                    let data = {
+                        group_id:group.group_id,
+                        group_key,
+                    }
+                    let resp = await this.props.add_member_group_exist(exist.payload.account_id, group.group_id, email, data)
+
+                    if(resp.code == 1) {
+                        this.setState({
+                            add_email:""
+                        })
+                        await this.onRefresh()
+                        alert("성공적으로 그룹에 초대하였습니다.")
+                    } else if(resp.code == -7) {
+                        alert("해당 이메일로 가입한 계정이 없습니다.")
+                    } else if(resp.code == -8) {
+                        alert("이미 개인 계정으로 가입되어 있습니다.")
+                    } else if(resp.code == -9) {
+                        alert("이미 기업 계정으로 가입되어 있습니다.")
+                    }
+
+                } else if(exist.code == -6) {
+                    alert("이미 해당 그룹에 속해있는 사용자 입니다.")
+                }
+                await window.hideIndicator()
+            }
+        })
     }
 
 	getTitle() {

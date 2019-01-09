@@ -63,6 +63,12 @@ export default class extends React.Component {
             step: this.state.step+1
         })
     }
+    
+    prev_term = () => {
+        this.setState({
+            step: this.state.step - 1
+        })
+    }
 
     onClickInputMnemonic = async() => {
         if (!this.state.mnemonic) {
@@ -212,6 +218,7 @@ export default class extends React.Component {
             </div>
 
             <div className="bottom-container">
+                <div className="back-button" onClick={this.prev_term}>뒤로가기</div>
                 <div className="confirm-button" onClick={this.onClickRecoverMyAccount}>
                     기존 계정으로 로그인
                 </div>
