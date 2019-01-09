@@ -1022,11 +1022,11 @@ class AddGroupMember extends React.Component {
         window.closeModal(this.props.modalId)
     }
 
-    onConfirm = (group)=>{
+    onConfirm = ()=>{
         if(!this.state.selected_group)
             return alert("그룹을 선택해주세요.")
 
-        this.props.onConfirm && this.props.onConfirm(this.state.email, group)
+        this.props.onConfirm && this.props.onConfirm(this.state.email, this.state.selected_group)
         this.closeSelf()
     }
 
