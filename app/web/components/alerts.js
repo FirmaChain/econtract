@@ -214,6 +214,8 @@ class CardInfo extends React.Component {
             selected_expiration_year: 0,
             selected_expiration_month_label: "",
             selected_expiration_year_label: "",
+            card_number: "",
+            social_number_front: "",
         };
     }
 
