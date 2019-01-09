@@ -302,7 +302,7 @@ export default class extends React.Component {
                 let username = ""
                 if(!!this.state.member)
                     username = this.state.member.data.username
-                return { id:"unclassified", account_id:account_id, title : "분류되지 않은 그룹원 #" + username}
+                return { id:"unclassified", account_id:account_id, title : "#분류되지 않은 그룹원 " + username}
             }
             else {
                 return { id:"unclassified", title : "분류되지 않은 그룹원"}
@@ -313,7 +313,7 @@ export default class extends React.Component {
                 let username = ""
                 if(!!this.state.member)
                     username = this.state.member.data.username
-                return { id:"withdraw", account_id:account_id, title : "탈퇴한 그룹원 #" + username}
+                return { id:"withdraw", account_id:account_id, title : "#탈퇴한 그룹원 " + username}
             }
             else {
                 return { id:"withdraw", title : "탈퇴한 그룹원"}
@@ -413,6 +413,8 @@ export default class extends React.Component {
         let result
         if(group_id == "all") {
             result = await this.props.get_contracts(5, -1, page, LIST_DISPLAY_COUNT, -1, -1, this.props.user_info, groups, search_text)
+        } else if( group_id == "withdraw" && account_id != null ) {
+            result = await this.props.get_contracts(5, -1, page, LIST_DISPLAY_COUNT, account_id, -1, this.props.user_info, groups, search_text)
         } else if( !isNaN(group_id) && account_id != null ) {
             result = await this.props.get_contracts(5, -1, page, LIST_DISPLAY_COUNT, account_id, group_id, this.props.user_info, groups, search_text)
         }

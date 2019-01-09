@@ -336,7 +336,7 @@ export default class extends React.Component {
 
     onClickRegiserSignInfo = async () => {
 
-        let sign_info = this.state.sign_info || {}
+        let sign_info = Object.assign(this.state.sign_info, {}) || {}
         let sign_info_list
 
         if(this.props.user_info.account_type == 0) {
@@ -346,7 +346,8 @@ export default class extends React.Component {
         }
 
         for(let v of sign_info_list) {
-            if(!sign_info["#"+v] || sign_info["#"+v] == "") {
+            if(!sign_info["#"+v] || sign_info["#"+v].trim() == "") {
+                sign_info["#"+v] = sign_info["#"+v].trim()
                 return alert("서명 정보를 모두 입력해주세요. " + v)
             }
         }
@@ -356,7 +357,7 @@ export default class extends React.Component {
                 await this.onClickContractSave()
 
         await window.showIndicator()
-        let r = await this.props.update_contract_sign_info(this.state.contract.contract_id, this.state.sign_info, this.state.contract.the_key)
+        let r = await this.props.update_contract_sign_info(this.state.contract.contract_id, sign_info, this.state.contract.the_key)
         if(r.code == -9) alert("이미 완료된 계약은 서명 정보를 업데이트할 수 없습니다.")
         //await this.onRefresh()
         this.onToggleRegisterSignForm()
