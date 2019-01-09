@@ -647,7 +647,7 @@ export default class extends React.Component {
             <div className="list-body-item list-action">
                 <div className="button-container">
                     <div className={"action-button " + (e.status == 2 ? "action-transparent-but" : "action-blue-but")} onClick={this.onClickOpenContract.bind(this, e, 1)}>
-                        {e.status == 2 ? "이동" : "서명"}
+                        {e.status == 2 ? "보기" : "서명"}
                     </div>
                     <div className={"arrow-button " + (e.status == 2 ? "arrow-transparent-but" : "arrow-blue-but")} onClick={this.onClickOption.bind(this, e.contract_id)} >
                         <i className="fas fa-caret-down"></i>

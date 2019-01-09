@@ -4,6 +4,7 @@ import {modal} from "./modalmanager"
 import SignerSlot from "./signer-slot"
 import history from '../history';
 import translate from "../../common/translate"
+import moment from "moment"
 
 import Dropdown from "react-dropdown"
 import 'react-dropdown/style.css'
@@ -753,7 +754,6 @@ class DrawSign extends React.Component{
     }
 
     finishDraw = ()=>{
-        console.log("finishDraw", this.first_drawing)
         if(!this.first_drawing)
             return alert("서명을 그려주세요.")
 
@@ -782,8 +782,10 @@ class DrawSign extends React.Component{
 
     onUploadSignImage = async (e) => {
         let file = e.target.files[0];
-        if(!file)
+        if(!file) {
+            console.log("no file")
             return
+        }
 
         await window.showIndicator()
 
@@ -792,6 +794,7 @@ class DrawSign extends React.Component{
 
         let reader = new FileReader();
         reader.onload = () => {
+            console.log("asdasd")
             let img = new Image()
             img.onload = () => {
                 let ctx = this.refs.canvas.getContext('2d');
@@ -883,7 +886,10 @@ class DrawSign extends React.Component{
                     onMouseUp={this.onmouseup} />
 
                 <div className="image-upload">
-                    <div className="button" onClick={()=>this.refs['sign-image'].click()}>이미지 업로드</div>
+                    <div className="button" onClick={()=>{
+                        this.refs['sign-image'].value = ""
+                        this.refs['sign-image'].click()
+                    }}>이미지 업로드</div>
                     <input ref="sign-image" type="file" accept=".png, .jpg, .jpeg" onChange={this.onUploadSignImage} style={{display:"none"}}/>
                 </div>
 

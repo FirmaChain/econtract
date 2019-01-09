@@ -99,9 +99,9 @@ export default class extends React.Component {
 
         if(account_id) {
             let member = await this.props.get_corp_member_info(account_id, this.props.user_info.corp_key)
-            await this.props.openGroup(member.group_id)
             _.member = member
         }
+        await this.props.openGroup(menu)
 
         await this.setState({
             ..._,
@@ -193,7 +193,15 @@ export default class extends React.Component {
             }
         }
 		else if(menu == "withdraw") {
-			return { id:"withdraw", title : "탈퇴한 그룹원"}
+            if(!!account_id) {
+                let username = ""
+                if(!!this.state.member)
+                    username = this.state.member.data.username
+                return { id:"withdraw", account_id:account_id, title : "탈퇴한 그룹원 #" + username}
+            }
+            else {
+                return { id:"withdraw", title : "탈퇴한 그룹원"}
+            }
         }
 		return { id:"all", title : "모든 계약"}
 	} 
@@ -459,7 +467,7 @@ export default class extends React.Component {
                                     memberList.push(<div key={e.group_id+" "+v.account_id} className={"item sub" + (this.isOpenGroup(e.group_id) ? "" : " hide") + ( (this.getTitle().id == e.group_id && this.getTitle().account_id != null && this.getTitle().account_id == account_id) ? " selected" : "")} onClick={this.moveGroupMember.bind(this, e.group_id, v.account_id)}>
                                         <i className="icon fas fa-user"></i>
                                         <div className="text">{v.data.username}</div>
-                                        <i className="setting far fa-ellipsis-h"></i>
+                                        {/*<i className="setting far fa-ellipsis-h"></i>*/}
                                     </div>)
                                 }
                             }
@@ -475,25 +483,33 @@ export default class extends React.Component {
                         })}
 
 
-						<div className={"item" + (this.getTitle().id == "unclassified" ? " selected" : "")} onClick={this.moveGroup.bind(this, "unclassified")}>
+						<div className={"item" + (this.getTitle().id == "unclassified" ? " selected" : "")} onClick={async () => {await this.props.openGroup("unclassified")}}>
                             <i className="icon fas fa-share-square"></i> 
                             <div className="text">분류되지 않은 그룹원</div>
                             <i className={"angle far "  + ( this.isOpenGroup("unclassified") ? "fa-angle-down" : "fa-angle-up")} onClick={this.openCloseGroup.bind(this, "unclassified")}></i>
                         </div>
-                        {members.filter(e=>e.group_ids == null).map((e,k)=>{
+                        {members.filter(e=>e.group_ids == null && e.is_enable == 1).map((e,k)=>{
                             return <div key={"unclassified "+e.account_id} className={"item sub" + (this.isOpenGroup("unclassified") ? "" : " hide")} onClick={this.moveGroupMember.bind(this, "unclassified", e.account_id)}>
                                 <i className="icon fas fa-user"></i>
                                 <div className="text">{e.data.username}</div>
-                                <i className="setting far fa-ellipsis-h"></i>
                             </div>
                         })}
-                        {members.filter(e=>e.group_ids == null).length == 0 ? <div className={"empty-person" + (this.isOpenGroup("unclassified") ? "" : " hide")}>그룹원이 없습니다</div> : null}
+                        {members.filter(e=>e.group_ids == null && e.is_enable == 1).length == 0 ? <div className={"empty-person" + (this.isOpenGroup("unclassified") ? "" : " hide")}>그룹원이 없습니다</div> : null}
 
-						<div className={"item" + (this.getTitle().id == "withdraw" ? " selected" : "")} onClick={this.moveGroup.bind(this, "withdraw")}>
+
+
+						<div className={"item" + (this.getTitle().id == "withdraw" ? " selected" : "")} onClick={async () => {await this.props.openGroup("withdraw")}}>
                             <i className="icon fas fa-handshake-alt"></i>
                             <div className="text">탈퇴한 그룹원</div>
                             <i className={"angle far "  + ( this.isOpenGroup("withdraw") ? "fa-angle-down" : "fa-angle-up")} onClick={this.openCloseGroup.bind(this, "withdraw")}></i>
                         </div>
+                        {members.filter(e=>e.is_enable == 0).map((e,k)=>{
+                            return <div key={"withdraw "+e.account_id} className={"item sub" + (this.isOpenGroup("withdraw") ? "" : " hide")} onClick={this.moveGroupMember.bind(this, "withdraw", e.account_id)}>
+                                <i className="icon fas fa-user"></i>
+                                <div className="text">{e.data.username}</div>
+                            </div>
+                        })}
+                        {members.filter(e=>e.is_enable == 0).length == 0 ? <div className={"empty-person" + (this.isOpenGroup("withdraw") ? "" : " hide")}>그룹원이 없습니다</div> : null}
 					</div>
 				</div>
 			</div>
