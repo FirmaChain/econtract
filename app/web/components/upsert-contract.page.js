@@ -179,7 +179,9 @@ export default class extends React.Component {
         history.block( (targetLocation) => {
             if(this.blockFlag)
                 return true
-            if(this.state.contract.html == this.state.model)
+            if(this.state.contract && this.state.contract.html == this.state.model)
+                return true
+            if(!this.state.contract)
                 return true
             
             let out_flag = window._confirm("계약서 수정 작업을 중단하고 현재 페이지를 나가시겠습니까?")
