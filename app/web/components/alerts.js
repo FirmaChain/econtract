@@ -251,7 +251,7 @@ class CardInfo extends React.Component {
             cvc: this.state.cvc,
             month: this.state.selected_expiration_month,
             year: this.state.selected_expiration_year,
-            id_number: social_number_front,
+            id_number: this.state.social_number_front,
         });
         this.closeSelf();
     }
