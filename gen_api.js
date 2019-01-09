@@ -471,6 +471,15 @@ export async function api_input_payment_info(data,preview_data){
         session:window.getCookie("session")
     });
 }
+export async function api_get_payment_info(){
+    let __data = new FormData();
+
+    
+
+    return await post("/get_payment_info", __data,{
+        session:window.getCookie("session")
+    });
+}
 export async function api_add_template(subject,folder_id,html){
     let __data = new FormData();
 

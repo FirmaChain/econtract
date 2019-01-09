@@ -24,6 +24,7 @@ import {
     get_current_subscription,
     get_current_onetime_ticket,
     input_payment_info,
+    get_payment_info,
 } from "../../common/actions"
 
 let mapStateToProps = (state)=>{
@@ -38,6 +39,7 @@ let mapDispatchToProps = {
     get_current_subscription,
     get_current_onetime_ticket,
     input_payment_info,
+    get_payment_info,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -52,11 +54,14 @@ export default class extends React.Component {
             let subscription_plans = (await this.props.get_subscribe_plan()).map((e)=>{e.data = JSON.parse(e.data); return e});
             let current_subscription = await this.props.get_current_subscription();
             let current_onetime_ticket = await this.props.get_current_onetime_ticket();
+            let payment_info = await this.props.get_payment_info();
+            let partial_payment_info = payment_info.preview_data;
 
             this.setState({
                 subscription_plans,
                 current_subscription,
                 current_onetime_ticket,
+                partial_payment_info,
             })
         })()
     }
@@ -167,7 +172,7 @@ export default class extends React.Component {
                         <div className="bar gray-bar">
                             <div className="left">
                                 <div className="title">결제 정보</div>
-                                <div className="desc">기업 | 4854-****-****-****</div>
+                                <div className="desc">{this.state.partial_payment_info}</div>
                             </div>
                             <div className="right">
                                 <div className="button" onClick={this.onChangeCardInfo}>변경</div>
