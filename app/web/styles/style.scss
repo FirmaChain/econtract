@@ -2354,6 +2354,7 @@ div.checkbox2-comp{
                                 font-size: $font1;
                                 font-weight:bold;
                                 color:$black;
+                                word-break:break-all;
                             }
 
                             >.desc {
@@ -2361,6 +2362,7 @@ div.checkbox2-comp{
                                 color:$black;
                                 margin-top:5px;
                                 margin-bottom:20px;
+                                word-break:break-all;
 
                                 >img {
                                     width:200px;
@@ -3457,11 +3459,13 @@ div.checkbox2-comp{
 
                         >.first {
                             margin-right:10px;
+                            word-break:break-all;
                         }
 
                         >.last {
                             flex:1;
                             margin-left:10px;
+                            word-break:break-all;
                         }
                     }
 
