@@ -822,7 +822,6 @@ class DrawSign extends React.Component{
         let ctx = this.refs.canvas.getContext('2d');
 
         this.isDrawing = true;
-        ctx.beginPath();
         ctx.moveTo(e.clientX - e.target.offsetLeft, e.clientY - e.target.offsetTop);
     }
 
@@ -847,8 +846,6 @@ class DrawSign extends React.Component{
 
         this.isDrawing = false;
         let ctx = this.refs.canvas.getContext('2d');
-
-        ctx.closePath();
     }
 
     render(){
