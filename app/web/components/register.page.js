@@ -669,10 +669,11 @@ export default class extends React.Component {
             let encryptedPublicInfo = aes_encrypt(JSON.stringify(public_info), Buffer.from(info['corp_key'], 'hex'));
             let consumeResp = await this.props.consume_invitation(this.state.registration_code, encryptedPublicInfo);
             if (!consumeResp) {
-                return alert("초대 코드 소모에 실패하였습니다.");
+                return alert("초대 코드 사용에 실패하였습니다.");
             }
         }
         await window.hideIndicator()
+        window.logout();
 
         if(resp.code == 1){
             localStorage.setItem("browser_key_virgin", 0);
