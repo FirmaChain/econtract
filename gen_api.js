@@ -747,3 +747,12 @@ export async function api_update_user_public_info(encrypted_info){
         session:window.getCookie("session")
     });
 }
+export async function api_update_username(username){
+    let __data = new FormData();
+
+    if(username != null) __data.append('username', username)
+
+    return await post("/update_username", __data,{
+        session:window.getCookie("session")
+    });
+}
