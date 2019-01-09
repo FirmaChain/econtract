@@ -182,7 +182,7 @@ export default class extends React.Component {
                         <div className="bar gray-bar">
                             <div className="left">
                                 <div className="title">결제 정보</div>
-                                <div className="desc">{this.state.partial_payment_info.partial_card_number}</div>
+                                <div className="desc">{this.state.partial_payment_info ? this.state.partial_payment_info.partial_card_number : "미등록상태"}</div>
                             </div>
                             <div className="right">
                                 <div className="button" onClick={this.onChangeCardInfo}>변경</div>
