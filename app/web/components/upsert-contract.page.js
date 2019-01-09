@@ -359,7 +359,9 @@ export default class extends React.Component {
     }
 
     onClickRegisterSign = async () => {
-        if(this.state.contract.html != this.state.model)
+        console.log(this.state.contract.html)
+        console.log(this.state.model)
+        if( (this.state.contract.html || "") != this.state.model)
             return alert("수정중인 내용이 있으면 서명할 수 없습니다.")
 
         let me = select_subject(this.state.infos, [], this.props.user_info.account_id, -1).my_info
