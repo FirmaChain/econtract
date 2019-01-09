@@ -23,6 +23,7 @@ import {
     get_contract,
     get_group_info,
     get_chats,
+    update_epin_account,
     getGroupKey,
     select_subject,
 } from "../../common/actions"
@@ -39,6 +40,7 @@ let mapDispatchToProps = {
     get_contract,
     get_group_info,
     get_chats,
+    update_epin_account,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -83,6 +85,10 @@ export default class extends React.Component {
             }
 
             if(contract.payload.contract) {
+
+                if(contract.payload.contract.is_pin_used == 1 && contract.payload.contract.pin && contract.payload.contract.pin != "000000") 
+                    await this.props.update_epin_account(contract_id, contract.payload.contract.pin);
+            
                 this.setState({
                     ...contract.payload,
                     groups
@@ -272,16 +278,6 @@ export default class extends React.Component {
         }
         users = users.join(", ")
 
-        let pin = "000000"
-        if(contract.is_pin_used) {
-            if(isAccount)
-                pin = decryptPIN(Buffer.from(meOrGroup.epin, 'hex').toString('hex'))
-            else {
-                let group_key = getGroupKey(this.props.user_info, meOrGroup.entity_id)
-                pin = decryptPIN(Buffer.from(meOrGroup.epin, 'hex').toString('hex'), Buffer.from(group_key, 'hex'))
-            }
-        }
-
         return <div className="deck informations">
             <div className="item">
                 <div className="title">계약명</div>
@@ -301,7 +297,7 @@ export default class extends React.Component {
             </div>
             <div className="item">
                 <div className="title">PIN 번호</div>
-                <div className="desc">{contract.is_pin_used == 0 ? "PIN이 없습니다." : pin}</div>
+                <div className="desc">{contract.is_pin_used == 0 ? "PIN이 없습니다." : contract.pin}</div>
             </div>
             <div className="item">
                 <div className="title">IPFS ID</div>
