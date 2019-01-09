@@ -192,6 +192,10 @@ a.fr-command {
         font-size: $font0;
         color:$gray;
         text-align:center;
+
+        >span {
+            cursor:pointer;
+        }
     }
 
     .right {
