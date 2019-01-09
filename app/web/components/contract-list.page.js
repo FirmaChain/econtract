@@ -209,7 +209,7 @@ export default class extends React.Component {
         else if(menu == "completed") {
             result = await this.props.get_contracts(0, 2, page, LIST_DISPLAY_COUNT, -1, group_id, this.props.user_info, groups, search_text)
         }
-        else if(menu == "group_view") {
+        else if(menu == "view-group") {
             result = await this.props.get_contracts(0, 3, page, LIST_DISPLAY_COUNT, 0, group_id, this.props.user_info, groups, search_text)
         }
         else if(menu == "my_view") {
@@ -270,8 +270,8 @@ export default class extends React.Component {
 		else if(menu == "completed") {
 			result = { id:"completed", title : "완료됨"}
 		}
-        else if(menu == "group_view") {
-            result = { id:"group_view", title : "그룹 보기 가능"}
+        else if(menu == "view-group") {
+            result = { id:"view-group", title : "그룹 보기 가능"}
         }
 		else if(menu == "my_view") {
 			result = { id:"my_view", title : "개인 문서함"}
@@ -711,7 +711,7 @@ export default class extends React.Component {
 						<div className={"item" + (this.getTitle().id == "beforeMySign" ? " selected" : "")} onClick={this.move.bind(this, "beforeMySign")}><i className="icon far fa-file-import"></i> <div className="text">서명 전</div></div>
 						{/*<div className={"item" + (this.getTitle().id == "beforeOtherSign" ? " selected" : "")} onClick={this.move.bind(this, "beforeOtherSign")}><i className="icon far fa-file-export"></i> <div className="text">상대방 서명 전</div></div>*/}
 						<div className={"item" + (this.getTitle().id == "completed" ? " selected" : "")} onClick={this.move.bind(this, "completed")}><i className="icon fal fa-check-circle"></i> <div className="text">완료됨</div></div>
-                        {account_type != 0 ? <div className={"item" + (this.getTitle().id == "group_view" ? " selected" : "")} onClick={this.move.bind(this, "group_view")}><i className="icon fas fa-eye"></i> <div className="text">그룹 보기 가능</div></div> : null}
+                        {account_type != 0 ? <div className={"item" + (this.getTitle().id == "view-group" ? " selected" : "")} onClick={this.move.bind(this, "view-group")}><i className="icon fas fa-eye"></i> <div className="text">그룹 보기 가능</div></div> : null}
 					</div>
 					<div className="list">
 						<div className="title">
