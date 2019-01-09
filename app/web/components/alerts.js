@@ -894,7 +894,7 @@ class DrawSign extends React.Component{
 }
 
 @modal
-class MoveToFolder extends React.Component{
+class MoveToFolder extends React.Component {
 
     constructor(props) {
         super(props);
@@ -922,7 +922,6 @@ class MoveToFolder extends React.Component{
     render(){
         return <div className="move-folder default-modal-container">
             <div className="container">
-
                 <div className="icon"><i className="far fa-folder"></i></div>
                 <div className="title">폴더 지정</div>
                 
@@ -946,6 +945,63 @@ class MoveToFolder extends React.Component{
         </div>
     }
 }
+
+@modal
+class ContractListModal extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {};
+    }
+
+    componentDidMount() {
+
+    }
+
+    closeSelf = ()=>{
+        window.closeModal(this.props.modalId)
+    }
+
+    onConfirm = ()=>{
+        this.props.onConfirm && this.props.onConfirm()
+        this.closeSelf()
+    }
+
+    onMoveContract = (contract_id) => {
+        history.push("/contract-info/"+contract_id)
+    }
+
+
+    render() {
+        return <div className="contract-list-modal default-modal-container">
+            <div className="container">
+                <div className="icon"><i className={this.props.icon}></i></div>
+                <div className="title">{this.props.title}</div>
+                <div className="desc" dangerouslySetInnerHTML={{__html:this.props.desc}}></div>
+
+                <div className="list">
+                    {this.props.list.map( (e, k) => {
+                        return <div className="item" key={k} onClick={this.onMoveContract.bind(this, e.contract_id)}>
+                            {e.name}
+                        </div>
+                    })}
+                </div>
+
+                <div className="button">
+                    <div className="submit" onClick={this.onConfirm}>삭제</div>
+                    <div className="cancel" onClick={this.closeSelf}>취소</div>
+                </div>
+            </div>
+        </div>
+    }
+}
+
+
+
+
+
+
+
+
 
 
 

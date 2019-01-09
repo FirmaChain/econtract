@@ -63,10 +63,26 @@ export default class extends React.Component {
         await this.props.get_corp_member_info_all(this.props.user_info.corp_key)
     }
 
-    onRemoveGroupMember = async (account_id) => {
+    onRemoveGroupMember = async (account_id, name) => {
     	let exist_contract = await this.props.exist_in_progress_contract(account_id)
-    	console.log(exist_contract)
-    	//await this.props.remove_corp_member(account_id)
+    	if(exist_contract.code == 1 && exist_contract.payload.length > 0) {
+    		for(let v of exist_contract.payload) {
+    			v.name
+    		}
+    		window.openModal("ContractListModal", {
+    			icon:"fas fa-user-slash",
+    			title:`그룹원 ${name} 탈퇴`,
+    			desc:"해당 그룹원이 현재 진행중인 계약입니다.<br/>그룹원을 삭제하게 되면 진행중인 계약에서 제외됩니다.",
+    			list:exist_contract.payload,
+    			onConfirm: async () => {
+    				let resp = await this.props.remove_corp_member(account_id)
+    				if(resp.code == 1) alert("해당 그룹원이 탈퇴되었습니다.")
+    				else alert("삭제에 실패하였습니다.")
+    			}
+    		})
+    	} else {
+    		window.confirm(`그룹원 ${name} 탈퇴`, `그룹원 ${name} 탈퇴`)
+    	}
     }
 
     onChangeAccountNumber = async () => {
@@ -121,7 +137,7 @@ export default class extends React.Component {
                                     {user_groups.map( (e, k) => e.title).join(", ")}
                                 </div>
                                 <div className="action">
-                                    {this.props.user_info.account_id != e.account_id ? <div className="delete" onClick={this.onRemoveGroupMember.bind(this, e.account_id)}>삭제</div> : null}
+                                    {this.props.user_info.account_id != e.account_id ? <div className="delete" onClick={this.onRemoveGroupMember.bind(this, e.account_id, e.data.username)}>탈퇴</div> : null}
                                 </div>
                             </div>
                         })}

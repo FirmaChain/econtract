@@ -158,6 +158,10 @@ export default class extends React.Component {
         })
 	}
 
+    onClickAddGroupMember = () => {
+        // window.openModal("")
+    }
+
 	getTitle() {
         let menu = this.props.match.params.menu || "all"
 		let account_id = this.props.match.params.account_id || null
@@ -435,7 +439,7 @@ export default class extends React.Component {
 
 		return (<div className="group-page">
 			<div className="contract-group-menu">
-				<div className="left-top-button" onClick={this.onClickAddGroup}>그룹 추가하기</div>
+				<div className="left-top-button" onClick={this.onClickAddGroupMember}>직원 계정 추가하기</div>
 				<div className="menu-list">
                     <div className="list">
                         <div className={"item" + (this.getTitle().id == "all" ? " selected" : "")} onClick={this.moveGroup.bind(this, "")}>
@@ -444,7 +448,10 @@ export default class extends React.Component {
                         </div>
                     </div>
 					<div className="list">
-						<div className="title">그룹</div>
+						<div className="title">
+                            <div className="text">그룹</div>
+                            <i className="angle far fa-plus" onClick={this.onClickAddGroup}></i>
+                        </div>
                         {groups.map((e,k)=>{
                             let memberList = []
                             for(let v of members) {

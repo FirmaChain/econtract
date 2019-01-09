@@ -5198,6 +5198,99 @@ div.checkbox2-comp{
     }
 }
 
+.contract-list-modal {
+    background-color: #fff;
+    min-width: 200px;
+    width: 500px;
+
+    >.container {
+        padding: 55px;
+        text-align: center;
+
+        >.icon {
+            >i { 
+                font-size: 30px;
+            }
+        }
+
+        >.title {
+            font-size: $font5;
+            color: $black;
+            font-weight: bold;
+            margin-top: 18px;
+        }
+
+        >.desc {
+            text-align: center;
+            font-size: $font2;
+            color: $black;
+            margin-bottom: 20px;
+            margin-top: 20px;
+        }
+
+        >.list {
+            border: 1px solid $gray;
+
+            max-height:350px;
+            overflow-y: auto;
+
+
+            >.item {
+                padding:10px 0;
+                border-bottom: 1px solid $middlegray;
+                cursor: pointer;
+
+                &:last-child {
+                    border-bottom:none;
+                }
+
+                &:hover {
+                    background-color: $lightgray;
+                }
+            }
+        }
+
+
+        >.button {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+
+            margin-top: 40px;
+
+            >.submit {
+                margin: auto;
+                margin-right:10px;
+
+                font-size: $font4;
+                font-weight: bold;
+                color: white;
+                cursor: pointer;
+
+                background-color: $blue;
+                border:1px solid $blue;
+                padding:15px;
+                flex:1;
+            }
+
+            >.cancel {
+                margin: auto;
+
+                font-size: $font4;
+                font-weight: bold;
+                color: $blue;
+                cursor: pointer;
+
+                border:1px solid $blue;
+                padding:15px;
+                flex:1;
+            }
+        }
+
+    }
+}
+
 
 
 
