@@ -155,7 +155,7 @@ export default class extends React.Component {
         let infos = this.state.infos
 
         let corp_id = this.props.user_info.corp_id || -1
-        let me = select_subject(this.state.infos, this.state.groups, this.props.user_info.account_id, corp_id).my_info
+        let me = select_subject(infos, this.state.groups, this.props.user_info.account_id, corp_id, contract.is_pin_used).my_info
         if(status == 0) {
             return "내용 입력 중"
         } else if(status == 1) {
