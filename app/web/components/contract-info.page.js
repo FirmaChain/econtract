@@ -81,7 +81,7 @@ export default class extends React.Component {
 
             if(!contract) {
                 alert("계약이 암호화되어 있어 접근할 수 없습니다.")
-                return history.replace("/login")
+                return history.goBack()
             }
 
             if(contract.payload.contract) {

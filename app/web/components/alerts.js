@@ -1022,13 +1022,16 @@ class AddGroupMember extends React.Component {
         window.closeModal(this.props.modalId)
     }
 
-    onConfirm = ()=>{
+    onConfirm = async ()=>{
         if(!this.state.selected_group)
             return alert("그룹을 선택해주세요.")
 
         let result = false
-        if(this.props.onConfirm)
-            result = this.props.onConfirm(this.state.email, this.state.selected_group)
+        if(this.props.onConfirm) {
+            await window.showIndicator()
+            result = await this.props.onConfirm(this.state.email, this.state.selected_group)
+            await window.hideIndicator()
+        }
 
         if(result) this.closeSelf()
     }
@@ -1178,7 +1181,7 @@ class RegistContract extends React.Component{
 @modal
 class Loading extends React.Component{
     render(){
-        return <div style={{color:"#fff",textAlign:"center"}}>
+        return <div style={{color:"#fff",textAlign:"center",zIndex:"9999999999"}}>
             <div className="loader"></div>
             <div style={{marginTop:"20px"}}>{this.props.text || "로딩 중"}</div>
         </div>

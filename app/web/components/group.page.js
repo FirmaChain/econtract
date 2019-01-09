@@ -11,6 +11,7 @@ import Route from "./custom_route"
 import moment from "moment"
 import CorpGroupInfoPage from "./corp-group-info.page"
 import queryString from "query-string"
+import md5 from 'md5'
 
 
 import {
@@ -177,13 +178,14 @@ export default class extends React.Component {
                     return false
                 }
 
+                group = groups.find(e=>e.group_id == group.value)
+
                 email = email.trim()
 
                 if(!window.email_regex.test(email)) {
                     alert("이메일이 형식에 맞지 않습니다.")
                     return false
                 }
-                await window.showIndicator()
 
                 let exist = await this.props.exist_group_member(group.group_id, email)
 
@@ -211,7 +213,7 @@ export default class extends React.Component {
                     for(let v of all_invite_list) {
                         if(v.email_hashed == md5(email+v.passphrase1) ) {
                             await window.hideIndicator()
-                            if(v.group_id == this.getGroupId()) {
+                            if(v.group_id == group.group_id) {
                                 alert("이미 해당 그룹에 초대중인 사용자입니다.")
                                 return false 
                             }
@@ -222,7 +224,7 @@ export default class extends React.Component {
                         }
                     }
 
-                    let resp = await this.props.add_member_group(this.getGroupId(), email, this.props.user_info.corp_key, data, data_for_inviter);
+                    let resp = await this.props.add_member_group(group.group_id, email, this.props.user_info.corp_key, data, data_for_inviter);
                     if(resp) {
                         if(resp.code == 1) {
                             this.setState({
@@ -271,7 +273,6 @@ export default class extends React.Component {
                     alert("이미 해당 그룹에 속해있는 사용자 입니다.")
                     return false
                 }
-                await window.hideIndicator()
 
                 return false;
             }
@@ -514,8 +515,11 @@ export default class extends React.Component {
             } 
         }
 
-        let usernames = e.user_infos.map(ee => ee.username).filter(ee => !!ee)
-        usernames = usernames.join(", ")
+        let usernames = ""
+        if(typeof(e.user_infos) == "object") {
+            usernames = e.user_infos.map(ee => ee.username).filter( ee => !!ee)
+            usernames = usernames.join(", ")
+        }
 
         return <div key={e.contract_id} className="item" onClick={this.onClickOpenContract.bind(this, e, 0)}>
             <div className="list-body-item list-chkbox">
