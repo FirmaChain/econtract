@@ -37,6 +37,21 @@ Number.prototype.number_format = function(){
 String.prototype.number_format = function(){
   return this.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
 }
+Array.prototype.suffle = function() {
+  let currentIndex = this.length, temporaryValue, randomIndex;
+
+  while (0 !== currentIndex) {
+
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    temporaryValue = this[currentIndex];
+    this[currentIndex] = this[randomIndex];
+    this[randomIndex] = temporaryValue;
+  }
+  return this;
+}
+
 
 export const byte2fct = function(byte){
   if(byte == null || byte == undefined)

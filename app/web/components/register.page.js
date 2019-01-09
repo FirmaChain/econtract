@@ -1014,7 +1014,7 @@ export default class extends React.Component {
                 </div>
                 <div className="split-line"></div>
                 <div className="list">
-                    {this.state.mnemonic.split(" ").map((e,k)=>[e,k]).sort(e=>e[0]).map((e,k)=>{
+                    {this.state.mnemonic.split(" ").map((e,k)=>[e,k]).shuffle().map((e,k)=>{
                         return <div key={k} 
                                     className={`item cursored ${this.state.sort_test.indexOf(e[1]) >= 0 ? "selected" : ""}`}
                                     onClick={this.onClickSortTest.bind(this,e[1])}
