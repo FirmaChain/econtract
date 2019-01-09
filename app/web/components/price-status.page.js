@@ -25,6 +25,7 @@ import {
     get_current_onetime_ticket,
     input_payment_info,
     get_payment_info,
+    select_subscription_plan,
 } from "../../common/actions"
 
 let mapStateToProps = (state)=>{
@@ -40,6 +41,7 @@ let mapDispatchToProps = {
     get_current_onetime_ticket,
     input_payment_info,
     get_payment_info,
+    select_subscription_plan,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -85,7 +87,9 @@ export default class extends React.Component {
             planYearlyOptions: plan_yearly_options,
             selectedMonthlyIndex: plan_monthly[0].plan_id,
             selectedYearlyIndex: plan_yearly[0].plan_id,
-            onResponse: async (purchase_type, give_count) => {
+            selectPeriod: 0,
+            onResponse: async (plan_id) => {
+                await this.props.select_subscription_plan(plan_id);
             }
         });
     }

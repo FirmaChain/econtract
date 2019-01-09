@@ -415,6 +415,7 @@ class PurchaseRegularPayment extends React.Component {
             yearly_id: 0,
             select_monthly_plan: {data:{title:null}},
             select_yearly_plan: {data:{title:null}},
+            select_period: 0,
         };
     }
 
@@ -423,11 +424,13 @@ class PurchaseRegularPayment extends React.Component {
         let yearly_id = this.props.selectedYearlyIndex;
         let select_monthly_plan = this.props.planMonthly.filter(e=>e.plan_id==monthly_id)[0];
         let select_yearly_plan = this.props.planYearly.filter(e=>e.plan_id==yearly_id)[0];
+        let select_period = this.props.selectPeriod;
         this.setState({
             monthly_id,
             yearly_id,
             select_monthly_plan,
             select_yearly_plan,
+            select_period,
         });
     }
 
@@ -436,7 +439,7 @@ class PurchaseRegularPayment extends React.Component {
     }
 
     onResponse = () => {
-        this.props.onResponse && this.props.onResponse(this.state);
+        this.props.onResponse && this.props.onResponse(this.state.select_period == 0 ? monthly_id : yearly_id);
         this.closeSelf();
     }
 
@@ -454,7 +457,7 @@ class PurchaseRegularPayment extends React.Component {
                                 controlClassName="control"
                                 menuClassName="item"
                                 options={this.props.planMonthlyOptions}
-                                onChange={e=>{this.setState({select_monthly_plan:this.props.planMonthly.filter(f=>e.value==f.plan_id)[0]})}}
+                                onChange={e=>{this.setState({select_monthly_plan:this.props.planMonthly.filter(f=>e.value==f.plan_id)[0], select_period:0})}}
                                 value={this.state.select_monthly_plan.data.title} placeholder="건수" />
                             <span className="last"> 건 사용 / 월</span>
                         </div>
@@ -471,7 +474,7 @@ class PurchaseRegularPayment extends React.Component {
                                 controlClassName="control"
                                 menuClassName="item"
                                 options={this.props.planYearlyOptions}
-                                onChange={e=>{this.setState({select_yearly_plan:this.props.planYearly.filter(f=>e.value==f.plan_id)[0]})}}
+                                onChange={e=>{this.setState({select_yearly_plan:this.props.planYearly.filter(f=>e.value==f.plan_id)[0], select_period:1})}}
                                 value={this.state.select_yearly_plan.data.title} placeholder="건수" />
                             <span className="last"> 건 사용 / 월</span>
                         </div>
