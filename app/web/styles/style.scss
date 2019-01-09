@@ -4898,6 +4898,21 @@ div.checkbox2-comp{
             margin-top: 20px;
         }
 
+        >.canvas {
+            position: relative;
+
+            >.clear{
+                position: absolute;
+                top:0;
+                right:0;
+                font-size:$font1;
+                color: $middleblack;
+                background-color: $middlegray;
+                cursor: pointer;
+                padding:5px 10px;
+            }
+        }
+
         >.image-upload {
             text-align: center;
 

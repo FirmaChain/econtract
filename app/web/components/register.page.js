@@ -583,7 +583,7 @@ export default class extends React.Component {
     }
 
     onClickFinishSortTest = async ()=>{
-        if(this.state.sort_test.map(e=>this.state.mnemonic.split(" ")[e]).join(" ") !== this.state.mnemonic){
+        if(this.state.sort_test.join(" ") != this.state.mnemonic){
             this.setState({
                 shuffled_mnemonic:this.state.mnemonic.split(" ").shuffle(),
                 sort_test:[],
