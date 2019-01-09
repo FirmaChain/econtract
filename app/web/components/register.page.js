@@ -373,7 +373,7 @@ export default class extends React.Component {
             step: this.state.step + 1
         }
         if(this.state.step == 3) {
-            _.shuffled_mnemonic = this.state.mnemonic.split(" ").shuffle()
+            _.shuffled_mnemonic = this.state.mnemonic.split(" ").map( (e, k) => { return {idx:k, word:e} } ).shuffle()
         }
         this.setState(_)
     }
@@ -568,13 +568,18 @@ export default class extends React.Component {
         anchor.click();
     }
 
-    onClickSortTest = (e)=>{
+    onClickSortTest = (item)=>{
         let sort_test = [...this.state.sort_test]
-        let idx = sort_test.indexOf(e)
-        if( idx >= 0 ){
-            sort_test.splice(idx,1)
+        let sort_item = sort_test.find( e => item.word == e.word && item.idx == e.idx )
+        if( sort_item ){
+            for(let i in sort_test) {
+                if(sort_item == item) {
+                    sort_test.splice(i, 1)
+                    break;
+                }
+            }
         } else {
-            sort_test.push(e)
+            sort_test.push(item)
         }
 
         this.setState({
@@ -583,9 +588,9 @@ export default class extends React.Component {
     }
 
     onClickFinishSortTest = async ()=>{
-        if(this.state.sort_test.join(" ") != this.state.mnemonic){
+        if(this.state.sort_test.map(e=>e.word).join(" ") != this.state.mnemonic){
             this.setState({
-                shuffled_mnemonic:this.state.mnemonic.split(" ").shuffle(),
+                shuffled_mnemonic:this.state.mnemonic.split(" ").map( (e, k) => { return {idx:k, word:e} } ).shuffle(),
                 sort_test:[],
             })
             return alert("순서가 맞지 않습니다. 다시 한번 확인해주세요!")
@@ -1029,7 +1034,7 @@ export default class extends React.Component {
                 </div>
                 <div className="selection-list">
                     {this.state.sort_test.map((e,k)=>{
-                        return <div className="item" key={k}>{e}</div>
+                        return <div className="item" key={k}>{e.word}</div>
                     })}
                     {this.render_empty_slot()}
                 </div>
@@ -1038,7 +1043,7 @@ export default class extends React.Component {
                     {shuffled_mnemonic.map((e, k)=>{
                         console.log(e, k)
                         return <div key={k} 
-                                    className={`item cursored ${this.state.sort_test.indexOf(e) >= 0 ? "selected" : ""}`}
+                                    className={`item cursored ${this.state.sort_test.find( v => v.word == e.word && v.idx == e.idx) ? "selected" : ""}`}
                                     onClick={this.onClickSortTest.bind(this,e)}
                                 >
                             {e}
