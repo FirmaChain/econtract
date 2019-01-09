@@ -227,7 +227,7 @@ export default class extends React.Component {
 	            			<input className="common-textbox" type="text"
 	            				disabled={account_type == 2} value={this.state.company_address}
 	            				onChange={this.onInfoChange.bind(this, "company_address")}/>
-	            			<div className="blue-but" onClick={this.onClickFindAddress.bind(this, "company")}>찾기</div>
+	            			{ account_type == 1 ? <div className="blue-but" onClick={this.onClickFindAddress.bind(this, "company")}>찾기</div> : null }
 	            		</div>
 	            	</div>
 	            </div>:null}
