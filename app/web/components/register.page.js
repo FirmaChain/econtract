@@ -951,10 +951,10 @@ export default class extends React.Component {
                     <input className="common-textbox" type="text"
                         value={this.state.userphone || ""} 
                         onChange={this.onChangePhoneForm.bind(this,"userphone")}
-                        disabled={this.state.phone_verification_code_sent}
+                        disabled={this.state.verificated_phone}
                         placeholder="휴대폰 번호를 정확하게 입력해주세요"/>
                 </div>
-                { this.state.phone_verification_code_sent ? null :
+                { this.state.verificated_phone ? null :
                     <div className="blue-but" onClick={this.onClickRequestPhone}>
                         발송
                     </div>
