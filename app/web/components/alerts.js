@@ -245,7 +245,14 @@ class CardInfo extends React.Component {
     }
 
     onResponse = () => {
-        this.props.onResponse && this.props.onResponse(this.state);
+        // Input validation check
+        this.props.onResponse && this.props.onResponse({
+            card_number: this.state.card_number,
+            cvc: this.state.cvc,
+            month: this.state.selected_expiration_month,
+            year: this.state.selected_expiration_year,
+            id_number: social_number_front,
+        });
         this.closeSelf();
     }
 

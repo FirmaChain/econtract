@@ -101,9 +101,11 @@ export default class extends React.Component {
         window.openModal("CardInfo", {
             onResponse: async (card_info) => {
                 //TODO: necessary to encrypt via firma's private key
-                let data = JSON.stringify({card_number:"1234-1234-1234-1234"});
-                let preview_data = JSON.stringify({partial_card_number:"1234-xxxx-xxxx-xxxx"});
-                await this.props.input_payment_info(data, preview_data);
+                let encrypted_data = JSON.stringify(card_info);
+                let partial_info = {};
+                partial_info['partial_card_number'] = card_info.card_number.slice(0, 4)+"-xxxx-xxxx-xxxx";
+                let preview_data = JSON.stringify(partial_info);
+                await this.props.input_payment_info(encrypted_data, preview_data);
             }
         })
     }
