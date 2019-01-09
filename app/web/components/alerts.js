@@ -746,6 +746,7 @@ class DrawSign extends React.Component{
     }
 
     finishDraw = ()=>{
+        console.log("finishDraw", this.first_drawing)
         if(!this.first_drawing)
             return alert("서명을 그려주세요.")
 
@@ -809,7 +810,8 @@ class DrawSign extends React.Component{
         await window.hideIndicator()
     }
 
-    onClear = () => {
+    onClear = (e) => {
+        e.stopPropagation()
         let ctx = this.refs.canvas.getContext('2d');
         ctx.save();
         ctx.setTransform(1, 0, 0, 1, 0, 0);
@@ -828,7 +830,7 @@ class DrawSign extends React.Component{
 
         this.isDrawing = true;
         ctx.moveTo(e.clientX - e.target.offsetLeft, e.clientY - e.target.offsetTop);
-        ctx.closePath()
+        ctx.beginPath()
     }
 
     onmousemove = (e)=>{
@@ -836,9 +838,6 @@ class DrawSign extends React.Component{
             return;
 
         let ctx = this.refs.canvas.getContext('2d');
-
-        if(!this.first_drawing)
-            this.first_drawing = true
 
         if (this.isDrawing) {
             ctx.lineTo(e.clientX - e.target.offsetLeft, e.clientY - e.target.offsetTop);
@@ -852,7 +851,10 @@ class DrawSign extends React.Component{
 
         this.isDrawing = false;
         let ctx = this.refs.canvas.getContext('2d');
-        ctx.beginPath()
+        ctx.closePath()
+
+        if(!this.first_drawing)
+            this.first_drawing = true
     }
 
     render(){
