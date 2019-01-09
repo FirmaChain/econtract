@@ -88,7 +88,7 @@ export default class extends React.Component {
 
                 if(contract.payload.contract.is_pin_used == 1 && contract.payload.contract.pin && contract.payload.contract.pin != "000000") 
                     await this.props.update_epin_account(contract_id, contract.payload.contract.pin);
-            
+
                 this.setState({
                     ...contract.payload,
                     groups
@@ -406,7 +406,7 @@ export default class extends React.Component {
             <div className="header-page">
                 <div className="header">
                     <div className="left-icon">
-                        <i className="fal fa-times" onClick={()=>history.goBack()}></i>
+                        <i className="fal fa-times" onClick={this.onClickBack}></i>
                     </div>
                     <div className="title">계약 상세 정보</div>
                     { !!this.props.user_info ? <Information /> : null }
