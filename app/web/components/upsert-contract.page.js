@@ -300,7 +300,7 @@ export default class extends React.Component {
             my_account_id: this.props.user_info.account_id,
             onConfirm : async (user)=>{
 
-                if(this.state.contract.html != this.state.model)
+                if((this.state.contract.html || "") != this.state.model)
                     if(window._confirm("수정중인 내용이 있습니다. 저장하고 수정 권한을 넘기시겠습니까?"))
                         await this.onClickContractSave()
                     
@@ -346,7 +346,7 @@ export default class extends React.Component {
             }
         }
 
-        if(this.state.contract.html != this.state.model)
+        if((this.state.contract.html || "") != this.state.model)
             if(window._confirm("수정중인 내용이 있습니다. 저장하고 서명 정보를 등록하시겠습니까?"))
                 await this.onClickContractSave()
 
