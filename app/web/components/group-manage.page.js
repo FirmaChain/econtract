@@ -23,6 +23,7 @@ import {
     get_corp_member_info_all,
     get_group_info,
     remove_corp_member,
+    exist_in_progress_contract,
 } from "../../common/actions"
 
 let mapStateToProps = (state)=>{
@@ -38,6 +39,7 @@ let mapDispatchToProps = {
     get_corp_member_info_all,
     get_group_info,
     remove_corp_member,
+    exist_in_progress_contract,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -62,7 +64,9 @@ export default class extends React.Component {
     }
 
     onRemoveGroupMember = async (account_id) => {
-    	await this. props.remove_corp_member(account_id)
+    	let exist_contract = await this.props.exist_in_progress_contract(account_id)
+    	console.log(exist_contract)
+    	//await this.props.remove_corp_member(account_id)
     }
 
     onChangeAccountNumber = async () => {

@@ -464,8 +464,8 @@ div.checkbox2-comp{
                     >.transparent-button {
                         display: inline-block;
                         background-color: white;
-                        border: 2px solid $blue;
-                        font-size: $font4;
+                        border: 1px solid $blue;
+                        font-size: $font3;
                         color: $black;
                         font-weight:bold;
                         cursor: pointer;
@@ -475,14 +475,29 @@ div.checkbox2-comp{
                         text-align: center;
                         margin: auto;
                         margin-right:10px;
+                    }
 
+                    >.back-button {
+                        display: inline-block;
+                        background-color: white;
+                        border: 1px solid $blue;
+                        font-size: $font3;
+                        color: $black;
+                        font-weight:bold;
+                        cursor: pointer;
+                        width:250px;
+                        max-width:40%;
+                        padding:15px 20px;
+                        text-align: center;
+                        margin: auto;
+                        margin-right:10px;
                     }
 
                     >.confirm-button {
                         display: inline-block;
                         background-color:$blue;
                         border: 2px solid $blue;
-                        font-size: $font4;
+                        font-size: $font3;
                         color: white;
                         font-weight:bold;
                         cursor: pointer;

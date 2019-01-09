@@ -794,6 +794,7 @@ export default class extends React.Component {
             </div>
 
             <div className="bottom-container">
+                <div className="back-button" onClick={this.prev_term}>뒤로가기</div>
                 <div className="confirm-button" onClick={this.onClickNextBtnAccountInfo}>
                     확인
                 </div>
@@ -859,6 +860,7 @@ export default class extends React.Component {
             </div>
 
             <div className="bottom-container">
+                <div className="back-button" onClick={this.prev_term}>뒤로가기</div>
                 <div className="confirm-button" onClick={this.onClickNextBtnUserInfo}>
                     확인
                 </div>
@@ -970,6 +972,7 @@ export default class extends React.Component {
             </div>
 
             <div className="bottom-container">
+                <div className="back-button" onClick={this.prev_term}>뒤로가기</div>
                 <div className="confirm-button" onClick={this.onClickNextBtnCompanyInfo}>
                     확인
                 </div>
@@ -1043,10 +1046,8 @@ export default class extends React.Component {
                 </div>
             </div>
             <div className="bottom-container">
-                <div className="confirm-button" onClick={this.onClickFinishSortTest}>
-                    가입완료
-                </div>
-                <div className="transparent-button" onClick={this.prev_term}>뒤로가기</div>
+                <div className="back-button" onClick={this.prev_term}>뒤로가기</div>
+                <div className="confirm-button" onClick={this.onClickFinishSortTest}>가입완료</div>
             </div>
         </div>)
     }
