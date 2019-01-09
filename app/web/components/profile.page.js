@@ -31,6 +31,7 @@ import {
     update_user_info,
     update_user_public_info,
     update_corp_info,
+    update_username,
 } from "../../common/actions"
 
 let mapStateToProps = (state)=>{
@@ -44,6 +45,7 @@ let mapDispatchToProps = {
     update_user_info,
     update_user_public_info,
     update_corp_info,
+    update_username,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -104,6 +106,7 @@ export default class extends React.Component {
             }
         }
         try {
+            await this.props.update_username(this.state.username)
             if(account_type == 0) {
     	    	let masterKeyPublic = SeedToMasterKeyPublic(getMasterSeed())
     	        let encryptedInfo = aes_encrypt(JSON.stringify(info), masterKeyPublic);

@@ -15,6 +15,7 @@ import {
     api_update_user_info,
     api_update_corp_info,
     api_update_user_public_info,
+    api_update_username,
 } from "../../../gen_api"
 
 import {
@@ -262,6 +263,12 @@ export function update_user_public_info(encrypted_info) {
 export function update_corp_info(encrypted_corp_info){
     return async function(){
         return (await api_update_corp_info(encrypted_corp_info)).payload
+    }
+}
+
+export function update_username(username) {
+    return async function() {
+        return (await api_update_username(username))
     }
 }
 

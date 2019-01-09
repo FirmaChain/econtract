@@ -172,14 +172,17 @@ export default class extends React.Component {
             list: groups.map(e=>{return {...e, value:e.group_id, label:e.title}}),
             onConfirm: async (email, group) => {
 
-                if(email == "")
-                    return alert("초대하려는 그룹원의 이메일을 입력해주세요.")
-                
+                if(email == ""){
+                    alert("초대하려는 그룹원의 이메일을 입력해주세요.")
+                    return false
+                }
+
                 email = email.trim()
 
-                if(!window.email_regex.test(email))
-                    return alert("이메일이 형식에 맞지 않습니다.")
-
+                if(!window.email_regex.test(email)) {
+                    alert("이메일이 형식에 맞지 않습니다.")
+                    return false
+                }
                 await window.showIndicator()
 
                 let exist = await this.props.exist_group_member(group.group_id, email)
@@ -208,10 +211,14 @@ export default class extends React.Component {
                     for(let v of all_invite_list) {
                         if(v.email_hashed == md5(email+v.passphrase1) ) {
                             await window.hideIndicator()
-                            if(v.group_id == this.getGroupId())
-                                return alert("이미 해당 그룹에 초대중인 사용자입니다.")
-                            else
-                                return alert("이미 다른 그룹에서 초대중인 사용자입니다.")
+                            if(v.group_id == this.getGroupId()) {
+                                alert("이미 해당 그룹에 초대중인 사용자입니다.")
+                                return false 
+                            }
+                            else {
+                                alert("이미 다른 그룹에서 초대중인 사용자입니다.")
+                                return false
+                            }
                         }
                     }
 
@@ -222,6 +229,7 @@ export default class extends React.Component {
                                 add_email:""
                             })
                             alert("성공적으로 그룹에 초대하였습니다.")
+                            return true;
                         } else if(resp.code == 2) {
                             alert("이미 해당 그룹에 속해있는 사용자 입니다.")
                         } else if(resp.code == -5) {
@@ -234,6 +242,7 @@ export default class extends React.Component {
                             alert("이미 기업 계정으로 가입되어 있습니다.")
                         }
                         await this.onRefresh()
+                        return false;
                     }
                 } else if(exist.code == 1) {
                     let data = {
@@ -248,6 +257,7 @@ export default class extends React.Component {
                         })
                         await this.onRefresh()
                         alert("성공적으로 그룹에 초대하였습니다.")
+                        return true
                     } else if(resp.code == -7) {
                         alert("해당 이메일로 가입한 계정이 없습니다.")
                     } else if(resp.code == -8) {
@@ -255,11 +265,15 @@ export default class extends React.Component {
                     } else if(resp.code == -9) {
                         alert("이미 기업 계정으로 가입되어 있습니다.")
                     }
+                    return false
 
                 } else if(exist.code == -6) {
                     alert("이미 해당 그룹에 속해있는 사용자 입니다.")
+                    return false
                 }
                 await window.hideIndicator()
+
+                return false;
             }
         })
     }
