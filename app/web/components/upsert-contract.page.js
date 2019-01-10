@@ -347,8 +347,9 @@ export default class extends React.Component {
 
         for(let v of sign_info_list) {
             if(!sign_info["#"+v] || sign_info["#"+v].trim() == "") {
-                sign_info["#"+v] = sign_info["#"+v].trim()
                 return alert("서명 정보를 모두 입력해주세요. " + v)
+            } else {
+                sign_info["#"+v] = sign_info["#"+v].trim()
             }
         }
 
