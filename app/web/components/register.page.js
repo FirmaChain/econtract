@@ -311,6 +311,14 @@ export default class extends React.Component {
             return history.replace("/home")
         }
 
+        if(localStorage.getItem("browser_key") || localStorage.getItem("browser_key_virgin") == false) {
+            if(!window.confirm("해당 기기로 인증된 계정이 있습니다. 인증을 해제하고 가입을 진행하시겠습니까?")) {
+                return history.push("/login")
+            }
+            localStorage.removeItem("browser_key")
+            localStorage.removeItem("browser_key_virgin")
+        }
+
         if(this.getAccountType() == 2) {
             let params = queryString.parse(this.props.location.search)
 
