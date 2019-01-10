@@ -307,7 +307,7 @@ export default class extends React.Component {
 
         if(this.state.can_edit_account_id == null) {
             this.is_register = false
-            return alert("첫 수정 권한을 지정해주세요.")
+            return alert("수정 권한을 지정해주세요.")
         }
 
         if(this.state.is_use_pin) {
@@ -320,14 +320,19 @@ export default class extends React.Component {
             }
         }
 
-        if(!this.state.contract_name || this.state.contract_name == "") {
+        if(!this.state.contract_name || this.state.contract_name.trim() == "") {
             this.is_register = false
             return alert("계약명을 입력해주세요.")
         }
 
         this.blockFlag = true;
 
-        let contract_name = this.state.contract_name;
+        let contract_name = this.state.contract_name.trim();
+
+        if(contract_name.length > 80) {
+            return alert("계약 이름은 80자 이하로 구성되어야 합니다.")
+        }
+
         let counterparties = this.state.target_list.map(e=> {
             let role;
             for(let v of e.role) {
