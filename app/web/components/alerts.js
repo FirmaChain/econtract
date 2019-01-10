@@ -415,7 +415,6 @@ class PurchaseRegularPayment extends React.Component {
             select_monthly_plan: {data:{title:null}},
             select_yearly_plan: {data:{title:null}},
             select_period: 0,
-            select_type: 0,
         };
     }
 
@@ -441,7 +440,7 @@ class PurchaseRegularPayment extends React.Component {
 
     onClickType = (type) => {
         this.setState({
-            select_type: type
+            select_period: type
         })
     }
 
@@ -452,7 +451,7 @@ class PurchaseRegularPayment extends React.Component {
                 <div className="title">정기 결제 이용권 선택</div>
                 <div className="sub-title">월간, 연간 이용권 선택해서 구매하실 수 있습니다.</div>
                 <div className="btn-container">
-                    <div className={"btn" + (this.state.select_type == 0 ? " active" : "")} onClick={this.onClickType.bind(this, 0)}>
+                    <div className={"btn" + (this.state.select_period == 0 ? " active" : "")} onClick={this.onClickType.bind(this, 0)}>
                         <div className="title">월간 정기 결제</div>
                         <div className="give-count">
                             <Dropdown className="common-select"
@@ -469,7 +468,7 @@ class PurchaseRegularPayment extends React.Component {
                             + 마스터 계정 1명, 서브 계정 4명
                         </div>
                     </div>
-                    <div className={"btn" + (this.state.select_type == 1 ? " active" : "")} onClick={this.onClickType.bind(this, 1)}>
+                    <div className={"btn" + (this.state.select_period == 1 ? " active" : "")} onClick={this.onClickType.bind(this, 1)}>
                         <div className="title">연간 정기 결제</div>
                         <div className="give-count">
                             <Dropdown className="common-select"
