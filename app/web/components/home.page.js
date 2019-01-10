@@ -43,7 +43,12 @@ export default class extends React.Component {
         if(!this.props.user_info){
             (async()=>{
                 await window.showIndicator()
-                await this.props.fetch_user_info()
+                let user = await this.props.fetch_user_info()
+                if(!user) {
+                    window.logout()
+                    alert("탈퇴 처리된 계정입니다.")
+                    history.replace("/login")
+                }
                 await window.hideIndicator()
             })()
         }

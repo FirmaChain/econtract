@@ -116,9 +116,9 @@ export default class extends React.Component {
                         }
                     })
                 } else if(account_type == 2) {
-                    alert("할당된 그룹이 없습니다. 관리자에게 그룹 추가를 요청해주세요.")
                     window.logout()
-                    location.reload(true)
+                    alert("할당된 그룹이 없습니다. 관리자에게 그룹 추가를 요청해주세요.")
+                    history.replace("/login")
                 }
             } else if(!group_id) {
                 if(groups) {
