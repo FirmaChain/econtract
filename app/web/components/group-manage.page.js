@@ -66,9 +66,6 @@ export default class extends React.Component {
     onRemoveGroupMember = async (account_id, name) => {
     	let exist_contract = await this.props.exist_in_progress_contract(account_id)
     	if(exist_contract.code == 1 && exist_contract.payload.length > 0) {
-    		for(let v of exist_contract.payload) {
-    			v.name
-    		}
     		window.openModal("ContractListModal", {
     			icon:"fas fa-user-slash",
     			title:`그룹원 ${name} 탈퇴`,
