@@ -722,9 +722,9 @@ export default class extends React.Component {
                             config={this.config}
                             model={this.state.model}
                             onModelChange={(model) => this.setState({model, contract_modify_status:"계약서가 수정되었습니다."})} />
-                        <div className="can-edit-text">
+                        { this.state.contract.status < 2 ? <div className="can-edit-text">
                             <div>현재 {can_edit_name} 님이 수정권한을 갖고 있습니다.</div>
-                        </div>
+                        </div> : null }
                     </div>
                     {!this.state.sign_mode ? <div className="info">
                         <div className="top">
