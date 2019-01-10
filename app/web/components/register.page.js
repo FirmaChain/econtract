@@ -581,7 +581,7 @@ export default class extends React.Component {
         let sort_item = sort_test.find( e => item.word == e.word && item.idx == e.idx )
         if( sort_item ){
             for(let i in sort_test) {
-                if(sort_item.idx == item.idx) {
+                if(sort_item.idx == sort_test[i]) {
                     sort_test.splice(i, 1)
                     break;
                 }
