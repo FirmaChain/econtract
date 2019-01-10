@@ -412,8 +412,6 @@ class PurchaseRegularPayment extends React.Component {
     constructor() {
         super();
         this.state = {
-            monthly_id: 0,
-            yearly_id: 0,
             select_monthly_plan: {data:{title:null}},
             select_yearly_plan: {data:{title:null}},
             select_period: 0,
@@ -421,14 +419,10 @@ class PurchaseRegularPayment extends React.Component {
     }
 
     componentDidMount() {
-        let monthly_id = this.props.selectedMonthlyIndex;
-        let yearly_id = this.props.selectedYearlyIndex;
-        let select_monthly_plan = this.props.planMonthly.filter(e=>e.plan_id==monthly_id)[0];
-        let select_yearly_plan = this.props.planYearly.filter(e=>e.plan_id==yearly_id)[0];
+        let select_monthly_plan = this.props.planMonthly.filter(e=>e.plan_id==this.props.selectedMonthlyIndex)[0];
+        let select_yearly_plan = this.props.planYearly.filter(e=>e.plan_id==this.props.selectedYearlyIndex)[0];
         let select_period = this.props.selectPeriod;
         this.setState({
-            monthly_id,
-            yearly_id,
             select_monthly_plan,
             select_yearly_plan,
             select_period,
@@ -440,7 +434,7 @@ class PurchaseRegularPayment extends React.Component {
     }
 
     onResponse = () => {
-        this.props.onResponse && this.props.onResponse(this.state.select_period == 0 ? this.state.monthly_id : this.state.yearly_id);
+        this.props.onResponse && this.props.onResponse(this.state.select_period == 0 ? this.state.select_monthly_plan.plan_id : this.state.select_yearly_plan.plan_id);
         this.closeSelf();
     }
 
