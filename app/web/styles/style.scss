@@ -4554,7 +4554,14 @@ div.checkbox2-comp{
                 &:last-child {
                     margin-right:0;
                 }
+            }
 
+            >.active {
+                border: 2px solid $blue;
+
+                &:hover {
+                    border: 2px solid $blue !important;
+                }
             }
         }
 
