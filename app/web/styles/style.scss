@@ -1424,7 +1424,7 @@ div.checkbox2-comp{
 
     >.search {
         text-align: right;
-        max-width: 1000px;
+        margin-right:30px;
 
         >input {
             width:240px;
@@ -1449,7 +1449,6 @@ div.checkbox2-comp{
         margin: 40px 20px;
         border-collapse: collapse;
         box-sizing: border-box;
-        max-width:1000px;
 
         >.clickable{
             cursor: pointer;
@@ -1519,11 +1518,13 @@ div.checkbox2-comp{
         }
 
         .list-status {
-            width:100px;
+            width:15%;
+            min-width:100px;
         }
 
         .list-date {
-            width:160px;
+            width:18%;
+            min-width:160px;
         }
 
         .list-action {
