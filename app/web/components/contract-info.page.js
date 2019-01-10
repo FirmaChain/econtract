@@ -272,7 +272,7 @@ export default class extends React.Component {
             if(v.privilege == 1) {
                 let user_name = v.user_info.username ? v.user_info.username : v.user_info.title
                 if(v && v.is_exclude == 1) {
-                    user_name = "탈퇴된 사용자 : " + v.user_info.username
+                    user_name = "(삭제) " + v.user_info.username
                 }
                 users.push(user_name)
             }
@@ -289,7 +289,7 @@ export default class extends React.Component {
 
         let creator_name = creator ? creator.user_info.username : "알 수 없음"
         if(creator && creator.is_exclude == 1) {
-            creator_name = "탈퇴된 사용자 : " + creator.user_info.username
+            creator_name = "(삭제) " + creator.user_info.username
         }
 
         return <div className="deck informations">
@@ -355,6 +355,9 @@ export default class extends React.Component {
             let name = user.user_info.username ? user.user_info.username : user.user_info.title
             let email = user.user_info.email ? user.user_info.email : user.user_info.company_name
 
+            if(user.is_exclude)
+                name = "(삭제) " + name
+
             switch(e.code) {
                 case 1:
                     msg = `${name}님이 계약서를 생성하셨습니다.`
@@ -374,6 +377,11 @@ export default class extends React.Component {
                 case 6: {
                     let next_account_id = JSON.parse(e.data).to_account_id
                     let next = this.state.infos.find(c=>c.corp_id == 0 && c.entity_id == next_account_id)
+
+                    let next_name = next ? next.user_info.username : "알 수 없음"
+                    if(next && next.is_exclude == 1)
+                        next_name = "(삭제) " + next_name
+
                     msg = `${name}님이 수정 권한을 ${next.user_info.username}님에게 전달했습니다.`
                     break;
                 }
