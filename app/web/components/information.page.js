@@ -106,7 +106,7 @@ export default class extends React.Component {
                         <div className="title">설정</div>
                         <div className={"item" + (this.getTitle().id == "/profile" ? " selected" : "")} onClick={this.move.bind(this, "profile")}><i className=" icon far fa-info-circle"></i>내 정보</div>
                         <div className={"item" + (this.getTitle().id == "/price-status" ? " selected" : "")} onClick={this.move.bind(this, "price-status")}><i className="icon far fa-file-invoice-dollar"></i>요금</div>
-                        <div className={"item" + (this.getTitle().id == "/group-manage" ? " selected" : "")} onClick={this.move.bind(this, "group-manage")}><i className="icon far fa-users"></i>그룹 관리</div>
+                        {this.props.user_info.account_type == 1 ? <div className={"item" + (this.getTitle().id == "/group-manage" ? " selected" : "")} onClick={this.move.bind(this, "group-manage")}><i className="icon far fa-users"></i>그룹 관리</div> : null}
                     </div>
                     <Route path="/profile" render={() => <ProfilePage {...this.props}/>} />
                     <Route path="/price-status" render={() => <PriceStatusPage {...this.props}/>} />

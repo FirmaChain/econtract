@@ -300,19 +300,28 @@ export default class extends React.Component {
     }
 
     onClickRegister = async ()=>{
+        if(this.is_register)
+            return
+        
+        this.is_register = true
 
-        if(this.state.can_edit_account_id == null)
+        if(this.state.can_edit_account_id == null) {
+            this.is_register = false
             return alert("첫 수정 권한을 지정해주세요.")
+        }
 
         if(this.state.is_use_pin) {
             if(this.state.pin_number == "" || this.state.pin_number.length != 6) {
+                this.is_register = false
                 return alert("핀 번호를 입력해주세요.")
             } else if(this.state.pin_number == "000000") {
+                this.is_register = false
                 return alert("핀 번호는 000000 으로 설정할 수 없습니다.")
             }
         }
 
         if(!this.state.contract_name || this.state.contract_name == "") {
+            this.is_register = false
             return alert("계약명을 입력해주세요.")
         }
 
@@ -343,6 +352,7 @@ export default class extends React.Component {
 
         if(this.props.user_info.account_type != 0 && includeGroup == false) {
             this.blockFlag = false;
+            this.is_register = false
             return alert("기업 계정으로 계약 생성 시, 그룹을 최소한 하나는 추가해야 합니다.");
         }
 
@@ -375,6 +385,8 @@ export default class extends React.Component {
             }
             history.replace(`/edit-contract/${contract_id}`)
         }
+        
+        this.is_register = false
 
     }
 
