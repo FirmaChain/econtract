@@ -211,6 +211,9 @@ export default class extends React.Component {
     render_users() {
         return <div className="deck users">
             {this.state.infos.map((e, k)=>{
+                if(e.is_exclude == 1)
+                    return
+
                 return <div className="item" key={e.entity_id+"_"+e.corp_id}>
                     <div className="icon">
                     {
@@ -266,7 +269,13 @@ export default class extends React.Component {
             if(v.corp_id == 0 && v.entity_id == contract.account_id)
                 creator = v
 
-            users.push(v.user_info.username ? v.user_info.username : v.user_info.title)
+            if(v.privilege == 1) {
+                let user_name = v.user_info.username ? v.user_info.username : v.user_info.title
+                if(v && v.is_exclude == 1) {
+                    user_name = "탈퇴된 사용자 : " + v.user_info.username
+                }
+                users.push(user_name)
+            }
         }
 
         if(!meOrGroup && this.props.user_info.account_type != 0) {
@@ -277,6 +286,11 @@ export default class extends React.Component {
             }
         }
         users = users.join(", ")
+
+        let creator_name = creator ? creator.user_info.username : "알 수 없음"
+        if(creator && creator.is_exclude == 1) {
+            creator_name = "탈퇴된 사용자 : " + creator.user_info.username
+        }
 
         return <div className="deck informations">
             <div className="item">
@@ -309,7 +323,7 @@ export default class extends React.Component {
             </div>
             <div className="item">
                 <div className="title">계약 생성자</div>
-                <div className="desc">{creator ? creator.user_info.username : "알 수 없음"}</div>
+                <div className="desc">{creator_name}</div>
             </div>
             <div className="item">
                 <div className="title">트랜잭션 ID</div>

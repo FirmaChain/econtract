@@ -98,10 +98,14 @@ export default class extends React.Component {
                     text = e.msg
                 }
 
+                let user_name = user.user_info.username ? user.user_info.username : (user.user_info.title + " " + data.username)
+                if(user.is_exclude == 1)
+                    user_name = "탈퇴된 사용자 : " + user_name
+
                 return <div key={e.chat_id} className={isMine ? "chat-slot right" : "chat-slot left"}>
                     { !isMine ? <img className="profile" src={`https://identicon-api.herokuapp.com/${user.corp_id+"_"+user.entity_id}/70?format=png`}/> : null }
                     <div className="msg">
-                        <div className="name">{user.user_info.username ? user.user_info.username : (user.user_info.title + " " + data.username)}</div>
+                        <div className="name">{user_name}</div>
                         <div className="msg-text">{text}</div>
                     </div>
                 </div>
@@ -116,8 +120,11 @@ export default class extends React.Component {
                 // 계약서 내용 바꼈을때
                 let data = JSON.parse(e.msg)
                 let entity = this.props.infos.find(e=>e.entity_id == data.entity_id && e.corp_id == data.corp_id)
-                if(!entity) return
-                let text = `${entity.user_info.username}님이 계약서를 수정하였습니다.`
+                if(!entity) return;
+                let user_name = entity.user_info.username
+                if(entity.is_exclude == 1)
+                    user_name = "탈퇴된 사용자 : " + user_name
+                let text = `${user_name}님이 계약서를 수정하였습니다.`
                 return <div key={e.chat_id} className="notice">
                     {text}
                 </div>
@@ -126,8 +133,11 @@ export default class extends React.Component {
                 // 서명 했을때
                 let data = JSON.parse(e.msg)
                 let entity = this.props.infos.find(e=>e.entity_id == data.entity_id && e.corp_id == data.corp_id)
-                if(!entity) return
-                let text = `${entity.user_info.username}님이 해당 계약서에 서명하였습니다.`
+                if(!entity) return;
+                let user_name = entity.user_info.username
+                if(entity.is_exclude == 1)
+                    user_name = "탈퇴된 사용자 : " + user_name
+                let text = `${user_name}님이 해당 계약서에 서명하였습니다.`
                 return <div key={e.chat_id} className="notice">
                     {text}
                 </div>
@@ -136,8 +146,11 @@ export default class extends React.Component {
                 // 서명 정보 바꿨을때
                 let data = JSON.parse(e.msg)
                 let entity = this.props.infos.find(e=>e.entity_id == data.entity_id && e.corp_id == data.corp_id)
-                if(!entity) return
-                let text = `${entity.user_info.username}님이 서명에 필요한 정보를 수정하였습니다.`
+                if(!entity) return;
+                let user_name = entity.user_info.username
+                if(entity.is_exclude == 1)
+                    user_name = "탈퇴된 사용자 : " + user_name
+                let text = `${user_name}님이 서명에 필요한 정보를 수정하였습니다.`
                 return <div key={e.chat_id} className="notice">
                     {text}
                 </div>
@@ -146,9 +159,18 @@ export default class extends React.Component {
                 // 수정 권한 옮겼을 때
                 let data = JSON.parse(e.msg)
                 let entity = this.props.infos.find(e=>e.entity_id == data.account_id && e.corp_id == 0)
-                if(!entity) return
+                if(!entity) return;
+                let user_name = entity.user_info.username
+                if(entity.is_exclude == 1)
+                    user_name = "탈퇴된 사용자 : " + user_name
+
                 let move_entity = this.props.infos.find(e=>e.entity_id == data.move_account_id && e.corp_id == 0)
-                let text = `${entity.user_info.username}님이 ${move_entity.user_info.username}님에게 수정 권한을 넘겼습니다.`
+                if(!move_entity) return;
+                let move_user_name = move_entity.user_info.username
+                if(move_entity.is_exclude == 1)
+                    move_user_name = "탈퇴된 사용자 : " + move_user_name
+
+                let text = `${user_name}님이 ${move_user_name}님에게 수정 권한을 넘겼습니다.`
                 return <div key={e.chat_id} className="notice">
                     {text}
                 </div>

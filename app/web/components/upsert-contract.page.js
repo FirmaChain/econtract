@@ -622,6 +622,9 @@ export default class extends React.Component {
                 if(e == meOrGroup)
                     return null
 
+                if(info.user_info.user_type == 2) 
+                    return null
+
                 return <div className="user-container" key={e.entity_id+"_"+e.corp_id}>
                     <div className="user" onClick={this.onToggleUser.bind(this, e.entity_id, e.corp_id, false)}>
                         <div className="user-info">
