@@ -106,11 +106,12 @@ export async function api_update_contract_user_info(contract_id,entity_id,corp_i
         session:window.getCookie("session")
     });
 }
-export async function api_update_contract_sign(contract_id,signature){
+export async function api_update_contract_sign(contract_id,signature,email_list){
     let __data = new FormData();
 
     if(contract_id != null) __data.append('contract_id', contract_id);
-	if(signature != null) __data.append('signature', signature)
+	if(signature != null) __data.append('signature', signature);
+	if(email_list != null) __data.append('email_list', email_list)
 
     return await post("/update_contract_sign", __data,{
         session:window.getCookie("session")
@@ -126,11 +127,12 @@ export async function api_update_contract_sign_info(contract_id,sign_info){
         session:window.getCookie("session")
     });
 }
-export async function api_move_contract_can_edit_account_id(contract_id,move_account_id){
+export async function api_move_contract_can_edit_account_id(contract_id,move_account_id,move_email){
     let __data = new FormData();
 
     if(contract_id != null) __data.append('contract_id', contract_id);
-	if(move_account_id != null) __data.append('move_account_id', move_account_id)
+	if(move_account_id != null) __data.append('move_account_id', move_account_id);
+	if(move_email != null) __data.append('move_email', move_email)
 
     return await post("/move_contract_can_edit_account_id", __data,{
         session:window.getCookie("session")

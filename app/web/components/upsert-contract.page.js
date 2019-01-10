@@ -63,10 +63,10 @@ let mapDispatchToProps = {
     get_group_info,
     update_contract_model,
     update_contract_sign,
+    update_contract_sign_info,
     move_contract_can_edit_account_id,
     get_chats,
     send_chat,
-    update_contract_sign_info,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -310,7 +310,7 @@ export default class extends React.Component {
                         await this.onClickContractSave()
                     
                 await window.showIndicator()
-                await this.props.move_contract_can_edit_account_id(this.state.contract.contract_id, user.entity_id)
+                await this.props.move_contract_can_edit_account_id(this.state.contract.contract_id, user.entity_id, user.sub)
                 //await this.onRefresh()
                 await window.hideIndicator()
             }
@@ -392,7 +392,8 @@ export default class extends React.Component {
             onFinish : async (signature)=>{
                 //encrypt signature
                 await window.showIndicator()
-                let r = await this.props.update_contract_sign(this.state.contract.contract_id, signature, this.state.contract.the_key)
+                let email_list = this.state.infos.filter(e=>window.email_regex.test(e.sub)).map(e=>e.sub)
+                let r = await this.props.update_contract_sign(this.state.contract.contract_id, signature, this.state.contract.the_key, email_list)
                 if(r.code == -9) alert("이미 완료된 계약은 서명을 업데이트할 수 없습니다.")
                 else alert("서명 등록이 완료되었습니다.")
                 this.blockFlag = true
@@ -562,7 +563,7 @@ export default class extends React.Component {
         let meOrGroup = select_subject(user_infos, this.state.groups, this.props.user_info.account_id, corp_id).my_info
 
         return <div className="bottom signs">
-            <div className="title">총 {user_infos.length}명</div>
+            <div className="title">총 {user_infos.filter(e=>e.privilege==1).length}명</div>
             <div className="user-container me">
                 <div className="user" onClick={this.onToggleUser.bind(this, meOrGroup.entity_id, meOrGroup.corp_id, false)}>
                     <i className="icon fas fa-user-edit"></i>
