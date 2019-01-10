@@ -70,23 +70,23 @@ export default class extends React.Component {
 		let info, corp_info, public_info
         if(account_type == 0) { // 개인 계정
             info = {
-                email: this.state.email,
-                username: this.state.username,
-                userphone: this.state.userphone,
-                useraddress: this.state.useraddress,
+                email: this.props.user_info.email.trim(),
+                username: this.state.username.trim(),
+                userphone: this.state.userphone.trim(),
+                useraddress: this.state.useraddress.trim(),
             }
         } else if(account_type == 1) { // 기업 관리자 계정
             corp_info = {
-                company_name: this.state.company_name,
-                duns_number: this.state.duns_number,
-                company_ceo: this.state.company_ceo,
-                company_address: this.state.company_address,
+                company_name: this.state.company_name.trim(),
+                duns_number: this.state.duns_number.trim(),
+                company_ceo: this.state.company_ceo.trim(),
+                company_address: this.state.company_address.trim(),
             }
             public_info = {
-                email: this.state.email,
-                username: this.state.username,
-                job: this.state.job,
-                userphone: this.state.userphone,
+                email: this.props.user_info.email.trim(),
+                username: this.state.username.trim(),
+                job: this.state.job.trim(),
+                userphone: this.state.userphone.trim(),
             }
             info = {/*
                 corp_id:this.state.corp_id,
@@ -95,10 +95,10 @@ export default class extends React.Component {
             }
         } else if(account_type == 2) { // 기업 직원 계정
             public_info = {
-                email: this.state.email,
-                username: this.state.username,
-                job: this.state.job,
-                userphone: this.state.userphone,
+                email: this.props.user_info.email.trim(),
+                username: this.state.username.trim(),
+                job: this.state.job.trim(),
+                userphone: this.state.userphone.trim(),
             }
             info = {
                 /*corp_id:this.state.corp_id,
@@ -186,7 +186,7 @@ export default class extends React.Component {
 	            	</div> : null}
 	            	<div className="text-place">
 	            		<div className="title">이메일</div>
-	            		<div className="text-box"><input className="common-textbox" type="text" value={this.state.email} onChange={this.onInfoChange.bind(this, "email")}/></div>
+	            		<div className="text-box"><input className="common-textbox" type="text" value={this.state.email} onChange={this.onInfoChange.bind(this, "email")} disabled /></div>
 	            	</div>
 	            	<div className="text-place">
 	            		<div className="title">휴대폰 번호</div>
