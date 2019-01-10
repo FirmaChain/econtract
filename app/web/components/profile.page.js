@@ -147,6 +147,7 @@ export default class extends React.Component {
             }).open();
         }));
         if(!!address && !!address.roadAddress) {
+            console.log(address)
             if(type == "personal") {
                 this.setState({
                     useraddress: address.roadAddress + " "
