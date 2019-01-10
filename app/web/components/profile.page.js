@@ -167,7 +167,7 @@ export default class extends React.Component {
     }
 
 	render() {
-        if(!this.props.user_info || !this.state.username)
+        if(!this.props.user_info)
             return <div />
 
         let account_type = this.props.user_info.account_type
