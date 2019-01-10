@@ -311,8 +311,9 @@ export default class extends React.Component {
             return history.replace("/home")
         }
 
-        if(localStorage.getItem("browser_key") || localStorage.getItem("browser_key_virgin") == false) {
-            if(!window.confirm("해당 기기로 인증된 계정이 있습니다. 인증을 해제하고 가입을 진행하시겠습니까?")) {
+        if(localStorage.getItem("browser_key") || localStorage.getItem("browser_key_virgin") == 0) {
+            let res = await window.confirm("해당 기기로 인증된 계정이 있습니다. 인증을 해제하고 가입을 진행하시겠습니까?")
+            if( !res ) {
                 return history.push("/login")
             }
             localStorage.removeItem("browser_key")
