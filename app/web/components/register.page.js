@@ -581,7 +581,7 @@ export default class extends React.Component {
         let sort_item = sort_test.find( e => item.word == e.word && item.idx == e.idx )
         if( sort_item ){
             for(let i in sort_test) {
-                if(sort_item == item) {
+                if(sort_item.idx == item.idx) {
                     sort_test.splice(i, 1)
                     break;
                 }
@@ -1049,7 +1049,6 @@ export default class extends React.Component {
                 <div className="split-line"></div>
                 <div className="list">
                     {shuffled_mnemonic.map((e, k)=>{
-                        console.log(e, k)
                         return <div key={e.idx} 
                                     className={`item cursored ${this.state.sort_test.find( v => v.word == e.word && v.idx == e.idx) ? "selected" : ""}`}
                                     onClick={this.onClickSortTest.bind(this,e)}
