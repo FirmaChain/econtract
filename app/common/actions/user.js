@@ -52,9 +52,9 @@ export function fetch_user_info(){
                     if(resp.payload.account_type == 2 && resp.payload.is_enable == 0) {
                         dispatch({
                             type:RELOAD_USERINFO,
-                            payload:false
+                            payload:-2
                         })
-                        return false
+                        return -2
                     }
 
                     corp_info = decrypt_corp_info(Buffer.from(user_info.corp_key, 'hex'), new Buffer(resp.payload.corp_info.data) )
