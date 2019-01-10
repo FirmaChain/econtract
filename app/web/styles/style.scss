@@ -16,6 +16,7 @@ $middleblack : #555555;
 $black : #181818;
 $gray : #a7a4a5;
 $lightgray : #f4f4f4;
+$superlightgray : #fcfcfc;
 $middlegray : #dadadc;
 $red : #cc0000;
 
@@ -2345,7 +2346,7 @@ div.checkbox2-comp{
                     >.user-detail {
                         border-top: 1px solid $lightgray;
                         border-bottom: 1px solid $lightgray;
-                        background-color:$lightgray;
+                        background-color:$superlightgray;
                         padding:10px;
 
                         >.text-place {

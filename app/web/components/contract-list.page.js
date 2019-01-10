@@ -534,6 +534,9 @@ export default class extends React.Component {
                     epin:contract.epin,
                     eckai:contract.eckai,
                 }]
+                console.log(contract)
+                console.log(infos)
+                console.log(pin)
                 correct_pin = await this.props.is_correct_pin(contract, pin, infos, this.props.user_info, this.state.groups)
                 if( !correct_pin ) {
                     return alert("잘못된 PIN 번호를 입력했습니다.")
