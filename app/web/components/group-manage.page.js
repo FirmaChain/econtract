@@ -79,7 +79,8 @@ export default class extends React.Component {
     			}
     		})
     	} else {
-    		if(await window.confirm(`그룹원 ${name} 탈퇴`, `그룹원 ${name}를 탈퇴시킵니다.`)) {
+            let res = await window.confirm(`그룹원 ${name} 탈퇴`, `그룹원 ${name}를 탈퇴시킵니다.`)
+    		if( res ) {
                 await this.remove_member(account_id)
             }
     	}
