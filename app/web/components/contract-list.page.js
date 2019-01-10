@@ -116,9 +116,9 @@ export default class extends React.Component {
                         }
                     })
                 } else if(account_type == 2) {
-                    alert("할당된 그룹이 없습니다. 관리자에게 그룹 추가를 요청해주세요.")
                     window.logout()
-                    location.reload(true)
+                    alert("할당된 그룹이 없습니다. 관리자에게 그룹 추가를 요청해주세요.")
+                    history.replace("/login")
                 }
             } else if(!group_id) {
                 if(groups) {
@@ -212,7 +212,7 @@ export default class extends React.Component {
         else if(menu == "view-group") {
             result = await this.props.get_contracts(0, 3, page, LIST_DISPLAY_COUNT, 0, group_id, this.props.user_info, groups, search_text)
         }
-        else if(menu == "my_view") {
+        else if(menu == "my-view") {
             result = await this.props.get_contracts(0, 3, page, LIST_DISPLAY_COUNT, 1, group_id, this.props.user_info, groups, search_text)
         }
 
@@ -273,8 +273,8 @@ export default class extends React.Component {
         else if(menu == "view-group") {
             result = { id:"view-group", title : "그룹 보기 가능"}
         }
-		else if(menu == "my_view") {
-			result = { id:"my_view", title : "개인 문서함"}
+		else if(menu == "my-view") {
+			result = { id:"my-view", title : "개인 문서함"}
 		}
 		else
             result = { id:"recently", title : "최근 사용"}
@@ -686,7 +686,10 @@ export default class extends React.Component {
                             <div className="text">{this.props.user_info.account_type != 0 ? "미분류 계약":"잠김"}</div>
                             {this.state.lock_count > 0 ? <div className="count">{this.state.lock_count}</div> : null}
                         </div>
-                        <div className={"item" + (this.getTitle().id == "my_view" ? " selected" : "")} onClick={this.move.bind(this, "my_view")}><i className="icon far fa-eye"></i> <div className="text">개인 문서함</div></div>
+                        { account_type != 0 ? <div className={"item" + (this.getTitle().id == "my-view" ? " selected" : "")} onClick={this.move.bind(this, "my-view")}>
+                            <i className="icon far fa-eye"></i>
+                            <div className="text">개인 문서함</div>
+                        </div> : null }
                     </div>
                     { account_type != 0 ? (<div className="list">
                         <div className="title">그룹 선택</div>
@@ -715,6 +718,7 @@ export default class extends React.Component {
 						{/*<div className={"item" + (this.getTitle().id == "beforeOtherSign" ? " selected" : "")} onClick={this.move.bind(this, "beforeOtherSign")}><i className="icon far fa-file-export"></i> <div className="text">상대방 서명 전</div></div>*/}
 						<div className={"item" + (this.getTitle().id == "completed" ? " selected" : "")} onClick={this.move.bind(this, "completed")}><i className="icon fal fa-check-circle"></i> <div className="text">완료됨</div></div>
                         {account_type != 0 ? <div className={"item" + (this.getTitle().id == "view-group" ? " selected" : "")} onClick={this.move.bind(this, "view-group")}><i className="icon fas fa-eye"></i> <div className="text">그룹 보기 가능</div></div> : null}
+                        {account_type == 0 ? <div className={"item" + (this.getTitle().id == "my-view" ? " selected" : "")} onClick={this.move.bind(this, "my-view")}><i className="icon fas fa-eye"></i> <div className="text">보기 가능</div></div> : null}
 					</div>
 					<div className="list">
 						<div className="title">

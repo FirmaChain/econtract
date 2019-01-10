@@ -311,6 +311,17 @@ export default class extends React.Component {
             return history.replace("/home")
         }
 
+        (async()=>{
+            if(localStorage.getItem("browser_key") || localStorage.getItem("browser_key_virgin") == 0) {
+                let res = await window.confirm("해당 기기로 인증된 계정이 있습니다. 인증을 해제하고 가입을 진행하시겠습니까?")
+                if( !res ) {
+                    return history.push("/login")
+                }
+                localStorage.removeItem("browser_key")
+                localStorage.removeItem("browser_key_virgin")
+            }
+        })()
+
         if(this.getAccountType() == 2) {
             let params = queryString.parse(this.props.location.search)
 
@@ -573,7 +584,7 @@ export default class extends React.Component {
         let sort_item = sort_test.find( e => item.word == e.word && item.idx == e.idx )
         if( sort_item ){
             for(let i in sort_test) {
-                if(sort_item == item) {
+                if(sort_item.idx == sort_test[i].idx) {
                     sort_test.splice(i, 1)
                     break;
                 }
@@ -1041,7 +1052,6 @@ export default class extends React.Component {
                 <div className="split-line"></div>
                 <div className="list">
                     {shuffled_mnemonic.map((e, k)=>{
-                        console.log(e, k)
                         return <div key={e.idx} 
                                     className={`item cursored ${this.state.sort_test.find( v => v.word == e.word && v.idx == e.idx) ? "selected" : ""}`}
                                     onClick={this.onClickSortTest.bind(this,e)}

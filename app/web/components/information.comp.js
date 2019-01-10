@@ -112,8 +112,7 @@ export default class extends React.Component{
 
     onLogout = () => {
         this.deleteSession()
-
-        location.reload(true)
+        history.push("/login")
     }
     
     render(){

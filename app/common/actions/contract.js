@@ -250,7 +250,7 @@ export function is_correct_pin(contract, pin_to_be_verified, infos, user_info, g
     return async function() {
         let corp_id = user_info.corp_id || -1;
         let subject = select_subject(infos, groups, user_info.account_id, corp_id);
-        if (!subject.my_info) return null
+        if (!subject.my_info) return null;
 
         let shared_key;
         let pin = "000000";
@@ -271,8 +271,8 @@ export function is_correct_pin(contract, pin_to_be_verified, infos, user_info, g
         let the_key = getContractKey(pin, shared_key);
         let _ = [...contract.user_infos]
 
-        if( typeof(_) != "object" ) {
-            _ = _.split(window.SEPERATOR)
+        if( typeof(contract.user_infos) != "object" ) {
+            _ = contract.user_infos.split(window.SEPERATOR).map(e=>{ return {data:e} })
         }
 
         try {

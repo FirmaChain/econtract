@@ -72,20 +72,27 @@ export default class extends React.Component {
     		window.openModal("ContractListModal", {
     			icon:"fas fa-user-slash",
     			title:`그룹원 ${name} 탈퇴`,
-    			desc:"해당 그룹원이 현재 진행중인 계약입니다.<br/>그룹원을 삭제하게 되면 진행중인 계약에서 제외됩니다.",
+    			desc:"해당 그룹원이 현재 진행중인 계약입니다.<br/>그룹원을 삭제하게 되면 진행중인 계약에서 제외됩니다.<br/>수정권한은 다음 서명자에게 넘어가게 됩니다.",
     			list:exist_contract.payload,
     			onConfirm: async () => {
-    				let resp = await this.props.remove_corp_member(account_id)
-    				if(resp.code == 1) {
-    					await this.onRefresh()
-    					alert("해당 그룹원이 탈퇴되었습니다.")
-    				}
-    				else alert("삭제에 실패하였습니다.")
+                    await this.remove_member(account_id)
     			}
     		})
     	} else {
-    		window.confirm(`그룹원 ${name} 탈퇴`, `그룹원 ${name} 탈퇴`)
+            let res = await window.confirm(`그룹원 ${name} 탈퇴`, `그룹원 ${name}를 탈퇴시킵니다.`)
+    		if( res ) {
+                await this.remove_member(account_id)
+            }
     	}
+    }
+
+    remove_member = async (account_id) => {
+        let resp = await this.props.remove_corp_member(account_id)
+        if(resp.code == 1) {
+            await this.onRefresh()
+            alert("해당 그룹원이 탈퇴되었습니다.")
+        }
+        else alert("삭제에 실패하였습니다.")
     }
 
     onChangeAccountNumber = async () => {

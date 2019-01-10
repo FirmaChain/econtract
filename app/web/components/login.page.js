@@ -198,6 +198,7 @@ export default class extends React.Component {
 		</div>);
    }
 
+
 	render() {
         if(this.props.user_info !== false) {
             return <div />

@@ -347,8 +347,9 @@ export default class extends React.Component {
 
         for(let v of sign_info_list) {
             if(!sign_info["#"+v] || sign_info["#"+v].trim() == "") {
-                sign_info["#"+v] = sign_info["#"+v].trim()
                 return alert("서명 정보를 모두 입력해주세요. " + v)
+            } else {
+                sign_info["#"+v] = sign_info["#"+v].trim()
             }
         }
 
@@ -622,6 +623,9 @@ export default class extends React.Component {
                 if(e == meOrGroup)
                     return null
 
+                if(info.user_info.user_type == 2) 
+                    return null
+
                 return <div className="user-container" key={e.entity_id+"_"+e.corp_id}>
                     <div className="user" onClick={this.onToggleUser.bind(this, e.entity_id, e.corp_id, false)}>
                         <div className="user-info">
@@ -722,9 +726,9 @@ export default class extends React.Component {
                             config={this.config}
                             model={this.state.model}
                             onModelChange={(model) => this.setState({model, contract_modify_status:"계약서가 수정되었습니다."})} />
-                        <div className="can-edit-text">
+                        { this.state.contract.status < 2 ? <div className="can-edit-text">
                             <div>현재 {can_edit_name} 님이 수정권한을 갖고 있습니다.</div>
-                        </div>
+                        </div> : null }
                     </div>
                     {!this.state.sign_mode ? <div className="info">
                         <div className="top">
