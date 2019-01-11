@@ -30,7 +30,7 @@ let _ = {
     FOOTER_2:["서울시 성동구 성동이로 58, P-Tower 5층 ㅣ 사업자등록번호 261-88-0108","Seoul, Seongdong-gu, Seongdonge-ro 58, P-Tower 5th floor ㅣ CRN 261-88-0108","Seoul, Seongdong-gu, Seongdonge-ro 58, P-Tower 5th floor ㅣ CRN 261-88-0108"],
 }
 
-export default function(ID){
+export default function(ID, params){
     if(_[ID] == null)
         return ID + " is null"
     let language = 0
