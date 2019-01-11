@@ -17,7 +17,8 @@ export default function(ID, params = []){
     }
     let text = _[ID][language]
     params.map( (e, k) => {
-        text = text.replace(`{k}`, e)
+        regex = new RegExp(`\{${k}\}`, "i")
+        text = text.replace(regex, e)
     })
     return text 
 }
