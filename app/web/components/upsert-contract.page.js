@@ -310,9 +310,11 @@ export default class extends React.Component {
                         await this.onClickContractSave();
 
                 console.log("pbes0707", user)
+                console.log("user.sub", user.sub)
                     
                 await window.showIndicator()
-                await this.props.move_contract_can_edit_account_id(this.state.contract.contract_id, user.entity_id, user.sub)
+                let result = await this.props.move_contract_can_edit_account_id(this.state.contract.contract_id, user.entity_id, user.sub)
+                console.log(result)
                 //await this.onRefresh()
                 await window.hideIndicator()
             }
