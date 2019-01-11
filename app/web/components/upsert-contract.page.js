@@ -307,7 +307,9 @@ export default class extends React.Component {
 
                 if((this.state.contract.html || "") != this.state.model)
                     if(window._confirm("수정중인 내용이 있습니다. 저장하고 수정 권한을 넘기시겠습니까?"))
-                        await this.onClickContractSave()
+                        await this.onClickContractSave();
+
+                console.log("pbes0707", user)
                     
                 await window.showIndicator()
                 await this.props.move_contract_can_edit_account_id(this.state.contract.contract_id, user.entity_id, user.sub)
