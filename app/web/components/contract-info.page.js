@@ -61,7 +61,7 @@ export default class extends React.Component {
 
 	componentDidMount(){
         (async()=>{
-            await window.showIndicator("계약서 불러오는 중...")
+            await window.showIndicator(translate("loading_contract"))
             await this.props.fetch_user_info()
             let contract_id = this.props.match.params.contract_id || 0
             let contract, groups = []
@@ -80,7 +80,7 @@ export default class extends React.Component {
             }
 
             if(!contract) {
-                alert("계약이 암호화되어 있어 접근할 수 없습니다.")
+                alert(translate("contract_is_encrypt_so_dont_enter"))
                 return history.goBack()
             }
 
@@ -94,7 +94,7 @@ export default class extends React.Component {
                     groups
                 })
             } else {
-                alert("계약이 존재하지 않습니다.")
+                alert(translate("not_exist_contract"))
                 history.goBack()
             }
 
@@ -140,16 +140,12 @@ export default class extends React.Component {
     getRoleText = (entity_id, corp_id, privilege) => {
         let text = []
 
-        /*if(corp_id == 0 && this.state.contract.account_id == entity_id) {
-            text.push("생성자")
-        }*/
-
         switch(privilege) {
             case 1:
-                text.push("서명자")
+                text.push(translate("signer"))
                 break;
             case 2:
-                text.push("보기 전용")
+                text.push(translate("viewer"))
                 break;
         }
 
@@ -163,7 +159,7 @@ export default class extends React.Component {
         let corp_id = this.props.user_info.corp_id || -1
         let me = select_subject(infos, this.state.groups, this.props.user_info.account_id, corp_id, contract.is_pin_used).my_info
         if(status == 0) {
-            return "내용 입력 중"
+            return translate("status_0")
         } else if(status == 1) {
 
             console.log(infos)
@@ -178,11 +174,11 @@ export default class extends React.Component {
                 return v.corp_id == 0 && v.entity_id == this.props.user_info.account_id
             })
             if(sign_user && sign_user.sign == "true") {
-                return "상대방 서명 전"
+                return translate("status_1_0")
             }
-            return "내 서명 전"
+            return translate("status_1_1")
         } else if(status == 2) {
-            return "계약 완료"
+            return translate("status_2")
         } 
     }
 
@@ -247,7 +243,7 @@ export default class extends React.Component {
                         } })()
                     }
                     <div className="privilege">{this.getRoleText(e.entity_id, e.corp_id, e.privilege)}</div>
-                    <div className="is-sign">{e.privilege != 1 ? "" : (e.signature ? "서명 완료" : "서명 전")}</div>
+                    <div className="is-sign">{e.privilege != 1 ? "" : (e.signature ? translate("sign_all") : translate("status_1"))}</div>
                 </div>
             })}
         </div>
@@ -272,7 +268,7 @@ export default class extends React.Component {
             if(v.privilege == 1) {
                 let user_name = v.user_info.username ? v.user_info.username : v.user_info.title
                 if(v && v.is_exclude == 1) {
-                    user_name = "(퇴장) " + v.user_info.username
+                    user_name = translate("byebye_template", v.user_info.username)
                 }
                 users.push(user_name)
             }
@@ -287,54 +283,54 @@ export default class extends React.Component {
         }
         users = users.join(", ")
 
-        let creator_name = creator ? creator.user_info.username : "알 수 없음"
+        let creator_name = creator ? creator.user_info.username : translate("unknown")
         if(creator && creator.is_exclude == 1) {
-            creator_name = "(퇴장) " + creator.user_info.username
+            creator_name = translate("byebye_template", creator.user_info.username)
         }
 
         return <div className="deck informations">
             <div className="item">
-                <div className="title">계약명</div>
+                <div className="title">{translate("contract_name")}</div>
                 <div className="desc">{contract.name}</div>
             </div>
             <div className="item">
-                <div className="title">계약 상태</div>
+                <div className="title">{translate("contract_status")}</div>
                 <div className="desc">{this.status_text(contract.status)}</div>
             </div>
             <div className="item">
-                <div className="title">계약 고유 식별 값</div>
-                <div className="desc">{review.document_hash || "미완료"}</div>
+                <div className="title">{translate("contract_hash_id")}</div>
+                <div className="desc">{review.document_hash || translate("not_completed")}</div>
             </div>
             <div className="item">
-                <div className="title">계약 등록 일자</div>
+                <div className="title">{translate("contract_regist_date")}</div>
                 <div className="desc">{moment(contract.addedAt).format("YYYY-MM-DD HH:mm:ss")}</div>
             </div>
             <div className="item">
-                <div className="title">PIN 번호</div>
-                <div className="desc">{contract.is_pin_used == 0 ? "PIN이 없습니다." : contract.pin}</div>
+                <div className="title">{translate("PIN_number")}</div>
+                <div className="desc">{contract.is_pin_used == 0 ? translate("not_exist_PIN") : contract.pin}</div>
             </div>
             <div className="item">
                 <div className="title">IPFS ID</div>
-                <div className="desc">{contract.ipfs || "미완료"}</div>
+                <div className="desc">{contract.ipfs || translate("not_completed")}</div>
             </div>
             <div className="item">
-                <div className="title">계약 완료 일자</div>
-                <div className="desc">{contract.completedAt ? moment(contract.completedAt).format("YYYY-MM-DD HH:mm:ss") : "미완료"}</div>
+                <div className="title">{translate("contract_complete_date")}</div>
+                <div className="desc">{contract.completedAt ? moment(contract.completedAt).format("YYYY-MM-DD HH:mm:ss") : translate("not_completed")}</div>
             </div>
             <div className="item">
-                <div className="title">계약 생성자</div>
+                <div className="title">{translate("contract_creator")}</div>
                 <div className="desc">{creator_name}</div>
             </div>
             <div className="item">
-                <div className="title">트랜잭션 ID</div>
-                <div className="desc">{review.transaction_id || "미완료"}</div>
+                <div className="title">{translate("transaction_ID")}</div>
+                <div className="desc">{review.transaction_id || translate("not_completed")}</div>
             </div>
             <div className="item">
-                <div className="title">기준 시간</div>
-                <div className="desc">사용자 컴퓨터 기준</div>
+                <div className="title">{translate("standard_time")}</div>
+                <div className="desc">{translate("user_computer_standard")}</div>
             </div>
             <div className="item">
-                <div className="title">계약 수신자</div>
+                <div className="title">{translate("receive_contract_user")}</div>
                 <div className="desc">{users}</div>
             </div>
         </div>
@@ -356,33 +352,33 @@ export default class extends React.Component {
             let email = user.user_info.email ? user.user_info.email : user.user_info.company_name
 
             if(user.is_exclude)
-                name = "(퇴장) " + name
+                name = translate("byebye_template", [name])
 
             switch(e.code) {
                 case 1:
-                    msg = `${name}님이 계약서를 생성하셨습니다.`
+                    msg = translate("log_create_msg", [name])
                     break;
                 case 2:
-                    msg = `${name}님이 계약서를 열람하셨습니다.`
+                    msg = translate("log_open_msg", [name])
                     break;
                 case 3:
-                    msg = `${name}님이 계약서를 수정하셨습니다.`
+                    msg = translate("log_modify_msg", [name])
                     break;
                 case 4:
-                    msg = `${name}님이 서명 정보를 변경하셨습니다.`
+                    msg = translate("log_modify_sign_info_msg", [name])
                     break;
                 case 5:
-                    msg = `${name}님이 계약서에 서명하셨습니다.`
+                    msg = translate("log_sign_msg", [name])
                     break;
                 case 6: {
                     let next_account_id = JSON.parse(e.data).to_account_id
                     let next = this.state.infos.find(c=>c.corp_id == 0 && c.entity_id == next_account_id)
 
-                    let next_name = next ? next.user_info.username : "알 수 없음"
+                    let next_name = next ? next.user_info.username : translate("unknown")
                     if(next && next.is_exclude == 1)
-                        next_name = "(퇴장) " + next_name
+                        next_name = translate("byebye_template", [next_name])
 
-                    msg = `${name}님이 수정 권한을 ${next.user_info.username}님에게 전달했습니다.`
+                    msg = translate("log_move_privilege_msg", [name, next_name])
                     break;
                 }
             }
@@ -399,9 +395,9 @@ export default class extends React.Component {
 
         return <div className="deck logs">
             <div className="head">
-                <div className="list-head-item list-name">이력</div>
-                <div className="list-head-item list-user">사용자</div>
-                <div className="list-head-item list-date">일자</div>
+                <div className="list-head-item list-name">{translate("history")}</div>
+                <div className="list-head-item list-user">{translate("user")}</div>
+                <div className="list-head-item list-date">{translate("date")}</div>
             </div>
             {logs.map((e, k) => {
                 if(!e) return
@@ -419,7 +415,7 @@ export default class extends React.Component {
                     </div>
                 </div>
             })}
-            {logs.length == 0 ? <div className="empty-log">로그가 없습니다.</div> : null}
+            {logs.length == 0 ? <div className="empty-log">{translate("no_history")}</div> : null}
         </div>
     }
 
@@ -427,13 +423,13 @@ export default class extends React.Component {
         if(!this.props.user_info || !this.state.contract)
             return <div></div>
 
-        return (<div className="contract-info-page">
+        return <div className="contract-info-page">
             <div className="header-page">
                 <div className="header">
                     <div className="left-icon">
                         <i className="fal fa-times" onClick={this.onClickBack}></i>
                     </div>
-                    <div className="title">계약 상세 정보</div>
+                    <div className="title">{translate("contract_detail_info")}</div>
                     { !!this.props.user_info ? <Information /> : null }
                 </div>
                 <div className="container">
@@ -443,14 +439,14 @@ export default class extends React.Component {
                                 <div className="title">{this.state.contract.name}</div>
                             </div>
                             <div className="date">
-                                마지막 활동 시간 : {moment(this.state.contract.updatedAt).format("YYYY-MM-DD HH:mm:ss")}<br/>
-                                계약 등록 일자 : {moment(this.state.contract.addedAt).format("YYYY-MM-DD HH:mm:ss")}
+                                {translate("last_updated_date")} : {moment(this.state.contract.updatedAt).format("YYYY-MM-DD HH:mm:ss")}<br/>
+                                {translate("contract_regist_date")} : {moment(this.state.contract.addedAt).format("YYYY-MM-DD HH:mm:ss")}
                             </div>
                             <div className="buttons">
                                 <div className="flex1">&nbsp;</div>
                                 <div className="blue-button" 
-                                    onClick={(e)=>history.push(`/edit-contract/${this.state.contract.contract_id}`)}>{this.state.contract.status != 2 ? "편집":"계약서 보기"}</div>
-                                <div className="blue-button">다운로드</div>
+                                    onClick={(e)=>history.push(`/edit-contract/${this.state.contract.contract_id}`)}>{this.state.contract.status != 2 ? translate("edit"):translate("view_contract")}</div>
+                                <div className="blue-button">{translate("download")}</div>
                                 {/*<div className="transparent-button">설정</div>*/}
                             </div>
                             <div className="indicator">
@@ -466,21 +462,21 @@ export default class extends React.Component {
                             </div>
                             <div className="step-text">
                                 <div className="corner-space"></div>
-                                <div className="item enable-item">계약 정보 등록</div>
+                                <div className="item enable-item">{translate("contract_info_register")}</div>
                                 <div className="space"></div>
-                                <div className="item enable-item">내용 입력중</div>
+                                <div className="item enable-item">{translate("status_0")}</div>
                                 <div className="space"></div>
-                                <div className={"item" + (this.state.contract.status > 0 ? " enable-item" : "")}>서명 대기중</div>
+                                <div className={"item" + (this.state.contract.status > 0 ? " enable-item" : "")}>{translate("sign_waiting")}</div>
                                 <div className="space"></div>
-                                <div className={"item" + (this.state.contract.status > 1 ? " enable-item" : "")}>계약 완료</div>
+                                <div className={"item" + (this.state.contract.status > 1 ? " enable-item" : "")}>{translate("status_2")}</div>
                                 <div className="corner-space"></div>
                             </div>
 
                             <div className="information-deck">
                                 <div className="tab-container">
-                                    <div className={"tab " + (this.state.select_tab == 0 ? "selected" : "")} onClick={e=>this.setState({select_tab:0})}>사용자</div>
-                                    <div className={"tab " + (this.state.select_tab == 1 ? "selected" : "")} onClick={e=>this.setState({select_tab:1})}>상세 정보</div>
-                                    <div className={"tab " + (this.state.select_tab == 2 ? "selected" : "")} onClick={e=>this.setState({select_tab:2})}>이력</div>
+                                    <div className={"tab " + (this.state.select_tab == 0 ? "selected" : "")} onClick={e=>this.setState({select_tab:0})}>{translate("user")}</div>
+                                    <div className={"tab " + (this.state.select_tab == 1 ? "selected" : "")} onClick={e=>this.setState({select_tab:1})}>{translate("detail_info")}</div>
+                                    <div className={"tab " + (this.state.select_tab == 2 ? "selected" : "")} onClick={e=>this.setState({select_tab:2})}>{translate("history")}</div>
                                 </div>
                                 {this.render_information_deck()}
                             </div>
@@ -504,6 +500,6 @@ export default class extends React.Component {
                 </div>
             </div>
             <Footer />
-		</div>);
+		</div>
 	}
 }

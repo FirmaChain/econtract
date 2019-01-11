@@ -61,7 +61,7 @@ export default class extends React.Component {
 
     componentDidMount() {
         /*if(this.getGroupId() == null) {
-            alert("잘못된 경로로 들어왔습니다.")
+            alert(translate("wrong_url_enter"))
             return history.goBack()
         }*/
         if(this.getGroupId() != null && !isNaN(this.getGroupId()) ) {
@@ -118,14 +118,14 @@ export default class extends React.Component {
     onChangeGroupTitle = () => {
         window.openModal("AddCommonModal", {
             icon:"fas fa-users",
-            title:"그룹명 변경",
-            subTitle:"새 그룹명",
-            placeholder:"그룹명을 입력해주세요.",
-            confirmText:"변경",
+            title:translate("change_group_name"),
+            subTitle:translate("new_group_name"),
+            placeholder:translate("please_input_group_name"),
+            confirmText:translate("change"),
             onConfirm: async (group_name) => {
                 let resp = this.props.change_group_title(this.getGroupId(), group_name)
                 if(resp) {
-                    alert("그룹명 변경에 성공했습니다.")
+                    alert(translate("succes_group_name"))
                     await this.onRefresh()
                 }
             }
@@ -136,27 +136,27 @@ export default class extends React.Component {
 
         window.openModal("RemoveCommonModal", {
             icon:"fas fa-trash",
-            title:"그룹 삭제",
-            subTitle:`${this.state.group.title} 그룹을 삭제합니다.<br/>삭제하시겠습니까?`,
+            title:translate("remove_group"),
+            subTitle:translate("remove_group_desc_1", [this.state.group.title]),
             onDelete: async (group_name) => {
                 let resp = this.props.hide_group(this.getGroupId())
                 if(resp){
-                    alert("성공적으로 삭제하였습니다.")
+                    alert(translate("success_remove_group"))
                     return history.push("/group")
                 }
-                alert("삭제에 실패하였습니다.")
+                alert(translate("fail_remove"))
             }
         })
     }
 
     onAddMember = async ()=>{
         if(this.state.add_email == "")
-            return alert("초대하려는 그룹원의 이메일을 입력해주세요.")
+            return alert(translate("please_input_invite_member_email"))
         
         let email = this.state.add_email.trim()
 
         if(!window.email_regex.test(email))
-            return alert("이메일이 형식에 맞지 않습니다.")
+            return alert(translate("no_email_regex"))
         
 
         await window.showIndicator()
@@ -188,9 +188,9 @@ export default class extends React.Component {
                 if(v.email_hashed == md5(email+v.passphrase1) ) {
                     await window.hideIndicator()
                     if(v.group_id == this.getGroupId())
-                        return alert("이미 해당 그룹에 초대중인 사용자입니다.")
+                        return alert(translate("already_invite_this_group"))
                     else
-                        return alert("이미 다른 그룹에서 초대중인 사용자입니다.")
+                        return alert(translate("already_invite_another_group"))
                 }
             }
 
@@ -200,17 +200,17 @@ export default class extends React.Component {
                     this.setState({
                         add_email:""
                     })
-                    alert("성공적으로 그룹에 초대하였습니다.")
+                    alert(translate("success_invite_group"))
                 } else if(resp.code == 2) {
-                    alert("이미 해당 그룹에 속해있는 사용자 입니다.")
+                    alert(translate("already_this_group"))
                 } else if(resp.code == -5) {
-                    alert("이메일이 형식에 맞지 않습니다.")
+                    alert(translate("no_email_regex"))
                 } else if(resp.code == -7) {
-                    alert("가입은 되었으나 초대 이메일을 보내지 못했습니다. 초대 코드는 " + resp.invite_code + " 입니다.")
+                    alert(translate("success_invite_group_but_not_email", [resp.invite_code]))
                 } else if(resp.code == -8) {
-                    alert("이미 개인 계정으로 가입되어 있습니다.")
+                    alert(translate("already_register_individual"))
                 } else if(resp.code == -9) {
-                    alert("이미 기업 계정으로 가입되어 있습니다.")
+                    alert(translate("already_register_corporation"))
                 }
                 await this.onRefresh()
             }
@@ -226,30 +226,30 @@ export default class extends React.Component {
                     add_email:""
                 })
                 await this.onRefresh()
-                alert("성공적으로 그룹에 초대하였습니다.")
+                alert(translate("success_invite_group"))
             } else if(resp.code == -7) {
-                alert("해당 이메일로 가입한 계정이 없습니다.")
+                alert(translate("no_account_this_email"))
             } else if(resp.code == -8) {
-                alert("이미 개인 계정으로 가입되어 있습니다.")
+                alert(translate("already_register_individual"))
             } else if(resp.code == -9) {
-                alert("이미 기업 계정으로 가입되어 있습니다.")
+                alert(translate("already_register_corporation"))
             }
 
         } else if(exist.code == -6) {
-            alert("이미 해당 그룹에 속해있는 사용자 입니다.")
+            alert(translate("already_this_group"))
         }
         await window.hideIndicator()
     }
 
     onRemoveInviteList = async (invite_id) => {
-        if( await window.confirm("초대 취소", "해당 그룹원의 초대를 취소하시겠습니까?") ){
+        if( await window.confirm(translate("cancel_invitation"), translate("cancel_invitation_desc_1")) ){
             let resp = await this.props.remove_invite_group(this.getGroupId(), invite_id)
             if(resp) {
-                alert("초대를 취소하였습니다.")
+                alert(translate("success_cancel_invitation"))
                 await this.onRefresh()
             }
             else
-                alert("초대 취소에 실패하였습니다.")
+                alert(translate("fail_cancel_invitation"))
         }
     }
 
@@ -257,16 +257,16 @@ export default class extends React.Component {
 
         window.openModal("RemoveCommonModal", {
             icon:"fas fa-trash",
-            title:"그룹원 삭제",
-            subTitle:`해당 그룹원을 이 그룹에서 삭제하시겠습니까?`,
+            title:translate("delete_group_member"),
+            subTitle:translate("delete_group_member_desc_1"),
             onDelete: async (group_name) => {
                 let resp = await this.props.remove_group_member(this.getGroupId(), account_id)
                 if(resp) {
-                    alert("그룹원을 해당 그룹에서 삭제했습니다.")
+                    alert(translate("success_group_member"))
                     await this.onRefresh()
                 }
                 else {
-                    alert("그룹원을 삭제에 실패하였습니다.")
+                    alert(translate("fail_group_member"))
                 }
             }
         })
@@ -280,23 +280,23 @@ export default class extends React.Component {
         document.execCommand("copy");
         document.body.removeChild(dummy);
 
-        alert("링크가 복사되었습니다.")
+        alert(translate("success_link_copy"))
     }
 
     onAllRemoveGroupMembers = async () => {
 
         window.openModal("RemoveCommonModal", {
             icon:"fas fa-trash",
-            title:"그룹원 전체 삭제",
-            subTitle:`모든 그룹원들을 삭제하시겠습니까?`,
+            title:translate("remove_group_member_all"),
+            subTitle:translate("remove_group_member_all_desc_1"),
             onDelete: async (group_name) => {
                 let resp = await this.props.remove_group_member_all(this.getGroupId())
                 if(resp) {
-                    alert("그룹원을 해당 그룹에서 삭제했습니다.")
+                    alert(translate("success_group_member"))
                     await this.onRefresh()
                 }
                 else {
-                    alert("그룹원을 삭제에 실패하였습니다.")
+                    alert(translate("fail_group_member"))
                 }
             }
         })
@@ -314,23 +314,23 @@ export default class extends React.Component {
                         <span>{this.state.group.title}</span>
                     </div>
                     <div className="date">
-                        생성일 : {moment(this.state.group.added_at).format("YYYY-MM-DD HH:mm:ss")}
+                        {translate("create_date")} : {moment(this.state.group.added_at).format("YYYY-MM-DD HH:mm:ss")}
                     </div>
                     <div className="button-container">
-                        <div className="button" onClick={this.onChangeGroupTitle}>그룹명 변경</div>
-                        <div className="button delete" onClick={this.onRemoveGroup}>삭제</div>
+                        <div className="button" onClick={this.onChangeGroupTitle}>{translate("change_group_name")}</div>
+                        <div className="button delete" onClick={this.onRemoveGroup}>{translate("remove")}</div>
                     </div>
                 </div>
             </div>
             <div className="content">
                 <div className="title">
-                    <div className="head">그룹원 관리</div>
-                    <div className="desc">해당 그룹에서 그룹 변경 및 삭제 처리하실 수 있습니다</div>
+                    <div className="head">{translate("group_member_manage")}</div>
+                    <div className="desc">{translate("group_manage_change_delete_available")}</div>
                 </div>
                 <div className="row">
                     <div className="right-form">
                         <div className="column">
-                            <div className="form-head">그룹원 리스트</div>
+                            <div className="form-head">{translate("group_member_list")}</div>
                             <div className="form-list">
                                 {this.state.members.map((e, k)=>{
                                     return <div className="item" key={k}>
@@ -345,26 +345,26 @@ export default class extends React.Component {
                                             {e.info.job}
                                         </div>
                                         <div className="action">
-                                            <div className="delete" onClick={this.onRemoveGroupMember.bind(this, e.account_id)}>삭제</div>
+                                            <div className="delete" onClick={this.onRemoveGroupMember.bind(this, e.account_id)}>{translate("remove")}</div>
                                         </div>
                                     </div>
                                 })}
-                                {this.state.members.length == 0 ? <div className="empty">그룹원이 없습니다.</div> : null}
+                                {this.state.members.length == 0 ? <div className="empty">{translate("no_group_member")}</div> : null}
                             </div>
                         </div>
                     </div>
                 </div>
                 <div className="title">
-                    <div className="head">그룹원 초대하기</div>
-                    <div className="desc">추가하실 그룹원의 정보를 입력하여 추가하세요.<br/>다른 기업의 서브 계정 혹은 개인 계정은 초대할 수 없습니다.</div>
+                    <div className="head">{translate("invite_group_member")}</div>
+                    <div className="desc">{translate("invite_group_member_desc_1")}<br/>{translate("invite_group_member_desc_2")}</div>
                 </div>
                 <div className="row">
                     <div className="right-form">
                         <div className="column column-flex-2">
-                            <div className="form-head">그룹원 이메일</div>
+                            <div className="form-head">{translate("group_member_email")}</div>
                             <div className="form-input">
                                 <input className="common-textbox" id="email" type="email"
-                                    placeholder="이메일을 입력해주세요"
+                                    placeholder={translate("please_input_email")}
                                     value={this.state.add_email || ""}
                                     onChange={e=>this.setState({add_email:e.target.value})}/>
                             </div>
@@ -372,7 +372,7 @@ export default class extends React.Component {
                         <div className="column">
                             <div className="form-head">&nbsp;</div>
                             <div className="form-input">
-                                <div className={"btn-add-user" + ( (this.state.add_email || "").length==0 ? "" : " btn-add-user-active" )} onClick={this.onAddMember}>추가</div>
+                                <div className={"btn-add-user" + ( (this.state.add_email || "").length==0 ? "" : " btn-add-user-active" )} onClick={this.onAddMember}>{translate("add")}</div>
                             </div>
                         </div>
                     </div>
@@ -380,7 +380,7 @@ export default class extends React.Component {
                 <div className="row">
                     <div className="right-form">
                         <div className="column">
-                            <div className="form-head">초대한 그룹원 리스트</div>
+                            <div className="form-head">{translate("group_invite_member_list")}</div>
                             <div className="form-list form-list-600">
                                 {this.state.invite_list.map((e, k)=>{
                                     return <div className="item" key={k}>
@@ -388,14 +388,14 @@ export default class extends React.Component {
                                             <div className="email">{e.data_for_inviter.email}</div>
                                         </div>
                                         <div className="long-action">
-                                            <div className="copy" onClick={this.onCopyRegisterLink.bind(this, e)}>가입 링크 복사</div>
+                                            <div className="copy" onClick={this.onCopyRegisterLink.bind(this, e)}>{translate("register_link_copy")}</div>
                                         </div>
                                         <div className="action">
-                                            <div className="delete" onClick={this.onRemoveInviteList.bind(this, e.invite_id)}>취소</div>
+                                            <div className="delete" onClick={this.onRemoveInviteList.bind(this, e.invite_id)}>{translate("cancel")}</div>
                                         </div>
                                     </div>
                                 })}
-                                {this.state.invite_list.length == 0 ? <div className="empty">초대한 그룹원이 없습니다.</div> : null}
+                                {this.state.invite_list.length == 0 ? <div className="empty">{translate("no_invite_member")}</div> : null}
                             </div>
                         </div>
                     </div>

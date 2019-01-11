@@ -61,7 +61,7 @@ export default class extends React.Component {
 //0x85e3e519dad768899e72eab667c815af01ad5f6e67481294a302a9f511ebb8a0
     onVerify = async() => {
         if(this.state.file == null){
-            return alert("문서파일을 선택해주세요.")
+            return alert("문서 파일을 선택해주세요.")
         }
         if(!this.state.contract_name || this.state.contract_name.length < 64){
             return alert("해시를 입력해주세요.")
@@ -92,7 +92,7 @@ export default class extends React.Component {
                     this.setState({
                         ok:false,
                         step:2,
-                        warning:"이더넷과 파일의 해시가 다릅니다."
+                        warning:"입력하신 해시값과 파일의 해시값이 다릅니다."
                     })
                 }
             }else{
@@ -105,13 +105,13 @@ export default class extends React.Component {
                     this.setState({
                         ok:false,
                         step:2,
-                        warning:"입력한 해쉬값이 잘못되었습니다."
+                        warning:"입력하신 해시값이 잘못되었습니다."
                     })
                 }
                 this.setState({ percent:100 })
             }
         }catch(err){
-            alert("검증에 실패했습니다")
+            alert("검증에 실패했습니다.")
         }
     }
 
@@ -177,14 +177,14 @@ export default class extends React.Component {
             <div className={this.state.step==2?`bottom checked-panel`:`bottom checked-panel move-out`}>
                 <i className={this.state.ok ? "far fa-check-circle ok_icon":"far fa-times-circle no_icon"}></i>
                 <div className="title">{this.state.ok ? "검증 성공":"검증 실패"}</div>
-                <div className="sub-title">계약 해쉬값 또는 주소</div>
+                <div className="sub-title">계약 해시값 또는 주소</div>
                 <div className="hash-text">{this.state.contract_name}</div>
                 <div className="sub-title">업로드한 문서 파일</div>
                 <div className="content-text">{this.state.filename}</div>
-                {this.state.ok ? null : <div className="sub-title">실패사유</div> }
+                {this.state.ok ? null : <div className="sub-title">실패 사유</div> }
                 {this.state.ok ? null : <div className="warning-text">{this.state.warning}</div> }
 
-                <div className="btn" onClick={this.onClickReset}>재검증하기</div>
+                <div className="btn" onClick={this.onClickReset}>재 검증 하기</div>
             </div>
 		</div>);
 	}

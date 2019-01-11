@@ -100,7 +100,7 @@ export default class extends React.Component {
 
                 let user_name = user.user_info.username ? user.user_info.username : (user.user_info.title + " " + data.username)
                 if(user.is_exclude == 1)
-                    user_name = "(퇴장) " + user_name
+                    user_name = translate("byebye_template", [user_name])
 
                 return <div key={e.chat_id} className={isMine ? "chat-slot right" : "chat-slot left"}>
                     { !isMine ? <img className="profile" src={`https://identicon-api.herokuapp.com/${user.corp_id+"_"+user.entity_id}/70?format=png`}/> : null }
@@ -123,8 +123,8 @@ export default class extends React.Component {
                 if(!entity) return;
                 let user_name = entity.user_info.username
                 if(entity.is_exclude == 1)
-                    user_name = "(퇴장) " + user_name
-                let text = `${user_name}님이 계약서를 수정하였습니다.`
+                    user_name = translate("byebye_template", [user_name])
+                let text = translate("who_is_modify_contract", [user_name])
                 return <div key={e.chat_id} className="notice">
                     {text}
                 </div>
@@ -136,8 +136,8 @@ export default class extends React.Component {
                 if(!entity) return;
                 let user_name = entity.user_info.username
                 if(entity.is_exclude == 1)
-                    user_name = "(퇴장) " + user_name
-                let text = `${user_name}님이 해당 계약서에 서명하였습니다.`
+                    user_name = translate("byebye_template", [user_name])
+                let text = translate("who_is_sign", [user_name])
                 return <div key={e.chat_id} className="notice">
                     {text}
                 </div>
@@ -149,8 +149,8 @@ export default class extends React.Component {
                 if(!entity) return;
                 let user_name = entity.user_info.username
                 if(entity.is_exclude == 1)
-                    user_name = "(퇴장) " + user_name
-                let text = `${user_name}님이 서명에 필요한 정보를 수정하였습니다.`
+                    user_name = translate("byebye_template", [user_name])
+                let text = translate("who_is_sign_info", [user_name])
                 return <div key={e.chat_id} className="notice">
                     {text}
                 </div>
@@ -162,15 +162,15 @@ export default class extends React.Component {
                 if(!entity) return;
                 let user_name = entity.user_info.username
                 if(entity.is_exclude == 1)
-                    user_name = "(퇴장) " + user_name
+                    user_name = translate("byebye_template", [user_name])
 
                 let move_entity = this.props.infos.find(e=>e.entity_id == data.move_account_id && e.corp_id == 0)
                 if(!move_entity) return;
                 let move_user_name = move_entity.user_info.username
                 if(move_entity.is_exclude == 1)
-                    move_user_name = "(퇴장) " + move_user_name
+                    move_user_name = translate("byebye_template", [move_user_name])
 
-                let text = `${user_name}님이 ${move_user_name}님에게 수정 권한을 넘겼습니다.`
+                let text = translate("who_is_move_edit_privilege", [user_name, move_user_name])
                 return <div key={e.chat_id} className="notice">
                     {text}
                 </div>
@@ -194,7 +194,7 @@ export default class extends React.Component {
             </div>
             {this.props.contract.status != 2 && this.props.isSendable ?
                 <div className="input-container">
-                    <input className="text-box" placeholder="메세지를 입력해주세요." value={this.state.chat_text || ""}
+                    <input className="text-box" placeholder={translate("please_input_message")} value={this.state.chat_text || ""}
                         onKeyPress={this.onKeyDownChat}
                         onChange={e=>this.setState({chat_text:e.target.value})} />
                     <div className="send-btn" onClick={this.onClickSendChat}>

@@ -74,7 +74,7 @@ export default class extends React.Component {
     onClickDelete = async()=>{
         let selected = Object.keys(this.state.templates_checks).filter(e=>this.state.templates_checks[e].template_id)
         if(selected.length == 0)
-            return alert("삭제 할 템플릿을 선택해주세요!")
+            return alert("삭제 할 템플릿을 선택해주세요.")
 
         if(await window.confirm("템플릿 삭제", `${selected.length}개의 템플릿을 삭제하시겠습니까?`)){
             await window.showIndicator()
@@ -192,10 +192,10 @@ export default class extends React.Component {
             icon:"fas fa-folder",
             title:"템플릿 폴더 이름 변경",
             subTitle:"새 폴더 이름",
-            placeholder:"(기존 폴더명 : " + this.getTitle().title + ")",
+            placeholder:`(기존 폴더명 : ${this.getTitle().title})`,
             onConfirm: async (folder_name) => {
                 if(!folder_name || folder_name == "") {
-                    return alert("폴더 이름을 입력해주세요")
+                    return alert("폴더 이름을 입력해주세요.")
                 }
                 let resp = await this.props.change_folder_template(this.getTitle().id, folder_name)
 

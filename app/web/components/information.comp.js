@@ -90,7 +90,7 @@ export default class extends React.Component{
             window.setCookie("session", session, 0.125)
             window.setCookie("session_update", Date.now(), 0.125)
 
-            alert("정상적으로 연장되었습니다.")
+            alert(translate("success_continue"))
         }
     }
 
@@ -131,26 +131,26 @@ export default class extends React.Component{
                 <div className="profile-dropdown">
                     <div className="info-container">
                         <div className="login-session" onClick={this.onClickUpdateLogin}>
-                            <div className="text">로그인 세션 연장</div>
+                            <div className="text">{translate("login_session_continue")}</div>
                             <div className="time">
                                 <span className="icon"><i className="fas fa-hourglass-half"></i></span>
-                                {this.state.left_hour||"0"}시간 {this.digit(this.state.left_min)||"00"}분 {this.digit(this.state.left_second)||"00"}초
+                                {translate("hour_minutes_seconds", [this.state.left_hour||"0", this.digit(this.state.left_min)||"00", this.digit(this.state.left_second)||"00"])}
                             </div>
                         </div>
                         <div className="price-status" onClick={this.onPriceStatusInfo}>
-                            <div className="text">이용권 현황</div>
+                            <div className="text">{translate("tickets_status")}</div>
                             <div className="status">
                                 <span className="icon"><i className="far fa-usd-circle"></i></span>
-                                기업 00 / 00 <span className="small">건</span> 
+                                {translate("corporation")} 00 / 00 <span className="small">{translate("ticket")}</span> 
                             </div>
                             {/*<div className="date">
-                                연간 결제 | {moment().format("YYYY-MM-DD HH:mm:ss")}
+                                {translate("yearly_purchase")} | {moment().format("YYYY-MM-DD HH:mm:ss")}
                             </div>*/}
                         </div>
                         <div className="line"></div>
-                        <div className="my-info" onClick={this.onMyInfo}>내 정보</div>
-                        {info.account_type == 1 ? <div className="my-info" onClick={this.onGroupInfo}>그룹 관리</div> : null}
-                        <div className="logout" onClick={this.onLogout}>로그아웃</div>
+                        <div className="my-info" onClick={this.onMyInfo}>{translate("my_info")}</div>
+                        {info.account_type == 1 ? <div className="my-info" onClick={this.onGroupInfo}>{translate("group_manage")}</div> : null}
+                        <div className="logout" onClick={this.onLogout}>{translate("logout")}</div>
                     </div>
                 </div>
             </div>

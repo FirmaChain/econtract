@@ -179,7 +179,7 @@ export default class extends React.Component {
                             <div className="left">
                                 <div className="title">건별 이용권</div>
                                 <div className="desc">0건 남음</div>
-                                <div className="sub">*정기결제과 건별 이용권 모두 보유시 정기결제 이용권 먼저 차감됩니다.</div>
+                                <div className="sub">* 정기결제과 건별 이용권 모두 보유시 정기결제 이용권 먼저 차감됩니다.</div>
                             </div>
                             <div className="right">
                                 <div className="button" onClick={this.onBuyTicket}>구매</div>
@@ -188,7 +188,7 @@ export default class extends React.Component {
                         <div className="bar gray-bar">
                             <div className="left">
                                 <div className="title">결제 정보</div>
-                                <div className="desc">{this.state.partial_payment_info ? this.state.partial_payment_info.partial_card_number : "미등록상태"}</div>
+                                <div className="desc">{this.state.partial_payment_info ? this.state.partial_payment_info.partial_card_number : "미등록 상태"}</div>
                             </div>
                             <div className="right">
                                 <div className="button" onClick={this.onChangeCardInfo}>변경</div>
@@ -207,13 +207,13 @@ export default class extends React.Component {
                     <div className="item">
                         <div className="list-body-item list-content">정기 결제</div>
                         <div className="list-body-item list-purchase-type">신용카드</div>
-                        <div className="list-body-item list-price">36,500원</div>
+                        <div className="list-body-item list-price">{"36,500원"}</div>
                         <div className="list-body-item list-date">{moment().format("YYYY-MM-DD HH:mm:ss")}</div>
                     </div>
                     <div className="item">
                         <div className="list-body-item list-content">정기 결제</div>
                         <div className="list-body-item list-purchase-type">신용카드</div>
-                        <div className="list-body-item list-price">36,500원</div>
+                        <div className="list-body-item list-price">{"36,500원"}</div>
                         <div className="list-body-item list-date">{moment().format("YYYY-MM-DD HH:mm:ss")}</div>
                     </div>
                 </div>

@@ -222,7 +222,7 @@ export default class extends React.Component {
 	            		<div className="text-box"><input className="common-textbox" type="text" disabled={account_type == 2} value={this.state.duns_number} onChange={this.onInfoChange.bind(this, "duns_number")}/></div>
 	            	</div>
 	            	<div className="text-place">
-	            		<div className="title">대표자 이름</div>
+	            		<div className="title">대표자 성함</div>
 	            		<div className="text-box"><input className="common-textbox" type="text" disabled={account_type == 2} value={this.state.company_ceo} onChange={this.onInfoChange.bind(this, "company_ceo")}/></div>
 	            	</div>
 	            	<div className="text-place">

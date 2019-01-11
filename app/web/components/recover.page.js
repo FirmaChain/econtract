@@ -97,7 +97,7 @@ export default class extends React.Component {
 
     onClickRecoverMyAccount = async()=>{
         if(!this.state.email || this.state.email == ""){
-            return alert("이메일을 입력해주세요!")
+            return alert("이메일을 입력해주세요.")
         }
         if(this.state.password.length < 8){
             return alert("비밀번호는 최소 8글자입니다.")
@@ -161,7 +161,7 @@ export default class extends React.Component {
         return (<div className="content">
             <div className="master-keyword-container">
                 <div className="sub-title-container">
-                    <div className="title">마스터키워드</div>
+                    <div className="title">마스터 키워드</div>
                     <div className="what-is-masterkeyword" onClick={this.openWhyMasterkeywordReInputModal}>마스터키워드를 다시 입력하는 이유는?</div>
                 </div>
 
@@ -213,7 +213,7 @@ export default class extends React.Component {
                         value={this.state.password2 || ""}
                         onChange={e=>this.setState({password2:e.target.value})}
                         onKeyDown={this.keyPress.bind(this, 1)}
-                        placeholder="입력하신 패스워드를 다시 입력해주세요"/>
+                        placeholder="입력하신 비밀번호를 다시 입력해주세요."/>
                 </div>
             </div>
 
@@ -266,7 +266,7 @@ export default class extends React.Component {
                             <div className={`circle ${this.state.step == 1 ? "enable-circle": ""}`}></div>
                         </div>
                         <div className="step-text">
-                            <div className={`item ${this.state.step == 0 ? "enable": ""}`}>마스터키워드 입력</div>
+                            <div className={`item ${this.state.step == 0 ? "enable": ""}`}>마스터 키워드 입력</div>
                             <div className={`item ${this.state.step == 1 ? "enable": ""}`}>비밀번호 설정</div>
                         </div>
                     </div>

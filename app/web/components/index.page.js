@@ -56,9 +56,9 @@ export default class extends React.Component {
 									{/*<div onClick={()=>{window.setCookie("LANGUAGE", "CN");location.reload(true)}}>Chinese</div>*/}
 								</div>
 							</div>
-							<div className="whatis" onClick={()=>window.open("https://firmachain.org", "_blank")}>FirmaChain 이란</div>
+							<div className="whatis" onClick={()=>window.open("https://firmachain.org", "_blank")}>{translate("what_is_firmachain")}</div>
 							{user_info ? null : 
-								<div className="login-place"><div className="login-btn" onClick={()=>history.push("/login")} >로그인 / 회원가입</div></div>}
+								<div className="login-place"><div className="login-btn" onClick={()=>history.push("/login")}>{translate("login_and_register")}</div></div>}
 						</div>
 					</div>
 					<div className="mid">

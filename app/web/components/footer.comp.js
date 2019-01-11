@@ -14,7 +14,7 @@ export default class extends React.Component {
 		return (<div className="footer">
             <div className="left">Copyright 2018 Firma Solutions, Inc, All right reserved</div>
             <div className="middle">
-                <span onClick={this.download.bind(this, "https://e-contract.io/static/[E-Contract]%20Terms%20&%20Conditions.pdf")}>이용약관</span> | <span onClick={this.download.bind(this, "https://e-contract.io/static/[E-Contract]%20Privacy%20Policy.pdf")}>개인정보처리방침</span>
+                <span onClick={this.download.bind(this, "https://e-contract.io/static/[E-Contract]%20Terms%20&%20Conditions.pdf")}>{translate("service_term")}</span> | <span onClick={this.download.bind(this, "https://e-contract.io/static/[E-Contract]%20Privacy%20Policy.pdf")}>{translate("privacy_statement")}</span>
             </div>
             <div className="right">
                 developer@firma-solutions.com

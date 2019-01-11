@@ -105,7 +105,7 @@ export default class extends React.Component {
 
     onClickSendChat = async(e)=>{
         if(this.state.chat_text.length == 0)
-            return alert("메세지를 입력해주세요");
+            return alert("메세지를 입력해주세요.");
 
         await this.send()
     }

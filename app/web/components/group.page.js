@@ -151,9 +151,9 @@ export default class extends React.Component {
 	onClickAddGroup = () => {
         window.openModal("AddCommonModal", {
             icon:"fas fa-users",
-            title:"그룹 추가",
-            subTitle:"새 그룹명",
-            placeholder:"그룹명을 입력해주세요.",
+            title:translate("group_add"),
+            subTitle:translate("new_group_name"),
+            placeholder:translate("please_input_group_name"),
             onConfirm: async (group_name) => {
                 let resp = await this.props.create_group(group_name);
                 await this.props.update_group_public_key(resp.group_id, this.props.user_info.corp_master_key);
@@ -161,7 +161,7 @@ export default class extends React.Component {
                 if(resp) {
                     await this.props.get_group_info(0)
                     await this.props.fetch_user_info()
-                    alert("성공적으로 그룹이 추가되었습니다.")
+                    alert(translate("success_group_add"))
                 }
             }
         })
@@ -174,7 +174,7 @@ export default class extends React.Component {
             onConfirm: async (email, group) => {
 
                 if(email == ""){
-                    alert("초대하려는 그룹원의 이메일을 입력해주세요.")
+                    alert(translate("please_input_invite_member_email"))
                     return false
                 }
 
@@ -183,7 +183,7 @@ export default class extends React.Component {
                 email = email.trim()
 
                 if(!window.email_regex.test(email)) {
-                    alert("이메일이 형식에 맞지 않습니다.")
+                    alert(translate("no_email_regex"))
                     return false
                 }
 
@@ -214,11 +214,11 @@ export default class extends React.Component {
                         if(v.email_hashed == md5(email+v.passphrase1) ) {
                             await window.hideIndicator()
                             if(v.group_id == group.group_id) {
-                                alert("이미 해당 그룹에 초대중인 사용자입니다.")
+                                alert(translate("already_invite_this_group"))
                                 return false 
                             }
                             else {
-                                alert("이미 다른 그룹에서 초대중인 사용자입니다.")
+                                alert(translate("already_invite_another_group"))
                                 return false
                             }
                         }
@@ -230,18 +230,18 @@ export default class extends React.Component {
                             this.setState({
                                 add_email:""
                             })
-                            alert("성공적으로 그룹에 초대하였습니다.")
+                            alert(translate("success_invite_group"))
                             return true;
                         } else if(resp.code == 2) {
-                            alert("이미 해당 그룹에 속해있는 사용자 입니다.")
+                            alert(translate("already_this_group"))
                         } else if(resp.code == -5) {
-                            alert("이메일이 형식에 맞지 않습니다.")
+                            alert(translate("no_email_regex"))
                         } else if(resp.code == -7) {
-                            alert("가입은 되었으나 초대 이메일을 보내지 못했습니다. 초대 코드는 " + resp.invite_code + " 입니다.")
+                            alert(translate("success_invite_group_but_not_email", [resp.invite_code]))
                         } else if(resp.code == -8) {
-                            alert("이미 개인 계정으로 가입되어 있습니다.")
+                            alert(translate("already_register_individual"))
                         } else if(resp.code == -9) {
-                            alert("이미 기업 계정으로 가입되어 있습니다.")
+                            alert(translate("already_register_corporation"))
                         }
                         await this.onRefresh()
                         return false;
@@ -258,19 +258,19 @@ export default class extends React.Component {
                             add_email:""
                         })
                         await this.onRefresh()
-                        alert("성공적으로 그룹에 초대하였습니다.")
+                        alert(translate("success_invite_group"))
                         return true
                     } else if(resp.code == -7) {
-                        alert("해당 이메일로 가입한 계정이 없습니다.")
+                        alert(translate("no_account_this_email"))
                     } else if(resp.code == -8) {
-                        alert("이미 개인 계정으로 가입되어 있습니다.")
+                        alert(translate("already_register_individual"))
                     } else if(resp.code == -9) {
-                        alert("이미 기업 계정으로 가입되어 있습니다.")
+                        alert(translate("already_register_corporation"))
                     }
                     return false
 
                 } else if(exist.code == -6) {
-                    alert("이미 해당 그룹에 속해있는 사용자 입니다.")
+                    alert(translate("already_this_group"))
                     return false
                 }
 
@@ -303,10 +303,10 @@ export default class extends React.Component {
                 let username = ""
                 if(!!this.state.member)
                     username = this.state.member.data.username
-                return { id:"unclassified", account_id:account_id, title : "#분류되지 않은 그룹원 " + username}
+                return { id:"unclassified", account_id:account_id, title : `#${translate("unclassifed_member")} ${username}`}
             }
             else {
-                return { id:"unclassified", title : "분류되지 않은 그룹원"}
+                return { id:"unclassified", title : translate("unclassifed_member")}
             }
         }
 		else if(menu == "withdraw") {
@@ -314,13 +314,13 @@ export default class extends React.Component {
                 let username = ""
                 if(!!this.state.member)
                     username = this.state.member.data.username
-                return { id:"withdraw", account_id:account_id, title : "#탈퇴한 그룹원 " + username}
+                return { id:"withdraw", account_id:account_id, title : `#${translate("withdraw_member")} ${username}`}
             }
             else {
-                return { id:"withdraw", title : "탈퇴한 그룹원"}
+                return { id:"withdraw", title : translate("withdraw_member")}
             }
         }
-		return { id:"all", title : "모든 계약"}
+		return { id:"all", title : translate("all_contract")}
 	} 
 
     move(pageName) {
@@ -437,7 +437,7 @@ export default class extends React.Component {
 
     onClickSearch = async () => {
         if(!!this.state.search_text && this.state.search_text != "" && this.state.search_text.length < 2) {
-            return alert("검색어는 2글자 이상 입력해주세요.")
+            return alert(translate("please_input_search_query_more_2"))
         }
 
         if(!!this.state.search_text && this.state.search_text == "") {
@@ -495,7 +495,7 @@ export default class extends React.Component {
     render_contract_slot(e,k){
         let status_text = (status)=>{
             if(status == 0) {
-                return "내용 입력 중"
+                return translate("status_0")
             } else if(status == 1) {
                 let sign_user = e.is_signature.split(",").map( (v, k) => {
                     return {
@@ -507,11 +507,11 @@ export default class extends React.Component {
                     return v.corp_id == 0 && v.entity_id == this.props.user_info.account_id
                 })
                 if(sign_user && sign_user.signature == "true") {
-                    return "상대방 서명 전"
+                    return translate("status_1_0")
                 }
-                return "내 서명 전"
+                return translate("status_1_1")
             } else if(status == 2) {
-                return "계약 완료"
+                return translate("status_2")
             } 
         }
 
@@ -539,13 +539,13 @@ export default class extends React.Component {
             <div className="list-body-item list-action">
                 <div className="button-container">
                     <div className={"action-button " + (e.status == 2 ? "action-transparent-but" : "action-blue-but")} onClick={this.onClickOpenContract.bind(this, e, 1)}>
-                        {e.status == 2 ? "이동" : "서명"}
+                        {e.status == 2 ? translate("move") : translate("sign")}
                     </div>
                     <div className={"arrow-button " + (e.status == 2 ? "arrow-transparent-but" : "arrow-blue-but")} onClick={this.onClickOption.bind(this, e.contract_id)} >
                         <i className="fas fa-caret-down"></i>
                         <div className="arrow-dropdown" style={{display:!!this.isOpenOption(e.contract_id) ? "initial" : "none"}}>
                             <div className="container">
-                                <div className="detail" onClick={this.openContract.bind(this, e, 0, 1)}>상세 정보</div>
+                                <div className="detail" onClick={this.openContract.bind(this, e, 0, 1)}>{translate("detail_info")}</div>
                                 {/*<div className="move" onClick={this.onMoveContract.bind(this, [e.contract_id])}>폴더 이동</div>*/}
                             </div>
                         </div>
@@ -569,17 +569,17 @@ export default class extends React.Component {
 
 		return (<div className="group-page">
 			<div className="contract-group-menu">
-				<div className="left-top-button" onClick={this.onClickAddGroupMember}>그룹원 계정 추가하기</div>
+				<div className="left-top-button" onClick={this.onClickAddGroupMember}>{translate("group_member_account_add")}</div>
 				<div className="menu-list">
                     <div className="list">
                         <div className={"item" + (this.getTitle().id == "all" ? " selected" : "")} onClick={this.moveGroup.bind(this, "")}>
                             <i className="icon fal fa-clock"></i>
-                            <div className="text">모든 계약</div>
+                            <div className="text">{translate("all_contract")}</div>
                         </div>
                     </div>
 					<div className="list">
 						<div className="title">
-                            <div className="text">그룹</div>
+                            <div className="text">{translate("group")}</div>
                             <i className="angle far fa-plus" onClick={this.onClickAddGroup}></i>
                         </div>
                         {groups.map((e,k)=>{
@@ -594,7 +594,7 @@ export default class extends React.Component {
                                 }
                             }
                             if(memberList.length == 0) {
-                                memberList.push(<div key={"nothing"} className={"empty-person" + (this.isOpenGroup(e.group_id) ? "" : " hide")}>그룹원이 없습니다</div>)
+                                memberList.push(<div key={"nothing"} className={"empty-person" + (this.isOpenGroup(e.group_id) ? "" : " hide")}>{translate("no_group_member")}</div>)
                             }
                             return [<div key={e.group_id} className={"item" + ( ( this.getTitle().id == e.group_id && !this.getTitle().account_id ) ? " selected" : "")}
                                 onClick={this.moveGroup.bind(this, e.group_id)}>
@@ -607,7 +607,7 @@ export default class extends React.Component {
 
 						<div className={"item" + (this.getTitle().id == "unclassified" ? " selected" : "")} onClick={async () => {await this.props.openGroup("unclassified")}}>
                             <i className="icon fas fa-share-square"></i> 
-                            <div className="text">분류되지 않은 그룹원</div>
+                            <div className="text">{translate("unclassifed_member")}</div>
                             <i className={"angle far "  + ( this.isOpenGroup("unclassified") ? "fa-angle-down" : "fa-angle-up")} onClick={this.openCloseGroup.bind(this, "unclassified")}></i>
                         </div>
                         {members.filter(e=>e.group_ids == null && e.is_enable == 1).map((e,k)=>{
@@ -616,13 +616,13 @@ export default class extends React.Component {
                                 <div className="text">{e.data.username}</div>
                             </div>
                         })}
-                        {members.filter(e=>e.group_ids == null && e.is_enable == 1).length == 0 ? <div className={"empty-person" + (this.isOpenGroup("unclassified") ? "" : " hide")}>그룹원이 없습니다</div> : null}
+                        {members.filter(e=>e.group_ids == null && e.is_enable == 1).length == 0 ? <div className={"empty-person" + (this.isOpenGroup("unclassified") ? "" : " hide")}>{translate("no_group_member")}</div> : null}
 
 
 
 						<div className={"item" + (this.getTitle().id == "withdraw" ? " selected" : "")} onClick={async () => {await this.props.openGroup("withdraw")}}>
                             <i className="icon fas fa-handshake-alt"></i>
-                            <div className="text">탈퇴한 그룹원</div>
+                            <div className="text">{translate("withdraw_member")}</div>
                             <i className={"angle far "  + ( this.isOpenGroup("withdraw") ? "fa-angle-down" : "fa-angle-up")} onClick={this.openCloseGroup.bind(this, "withdraw")}></i>
                         </div>
                         {members.filter(e=>e.is_enable == 0).map((e,k)=>{
@@ -631,7 +631,7 @@ export default class extends React.Component {
                                 <div className="text">{e.data.username}</div>
                             </div>
                         })}
-                        {members.filter(e=>e.is_enable == 0).length == 0 ? <div className={"empty-person" + (this.isOpenGroup("withdraw") ? "" : " hide")}>그룹원이 없습니다</div> : null}
+                        {members.filter(e=>e.is_enable == 0).length == 0 ? <div className={"empty-person" + (this.isOpenGroup("withdraw") ? "" : " hide")}>{translate("no_group_member")}</div> : null}
 					</div>
 				</div>
 			</div>
@@ -641,11 +641,11 @@ export default class extends React.Component {
                 <div className="title">{this.getTitle().title}</div>
                 <div className="search">
                     <input className="common-textbox" type="text"
-                        placeholder="검색어를 2자 이상 입력해주세요."
+                        placeholder={translate("please_input_search_query_more_2")}
                         onKeyDown={this.onKeyPress.bind(this, "search")}
                         value={this.state.search_text || ""}
                         onChange={e=>this.setState({search_text:e.target.value})}/>
-                    <div className="blue-but" onClick={this.onClickSearch}>검색</div>
+                    <div className="blue-but" onClick={this.onClickSearch}>{translate("search")}</div>
                 </div>
                 <div className="list" style={{marginTop:"20px"}}>
                     <div className="head">
@@ -654,15 +654,15 @@ export default class extends React.Component {
                                 on={this.isCheckAll()}
                                 onClick={this.checkAll}/>
                         </div>
-                        <div className="list-head-item list-name">계약명</div>
-                        <div className="list-head-item list-status">상태</div>
-                        <div className="list-head-item list-date">마지막 활동 시간</div>
+                        <div className="list-head-item list-name">{translate("contract_name")}</div>
+                        <div className="list-head-item list-status">{translate("status")}</div>
+                        <div className="list-head-item list-date">{translate("last_updated_date")}</div>
                         <div className="list-head-item list-action"></div>
                     </div>
                     {contracts.list.map((e,k)=>{
                         return this.render_contract_slot(e,k)
                     })}
-                    {contracts.list.length == 0 ? <div className="empty-contract">계약서가 없습니다.</div> : null}
+                    {contracts.list.length == 0 ? <div className="empty-contract">{translate("no_contract")}</div> : null}
                 </div>
                 
                 <Pager max={Math.ceil(total_cnt/LIST_DISPLAY_COUNT)} cur={this.state.cur_page + 1 ||1} onClick={this.onClickPage} />

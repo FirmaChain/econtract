@@ -8,41 +8,8 @@ import moment from "moment"
 
 import Dropdown from "react-dropdown"
 import 'react-dropdown/style.css'
-/*
-@modal
-class AddFolder extends React.Component{
-    constructor(){
-        super()
-        this.state = {}
-    }
-    closeSelf = ()=>{
-        window.closeModal(this.props.modalId)
-    }
 
-    onClick = ()=>{
-        if(!this.state.name)
-            return alert("폴더 이름을 입력해주세요!")
 
-        this.props.onClick && this.props.onClick( this.state.name )
-        this.closeSelf()
-    }
-
-    render(){
-        return <div className="default-modal">
-            <div className="contents">
-                <div className="title">폴더 추가</div>
-                <div className="form-label">폴더 이름</div>
-                <div className="form-input">
-                    <input type="text" placeholder="폴더이름을 입력해주세요" value={this.state.name || ""} onChange={e=>this.setState({name:e.target.value})} />
-                </div>
-            </div>
-            <div className="buttons">
-                <button onClick={this.onClick}>확인</button>
-                <button onClick={this.closeSelf}>취소</button>
-            </div>
-        </div>
-    }
-}*/
 
 @modal
 class AddCommonModal extends React.Component {
@@ -82,8 +49,8 @@ class AddCommonModal extends React.Component {
                         placeholder={this.props.placeholder}/>
                 </div>
                 <div className="button">
-                    <div className="confirm" onClick={this.onConfirm}>{this.props.confirmText || "생성"}</div>
-                    { cancelable ? <div className="cancel" onClick={this.closeSelf}>취소</div> : null }
+                    <div className="confirm" onClick={this.onConfirm}>{this.props.confirmText || translate("create")}</div>
+                    { cancelable ? <div className="cancel" onClick={this.closeSelf}>{translate("cancel")}</div> : null }
                 </div>
             </div>
         </div>
@@ -115,8 +82,8 @@ class RemoveCommonModal extends React.Component {
                 <div className="sub-title" dangerouslySetInnerHTML={{__html:this.props.subTitle}}>
                 </div>
                 <div className="button">
-                    <div className="confirm" onClick={this.onDelete}>{this.props.deleteText || "삭제"}</div>
-                    <div className="cancel" onClick={this.closeSelf}>취소</div>
+                    <div className="confirm" onClick={this.onDelete}>{this.props.deleteText || translate("remove")}</div>
+                    <div className="cancel" onClick={this.closeSelf}>{translate("cancel")}</div>
                 </div>
             </div>
         </div>
@@ -164,7 +131,7 @@ class OneAddModal extends React.Component {
                 </div>
                 <div className="button">
                     
-                    <div className="cancel" onClick={this.onCancel}>취소</div>
+                    <div className="cancel" onClick={this.onCancel}>{translate("cancel")}</div>
                 </div>
             </div>
         </div>
@@ -197,7 +164,7 @@ class CommonModal extends React.Component {
                     </div>
                 </div>
                 <div className="button">
-                    <div onClick={this.closeSelf}>확인</div>
+                    <div onClick={this.closeSelf}>{translate("confirm")}</div>
                 </div>
             </div>
         </div>
@@ -263,46 +230,46 @@ class CardInfo extends React.Component {
         return <div className="card-info-modal default-modal-container">
             <div className="container">
                 <div className="icon"><i className="far fa-credit-card"></i></div>
-                <div className="title">결제 정보 입력 / 변경</div>
+                <div className="title">{translate("purchase_info_input_change")}</div>
                 <div className="text-box">
-                    <div className="sub-title">카드 번호</div>
+                    <div className="sub-title">{translate("card_number")}</div>
                     <input type="number" className="common-textbox"
                         onChange={(e)=>this.setState({card_number:e.target.value})}
                         value={this.state.card_number}
-                        placeholder="카드 번호를 입력해주세요."/>
+                        placeholder={translate("please_input_card_number")}/>
                 </div>
                 <div className="text-box">
                     <div className="sub-title">CVC</div>
                     <input type="number" className="common-textbox"
                         onChange={(e)=>this.setState({cvc:e.target.value})}
                         value={this.state.cvc}
-                        placeholder="카드 뒷면의 세자리 CVC 번호를 입력해주세요."/>
+                        placeholder={translate("please_input_cvc")}/>
                 </div>
                 <div className="text-box">
-                    <div className="sub-title">유효기간</div>
+                    <div className="sub-title">{translate("validation_date")}</div>
                     <Dropdown className="common-select"
                         controlClassName="control"
                         menuClassName="item"
                         options={this.state.expiration_month_options}
                         onChange={e=>{this.setState({selected_expiration_month:e.value, selected_expiration_month_label:e.label})}}
-                        value={this.state.selected_expiration_month_label} placeholder="월" />
+                        value={this.state.selected_expiration_month_label} placeholder={translate("month")} />
                     <Dropdown className="common-select"
                         controlClassName="control"
                         menuClassName="item"
                         options={this.state.expiration_year_options}
                         onChange={e=>{this.setState({selected_expiration_year:e.value, selected_expiration_year_label:e.label})}}
-                        value={this.state.selected_expiration_year_label} placeholder="년도" />
+                        value={this.state.selected_expiration_year_label} placeholder={translate("year")} />
                 </div>
                 <div className="text-box">
-                    <div className="sub-title">주민등록번호 앞자리</div>
+                    <div className="sub-title">{translate("social_number_front")}/</div>
                     <input type="number" className="common-textbox"
                         onChange={(e)=>this.setState({social_number_front:e.target.value})}
                         value={this.state.social_number_front}
-                        placeholder="주민번호 앞자리를 입력해주세요."/>
+                        placeholder={translate("please_input_social_number_front")}/>
                 </div>
                 <div className="button">
-                    <div className="submit" onClick={this.onResponse}>확인</div>
-                    <div className="cancel" onClick={this.closeSelf}>취소</div>
+                    <div className="submit" onClick={this.onResponse}>{translate("confirm")}</div>
+                    <div className="cancel" onClick={this.closeSelf}>{translate("cancel")}</div>
                 </div>
             </div>
         </div>
@@ -335,23 +302,23 @@ class PurchaseGroupMemberAdd extends React.Component {
         return <div className="purchase-group-member-add default-modal-container">
             <div className="container">
                 <div className="icon"><i className="fal fa-ticket-alt"></i></div>
-                <div className="title">그룹 계정 추가</div>
-                <div className="sub-title">그룹 계정을 추가로 등록하는데는 1계정당 2,000원/월 의 추가 비용이 청구됩니다.</div>
+                <div className="title">{translate("group_account_add")}</div>
+                <div className="sub-title">{translate("group_account_add_desc", ["2000".number_format()])}</div>
 
                 <div className="text-box">
-                    <div className="sub-title">추가할 그룹 계정 수</div>
+                    <div className="sub-title">{translate("add_account_group_count")}</div>
                     <input type="number" className="common-textbox"
                         onChange={(e)=>this.setState({give_count:e.target.value})}
                         value={this.state.give_count}
-                        placeholder="추가할 그룹 계정 수를 입력해주세요."/>
+                        placeholder={translate("please_input_add_account_group_count")}/>
                 </div>
-                <div className="sub-title">현재 계정 수 : 마스터 계정 1 + 서브 계정 5</div>
+                <div className="sub-title">{translate("info_of_now_account", [1, 4])}</div>
                 <div className="sub-desc">
-                    추가하신 인원은 바로 등록이 가능하며, 결제는 등록하신 결제 정보로 다음달 결제일에 진행됩니다
+                    {translate("add_sub_account_purchase_desc")}
                 </div>
                 <div className="button">
-                    <div className="submit" onClick={this.onResponse}>추가</div>
-                    <div className="cancel" onClick={this.closeSelf}>취소</div>
+                    <div className="submit" onClick={this.onResponse}>{translate("add")}</div>
+                    <div className="cancel" onClick={this.closeSelf}>{translate("cancel")}</div>
                 </div>
             </div>
         </div>
@@ -384,23 +351,23 @@ class PurchaseTicket extends React.Component {
         return <div className="purchase-ticket default-modal-container">
             <div className="container">
                 <div className="icon"><i className="fal fa-ticket-alt"></i></div>
-                <div className="title">건별 이용권 구매</div>
-                <div className="sub-title">건별로 이용권을 구매해서 사용하실 수 있습니다.</div>
-                <div className="content">{"1500".number_format()}<span className="last">원 / 건당</span></div>
+                <div className="title">{translate("buy_one_time_ticket")}</div>
+                <div className="sub-title">{translate("buy_one_time_ticket_desc")}</div>
+                <div className="content" dangerouslySetInnerHTML={{__html:translate("one_time_price_info", ["1500".number_format()])}}></div>
 
                 <div className="text-box">
-                    <div className="sub-title">구매하실 이용권 건수</div>
+                    <div className="sub-title">{translate("will_buy_ticket_count")}</div>
                     <input type="number" className="common-textbox"
                         onChange={(e)=>this.setState({give_count:e.target.value})}
                         value={this.state.give_count}
-                        placeholder="구매하실 이용권 건수를 입력해주세요."/>
+                        placeholder={translate("please_input_will_buy_ticket_count")}/>
                 </div>
-                <div className="result">
-                    금액 : <span className="price">{(this.state.give_count * 1500).number_format()}</span> 원
+                <div className="result" dangerouslySetInnerHTML={{__html:translate("price_info_msg", [(this.state.give_count * 1500).number_format()]) }}>
+                    
                 </div>
                 <div className="button">
-                    <div className="submit" onClick={this.onResponse}>구매</div>
-                    <div className="cancel" onClick={this.closeSelf}>취소</div>
+                    <div className="submit" onClick={this.onResponse}>{translate("buy")}</div>
+                    <div className="cancel" onClick={this.closeSelf}>{translate("cancel")}</div>
                 </div>
             </div>
         </div>
@@ -448,47 +415,47 @@ class PurchaseRegularPayment extends React.Component {
         return <div className="purchase-regular-payment-modal default-modal-container">
             <div className="container">
                 <div className="icon"><i className="fas fa-credit-card"></i></div>
-                <div className="title">정기 결제 이용권 선택</div>
-                <div className="sub-title">월간, 연간 이용권 선택해서 구매하실 수 있습니다.</div>
+                <div className="title">{translate("select_subscribe_purchase")}</div>
+                <div className="sub-title">{translate("select_subscribe_purchase_desc")}</div>
                 <div className="btn-container">
                     <div className={"btn" + (this.state.select_period == 0 ? " active" : "")} onClick={this.onClickType.bind(this, 0)}>
-                        <div className="title">월간 정기 결제</div>
+                        <div className="title">{translate("monthly_subscribe")}</div>
                         <div className="give-count">
                             <Dropdown className="common-select"
                                 controlClassName="control"
                                 menuClassName="item"
                                 options={this.props.planMonthlyOptions}
                                 onChange={e=>{this.setState({select_monthly_plan:this.props.planMonthly.filter(f=>e.value==f.plan_id)[0], select_period:0})}}
-                                value={this.state.select_monthly_plan.data.title} placeholder="건수" />
-                            <span className="last"> 건 사용 / 월</span>
+                                value={this.state.select_monthly_plan.data.title} placeholder={translate("one_time")} />
+                            <span className="last"> {translate("use_by_monthly")}</span>
                         </div>
-                        <div className="price-info">{(this.state.select_monthly_plan.total_price ? this.state.select_monthly_plan.total_price : 0).number_format()}<span className="last">원 / 월</span></div>
+                        <div className="price-info">{(this.state.select_monthly_plan.total_price ? this.state.select_monthly_plan.total_price : 0).number_format()}<span className="last">{translate("price_by_monthly")}</span></div>
                         <div className="sub">
-                        {(this.state.select_monthly_plan.total_price ? this.state.select_monthly_plan.total_price : 0) / (this.state.select_monthly_plan.ticket_count ? this.state.select_monthly_plan.ticket_count : 1)} 원 / 건당<br/>
-                            + 마스터 계정 1명, 서브 계정 4명
+                            {(this.state.select_monthly_plan.total_price ? this.state.select_monthly_plan.total_price : 0) / (this.state.select_monthly_plan.ticket_count ? this.state.select_monthly_plan.ticket_count : 1)} {translate("price_by_one_time")}<br/>
+                            {translate("i_give_you_many_account", 1, 4)} 
                         </div>
                     </div>
                     <div className={"btn" + (this.state.select_period == 1 ? " active" : "")} onClick={this.onClickType.bind(this, 1)}>
-                        <div className="title">연간 정기 결제</div>
+                        <div className="title">{translate("yearly_subscribe")}</div>
                         <div className="give-count">
                             <Dropdown className="common-select"
                                 controlClassName="control"
                                 menuClassName="item"
                                 options={this.props.planYearlyOptions}
                                 onChange={e=>{this.setState({select_yearly_plan:this.props.planYearly.filter(f=>e.value==f.plan_id)[0], select_period:1})}}
-                                value={this.state.select_yearly_plan.data.title} placeholder="건수" />
-                            <span className="last"> 건 사용 / 월</span>
+                                value={this.state.select_yearly_plan.data.title} placeholder={translate("one_time")} />
+                            <span className="last"> {translate("use_by_monthly")}</span>
                         </div>
-                        <div className="price-info">{(this.state.select_yearly_plan.total_price ? this.state.select_yearly_plan.total_price : 0).number_format()}<span className="last">원 / 년</span></div>
+                        <div className="price-info">{(this.state.select_yearly_plan.total_price ? this.state.select_yearly_plan.total_price : 0).number_format()}<span className="last">{translate("price_by_yearly")}</span></div>
                         <div className="sub">
-                            {(this.state.select_yearly_plan.total_price ? this.state.select_yearly_plan.total_price : 0) / (this.state.select_yearly_plan.ticket_count ? this.state.select_yearly_plan.ticket_count : 1)} 원 / 건당<br/>
-                            + 마스터 계정 1명, 서브 계정 4명
+                            {(this.state.select_yearly_plan.total_price ? this.state.select_yearly_plan.total_price : 0) / (this.state.select_yearly_plan.ticket_count ? this.state.select_yearly_plan.ticket_count : 1)} {translate("price_by_one_time")}<br/>
+                            {translate("i_give_you_many_account", 1, 4)} 
                         </div>
                     </div>
                 </div>
                 <div className="button">
-                    <div className="submit" onClick={this.onResponse}>변경</div>
-                    <div className="cancel" onClick={this.closeSelf}>취소</div>
+                    <div className="submit" onClick={this.onResponse}>{translate("change")}</div>
+                    <div className="cancel" onClick={this.closeSelf}>{translate("cancel")}</div>
                 </div>
             </div>
         </div>
@@ -516,24 +483,24 @@ class StartContract extends React.Component{
         return <div className="start-contract-modal default-modal-container">
             <div className="container">
                 <div className="icon"><i className="fal fa-file-code"></i></div>
-                <div className="title">시작하기</div>
+                <div className="title">{translate("start")}</div>
                 <div className="btn-container">
                     <div className="btn" onClick={this.onClick.bind(this, 1)}>
                         <i className="fal fa-comment-alt-edit"></i>
                         <div className="btn-desc">
-                            <div className="title">웹 에디터 사용하기</div>
-                            <div className="sub">계약 내용을 직접 추가하고 수정할 수 있습니다.<br/>내용이 확정되면 서명 또는 도장을 추가하여 작업을 완료할 수 있습니다.</div>
+                            <div className="title">{translate("use_web_editor")}</div>
+                            <div className="sub">{tranlsate("use_web_editor_desc_1")}<br/>{tranlsate("use_web_editor_desc_2")}</div>
                         </div>
                     </div>
                     <div className="btn" onClick={this.onClick.bind(this, 2)}>
                         <i className="fal fa-paste"></i>
                         <div className="btn-desc">
-                            <div className="title">템플릿 사용하기</div>
-                            <div className="sub">기존에 생성한 템플릿을 바로 사용하실 수 있습니다.<br/>기존 내용을 수정하거나 서명 또는 도장을 추가할 수 있습니다.</div>
+                            <div className="title">{translate("use_template")}</div>
+                            <div className="sub">{translate("use_template_desc_1")}<br/>{translate("use_template_desc_2")}</div>
                         </div>
                     </div>
                 </div>
-                <div className="cancel" onClick={this.closeSelf}>취소</div>
+                <div className="cancel" onClick={this.closeSelf}>{translate("cancel")}</div>
             </div>
         </div>
     }
@@ -554,27 +521,27 @@ class BrowserNotVerified extends React.Component{
         return <div className="browser-not-verified-modal default-modal-container">
             <div className="container">
                 <div className="icon"><i className="fal fa-browser"></i></div>
-                <div className="title">브라우저 미인증이란?</div>
-                <div className="sub-title">E-Contract 서비스는 회원가입시 발급되는 마스터 키워드를 기반으로 로그인 하실 수 있습니다.</div>
+                <div className="title">{translate("what_is_browser_unauth")}</div>
+                <div className="sub-title">{translate("what_is_browser_unauth_desc_1")}</div>
                 <div className="desc-container">
                     <div className="place">
                         <i className="fal fa-sign-in"></i>
-                        <div className="title">회원가입</div>
-                        <div className="sub">전자 계약 진행시 신원을 확인 할 수 있는 정보를 입력하여 가입합니다.</div>
+                        <div className="title">{translate("register_account")}</div>
+                        <div className="sub">{translate("register_account_desc")}</div>
                     </div>
                     <div className="place">
                         <i className="fal fa-key"></i>
-                        <div className="title">마스터 키워드 발급</div>
-                        <div className="sub">발급받은 마스터 키워드는 접속하고 있는 브라우저에 자동으로 저장됩니다.</div>
+                        <div className="title">{translate("master_keyword_issue")}</div>
+                        <div className="sub">{translate("master_keyword_issue_desc")}</div>
                     </div>
                     <div className="place">
                         <i className="fal fa-money-check"></i>
-                        <div className="title">마스터 키워드 인증</div>
-                        <div className="sub">서비스에 접속시 브라우저에 저장된 마스터 키워드를 기반으로 인증이 진행되며, 가입시 입력한 이메일과 비밀번호로 로그인이 가능합니다</div>
+                        <div className="title">{translate("master_keyword_verify")}</div>
+                        <div className="sub">{translate("master_keyword_verify_desc")}</div>
                     </div>
                 </div>
                 <div className="button">
-                    <div onClick={this.closeSelf}>확인</div>
+                    <div onClick={this.closeSelf}>{translate("confirm")}</div>
                 </div>
             </div>
         </div>
@@ -602,12 +569,12 @@ class Confirm extends React.Component{
         return <div className="confirm-modal default-modal-container">
             <div className="container">
                 <div className="icon"><i className="fal fa-user-check"></i></div>
-                <div className="title" dangerouslySetInnerHTML={{__html:this.props.title||"타이틀"}}></div>
-                <div className="sub-title" dangerouslySetInnerHTML={{__html:this.props.msg||"메세지"}}></div>
+                <div className="title" dangerouslySetInnerHTML={{__html:this.props.title || translate("title")}}></div>
+                <div className="sub-title" dangerouslySetInnerHTML={{__html:this.props.msg || translate("message")}}></div>
 
                 <div className="button">
-                    <div className="confirm" onClick={this.clickOk}>{this.props.right_btn || "확인"}</div>
-                    <div className="cancel" onClick={this.clickNo}>{this.props.left_btn || "취소"}</div>
+                    <div className="confirm" onClick={this.clickOk}>{this.props.right_btn || translate("confirm")}</div>
+                    <div className="cancel" onClick={this.clickNo}>{this.props.left_btn || translate("cancel")}</div>
                 </div>
             </div>
         </div>
@@ -633,7 +600,7 @@ class MoveCanEditAccount extends React.Component {
 
     onConfirm = () => {
         if(!this.state.select)
-            return alert("권한을 넘길 사용자를 선택해주세요.")
+            return alert(translate("select_edit_privilege_account"))
 
         this.props.onConfirm && this.props.onConfirm(this.state.select)
         this.closeSelf();
@@ -647,8 +614,8 @@ class MoveCanEditAccount extends React.Component {
         return <div className="move-can-edit-account-modal default-modal-container">
             <div className="container">
                 <div className="icon"><i className="fas fa-arrow-alt-right"></i></div>
-                <div className="title">수정 권한 넘기기</div>
-                <div className="sub-title">계약서 수정 권한을 타인에게 넘깁니다.</div>
+                <div className="title">{translate("move_edit_privilege")}</div>
+                <div className="sub-title">{translate("move_edit_privilege_desc")}</div>
                 <div className="content">
                 {this.props.user_infos.map( (e, k) => {
                     if(e.privilege != 1 || this.props.my_account_id == e.entity_id)
@@ -661,8 +628,8 @@ class MoveCanEditAccount extends React.Component {
                 })}
                 </div>
                 <div className="button">
-                    <div className="confirm" onClick={this.onConfirm}>수정 권한 넘기기</div>
-                    <div className="cancel" onClick={this.closeSelf}>취소</div>
+                    <div className="confirm" onClick={this.onConfirm}>{translate("move_edit_privilege")}</div>
+                    <div className="cancel" onClick={this.closeSelf}>{translate("cancel")}</div>
                 </div>
             </div>
         </div>        
@@ -687,7 +654,7 @@ class TypingPin extends React.Component{
             this.props.onFinish && this.props.onFinish(this.state.value)
             this.closeSelf()
         } else {
-            alert("핀번호는 6자리입니다. 정확히 입력해주세요.")
+            alert(translate("please_input_pin_6"))
         }
     }
 
@@ -725,14 +692,14 @@ class TypingPin extends React.Component{
     render(){
         return <div className="default-modal type-pin-modal default-modal-container">
             <div className="contents">
-                <div className="title">PIN을 입력해주세요</div>
+                <div className="title">{translate("please_input_pin")}</div>
                 <div className="pin-box">
                     {this.state.value}
                 </div>
             </div>
             <div className="buttons">
-                <button onClick={this.onClickCancel}>취소</button>
-                <button onClick={this.onClickOK}>확인</button>
+                <button onClick={this.onClickOK}>{translate("confirm")}</button>
+                <button onClick={this.onClickCancel}>{translate("cancel")}</button>
             </div>
         </div>
     }
@@ -755,7 +722,7 @@ class DrawSign extends React.Component{
 
     finishDraw = ()=>{
         if(!this.first_drawing)
-            return alert("서명을 그려주세요.")
+            return alert(translate("please_draw_sign"))
 
         let dataUrl = this.refs.canvas.toDataURL("image/png")
         this.props.onFinish(dataUrl)
@@ -872,11 +839,11 @@ class DrawSign extends React.Component{
             <div className="container">
 
                 <div className="icon"><i className="far fa-file-signature"></i></div>
-                <div className="title">서명 그리기</div>
-                <div className="desc">다른 사람들이 모두 서명을 했다면 계약이 완료됩니다.<br/>서명을 하기전에 신중하게 계약서 내용을 검토해주세요.</div>
+                <div className="title">{translate("draw_sign")}</div>
+                <div className="desc">{translate("draw_sign_desc_1")}<br/>{translate("draw_sign_desc_2")}</div>
                 
                 <div className="canvas">
-                    <div className="clear" onClick={this.onClear}>초기화</div>
+                    <div className="clear" onClick={this.onClear}>{translate("reset")}</div>
                 </div>
                 <canvas ref="canvas" 
                     width="500"
@@ -889,13 +856,13 @@ class DrawSign extends React.Component{
                     <div className="button" onClick={()=>{
                         this.refs['sign-image'].value = ""
                         this.refs['sign-image'].click()
-                    }}>이미지 업로드</div>
+                    }}>{translate("image_upload")}</div>
                     <input ref="sign-image" type="file" accept=".png, .jpg, .jpeg" onChange={this.onUploadSignImage} style={{display:"none"}}/>
                 </div>
 
                 <div className="button">
-                    <div className="submit" onClick={this.finishDraw}>서명</div>
-                    <div className="cancel" onClick={this.closeSelf}>취소</div>
+                    <div className="submit" onClick={this.finishDraw}>{translate("sign")}</div>
+                    <div className="cancel" onClick={this.closeSelf}>{translate("cancel")}</div>
                 </div>
             </div>
         </div>
@@ -921,7 +888,7 @@ class MoveToFolder extends React.Component {
 
     onClickMove = ()=>{
         if(!this.state.select_folder_id) {
-            return alert("계약이 이동될 폴더를 지정해주세요")
+            return alert(translate("please_set_move_folder"))
         }
         
         this.props.onClickMove && this.props.onClickMove(this.state.select_folder_id)
@@ -932,7 +899,7 @@ class MoveToFolder extends React.Component {
         return <div className="move-folder default-modal-container">
             <div className="container">
                 <div className="icon"><i className="far fa-folder"></i></div>
-                <div className="title">폴더 지정</div>
+                <div className="title">{translate("set_folder")}</div>
                 
                 <div className="select">
                     <Dropdown className="folder-dropdown"
@@ -940,14 +907,14 @@ class MoveToFolder extends React.Component {
                         menuClassName="item"
                         options={this.props.folders.map(e=>{ return {value:e.folder_id, label:e.subject} })}
                         onChange={e=>{this.setState({select_folder_id:e.value, select_folder_title:e.label})}}
-                        value={this.state.select_folder_title} placeholder="이동할 폴더 선택" />
+                        value={this.state.select_folder_title} placeholder={translate("choose_move_folder")} />
                 </div>
 
-                <div className="msg"><b>{this.props.contract_ids.length}</b>건의 계약이 선택하신 폴더로 이동합니다.</div>
+                <div className="msg" dangerouslySetInnerHTML={{__html:translate("noti_move_contract_folder_multiple", [this.props.contract_ids.length]) }}></div>
 
                 <div className="button">
-                    <div className="submit" onClick={this.onClickMove}>이동</div>
-                    <div className="cancel" onClick={this.closeSelf}>취소</div>
+                    <div className="submit" onClick={this.onClickMove}>{translate("move")}</div>
+                    <div className="cancel" onClick={this.closeSelf}>{translate("cancel")}</div>
                 </div>
 
             </div>
@@ -996,8 +963,8 @@ class ContractListModal extends React.Component {
                 </div>
 
                 <div className="button">
-                    <div className="submit" onClick={this.onConfirm}>삭제</div>
-                    <div className="cancel" onClick={this.closeSelf}>취소</div>
+                    <div className="submit" onClick={this.onConfirm}>{translate("remove")}</div>
+                    <div className="cancel" onClick={this.closeSelf}>{trnaslate("cancel")}</div>
                 </div>
             </div>
         </div>
@@ -1024,7 +991,7 @@ class AddGroupMember extends React.Component {
 
     onConfirm = async ()=>{
         if(!this.state.selected_group)
-            return alert("그룹을 선택해주세요.")
+            return alert(translate("select_group"))
 
         let result = false
         if(this.props.onConfirm) {
@@ -1040,30 +1007,30 @@ class AddGroupMember extends React.Component {
         return <div className="add-group-member-modal default-modal-container">
             <div className="container">
                 <div className="icon"><i className="fas fa-users"></i></div>
-                <div className="title">직원 계정 추가하기</div>
-                <div className="desc">직원 계정을 추가합니다.<br/>이미 직원인 계정을 추가하면 지정하신 그룹에 할당됩니다.</div>
+                <div className="title">{translate("add_sub_account")}</div>
+                <div className="desc">{translate("add_sub_account_desc_1")}<br/>{translate("add_sub_account_desc_2")}</div>
 
                 <div className="text-box">
-                    <div className="sub-title">이메일</div>
+                    <div className="sub-title">{translate("email")}</div>
                     <input type="text" className="common-textbox"
                         onChange={(e)=>this.setState({email:e.target.value})}
                         value={this.state.email}
-                        placeholder="초대하실 이메일을 입력해주세요."/>
+                        placeholder={translate("please_input_email_invite")}/>
                 </div>
                 <div className="text-box">
-                    <div className="sub-title">그룹</div>
+                    <div className="sub-title">{translate("group")}</div>
                     <Dropdown className="common-select"
                         controlClassName="control"
                         menuClassName="item"
                         options={this.props.list}
                         onChange={e=>{this.setState({selected_group:e, selected_group_label:e.label})}}
-                        value={this.state.selected_group_label} placeholder="그룹" />
+                        value={this.state.selected_group_label} placeholder={translate("group")} />
                 </div>
                 
 
                 <div className="button">
-                    <div className="submit" onClick={this.onConfirm}>추가</div>
-                    <div className="cancel" onClick={this.closeSelf}>취소</div>
+                    <div className="submit" onClick={this.onConfirm}>{translate("add")}</div>
+                    <div className="cancel" onClick={this.closeSelf}>{translate("cancel")}</div>
                 </div>
             </div>
         </div>
@@ -1133,13 +1100,13 @@ class RegistContract extends React.Component{
         let user_code = this.props.login_user_code
         return <div className="default-modal register-contract-modal">
             <div className="contents">
-                <div className="title">계약 등록</div>
+                <div className="title">{translate("register_contract")}</div>
                 <div className="form-content">
                     <div>
-                        <div className="label">계약명</div>
+                        <div className="label">{translate("contract_name")}</div>
                         <div className="info">{this.props.subject}</div>
 
-                        <div className="label">계약 PIN</div>
+                        <div className="label">{translate("contract_pin")}</div>
                         <div className="info">
                             <div className="pin-box">
                                 {this.props.pin}
@@ -1150,13 +1117,13 @@ class RegistContract extends React.Component{
                             <input
                                 type="checkbox" 
                                 onChange={this.pinCheckChange}
-                                defaultChecked={this.props.is_pin_saved}/> PIN 번호 저장하기
+                                defaultChecked={this.props.is_pin_saved}/> {translate("save_pin")}
                         </div>
 
-                        <div className="desc"> * 해당 PIN번호는 암호화되어 저장되어 본인만 열람이 가능합니다.</div>
+                        <div className="desc">{translate("save_pin_desc")}</div>
                     </div>
                     <div>
-                        <div className="label">서명자</div>
+                        <div className="label">{translate("signer")}</div>
                         <SignerSlot me={user_code == author.code} code={author.code} name={author.name} eth_address={author.eth_address}  />
                         {this.props.counterparties.map((e,k)=>{
                             return <SignerSlot 
@@ -1171,36 +1138,38 @@ class RegistContract extends React.Component{
                 </div>
             </div>
             <div className="buttons">
-                <button onClick={this.onClickOK}>확인</button>
-                <button onClick={this.closeSelf}>취소</button>
+                <button onClick={this.onClickOK}>{translate("confirm")}</button>
+                <button onClick={this.closeSelf}>{translate("cancel")}</button>
             </div>
         </div>
     }
 }
 
 @modal
-class Loading extends React.Component{
-    render(){
+class Loading extends React.Component {
+
+    render() {
         return <div style={{color:"#fff",textAlign:"center",zIndex:"9999999999"}}>
             <div className="loader"></div>
-            <div style={{marginTop:"20px"}}>{this.props.text || "로딩 중"}</div>
+            <div style={{marginTop:"20px"}}>{this.props.text || translate("loading")}</div>
         </div>
     }
 }
 
 
 @modal
-class RefreshSession extends React.Component{
-    constructor(){
+class RefreshSession extends React.Component {
+    constructor() {
         super()
         this.state = {}
     }
-    componentDidMount(){
+
+    componentDidMount() {
         this.interval = setInterval(this.update, 1000)
         this.update()
     }
 
-    componentWillUnmount(){
+    componentWillUnmount() {
         clearInterval(this.interval)
     }
 
@@ -1252,15 +1221,15 @@ class RefreshSession extends React.Component{
         try{
             return <div className="default-modal session-expired-warning-modal">
                 <div className="title">
-                    세션이 {this.state.hour}시간 {this.state.min}분 {this.state.sec}초 후 만료됩니다.
+                    {translate("session_will_be_expired_after", [this.state.hour, this.state.min, this.state.sec])}
                 </div>
                 <div className="content">
-                    세션 만료 후에는 재로그인을 해야합니다.<br />
-                    세션 만료를 연장하시겠습니까?
+                    {translate("session_will_be_expired_after_desc_1")}<br/>
+                    {translate("session_will_be_expired_after_desc_2")}
                 </div>
                 <div className="btns">
-                    <button onClick={this.onClickRenewal}>연장</button>
-                    <button onClick={this.onClickLogout}>로그아웃</button>
+                    <button onClick={this.onClickRenewal}>{translate("continue")}</button>
+                    <button onClick={this.onClickLogout}>{translate("logout")}</button>
                 </div>
             </div>
         }catch(err){

@@ -68,15 +68,15 @@ export default class extends React.Component {
     	if(exist_contract.code == 1 && exist_contract.payload.length > 0) {
     		window.openModal("ContractListModal", {
     			icon:"fas fa-user-slash",
-    			title:`그룹원 ${name} 탈퇴`,
-    			desc:"해당 그룹원이 현재 진행중인 계약입니다.<br/>그룹원을 삭제하게 되면 진행중인 계약에서 제외됩니다.<br/>수정권한은 다음 서명자에게 넘어가게 됩니다.",
+    			title: translate("group_member_withdraw", [name]),
+    			desc:translate("group_member_withdraw_desc_1"),
     			list:exist_contract.payload,
     			onConfirm: async () => {
                     await this.remove_member(account_id)
     			}
     		})
     	} else {
-            let res = await window.confirm(`그룹원 ${name} 탈퇴`, `그룹원 ${name}를 탈퇴시킵니다.`)
+            let res = await window.confirm( translate("group_member_withdraw", [name]), translate("group_member_withdraw_desc_2", [name]) )
     		if( res ) {
                 await this.remove_member(account_id)
             }
@@ -87,9 +87,9 @@ export default class extends React.Component {
         let resp = await this.props.remove_corp_member(account_id)
         if(resp.code == 1) {
             await this.onRefresh()
-            alert("해당 그룹원이 탈퇴되었습니다.")
+            alert(translate("success_group_member_withdraw"))
         }
-        else alert("삭제에 실패하였습니다.")
+        else alert(translate("fail_group_member_withdraw"))
     }
 
     onChangeAccountNumber = async () => {
@@ -104,17 +104,17 @@ export default class extends React.Component {
             return <div />
 
 		return (<div className="right-desc group-manage-page">
-            <div className="title">그룹 관리</div>
+            <div className="title">{translate("group_manage")}</div>
             <div className="container">
             	<div className="row">
-            		<div className="title">그룹 계정</div>
+            		<div className="title">{translate("group_account")}</div>
             		<div className="desc">
-            			{"5/10명"}
-            			<div className="blue-but" onClick={this.onChangeAccountNumber}>추가</div>
+            			{translate("count_curr_all_person", 5, 10)}
+            			<div className="blue-but" onClick={this.onChangeAccountNumber}>{translate("add")}</div>
             		</div>
             	</div>
             	<div className="row">
-            		<div className="title">그룹원 리스트</div>
+            		<div className="title">{translate("group_member_list")}</div>
             		<div className="desc">
             			<div className="form-list">
                         {this.props.members.map((e, k)=>{
@@ -123,7 +123,7 @@ export default class extends React.Component {
                         	
                         	group_id_list.map( (e, k) => {
                     			if(e == 0) {
-                    				user_groups.push({title:"모든 그룹"})
+                    				user_groups.push({title:translate("all_group")})
                     				return
                     			}
                         		this.props.groups.map( (ee, kk) => {
@@ -144,11 +144,11 @@ export default class extends React.Component {
                                     {user_groups.map( (e, k) => e.title).join(", ")}
                                 </div>
                                 <div className="action">
-                                    {this.props.user_info.account_id != e.account_id ? <div className="delete" onClick={this.onRemoveGroupMember.bind(this, e.account_id, e.data.username)}>탈퇴</div> : null}
+                                    {this.props.user_info.account_id != e.account_id ? <div className="delete" onClick={this.onRemoveGroupMember.bind(this, e.account_id, e.data.username)}>{translate("withdraw")}</div> : null}
                                 </div>
                             </div>
                         })}
-                        {this.props.members.length == 0 ? <div className="empty">그룹원이 없습니다.</div> : null}
+                        {this.props.members.length == 0 ? <div className="empty">{translate("no_group_member")}</div> : null}
                         </div>
             		</div>
             	</div>

@@ -46,7 +46,7 @@ export default class extends React.Component {
                 let user = await this.props.fetch_user_info()
                 if(user == -2) {
                     window.logout()
-                    alert("탈퇴 처리된 계정입니다.")
+                    alert(translate("already_withdraw_account"))
                     history.replace("/login")
                 }
                 await window.hideIndicator()
@@ -80,14 +80,14 @@ export default class extends React.Component {
                     </div>
                     <div className="menu">
                         <div className={(this.getStatus().includes("/home") ? "selected-item" : "item")} onClick={() => history.push("/home")}>
-                            <div>계약</div>
+                            <div>{translate("contract")}</div>
                         </div>
                         <div className={(this.getStatus().includes("/template") ? "selected-item" : "item")} onClick={() => history.push("/template")}>
-                            <div>템플릿</div>
+                            <div>{translate("template")}/</div>
                         </div>
                         { ( !!this.props.user_info && (this.props.user_info.account_type == 1) ) ? 
                             <div className={(this.getStatus().includes("/group") ? "selected-item" : "item")} onClick={() => history.push("/group")}>
-                                <div>그룹</div>
+                                <div>{translate("group")}</div>
                             </div>: ""}
                     </div>
                     { !!this.props.user_info ? <Information /> : null }

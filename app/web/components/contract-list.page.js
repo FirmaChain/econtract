@@ -11,6 +11,7 @@ import history from '../history'
 import Route from "./custom_route"
 import moment from "moment"
 import queryString from "query-string"
+import translate from "../../common/translate"
 
 import {
     decryptPIN,
@@ -100,9 +101,9 @@ export default class extends React.Component {
                 if(account_type == 1) {
                     window.openModal("AddCommonModal", {
                         icon:"fas fa-users",
-                        title:"첫 그룹 추가",
-                        subTitle:"첫 번째 그룹 추가는 필수입니다.",
-                        placeholder:"그룹명을 입력해주세요.",
+                        title:translate("add_first_group"),
+                        subTitle:translate("add_first_group_desc_1"),
+                        placeholder:translate("please_input_group_name"),
                         cancelable:false,
                         onConfirm: async (group_name) => {
                             let resp = await this.props.create_group(group_name);
@@ -111,13 +112,13 @@ export default class extends React.Component {
                             if(resp) {
                                 await this.props.get_group_info(0)
                                 await this.props.fetch_user_info()
-                                alert("성공적으로 그룹이 추가되었습니다.")
+                                alert(translate("success_group_add"))
                             }
                         }
                     })
                 } else if(account_type == 2) {
                     window.logout()
-                    alert("할당된 그룹이 없습니다. 관리자에게 그룹 추가를 요청해주세요.")
+                    alert(translate("no_group_what_you_have"))
                     history.replace("/login")
                 }
             } else if(!group_id) {
@@ -250,38 +251,38 @@ export default class extends React.Component {
         let result = {}
 
 		if(menu == "lock") {
-			result = { id:"lock", title : this.props.user_info.account_type != 0 ? "미분류 계약":"잠김"}
+			result = { id:"lock", title : this.props.user_info.account_type != 0 ? translate("unclassified_contract"):translate("locked")}
         }
 		else if(menu == "requested") {
-			result = { id:"requested", title : "요청받음"}
+			result = { id:"requested", title : translate("requested")}
         }
 		else if(menu == "created") {
-			result = { id:"created", title : "생성함"}
+			result = { id:"created", title : translate("created")}
         }
 		else if(menu == "typing") {
-			result = { id:"typing", title : "내용 입력중"}
+			result = { id:"typing", title : translate("status_0")}
 		}
 		else if(menu == "beforeMySign") {
-			result = { id:"beforeMySign", title : "서명 전"}
+			result = { id:"beforeMySign", title : translate("status_1")}
 		}
 		/*else if(menu == "beforeOtherSign") {
 			result = { id:"beforeOtherSign", title : "상대방 서명 전"}
 		}*/
 		else if(menu == "completed") {
-			result = { id:"completed", title : "완료됨"}
+			result = { id:"completed", title : translate("completed")}
 		}
         else if(menu == "view-group") {
-            result = { id:"view-group", title : "그룹 보기 가능"}
+            result = { id:"view-group", title : translate("group_view_only")}
         }
 		else if(menu == "my-view") {
-			result = { id:"my-view", title : "개인 문서함"}
+			result = { id:"my-view", title : translate("individual_document_list")}
 		}
 		else
-            result = { id:"recently", title : "최근 사용"}
+            result = { id:"recently", title : translate("recently_use")}
 
         if(is_folder) {
             if(menu == 0) {
-                result = { id : "folder", folder_id: 0, title : "분류되지 않은 계약"}
+                result = { id : "folder", folder_id: 0, title : translate("unclassified_contract_detail")}
             } else {
                 let folder = this.props.folders.find(e=>e.folder_id == menu)
                 if(folder) result = { id : "folder", folder_id: folder.folder_id, title : folder.subject}
@@ -343,7 +344,7 @@ export default class extends React.Component {
 
     onClickSearch = async () => {
         if(!!this.state.search_text && this.state.search_text != "" && this.state.search_text.length < 2) {
-            return alert("검색어는 2글자 이상 입력해주세요.")
+            return alert(translate("please_input_search_query_more_2"))
         }
 
         if(!!this.state.search_text && this.state.search_text == "") {
@@ -370,14 +371,14 @@ export default class extends React.Component {
     onAddFolder = () => {
         window.openModal("AddCommonModal", {
             icon:"fas fa-folder",
-            title:"폴더 추가",
-            subTitle:"새 폴더명",
-            placeholder:"폴더명을 입력해주세요.",
+            title:translate("add_folder"),
+            subTitle:translate("new_folder_name"),
+            placeholder:translate("please_input_folder_name"),
             onConfirm: async (folder_name) => {
                 //TODO 폴더 생성 api
 
                 if(!folder_name || folder_name == "") {
-                    return alert("폴더명을 입력해주세요")
+                    return alert(translate("please_input_folder_name"))
                 }
                 let resp = await this.props.add_folder_contract(folder_name, this.props.match.params.group_id || null)
 
@@ -389,7 +390,7 @@ export default class extends React.Component {
     }
 
     onRemoveFolder = async (folder_id, folder_name) => {
-        if( await window.confirm("폴더 삭제", `<b>${folder_name}</b> 를 정말 삭제하시겠습니까?`) ){
+        if( await window.confirm(translate("folder_delete"), translate("really_delete_this_?", [folder_name]) ) ){
             await this.props.remove_folder_contract([folder_id], this.props.match.params.group_id || null)
             await this.props.folder_list_contract(this.props.match.params.group_id || null)
         }
@@ -399,14 +400,14 @@ export default class extends React.Component {
         let folders = this.props.folders
 
         if(folders.length == 0){
-            return alert("생성된 폴더가 없습니다.")
+            return alert(translate("no_created_folder"))
         }
 
         await window.openModal("MoveToFolder",{
             contract_ids,
             folders,
             onClickMove:async(folder_id)=>{
-                await window.showIndicator("폴더로 계약 이동중");
+                await window.showIndicator(translate("move_folder_contract"));
                 await this.props.add_folder_in_contract(folder_id, contract_ids, this.props.match.params.group_id || null)
                 await this.onRefresh()
                 await window.hideIndicator();
@@ -493,7 +494,7 @@ export default class extends React.Component {
                 if( correct_pin ) {
                     await this.props.update_epin_account(contract.contract_id, result);
                 } else {
-                    return alert("잘못된 PIN 번호를 입력했습니다.")
+                    return alert(translate("u_input_wrong_pin_number"))
                 }
 
                 history.push(move_info)
@@ -536,7 +537,7 @@ export default class extends React.Component {
                 }]
                 correct_pin = await this.props.is_correct_pin(contract, pin, infos, this.props.user_info, this.state.groups)
                 if( !correct_pin ) {
-                    return alert("잘못된 PIN 번호를 입력했습니다.")
+                    return alert(translate("u_input_wrong_pin_number"))
                     /*let user_info = {
                         user_type:1,
                         account_id: user.account_id,
@@ -572,9 +573,9 @@ export default class extends React.Component {
                 })
                 let result = await new Promise(r=>window.openModal("OneAddModal", {
                     icon:"fal fa-users",
-                    title:"계약에 그룹 추가하기",
-                    subTitle:"그룹 선택",
-                    desc:`해당 계약이 선택하신 그룹에 추가됩니다.`,
+                    title:translate("add_contract_in_group"),
+                    subTitle:translate("group_select"),
+                    desc:translate("add_contract_in_group_desc_1"),
                     data,
                     onConfirm:async (group)=>{
                         // add_contract_info group
@@ -592,7 +593,7 @@ export default class extends React.Component {
                     }
                 }))
                 if(!result) {
-                    return alert("그룹을 지정해야 계약이 분류될 수 있습니다.")
+                    return alert(translate("add_contract_in_group_desc_2"))
                 }
             }
             history.push(move_info)
@@ -606,7 +607,7 @@ export default class extends React.Component {
     render_contract_slot(e,k){
         let status_text = (status)=>{
             if(status == 0) {
-                return "내용 입력 중"
+                return translate("status_0")
             } else if(status == 1) {
                 let sign_user = e.is_signature.split(",").map( (v, k) => {
                     return {
@@ -618,11 +619,11 @@ export default class extends React.Component {
                     return v.corp_id == 0 && v.entity_id == this.props.user_info.account_id
                 })
                 if(sign_user && sign_user.signature == "true") {
-                    return "상대방 서명 전"
+                    return translate("status_1_0")
                 }
-            	return "내 서명 전"
+                return translate("status_1_1")
             } else if(status == 2) {
-                return "계약 완료"
+                return translate("status_2")
             } 
         }
 
@@ -650,14 +651,14 @@ export default class extends React.Component {
             <div className="list-body-item list-action">
                 <div className="button-container">
                     <div className={"action-button " + (e.status == 2 ? "action-transparent-but" : "action-blue-but")} onClick={this.onClickOpenContract.bind(this, e, 1)}>
-                        {e.status == 2 ? "보기" : "서명"}
+                        {e.status == 2 ? translate("view") : translate("sign")}
                     </div>
                     <div className={"arrow-button " + (e.status == 2 ? "arrow-transparent-but" : "arrow-blue-but")} onClick={this.onClickOption.bind(this, e.contract_id)} >
                         <i className="fas fa-caret-down"></i>
                         <div className="arrow-dropdown" style={{display:!!this.isOpenOption(e.contract_id) ? "initial" : "none"}}>
                             <div className="container">
-                                <div className="detail" onClick={this.openContract.bind(this, e, 0, 1)}>상세 정보</div>
-                                <div className="move" onClick={this.onMoveContract.bind(this, [e.contract_id])}>폴더 이동</div>
+                                <div className="detail" onClick={this.openContract.bind(this, e, 0, 1)}>{translate("detail_info")}</div>
+                                <div className="move" onClick={this.onMoveContract.bind(this, [e.contract_id])}>{translate("move_folder")}</div>
                             </div>
                         </div>
                     </div>
@@ -677,22 +678,22 @@ export default class extends React.Component {
 
 		return (<div className="contract-page">
 			<div className="contract-group-menu">
-				<div className="left-top-button" onClick={this.onClickAddContract}>계약 만들기</div>
+				<div className="left-top-button" onClick={this.onClickAddContract}>{translate("create_contract")}</div>
 				<div className="menu-list">
                     <div className="list">
-                        <div className="title">개인</div>
+                        <div className="title">{translate("individual")}</div>
                         <div className={"item" + (this.getTitle().id == "lock" ? " selected" : "")} onClick={this.move.bind(this, "lock")}>
                             <i className="icon fas fa-lock-alt"></i> 
-                            <div className="text">{this.props.user_info.account_type != 0 ? "미분류 계약":"잠김"}</div>
+                            <div className="text">{this.props.user_info.account_type != 0 ? translate("unclassified_contract"):translate("locked")}</div>
                             {this.state.lock_count > 0 ? <div className="count">{this.state.lock_count}</div> : null}
                         </div>
                         { account_type != 0 ? <div className={"item" + (this.getTitle().id == "my-view" ? " selected" : "")} onClick={this.move.bind(this, "my-view")}>
                             <i className="icon far fa-eye"></i>
-                            <div className="text">개인 문서함</div>
+                            <div className="text">{translate("individual_document_list")}</div>
                         </div> : null }
                     </div>
                     { account_type != 0 ? (<div className="list">
-                        <div className="title">그룹 선택</div>
+                        <div className="title">{translate("group_select")}</div>
                         <div className="item group-item" onClick={this.onClickGroupMenu}>
                             <div className="text">{this.getTitle().groupName}</div>
                             <i className={"angle far " + (!!this.isOpenGroupMenu() ? "fa-angle-down" : "fa-angle-up")}></i>
@@ -706,28 +707,28 @@ export default class extends React.Component {
                     </div>) : null
                     }
 					<div className="list">
-						<div className="title">계약</div>
-						<div className={"item" + (this.getTitle().id == "recently" ? " selected" : "")} onClick={this.move.bind(this, "recently")}><i className="icon fal fa-clock"></i> <div className="text">최근 사용</div></div>
-						<div className={"item" + (this.getTitle().id == "requested" ? " selected" : "")} onClick={this.move.bind(this, "requested")}><i className="icon fas fa-share-square"></i> <div className="text">요청받음</div></div>
-						<div className={"item" + (this.getTitle().id == "created" ? " selected" : "")} onClick={this.move.bind(this, "created")}><i className="icon fas fa-handshake-alt"></i> <div className="text">생성함</div></div>
+						<div className="title">{translate("contract")}</div>
+						<div className={"item" + (this.getTitle().id == "recently" ? " selected" : "")} onClick={this.move.bind(this, "recently")}><i className="icon fal fa-clock"></i> <div className="text">{translate("recently_use")}</div></div>
+						<div className={"item" + (this.getTitle().id == "requested" ? " selected" : "")} onClick={this.move.bind(this, "requested")}><i className="icon fas fa-share-square"></i> <div className="text">{translate("requested")}</div></div>
+						<div className={"item" + (this.getTitle().id == "created" ? " selected" : "")} onClick={this.move.bind(this, "created")}><i className="icon fas fa-handshake-alt"></i> <div className="text">{translate("created")}</div></div>
 					</div>
 					<div className="list">
-						<div className="title">모아보기</div>
-						<div className={"item" + (this.getTitle().id == "typing" ? " selected" : "")} onClick={this.move.bind(this, "typing")}><i className="icon fal fa-keyboard"></i> <div className="text">내용 입력 중</div></div>
-						<div className={"item" + (this.getTitle().id == "beforeMySign" ? " selected" : "")} onClick={this.move.bind(this, "beforeMySign")}><i className="icon far fa-file-import"></i> <div className="text">서명 전</div></div>
+						<div className="title">{translate("classify_view")}</div>
+						<div className={"item" + (this.getTitle().id == "typing" ? " selected" : "")} onClick={this.move.bind(this, "typing")}><i className="icon fal fa-keyboard"></i> <div className="text">{translate("status_0")}</div></div>
+						<div className={"item" + (this.getTitle().id == "beforeMySign" ? " selected" : "")} onClick={this.move.bind(this, "beforeMySign")}><i className="icon far fa-file-import"></i> <div className="text">{translate("status_1")}</div></div>
 						{/*<div className={"item" + (this.getTitle().id == "beforeOtherSign" ? " selected" : "")} onClick={this.move.bind(this, "beforeOtherSign")}><i className="icon far fa-file-export"></i> <div className="text">상대방 서명 전</div></div>*/}
-						<div className={"item" + (this.getTitle().id == "completed" ? " selected" : "")} onClick={this.move.bind(this, "completed")}><i className="icon fal fa-check-circle"></i> <div className="text">완료됨</div></div>
-                        {account_type != 0 ? <div className={"item" + (this.getTitle().id == "view-group" ? " selected" : "")} onClick={this.move.bind(this, "view-group")}><i className="icon fas fa-eye"></i> <div className="text">그룹 보기 가능</div></div> : null}
-                        {account_type == 0 ? <div className={"item" + (this.getTitle().id == "my-view" ? " selected" : "")} onClick={this.move.bind(this, "my-view")}><i className="icon fas fa-eye"></i> <div className="text">보기 가능</div></div> : null}
+						<div className={"item" + (this.getTitle().id == "completed" ? " selected" : "")} onClick={this.move.bind(this, "completed")}><i className="icon fal fa-check-circle"></i> <div className="text">{translate("completed")}</div></div>
+                        {account_type != 0 ? <div className={"item" + (this.getTitle().id == "view-group" ? " selected" : "")} onClick={this.move.bind(this, "view-group")}><i className="icon fas fa-eye"></i> <div className="text">{translate("group_view_only")}</div></div> : null}
+                        {account_type == 0 ? <div className={"item" + (this.getTitle().id == "my-view" ? " selected" : "")} onClick={this.move.bind(this, "my-view")}><i className="icon fas fa-eye"></i> <div className="text">{translate("viewer")}</div></div> : null}
 					</div>
 					<div className="list">
 						<div className="title">
-                            <div className="text">폴더</div>
+                            <div className="text">{translate("folder")}</div>
                             <i className="angle far fa-plus" onClick={this.onAddFolder}></i>
                         </div>
                         <div className={"item" + ( (this.getTitle().id == "folder" && this.getTitle().folder_id == 0) ? " selected" : "")} onClick={this.move.bind(this, `folder/0`)}>
                             <i className="fas icon fa-thumbtack" />
-                            <div className="text">분류되지 않은 계약</div>
+                            <div className="text">{translate("unclassified_contract_detail")}</div>
                         </div>
 						{folders.map((e,k)=>{
                             let subject = e.subject
@@ -745,11 +746,11 @@ export default class extends React.Component {
                 <div className="title">{this.getTitle().title}</div>
 				<div className="search">
                     <input className="common-textbox" type="text"
-                        placeholder="검색어를 2자 이상 입력해주세요."
+                        placeholder={translate("please_input_search_query_more_2")}
                         onKeyDown={this.onKeyPress.bind(this, "search")}
                         value={this.state.search_text || ""}
                         onChange={e=>this.setState({search_text:e.target.value})}/>
-                    <div className="blue-but" onClick={this.onClickSearch}>검색</div>
+                    <div className="blue-but" onClick={this.onClickSearch}>{translate("search")}</div>
                 </div>
 				<div className="list" style={{marginTop:"20px"}}>
                     <div className="head">
@@ -758,15 +759,15 @@ export default class extends React.Component {
                         		on={this.isCheckAll()}
                         		onClick={this.checkAll}/>
                         </div>
-                        <div className="list-head-item list-name">계약명</div>
-                        <div className="list-head-item list-status">상태</div>
-                        <div className="list-head-item list-date">마지막 활동 시간</div>
+                        <div className="list-head-item list-name">{translate("contract_name")}</div>
+                        <div className="list-head-item list-status">{translate("status")}</div>
+                        <div className="list-head-item list-date">{translate("last_updated_date")}</div>
                         <div className="list-head-item list-action"></div>
                     </div>
                     {contracts.list.map((e,k)=>{
                         return this.render_contract_slot(e,k)
                     })}
-                    {contracts.list.length == 0 ? <div className="empty-contract">계약서가 없습니다.</div> : null}
+                    {contracts.list.length == 0 ? <div className="empty-contract">{translate("no_contract")}</div> : null}
                 </div>
                 
                 <Pager max={Math.ceil(total_cnt/LIST_DISPLAY_COUNT)} cur={this.state.cur_page + 1 ||1} onClick={this.onClickPage} />

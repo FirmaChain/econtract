@@ -99,7 +99,7 @@ export default class extends React.Component {
                 <div className="page bottom-no-border">
                     <div className="column-300">
                         <div className="form-layout">
-                            <div className="form-label"> 템플릿 명 </div>
+                            <div className="form-label"> 템플릿명 </div>
                             <div className="form-input">
                                 <input placeholder="템플릿명을 입력해주세요." value={this.state.subject || ""} onChange={e=>this.setState({subject:e.target.value})}  />
                             </div>

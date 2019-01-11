@@ -49,9 +49,9 @@ export default class extends React.Component {
         super();
         this.blockFlag = false
         this.roles = [
-            {value:0, label: "생성자"},
-            {value:1, label: "서명자"},
-            {value:2, label: "보기 가능"}
+            {value:0, label: translate("creator")},
+            {value:1, label: translate("signer")},
+            {value:2, label: translate("viewer")}
         ]
 
 		this.state={
@@ -62,52 +62,52 @@ export default class extends React.Component {
             contract_name:"",
             individual:[{
                 deletable:false,
-                title:"성함",
+                title:translate("individual_name"),
                 force:true
             },{
                 deletable:false,
-                title:"이메일",
+                title:translate("individual_email"),
                 force:true
             },{
                 deletable:false,
-                title:"주소",
+                title:translate("individual_address"),
                 force:true
             },{
                 deletable:false,
-                title:"휴대폰 번호",
+                title:translate("individual_phone"),
                 checked:false
             },{
                 deletable:false,
-                title:"주민등록번호",
+                title:translate("individual_social_number"),
                 checked:false
             }],
             corporation:[{
                 deletable:false,
-                title:"기업명",
+                title:translate("corporation_name"),
                 force:true
             },{
                 deletable:false,
-                title:"사업자등록번호",
+                title:translate("corporation_duns"),
                 force:true
             },{
                 deletable:false,
-                title:"주소",
+                title:translate("corporation_address"),
                 force:true
             },{
                 deletable:false,
-                title:"대표자 성함",
+                title:translate("corporation_ceo_name"),
                 force:true
             },{
                 deletable:false,
-                title:"담당자 성함",
+                title:translate("corporation_manager_name"),
                 checked:false
             },{
                 deletable:false,
-                title:"담당자 이메일",
+                title:translate("corporation_manager_email"),
                 checked:false
             },{
                 deletable:false,
-                title:"담당자 휴대전화",
+                title:translate("corporation_manager_phone"),
                 checked:false
             }]
         };
@@ -145,29 +145,7 @@ export default class extends React.Component {
                         public_key:user.publickey_contract,
                         company_name:user.company_name,
                         role:[0, 1],
-                    }/*,{
-                        user_type:0,
-                        username:user.username,
-                        email:user.email,
-                        role:[1]
-                    },{
-                        user_type:0,
-                        username:user.username,
-                        email:user.email,
-                        role:[1]
-                    },{
-                        user_type:1,
-                        username:"김정완",
-                        email:"jwkim@firma-solutions.com",
-                        company_name:"피르마 솔루션즈",
-                        role:[1],
-                    },{
-                        user_type:2,
-                        company_name:"피르마 솔루션즈",
-                        group_name:"사업1팀",
-                        count:5,
-                        role:[2],
-                    }*/]
+                    }]
                 })
             } else {
 
@@ -186,7 +164,7 @@ export default class extends React.Component {
         history.block( (targetLocation) => {
             if(this.blockFlag)
                 return true
-            let out_flag = window._confirm("게약 작성을 중단하고 현재 페이지를 나가시겠습니까?")
+            let out_flag = window._confirm(translate("you_really_leave_this_page_contract"))
             if(out_flag)
                 history.block( () => true )
             return out_flag
@@ -212,11 +190,11 @@ export default class extends React.Component {
 
         for(let v of roles) {
             if(v == 0) {
-                str += "생성자\n"
+                str += translate("creator") + "\n"
             } else if(v == 1) {
-                str += "서명자\n"
+                str += translate("signer") + "\n"
             } else if(v == 2) {
-                str += "보기 가능\n"
+                str += translate("viewer") + "\n"
             }
         }
         return str.trim().replace(/\n/g, ", ");
@@ -228,12 +206,12 @@ export default class extends React.Component {
 
     onClickAdd = async ()=>{
         if(!this.state.add_email)
-            return alert("이메일을 입력해주세요.")
+            return alert(translate("please_input_email"))
         if(!this.state.add_role)
-            return alert("역할을 선택해주세요.")
+            return alert(translate("please_select_role"))
 
         if( !window.email_regex.test(this.state.add_email) )
-            return alert("이메일 형식이 잘못되었습니다.")
+            return alert(translate("incorrect_email_expression"))
 
         let resp = await this.props.select_userinfo_with_email(this.state.add_email)
 
@@ -241,7 +219,7 @@ export default class extends React.Component {
 
             for(let v of this.state.target_list) {
                 if( !!v.account_id && v.account_id == resp.account_id ) {
-                    return alert("이미 추가된 유저입니다.")
+                    return alert(translate("already_add_user"))
                 }
             }
             let info = {
@@ -258,7 +236,7 @@ export default class extends React.Component {
                 add_email:""
             })
         }else{
-            return alert("해당 이메일로 일치하는 가입자가 없습니다.")
+            return alert(translate("no_user_this_email"))
         }
     }
 
@@ -271,7 +249,7 @@ export default class extends React.Component {
 
     onClickAddCorporation = ()=>{
         if(!this.state.add_corporation_info){
-            return alert("항목의 이름을 입력해주세요.")
+            return alert(translate("please_input_name_of_this"))
         }
 
         this.setState({
@@ -286,7 +264,7 @@ export default class extends React.Component {
 
     onClickAddIndivisual = ()=>{
         if(!this.state.add_individual_info){
-            return alert("항목의 이름을 입력해주세요.")
+            return alert(translate("please_input_name_of_this"))
         }
 
         this.setState({
@@ -307,22 +285,22 @@ export default class extends React.Component {
 
         if(this.state.can_edit_account_id == null) {
             this.is_register = false
-            return alert("수정 권한을 지정해주세요.")
+            return alert(translate("please_set_edit_privilege"))
         }
 
         if(this.state.is_use_pin) {
             if(this.state.pin_number == "" || this.state.pin_number.length != 6) {
                 this.is_register = false
-                return alert("핀 번호를 입력해주세요.")
+                return alert(translate("please_input_PIN"))
             } else if(this.state.pin_number == "000000") {
                 this.is_register = false
-                return alert("핀 번호는 000000 으로 설정할 수 없습니다.")
+                return alert(translate("you_dont_set_pin_000000"))
             }
         }
 
         if(!this.state.contract_name || this.state.contract_name.trim() == "") {
             this.is_register = false
-            return alert("계약명을 입력해주세요.")
+            return alert(translate("please_input_contract_name"))
         }
 
         this.blockFlag = true;
@@ -330,7 +308,7 @@ export default class extends React.Component {
         let contract_name = this.state.contract_name.trim();
 
         if(contract_name.length > 80) {
-            return alert("계약 이름은 80자 이하로 구성되어야 합니다.")
+            return alert(translate("contract_name_must_be_80_letters"))
         }
 
         let counterparties = this.state.target_list.map(e=> {
@@ -358,7 +336,7 @@ export default class extends React.Component {
         if(this.props.user_info.account_type != 0 && includeGroup == false) {
             this.blockFlag = false;
             this.is_register = false
-            return alert("기업 계정으로 계약 생성 시, 그룹을 최소한 하나는 추가해야 합니다.");
+            return alert(translate("if_corporation_account_at_least_one_group"));
         }
 
 
@@ -438,14 +416,14 @@ export default class extends React.Component {
         })
         window.openModal("OneAddModal", {
             icon:"fal fa-users",
-            title:"사용자에 그룹 추가하기",
-            subTitle:"그룹 선택",
-            desc:`선택하신 그룹의 그룹원들이 해당 계약에 보기 가능 사용자로 추가됩니다`,
+            title:translate("user_add_group"),
+            subTitle:translate("group_select"),
+            desc:translate("select_group_member_contract_view_user_add"),
             data,
             onConfirm:(group)=>{
                 for(let v of this.state.target_list) {
                     if( !!v.corp_id && !!v.group_id && v.corp_id == group.corp_id && v.group_id == group.group_id) {
-                        return alert("이미 추가된 그룹입니다.")
+                        return alert(translate("already_add_group"))
                     }
                 }
 
@@ -459,12 +437,9 @@ export default class extends React.Component {
     openServiceNoRegisterModal = () => {
         window.openModal("CommonModal", {
             icon:"fal fa-user-slash",
-            title:"서비스 미가입 사용자",
-            subTitle:"계약 문서의 법적 효력을 위해 서비스 가입이 필요합니다.",
-            desc:`서비스 가입을 거치지 않고 서명을 할 경우, 해당 계약의 법적 효력을 증명할 수 없습니다.<br/><br/>
-사용자를 추가하기 위해선 양측의 서비스 가입이 
-필수적이며, 가입 후 계약 정보 수정 화면에서 해당 
-사용자를 꼭 추가해주세요.`,
+            title:translate("service_unregister_user"),
+            subTitle:translate("u_need_register_for_legal_validity"),
+            desc:translate("unregister_user_add_contract_popup_desc"),
             onClose:()=>{
             }
         })
@@ -499,15 +474,15 @@ export default class extends React.Component {
             </div>
             <div className="head">
                 <span className="back" onClick={()=> history.goBack()}>
-                    <i className="fal fa-chevron-left"></i> <span>뒤로가기</span>
+                    <i className="fal fa-chevron-left"></i> <span>{translate("go_back")}</span>
                 </span>
-                <div className="text">계약정보 등록</div>
+                <div className="text">{translate("register_contract_info")}</div>
             </div>
             <div className="content">
                 <div className="row">
                     <div className="left-desc">
-                        <div className="desc-head">계약명 입력</div>
-                        <div className="desc-content">해당 계약명을 입력해주세요</div>
+                        <div className="desc-head">{translate("input_contract_name")}</div>
+                        <div className="desc-content">{translate("please_input_this_contract_name")}</div>
                     </div>
                     <div className="right-form">
                         <div className="column">
@@ -515,7 +490,7 @@ export default class extends React.Component {
                             <div className="form-input">
                                 <input className="common-textbox" type="text"
                                     value={this.state.contract_name || ""}
-                                    placeholder="해당 계약명을 입력해주세요"
+                                    placeholder={translate("please_input_this_contract_name")}
                                     onChange={e=>this.setState({contract_name:e.target.value})}/>
                             </div>
                         </div>
@@ -524,8 +499,8 @@ export default class extends React.Component {
 
                 {this.state.template ? <div className="row">
                     <div className="left-desc">
-                        <div className="desc-head">선택된 템플릿</div>
-                        <div className="desc-content">해당 계약에 사용될 템플릿입니다.</div>
+                        <div className="desc-head">{translate("selected_template")}</div>
+                        <div className="desc-content">{translate("use_template_this_contract")}</div>
                     </div>
                     <div className="right-form">
                         <div className="column">
@@ -539,7 +514,7 @@ export default class extends React.Component {
                         <div className="column">
                             <div className="form-head"></div>
                             <div className="form-input">
-                                <div className="btn-add-user btn-add-user-active" onClick={this.onViewTemplate}>템플릿 미리보기</div>
+                                <div className="btn-add-user btn-add-user-active" onClick={this.onViewTemplate}>{translate("preview_template")}</div>
                             </div>
                         </div>
                     </div>
@@ -547,8 +522,8 @@ export default class extends React.Component {
 
                 <div className="row">
                     <div className="left-desc">
-                        <div className="desc-head">서명 대상</div>
-                        <div className="desc-content">계약에 서명하는 대상에 본인 포함 여부를 선택할 수 있습니다</div>
+                        <div className="desc-head">{translate("sign_object")}</div>
+                        <div className="desc-content">{translate("select_sign_object_desc")}</div>
                     </div>
                     <div className="right-form">
                         <div className="column">
@@ -558,11 +533,11 @@ export default class extends React.Component {
                                     size={18}
                                     disabled
                                     onClick={()=>this.setState({target_me:!this.state.target_me})}
-                                    text={"본인 (" + this.props.user_info.username + ")"}/> &nbsp;&nbsp;&nbsp;&nbsp;
+                                    text={translate("me_name", [this.props.user_info.username])}/> &nbsp;&nbsp;&nbsp;&nbsp;
                                 <CheckBox2 on={this.state.target_other}
                                     size={18}
                                     onClick={()=>this.setState({target_other:!this.state.target_other})}
-                                    text={"타 서명자"}/>
+                                    text={translate("another_signer")}/>
                             </div>
                         </div>
                     </div>
@@ -570,12 +545,12 @@ export default class extends React.Component {
 
                 <div className="row">
                     <div className="left-desc">
-                        <div className="desc-head">보안 설정</div>
-                        <div className="desc-content">계약 열람시 PIN 입력 여부를 선택할 수 있습니다</div>
+                        <div className="desc-head">{translate("security_setting")}</div>
+                        <div className="desc-content">{translate("security_setting_desc")}</div>
                     </div>
                     <div className="right-form">
                         <div className="column">
-                            <div className="form-head">계약 PIN 사용 여부</div>
+                            <div className="form-head">{translate("security_setting_title")}</div>
                             <div className="form-input">
                                 <CheckBox2 on={this.state.is_use_pin}
                                     size={18}
@@ -585,14 +560,14 @@ export default class extends React.Component {
                                             pin_number:genPIN()
                                         })
                                     }}
-                                    text={"PIN 보안 사용"}/>
+                                    text={translate("pin_security_use")}/>
                             </div>
                         </div>
                         {this.state.is_use_pin ? <div className="column column-flex-2">
-                            <div className="form-head">PIN 설정</div>
+                            <div className="form-head">{translate("pin_set")}</div>
                             <div className="form-input">
                                 <input className="common-textbox" id="pin" type="text"
-                                    placeholder="원하시는 PIN 번호를 입력해주세요 ( 숫자로 구성된 6자리 번호 )"
+                                    placeholder={translate("input_want_pin")}
                                     value={this.state.pin_number || ""}
                                     onChange={e=>{
                                         if(!isNaN(e.target.value) && e.target.value.length < 7)
@@ -605,30 +580,30 @@ export default class extends React.Component {
 
                 <div className="row" style={{display:this.state.target_other ? "flex" : "none"}}>
                     <div className="left-desc">
-                        <div className="desc-head">사용자 추가</div>
-                        <div className="desc-content">계약에 서명하거나 볼 수 있는 사용자를 추가합니다</div>
-                        <div className="desc-link" onClick={this.openServiceNoRegisterModal}>서비스 미가입자도 서명할 수 있나요?</div>
+                        <div className="desc-head">{translate("user_add")}</div>
+                        <div className="desc-content">{translate("user_add_desc")}</div>
+                        <div className="desc-link" onClick={this.openServiceNoRegisterModal}>{translate("unregister_user_enable_sign_?")}</div>
                     </div>
                     <div className="right-form">
                         <div className="column column-flex-2">
-                            <div className="form-head">사용자 이메일</div>
+                            <div className="form-head">{translate("user_email")}</div>
                             <div className="form-input">
                                 <input className="common-textbox" id="email" type="email"
-                                    placeholder="이메일을 입력해주세요"
+                                    placeholder={translate("please_input_email")}
                                     value={this.state.add_email || ""}
                                     onChange={e=>this.setState({add_email:e.target.value})}/>
                             </div>
                         </div>
                         <div className="column">
-                            <div className="form-head">사용자 역할</div>
+                            <div className="form-head">{translate("user_role")}</div>
                             <div className="form-input">
                                 <Dropdown className="common-select"
                                     controlClassName="control"
                                     menuClassName="item"
                                     options={_roles}
                                     onChange={e=>{this.setState({add_role:e.value, add_role_label:e.label})}}
-                                    value={this.state.add_role_label} placeholder="역할" />
-                                <div className={"btn-add-user" + ( (this.state.add_email || "").length==0? "" : " btn-add-user-active" )} onClick={this.onClickAdd}>추가</div>
+                                    value={this.state.add_role_label} placeholder={translate("user_role")} />
+                                <div className={"btn-add-user" + ( (this.state.add_email || "").length==0? "" : " btn-add-user-active" )} onClick={this.onClickAdd}>{translate("add")}</div>
                             </div>
                         </div>
                     </div>
@@ -638,7 +613,7 @@ export default class extends React.Component {
                         <div className="left-desc">
                         </div>
                         <div className="right-form small-right-form">
-                            <div className="group-add-button" onClick={this.onAddGroup}>그룹 추가하기</div>
+                            <div className="group-add-button" onClick={this.onAddGroup}>{translate("group_add")}</div>
                         </div>
                     </div> : null
                 }
@@ -648,7 +623,7 @@ export default class extends React.Component {
                     </div>
                     <div className="right-form">
                         <div className="column">
-                            <div className="form-head">사용자 리스트</div>
+                            <div className="form-head">{translate("user_list")}</div>
                             <div className="form-list">
                                 {this.state.target_list.map((e, k)=>{
                                     return <div className="item" key={k}>
@@ -692,30 +667,30 @@ export default class extends React.Component {
                                                 onClick={ v => {
                                                     this.setState({can_edit_account_id:e.account_id})
                                                 }} />
-                                            <div className="name">수정 권한</div>
+                                            <div className="name">{translate("modify_privilege")}</div>
                                         </div>
                                         <div className="action">
                                             {k == 0 ?
                                                 null:
-                                                <div className="delete" onClick={this.onClickRemoveCounterparty.bind(this, k, e)}>삭제</div>
+                                                <div className="delete" onClick={this.onClickRemoveCounterparty.bind(this, k, e)}>{translate("remove")}</div>
                                             }
                                         </div>
                                     </div>
                                 })}
                             </div>
-                            <div className="explain">* 수정 권한은 처음에 편집할 사람을 지정하는 것입니다. 동시에 계약서를 여러명이 편집할 수 없습니다.</div>
+                            <div className="explain">{translate("privilege_desc")}</div>
                         </div>
                     </div>
                 </div>
 
                 <div className="row">
                     <div className="left-desc">
-                        <div className="desc-head">서명 정보</div>
-                        <div className="desc-content">전자 서명시 계약에 들어갈 정보들을 선택합니다</div>
+                        <div className="desc-head">{translate("sign_info")}</div>
+                        <div className="desc-content">{translate("sign_info_desc")}</div>
                     </div>
                     <div className="right-form align-normal">
                         <div className="checkbox-list">
-                            <div className="form-head">개인 서명자 정보</div>
+                            <div className="form-head">{translate("individual_sign_info")}</div>
                             <div className="form-check-list">
                                 {this.state.individual.map((e,k)=>{
                                     return <div className="item" key={k}>
@@ -726,20 +701,20 @@ export default class extends React.Component {
                                 })}
                                 <div className="bottom">
                                     <input className="text-box common-textbox"
-                                        placeholder="항목 입력"
+                                        placeholder={translate("input_object")}
                                         type="text"
                                         value={this.state.add_individual_info || ""}
                                         onChange={e=>this.setState({add_individual_info:e.target.value})}
                                         onKeyDown={this.keyPress.bind(this, 0)}/>
                                     <div className="add-btn" onClick={this.onClickAddIndivisual}>
-                                        <div>서명 정보 추가</div>
+                                        <div>{translate("sign_info_add")}</div>
                                         <i className="fal fa-plus"></i>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div className="checkbox-list">
-                            <div className="form-head">기업 서명자 정보</div>
+                            <div className="form-head">{translate("corporation_sign_info")}</div>
                             <div className="form-check-list">
                                 {this.state.corporation.map((e,k)=>{
                                     return <div className="item" key={k}>
@@ -750,13 +725,13 @@ export default class extends React.Component {
                                 })}
                                 <div className="bottom">
                                     <input className="text-box common-textbox"
-                                        placeholder="항목 입력"
+                                        placeholder={translate("input_object")}
                                         type="text"
                                         value={this.state.add_corporation_info || ""}
                                         onChange={e=>this.setState({add_corporation_info:e.target.value})}
                                         onKeyDown={this.keyPress.bind(this, 1)}/>
                                     <div className="add-btn" onClick={this.onClickAddCorporation}>
-                                        <div>서명 정보 추가</div>
+                                        <div>{translate("sign_info_add")}</div>
                                         <i className="fal fa-plus"></i>
                                     </div>
                                 </div>
@@ -766,7 +741,7 @@ export default class extends React.Component {
                 </div>
 
                 <div className="bottom-container">
-                    <div className="regist-contract" onClick={this.onClickRegister}>등 록</div>
+                    <div className="regist-contract" onClick={this.onClickRegister}>{translate("register_space")}</div>
                 </div>
             </div>
             <Footer />

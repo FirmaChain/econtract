@@ -54,7 +54,7 @@ export default class PreviewContract extends React.Component {
                     return
                 
                 return <div className="item" key={k}>
-                    <div className="title">계약자 {k+1}</div>
+                    <div className="title">{`계약자 ${k+1}`}</div>
                     {e.sign_info ? Object.entries(e.sign_info).map( (ee, kk) => {
                         let title = ee[0].substring(1, ee[0].length)
                         return <div className="info" key={kk}><span className="first">{title}</span> : <span className="last">{ee[1]}</span></div>
@@ -72,7 +72,7 @@ export default class PreviewContract extends React.Component {
         if(this.props.contract && this.props.contract.name) {
             return this.props.contract.name
         } else {
-            return this.props.title || "제목이 없습니다"
+            return this.props.title || "제목이 없습니다."
         }
     }
 
