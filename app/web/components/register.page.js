@@ -997,7 +997,7 @@ export default class extends React.Component {
             <div className="master-keyword-container">
                 <div className="sub-title-container">
                     <div className="title">{translate("master_keyword")}</div>
-                    <div className="what-is-masterkeyword" onClick={this.openWhatIsMasterkeywordModal}>마스터키워드란?</div>
+                    <div className="what-is-masterkeyword" onClick={this.openWhatIsMasterkeywordModal}>{translate("what_is_master_keyword")}</div>
                 </div>
                 <div className="list">
                     {this.state.mnemonic.split(" ").map((e,k)=>{

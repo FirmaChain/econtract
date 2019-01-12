@@ -74,15 +74,15 @@ export default class extends React.Component {
     onClickDelete = async()=>{
         let selected = Object.keys(this.state.templates_checks).filter(e=>this.state.templates_checks[e].template_id)
         if(selected.length == 0)
-            return alert("삭제 할 템플릿을 선택해주세요.")
+            return alert(translate("plase_choice_delete_template"))
 
-        if(await window.confirm("템플릿 삭제", `${selected.length}개의 템플릿을 삭제하시겠습니까?`)){
+        if(await window.confirm(translate("template_delete"), translate("template_delete_desc_1", [selected.length]) )){
             await window.showIndicator()
             await this.props.remove_template(selected)
             await this.props.list_template(this.getTitle().id, this.state.cur_page - 1)
             await window.hideIndicator()
             
-            alert("성공적으로 삭제했습니다.")
+            alert(translate("template_delete_desc_2"))
         }
     }
 
@@ -107,12 +107,12 @@ export default class extends React.Component {
     onAddFolder = () => {
         window.openModal("AddCommonModal", {
             icon:"fas fa-folder",
-            title:"템플릿 폴더 추가",
-            subTitle:"새 폴더명",
-            placeholder:"폴더명을 입력해주세요.",
+            title:translate("add_template_folder"),
+            subTitle:translate("new_folder_name"),
+            placeholder:translate("please_input_folder_name"),
             onConfirm: async (folder_name) => {
                 if(!folder_name || folder_name == "") {
-                    return alert("폴더명을 입력해주세요")
+                    return alert(translate("please_input_folder_name"))
                 }
                 let resp = await this.props.add_folder_template(folder_name)
 
@@ -153,12 +153,12 @@ export default class extends React.Component {
     async onRemoveTemplate(template_id, subject, e) {
         e.stopPropagation()
 
-        if(await window.confirm("템플릿 삭제", `'${subject}' 템플릿을 삭제하시겠습니까?`)) {
+        if(await window.confirm(translate("template_delete"), translate("are_u_delete_template", [subject]) )) {
             await window.showIndicator()
             await this.props.remove_template([template_id])
             await this.props.list_template(this.getTitle().id, this.state.cur_page - 1)
             await window.hideIndicator()
-            alert(`성공적으로 ${subject} 템플릿을 삭제하였습니다.`)
+            alert(translate("are_u_delete_template_desc", [subject]))
         }
     }
 
@@ -174,13 +174,13 @@ export default class extends React.Component {
             }
         }
         if(menu == "unclassified") {
-            return { id:"unclassified", title : "분류되지 않은 템플릿"}
+            return { id:"unclassified", title : translate("not_classfication_template")}
         }
-        return { id:"all", title : "모든 템플릿"}
+        return { id:"all", title : translate("all_template")}
     } 
 
     onRemoveFolder = async (folder_id, folder_name) => {
-        if( await window.confirm("템플릿 폴더 삭제", `${folder_name} 를 정말 삭제하시겠습니까?`) ){
+        if(await window.confirm(translate("template_folder_delete"), translate("template_folder_delete_desc", [folder_name]) )){
             await this.props.remove_folder_template([folder_id])
             history.push("/template")
         }
@@ -190,12 +190,12 @@ export default class extends React.Component {
 
         window.openModal("AddCommonModal", {
             icon:"fas fa-folder",
-            title:"템플릿 폴더 이름 변경",
-            subTitle:"새 폴더 이름",
-            placeholder:`(기존 폴더명 : ${this.getTitle().title})`,
+            title:translate("change_template_folder_name"),
+            subTitle:translate("new_folder_name"),
+            placeholder: translate("change_template_folder_name_desc", [this.getTitle().title]),
             onConfirm: async (folder_name) => {
                 if(!folder_name || folder_name == "") {
-                    return alert("폴더 이름을 입력해주세요.")
+                    return alert(translate("please_input_folder_name"))
                 }
                 let resp = await this.props.change_folder_template(this.getTitle().id, folder_name)
 
@@ -256,12 +256,12 @@ export default class extends React.Component {
             <div className="list-body-item list-date">{moment(e.addedAt).format("YYYY-MM-DD HH:mm:ss")}</div>
             <div className="list-body-item list-action">
                 <div className="button-container">
-                    <div className="action-button action-blue-but" onClick={this.useTemplate.bind(this, e.template_id)}>사용</div>
+                    <div className="action-button action-blue-but" onClick={this.useTemplate.bind(this, e.template_id)}>{translate("use")}</div>
                     <div className="arrow-button arrow-blue-but" onClick={this.onClickOption.bind(this, e.template_id)} >
                         <i className="fas fa-caret-down"></i>
                     <div className="arrow-dropdown" style={{display:!!this.isOpenOption(e.template_id) ? "initial" : "none"}}>
                             <div className="container">
-                                <div className="move" onClick={this.onRemoveTemplate.bind(this, e.template_id, e.subject)}>삭제</div>
+                                <div className="move" onClick={this.onRemoveTemplate.bind(this, e.template_id, e.subject)}>{translate("remove")}</div>
                             </div>
                         </div>
                     </div>
@@ -279,20 +279,20 @@ export default class extends React.Component {
 
 		return (<div className="template-page">
             <div className="contract-group-menu">
-                <div className="left-top-button" onClick={this.onClickAddTemplate}>생성하기</div>
+                <div className="left-top-button" onClick={this.onClickAddTemplate}>{translate("generate")}</div>
                 <div className="menu-list">
                     <div className="list">
                         <div className="title">
-                            <div className="text">템플릿</div>
+                            <div className="text">{translate("template")}</div>
                             <i className="angle far fa-plus" onClick={this.onAddFolder}></i>
                         </div>
                         <div className={"item" + (this.getTitle().id == "all" ? " selected" : "")} onClick={this.move.bind(this, "")}>
                             <i className="icon fal fa-clock"></i>
-                            <div className="text">모든 템플릿</div>
+                            <div className="text">{translate("all_template")}</div>
                         </div>
                         <div className={"item" + (this.getTitle().id == "unclassified" ? " selected" : "")} onClick={this.move.bind(this, "unclassified")}>
                             <i className="icon fas fa-thumbtack"></i>
-                            <div className="text">분류되지 않은 템플릿</div>
+                            <div className="text">{translate("not_classfication_template")}</div>
                         </div>
                         {folders.map((e,k)=>{
                             let subject = e.subject
@@ -318,14 +318,14 @@ export default class extends React.Component {
                                 on={this.isCheckAll()}
                                 onClick={this.checkAll}/>
                         </div>
-                        <div className="list-head-item list-name">템플릿명</div>
-                        <div className="list-head-item list-date">생성 일자</div>
+                        <div className="list-head-item list-name">{translate("template_name")}</div>
+                        <div className="list-head-item list-date">{translate("create_date")}</div>
                         <div className="list-head-item list-action"></div>
                     </div>
                     {templates.list.map((e,k)=>{
                         return this.render_template_slot(e,k)
                     })}
-                    {templates.list.length == 0 ? <div className="empty-contract">템플릿이 없습니다.</div> : null}
+                    {templates.list.length == 0 ? <div className="empty-contract">{translate("not_template")}</div> : null}
                 </div>
                 
                 <Pager max={Math.ceil(total_cnt/page_num)} cur={this.state.cur_page||1} onClick={this.onClickPage} />

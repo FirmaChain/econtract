@@ -128,7 +128,7 @@ export default class extends React.Component {
         history.block( (targetLocation) => {
             if(this.blockFlag)
                 return true
-            let out_flag = window._confirm("템플릿 작업을 중단하고 현재 페이지를 나가시겠습니까?")
+            let out_flag = window._confirm(translate("are_u_stop_template_work_and_page_exit"))
             if(out_flag)
                 history.block( () => true )
             return out_flag
@@ -144,12 +144,12 @@ export default class extends React.Component {
     onAddFolder = () => {
         window.openModal("AddCommonModal", {
             icon:"fas fa-folder",
-            title:"템플릿 폴더 추가",
-            subTitle:"새 폴더명",
-            placeholder:"폴더명을 입력해주세요.",
+            title:translate("add_template_folder"),
+            subTitle:translate("new_folder_name"),
+            placeholder:translate("please_input_folder_name"),
             onConfirm: async (folder_name) => {
                 if(!folder_name || folder_name == "") {
-                    return alert("폴더명을 입력해주세요")
+                    return alert(translate("please_input_folder_name"))
                 }
                 let resp = await this.props.add_folder_template(folder_name)
 
@@ -173,7 +173,7 @@ export default class extends React.Component {
         //window.html2Doc(document.getElementsByClassName('fr-view')[0], `[템플릿] ${this.state.title}`)
         
         if(!this.state.model || this.state.model == "") {
-            return alert("내용을 작성해주세요.")
+            return alert(translate("please_write_content"))
         }
 
         window.openModal("PreviewContract",{
@@ -184,12 +184,12 @@ export default class extends React.Component {
 
     onClickSubmit = async () => {
         if(this.state.title == "")
-            return alert("템플릿 제목을 입력해주세요.")
+            return alert(translate("please_input_template_title"))
         else if(this.state.select_folder_id == null)
-            return alert("템플릿을 저장할 폴더를 선택해주세요.")
+            return alert(translate("please_save_template_folder"))
 
         if(this.state.editMode) {
-            if(await window.confirm("템플릿 수정", `해당 템플릿을 수정하시겠습니까?`)){
+            if(await window.confirm(translate("template_modify"), translate("are_u_modify_this_template"))){
                 this.blockFlag = true
                 await window.showIndicator()
                 await this.props.update_template(this.state.template_id, this.state.select_folder_id, this.state.title, this.state.model)
@@ -197,7 +197,7 @@ export default class extends React.Component {
                 history.goBack()
             }
         } else {
-            if(await window.confirm("템플릿 등록", `해당 템플릿을 등록하시겠습니까?`)){
+            if(await window.confirm(translate("register_template"), translate("are_u_register_this_template"))){
                 this.blockFlag = true
                 await window.showIndicator()
                 await this.props.add_template(this.state.title, this.state.select_folder_id, this.state.model)
@@ -215,7 +215,7 @@ export default class extends React.Component {
                     <div className="left-icon">
                         <i className="fal fa-times" onClick={()=>history.goBack()}></i>
                     </div>
-                    <div className="title">{this.state.editMode ? "템플릿 수정":"템플릿 생성"}</div>
+                    <div className="title">{this.state.editMode ? translate("template_modify") : translate("template_generation")}</div>
                     { !!this.props.user_info ? <Information /> : null }
                 </div>
                 <div className="container">
@@ -229,10 +229,10 @@ export default class extends React.Component {
                     <div className="info">
                         <div className="title">
                             <i className="far fa-file-contract"></i>
-                            <div className="text">정보 입력</div>
+                            <div className="text">{translate("input_info")}</div>
                         </div>
                         <div className="desc">
-                            <div className="title">템플릿명</div>
+                            <div className="title">{translate("template_name")}</div>
                             <div className="text-box">
                                 <input className="common-textbox"
                                     type="text"
@@ -241,20 +241,20 @@ export default class extends React.Component {
                             </div>
                         </div>
                         <div className="desc">
-                            <div className="title">폴더 지정</div>
+                            <div className="title">{translate("set_folder")}</div>
                             <div className="text-box">
                                 <Dropdown className="common-select"
                                     controlClassName="control"
                                     menuClassName="item"
                                     options={folders.map((e,k) => {return {value:e.folder_id, label:e.subject}})}
                                     onChange={e=>{this.setState({select_folder_id:e.value, select_folder_label: e.label})}}
-                                    value={this.state.select_folder_label} placeholder="저장할 폴더를 골라주세요" />
+                                    value={this.state.select_folder_label} placeholder={translate("please_choice_save_folder")} />
                             </div>
                         </div>
                         <div className="desc">
-                            <div className="title">폴더 생성</div>
+                            <div className="title">{translate("folder_generation")}</div>
                             <div className="text-box">
-                                <div className="blue-but" onClick={this.onAddFolder}>새 폴더 만들기</div>
+                                <div className="blue-but" onClick={this.onAddFolder}>{translate("go_new_folder")}</div>
                             </div>
                         </div>
                     </div>
@@ -263,10 +263,10 @@ export default class extends React.Component {
             <div className="bottom-container">
                 <div className="preview" onClick={this.onClickPreview}>
                     <i className="fal fa-eye"></i>
-                    미리보기
+                    {translate("go_preview")}
                 </div>
                 <div className="submit" onClick={this.onClickSubmit}>
-                    {this.state.editMode ? "적용하기":"등록하기"}
+                    {this.state.editMode ? translate("go_apply"):translate("go_register")}
                 </div>
             </div>
 		</div>);

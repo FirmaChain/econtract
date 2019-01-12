@@ -167,7 +167,7 @@ export default class extends React.Component {
 
     componentDidMount() {
         setTimeout(async()=>{
-            await window.showIndicator("계약서 상세 데이터 불러오는 중...")
+            await window.showIndicator(translate("loding_contract_detail_data"))
             await this.props.fetch_user_info()
             await this.onRefresh()
             this.subscribeChannel()
@@ -183,7 +183,7 @@ export default class extends React.Component {
             if(!this.state.contract)
                 return true
             
-            let out_flag = window._confirm("계약서 수정 작업을 중단하고 현재 페이지를 나가시겠습니까?")
+            let out_flag = window._confirm(translate("are_u_stop_contract_modify_work_and_now_page_out"))
             if(out_flag)
                 history.block( () => true )
             return out_flag
@@ -242,7 +242,7 @@ export default class extends React.Component {
                 this.editor.edit.off()
             }
         } else {
-            alert("계약이 존재하지 않습니다.")
+            alert(translate("not_exist_contract"))
             history.goBack()
         }
     }
@@ -265,7 +265,7 @@ export default class extends React.Component {
         //window.html2Doc(document.getElementsByClassName('fr-view')[0], `[계약서] ${this.state.contract.name}`)
 
         if(!this.state.model || this.state.model == "") {
-            return alert("내용을 작성해주세요.")
+            return alert(translate("please_write_content"))
         }
 
         window.openModal("PreviewContract",{
@@ -290,10 +290,10 @@ export default class extends React.Component {
         let r = await this.props.update_contract_model(this.state.contract.contract_id, model, this.state.contract.the_key)
         if(r.code == 1) {
             this.setState({
-                contract_modify_status:"마지막으로 수정한 내용이 저장되었습니다. " + moment().format("YYYY-MM-DD HH:mm:ss")
+                contract_modify_status:translate("last_modify_contract_save") + " " + moment().format("YYYY-MM-DD HH:mm:ss")
             })
         } else if(r.code == -9) {
-            alert("이미 완료된 계약은 내용을 업데이트할 수 없습니다.")
+            alert(translate("you_dont_update_alredy_complete_contract"))
         }
     }
 
@@ -305,15 +305,11 @@ export default class extends React.Component {
             onConfirm : async (user)=>{
 
                 if((this.state.contract.html || "") != this.state.model)
-                    if(window._confirm("수정중인 내용이 있습니다. 저장하고 수정 권한을 넘기시겠습니까?"))
+                    if(await window.confirm(translate("you_have_modify_content_save_and_pass_modify_verification")))
                         await this.onClickContractSave();
 
-                console.log("pbes0707", user)
-                console.log("user.sub", user.sub)
-                    
                 await window.showIndicator()
                 let result = await this.props.move_contract_can_edit_account_id(this.state.contract.contract_id, user.entity_id, user.sub)
-                console.log(result)
                 //await this.onRefresh()
                 await window.hideIndicator()
             }
@@ -350,19 +346,19 @@ export default class extends React.Component {
 
         for(let v of sign_info_list) {
             if(!sign_info["#"+v] || sign_info["#"+v].trim() == "") {
-                return alert("서명 정보를 모두 입력해주세요.")
+                return alert(translate("input_all_sign_info"))
             } else {
                 sign_info["#"+v] = sign_info["#"+v].trim()
             }
         }
 
         if((this.state.contract.html || "") != this.state.model)
-            if(window._confirm("수정중인 내용이 있습니다. 저장하고 서명 정보를 등록하시겠습니까?"))
+            if(await window.confirm(translate("Are_U_have_modify_content_save_and_register_sign_info")))
                 await this.onClickContractSave()
 
         await window.showIndicator()
         let r = await this.props.update_contract_sign_info(this.state.contract.contract_id, sign_info, this.state.contract.the_key)
-        if(r.code == -9) alert("이미 완료된 계약은 서명 정보를 업데이트할 수 없습니다.")
+        if(r.code == -9) alert(translate("you_dont_update_complete_contract_sign_info"))
         //await this.onRefresh()
         this.onToggleRegisterSignForm()
         await window.hideIndicator()
@@ -370,7 +366,7 @@ export default class extends React.Component {
 
     onClickRegisterSign = async () => {
         if( (this.state.contract.html || "") != this.state.model)
-            return alert("수정중인 내용이 있으면 서명할 수 없습니다.")
+            return alert(translate("if_modify_content_not_sign"))
 
         let me = select_subject(this.state.infos, [], this.props.user_info.account_id, -1).my_info
         if(me == null)
@@ -387,7 +383,7 @@ export default class extends React.Component {
 
         for(let v of sign_info_list) {
             if(!sign_info["#"+v] || sign_info["#"+v] == "") {
-                return alert("서명 정보를 모두 입력해주세요.")
+                return alert(translate("input_all_sign_info"))
             }
         }
 
@@ -397,8 +393,8 @@ export default class extends React.Component {
                 await window.showIndicator()
                 let email_list = this.state.infos.filter(e=>window.email_regex.test(e.sub)).map(e=>e.sub)
                 let r = await this.props.update_contract_sign(this.state.contract.contract_id, signature, this.state.contract.the_key, email_list)
-                if(r.code == -9) alert("이미 완료된 계약은 서명을 업데이트할 수 없습니다.")
-                else alert("서명 등록이 완료되었습니다.")
+                if(r.code == -9) alert(translate("you_dont_update_complete_contract_sign"))
+                else alert(translate("complete_sign_register"))
                 this.blockFlag = true
                 await window.hideIndicator()
                 history.replace(`/contract-info/${this.props.match.params.contract_id}`)
@@ -438,10 +434,10 @@ export default class extends React.Component {
     textPrivilege(privilege) {
         switch(privilege) {
             case 1:
-                return "서명자"
+                return translate("signer")
                 break;
             case 2:
-                return "보기 전용"
+                return translate("viewer")
                 break;
         }
     } 
@@ -473,12 +469,12 @@ export default class extends React.Component {
 
     onClickSendChat = async (text)=>{
         if(this.disconnect) {
-            alert("채팅 연결이 끊겼습니다. 새로고침 해주세요")
+            alert(translate("broken_chat_connection_plaese_refresh"))
             return false
         }
         
         if(text.length == 0) {
-            alert("메세지를 입력해주세요");
+            alert(translate("input_message"));
             return false
         }
 
@@ -524,9 +520,9 @@ export default class extends React.Component {
     text_status(v) {
         switch(v.privilege) {
             case 1:
-                return v.signature ? "서명 완료" : "서명 전"
+                return v.signature ? translate("sign_all") : translate("status_1")
             case 2:
-                return "보기 전용"
+                return translate("viewer")
         }
     }
 
@@ -554,7 +550,7 @@ export default class extends React.Component {
                     </div>
                 </div>
             })}
-            <div className="button-save-sign-info" onClick={this.onClickRegiserSignInfo}>서명 정보 저장</div>
+            <div className="button-save-sign-info" onClick={this.onClickRegiserSignInfo}>{translate("sign_info_save")}</div>
         </div>
     }
 
@@ -566,7 +562,7 @@ export default class extends React.Component {
         let meOrGroup = select_subject(user_infos, this.state.groups, this.props.user_info.account_id, corp_id).my_info
 
         return <div className="bottom signs">
-            <div className="title">총 {user_infos.filter(e=>e.privilege==1).length}명</div>
+            <div className="title">{translate("count_curr_total_person", [user_infos.filter(e=>e.privilege==1).length])}</div>
             <div className="user-container me">
                 <div className="user" onClick={this.onToggleUser.bind(this, meOrGroup.entity_id, meOrGroup.corp_id, false)}>
                     <i className="icon fas fa-user-edit"></i>
@@ -578,7 +574,7 @@ export default class extends React.Component {
                 </div>
                 {this.isOpenUser(meOrGroup.entity_id, meOrGroup.corp_id) ? <div className="user-detail">
                     <div className="text-place">
-                        <div className="title">역할</div>
+                        <div className="title">{translate("role")}</div>
                         <div className="desc">{this.textPrivilege(meOrGroup.privilege)}</div>
                     </div>
                     {(()=> {
@@ -591,27 +587,27 @@ export default class extends React.Component {
                             for(let v of contract.necessary_info.individual) {
                                 divs.push(<div className="text-place" key={v}>
                                     <div className="title">{v}</div>
-                                    <div className="desc">{meOrGroup.sign_info ? meOrGroup.sign_info["#"+v] || "미등록" : "미등록"}</div>
+                                    <div className="desc">{meOrGroup.sign_info ? meOrGroup.sign_info["#"+v] || translate("unregistered") : translate("unregistered")}</div>
                                 </div>)
                             }
                         } else {
                             for(let v of contract.necessary_info.corporation) {
                                 divs.push(<div className="text-place" key={v}>
                                     <div className="title">{v}</div>
-                                    <div className="desc">{meOrGroup.sign_info ? meOrGroup.sign_info["#"+v] || "미등록" : "미등록"}</div>
+                                    <div className="desc">{meOrGroup.sign_info ? meOrGroup.sign_info["#"+v] || translate("unregistered") : translate("unregistered")}</div>
                                 </div>)
                             }
                         }
                         return divs
                     })()}
                     { meOrGroup.privilege == 1 ? <div className="text-place">
-                        <div className="title">서명</div>
+                        <div className="title">{translate("sign")}</div>
                         <div className="desc">
-                            {meOrGroup.signature ? <img src={meOrGroup.signature}/> : "서명 하기 전"}
+                            {meOrGroup.signature ? <img src={meOrGroup.signature}/> : translate("before_sign")}
                         </div>
                     </div> : null }
 
-                    { (meOrGroup.privilege == 1 && this.state.contract.status != 2) ? <div className="modify-button" onClick={this.onToggleRegisterSignForm}> 서명 정보 수정 </div> : null}
+                    { (meOrGroup.privilege == 1 && this.state.contract.status != 2) ? <div className="modify-button" onClick={this.onToggleRegisterSignForm}> {translate("sign_info_modify")} </div> : null}
                 </div> : null}
             </div>
             {user_infos.map( (e, k) => {
@@ -640,7 +636,7 @@ export default class extends React.Component {
                     </div>
                     {this.isOpenUser(e.entity_id, e.corp_id) ? <div className="user-detail">
                         <div className="text-place">
-                            <div className="title">역할</div>
+                            <div className="title">{translate("role")}</div>
                             <div className="desc">{this.textPrivilege(e.privilege)}</div>
                         </div>
                         {(()=> {
@@ -654,23 +650,23 @@ export default class extends React.Component {
                                 for(let v of contract.necessary_info.individual) {
                                     divs.push(<div className="text-place" key={v}>
                                         <div className="title">{v}</div>
-                                        <div className="desc">{e.sign_info ? e.sign_info["#"+v] || "미등록" : "미등록"}</div>
+                                        <div className="desc">{e.sign_info ? e.sign_info["#"+v] || translate("unregistered") : translate("unregistered")}</div>
                                     </div>)
                                 }
                             } else {
                                 for(let v of contract.necessary_info.corporation) {
                                     divs.push(<div className="text-place" key={v}>
                                         <div className="title">{v}</div>
-                                        <div className="desc">{e.sign_info ? e.sign_info["#"+v] || "미등록" : "미등록"}</div>
+                                        <div className="desc">{e.sign_info ? e.sign_info["#"+v] || translate("unregistered") : translate("unregistered")}</div>
                                     </div>)
                                 }
                             }
                             return divs
                         })()}
                         { e.privilege == 1 ? <div className="text-place">
-                            <div className="title">서명</div>
+                            <div className="title">{translate("sign")}</div>
                             <div className="desc">
-                                {e.signature != null ? <img src={e.signature}/> : "서명 하기 전"}
+                                {e.signature != null ? <img src={e.signature}/> : translate("before_sign")}
                             </div>
                         </div> : null }
                     </div> : null}
@@ -722,27 +718,27 @@ export default class extends React.Component {
                 <div className="container">
                     <div className="editor">
                         <div className="title">
-                            <span> <i className="fas fa-keyboard"></i> &nbsp;웹 에디터 모드 </span>
+                            <span> <i className="fas fa-keyboard"></i> &nbsp;{translate("web_editor_mode")} </span>
                             <span className="modify-status">{this.state.contract_modify_status}</span>
                         </div>
                         <FroalaEditor
                             tag='textarea'
                             config={this.config}
                             model={this.state.model}
-                            onModelChange={(model) => this.setState({model, contract_modify_status:"계약서가 수정되었습니다."})} />
+                            onModelChange={(model) => this.setState({model, contract_modify_status:translate("contract_modify")})} />
                         { this.state.contract.status < 2 ? <div className="can-edit-text">
-                            <div>현재 {can_edit_name} 님이 수정권한을 갖고 있습니다.</div>
+                            <div>{translate("now_edit_privilege_who", [can_edit_name])}</div>
                         </div> : null }
                     </div>
                     {!this.state.sign_mode ? <div className="info">
                         <div className="top">
                             <div className={"menu" + (this.state.selected_menu == 0 ? " enable-menu" : "")} onClick={e=>this.setState({selected_menu:0})}>
                                 <i className="far fa-signature"></i>
-                                <div className="text">서명 정보</div>
+                                <div className="text">{translate("sign_info")}</div>
                             </div>
                             <div className={"menu" + (this.state.selected_menu == 1 ? " enable-menu" : "")} onClick={e=>this.setState({selected_menu:1})}>
                                 <i className="far fa-comments"></i>
-                                <div className="text">대화</div>
+                                <div className="text">{translate("conversation")}</div>
                             </div>
                         </div>
                         {this.render_info()}
@@ -750,7 +746,7 @@ export default class extends React.Component {
                         <div className="top">
                             <div className="menu">
                                 <i className="far fa-signature"></i>
-                                <div className="text">서명 정보 등록</div>
+                                <div className="text">{translate("sign_info_register")}</div>
                             </div>
                         </div>
                         {this.render_sign_form()}
@@ -761,29 +757,29 @@ export default class extends React.Component {
                 <div className="left">
                     <div className="but" onClick={this.onClickPreview}>
                         <i className="fal fa-eye"></i>
-                        계약 미리보기
+                        {translate("contract_preview")}
                     </div>
                     { ( this.state.contract.status < 2 && this.state.contract.can_edit_account_id == this.props.user_info.account_id) ? [
                         <div className="but" onClick={this.onClickMoveEditPrivilege} key={"edit_privilege"}>
                             <i className="far fa-arrow-to-right"></i>
-                            수정 권한 넘기기
+                            {translate("move_edit_privilege")}
                         </div>, <div className="but" onClick={this.onClickContractSave} key={"contract_save"}>
                             <i className="far fa-save"></i>
-                            수정한 내용 저장하기
+                            {translate("modify_content_save")}
                         </div>]
                     : null}
                 </div>
                 {(()=>{
                     if(meOrGroup.privilege == 2 || this.state.contract.status == 2) {
                         return <div className="sign" onClick={(e)=>history.goBack()}>
-                            돌아가기
+                            {translate("go_back")}
                         </div>
                     }
 
                     return this.state.sign_mode ? <div className="sign" onClick={this.onToggleRegisterSignForm}>
-                        편집 모드
+                        {translate("edit_mode")}
                     </div> : <div className="sign" onClick={this.onClickRegisterSign}>
-                        {meOrGroup.signature ? "재서명" : "서명 하기"}
+                        {meOrGroup.signature ? translate("resign") : translate("go_sign")}
                     </div>
                 })()}
                 

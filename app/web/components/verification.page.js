@@ -52,7 +52,7 @@ export default class extends React.Component {
                 })
             }catch(err){
                 console.log(err)
-                window.alert("PDF 형식이 아닙니다.")
+                window.alert(translate("no_form_file", ["PDF"]))
             }
             await window.hideIndicator()
         }
@@ -61,10 +61,10 @@ export default class extends React.Component {
 //0x85e3e519dad768899e72eab667c815af01ad5f6e67481294a302a9f511ebb8a0
     onVerify = async() => {
         if(this.state.file == null){
-            return alert("문서 파일을 선택해주세요.")
+            return alert(translate("select_doc_file"))
         }
         if(!this.state.contract_name || this.state.contract_name.length < 64){
-            return alert("해시를 입력해주세요.")
+            return alert(translate("input_hash"))
         }
 
         this.setState({
@@ -92,7 +92,7 @@ export default class extends React.Component {
                     this.setState({
                         ok:false,
                         step:2,
-                        warning:"입력하신 해시값과 파일의 해시값이 다릅니다."
+                        warning:translate("input_hash_file_hash_different")
                     })
                 }
             }else{
@@ -105,13 +105,13 @@ export default class extends React.Component {
                     this.setState({
                         ok:false,
                         step:2,
-                        warning:"입력하신 해시값이 잘못되었습니다."
+                        warning:translate("input_wrong_hash")
                     })
                 }
                 this.setState({ percent:100 })
             }
         }catch(err){
-            alert("검증에 실패했습니다.")
+            alert(translate("verification_failed"))
         }
     }
 
@@ -130,20 +130,20 @@ export default class extends React.Component {
                 <div className="logo">
                     <img src="/static/logo_blue.png" onClick={()=>history.push("/")}/>
                 </div>
-                <div className="title">문서 위 ・ 변조 검증 서비스</div>
-                <div className="desc">이더리움에 올라간 계약의 해쉬값과 파일의 대조를 통한 검증 서비스를 제공합니다!</div>
+                <div className="title">{translate("verification_service_title")}</div>
+                <div className="desc">{translate("verification_service_title_desc_1")}</div>
                 <div className={this.state.step == 0?`desc-image`:`desc-image folded`}>
                     <div>
                         <img src="/static/pic_01.png" />
-                        <div className="img-desc">등록하신 계약의 상세보기 화면에서</div>
+                        <div className="img-desc">{translate("verification_service_title_desc_2")}</div>
                     </div>
                     <div>
                         <img src="/static/pic_02.png" />
-                        <div className="img-desc">해쉬값 혹은 트랜잭션 주소를 붙여넣으시고</div>
+                        <div className="img-desc">{translate("verification_service_title_desc_3")}</div>
                     </div>
                     <div>
                         <img src="/static/pic_03.png" />
-                        <div className="img-desc">계약서를 로드하여 검증하면 끝!</div>
+                        <div className="img-desc">{translate("verification_service_title_desc_4")}</div>
                     </div>
                 </div>
             </div>
@@ -151,20 +151,20 @@ export default class extends React.Component {
                 <div className="progress-fill" style={{width:`${this.state.percent}%`}}></div>
             </div>
             <div className={this.state.step == 0?`bottom`:`bottom move-out`}>
-                <div className="form-label"> 계약 해쉬값 또는 트랜잭션 </div>
+                <div className="form-label"> {translate("contract_hash_or_transaction")} </div>
                 <div className="form-input">
-                    <input placeholder="문서 해쉬값 또는 트랜잭션 해시를 입력해주세요" value={this.state.contract_name || ""} onChange={e=>this.setState({contract_name:e.target.value})} />
+                    <input placeholder={translate("please_input_doc_hash_or_contract_hash")} value={this.state.contract_name || ""} onChange={e=>this.setState({contract_name:e.target.value})} />
                 </div>
-                <div className="form-label"> 계약명 </div>
+                <div className="form-label"> {translate("contract_name")} </div>
                 {this.state.file ? <div className="selected-file">
                     <div className="filename">{this.state.file.name}</div>
-                    <div className="del-btn" onClick={()=>this.setState({file:null,imgs:[]})}>삭제</div>
+                    <div className="del-btn" onClick={()=>this.setState({file:null,imgs:[]})}>{translate("remove")}</div>
                 </div> : <div className="upload-form">
-                    <button className="file-upload-btn" onClick={()=>this.refs.file.click()}> <i className="fas fa-file-archive"></i> 파일 업로드 </button>
+                    <button className="file-upload-btn" onClick={()=>this.refs.file.click()}> <i className="fas fa-file-archive"></i> {translate("file_upload")} </button>
                     <input ref="file" type="file" onChange={this.onClickUploadFile} style={{display:"none"}}/>
                 </div>}
                 <div className="form-button">
-                    <div className="submit-button" onClick={this.onVerify}>검증하기</div>
+                    <div className="submit-button" onClick={this.onVerify}>{translate("verification")}</div>
                 </div>
             </div>
             <div className={this.state.step==1?`bottom`:`bottom move-in`} style={{textAlign: "center",paddingTop:"130px"}}>
@@ -176,15 +176,15 @@ export default class extends React.Component {
             </div>
             <div className={this.state.step==2?`bottom checked-panel`:`bottom checked-panel move-out`}>
                 <i className={this.state.ok ? "far fa-check-circle ok_icon":"far fa-times-circle no_icon"}></i>
-                <div className="title">{this.state.ok ? "검증 성공":"검증 실패"}</div>
-                <div className="sub-title">계약 해시값 또는 주소</div>
+                <div className="title">{this.state.ok ? translate("verification_success") : translate("verification_fail")}</div>
+                <div className="sub-title">{translate("contract_hash_or_address")}</div>
                 <div className="hash-text">{this.state.contract_name}</div>
-                <div className="sub-title">업로드한 문서 파일</div>
+                <div className="sub-title">{translate("upload_doc_file")}</div>
                 <div className="content-text">{this.state.filename}</div>
-                {this.state.ok ? null : <div className="sub-title">실패 사유</div> }
+                {this.state.ok ? null : <div className="sub-title">{translate("fail_reason")}</div> }
                 {this.state.ok ? null : <div className="warning-text">{this.state.warning}</div> }
 
-                <div className="btn" onClick={this.onClickReset}>재 검증 하기</div>
+                <div className="btn" onClick={this.onClickReset}>{translate("re_verification")}</div>
             </div>
 		</div>);
 	}

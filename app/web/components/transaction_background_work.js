@@ -18,7 +18,7 @@ export default class extends React.Component {
     render(){
         return (<div className="transaction-background-work-comp">
             <div className="header" onClick={this.onClickFold}>
-                <div className="title">1개의 계약 진행중</div>
+                <div className="title">{translate("contract_progression_number", [1])}</div>
                 <div> <i className="fas fa-chevron-up" />  </div>
             </div>
             <div className="content">
