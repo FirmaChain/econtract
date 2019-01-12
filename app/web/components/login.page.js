@@ -49,18 +49,18 @@ export default class extends React.Component {
         await window.showIndicator()
         
         if (!this.state.email || !this.state.password) {
-            alert("이메일과 비밀번호를 확인해주세요.");
+            alert(translate("please_check_email_password"));
         } else {
             let resp = await this.props.login_account(this.state.email || "", this.state.password || "")
             if(resp.code == -3){
-                alert("해당 기기에 연결된 계정 정보가 존재하지 않습니다.\n현재 기기에 인증이 필요할 경우 [다른 계정으로 로그인] 기능을 사용해 주세요.")
+                alert(translate("re_login_desc_1"))
             } else if(resp.code == -4){
-                alert("이메일과 비밀번호를 확인해주세요.");
+                alert(translate("please_check_email_password"));
             } else if(resp.eems){
                 localStorage.setItem("browser_key_virgin", 0);
                 history.push("/home")
             } else{
-                alert("login error;")
+                alert("login error")
             }
         }
 
@@ -69,10 +69,10 @@ export default class extends React.Component {
 
     onClickClearBrowserKey = async ()=>{
         await window.showIndicator();
-        if (window._confirm("신규 회원가입을 하시려면 브라우저 인증을 해제해야 합니다.\n브라우저 인증 해제 후 기존의 계정으로 다시 로그인 하시려면 [기존 계정으로 로그인] 과정을 거쳐야 하며,\n이 때 마스터 키워드가 필요합니다.\n\n브라우저 인증을 해제 하시겠습니까?")) { 
+        if (window._confirm(translate("re_login_desc_2"))) { 
             localStorage.removeItem("browser_key");
             localStorage.removeItem("browser_key_virgin");
-            alert("브라우저 인증이 해제되었습니다.");
+            alert(translate("browser_auth_is_unlock"));
             this.setState({is_clear_browser_key: true});
         }
         await window.hideIndicator();
@@ -80,7 +80,7 @@ export default class extends React.Component {
 
     onClickRecoverAccount = async () => {
         await window.showIndicator();
-        if (window._confirm("다른 계정으로 로그인하기 전에 먼저 브라우저 인증을 해제해야 합니다.\n브라우저 인증 해제 후 기존의 계정으로 다시 로그인 하시려면 [기존 계정으로 로그인] 과정을 거쳐야 하며,\n이 때 마스터 키워드가 필요합니다.\n\n브라우저 인증을 해제 하시겠습니까?")) {
+        if (window._confirm(translate("re_login_desc_3"))) {
             localStorage.removeItem("browser_key");
             localStorage.removeItem("browser_key_virgin");
             this.setState({is_clear_browser_key: true});
@@ -92,14 +92,9 @@ export default class extends React.Component {
     openVerifiedBrowserModal = () => {
         window.openModal("CommonModal", {
             icon:"fas fa-browser",
-            title:"인증된 브라우저",
-            subTitle:"E-Contract 서비스는 마스터 키워드를 기반으로 로그인 하실 수 있습니다.",
-            desc:`회원가입시 발급되는 마스터 키워드는 해당 계정에 귀속되며, 당시 사용된 브라우저에 자동으로 저장됩니다.<br/><br/>
-회원님의 계정은 일치하는 마스터 키워드가 
-저장되있는 브라우저에서만 로그인이 가능합니다.<br/><br/>
-서비스에 가입한 적이 없다면 [신규 회원가입]을 통해 E-Contract 서비스를 경험해보시길 바랍니다.<br/><br/>
-현재 접속해있는 브라우저에 회원님의 마스터 키워드가 저장되어 있지 않은 경우, [다른 계정으로 로그인] 기능을 통해 현재 인증된 계정을 해제하고 회원님의 기존 
-마스터 키워드를 사용하여 로그인하실 수 있습니다.`
+            title:translate("verified_browser"),
+            subTitle:translate("re_login_desc_4"),
+            desc:translate("re_login_desc_5"),
         })
     }
 
@@ -121,13 +116,12 @@ export default class extends React.Component {
             <div className="container">
                 <div className="top">
                     <div className="left">
-                        <div className="content1 font5 font-bold">E-Contract 시작하기</div>
-                        <div className="content2 font0"><i className="fas fa-lock-alt"></i> &nbsp; 접속하신 브라우저는 <u onClick={this.openNotVerifiedBrowserModal}>미인증</u> 상태입니다.</div>
+                        <div className="content1 font5 font-bold">{translate("start_e_contract")}</div>
+                        <div className="content2 font0"><i className="fas fa-lock-alt"></i> &nbsp; {translate("connect_browser_title_1")} <u onClick={this.openNotVerifiedBrowserModal}>{translate("connect_browser_title_2")}</u> {translate("connect_browser_title_3")}</div>
                     </div>
                     <div className="right">
                         <div className="content3 font2">
-                            E-Contract를 처음 시작하거나, 접속된 브라우저가 인증되지 않은 상태일 경우
-                            아래의 방법으로 서비스를 시작할 수 있습니다.
+                            {translate("no_verify_desc")}
                         </div>
                     </div>
                 </div>
@@ -136,33 +130,33 @@ export default class extends React.Component {
                     <button className="new-already-button" onClick={()=>history.push({pathname:"/register", state:{type:0}})}>
                         <div className="icon"><i className="fas fa-user"></i></div>
                         <div className="nohover">
-                            신규 일반 회원 가입
-                            <div className="small">개인 사용</div>
+                            {translate("new_individual_register")}
+                            <div className="small">{translate("individual_use")}</div>
                         </div>
                         <div className="yeshover">
-                            <div className="big">신규 일반 회원 가입</div>
-                            <div className="small">개인 사용</div>
+                            <div className="big">{translate("new_individual_register")}</div>
+                            <div className="small">{translate("individual_use")}</div>
                         </div>
                     </button>
                     <button className="new-already-button" onClick={()=>history.push({pathname:"/register", state:{type:1}})}>
                         <div className="icon"><i className="fas fa-user-tie"></i></div>
                         <div className="nohover">
-                            신규 기업 가입
-                            <div className="small">팀 관리용</div>
+                            {translate("new_corp_register")}
+                            <div className="small">{translate("team_manage_use")}</div>
                         </div>
                         <div className="yeshover">
-                            <div className="big">신규 기업 가입</div>
-                            <div className="small">팀 관리용</div>
+                            <div className="big">{translate("new_corp_register")}</div>
+                            <div className="small">{translate("team_manage_use")}</div>
                         </div>
                     </button>
                     <button className="new-already-button" onClick={()=>history.push("/recover")}>
                         <div className="icon"><i className="fas fa-user-check"></i></div>
                         <div className="nohover">
-                            기존 계정으로 로그인
+                            {translate("original_account_login")}
                             <div className="small">&nbsp;</div>
                         </div>
                         <div className="yeshover">
-                            <div className="big">기존 계정으로 로그인</div>
+                            <div className="big">{translate("original_account_login")}</div>
                             <div className="small">&nbsp;</div>
                         </div>
                     </button>
@@ -177,21 +171,21 @@ export default class extends React.Component {
                 <img src="/static/logo_blue.png" onClick={()=>history.push("/")}/>
             </div>
             <div className="container">
-                <div className="title">E-Contract 시작하기</div>
-                <div className="desc1"><i className="fas fa-lock-open-alt"></i> &nbsp; 접속하신 브라우저는 인증되었습니다.</div>
-                <div className="desc2" onClick={this.openVerifiedBrowserModal}>인증된 브라우저란?</div>
+                <div className="title">{translate("start_e_contract")}</div>
+                <div className="desc1"><i className="fas fa-lock-open-alt"></i> &nbsp; {translate("this_browser_was_verificated")}</div>
+                <div className="desc2" onClick={this.openVerifiedBrowserModal}>{translate("what_is_verified_browser")}</div>
 
-                <div className="textbox"><input className="common-textbox" id="email" type="email" placeholder="이메일을 입력해주세요." value={this.state.email || ""} onChange={e=>this.setState({email:e.target.value})}/></div>
-                <div className="textbox"><input className="common-textbox" id="password" type="password" placeholder="비밀번호를 입력해주세요." value={this.state.password || ""} onKeyDown={this.keyPress} onChange={e=>this.setState({password:e.target.value})}/></div>
+                <div className="textbox"><input className="common-textbox" id="email" type="email" placeholder={translate("please_input_email")} value={this.state.email || ""} onChange={e=>this.setState({email:e.target.value})}/></div>
+                <div className="textbox"><input className="common-textbox" id="password" type="password" placeholder={translate("please_input_password")} value={this.state.password || ""} onKeyDown={this.keyPress} onChange={e=>this.setState({password:e.target.value})}/></div>
 
-                <div className="login-btn" onClick={this.onClickLogin}>로그인</div>
+                <div className="login-btn" onClick={this.onClickLogin}>{translate("login")}</div>
                 <br/>
-                <div className="register-btn" onClick={this.onClickClearBrowserKey}>신규 회원가입</div>
+                <div className="register-btn" onClick={this.onClickClearBrowserKey}>{translate("new_register")}</div>
 
                 <div className="other">
                     <div className="recover-account" onClick={this.onClickRecoverAccount}>
-                        다른 계정으로 로그인<br/>
-                        (브라우저 인증 해제)
+                        {translate("another_account_login")}<br/>
+                        {translate("browser_verification_unlock")}
                     </div>
                 </div>
             </div>

@@ -313,7 +313,7 @@ export default class extends React.Component {
 
         (async()=>{
             if(localStorage.getItem("browser_key") || localStorage.getItem("browser_key_virgin") == 0) {
-                let res = await window.confirm("해당 기기로 인증된 계정이 있습니다. 인증을 해제하고 가입을 진행하시겠습니까?")
+                let res = await window.confirm(translate("yes_this_device_verify_account_are_you_unverify_go_register_?"))
                 if( !res ) {
                     return history.push("/login")
                 }
@@ -344,7 +344,7 @@ export default class extends React.Component {
                         email_verification: true,
                     });
                 } else {
-                    alert("유효하지 않은 초대코드입니다.");
+                    alert(translate("not_validate_invite_code"));
                     history.goBack();
                 }
             })();
@@ -397,33 +397,33 @@ export default class extends React.Component {
 
     onClickRequestEmail =  async ()=>{
         if(!this.state.email)
-            return alert("이메일을 입력해주세요.")
+            return alert(translate("please_input_email"))
 
         await window.showIndicator();
         let resp = await this.props.request_email_verification_code(this.state.email)
         if(resp.code == 1){
-            alert("이메일이 발송되었습니다.")
+            alert(translate("email_was_sent"))
             this.setState({
                 step1:1,
                 email_verification:false
             })
         }else if(resp.code == -1){
-            alert("이미 가입 된 이메일입니다.")
+            alert(translate("already_register_email"))
         }else if(resp.code == -3){
-            alert("유효하지 않은 이메일입니다.")
+            alert(translate("not_validate_email"))
         }else{
-            alert("인증번호 전송에 문제가 생겼습니다! 이메일을 정확히 기입해주세요.\n계속 문제가 발생할 경우 관리자에게 문의해주세요.")
+            alert(translate("send_verification_code_error_occured"))
         }
         await window.hideIndicator();
     }
 
     onClickVerificateEmail = async ()=>{
         if(this.state.step1 != 1) {
-            return alert("먼저 이메일 발송을 진행해주세요.")
+            return alert(translate("first_you_need_send_email"))
         }
 
         if(this.state.verification_code == null || this.state.verification_code.length !=4){
-            return alert('인증번호는 4자리입니다.')
+            return alert(translate("code_is_4"))
         }
 
         await window.showIndicator();
@@ -432,44 +432,44 @@ export default class extends React.Component {
             this.setState({
                 email_verification:true
             })
-            alert("인증 완료되었습니다.")
+            alert(translate("complete_verification"))
         }else{
-            alert("잘못된 인증번호입니다.")
+            alert(translate("wrong_code"))
         }
         await window.hideIndicator();
     }
 
     onClickRequestPhone = async ()=>{
         if(this.state.userphone == null || this.state.userphone.length != 13 || !/^0\d{2}-\d{4}-\d{4}$/.test(this.state.userphone))
-            return alert("휴대폰 번호를 정확히 입력해주세요.")
+            return alert(translate("please_input_correct_phone"))
             
         await window.showIndicator();
         let resp = await this.props.request_phone_verification_code(this.state.userphone)
         if(resp.code == 1 && resp.payload == true){
-            alert("인증번호가 발송되었습니다.")
+            alert(translate("code_was_sent"))
             this.setState({
                 phone_verification_code_sent:true,
                 verificated_phone:false
             })
         }else{
-            alert("인증번호 전송에 문제가 생겼습니다!\n계속 문제가 발생할 경우 관리자에게 문의해주세요.")
+            alert(translate("send_code_error_occured"))
         }
         await window.hideIndicator();
     }
 
     onClickVerificatePhone = async ()=>{
         if(this.state.phone_verification_code == null || this.state.phone_verification_code.length !=4){
-            return alert('인증번호는 4자리입니다.')
+            return alert(translate("code_is_4"))
         }
         await window.showIndicator();
         let resp = await this.props.check_phone_verification_code(this.state.userphone, this.state.phone_verification_code)
         if(resp.code == 1 && resp.payload == true){
-            alert("정상적으로 인증되었습니다.")
+            alert(translate("success_verification"))
             this.setState({
                 verificated_phone:true
             })
         } else {
-            alert("잘못된 인증번호입니다.")
+            alert(translate("wrong_code"))
         }
         await window.hideIndicator();
     }
@@ -492,16 +492,16 @@ export default class extends React.Component {
 
     onClickNextBtnAccountInfo = async ()=>{
         if(!this.state.email){
-            return alert("이메일을 입력해주세요.")
+            return alert(translate("please_input_email"))
         }
         else if(!this.state.password || this.state.password.length < 8){
-            return alert("비밀번호는 최소 8글자입니다.")
+            return alert(translate("password_will_be_more_than_8"))
         }
         else if(this.state.password !== this.state.password2){
-            return alert("비밀번호가 일치하지 않습니다.")
+            return alert(translate("password_not_symmetry"))
         }
         else if(!this.state.email_verification) {
-            return alert("이메일을 인증을 진행해주세요.")
+            return alert(translate("go_email_verification"))
         }
 
         this.setState({
@@ -533,11 +533,11 @@ export default class extends React.Component {
 
     onClickNextBtnUserInfo = async ()=>{
         if(!this.state.username)
-            return alert("이름을 작성해주세요.")
+            return alert(translate("please_input_name"))
         if(!this.state.verificated_phone)
-            return alert("휴대폰 인증을 해주세요.")
+            return alert(translate("please_verify_phone"))
         if(!this.state.useraddress)
-            return alert("주소를 입력해주세요.")
+            return alert(translate("please_input_address"))
 
         let account = new_account(this.state.email, this.state.password);
         this.setState({
@@ -549,20 +549,20 @@ export default class extends React.Component {
 
     onClickNextBtnCompanyInfo = async ()=>{
         if(!this.state.company_name)
-            return alert("기업명을 입력해주세요.")
+            return alert(translate("please_input_corp_name"))
         if(!this.state.duns_number)
-            return alert("사업자등록번호를 입력해주세요.")
+            return alert(translate("please_input_duns"))
         if(!this.state.company_ceo)
-            return alert("대표자 성함을 입력해주세요.")
+            return alert(translate("please_input_ceo_name"))
         if(!this.state.company_address)
-            return alert("기업 주소를 입력해주세요.")
+            return alert(translate("please_input_corp_address"))
 
         if(!this.state.username)
-            return alert("이름을 작성해주세요.")
+            return alert(translate("please_input_name"))
         if(!this.state.job)
-            return alert("직급을 작성해주세요.")
+            return alert(translate("please_input_job"))
         if(!this.state.verificated_phone)
-            return alert("휴대폰 인증을 해주세요.")
+            return alert(translate("please_verify_phone"))
 
         let account = new_account(this.state.email, this.state.password);
         this.setState({
@@ -604,7 +604,7 @@ export default class extends React.Component {
                 shuffled_mnemonic:this.state.mnemonic.split(" ").map( (e, k) => { return {idx:k, word:e} } ).shuffle(),
                 sort_test:[],
             })
-            return alert("순서가 맞지 않습니다. 다시 한번 확인해주세요.")
+            return alert(translate("please_check_master_keyword_order"))
         }
         let account_type = this.getAccountType()
         let info, corp_info, public_info
@@ -661,7 +661,7 @@ export default class extends React.Component {
             let encryptedCorpInfo = aes_encrypt(JSON.stringify(corp_info), corpKey);
             let corpResp = await this.props.new_corp(encryptedCorpInfo);
             if (!corpResp) {
-                return alert("기업 정보 생성에 실패하였습니다.");
+                return alert(translate("fail_create_corp_info"));
             }
             info['corp_id'] = corpResp.corp_id;
             info['corp_master_key'] = corpMasterKey.toString("hex");
@@ -669,23 +669,23 @@ export default class extends React.Component {
             let encryptedInfo = aes_encrypt(JSON.stringify(info), this.state.account.masterKeyPublic);
             let updateResp = await this.props.update_user_info(encryptedInfo);
             if (!updateResp) {
-                return alert("기업 키 저장에 실패하였습니다.");
+                return alert(translate("fail_save_corp_key"));
             }
 
             let encryptedPublicInfo = aes_encrypt(JSON.stringify(public_info), Buffer.from(info['corp_key'], 'hex'));
             updateResp = await this.props.update_user_public_info(encryptedPublicInfo);
             if (!updateResp) {
-                return alert("공개 정보 저장에 실패하였습니다.");
+                return alert(translate("fail_save_public_info"));
             }
 
-            let resp = await this.props.create_group("기본 그룹");
+            let resp = await this.props.create_group(translate("basic_group"));
             await this.props.update_group_public_key(resp.group_id, info['corp_master_key']);
 
         } else if (resp.code == 1 && account_type == 2) {
             let encryptedPublicInfo = aes_encrypt(JSON.stringify(public_info), Buffer.from(info['corp_key'], 'hex'));
             let consumeResp = await this.props.consume_invitation(this.state.registration_code, encryptedPublicInfo);
             if (!consumeResp) {
-                return alert("초대 코드 사용에 실패하였습니다.");
+                return alert(translate("fail_to_use_invite_code"));
             }
         }
         await window.hideIndicator()
@@ -694,15 +694,15 @@ export default class extends React.Component {
         if(resp.code == 1){
             localStorage.setItem("browser_key_virgin", 0);
             history.push("/login");
-            return alert("회원가입에 성공하였습니다.")
+            return alert(translate("success_register"))
         } else if(resp.code == -3) {
-            return alert("이미 해당 브라우저에 로그인 되어 있습니다.")
+            return alert(translate("already_login_this_browser"))
         } else if(resp.code == -4) {
-            return alert("세션을 만들지 못했습니다.")
+            return alert(translate("dont_create_session"))
         } else if(resp.code == -5) {
-            return alert("계정 생성에 실패하였습니다.")
+            return alert(translate("fail_create_account"))
         } else {
-            return alert("알 수 없는 에러 발생")
+            return alert(translate("unknown_error_occured"))
         }
 
     }
@@ -710,14 +710,9 @@ export default class extends React.Component {
     openWhatIsMasterkeywordModal = () => {
         window.openModal("CommonModal", {
             icon:"fas fa-money-check",
-            title:"마스터 키워드란?",
-            subTitle:"마스터 키워드는 회원님의 계정을 안전하게 보호하기 위한 장치입니다.",
-            desc:`브라우저상에 저장되는 마스터 키워드는 브라우저 인증, 계약 잠금 해제 등 이컨트랙트 서비스 전반에서 사용됩니다.<br/><br/>
-접속 브라우저 변경시에는 기존에 사용한 계약들이 
-잠금 상태로 로드가 되는데 이때, 기존 마스터 키워드를 
-입력하면 잠금 해제 하실 수 있습니다. <br/><br/>
-또, 팀 계정 또한 마스터 키워드를 기반으로 사용되기 
-때문에 해당 마스터 키워드들을 잘 보관하여 사용하시길 바랍니다.`
+            title:translate("what_is_master_keyword"),
+            subTitle:translate("what_is_master_keyword_desc_1"),
+            desc:translate("what_is_master_keyword_desc_2")
         })
     }
 
@@ -736,15 +731,15 @@ export default class extends React.Component {
     
     render_term(){
         return (<div className="content">
-            <div className="service-title"> 서비스 이용약관 </div>
+            <div className="service-title"> {translate("service_term")} </div>
             <textarea className="terms-condition" defaultValue={this.info1} disabled />
             
-            <div className="service-title"> 개인정보취급방침 </div>
+            <div className="service-title"> {translate("privacy_statement")} </div>
             <textarea className="terms-condition" defaultValue={this.info2} disabled />
 
             <div className="bottom-container">
                 <div className="confirm-button" onClick={this.next_term}>
-                    모두 동의
+                    {translate("all_agree")}
                 </div>
             </div>
         </div>)
@@ -755,65 +750,65 @@ export default class extends React.Component {
 
         return (<div className="content">
             <div className="text-place">
-                <div className="name">이메일</div>
+                <div className="name">{tranlsate("email")}</div>
                 <div className="textbox">
                     <input className="common-textbox" type="email"
                         value={this.state.email || ""} 
                         onChange={e=>this.setState({email:e.target.value})}
                         disabled={this.getAccountType() == 2 || this.state.email_verification}
-                        placeholder="이메일을 정확하게 입력해주세요."/>
+                        placeholder={translate("please_input_email_correct")}/>
                 </div>
                 { type == 2 ? null : (this.state.email_verification ?
-                    <div className="gray-but">발송 완료</div> : 
-                    <div className="blue-but" onClick={this.onClickRequestEmail}>인증메일 발송</div>)
+                    <div className="gray-but">{translate("complete_send")}</div> : 
+                    <div className="blue-but" onClick={this.onClickRequestEmail}>{translate("send_certification_mail")}</div>)
                 }
                 
             </div>
 
             {type == 2 ? null : 
                 <div className="text-place">
-                    <div className="name">이메일 인증</div>
+                    <div className="name">{translate("email_certification")}</div>
                     <div className="textbox">
                         <input className="common-textbox" type="text"
                             value={this.state.verification_code || ""}
                             onKeyDown={this.keyPress.bind(this, 0)}
                             onChange={e=>this.setState({verification_code:e.target.value})}
                             disabled={this.state.email_verification}
-                            placeholder="인증번호를 정확하게 입력해주세요."/>
+                            placeholder={translate("please_input_certification_number")}/>
                     </div>
                     {this.state.email_verification ? null : 
                         <div className={this.state.step1 == 1 ? "blue-but" : "gray-but"} onClick={this.onClickVerificateEmail}>
-                            확인
+                            {translate("confirm")}
                         </div>
                     }
                 </div>
             }
 
             <div className="text-place">
-                <div className="name">비밀번호</div>
+                <div className="name">{translate("password")}</div>
                 <div className="textbox">
                     <input className="common-textbox" type="password"
                         value={this.state.password || ""}
                         onChange={e=>this.setState({password:e.target.value})}  
-                        placeholder="최소 8자리(영어, 숫자, 특수문자 사용 가능)"/>
+                        placeholder={translate("at_lesat_8_detail")}/>
                 </div>
             </div>
 
             <div className="text-place">
-                <div className="name">비밀번호 확인</div>
+                <div className="name">{translate("re_password")}</div>
                 <div className="textbox">
                     <input className="common-textbox" type="password"
                         value={this.state.password2 || ""}
                         onChange={e=>this.setState({password2:e.target.value})}
                         onKeyDown={this.keyPress.bind(this, 1)}
-                        placeholder="입력하신 비밀번호를 다시 입력해주세요."/>
+                        placeholder={translate("please_reinput_password")}/>
                 </div>
             </div>
 
             <div className="bottom-container">
-                <div className="back-button" onClick={this.prev_term}>뒤로가기</div>
+                <div className="back-button" onClick={this.prev_term}>{translate("go_back")}</div>
                 <div className="confirm-button" onClick={this.onClickNextBtnAccountInfo}>
-                    확인
+                    {translate("confirm")}
                 </div>
             </div>
         </div>)
@@ -822,64 +817,64 @@ export default class extends React.Component {
     render_personal(){
         return (<div className="content">
             <div className="text-place">
-                <div className="name">이름</div>
+                <div className="name">{translate("name")}</div>
                 <div className="textbox">
                     <input className="common-textbox" type="text"
                         value={this.state.username || ""}
                         onChange={e=>this.setState({username:e.target.value})}
-                        placeholder="이름을 정확하게 입력해주세요."/>
+                        placeholder={translate("please_input_name_correct")}/>
                 </div>
             </div>
 
             <div className="text-place">
-                <div className="name">휴대폰 번호</div>
+                <div className="name">{translate("individual_phone")}</div>
                 <div className="textbox">
                     <input className="common-textbox" type="text"
                         value={this.state.userphone || ""} 
                         onChange={this.onChangePhoneForm.bind(this,"userphone")}
                         disabled={this.state.verificated_phone}
-                        placeholder="휴대폰 번호를 정확하게 입력해주세요."/>
+                        placeholder={translate("please_input_correct_phone")}/>
                 </div>
                 { this.state.verificated_phone ? null :
                     <div className="blue-but" onClick={this.onClickRequestPhone}>
-                        발송
+                        {translate("send")}
                     </div>
                 }
             </div>
 
             <div className="text-place">
-                <div className="name">인증번호</div>
+                <div className="name">{translate("certification_number")}</div>
                 <div className="textbox">
                     <input className="common-textbox" type="text"
                         value={this.state.phone_verification_code || ""} 
                         onChange={e=>this.setState({phone_verification_code:e.target.value})} 
                         disabled={this.state.verificated_phone}
-                        placeholder="인증번호를 정확하게 입력해주세요."/>
+                        placeholder={translate("please_input_certification_number")}/>
                 </div>
                 { this.state.verificated_phone ? null : 
                     <div className={ this.state.phone_verification_code_sent ? "blue-but":"gray-but"} onClick={this.onClickVerificatePhone}>
-                        확인
+                        {translate("confirm")}
                     </div>
                 }
             </div>
 
             <div className="text-place">
-                <div className="name">주소</div>
+                <div className="name">{translate("individual_address")}</div>
                 <div className="textbox">
                     <input className="common-textbox" type="text"
                         value={this.state.useraddress || ""} 
                         onChange={e=>this.setState({useraddress:e.target.value})}
-                        placeholder="주소를 정확하게 입력해주세요"/>
+                        placeholder={translate("please_input_address_correct")}/>
                 </div>
                 <div className="blue-but" onClick={this.onClickFindAddress.bind(this, 0)}>
-                    검색
+                    {translate("search")}
                 </div>
             </div>
 
             <div className="bottom-container">
-                <div className="back-button" onClick={this.prev_term}>뒤로가기</div>
+                <div className="back-button" onClick={this.prev_term}>{translate("go_back")}</div>
                 <div className="confirm-button" onClick={this.onClickNextBtnUserInfo}>
-                    확인
+                    {translate("confirm")}
                 </div>
             </div>
         </div>)
@@ -888,12 +883,12 @@ export default class extends React.Component {
     render_company() {
         return (<div className="content">
             <div className="text-place">
-                <div className="name">기업정보</div>
+                <div className="name">{translate("corp_info")}</div>
                 <div className="textbox">
                     <input className="common-textbox" type="text"
                         value={this.state.company_name || ""}
                         onChange={e=>this.setState({company_name:e.target.value})}
-                        placeholder="기업명을 입력해주세요."
+                        placeholder={translate("please_input_corp_name")}
                         disabled={this.getAccountType() == 2}/>
                 </div>
             </div>
@@ -904,45 +899,45 @@ export default class extends React.Component {
                     <input className="common-textbox" type="text"
                         value={this.state.duns_number || ""}
                         onChange={e=>this.setState({duns_number:e.target.value})}
-                        placeholder="사업자등록번호를 입력해주세요."
+                        placeholder={translate("please_input_duns")}
                         disabled={this.getAccountType() == 2}/>
                 </div>
             </div>
 
             <div className="text-place">
-                <div className="name">대표자 성함</div>
+                <div className="name">{translate("corporation_ceo_name")}</div>
                 <div className="textbox">
                     <input className="common-textbox" type="text"
                         value={this.state.company_ceo || ""}
                         onChange={e=>this.setState({company_ceo:e.target.value})}
-                        placeholder="대표자 성함을 입력해주세요."
+                        placeholder={translate("please_input_ceo_name")}
                         disabled={this.getAccountType() == 2}/>
                 </div>
             </div>
 
             <div className="text-place">
-                <div className="name">주소</div>
+                <div className="name">{translate("corporation_address")}</div>
                 <div className="textbox">
                     <input className="common-textbox" type="text"
                         value={this.state.company_address || ""} 
                         onChange={e=>this.setState({company_address:e.target.value})}
-                        placeholder="주소를 정확하게 입력해주세요"
+                        placeholder={translate("please_input_address_correct")}
                         disabled={this.getAccountType() == 2}/>
                 </div>
                 { this.getAccountType() == 2 ? null : <div className="blue-but" onClick={this.onClickFindAddress.bind(this, 1)}>
-                    검색
+                    {translate("search")}
                 </div>}
             </div>
 
             <div className="split-line"></div>
 
             <div className="text-place">
-                <div className="name">담당자 정보</div>
+                <div className="name">{translate("manager_info")}</div>
                 <div className="textbox">
                     <input className="common-textbox" type="text"
                         value={this.state.username || ""}
                         onChange={e=>this.setState({username:e.target.value})}
-                        placeholder="담당자명을 입력해주세요."/>
+                        placeholder={translate("please_input_manager_name")}/>
                 </div>
             </div>
 
@@ -952,46 +947,46 @@ export default class extends React.Component {
                     <input className="common-textbox" type="text"
                         value={this.state.job || ""}
                         onChange={e=>this.setState({job:e.target.value})}
-                        placeholder="담당자 직급을 입력해주세요."/>
+                        placeholder={translate("please_input_manager_job")}/>
                 </div>
             </div>
 
             <div className="text-place">
-                <div className="name">휴대폰 번호</div>
+                <div className="name">{translate("individual_phone")}</div>
                 <div className="textbox">
                     <input className="common-textbox" type="text"
                         value={this.state.userphone || ""} 
                         onChange={this.onChangePhoneForm.bind(this,"userphone")}
                         disabled={this.state.verificated_phone}
-                        placeholder="휴대폰 번호를 정확하게 입력해주세요"/>
+                        placeholder={translate("please_input_certification_number")}/>
                 </div>
                 { this.state.verificated_phone ? null :
                     <div className="blue-but" onClick={this.onClickRequestPhone}>
-                        발송
+                        {translate("send")}
                     </div>
                 }
             </div>
 
             <div className="text-place">
-                <div className="name">인증번호</div>
+                <div className="name">{translate("certification_number")}</div>
                 <div className="textbox">
                     <input className="common-textbox" type="text"
                         value={this.state.phone_verification_code || ""} 
                         onChange={e=>this.setState({phone_verification_code:e.target.value})} 
                         disabled={this.state.verificated_phone}
-                        placeholder="인증번호를 정확하게 입력해주세요"/>
+                        placeholder={translate("please_input_certification_number")}/>
                 </div>
                 { this.state.verificated_phone ? null : 
                     <div className={ this.state.phone_verification_code_sent ? "blue-but":"gray-but"} onClick={this.onClickVerificatePhone}>
-                        확인
+                        {translate("confirm")}
                     </div>
                 }
             </div>
 
             <div className="bottom-container">
-                <div className="back-button" onClick={this.prev_term}>뒤로가기</div>
+                <div className="back-button" onClick={this.prev_term}>{translate("go_back")}</div>
                 <div className="confirm-button" onClick={this.onClickNextBtnCompanyInfo}>
-                    확인
+                    {translate("confirm")}
                 </div>
             </div>
         </div>)
@@ -1001,7 +996,7 @@ export default class extends React.Component {
         return (<div className="content">
             <div className="master-keyword-container">
                 <div className="sub-title-container">
-                    <div className="title">마스터 키워드</div>
+                    <div className="title">{translate("master_keyword")}</div>
                     <div className="what-is-masterkeyword" onClick={this.openWhatIsMasterkeywordModal}>마스터키워드란?</div>
                 </div>
                 <div className="list">
@@ -1011,17 +1006,17 @@ export default class extends React.Component {
                 </div>
 
                 <div className="reference">
-                    필요할 때 사용할 수 있도록 상단의 12개의 키워드들을 순서대로 종이에 옮겨 적어 안전하게 보관하십시오.<br/>
-                    안전하게 계정을 보호하기 위해서는 전자매체에 저장하거나 타인에게 양도하는 등의 행동을 하지 않는 것을 권장합니다.
+                    {translate("master_keyword_must_be_save_desc_1")}<br/>
+                    {translate("master_keyword_must_be_save_desc_2")}
                 </div>
             </div>
 
             <div className="bottom-container">
                 <div className="transparent-button" onClick={this.onClickSaveMnemonic}>
-                    저장양식 다운로드
+                    {translate("download_saveform")}
                 </div>
                 <div className="confirm-button" onClick={this.next_term}>
-                    확인
+                    {translate("confirm")}
                 </div>
             </div>
         </div>)
@@ -1041,7 +1036,7 @@ export default class extends React.Component {
         return (<div className="content">
             <div className="master-keyword-container">
                 <div className="sub-title-container">
-                    <div className="title">마스터 키워드 확인</div>
+                    <div className="title">{translate("confirm_master_keyword")}</div>
                 </div>
                 <div className="selection-list">
                     {this.state.sort_test.map((e,k)=>{
@@ -1062,8 +1057,8 @@ export default class extends React.Component {
                 </div>
             </div>
             <div className="bottom-container">
-                <div className="back-button" onClick={this.prev_term}>뒤로가기</div>
-                <div className="confirm-button" onClick={this.onClickFinishSortTest}>가입완료</div>
+                <div className="back-button" onClick={this.prev_term}>{translate("go_back")}</div>
+                <div className="confirm-button" onClick={this.onClickFinishSortTest}>{translate("complete_join")}</div>
             </div>
         </div>)
     }
@@ -1091,39 +1086,39 @@ export default class extends React.Component {
         let title = "", desc = ""
         if(this.state.step == 0){
             if(type == 0) {
-                title = "개인 가입 약관 동의"
-                desc = "서비스 이용에 필요한 약관에 동의합니다."
+                title = translate("individual_join_term_agree")
+                desc = translate("individual_join_term_agree_desc")
             }
             else if(type == 1) {
-                title = "기업 가입 약관 동의"
-                desc = "기업 가입은 관리자 및 기업 자체 정보로 가입합니다. 추후 직원용 계정은 내부 기능을 통해 이용할 수 있습니다."
+                title = translate("corporation_join_term_agree")
+                desc = translate("corporation_join_term_agree_desc")
             }
             else if(type == 2) {
-                title = "기업 직원 계정 가입 약관 동의"
-                desc = "직원 계정 가입 절차입니다. 링크를 통해서만 가입할 수 있으며, 기본적인 기업 정보는 입력되어 있습니다."
+                title = translate("coporation_staff_account_join_term_agree")
+                desc = translate("coporation_staff_account_join_term_agree_desc")
             }
         }else if(this.state.step == 1){
-            title = "계정 정보 입력"
+            title = translate("input_account_info")
             if(type == 0)
-                desc = "기본정보를 정확히 입력해주시기 바랍니다."
+                desc = translate("input_account_info_desc_1")
             else if(type == 1)
-                desc = "회사에서 사용하시는 본인의 이메일을 입력해주세요."
+                desc = translate("input_account_info_desc_2")
             else if(type == 2)
-                desc = "직원 계정 가입 과정에서는 지정된 이메일로만 가입할 수 있습니다."
+                desc = translate("input_account_info_desc_3")
         }else if(this.state.step == 2){
             if(type == 0) {
-                title = "회원정보 입력"
-                desc = "전자 서명에 사용될 회원님의 정보를 입력해주시기 바랍니다."
+                title = translate("input_user_info")
+                desc = translate("input_user_info_desc")
             } else if(type == 1 || type == 2) {
-                title = "기업정보 입력"
-                desc = "전자 서명에 사용될 기업 및 담당자 정보를 입력해주시기 바랍니다."
+                title = translate("input_corporation_info")
+                desc = translate("input_corporation_info_desc")
             }
         }else if(this.state.step == 3){
-            title = "마스터 키워드 저장하기"
-            desc = "마스터 키워드를 저장해주세요."
+            title = translate("save_master_keyword")
+            desc = translate("save_master_keyword_desc_1")
         }else if(this.state.step == 4){
-            title = "마스터 키워드 저장하기"
-            desc = "앞서 저장해둔 마스터 키워드를 차례대로 배치해 주세요"
+            title = translate("save_master_keyword")
+            desc = translate("save_master_keyword_desc_2")
         }
 
         return <div className="top">
@@ -1137,11 +1132,11 @@ export default class extends React.Component {
         let type = this.getAccountType()
         let step2_text = ""
         if(type == 0)
-            step2_text = "회원정보 입력"
+            step2_text = translate("input_user_info")
         else if(type == 1)
-            step2_text = "기업정보 입력"
+            step2_text = translate("input_corporation_info")
         else if(type == 2)
-            step2_text = "담당자 정보 입력"
+            step2_text = translate("input_manager_info")
 
 		return (<div className="maintain">
             <div className="register-common-page register-page">
@@ -1161,10 +1156,10 @@ export default class extends React.Component {
                             <div className={`circle ${this.state.step == 3 || this.state.step == 4 ? "enable-circle": ""}`}></div>
                         </div>
                         <div className="step-text">
-                            <div className={`item ${this.state.step == 0 ? "enable": ""}`}>약관동의</div>
-                            <div className={`item ${this.state.step == 1 ? "enable": ""}`}>계정정보 입력</div>
+                            <div className={`item ${this.state.step == 0 ? "enable": ""}`}>{translate("terms_agree")}</div>
+                            <div className={`item ${this.state.step == 1 ? "enable": ""}`}>{translate("input_account_info")}</div>
                             <div className={`item ${this.state.step == 2 ? "enable": ""}`}>{step2_text}</div>
-                            <div className={`item ${this.state.step == 3 || this.state.step == 4 ? "enable": ""}`}>마스터 키워드 발급</div>
+                            <div className={`item ${this.state.step == 3 || this.state.step == 4 ? "enable": ""}`}>{translate("master_keyword_issue")}</div>
                         </div>
                     </div>
                     <div className="desc">

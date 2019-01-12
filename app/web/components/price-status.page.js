@@ -132,80 +132,80 @@ export default class extends React.Component {
         let subscriptionText;
         switch (this.props.user_info.account_type) {
             case 0:
-                accountTypeText = "개인 회원";
+                accountTypeText = translate("individual_user");
                 break;
             case 1:
-                accountTypeText = "기업 회원";
+                accountTypeText = translate("corp_user");
                 break;
             case 2:
-                accountTypeText = "기업 회원";
+                accountTypeText = translate("corp_user");
                 break;
         }
         if (current_subscription) {
             let current_subscription_info = subscription_plans.find(e=>e.plan_id == current_subscription.plan_id);
             if (current_subscription_info) {
-                subscriptionText = current_subscription_info.type == 1 ? "월간 결제" : "연간 결제";
+                subscriptionText = current_subscription_info.type == 1 ? translate("monthly_purchase") : translate("yearly_purchase");
                 subscriptionText += " ";
                 subscriptionText += current_subscription_info.data.title;
             }
         } else {
-            subscriptionText = "미 구독 상태";
+            subscriptionText = translate("not_subscribe_status");
         }
 		return (<div className="right-desc price-status-page">
-            <div className="title">요금 정보</div>
+            <div className="title">{translate("price_info")}</div>
             <div className="container">
                 <div className="cluster">
                     <div className="box blue-box">
                         <div className="icon"><i className="fas fa-credit-card"></i></div>
                         <div className="title">{accountTypeText} | {subscriptionText}</div>
-                        <div className="desc">00 / 00 건</div>
-                        <div className="sub">결제일 : {moment().format("YYYY-MM-DD HH:mm:ss")}</div>
+                        <div className="desc">{translate("count_curr_all_ticket", [0, 10])}</div>
+                        <div className="sub">{translate("purchase_date")} : {moment().format("YYYY-MM-DD HH:mm:ss")}</div>
                         <div className="button-container">
-                            <div className="button" onClick={this.onClickChangeRegularPayment}>변경</div>
-                            <div className="button">해지</div>
+                            <div className="button" onClick={this.onClickChangeRegularPayment}>{translate("change")}</div>
+                            <div className="button">{translate("terminate")}</div>
                         </div>
                     </div>
                     <div className="box gray-box">
                         <div className="icon"><i className="fal fa-users"></i></div>
-                        <div className="title">10명</div>
-                        <div className="desc">00 / 00 건</div>
-                        <div className="sub">결제일 : {moment().format("YYYY-MM-DD HH:mm:ss")}</div>
+                        <div className="title">{translate("count_curr_person", [10])}</div>
+                        <div className="desc">{translate("count_curr_all_ticket", [0, 10])}</div>
+                        <div className="sub">{translate("purchase_date")} : {moment().format("YYYY-MM-DD HH:mm:ss")}</div>
                         <div className="button-container">
-                            <div className="button" onClick={this.onChangeAccountNumber}>변경</div>
+                            <div className="button" onClick={this.onChangeAccountNumber}>{translate("change")}</div>
                         </div>
                     </div>
                     <div className="big-box">
                         <div className="bar middlegray-bar">
                             <div className="left">
-                                <div className="title">건별 이용권</div>
-                                <div className="desc">0건 남음</div>
-                                <div className="sub">* 정기결제과 건별 이용권 모두 보유시 정기결제 이용권 먼저 차감됩니다.</div>
+                                <div className="title">{translate("one_time_ticket")}</div>
+                                <div className="desc">{translate("remain_count_msg", [0])}</div>
+                                <div className="sub">{translate("ticket_use_order_msg")}</div>
                             </div>
                             <div className="right">
-                                <div className="button" onClick={this.onBuyTicket}>구매</div>
+                                <div className="button" onClick={this.onBuyTicket}>{translate("buy")}</div>
                             </div>
                         </div>
                         <div className="bar gray-bar">
                             <div className="left">
-                                <div className="title">결제 정보</div>
-                                <div className="desc">{this.state.partial_payment_info ? this.state.partial_payment_info.partial_card_number : "미등록 상태"}</div>
+                                <div className="title">{translate("purchase_info")}</div>
+                                <div className="desc">{this.state.partial_payment_info ? this.state.partial_payment_info.partial_card_number : translate("no_register_status")}</div>
                             </div>
                             <div className="right">
-                                <div className="button" onClick={this.onChangeCardInfo}>변경</div>
+                                <div className="button" onClick={this.onChangeCardInfo}>{translate("change")}</div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div className="list">
-                    <div className="title">결제 내역</div>
+                    <div className="title">{translate("purchase_logs")}</div>
                     <div className="head">
-                        <div className="list-head-item list-content">내용</div>
-                        <div className="list-head-item list-purchase-type">결제 수단</div>
-                        <div className="list-head-item list-price">금액</div>
-                        <div className="list-head-item list-date">일자</div>
+                        <div className="list-head-item list-content">{translate("article")}</div>
+                        <div className="list-head-item list-purchase-type">{translate("purchase_way")}</div>
+                        <div className="list-head-item list-price">{translate("amount_of_money")}</div>
+                        <div className="list-head-item list-date">{translate("date")}</div>
                     </div>
                     <div className="item">
-                        <div className="list-body-item list-content">정기 결제</div>
+                        <div className="list-body-item list-content">건별 결제</div>
                         <div className="list-body-item list-purchase-type">신용카드</div>
                         <div className="list-body-item list-price">{"36,500원"}</div>
                         <div className="list-body-item list-date">{moment().format("YYYY-MM-DD HH:mm:ss")}</div>
@@ -218,7 +218,7 @@ export default class extends React.Component {
                     </div>
                 </div>
                 <div className="list">
-                    <div className="title">이용권 차감 내역</div>
+                    <div className="title">{translate("ticket_use_logs")}</div>
                     <div className="head">
                         <div className="list-head-item list-content">계약명</div>
                         <div className="list-head-item list-signer">서명자</div>

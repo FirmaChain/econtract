@@ -13,7 +13,6 @@ import {
     load_contract_info,
     decrypt_contract_hexstring,
 } from "../../common/actions"
-import SignerSlot from "./signer-slot"
 import moment from "moment"
 import { sha256 } from 'js-sha256'
 

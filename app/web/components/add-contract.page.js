@@ -2,7 +2,6 @@ import React from "react"
 import ReactDOM from "react-dom"
 import { connect } from 'react-redux';
 import { Link, Prompt } from 'react-router-dom'
-import SignerSlot from "./signer-slot"
 import history from '../history';
 import pdfjsLib from "pdfjs-dist"
 import translate from "../../common/translate"

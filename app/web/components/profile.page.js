@@ -126,10 +126,10 @@ export default class extends React.Component {
 	        await this.props.fetch_user_info()
     	} catch( err ) {
     		console.log(err)
-    		return alert("에러가 발생하여 회원정보 수정에 실패하였습니다.")
+    		return alert(translate("error_modify_public_info_msg"))
 
     	}
-    	return alert("회원정보 수정에 성공하였습니다.")
+    	return alert(translate("success_modify_public_info"))
     }
 
     onInfoChange = (propertyName, e) => {
@@ -176,68 +176,68 @@ export default class extends React.Component {
 		return (<div className="right-desc profile-page">
 			<div className="info-container">
 	            <div className="info">
-	            	<div className="title">계정 정보</div>
+	            	<div className="title">{translate("account_info")}</div>
 	            	<div className="text-place">
-	            		<div className="title">이름</div>
+	            		<div className="title">{translate("name")}</div>
 	            		<div className="text-box"><input className="common-textbox" type="text" value={this.state.username} onChange={this.onInfoChange.bind(this, "username")}/></div>
 	            	</div>
 	            	{account_type != 0 ? <div className="text-place">
-	            		<div className="title">직급</div>
+	            		<div className="title">{translate("job")}</div>
 	            		<div className="text-box"><input className="common-textbox" type="text" value={this.state.job} onChange={this.onInfoChange.bind(this, "job")}/></div>
 	            	</div> : null}
 	            	<div className="text-place">
-	            		<div className="title">이메일</div>
+	            		<div className="title">{translate("email")}</div>
 	            		<div className="text-box"><input className="common-textbox" type="text" value={this.state.email} onChange={this.onInfoChange.bind(this, "email")} disabled /></div>
 	            	</div>
 	            	<div className="text-place">
-	            		<div className="title">휴대폰 번호</div>
+	            		<div className="title">{translate("individual_phone")}</div>
 	            		<div className="text-box"><input className="common-textbox" type="text" value={this.state.userphone} onChange={this.onInfoChange.bind(this, "userphone")} disabled /></div>
 	            	</div>
 	            	{account_type == 0 ? <div className="text-place">
-	            		<div className="title">주소</div>
+	            		<div className="title">{translate("address")}</div>
 	            		<div className="text-box">
 	            			<input className="common-textbox" type="text"
 	            				value={this.state.useraddress}
 	            				onChange={this.onInfoChange.bind(this, "useraddress")}/>
-	            			<div className="blue-but" onClick={this.onClickFindAddress.bind(this, "personal")}>찾기</div>
+	            			<div className="blue-but" onClick={this.onClickFindAddress.bind(this, "personal")}>{translate("find")}</div>
 	            		</div>
 	            	</div> : null}
                     <div className="text-place">
-                        <div className="title">마스터 키워드</div>
+                        <div className="title">{translate("master_keyword")}</div>
                         <div className="text-box">
                             <div className={"master-keyword" + (this.state.show_mnemonic ? "" : " hide")}>{entropyToMnemonic(sessionStorage.getItem("entropy"))}</div>
-                            <div className="blue-but" onClick={this.onClickViewMasterkeyword}>{this.state.show_mnemonic ? "닫기" : "보기"}</div>
+                            <div className="blue-but" onClick={this.onClickViewMasterkeyword}>{this.state.show_mnemonic ? translate("close") : translate("view")}</div>
                         </div>
                     </div>
 
 	            </div>
 	            {account_type != 0 ? <div className="info">
-	            	<div className="title">기업 정보</div>
+	            	<div className="title">{translate("corp_info")}</div>
 	            	<div className="text-place">
-	            		<div className="title">기업명</div>
+	            		<div className="title">{translate("corporation_name")}</div>
 	            		<div className="text-box"><input className="common-textbox" type="text" disabled={account_type == 2} value={this.state.company_name} onChange={this.onInfoChange.bind(this, "company_name")}/></div>
 	            	</div>
 	            	<div className="text-place">
-	            		<div className="title">사업자 등록번호</div>
+	            		<div className="title">{translate("duns_number")}</div>
 	            		<div className="text-box"><input className="common-textbox" type="text" disabled={account_type == 2} value={this.state.duns_number} onChange={this.onInfoChange.bind(this, "duns_number")}/></div>
 	            	</div>
 	            	<div className="text-place">
-	            		<div className="title">대표자 성함</div>
+	            		<div className="title">{translate("corporation_ceo_name")}</div>
 	            		<div className="text-box"><input className="common-textbox" type="text" disabled={account_type == 2} value={this.state.company_ceo} onChange={this.onInfoChange.bind(this, "company_ceo")}/></div>
 	            	</div>
 	            	<div className="text-place">
-	            		<div className="title">주소</div>
+	            		<div className="title">{translate("address")}</div>
 	            		<div className="text-box">
 	            			<input className="common-textbox" type="text"
 	            				disabled={account_type == 2} value={this.state.company_address}
 	            				onChange={this.onInfoChange.bind(this, "company_address")}/>
-	            			{ account_type == 1 ? <div className="blue-but" onClick={this.onClickFindAddress.bind(this, "company")}>찾기</div> : null }
+	            			{ account_type == 1 ? <div className="blue-but" onClick={this.onClickFindAddress.bind(this, "company")}>{translate("find")}</div> : null }
 	            		</div>
 	            	</div>
 	            </div>:null}
             </div>
             <div className="button-container">
-            	<div className="blue-but" onClick={this.onSaveInformation}>저장하기</div>
+            	<div className="blue-but" onClick={this.onSaveInformation}>{translate("save")}</div>
             </div>
         </div>)
 	}

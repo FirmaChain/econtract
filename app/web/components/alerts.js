@@ -1,7 +1,6 @@
 import React from "react"
 import ReactDOM from "react-dom"
 import {modal} from "./modalmanager"
-import SignerSlot from "./signer-slot"
 import history from '../history';
 import translate from "../../common/translate"
 import moment from "moment"
