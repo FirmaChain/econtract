@@ -12,6 +12,7 @@ import moment from "moment"
 import CorpGroupInfoPage from "./corp-group-info.page"
 import queryString from "query-string"
 import md5 from 'md5'
+import translate from "../../common/translate"
 
 
 import {

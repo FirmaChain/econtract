@@ -17,6 +17,7 @@ import {
     clear_epin,
 } from "../../common/actions"
 import CancelablePromise from 'cancelable-promise';
+import translate from "../../common/translate"
 
 @connect((state)=>{return {user:state.user.info}}, {} )
 export default class Item extends React.Component{
