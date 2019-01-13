@@ -314,11 +314,11 @@ class CardInfo extends React.Component {
 }
 
 @modal
-class PurchaseGroupMemberAdd extends React.Component {
+class PurchaseGroupMemberChange extends React.Component {
     constructor() {
         super();
         this.state = {
-            give_count:10
+            change_count:9999
         };
     }
 
@@ -339,15 +339,15 @@ class PurchaseGroupMemberAdd extends React.Component {
         return <div className="purchase-group-member-add default-modal-container">
             <div className="container">
                 <div className="icon"><i className="fal fa-ticket-alt"></i></div>
-                <div className="title">{translate("group_account_add")}</div>
+                <div className="title">{translate("group_account_modify")}</div>
                 <div className="sub-title">{translate("group_account_add_desc", ["2000".number_format()])}</div>
 
                 <div className="text-box">
-                    <div className="sub-title">{translate("add_account_group_count")}</div>
+                    <div className="sub-title">{translate("modify_account_group_count")}</div>
                     <input type="number" className="common-textbox"
-                        onChange={(e)=>this.setState({give_count:e.target.value})}
-                        value={this.state.give_count}
-                        placeholder={translate("please_input_add_account_group_count")}/>
+                        onChange={(e)=>this.setState({change_count:e.target.value})}
+                        value={this.state.change_count}
+                        placeholder={translate("please_input_modify_account_group_count")}/>
                 </div>
                 <div className="sub-title">{translate("info_of_now_account", [1, 4])}</div>
                 <div className="sub-desc">

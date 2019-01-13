@@ -166,7 +166,7 @@ export default class extends React.Component {
             let result = await this.onChangeCardInfo()
             if(!result) return
         }
-        window.openModal("PurchaseGroupMemberAdd", {
+        window.openModal("PurchaseGroupMemberChange", {
             onResponse: async (card_info) => {
             }
         })
