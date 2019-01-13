@@ -481,6 +481,15 @@ export async function api_get_current_onetime_ticket(){
         session:window.getCookie("session")
     });
 }
+export async function api_get_maximum_member_count(){
+    let __data = new FormData();
+
+    
+
+    return await post("/get_maximum_member_count", __data,{
+        session:window.getCookie("session")
+    });
+}
 export async function api_get_current_total_ticket(){
     let __data = new FormData();
 
