@@ -207,7 +207,7 @@ export default class extends React.Component {
 	render() {
         let subscription_plans = this.state.subscription_plans ? this.state.subscription_plans : []
         let current_subscription = this.state.current_subscription ? this.state.current_subscription : null
-        let current_onetime_ticket = this.state.current_onetime_ticket ? this.state.current_onetime_ticket : null
+        let current_onetime_ticket = this.state.current_onetime_ticket ? this.state.current_onetime_ticket : {total_count: 0, unused_count: 0};
 
         let accountTypeText;
         let subscriptionText;
