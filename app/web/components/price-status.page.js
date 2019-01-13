@@ -196,9 +196,9 @@ export default class extends React.Component {
             onResponse: async (change_count) => {
                 let resp = this.props.increase_account(change_count);
                 if (resp.code == 1) {
-                    r(true);
+                    console.log("purchase group member change will be success")
                 } else {
-                    r(false);
+                    console.log("purchase group member change will be fail")
                 }
             }
         })

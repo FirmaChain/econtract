@@ -24,6 +24,8 @@ import {
     get_group_info,
     remove_corp_member,
     exist_in_progress_contract,
+    get_corp_member_count,
+    get_maximum_member_count,
 } from "../../common/actions"
 
 let mapStateToProps = (state)=>{
@@ -40,6 +42,8 @@ let mapDispatchToProps = {
     get_group_info,
     remove_corp_member,
     exist_in_progress_contract,
+    get_corp_member_count,
+    get_maximum_member_count,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -61,6 +65,18 @@ export default class extends React.Component {
 
         await this.props.get_group_info(0)
         await this.props.get_corp_member_info_all(this.props.user_info.corp_key, 0)
+
+        let corp_member_count = 0;
+        let corp_member_count_max = 0;
+        if (this.props.user_info.account_type != 0) {
+            corp_member_count = (await this.props.get_corp_member_count()).payload.count;
+            corp_member_count_max = (await this.props.get_maximum_member_count()).payload.count;
+        }
+
+        this.setState({
+            corp_member_count,
+            corp_member_count_max,
+        })
     }
 
     onRemoveGroupMember = async (account_id, name) => {
@@ -93,8 +109,15 @@ export default class extends React.Component {
     }
 
     onChangeAccountNumber = async () => {
-        window.openModal("PurchaseGroupMemberAdd", {
-            onResponse: async (card_info) => {
+        window.openModal("PurchaseGroupMemberChange", {
+            count:this.state.corp_member_count_max,
+            onResponse: async (change_count) => {
+                let resp = this.props.increase_account(change_count);
+                if (resp.code == 1) {
+                    console.log("purchase group member change will be success")
+                } else {
+                    console.log("purchase group member change will be fail")
+                }
             }
         })
     }
@@ -109,7 +132,7 @@ export default class extends React.Component {
             	<div className="row">
             		<div className="title">{translate("group_account")}</div>
             		<div className="desc">
-            			{translate("count_curr_all_person", [5, 10])}
+            			{translate("count_curr_all_person", [this.state.corp_member_count || 0, this.state.corp_member_count_max || 0])}
             			<div className="blue-but" onClick={this.onChangeAccountNumber}>{translate("add")}</div>
             		</div>
             	</div>
