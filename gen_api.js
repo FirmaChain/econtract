@@ -481,6 +481,15 @@ export async function api_get_current_onetime_ticket_within(days){
         session:window.getCookie("session")
     });
 }
+export async function api_get_payment_log(){
+    let __data = new FormData();
+
+    
+
+    return await post("/get_payment_log", __data,{
+        session:window.getCookie("session")
+    });
+}
 export async function api_input_payment_info(data,preview_data){
     let __data = new FormData();
 
