@@ -63,12 +63,12 @@ export default class extends React.Component {
     }
 
     onRefresh = async () => {
-        let subscription_plans = (await this.props.get_subscribe_plan()).map((e)=>{e.data = JSON.parse(e.data); return e});
-        let current_subscription = await this.props.get_current_subscription();
-        let current_onetime_ticket = await this.props.get_current_onetime_ticket();
-        let payment_info = await this.props.get_payment_info();
+        let subscription_plans = (await this.props.get_subscribe_plan()).payload.map((e)=>{e.data = JSON.parse(e.data); return e});
+        let current_subscription = await this.props.get_current_subscription().payload;
+        let current_onetime_ticket = await this.props.get_current_onetime_ticket().payload;
+        let payment_info = await this.props.get_payment_info().payload;
         let partial_payment_info = payment_info ? JSON.parse(payment_info.preview_data) : null;
-        let payment_logs = await this.props.get_payment_log();
+        let payment_logs = await this.props.get_payment_log().payload;
 
         console.log("subscription_plans", subscription_plans)
         console.log("current_subscription", current_subscription)
@@ -104,11 +104,18 @@ export default class extends React.Component {
             selectedYearlyIndex: plan_yearly[0].plan_id,
             selectPeriod: 0,
             onResponse: async (period_type, plan_id) => {
+                let resp
                 if (period_type == 1) { // Yearly
                     // TODO: Make branch between register and change
-                    await this.props.make_yearly_commitment(plan_id);
+                    resp = await this.props.make_yearly_commitment(plan_id);
+                    if(resp.code == 1) {
+                        await this.onRefresh()
+                    }
                 } else {
-                    await this.props.select_subscription_plan(plan_id);
+                    resp = await this.props.select_subscription_plan(plan_id);
+                    if(resp.code == 1) {
+                        await this.onRefresh()
+                    }
                 }
             }
         });
@@ -198,7 +205,7 @@ export default class extends React.Component {
                             {translate("pre_purchase_date")} : {moment().format("YYYY-MM-DD HH:mm:ss")}
                         </div>
                         <div className="button-container">
-                            <div className="button" onClick={this.onClickChangeRegularPayment}>{this.state.partial_payment_info ? translate("change") : translate("register")}</div>
+                            <div className="button" onClick={this.onClickChangeRegularPayment}>{this.state.current_subscription ? translate("change") : translate("register")}</div>
                             {this.current_subscription ? <div className="button">{translate("terminate")}</div> : null}
                         </div>
                     </div>

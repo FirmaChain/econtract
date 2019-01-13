@@ -12,25 +12,25 @@ import {
 
 export function get_subscribe_plan(){
     return async function(){
-        return (await api_get_subscribe_plan()).payload;
+        return (await api_get_subscribe_plan())
     };
 }
 
 export function get_current_subscription(){
     return async function(){
-        return (await api_get_current_subscription()).payload;
+        return (await api_get_current_subscription())
     };
 }
 
 export function get_current_onetime_ticket(){
     return async function(){
-        return (await api_get_current_onetime_ticket()).payload;
+        return (await api_get_current_onetime_ticket())
     };
 }
 
 export function get_current_total_ticket(){
     return async function(){
-        return (await api_get_current_total_ticket()).payload;
+        return (await api_get_current_total_ticket())
     };
 }
 
@@ -42,24 +42,24 @@ export function input_payment_info(data, preview_data){
 
 export function get_payment_info(){
     return async function(){
-        return (await api_get_payment_info()).payload;
+        return (await api_get_payment_info())
     };
 }
 
 export function get_payment_log(){
     return async function(){
-        return (await api_get_payment_log()).payload;
+        return (await api_get_payment_log())
     };
 }
 
 export function select_subscription_plan(plan_id) {
     return async function(){
-        return (await api_select_subscription_plan(plan_id)).payload;
+        return (await api_select_subscription_plan(plan_id))
     };
 }
 
 export function make_yearly_commitment(plan_id) {
     return async function(){
-        return (await api_make_yearly_commitment(plan_id)).payload;
+        return (await api_make_yearly_commitment(plan_id))
     };
 }
