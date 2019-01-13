@@ -82,7 +82,7 @@ export default class extends React.Component {
         let corp_member_count_max = 0;
         if (this.props.user_info.account_type != 0) {
             corp_member_count = (await this.props.get_corp_member_count()).payload.count;
-            corp_member_count_max = (await this.props.get_maximum_member_count()).payload;
+            corp_member_count_max = (await this.props.get_maximum_member_count()).payload.count;
         }
 
         console.log("subscription_plans", subscription_plans)
