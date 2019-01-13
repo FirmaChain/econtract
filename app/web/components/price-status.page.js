@@ -79,7 +79,7 @@ export default class extends React.Component {
         console.log("payment_info", payment_info)
         console.log("partial_payment_info", partial_payment_info)
         console.log("payment_logs", payment_logs);
-        conosle.log("current_subscription_payment", current_subscription_payment);
+        console.log("current_subscription_payment", current_subscription_payment);
 
         this.setState({
             subscription_plans,
