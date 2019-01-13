@@ -228,7 +228,7 @@ export default class extends React.Component {
                             {this.current_subscription ? <div className="button">{translate("terminate")}</div> : null}
                         </div>
                     </div>
-                    <div className="box gray-box">
+                    {this.props.user_info.account_type != 0 ? <div className="box gray-box">
                         <div className="icon"><i className="fal fa-users"></i></div>
                         <div className="title">{translate("count_curr_person", [10])}</div>
                         <div className="desc">{translate("count_curr_all_ticket", [0, 10])}</div>
@@ -239,7 +239,7 @@ export default class extends React.Component {
                         <div className="button-container">
                             <div className="button" onClick={this.onChangeAccountNumber}>{translate("change")}</div>
                         </div>
-                    </div>
+                    </div> : null}
                     <div className="big-box">
                         <div className="bar middlegray-bar">
                             <div className="left">
