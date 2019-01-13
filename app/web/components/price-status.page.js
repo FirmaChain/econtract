@@ -274,6 +274,8 @@ export default class extends React.Component {
                                 break;
                             case window.CONST.PAYMENT_LOG_TYPE.YEARLY_PAYMENT_REGULAR:
                                 type = "월간 결제"
+                                if(e.reference_id == "PENDING")
+                                    type += " (결제 예정)"
                                 break;
                         }
                         return <div className="item" key={e.log_id}>
