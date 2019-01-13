@@ -500,6 +500,15 @@ export async function api_get_payment_info(){
         session:window.getCookie("session")
     });
 }
+export async function api_make_yearly_commitment(){
+    let __data = new FormData();
+
+    
+
+    return await post("/make_yearly_commitment", __data,{
+        session:window.getCookie("session")
+    });
+}
 export async function api_select_subscription_plan(plan_id){
     let __data = new FormData();
 

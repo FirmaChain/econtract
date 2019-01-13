@@ -26,6 +26,7 @@ import {
     input_payment_info,
     get_payment_info,
     select_subscription_plan,
+    make_yearly_commitment,
 } from "../../common/actions"
 
 let mapStateToProps = (state)=>{
@@ -42,6 +43,7 @@ let mapDispatchToProps = {
     input_payment_info,
     get_payment_info,
     select_subscription_plan,
+    make_yearly_commitment,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -94,8 +96,13 @@ export default class extends React.Component {
             selectedMonthlyIndex: plan_monthly[0].plan_id,
             selectedYearlyIndex: plan_yearly[0].plan_id,
             selectPeriod: 0,
-            onResponse: async (plan_id) => {
-                await this.props.select_subscription_plan(plan_id);
+            onResponse: async (period_type, plan_id) => {
+                if (period_type == 1) { // Yearly
+                    // TODO: Make branch between register and change
+                    await this.props.make_yearly_commitment(plan_id);
+                } else {
+                    await this.props.select_subscription_plan(plan_id);
+                }
             }
         });
     }
