@@ -454,6 +454,15 @@ export async function api_get_current_subscription(){
         session:window.getCookie("session")
     });
 }
+export async function api_get_current_subscription_payment(){
+    let __data = new FormData();
+
+    
+
+    return await post("/get_current_subscription_payment", __data,{
+        session:window.getCookie("session")
+    });
+}
 export async function api_get_current_onetime_ticket(){
     let __data = new FormData();
 
@@ -481,6 +490,15 @@ export async function api_get_current_onetime_ticket_within(days){
         session:window.getCookie("session")
     });
 }
+export async function api_get_payment_log(){
+    let __data = new FormData();
+
+    
+
+    return await post("/get_payment_log", __data,{
+        session:window.getCookie("session")
+    });
+}
 export async function api_input_payment_info(data,preview_data){
     let __data = new FormData();
 
@@ -497,6 +515,15 @@ export async function api_get_payment_info(){
     
 
     return await post("/get_payment_info", __data,{
+        session:window.getCookie("session")
+    });
+}
+export async function api_make_yearly_commitment(plan_id){
+    let __data = new FormData();
+
+    if(plan_id != null) __data.append('plan_id', plan_id)
+
+    return await post("/make_yearly_commitment", __data,{
         session:window.getCookie("session")
     });
 }
