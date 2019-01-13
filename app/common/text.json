@@ -506,6 +506,7 @@
     "master_keyword_must_be_save_desc_2":["안전하게 계정을 보호하기 위해서는 전자매체에 저장하거나 타인에게 양도하는 등의 행동을 하지 않는 것을 권장합니다.","",""],
     "card_number_not_valid":["카드 번호가 유효하지 않습니다.","",""],
     "no_register_status":["미등록 상태","",""],
+    "ticket_msg":["{0}건","",""],
     "fail_group_member_withdraw":["해당 그룹원 탈퇴에 실패하였습니다.","",""],
     "name_of_folder":["폴더 이름","Folder name",""],
     "set_password_desc":["로그인하려는 계정의 이메일과 비밀번호를 입력하여 브라우저에 등록해주세요.","",""],
