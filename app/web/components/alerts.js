@@ -431,7 +431,7 @@ class PurchaseRegularPayment extends React.Component {
                         <div className="price-info">{(this.state.select_monthly_plan.total_price ? this.state.select_monthly_plan.total_price : 0).number_format()}<span className="last">{translate("price_by_monthly")}</span></div>
                         <div className="sub">
                             {(this.state.select_monthly_plan.total_price ? this.state.select_monthly_plan.total_price : 0) / (this.state.select_monthly_plan.ticket_count ? this.state.select_monthly_plan.ticket_count : 1)} {translate("price_by_one_time")}<br/>
-                            {translate("i_give_you_many_account", 1, 4)} 
+                            {translate("i_give_you_many_account", [1, 4])} 
                         </div>
                     </div>
                     <div className={"btn" + (this.state.select_period == 1 ? " active" : "")} onClick={this.onClickType.bind(this, 1)}>
@@ -448,7 +448,7 @@ class PurchaseRegularPayment extends React.Component {
                         <div className="price-info">{(this.state.select_yearly_plan.total_price ? this.state.select_yearly_plan.total_price : 0).number_format()}<span className="last">{translate("price_by_yearly")}</span></div>
                         <div className="sub">
                             {(this.state.select_yearly_plan.total_price ? this.state.select_yearly_plan.total_price : 0) / (this.state.select_yearly_plan.ticket_count ? this.state.select_yearly_plan.ticket_count : 1)} {translate("price_by_one_time")}<br/>
-                            {translate("i_give_you_many_account", 1, 4)} 
+                            {translate("i_give_you_many_account", [1, 4])} 
                         </div>
                     </div>
                 </div>
