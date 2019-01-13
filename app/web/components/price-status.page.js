@@ -55,27 +55,31 @@ export default class extends React.Component {
 
 	componentDidMount(){
         (async() => {
-            let subscription_plans = (await this.props.get_subscribe_plan()).map((e)=>{e.data = JSON.parse(e.data); return e});
-            let current_subscription = await this.props.get_current_subscription();
-            let current_onetime_ticket = await this.props.get_current_onetime_ticket();
-            let payment_info = await this.props.get_payment_info();
-            let partial_payment_info
-            if(payment_info)
-                partial_payment_info = JSON.parse(payment_info.preview_data);
-
-            console.log("subscription_plans", subscription_plans)
-            console.log("current_subscription", current_subscription)
-            console.log("current_onetime_ticket", current_onetime_ticket)
-            console.log("payment_info", payment_info)
-            console.log("partial_payment_info", partial_payment_info)
-
-            this.setState({
-                subscription_plans,
-                current_subscription,
-                current_onetime_ticket,
-                partial_payment_info,
-            })
+            await this.onRefresh()
         })()
+    }
+
+    onRefresh = async () => {
+        let subscription_plans = (await this.props.get_subscribe_plan()).map((e)=>{e.data = JSON.parse(e.data); return e});
+        let current_subscription = await this.props.get_current_subscription();
+        let current_onetime_ticket = await this.props.get_current_onetime_ticket();
+        let payment_info = await this.props.get_payment_info();
+        let partial_payment_info
+        if(payment_info)
+            partial_payment_info = JSON.parse(payment_info.preview_data);
+
+        console.log("subscription_plans", subscription_plans)
+        console.log("current_subscription", current_subscription)
+        console.log("current_onetime_ticket", current_onetime_ticket)
+        console.log("payment_info", payment_info)
+        console.log("partial_payment_info", partial_payment_info)
+
+        this.setState({
+            subscription_plans,
+            current_subscription,
+            current_onetime_ticket,
+            partial_payment_info,
+        })
     }
 
     onClickChangeRegularPayment = async () => {
@@ -119,6 +123,9 @@ export default class extends React.Component {
     }
 
     onChangeCardInfo = async () => {
+        if(this.state.partial_payment_info)
+            return true
+
         let result = await new Promise( r => window.openModal("CardInfo", {
             data:this.state.partial_payment_info || null,
             onResponse: async (card_info) => {
@@ -128,6 +135,7 @@ export default class extends React.Component {
                 partial_info['partial_card_number'] = card_info.card_number.slice(0, 4)+"-xxxx-xxxx-xxxx";
                 let preview_data = JSON.stringify(partial_info);
                 await this.props.input_payment_info(encrypted_data, preview_data);
+                await this.onRefresh()
                 r(true)
             }
         }))
