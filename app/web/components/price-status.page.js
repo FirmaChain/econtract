@@ -31,6 +31,7 @@ import {
     get_payment_log,
     select_subscription_plan,
     make_yearly_commitment,
+    increase_account,
 } from "../../common/actions"
 
 let mapStateToProps = (state)=>{
@@ -51,6 +52,7 @@ let mapDispatchToProps = {
     get_payment_log,
     select_subscription_plan,
     make_yearly_commitment,
+    increase_account,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -176,6 +178,12 @@ export default class extends React.Component {
         }
         window.openModal("PurchaseGroupMemberChange", {
             onResponse: async (change_count) => {
+                let resp = this.props.increase_account(change_count);
+                if (resp.code == 1) {
+                    r(true);
+                } else {
+                    r(false);
+                }
             }
         })
     }
