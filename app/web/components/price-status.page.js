@@ -31,6 +31,7 @@ import {
     get_payment_log,
     select_subscription_plan,
     make_yearly_commitment,
+    make_monthly_commitment,
     increase_account,
     get_maximum_member_count,
 } from "../../common/actions"
@@ -53,6 +54,7 @@ let mapDispatchToProps = {
     get_payment_log,
     select_subscription_plan,
     make_yearly_commitment,
+    make_monthly_commitment,
     increase_account,
     get_maximum_member_count,
 }
@@ -133,7 +135,7 @@ export default class extends React.Component {
                         await this.onRefresh()
                     }
                 } else {
-                    resp = await this.props.select_subscription_plan(plan_id);
+                    resp = await this.props.make_monthly_commitment(plan_id);
                     if(resp.code == 1) {
                         await this.onRefresh()
                     }
