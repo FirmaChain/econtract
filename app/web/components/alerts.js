@@ -377,7 +377,7 @@ class PurchaseTicket extends React.Component {
     }
 
     onResponse = () => {
-        this.props.onResponse && this.props.onResponse()
+        this.props.onResponse && this.props.onResponse(this.state.give_count)
         this.closeSelf();
     }
 
