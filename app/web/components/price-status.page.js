@@ -208,6 +208,7 @@ export default class extends React.Component {
         let subscription_plans = this.state.subscription_plans ? this.state.subscription_plans : []
         let current_subscription = this.state.current_subscription ? this.state.current_subscription : null
         let current_onetime_ticket = this.state.current_onetime_ticket ? this.state.current_onetime_ticket : {total_count: 0, unused_count: 0};
+        console.log("what", current_onetime_ticket);
 
         let accountTypeText;
         let subscriptionText;
