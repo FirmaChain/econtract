@@ -8,6 +8,7 @@ import {
     api_select_subscription_plan,
     api_make_yearly_commitment,
     api_make_monthly_commitment,
+    api_buy_onetime_ticket,
     api_increase_account,
     api_get_payment_log,
     api_get_current_subscription_payment,
