@@ -190,8 +190,10 @@ export default class extends React.Component {
                 accountTypeText = translate("corp_user");
                 break;
         }
+
+        let current_subscription_info
         if (current_subscription) {
-            let current_subscription_info = subscription_plans.find(e=>e.plan_id == current_subscription.plan_id);
+            current_subscription_info = subscription_plans.find(e=>e.plan_id == current_subscription.plan_id);
             if (current_subscription_info) {
                 subscriptionText = current_subscription_info.type == 1 ? translate("monthly_purchase") : translate("yearly_purchase");
                 subscriptionText += " ";
@@ -214,12 +216,12 @@ export default class extends React.Component {
                     <div className="box blue-box">
                         <div className="icon"><i className="fas fa-credit-card"></i></div>
                         <div className="title">{accountTypeText} | {subscriptionText}</div>
-                        { !current_subscription ? null :
-                        <div className="desc">{translate("count_curr_all_ticket", [current_subscription_info.unused_count, current_subscription_info.total_count])}</div>
+                        { (!current_subscription || !current_subscription_info) ? null && : [
+                        <div className="desc">{translate("count_curr_all_ticket", [current_subscription_info.unused_count, current_subscription_info.total_count])}</div>,
                         <div className="sub">
                             {translate("purchase_date")} : {moment().format("YYYY-MM-DD HH:mm:ss")}<br/>
                             {translate("pre_purchase_date")} : {moment().format("YYYY-MM-DD HH:mm:ss")}
-                        </div>
+                        </div>]
                         }
                         <div className="button-container">
                             <div className="button" onClick={this.onClickChangeRegularPayment}>{this.state.current_subscription ? translate("change") : translate("register")}</div>
