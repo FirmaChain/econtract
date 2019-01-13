@@ -197,7 +197,7 @@ export default class extends React.Component {
                         <div className="sub">{translate("purchase_date")} : {moment().format("YYYY-MM-DD HH:mm:ss")}</div>
                         <div className="button-container">
                             <div className="button" onClick={this.onClickChangeRegularPayment}>{this.state.partial_payment_info ? translate("change") : translate("register")}</div>
-                            <div className="button">{translate("terminate")}</div>
+                            {this.current_subscription ? <div className="button">{translate("terminate")}</div> : null}
                         </div>
                     </div>
                     <div className="box gray-box">
