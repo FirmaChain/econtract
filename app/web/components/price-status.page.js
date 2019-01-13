@@ -120,6 +120,7 @@ export default class extends React.Component {
 
     onChangeCardInfo = async () => {
         let result = await new Promise( r => window.openModal("CardInfo", {
+            data:this.state.partial_payment_info || null,
             onResponse: async (card_info) => {
                 //TODO: necessary to encrypt via firma's private key
                 let encrypted_data = JSON.stringify(card_info);

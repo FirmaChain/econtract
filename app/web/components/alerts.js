@@ -199,14 +199,17 @@ class CardInfo extends React.Component {
         let selected_expiration_year = this.props.selected_expiration_year || expiration_year_options[0].value;
         let selected_expiration_month_label = expiration_month_options.find(e => e.value == selected_expiration_month).label;
         let selected_expiration_year_label = expiration_year_options.find(e => e.value == selected_expiration_year).label;
-        this.setState({
+
+        let _ = {
             expiration_month_options,
             expiration_year_options,
             selected_expiration_month,
             selected_expiration_year,
             selected_expiration_month_label,
             selected_expiration_year_label,
-        });
+        }
+        if(this.props.data) _ = {..._, ...this.props.data}
+        this.setState(_);
     }
 
     closeSelf = ()=>{
@@ -243,6 +246,13 @@ class CardInfo extends React.Component {
                         onChange={(e)=>this.setState({cvc:e.target.value})}
                         value={this.state.cvc}
                         placeholder={translate("please_input_cvc")}/>
+                </div>
+                <div className="text-box">
+                    <div className="sub-title">{translate("name")}</div>
+                    <input type="number" className="common-textbox"
+                        onChange={(e)=>this.setState({name:e.target.value})}
+                        value={this.state.name}
+                        placeholder={translate("please_input_name")}/>
                 </div>
                 <div className="text-box">
                     <div className="sub-title">{translate("validation_date")}</div>
