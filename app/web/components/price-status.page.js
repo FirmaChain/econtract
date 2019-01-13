@@ -232,7 +232,7 @@ export default class extends React.Component {
                                 <div className="desc">{this.state.partial_payment_info ? this.state.partial_payment_info.partial_card_number : translate("no_register_status")}</div>
                             </div>
                             <div className="right">
-                                <div className="button" onClick={this.onChangeCardInfo}>{this.state.partial_payment_info ? translate("change") : translate("re_register")}</div>
+                                <div className="button" onClick={this.onChangeCardInfo}>{this.state.partial_payment_info ? translate("re_register") : translate("register")}</div>
                             </div>
                         </div>
                     </div>
