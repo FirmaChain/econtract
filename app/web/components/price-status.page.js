@@ -184,6 +184,7 @@ export default class extends React.Component {
             if(!result) return
         }
         window.openModal("PurchaseGroupMemberChange", {
+            count:this.state.corp_member_count_max,
             onResponse: async (change_count) => {
                 let resp = this.props.increase_account(change_count);
                 if (resp.code == 1) {
@@ -300,7 +301,9 @@ export default class extends React.Component {
                             case window.CONST.PAYMENT_LOG_TYPE.YEARLY_COMMITMENT:
                                 break;
                             case window.CONST.PAYMENT_LOG_TYPE.YEARLY_PAYMENT_REGULAR:
-                                type = "연간 결제 지불"
+                                type = "연간 결제" + e.total_count
+                                if(e.reference_id == "PENDING")
+                                    type += " (결제 예정)"
                                 break;
                             case window.CONST.PAYMENT_LOG_TYPE.YEARLY_PAYMENT_UPGRADE:
                                 type = "연간 결제 변경"

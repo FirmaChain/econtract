@@ -315,15 +315,14 @@ class CardInfo extends React.Component {
 
 @modal
 class PurchaseGroupMemberChange extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
-            change_count:9999
+            change_count:props.count
         };
     }
 
     componentDidMount() {
-
     }
 
     closeSelf = ()=>{
