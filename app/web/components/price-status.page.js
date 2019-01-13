@@ -21,6 +21,7 @@ import Web3 from "../../common/Web3"
 import translate from "../../common/translate"
 import {
     fetch_user_info,
+    get_corp_member_count,
     get_subscribe_plan,
     get_current_subscription,
     get_current_subscription_payment,
@@ -40,6 +41,7 @@ let mapStateToProps = (state)=>{
 
 let mapDispatchToProps = {
     fetch_user_info,
+    get_corp_member_count,
     get_subscribe_plan,
     get_current_subscription,
     get_current_subscription_payment,
@@ -72,6 +74,10 @@ export default class extends React.Component {
         let partial_payment_info = payment_info ? JSON.parse(payment_info.preview_data) : null;
         let payment_logs = (await this.props.get_payment_log()).payload;
         let current_subscription_payment = (await this.props.get_current_subscription_payment()).payload;
+        let corp_member_count = 0;
+        if (this.props.user_info.account_type != 0) {
+            corp_member_count = (await this.props.get_corp_member_count()).payload;
+        }
 
         console.log("subscription_plans", subscription_plans)
         console.log("current_subscription", current_subscription)
@@ -88,6 +94,7 @@ export default class extends React.Component {
             partial_payment_info,
             payment_logs,
             current_subscription_payment,
+            corp_member_count,
         })
     }
 
@@ -126,6 +133,7 @@ export default class extends React.Component {
                 }
             }
         });
+    get_corp_member_count,
     }
 
     onBuyTicket = async () => {
@@ -231,7 +239,7 @@ export default class extends React.Component {
                     </div>
                     {this.props.user_info.account_type != 0 ? <div className="box gray-box">
                         <div className="icon"><i className="fal fa-users"></i></div>
-                        <div className="title">{translate("count_curr_person", [10])}</div>
+                        <div className="title">{translate("count_curr_person", [this.state.corp_member_count])}</div>
                         <div className="desc">{translate("count_curr_all_ticket", [0, 10])}</div>
                         <div className="sub">
                             {translate("purchase_date")} : {moment().format("YYYY-MM-DD HH:mm:ss")}<br/>

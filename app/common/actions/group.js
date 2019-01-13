@@ -21,6 +21,7 @@ import {
     api_add_member_group_exist,
     api_exist_in_progress_contract,
     api_remove_corp_member,
+    api_get_corp_member_count,
 } from "../../../gen_api"
 
 import {
@@ -274,3 +275,9 @@ export function remove_corp_member(account_id) {
     }
 }
 
+export function get_corp_member_count() {
+    return async function() {
+        let resp = await api_get_corp_member_count()
+        return resp
+    }
+}
