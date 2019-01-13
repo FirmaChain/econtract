@@ -331,7 +331,7 @@ class PurchaseGroupMemberChange extends React.Component {
     }
 
     onResponse = () => {
-        this.props.onResponse && this.props.onResponse()
+        this.props.onResponse && this.props.onResponse(this.state.change_count)
         this.closeSelf();
     }
 

@@ -176,7 +176,7 @@ export default class extends React.Component {
             if(!result) return
         }
         window.openModal("PurchaseGroupMemberChange", {
-            onResponse: async (card_info) => {
+            onResponse: async (change_count) => {
             }
         })
     }
