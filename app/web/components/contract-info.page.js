@@ -354,22 +354,22 @@ export default class extends React.Component {
                 name = translate("byebye_template", [name])
 
             switch(e.code) {
-                case 1:
+                case window.CONST.CONTRACT_LOG.CREATE:
                     msg = translate("log_create_msg", [name])
                     break;
-                case 2:
+                case window.CONST.CONTRACT_LOG.READ:
                     msg = translate("log_open_msg", [name])
                     break;
-                case 3:
+                case window.CONST.CONTRACT_LOG.MODIFY:
                     msg = translate("log_modify_msg", [name])
                     break;
-                case 4:
+                case window.CONST.CONTRACT_LOG.CHANGE_SIGN_INFO:
                     msg = translate("log_modify_sign_info_msg", [name])
                     break;
-                case 5:
+                case window.CONST.CONTRACT_LOG.CHANGE_SIGN:
                     msg = translate("log_sign_msg", [name])
                     break;
-                case 6: {
+                case window.CONST.CONTRACT_LOG.GIVE_MODIFY: {
                     let next_account_id = JSON.parse(e.data).to_account_id
                     let next = this.state.infos.find(c=>c.corp_id == 0 && c.entity_id == next_account_id)
 
