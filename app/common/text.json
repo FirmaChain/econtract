@@ -591,5 +591,9 @@
     "upload_doc_file": ["업로드한 문서 파일", "", ""],
     "fail_reason": ["실패 사유", "", ""],
     "re_verification": ["재 검증 하기", "", ""],
-    "re_register": ["재등록", "", ""]
+    "re_register": ["재등록", "", ""],
+    "card_number_not_valid":["카드 번호가 유효하지 않습니다.", "", ""],
+    "card_expiry_not_valid":["카드 유효기간이 잘못되었습니다.", "", ""],
+    "card_cvc_not_valid":["카드 CVC가 유효하지 않습니다.", "", ""],
+    "pre_purchase_date":["다음 결제일", "", ""]
 }
