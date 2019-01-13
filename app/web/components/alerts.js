@@ -245,6 +245,7 @@ class CardInfo extends React.Component {
 
         this.props.onResponse && this.props.onResponse({
             card_type: card_type,
+            name: this.state.name,
             card_number: this.state.card_number,
             cvc: this.state.cvc,
             month: this.state.selected_expiration_month,

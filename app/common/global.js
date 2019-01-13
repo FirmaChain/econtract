@@ -11,6 +11,38 @@ import fs from "../web/filesystem"
 
 // window.Promise = global.Promise = CancelablePromise;
 
+window.CONST = {
+    CONTRACT_LOG: {
+        CREATE: 1,
+        READ: 2,
+        MODIFY: 3,
+        CHANGE_SIGN_INFO: 4,
+        CHANGE_SIGN: 5,
+        GIVE_MODIFY: 6,
+    },
+    DUMMY_CORP_ID: 0,
+    DUMMY_GROUP_ID: 0,
+    DUMMY_CONTRACT_ID: 0,
+    SUBSCRIPTION_PLAN_TYPE: {
+        ONETIME: 1,
+        MONTHLY: 2,
+        YEARLY: 3,
+    },
+    PAYMENT_LOG_TYPE: {
+        YEARLY_COMMITMENT: 1,
+        YEARLY_PAYMENT_REGULAR: 2,
+        YEARLY_PAYMENT_UPGRADE: 3,
+        YEARLY_DISTRIBUTE_TICKET: 4,
+        MONTHLY_PAYMENT_AND_DISTRIBUTE: 5,
+        ONETIME_PAYMENT_AND_DISTRIBUTE: 6,
+        PROMOTION_DISTRIBUTE_TICKET: 7,
+        REFUND: 8,
+        YEARLY_PAYMENT_MEMBER: 9,
+        YEARLY_PAYMENT_MEMBER_UPGRADE: 10,
+        MONTHLY_PAYMENT_MEMBER: 11,
+    },
+}
+
 global.Buffer = require('buffer').Buffer;
 global.process = require('process');
 

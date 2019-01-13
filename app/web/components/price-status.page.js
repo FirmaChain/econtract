@@ -86,6 +86,8 @@ export default class extends React.Component {
             current_subscription,
             current_onetime_ticket,
             partial_payment_info,
+            payment_logs,
+            current_subscription_payment,
         })
     }
 
@@ -143,6 +145,8 @@ export default class extends React.Component {
                 let encrypted_data = JSON.stringify(card_info);
                 let partial_info = {};
                 partial_info['partial_card_number'] = card_info.card_number.slice(0, 4)+"-xxxx-xxxx-xxxx";
+                partial_info['name'] = card_info.name;
+                partial_info['card_type'] = card_info.card_type.toUpperCase();
                 let preview_data = JSON.stringify(partial_info);
                 let resp = await this.props.input_payment_info(encrypted_data, preview_data);
                 await this.onRefresh()
@@ -196,6 +200,13 @@ export default class extends React.Component {
         } else {
             subscriptionText = translate("not_subscribe_status");
         }
+
+        let card_info_string = translate("no_register_status")
+        if(this.state.partial_payment_info) {
+            let _i = this.state.partial_payment_info
+            card_info_string = `${_i.card_type} ${_i.partial_card_number} ${_i.name}`
+        }
+
 		return (<div className="right-desc price-status-page">
             <div className="title">{translate("price_info")}</div>
             <div className="container">
@@ -239,7 +250,7 @@ export default class extends React.Component {
                         <div className="bar gray-bar">
                             <div className="left">
                                 <div className="title">{translate("purchase_info")}</div>
-                                <div className="desc">{this.state.partial_payment_info ? this.state.partial_payment_info.partial_card_number : translate("no_register_status")}</div>
+                                <div className="desc">{card_info_string}</div>
                             </div>
                             <div className="right">
                                 <div className="button" onClick={this.onChangeCardInfo}>{this.state.partial_payment_info ? translate("re_register") : translate("register")}</div>
@@ -255,18 +266,23 @@ export default class extends React.Component {
                         <div className="list-head-item list-price">{translate("amount_of_money")}</div>
                         <div className="list-head-item list-date">{translate("date")}</div>
                     </div>
-                    <div className="item">
-                        <div className="list-body-item list-content">건별 결제</div>
-                        <div className="list-body-item list-purchase-type">신용카드</div>
-                        <div className="list-body-item list-price">{"36,500원"}</div>
-                        <div className="list-body-item list-date">{moment().format("YYYY-MM-DD HH:mm:ss")}</div>
-                    </div>
-                    <div className="item">
-                        <div className="list-body-item list-content">정기 결제</div>
-                        <div className="list-body-item list-purchase-type">신용카드</div>
-                        <div className="list-body-item list-price">{"36,500원"}</div>
-                        <div className="list-body-item list-date">{moment().format("YYYY-MM-DD HH:mm:ss")}</div>
-                    </div>
+                    {this.state.payment_logs ? this.state.payment_logs.map( (e,k) => {
+                        let type
+                        switch(e.type) {
+                            case window.CONST.PAYMENT_LOG_TYPE.ONETIME_PAYMENT_AND_DISTRIBUTE:
+                                type = "건별 결제"
+                                break;
+                            case window.CONST.PAYMENT_LOG_TYPE.YEARLY_PAYMENT_REGULAR:
+                                type = "월간 결제"
+                                break;
+                        }
+                        return <div className="item" key={e.log_id}>
+                            <div className="list-body-item list-content">{type}</div>
+                            <div className="list-body-item list-purchase-type">신용카드</div>
+                            <div className="list-body-item list-price">{e.money_amount.number_format()}원</div>
+                            <div className="list-body-item list-date">{moment(e.start_date).format("YYYY-MM-DD HH:mm:ss")}</div>
+                        </div>
+                    }) : null}
                 </div>
                 <div className="list">
                     <div className="title">{translate("ticket_use_logs")}</div>
