@@ -109,7 +109,7 @@ export default class extends React.Component {
             	<div className="row">
             		<div className="title">{translate("group_account")}</div>
             		<div className="desc">
-            			{translate("count_curr_all_person", 5, 10)}
+            			{translate("count_curr_all_person", [5, 10])}
             			<div className="blue-but" onClick={this.onChangeAccountNumber}>{translate("add")}</div>
             		</div>
             	</div>
