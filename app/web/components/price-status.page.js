@@ -95,7 +95,6 @@ export default class extends React.Component {
             payment_logs,
             current_subscription_payment,
             corp_member_count,
-            get_corp_member_count,
         })
     }
 
