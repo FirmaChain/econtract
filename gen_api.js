@@ -399,6 +399,15 @@ export async function api_get_corp_member_info_all(show_all){
         session:window.getCookie("session")
     });
 }
+export async function api_get_corp_member_count(){
+    let __data = new FormData();
+
+    
+
+    return await post("/get_corp_member_count", __data,{
+        session:window.getCookie("session")
+    });
+}
 export async function api_exist_group_member(group_id,email){
     let __data = new FormData();
 
