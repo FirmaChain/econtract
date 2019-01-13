@@ -74,6 +74,12 @@ export function make_monthly_commitment(plan_id) {
     };
 }
 
+export function buy_onetime_ticket(plan_id, count) {
+    return async function(){
+        return (await api_buy_onetime_ticket(plan_id, count))
+    };
+}
+
 export function increase_account(account_count){
     return async function(){
         return (await api_increase_account(account_count));
