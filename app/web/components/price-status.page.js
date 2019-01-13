@@ -66,12 +66,12 @@ export default class extends React.Component {
 
     onRefresh = async () => {
         let subscription_plans = (await this.props.get_subscribe_plan()).payload.map((e)=>{e.data = JSON.parse(e.data); return e});
-        let current_subscription = await this.props.get_current_subscription().payload;
-        let current_onetime_ticket = await this.props.get_current_onetime_ticket().payload;
-        let payment_info = await this.props.get_payment_info().payload;
+        let current_subscription = (await this.props.get_current_subscription()).payload;
+        let current_onetime_ticket = (await this.props.get_current_onetime_ticket()).payload;
+        let payment_info = (await this.props.get_payment_info()).payload;
         let partial_payment_info = payment_info ? JSON.parse(payment_info.preview_data) : null;
-        let payment_logs = await this.props.get_payment_log().payload;
-        let current_subscription_payment = await this.props.get_current_subscription_payment().payload;
+        let payment_logs = (await this.props.get_payment_log()).payload;
+        let current_subscription_payment = (await this.props.get_current_subscription_payment()).payload;
 
         console.log("subscription_plans", subscription_plans)
         console.log("current_subscription", current_subscription)
