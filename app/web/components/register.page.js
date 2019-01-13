@@ -750,7 +750,7 @@ export default class extends React.Component {
 
         return (<div className="content">
             <div className="text-place">
-                <div className="name">{tranlsate("email")}</div>
+                <div className="name">{translate("email")}</div>
                 <div className="textbox">
                     <input className="common-textbox" type="email"
                         value={this.state.email || ""} 

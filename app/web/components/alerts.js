@@ -488,7 +488,7 @@ class StartContract extends React.Component{
                         <i className="fal fa-comment-alt-edit"></i>
                         <div className="btn-desc">
                             <div className="title">{translate("use_web_editor")}</div>
-                            <div className="sub">{tranlsate("use_web_editor_desc_1")}<br/>{tranlsate("use_web_editor_desc_2")}</div>
+                            <div className="sub">{translate("use_web_editor_desc_1")}<br/>{translate("use_web_editor_desc_2")}</div>
                         </div>
                     </div>
                     <div className="btn" onClick={this.onClick.bind(this, 2)}>
