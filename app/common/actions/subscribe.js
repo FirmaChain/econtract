@@ -35,7 +35,7 @@ export function get_current_total_ticket(){
 
 export function input_payment_info(data, preview_data){
     return async function(){
-        return (await api_input_payment_info(data, preview_data)).payload;
+        return (await api_input_payment_info(data, preview_data));
     };
 }
 

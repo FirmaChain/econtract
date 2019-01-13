@@ -134,9 +134,14 @@ export default class extends React.Component {
                 let partial_info = {};
                 partial_info['partial_card_number'] = card_info.card_number.slice(0, 4)+"-xxxx-xxxx-xxxx";
                 let preview_data = JSON.stringify(partial_info);
-                await this.props.input_payment_info(encrypted_data, preview_data);
+                let resp = await this.props.input_payment_info(encrypted_data, preview_data);
                 await this.onRefresh()
-                r(true)
+                if(resp.code == 1) {
+                    r(true)
+                } else {
+                    alert("card info error")
+                    r(false)
+                }
             }
         }))
         return result
