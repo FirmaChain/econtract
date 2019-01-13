@@ -214,11 +214,13 @@ export default class extends React.Component {
                     <div className="box blue-box">
                         <div className="icon"><i className="fas fa-credit-card"></i></div>
                         <div className="title">{accountTypeText} | {subscriptionText}</div>
-                        <div className="desc">{translate("count_curr_all_ticket", [0, 10])}</div>
+                        { !current_subscription ? null :
+                        <div className="desc">{translate("count_curr_all_ticket", [current_subscription_info.unused_count, current_subscription_info.total_count])}</div>
                         <div className="sub">
                             {translate("purchase_date")} : {moment().format("YYYY-MM-DD HH:mm:ss")}<br/>
                             {translate("pre_purchase_date")} : {moment().format("YYYY-MM-DD HH:mm:ss")}
                         </div>
+                        }
                         <div className="button-container">
                             <div className="button" onClick={this.onClickChangeRegularPayment}>{this.state.current_subscription ? translate("change") : translate("register")}</div>
                             {this.current_subscription ? <div className="button">{translate("terminate")}</div> : null}
