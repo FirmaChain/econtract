@@ -32,6 +32,7 @@ import {
     select_subscription_plan,
     make_yearly_commitment,
     make_monthly_commitment,
+    buy_onetime_ticket,
     increase_account,
     get_maximum_member_count,
 } from "../../common/actions"
@@ -55,6 +56,7 @@ let mapDispatchToProps = {
     select_subscription_plan,
     make_yearly_commitment,
     make_monthly_commitment,
+    buy_onetime_ticket,
     increase_account,
     get_maximum_member_count,
 }
@@ -151,6 +153,12 @@ export default class extends React.Component {
         }
         window.openModal("PurchaseTicket", {
             onResponse: async (give_count) => {
+                let subscribe_plans = this.state.subscription_plans;
+                let plan_id = subscribe_plans.find(e=>e.type==1).plan_id;
+                resp = await this.props.buy_onetime_ticket(plan_id, give_count);
+                if (resp.code == 1) {
+                    await this.onRefresh();
+                }
             }
         })
     }
