@@ -79,6 +79,10 @@ export default class extends React.Component {
     }
 
     onClickChangeRegularPayment = async () => {
+        if(this.state.partial_payment_info) {
+            let result = await this.onChangeCardInfo()
+            if(!result) return
+        }
         let subscribe_plans = this.state.subscription_plans;
         let plan_monthly = subscribe_plans.filter(e=>e.type==2);
         let plan_yearly = subscribe_plans.filter(e=>e.type==3);
@@ -104,6 +108,10 @@ export default class extends React.Component {
     }
 
     onBuyTicket = async () => {
+        if(this.state.partial_payment_info) {
+            let result = await this.onChangeCardInfo()
+            if(!result) return
+        }
         window.openModal("PurchaseTicket", {
             onResponse: async (give_count) => {
             }
@@ -111,7 +119,7 @@ export default class extends React.Component {
     }
 
     onChangeCardInfo = async () => {
-        window.openModal("CardInfo", {
+        let result = await new Promise( r => window.openModal("CardInfo", {
             onResponse: async (card_info) => {
                 //TODO: necessary to encrypt via firma's private key
                 let encrypted_data = JSON.stringify(card_info);
@@ -119,11 +127,17 @@ export default class extends React.Component {
                 partial_info['partial_card_number'] = card_info.card_number.slice(0, 4)+"-xxxx-xxxx-xxxx";
                 let preview_data = JSON.stringify(partial_info);
                 await this.props.input_payment_info(encrypted_data, preview_data);
+                r(true)
             }
-        })
+        }))
+        return result
     }
 
     onChangeAccountNumber = async () => {
+        if(this.state.partial_payment_info) {
+            let result = await this.onChangeCardInfo()
+            if(!result) return
+        }
         window.openModal("PurchaseGroupMemberAdd", {
             onResponse: async (card_info) => {
             }
@@ -168,7 +182,7 @@ export default class extends React.Component {
                         <div className="desc">{translate("count_curr_all_ticket", [0, 10])}</div>
                         <div className="sub">{translate("purchase_date")} : {moment().format("YYYY-MM-DD HH:mm:ss")}</div>
                         <div className="button-container">
-                            <div className="button" onClick={this.onClickChangeRegularPayment}>{translate("change")}</div>
+                            <div className="button" onClick={this.onClickChangeRegularPayment}>{this.state.partial_payment_info ? translate("change") : translate("register")}</div>
                             <div className="button">{translate("terminate")}</div>
                         </div>
                     </div>
@@ -198,7 +212,7 @@ export default class extends React.Component {
                                 <div className="desc">{this.state.partial_payment_info ? this.state.partial_payment_info.partial_card_number : translate("no_register_status")}</div>
                             </div>
                             <div className="right">
-                                <div className="button" onClick={this.onChangeCardInfo}>{translate("change")}</div>
+                                <div className="button" onClick={this.onChangeCardInfo}>{this.state.partial_payment_info ? translate("change") : translate("register")}</div>
                             </div>
                         </div>
                     </div>
