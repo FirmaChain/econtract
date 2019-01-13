@@ -111,10 +111,10 @@ export default class extends React.Component {
             subTitle:translate("new_folder_name"),
             placeholder:translate("please_input_folder_name"),
             onConfirm: async (folder_name) => {
-                if(!folder_name || folder_name == "") {
+                if(!folder_name || folder_name.trim() == "") {
                     return alert(translate("please_input_folder_name"))
                 }
-                let resp = await this.props.add_folder_template(folder_name)
+                let resp = await this.props.add_folder_template(folder_name.trim())
 
                 if(resp) {
                     await this.props.folder_list_template()

@@ -375,12 +375,10 @@ export default class extends React.Component {
             subTitle:translate("new_folder_name"),
             placeholder:translate("please_input_folder_name"),
             onConfirm: async (folder_name) => {
-                //TODO 폴더 생성 api
-
-                if(!folder_name || folder_name == "") {
+                if(!folder_name || folder_name.trim() == "") {
                     return alert(translate("please_input_folder_name"))
                 }
-                let resp = await this.props.add_folder_contract(folder_name, this.props.match.params.group_id || null)
+                let resp = await this.props.add_folder_contract(folder_name.trim(), this.props.match.params.group_id || null)
 
                 if(resp) {
                     await this.props.folder_list_contract(this.props.match.params.group_id || null)
@@ -475,10 +473,10 @@ export default class extends React.Component {
             subTitle:translate("new_folder_name"),
             placeholder: translate("change_contract_folder_name_desc", [this.getTitle().title]),
             onConfirm: async (folder_name) => {
-                if(!folder_name || folder_name == "") {
+                if(!folder_name || folder_name.trim() == "") {
                     return alert(translate("please_input_folder_name"))
                 }
-                let resp = await this.props.change_folder_contract(this.getTitle().folder_id, folder_name, this.props.match.params.group_id || null)
+                let resp = await this.props.change_folder_contract(this.getTitle().folder_id, folder_name.trim(), this.props.match.params.group_id || null)
 
                 if(resp) {
                     await this.props.folder_list_contract(this.props.match.params.group_id || null)
