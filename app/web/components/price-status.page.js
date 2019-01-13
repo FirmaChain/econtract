@@ -23,6 +23,7 @@ import {
     fetch_user_info,
     get_subscribe_plan,
     get_current_subscription,
+    get_current_subscription_payment,
     get_current_onetime_ticket,
     input_payment_info,
     get_payment_info,
@@ -41,6 +42,7 @@ let mapDispatchToProps = {
     fetch_user_info,
     get_subscribe_plan,
     get_current_subscription,
+    get_current_subscription_payment,
     get_current_onetime_ticket,
     input_payment_info,
     get_payment_info,
@@ -69,6 +71,7 @@ export default class extends React.Component {
         let payment_info = await this.props.get_payment_info();
         let partial_payment_info = payment_info ? JSON.parse(payment_info.preview_data) : null;
         let payment_logs = await this.props.get_payment_log();
+        let current_subscription_payment = await this.props.get_current_subscription_payment().payload;
 
         console.log("subscription_plans", subscription_plans)
         console.log("current_subscription", current_subscription)
@@ -76,6 +79,7 @@ export default class extends React.Component {
         console.log("payment_info", payment_info)
         console.log("partial_payment_info", partial_payment_info)
         console.log("payment_logs", payment_logs);
+        conosle.log("current_subscription_payment", current_subscription_payment);
 
         this.setState({
             subscription_plans,

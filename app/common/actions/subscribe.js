@@ -8,6 +8,7 @@ import {
     api_select_subscription_plan,
     api_make_yearly_commitment,
     api_get_payment_log,
+    api_get_current_subscription_payment,
 } from "../../../gen_api"
 
 export function get_subscribe_plan(){
@@ -63,3 +64,10 @@ export function make_yearly_commitment(plan_id) {
         return (await api_make_yearly_commitment(plan_id)).payload;
     };
 }
+
+export function get_current_subscription_payment(){
+    return async function(){
+        return (await api_get_current_subscription_payment());
+    };
+}
+
