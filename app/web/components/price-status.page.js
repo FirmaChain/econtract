@@ -84,7 +84,7 @@ export default class extends React.Component {
     }
 
     onClickChangeRegularPayment = async () => {
-        if(this.state.partial_payment_info) {
+        if(!this.state.partial_payment_info) {
             let result = await this.onChangeCardInfo()
             if(!result) return
         }
