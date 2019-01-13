@@ -318,7 +318,7 @@ class PurchaseGroupMemberChange extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            change_count:props.count
+            change_count:props.count,
         };
     }
 
@@ -348,7 +348,7 @@ class PurchaseGroupMemberChange extends React.Component {
                         value={this.state.change_count}
                         placeholder={translate("please_input_modify_account_group_count")}/>
                 </div>
-                <div className="sub-title">{translate("info_of_now_account", [1, 4])}</div>
+            <div className="sub-title">{translate("info_of_now_account", [this.props.count])}</div>
                 <div className="sub-desc" dangerouslySetInnerHTML={{__html:translate("add_sub_account_purchase_desc")}}></div>
                 <div className="button">
                     <div className="submit" onClick={this.onResponse}>{translate("add")}</div>
