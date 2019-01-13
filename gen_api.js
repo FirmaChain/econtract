@@ -545,6 +545,15 @@ export async function api_make_yearly_commitment(plan_id){
         session:window.getCookie("session")
     });
 }
+export async function api_make_monthly_commitment(plan_id){
+    let __data = new FormData();
+
+    if(plan_id != null) __data.append('plan_id', plan_id)
+
+    return await post("/make_monthly_commitment", __data,{
+        session:window.getCookie("session")
+    });
+}
 export async function api_increase_account(account_count){
     let __data = new FormData();
 
