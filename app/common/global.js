@@ -27,6 +27,7 @@ window.CONST = {
         ONETIME: 1,
         MONTHLY: 2,
         YEARLY: 3,
+        MEMBER: 4,
     },
     PAYMENT_LOG_TYPE: {
         YEARLY_COMMITMENT: 1,
@@ -40,6 +41,7 @@ window.CONST = {
         YEARLY_PAYMENT_MEMBER: 9,
         YEARLY_PAYMENT_MEMBER_UPGRADE: 10,
         MONTHLY_PAYMENT_MEMBER: 11,
+        MONTHLY_PAYMENT_MEMBER_UPGRADE: 12,
     },
 }
 
