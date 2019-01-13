@@ -467,6 +467,26 @@ export default class extends React.Component {
         return this.state.contracts_checks.length == contracts.list.length 
     }
 
+    onChangeFolderName = async () => {
+
+        window.openModal("AddCommonModal", {
+            icon:"fas fa-folder",
+            title:translate("change_contract_folder_name"),
+            subTitle:translate("new_folder_name"),
+            placeholder: translate("change_contract_folder_name_desc", [this.getTitle().title]),
+            onConfirm: async (folder_name) => {
+                if(!folder_name || folder_name == "") {
+                    return alert(translate("please_input_folder_name"))
+                }
+                let resp = await this.props.change_folder_contract(this.getTitle().folder_id, folder_name, this.props.match.params.group_id || null)
+
+                if(resp) {
+                    await this.props.folder_list_contract(this.props.match.params.group_id || null)
+                }
+            }
+        })
+    }
+
     openContract = async (contract, type, select_tab = 0, e) => {
         e.stopPropagation()
         select_tab = select_tab ? select_tab : 0
@@ -743,7 +763,10 @@ export default class extends React.Component {
 				</div>
 			</div>
 			<div className="contract-list">
-                <div className="title">{this.getTitle().title}</div>
+                <div className="title">
+                    {this.getTitle().title} &nbsp;
+                    { (this.getTitle().id == "folder" && this.getTitle().folder_id != 0) ? <i className="fas fa-cog" onClick={this.onChangeFolderName}></i> : null }
+                </div>
 				<div className="search">
                     <input className="common-textbox" type="text"
                         placeholder={translate("please_input_search_query_more_2")}
