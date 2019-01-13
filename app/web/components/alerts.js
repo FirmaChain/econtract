@@ -350,9 +350,7 @@ class PurchaseGroupMemberChange extends React.Component {
                         placeholder={translate("please_input_modify_account_group_count")}/>
                 </div>
                 <div className="sub-title">{translate("info_of_now_account", [1, 4])}</div>
-                <div className="sub-desc">
-                    {translate("add_sub_account_purchase_desc")}
-                </div>
+                <div className="sub-desc" dangerouslySetInnerHTML={{__html:translate("add_sub_account_purchase_desc")}}></div>
                 <div className="button">
                     <div className="submit" onClick={this.onResponse}>{translate("add")}</div>
                     <div className="cancel" onClick={this.closeSelf}>{translate("cancel")}</div>
