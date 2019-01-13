@@ -596,5 +596,6 @@
     "card_number_not_valid":["카드 번호가 유효하지 않습니다.", "", ""],
     "card_expiry_not_valid":["카드 유효기간이 잘못되었습니다.", "", ""],
     "card_cvc_not_valid":["카드 CVC가 유효하지 않습니다.", "", ""],
-    "pre_purchase_date":["다음 결제일", "", ""]
+    "pre_purchase_date":["다음 결제일", "", ""],
+    "group_member_count":["그룹 계정 수", "", ""]
 }

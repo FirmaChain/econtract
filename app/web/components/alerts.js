@@ -298,7 +298,7 @@ class CardInfo extends React.Component {
                         value={this.state.selected_expiration_year_label} placeholder={translate("year")} />
                 </div>
                 <div className="text-box">
-                    <div className="sub-title">{translate("social_number_front")}/</div>
+                    <div className="sub-title">{translate("social_number_front")}</div>
                     <input type="number" className="common-textbox"
                         onChange={(e)=>this.setState({social_number_front:e.target.value})}
                         value={this.state.social_number_front}
