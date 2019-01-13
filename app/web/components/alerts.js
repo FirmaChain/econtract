@@ -4,6 +4,7 @@ import {modal} from "./modalmanager"
 import history from '../history';
 import translate from "../../common/translate"
 import moment from "moment"
+import creditcardutils from 'creditcardutils';
 
 import Dropdown from "react-dropdown"
 import 'react-dropdown/style.css'
@@ -208,7 +209,6 @@ class CardInfo extends React.Component {
             selected_expiration_month_label,
             selected_expiration_year_label,
         }
-        if(this.props.data) _ = {..._, ...this.props.data}
         this.setState(_);
     }
 
@@ -216,9 +216,34 @@ class CardInfo extends React.Component {
         window.closeModal(this.props.modalId)
     }
 
+    onChangeCardNumber = (e) => {
+        let card_number = e.target.value
+        let is_valid = creditcardutils.validateCardNumber(card_number)
+        if(is_valid)
+            card_number = creditcardutils.formatCardNumber(card_number)
+        this.setState({
+            card_number
+        })
+    }
+
     onResponse = () => {
-        // Input validation check
+
+        let is_valid = creditcardutils.validateCardNumber(this.state.card_number)
+        if(!is_valid)
+            return alert(translate("card_number_not_valid"))
+
+        let card_type = creditcardutils.parseCardType(this.state.card_number)
+        let is_valid_expiry = creditcardutils.validateCardExpiry(this.state.selected_expiration_month, this.state.selected_expiration_year)
+        let is_valid_cvc = creditcardutils.validateCardCVC(this.state.cvc, card_type)
+
+        if(!is_valid_expiry)
+            return alert(translate("card_expiry_not_valid"))
+
+        if(!is_valid_cvc)
+            return alert(translate("card_cvc_not_valid"))
+
         this.props.onResponse && this.props.onResponse({
+            card_type: card_type,
             card_number: this.state.card_number,
             cvc: this.state.cvc,
             month: this.state.selected_expiration_month,
@@ -226,6 +251,7 @@ class CardInfo extends React.Component {
             id_number: this.state.social_number_front,
         });
         this.closeSelf();
+
     }
 
     render() {
@@ -235,8 +261,8 @@ class CardInfo extends React.Component {
                 <div className="title">{translate("purchase_info_input_change")}</div>
                 <div className="text-box">
                     <div className="sub-title">{translate("card_number")}</div>
-                    <input type="number" className="common-textbox"
-                        onChange={(e)=>this.setState({card_number:e.target.value})}
+                    <input type="text" className="common-textbox"
+                        onChange={this.onChangeCardNumber}
                         value={this.state.card_number}
                         placeholder={translate("please_input_card_number")}/>
                 </div>
@@ -249,7 +275,7 @@ class CardInfo extends React.Component {
                 </div>
                 <div className="text-box">
                     <div className="sub-title">{translate("name")}</div>
-                    <input type="number" className="common-textbox"
+                    <input type="text" className="common-textbox"
                         onChange={(e)=>this.setState({name:e.target.value})}
                         value={this.state.name}
                         placeholder={translate("please_input_name")}/>
