@@ -26,6 +26,7 @@ import {
     get_current_onetime_ticket,
     input_payment_info,
     get_payment_info,
+    get_payment_log,
     select_subscription_plan,
     make_yearly_commitment,
 } from "../../common/actions"
@@ -43,6 +44,7 @@ let mapDispatchToProps = {
     get_current_onetime_ticket,
     input_payment_info,
     get_payment_info,
+    get_payment_log,
     select_subscription_plan,
     make_yearly_commitment,
 }
@@ -65,15 +67,15 @@ export default class extends React.Component {
         let current_subscription = await this.props.get_current_subscription();
         let current_onetime_ticket = await this.props.get_current_onetime_ticket();
         let payment_info = await this.props.get_payment_info();
-        let partial_payment_info
-        if(payment_info)
-            partial_payment_info = JSON.parse(payment_info.preview_data);
+        let partial_payment_info = payment_info ? JSON.parse(payment_info.preview_data) : null;
+        let payment_logs = await this.props.get_payment_log();
 
         console.log("subscription_plans", subscription_plans)
         console.log("current_subscription", current_subscription)
         console.log("current_onetime_ticket", current_onetime_ticket)
         console.log("payment_info", payment_info)
         console.log("partial_payment_info", partial_payment_info)
+        console.log("payment_logs", payment_logs);
 
         this.setState({
             subscription_plans,
