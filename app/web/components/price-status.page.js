@@ -309,35 +309,35 @@ export default class extends React.Component {
                             case window.CONST.PAYMENT_LOG_TYPE.YEARLY_COMMITMENT:
                                 break;
                             case window.CONST.PAYMENT_LOG_TYPE.YEARLY_PAYMENT_REGULAR:
-                                type = "연간 결제" + e.total_count
+                                type = translate("YEARLY_PAYMENT_REGULAR") + e.total_count
                                 if(e.reference_id == "PENDING")
-                                    type += " (결제 예정)"
+                                    type += ` (${translate("payment_pending")})`
                                 break;
                             case window.CONST.PAYMENT_LOG_TYPE.YEARLY_PAYMENT_UPGRADE:
-                                type = "연간 결제 변경"
+                                type = translate("YEARLY_PAYMENT_UPGRADE")
                                 break;
                             case window.CONST.PAYMENT_LOG_TYPE.YEARLY_DISTRIBUTE_TICKET:
-                                type = "연간 티켓 충전"
+                                type = translate("YEARLY_DISTRIBUTE_TICKET")
                                 break;
                             case window.CONST.PAYMENT_LOG_TYPE.MONTHLY_PAYMENT_AND_DISTRIBUTE:
-                                type = "월간 결제 " + e.total_count
+                                type = translate("MONTHLY_PAYMENT_AND_DISTRIBUTE") + e.total_count
                                 if(e.reference_id == "PENDING")
-                                    type += " (결제 예정)"
+                                    type += ` (${translate("payment_pending")})`
                                 break;
                             case window.CONST.PAYMENT_LOG_TYPE.ONETIME_PAYMENT_AND_DISTRIBUTE:
-                                type = "건별 결제"
+                                type = translate("ONETIME_PAYMENT_AND_DISTRIBUTE")
                                 break;
                             case window.CONST.PAYMENT_LOG_TYPE.PROMOTION_DISTRIBUTE_TICKET:
-                                type = "프로모션 이용권 충전"
+                                type = translate("PROMOTION_DISTRIBUTE_TICKET")
                                 break;
                             case window.CONST.PAYMENT_LOG_TYPE.REFUND:
-                                type = "환불"
+                                type =translate("REFUND")
                                 break;
                             case window.CONST.PAYMENT_LOG_TYPE.MEMBER_PAYMENT_REGULAR:
-                                type = "그룹 계정 결제"
+                                type = translate("MEMBER_PAYMENT_REGULAR")
                                 break;
                             case window.CONST.PAYMENT_LOG_TYPE.MEMBER_PAYMENT_UPGRADE:
-                                type = "그룹원 수 추가"
+                                type = translate("MEMBER_PAYMENT_UPGRADE")
                                 break;
                         }
                         return <div className="item" key={e.log_id}>
