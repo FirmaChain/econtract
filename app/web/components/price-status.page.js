@@ -194,8 +194,10 @@ export default class extends React.Component {
                         <div className="icon"><i className="fas fa-credit-card"></i></div>
                         <div className="title">{accountTypeText} | {subscriptionText}</div>
                         <div className="desc">{translate("count_curr_all_ticket", [0, 10])}</div>
-                        <div className="sub">{translate("purchase_date")} : {moment().format("YYYY-MM-DD HH:mm:ss")}</div>
-                        <div className="sub">{translate("pre_purchase_date")} : {moment().format("YYYY-MM-DD HH:mm:ss")}</div>
+                        <div className="sub">
+                            {translate("purchase_date")} : {moment().format("YYYY-MM-DD HH:mm:ss")}<br/>
+                            {translate("pre_purchase_date")} : {moment().format("YYYY-MM-DD HH:mm:ss")}
+                        </div>
                         <div className="button-container">
                             <div className="button" onClick={this.onClickChangeRegularPayment}>{this.state.partial_payment_info ? translate("change") : translate("register")}</div>
                             {this.current_subscription ? <div className="button">{translate("terminate")}</div> : null}
@@ -205,8 +207,10 @@ export default class extends React.Component {
                         <div className="icon"><i className="fal fa-users"></i></div>
                         <div className="title">{translate("count_curr_person", [10])}</div>
                         <div className="desc">{translate("count_curr_all_ticket", [0, 10])}</div>
-                        <div className="sub">{translate("purchase_date")} : {moment().format("YYYY-MM-DD HH:mm:ss")}</div>
-                        <div className="sub">{translate("pre_purchase_date")} : {moment().format("YYYY-MM-DD HH:mm:ss")}</div>
+                        <div className="sub">
+                            {translate("purchase_date")} : {moment().format("YYYY-MM-DD HH:mm:ss")}<br/>
+                            {translate("pre_purchase_date")} : {moment().format("YYYY-MM-DD HH:mm:ss")}
+                        </div>
                         <div className="button-container">
                             <div className="button" onClick={this.onChangeAccountNumber}>{translate("change")}</div>
                         </div>
