@@ -7,6 +7,7 @@ import {
     api_get_payment_info,
     api_select_subscription_plan,
     api_make_yearly_commitment,
+    api_get_payment_log,
 } from "../../../gen_api"
 
 export function get_subscribe_plan(){
@@ -42,6 +43,12 @@ export function input_payment_info(data, preview_data){
 export function get_payment_info(){
     return async function(){
         return (await api_get_payment_info()).payload;
+    };
+}
+
+export function get_payment_log(){
+    return async function(){
+        return (await api_get_payment_log()).payload;
     };
 }
 
