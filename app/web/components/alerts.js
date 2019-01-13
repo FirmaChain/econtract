@@ -410,7 +410,7 @@ class PurchaseRegularPayment extends React.Component {
     }
 
     onResponse = () => {
-        this.props.onResponse && this.props.onResponse(this.state.select_period == 0 ? this.state.select_monthly_plan.plan_id : this.state.select_yearly_plan.plan_id);
+        this.props.onResponse && this.props.onResponse(this.state.select_period, this.state.select_period == 0 ? this.state.select_monthly_plan.plan_id : this.state.select_yearly_plan.plan_id);
         this.closeSelf();
     }
 
