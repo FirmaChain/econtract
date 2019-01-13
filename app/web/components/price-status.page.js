@@ -251,8 +251,7 @@ export default class extends React.Component {
                     </div>
                     {this.props.user_info.account_type != 0 ? <div className="box gray-box">
                         <div className="icon"><i className="fal fa-users"></i></div>
-                        <div className="title">{translate("count_curr_person", [this.state.corp_member_count])}</div>
-                        <div className="title">{translate("count_curr_person", [this.state.corp_member_count_max])}</div>
+                        <div className="title">{translate("count_curr_all_person", [this.state.corp_member_count, this.state.corp_member_count_max])}</div>
                         <div className="desc">&nbsp;</div>
                         <div className="sub">
                             {translate("purchase_date")} : {moment().format("YYYY-MM-DD HH:mm:ss")}<br/>
