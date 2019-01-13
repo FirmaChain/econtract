@@ -10,6 +10,7 @@ import CheckBox2 from "./checkbox2"
 import history from '../history'
 import Route from "./custom_route"
 import moment from "moment"
+import creditcardutils from 'creditcardutils';
 
 import ProfilePage from "./profile.page"
 import PriceStatusPage from "./price-status.page"
@@ -127,7 +128,6 @@ export default class extends React.Component {
             return true
 
         let result = await new Promise( r => window.openModal("CardInfo", {
-            data:this.state.partial_payment_info || null,
             onResponse: async (card_info) => {
                 //TODO: necessary to encrypt via firma's private key
                 let encrypted_data = JSON.stringify(card_info);
@@ -226,7 +226,7 @@ export default class extends React.Component {
                                 <div className="desc">{this.state.partial_payment_info ? this.state.partial_payment_info.partial_card_number : translate("no_register_status")}</div>
                             </div>
                             <div className="right">
-                                <div className="button" onClick={this.onChangeCardInfo}>{this.state.partial_payment_info ? translate("change") : translate("register")}</div>
+                                <div className="button" onClick={this.onChangeCardInfo}>{this.state.partial_payment_info ? translate("change") : translate("re_register")}</div>
                             </div>
                         </div>
                     </div>

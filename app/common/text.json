@@ -590,5 +590,6 @@
     "contract_hash_or_address": ["계약 해시값 또는 주소", "", ""],
     "upload_doc_file": ["업로드한 문서 파일", "", ""],
     "fail_reason": ["실패 사유", "", ""],
-    "re_verification": ["재 검증 하기", "", ""]
+    "re_verification": ["재 검증 하기", "", ""],
+    "re_register": ["재등록", "", ""]
 }
