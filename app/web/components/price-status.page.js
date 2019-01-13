@@ -226,7 +226,8 @@ export default class extends React.Component {
         if (current_subscription) {
             current_subscription_info = subscription_plans.find(e=>e.plan_id == current_subscription.plan_id);
             if (current_subscription_info) {
-                subscriptionText = current_subscription_info.type == 1 ? translate("monthly_purchase") : translate("yearly_purchase");
+                console.log(current_subscription_info)
+                subscriptionText = current_subscription_info.type == 2 ? translate("monthly_purchase") : translate("yearly_purchase"); // 1 건별 2 월간 3 년간
                 subscriptionText += " ";
                 subscriptionText += current_subscription_info.data.title;
             }
@@ -261,8 +262,8 @@ export default class extends React.Component {
                     </div>
                     {this.props.user_info.account_type != 0 ? <div className="box gray-box">
                         <div className="icon"><i className="fal fa-users"></i></div>
-                        <div className="title">{translate("count_curr_all_person", [this.state.corp_member_count, this.state.corp_member_count_max])}</div>
-                        <div className="desc">&nbsp;</div>
+                        <div className="title">{translate("group_member_count")}</div>
+                        <div className="desc">{translate("count_curr_all_person", [this.state.corp_member_count, this.state.corp_member_count_max])}</div>
                         <div className="sub">
                             {translate("purchase_date")} : {moment().format("YYYY-MM-DD HH:mm:ss")}<br/>
                             {translate("pre_purchase_date")} : {moment().format("YYYY-MM-DD HH:mm:ss")}
@@ -304,13 +305,36 @@ export default class extends React.Component {
                     {this.state.payment_logs ? this.state.payment_logs.map( (e,k) => {
                         let type
                         switch(e.type) {
+                            case window.CONST.PAYMENT_LOG_TYPE.YEARLY_COMMITMENT:
+                                break;
+                            case window.CONST.PAYMENT_LOG_TYPE.YEARLY_PAYMENT_REGULAR:
+                                type = "연간 결제 지불"
+                                break;
+                            case window.CONST.PAYMENT_LOG_TYPE.YEARLY_PAYMENT_UPGRADE:
+                                type = "연간 결제 변경"
+                                break;
+                            case window.CONST.PAYMENT_LOG_TYPE.YEARLY_DISTRIBUTE_TICKET:
+                                type = "연간 티켓 충전"
+                                break;
+                            case window.CONST.PAYMENT_LOG_TYPE.MONTHLY_PAYMENT_AND_DISTRIBUTE:
+                                type = "월간 결제 " + e.total_count
+                                if(e.reference_id == "PENDING")
+                                    type += " (결제 예정)"
+                                break;
                             case window.CONST.PAYMENT_LOG_TYPE.ONETIME_PAYMENT_AND_DISTRIBUTE:
                                 type = "건별 결제"
                                 break;
-                            case window.CONST.PAYMENT_LOG_TYPE.YEARLY_PAYMENT_REGULAR:
-                                type = "월간 결제"
-                                if(e.reference_id == "PENDING")
-                                    type += " (결제 예정)"
+                            case window.CONST.PAYMENT_LOG_TYPE.PROMOTION_DISTRIBUTE_TICKET:
+                                type = "프로모션 이용권 충전"
+                                break;
+                            case window.CONST.PAYMENT_LOG_TYPE.REFUND:
+                                type = "환불"
+                                break;
+                            case window.CONST.PAYMENT_LOG_TYPE.MEMBER_PAYMENT_REGULAR:
+                                type = "그룹 계정 결제"
+                                break;
+                            case window.CONST.PAYMENT_LOG_TYPE.MEMBER_PAYMENT_UPGRADE:
+                                type = "그룹원 수 추가"
                                 break;
                         }
                         return <div className="item" key={e.log_id}>
