@@ -250,7 +250,7 @@ export default class extends React.Component {
                         <div className="icon"><i className="fas fa-credit-card"></i></div>
                         <div className="title">{accountTypeText} | {subscriptionText}</div>
                         { (!current_subscription) ? null : [
-                        <div className="desc">{translate("count_curr_all_ticket", [current_subscription.unused_count, current_subscription.total_count])}</div>,
+                        <div className="desc" key={"curr_count"+current_subscription.unused_count+" "+current_subscription.total_count}>{translate("count_curr_all_ticket", [current_subscription.unused_count, current_subscription.total_count])}</div>,
                         <div className="sub" key={current_subscription.start_date}>
                             {translate("purchase_date")} : {moment(this.state.current_subscription_payment.start_date).format("YYYY-MM-DD HH:mm:ss")}<br/>
                             {translate("pre_purchase_date")} : {moment(this.state.current_subscription_payment.end_date).format("YYYY-MM-DD HH:mm:ss")}
