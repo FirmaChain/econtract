@@ -32,6 +32,7 @@ import {
     select_subscription_plan,
     make_yearly_commitment,
     increase_account,
+    get_maximum_member_count,
 } from "../../common/actions"
 
 let mapStateToProps = (state)=>{
@@ -53,6 +54,7 @@ let mapDispatchToProps = {
     select_subscription_plan,
     make_yearly_commitment,
     increase_account,
+    get_maximum_member_count,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -77,8 +79,10 @@ export default class extends React.Component {
         let payment_logs = (await this.props.get_payment_log()).payload;
         let current_subscription_payment = (await this.props.get_current_subscription_payment()).payload;
         let corp_member_count = 0;
+        let corp_member_count_max = 0;
         if (this.props.user_info.account_type != 0) {
             corp_member_count = (await this.props.get_corp_member_count()).payload.count;
+            corp_member_count_max = (await this.props.get_maximum_member_count()).payload;
         }
 
         console.log("subscription_plans", subscription_plans)
@@ -97,6 +101,7 @@ export default class extends React.Component {
             payment_logs,
             current_subscription_payment,
             corp_member_count,
+            corp_member_count_max,
         })
     }
 
@@ -247,6 +252,7 @@ export default class extends React.Component {
                     {this.props.user_info.account_type != 0 ? <div className="box gray-box">
                         <div className="icon"><i className="fal fa-users"></i></div>
                         <div className="title">{translate("count_curr_person", [this.state.corp_member_count])}</div>
+                        <div className="title">{translate("count_curr_person", [this.state.corp_member_count_max])}</div>
                         <div className="desc">&nbsp;</div>
                         <div className="sub">
                             {translate("purchase_date")} : {moment().format("YYYY-MM-DD HH:mm:ss")}<br/>

@@ -10,6 +10,7 @@ import {
     api_increase_account,
     api_get_payment_log,
     api_get_current_subscription_payment,
+    api_get_maximum_member_count,
 } from "../../../gen_api"
 
 export function get_subscribe_plan(){
@@ -75,6 +76,12 @@ export function increase_account(account_count){
 export function get_current_subscription_payment(){
     return async function(){
         return (await api_get_current_subscription_payment());
+    };
+}
+
+export function get_maximum_member_count(){
+    return async function(){
+        return (await api_get_maximum_member_count());
     };
 }
 
