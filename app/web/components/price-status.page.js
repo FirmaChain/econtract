@@ -216,7 +216,7 @@ export default class extends React.Component {
                     <div className="box blue-box">
                         <div className="icon"><i className="fas fa-credit-card"></i></div>
                         <div className="title">{accountTypeText} | {subscriptionText}</div>
-                        { (!current_subscription || !current_subscription_info) ? null && : [
+                        { (!current_subscription || !current_subscription_info) ? null : [
                         <div className="desc">{translate("count_curr_all_ticket", [current_subscription_info.unused_count, current_subscription_info.total_count])}</div>,
                         <div className="sub">
                             {translate("purchase_date")} : {moment().format("YYYY-MM-DD HH:mm:ss")}<br/>
