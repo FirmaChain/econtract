@@ -219,6 +219,7 @@ class CardInfo extends React.Component {
     onChangeCardNumber = (e) => {
         let card_number = e.target.value
         let is_valid = creditcardutils.validateCardNumber(card_number)
+        console.log(creditcardutils.validateCardNumber)
         if(is_valid)
             card_number = creditcardutils.formatCardNumber(card_number)
         this.setState({

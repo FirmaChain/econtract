@@ -115,7 +115,7 @@ export default class extends React.Component {
     }
 
     onBuyTicket = async () => {
-        if(this.state.partial_payment_info) {
+        if(!this.state.partial_payment_info) {
             let result = await this.onChangeCardInfo()
             if(!result) return
         }
@@ -126,9 +126,6 @@ export default class extends React.Component {
     }
 
     onChangeCardInfo = async () => {
-        if(this.state.partial_payment_info)
-            return true
-
         let result = await new Promise( r => window.openModal("CardInfo", {
             onResponse: async (card_info) => {
                 //TODO: necessary to encrypt via firma's private key
@@ -150,7 +147,7 @@ export default class extends React.Component {
     }
 
     onChangeAccountNumber = async () => {
-        if(this.state.partial_payment_info) {
+        if(!this.state.partial_payment_info) {
             let result = await this.onChangeCardInfo()
             if(!result) return
         }
