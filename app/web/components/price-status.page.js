@@ -76,7 +76,7 @@ export default class extends React.Component {
         let current_subscription_payment = (await this.props.get_current_subscription_payment()).payload;
         let corp_member_count = 0;
         if (this.props.user_info.account_type != 0) {
-            corp_member_count = (await this.props.get_corp_member_count()).payload;
+            corp_member_count = (await this.props.get_corp_member_count()).payload.count;
         }
 
         console.log("subscription_plans", subscription_plans)
