@@ -232,7 +232,6 @@ export default class extends React.Component {
                     {this.props.user_info.account_type != 0 ? <div className="box gray-box">
                         <div className="icon"><i className="fal fa-users"></i></div>
                         <div className="title">{translate("count_curr_person", [10])}</div>
-                        <div className="desc">{translate("count_curr_all_ticket", [0, 10])}</div>
                         <div className="sub">
                             {translate("purchase_date")} : {moment().format("YYYY-MM-DD HH:mm:ss")}<br/>
                             {translate("pre_purchase_date")} : {moment().format("YYYY-MM-DD HH:mm:ss")}
