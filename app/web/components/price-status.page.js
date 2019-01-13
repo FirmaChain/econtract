@@ -208,7 +208,6 @@ export default class extends React.Component {
         let subscription_plans = this.state.subscription_plans ? this.state.subscription_plans : []
         let current_subscription = this.state.current_subscription ? this.state.current_subscription : null
         let current_onetime_ticket = this.state.current_onetime_ticket ? this.state.current_onetime_ticket : {total_count: 0, unused_count: 0};
-        console.log("what", current_onetime_ticket);
 
         let accountTypeText;
         let subscriptionText;
@@ -278,7 +277,7 @@ export default class extends React.Component {
                         <div className="bar middlegray-bar">
                             <div className="left">
                                 <div className="title">{translate("one_time_ticket")}</div>
-                                <div className="desc">{translate("remain_count_msg", [this.state.current_onetime_ticket.unused_count])}</div>
+                                <div className="desc">{translate("remain_count_msg", [current_onetime_ticket.unused_count])}</div>
                                 <div className="sub">{translate("ticket_use_order_msg")}</div>
                             </div>
                             <div className="right">
