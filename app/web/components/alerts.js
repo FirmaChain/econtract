@@ -963,7 +963,7 @@ class ContractListModal extends React.Component {
 
                 <div className="button">
                     <div className="submit" onClick={this.onConfirm}>{translate("remove")}</div>
-                    <div className="cancel" onClick={this.closeSelf}>{trnaslate("cancel")}</div>
+                    <div className="cancel" onClick={this.closeSelf}>{translate("cancel")}</div>
                 </div>
             </div>
         </div>
