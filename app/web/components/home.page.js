@@ -67,7 +67,7 @@ export default class extends React.Component {
     }
 
 	render() {
-        if(!this.props.user_info)
+        if(!this.props.user_info || this.props.user_info == -2)
             return <div />
 
         console.log(this.props.user_info)
