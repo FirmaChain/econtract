@@ -39,7 +39,7 @@ export default class extends React.Component{
                 await window.hideIndicator()
             })()
         }*/
-        (async() {
+        (async() => {
             let totalTicket = await this.props.get_current_total_ticket();
             if (totalTicket) {
                 this.setState(total_ticket_count: totalTicket.payload.total_count, unused_ticket_count: totalTicket.payload.unused_count);
