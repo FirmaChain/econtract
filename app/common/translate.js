@@ -16,6 +16,7 @@ export default function(ID, params = []){
             break;
     }
     let text = _[ID][language]
+    text = text.replace(/\\\\n/, '\\n')
     params.map( (e, k) => {
         let regex = new RegExp(`\\{${k}\\}`, "g")
         text = text.replace(regex, e)
