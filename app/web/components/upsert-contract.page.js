@@ -370,7 +370,7 @@ export default class extends React.Component {
         if( (this.state.contract.html || "") != this.state.model)
             return alert(translate("if_modify_content_not_sign"))
 
-        let exist_ticket = (await this.props.api_check_ticket_count()).payload
+        let exist_ticket = (await this.props.check_ticket_count()).payload
         if(!exist_ticket)
             return alert(translate("no_ticket_please_charge"))
 
