@@ -4,7 +4,8 @@ import history from '../history';
 import { connect } from 'react-redux';
 import translate from "../../common/translate"
 import {
-    fetch_user_info
+    fetch_user_info,
+    get_current_total_ticket,
 } from "../../common/actions"
 import moment from "moment"
 
@@ -19,14 +20,15 @@ let mapStateToProps = (state)=>{
 }
 
 let mapDispatchToProps = {
-    fetch_user_info
+    fetch_user_info,
+    get_current_total_ticket,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
 export default class extends React.Component{
     constructor(){
 		super();
-		this.state={};
+		this.state={total_ticket_count: 0, unused_ticket_count: 0};
     }
 
     componentDidMount(){
@@ -37,6 +39,10 @@ export default class extends React.Component{
                 await window.hideIndicator()
             })()
         }*/
+        let totalTicket = await this.props.get_current_total_ticket();
+        if (totalTicket) {
+            this.setState(total_ticket_count: totalTicket.payload.total_count, unused_ticket_count: totalTicket.payload.unused_count);
+        }
 
         this.update()
         this.updateIdx = setInterval(this.update, 1000)
@@ -141,7 +147,7 @@ export default class extends React.Component{
                             <div className="text">{translate("tickets_status")}</div>
                             <div className="status">
                                 <span className="icon"><i className="far fa-usd-circle"></i></span>
-                                {translate("corporation")} 00 / 00 <span className="small">{translate("ticket")}</span> 
+                                {translate("corporation")} {this.state.unused_ticket_count} / {this.state.total_ticket_count} <span className="small">{translate("ticket")}</span> 
                             </div>
                             {/*<div className="date">
                                 {translate("yearly_purchase")} | {moment().format("YYYY-MM-DD HH:mm:ss")}
