@@ -48,6 +48,10 @@ export default class extends React.Component {
                     window.logout()
                     alert(translate("already_withdraw_account"))
                     history.replace("/login")
+                } else if(user == -3) {
+                    window.logout()
+                    alert(translate("no_group_account"))
+                    history.replace("/login")
                 }
                 await window.hideIndicator()
             })()

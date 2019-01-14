@@ -56,13 +56,22 @@ export function fetch_user_info(){
                         })
                         return -2
                     }
-                    console.log(resp.payload)
-                    corp_info = decrypt_corp_info(Buffer.from(user_info.corp_key, 'hex'), new Buffer(resp.payload.corp_info.data) )
+                    if(resp.payload.group_public_keys.length == 0) {
+                        dispatch({
+                            type:RELOAD_USERINFO,
+                            payload:-3
+                        })
+                        return -3
+                    }
+
                     let keys = {}
                     for(let v of resp.payload.group_public_keys) {
                         keys[v.group_id] = Buffer.from(v.group_public_key).toString("hex")
                     }
                     _.group_public_keys = keys
+
+                    corp_info = decrypt_corp_info(Buffer.from(user_info.corp_key, 'hex'), new Buffer(resp.payload.corp_info.data) )
+
                 }
                 if(!!resp.payload.public_info)
                     public_info = decrypt_corp_info(Buffer.from(user_info.corp_key, 'hex'), new Buffer(resp.payload.public_info.data) )
