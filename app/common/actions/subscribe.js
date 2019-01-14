@@ -100,9 +100,9 @@ export function get_maximum_member_count(){
     };
 }
 
-export function api_check_ticket_count(){
+export function check_ticket_count(){
     return async function(){
-        return (await api_api_check_ticket_count());
+        return (await api_check_ticket_count());
     };
 }
 
