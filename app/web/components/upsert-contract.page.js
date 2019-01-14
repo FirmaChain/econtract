@@ -39,7 +39,7 @@ import {
     move_contract_can_edit_account_id,
     get_chats,
     send_chat,
-    api_check_ticket_count,
+    check_ticket_count,
     select_subject,
 
 } from "../../common/actions"
@@ -67,7 +67,7 @@ let mapDispatchToProps = {
     move_contract_can_edit_account_id,
     get_chats,
     send_chat,
-    api_check_ticket_count,
+    check_ticket_count,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
