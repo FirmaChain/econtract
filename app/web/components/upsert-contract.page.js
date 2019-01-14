@@ -305,7 +305,7 @@ export default class extends React.Component {
             onConfirm : async (user)=>{
 
                 if((this.state.contract.html || "") != this.state.model)
-                    if(await window.confirm(translate("you_have_modify_content_save_and_pass_modify_verification")))
+                    if(window._confirm(translate("you_have_modify_content_save_and_pass_modify_verification")))
                         await this.onClickContractSave();
 
                 await window.showIndicator()
@@ -353,7 +353,7 @@ export default class extends React.Component {
         }
 
         if((this.state.contract.html || "") != this.state.model)
-            if(await window.confirm(translate("Are_U_have_modify_content_save_and_register_sign_info")))
+            if(window._confirm(translate("Are_U_have_modify_content_save_and_register_sign_info")))
                 await this.onClickContractSave()
 
         await window.showIndicator()
