@@ -121,6 +121,11 @@ export default class extends React.Component {
                     select_folder_id:templateData.folder_id,
                     select_folder_label:select_folder_label,
                 })
+            } else {
+                this.setState({
+                    select_folder_id:-1,
+                    select_folder_label:translate("not_insert_folder"),
+                })
             }
             await window.hideIndicator()
         })()
@@ -209,6 +214,7 @@ export default class extends React.Component {
 
 	render() {
         let folders = this.props.template_folders ? this.props.template_folders : []
+        folders.unshift({folder_id:-1, subject:translate("not_insert_folder")})
         return (<div className="upsert-template-page">
             <div className="header-page">
                 <div className="header">
