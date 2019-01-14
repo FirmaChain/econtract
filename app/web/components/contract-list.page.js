@@ -651,6 +651,10 @@ export default class extends React.Component {
             usernames = usernames.join(", ")
         }
 
+        let button_text = e.status == 2 ? translate("view") : translate("sign")
+
+        // TODO view privilege
+
         return <div key={e.contract_id} className="item" onClick={this.onClickOpenContract.bind(this, e, 0)}>
             <div className="list-body-item list-chkbox">
                 <CheckBox2 size={18}
@@ -669,7 +673,7 @@ export default class extends React.Component {
             <div className="list-body-item list-action">
                 <div className="button-container">
                     <div className={"action-button " + (e.status == 2 ? "action-transparent-but" : "action-blue-but")} onClick={this.onClickOpenContract.bind(this, e, 1)}>
-                        {e.status == 2 ? translate("view") : translate("sign")}
+                        {button_text}
                     </div>
                     <div className={"arrow-button " + (e.status == 2 ? "arrow-transparent-but" : "arrow-blue-but")} onClick={this.onClickOption.bind(this, e.contract_id)} >
                         <i className="fas fa-caret-down"></i>
