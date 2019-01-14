@@ -6,11 +6,9 @@ import "./alerts"
 
 export default class extends React.Component {
 	render() {
-		return (
-			<div>
-				<ModalManager />
-				{ this.props.children }
-			</div>
-		);
+		return <div>
+			<ModalManager />
+			<div style={{zoom:"90%"}}>{ this.props.children }</div>
+		</div>
 	}
 }

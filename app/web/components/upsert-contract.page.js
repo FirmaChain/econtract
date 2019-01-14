@@ -395,7 +395,7 @@ export default class extends React.Component {
 
         window.openModal("DrawSign",{
             onFinish : async (signature)=>{
-                let exist_ticket = (await this.props.api_check_ticket_count()).payload
+                let exist_ticket = (await this.props.check_ticket_count()).payload
                 if(!exist_ticket)
                     return alert(translate("no_ticket_please_charge"))
                 
