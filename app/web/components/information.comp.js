@@ -39,10 +39,12 @@ export default class extends React.Component{
                 await window.hideIndicator()
             })()
         }*/
-        let totalTicket = await this.props.get_current_total_ticket();
-        if (totalTicket) {
-            this.setState(total_ticket_count: totalTicket.payload.total_count, unused_ticket_count: totalTicket.payload.unused_count);
-        }
+        (async() {
+            let totalTicket = await this.props.get_current_total_ticket();
+            if (totalTicket) {
+                this.setState(total_ticket_count: totalTicket.payload.total_count, unused_ticket_count: totalTicket.payload.unused_count);
+            }
+        })();
 
         this.update()
         this.updateIdx = setInterval(this.update, 1000)
