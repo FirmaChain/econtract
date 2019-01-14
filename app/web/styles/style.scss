@@ -189,23 +189,15 @@ a.fr-command {
         margin-left:20px;
     }
 
-    .middle {
-        flex:1;
-        font-size: $font0;
-        color:$gray;
-        text-align:center;
-
-        >span {
-            cursor:pointer;
-        }
-    }
-
     .right {
-        flex:1;
         font-size: $font0;
         color:$gray;
         text-align: right;
         margin-right:20px;
+
+        >span {
+            cursor:pointer;
+        }
     }
 }
 

@@ -12,11 +12,12 @@ export default class extends React.Component {
 
     render() {
 		return (<div className="footer">
-            <div className="left">Copyright 2018 Firma Solutions, Inc, All right reserved</div>
-            <div className="middle">
-                <span onClick={this.download.bind(this, "https://e-contract.io/static/[E-Contract]%20Terms%20&%20Conditions.pdf")}>{translate("service_term")}</span> | <span onClick={this.download.bind(this, "https://e-contract.io/static/[E-Contract]%20Privacy%20Policy.pdf")}>{translate("privacy_statement")}</span>
+            <div className="left">
+                주식회사 피르마 솔루션즈 | 서울시 성동구 성수이로 58 | <b>대표이사</b> 권승훈 | <b>사업자등록번호</b> 261-88-01086 | <b>전화번호</b> 070-4276-9499<br/>
+                Copyright 2018 Firma Solutions, Inc, All right reserved
             </div>
             <div className="right">
+                <span onClick={this.download.bind(this, "https://e-contract.io/static/[E-Contract]%20Terms%20&%20Conditions.pdf")}>{translate("service_term")}</span> | <span onClick={this.download.bind(this, "https://e-contract.io/static/[E-Contract]%20Privacy%20Policy.pdf")}>{translate("privacy_statement")}</span> <br/>
                 developer@firma-solutions.com
             </div>
         </div>)
