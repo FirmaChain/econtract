@@ -148,7 +148,7 @@ export default class extends React.Component{
                         <div className="price-status" onClick={this.onPriceStatusInfo}>
                             <div className="text">{translate("tickets_status")}</div>
                             <div className="status">
-                                <span className="icon"><i className="far fa-usd-circle"></i></span>
+                                <span className="icon"><i className="fal fa-ticket-alt"></i></span>
                                 {translate("corporation")} {this.state.unused_ticket_count} / {this.state.total_ticket_count} <span className="small">{translate("ticket")}</span> 
                             </div>
                             {/*<div className="date">
