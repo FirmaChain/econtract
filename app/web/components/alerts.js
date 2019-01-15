@@ -859,7 +859,7 @@ class DrawSign extends React.Component{
     onmouseup = ()=>{
         if(this.isImage)
             return;
-
+        
         this.isDrawing = false;
         let ctx = this.refs.canvas.getContext('2d');
         ctx.closePath()
