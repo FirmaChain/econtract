@@ -220,17 +220,16 @@ class CardInfo extends React.Component {
         let card_number = e.target.value
         let card_type_label = translate("purchase_info_card_type_no")
         let is_valid = creditcardutils.validateCardNumber(card_number)
-        console.log(creditcardutils.validateCardNumber(card_number))
 
 
         if(is_valid) {
-            card_number = creditcardutils.formatCardNumber(card_number)
             card_type_label = creditcardutils.parseCardType(card_number).toUpperCase()
+            card_number = creditcardutils.formatCardNumber(card_number)
         }
 
         this.setState({
             card_number,
-            card_type_label
+            card_type_label,
         })
     }
 
