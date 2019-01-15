@@ -173,7 +173,7 @@ export default class extends React.Component {
                 let partial_info = {};
                 partial_info['partial_card_number'] = card_info.card_number.slice(0, 4)+"-xxxx-xxxx-xxxx";
                 partial_info['name'] = card_info.name;
-                partial_info['card_type'] = card_info.card_type.toUpperCase();
+                partial_info['card_type'] = card_info.card_type;
                 let preview_data = JSON.stringify(partial_info);
                 let resp = await this.props.input_payment_info(encrypted_data, preview_data);
                 await this.onRefresh()

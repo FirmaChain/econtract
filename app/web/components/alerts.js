@@ -218,12 +218,19 @@ class CardInfo extends React.Component {
 
     onChangeCardNumber = (e) => {
         let card_number = e.target.value
+        let card_type_label = translate("purchase_info_card_type_no")
         let is_valid = creditcardutils.validateCardNumber(card_number)
         console.log(creditcardutils.validateCardNumber(card_number))
-        if(is_valid)
+
+
+        if(is_valid) {
             card_number = creditcardutils.formatCardNumber(card_number)
+            card_type_label = creditcardutils.parseCardType(card_number).toUpperCase()
+        }
+
         this.setState({
-            card_number
+            card_number,
+            card_type_label
         })
     }
 
@@ -244,7 +251,7 @@ class CardInfo extends React.Component {
             return alert(translate("card_cvc_not_valid"))
 
         this.props.onResponse && this.props.onResponse({
-            card_type: card_type,
+            card_type: card_type.toUpperCase(),
             name: this.state.name,
             card_number: this.state.card_number,
             cvc: this.state.cvc,
@@ -267,6 +274,13 @@ class CardInfo extends React.Component {
                         onChange={this.onChangeCardNumber}
                         value={this.state.card_number}
                         placeholder={translate("please_input_card_number")}/>
+                </div>
+                <div className="text-box">
+                    <div className="sub-title">{translate("purchase_info_card_type")}</div>
+                    <input type="number" className="common-textbox"
+                        disabled
+                        value={this.state.card_type_label}
+                        placeholder={translate("purchase_info_card_type_no")}/>
                 </div>
                 <div className="text-box">
                     <div className="sub-title">CVC</div>
@@ -859,7 +873,7 @@ class DrawSign extends React.Component{
     onmouseup = ()=>{
         if(this.isImage)
             return;
-        
+
         this.isDrawing = false;
         let ctx = this.refs.canvas.getContext('2d');
         ctx.closePath()
