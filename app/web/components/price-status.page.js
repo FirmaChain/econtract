@@ -284,7 +284,7 @@ export default class extends React.Component {
                         <div className="bar middlegray-bar">
                             <div className="left">
                                 <div className="title">{translate("one_time_ticket")}</div>
-                                <div className="desc">{translate("remain_count_msg", [current_onetime_ticket.unused_count])}</div>
+                                <div className="desc">{translate("remain_count_msg", [current_onetime_ticket.unused_count || 0])}</div>
                                 <div className="sub">{translate("ticket_use_order_msg")}</div>
                             </div>
                             <div className="right">
