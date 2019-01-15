@@ -508,10 +508,11 @@ export async function api_get_current_onetime_ticket_within(days){
         session:window.getCookie("session")
     });
 }
-export async function api_get_payment_log(){
+export async function api_get_payment_log(page,display_count){
     let __data = new FormData();
 
-    
+    if(page != null) __data.append('page', page);
+	if(display_count != null) __data.append('display_count', display_count)
 
     return await post("/get_payment_log", __data,{
         session:window.getCookie("session")

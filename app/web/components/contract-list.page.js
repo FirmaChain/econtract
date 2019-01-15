@@ -301,7 +301,7 @@ export default class extends React.Component {
         return result
 	}
 
-    onClickPage = async(page)=>{
+    onClickPage = async (page)=>{
     	if(this.state.cur_page == page - 1)
     		return;
 

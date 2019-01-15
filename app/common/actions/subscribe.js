@@ -52,9 +52,9 @@ export function get_payment_info(){
     };
 }
 
-export function get_payment_log(){
+export function get_payment_log(page = 0, display_count = 6){
     return async function(){
-        return (await api_get_payment_log())
+        return (await api_get_payment_log(page, display_count))
     };
 }
 
