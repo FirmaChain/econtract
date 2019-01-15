@@ -149,7 +149,7 @@ export default class extends React.Component{
                             <div className="text">{translate("tickets_status")}</div>
                             <div className="status">
                                 <span className="icon"><i className="fal fa-ticket-alt"></i></span>
-                                {translate("corporation")} {this.state.unused_ticket_count || 0} / {this.state.total_ticket_count || 0} <span className="small">{translate("ticket")}</span> 
+                                {translate(info.account_type != 0 ? "corporation" : "individual")} {this.state.unused_ticket_count || 0} / {this.state.total_ticket_count || 0} <span className="small">{translate("ticket")}</span> 
                             </div>
                             {/*<div className="date">
                                 {translate("yearly_purchase")} | {moment().format("YYYY-MM-DD HH:mm:ss")}

@@ -261,10 +261,11 @@ export default class extends React.Component {
                             {translate("pre_purchase_date")} : {moment(this.state.current_subscription_payment.end_date).format("YYYY-MM-DD")}
                         </div>]
                         }
+                        {this.props.user_info.account_type == 2 ? null : 
                         <div className="button-container">
                             <div className="button" onClick={this.onClickChangeRegularPayment}>{this.state.current_subscription ? translate("change") : translate("register")}</div>
                             {current_subscription ? <div className="button">{translate("terminate")}</div> : null}
-                        </div>
+                        </div>}
                     </div>
                     {this.props.user_info.account_type != 0 ? <div className="box gray-box">
                         <div className="icon"><i className="fal fa-users"></i></div>
@@ -274,9 +275,10 @@ export default class extends React.Component {
                             &nbsp;<br/>
                             &nbsp;
                         </div>
+                        {this.props.user_info.account_type == 2 ? null : 
                         <div className="button-container">
                             <div className="button" onClick={this.onChangeAccountNumber}>{translate("change")}</div>
-                        </div>
+                        </div>}
                     </div> : null}
                     <div className="big-box">
                         <div className="bar middlegray-bar">
