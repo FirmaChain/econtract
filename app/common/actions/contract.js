@@ -18,6 +18,7 @@ import {
     api_add_folder_in_contract,
     api_get_lock_count,
     api_send_chat,
+    api_get_contract_logs,
 /*    api_load_contract,
     api_load_contract_info,
     api_folder_list,
@@ -436,6 +437,15 @@ export function get_lock_count(group_id) {
         return resp
     }
 }
+
+
+export function get_contract_logs(contract_id, page = 0, display_count = 6) {
+    return async function() {
+        let resp = await api_get_contract_logs(contract_id, page, display_count)
+        return resp
+    }
+}
+
 
 
 
