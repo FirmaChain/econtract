@@ -2813,6 +2813,10 @@ div.checkbox2-comp{
             }
         }
 
+        >.pager-wrapper {
+            max-width:800px;
+        }
+
         >.list {
             margin-top: 50px;
             margin-bottom: 30px;
@@ -2900,6 +2904,14 @@ div.checkbox2-comp{
 
             .list-date {
                 width:150px;
+            }
+
+
+            .empty-item {
+                font-size: $font3;
+                text-align: center;
+                margin-top: 20px;
+                margin-bottom: 20px;
             }
 
         }

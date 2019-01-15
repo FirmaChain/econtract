@@ -411,6 +411,9 @@ class PurchaseTicket extends React.Component {
     }
 
     onResponse = () => {
+        if(this.state.give_count < 1)
+            return alert(translate("too_low_ticket_count"))
+
         this.props.onResponse && this.props.onResponse(this.state.give_count)
         this.closeSelf();
     }

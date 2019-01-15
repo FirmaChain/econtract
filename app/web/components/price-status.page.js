@@ -11,6 +11,7 @@ import history from '../history'
 import Route from "./custom_route"
 import moment from "moment"
 import creditcardutils from 'creditcardutils';
+import queryString from "query-string"
 
 import ProfilePage from "./profile.page"
 import PriceStatusPage from "./price-status.page"
@@ -61,11 +62,16 @@ let mapDispatchToProps = {
     get_maximum_member_count,
 }
 
+const LIST_DISPLAY_COUNT = 1
+
 @connect(mapStateToProps, mapDispatchToProps )
 export default class extends React.Component {
 	constructor(){
 		super();
-		this.state={};
+		this.state={
+            cur_use_page:0,
+            cur_payment_page:0,
+        };
 	}
 
 	componentDidMount(){
@@ -74,13 +80,15 @@ export default class extends React.Component {
         })()
     }
 
-    onRefresh = async () => {
+    onRefresh = async (nextProps) => {
+        nextProps = !!nextProps ? nextProps : this.props
+        let params = queryString.parse(nextProps.location.search)
+
         let subscription_plans = (await this.props.get_subscribe_plan()).payload.map((e)=>{e.data = JSON.parse(e.data); return e});
         let current_subscription = (await this.props.get_current_subscription()).payload;
         let current_onetime_ticket = (await this.props.get_current_onetime_ticket()).payload;
         let payment_info = (await this.props.get_payment_info()).payload;
         let partial_payment_info = payment_info ? JSON.parse(payment_info.preview_data) : null;
-        let payment_logs = (await this.props.get_payment_log()).payload;
         let current_subscription_payment = (await this.props.get_current_subscription_payment()).payload;
         let corp_member_count = 0;
         let corp_member_count_max = 0;
@@ -89,6 +97,25 @@ export default class extends React.Component {
             corp_member_count_max = (await this.props.get_maximum_member_count()).payload.count;
         }
 
+        await this.setState({
+            subscription_plans,
+            current_subscription,
+            current_onetime_ticket,
+            partial_payment_info,
+            current_subscription_payment,
+            corp_member_count,
+            corp_member_count_max,
+            cur_payment_page:Number(params.payment_page) || 0,
+            cur_use_page:Number(params.use_page) || 0,
+        })
+
+        let payment_logs = (await this.props.get_payment_log(this.state.cur_payment_page, LIST_DISPLAY_COUNT)).payload;
+
+        this.setState({
+            payment_logs,
+        })
+
+
         console.log("subscription_plans", subscription_plans)
         console.log("current_subscription", current_subscription)
         console.log("current_onetime_ticket", current_onetime_ticket)
@@ -96,17 +123,24 @@ export default class extends React.Component {
         console.log("partial_payment_info", partial_payment_info)
         console.log("payment_logs", payment_logs);
         console.log("current_subscription_payment", current_subscription_payment);
+    }
 
-        this.setState({
-            subscription_plans,
-            current_subscription,
-            current_onetime_ticket,
-            partial_payment_info,
-            payment_logs,
-            current_subscription_payment,
-            corp_member_count,
-            corp_member_count_max,
-        })
+    componentWillReceiveProps(nextProps){
+        if(nextProps.user_info === false) {
+            history.replace("/login")
+        }
+
+        let prev_payment_page = queryString.parse(nextProps.location.search).payment_page || 0
+        let payment_page = queryString.parse(this.props.location.search).payment_page || 0 
+
+        let prev_use_page = queryString.parse(nextProps.location.search).use_page || 0
+        let use_page = queryString.parse(this.props.location.search).use_page || 0 
+
+        if(prev_use_page != use_page || prev_payment_page != payment_page){
+            (async()=>{
+                await this.onRefresh(nextProps)
+            })()
+        }
     }
 
     onClickChangeRegularPayment = async () => {
@@ -190,6 +224,26 @@ export default class extends React.Component {
         return result
     }
 
+    onClickPaymentLogPage = async (page)=>{
+        if(this.state.cur_payment_page == page - 1)
+            return;
+
+        let params = queryString.parse(this.props.location.search)
+        params.payment_page = page - 1
+
+        history.push({pathname:this.props.match.url, search:`?${queryString.stringify(params)}`})
+    }
+
+    onClickUseLogPage = async (page)=>{
+        if(this.state.cur_use_page == page - 1)
+            return;
+
+        let params = queryString.parse(this.props.location.search)
+        params.use_page = page - 1
+
+        history.push({pathname:this.props.match.url, search:`?${queryString.stringify(params)}`})
+    }
+
     onChangeAccountNumber = async () => {
         if(!this.state.partial_payment_info) {
             let result = await this.onChangeCardInfo()
@@ -213,6 +267,12 @@ export default class extends React.Component {
         let subscription_plans = this.state.subscription_plans ? this.state.subscription_plans : []
         let current_subscription = this.state.current_subscription ? this.state.current_subscription : null
         let current_onetime_ticket = this.state.current_onetime_ticket ? this.state.current_onetime_ticket : {total_count: 0, unused_count: 0};
+
+        let payment_logs = this.state.payment_logs ? this.state.payment_logs : {list:[]}
+        let total_payment_cnt = payment_logs.total_cnt
+
+        let use_logs = this.state.use_logs ? this.state.use_logs : {list:[]}
+        let total_use_cnt = use_logs.total_cnt
 
         let accountTypeText;
         let subscriptionText;
@@ -293,7 +353,7 @@ export default class extends React.Component {
                         </div>
                         <div className="bar gray-bar">
                             <div className="left">
-                                <div className="title">{translate("purchase_info")}</div>
+                                <div className="title">{translate("card_info")}</div>
                                 <div className="desc">{card_info_string}</div>
                             </div>
                             <div className="right">
@@ -302,6 +362,7 @@ export default class extends React.Component {
                         </div>
                     </div>
                 </div>
+                {this.props.user_info.account_type != 2 ?
                 <div className="list">
                     <div className="title">{translate("purchase_logs")}</div>
                     <div className="head">
@@ -311,7 +372,7 @@ export default class extends React.Component {
                         <div className="list-head-item list-price">{translate("amount_of_money")}</div>
                         <div className="list-head-item list-date">{translate("date")}</div>
                     </div>
-                    {this.state.payment_logs ? this.state.payment_logs.map( (e,k) => {
+                    {payment_logs.list ? payment_logs.list.map( (e,k) => {
                         let type
                         let count = ""
                         switch(e.type) {
@@ -363,7 +424,12 @@ export default class extends React.Component {
                             <div className="list-body-item list-date">{moment(e.start_date).format("YYYY-MM-DD HH:mm:ss")}</div>
                         </div>
                     }) : null}
+                    {!payment_logs.list || payment_logs.list.length == 0 ? <div className="empty-item">{translate("empty_log")}</div>:null}
+                </div> : null}
+                <div className="pager-wrapper">
+                    <Pager max={Math.ceil(total_payment_cnt/LIST_DISPLAY_COUNT)} cur={this.state.cur_payment_page + 1 ||1} onClick={this.onClickPaymentLogPage} />
                 </div>
+                {this.props.user_info.account_type != 2 ?
                 <div className="list">
                     <div className="title">{translate("ticket_use_logs")}</div>
                     <div className="head">
@@ -381,6 +447,10 @@ export default class extends React.Component {
                         <div className="list-body-item list-signer">윤대현, 박불이세 외 2명</div>
                         <div className="list-body-item list-date">{moment().format("YYYY-MM-DD HH:mm:ss")}</div>
                     </div>
+                    {!use_logs.list || use_logs.list.length == 0 ? <div className="empty-item">{translate("empty_log")}</div>:null}
+                </div> : null}
+                <div className="pager-wrapper">
+                    <Pager max={Math.ceil(total_use_cnt/LIST_DISPLAY_COUNT)} cur={this.state.cur_use_page + 1 ||1} onClick={this.onClickUseLogPage} />
                 </div>
             </div>
         </div>)
