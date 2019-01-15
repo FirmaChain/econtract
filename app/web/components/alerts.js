@@ -224,6 +224,8 @@ class CardInfo extends React.Component {
 
         if(is_valid) {
             card_type_label = creditcardutils.parseCardType(card_number).toUpperCase()
+            console.log("card_type_label", card_type_label)
+            console.log("card_number", card_number)
             card_number = creditcardutils.formatCardNumber(card_number)
         }
 
@@ -234,6 +236,25 @@ class CardInfo extends React.Component {
     }
 
     onResponse = () => {
+
+        if(!this.state.card_number || this.state.card_number == "")
+            return alert(translate("please_input_card_number"))
+
+        if(!this.state.cvc || this.state.cvc == "")
+            return alert(translate("please_input_cvc"))
+
+        if(!this.state.name || this.state.name == "")
+            return alert(translate("please_input_name"))
+
+        if(!this.state.selected_expiration_month || this.state.selected_expiration_month == "")
+            return alert(translate("please_input_expiration_month"))
+
+        if(!this.state.selected_expiration_year || this.state.selected_expiration_year == "")
+            return alert(translate("please_input_expiration_year"))
+
+        if(!this.state.social_number_front || this.state.social_number_front == "")
+            return alert(translate("please_input_social_number_front"))
+
 
         let is_valid = creditcardutils.validateCardNumber(this.state.card_number)
         if(!is_valid)
@@ -276,7 +297,7 @@ class CardInfo extends React.Component {
                 </div>
                 <div className="text-box">
                     <div className="sub-title">{translate("purchase_info_card_type")}</div>
-                    <input type="number" className="common-textbox"
+                    <input type="text" className="common-textbox"
                         disabled
                         value={this.state.card_type_label}
                         placeholder={translate("purchase_info_card_type_no")}/>
