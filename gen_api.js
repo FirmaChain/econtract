@@ -62,6 +62,17 @@ export async function api_get_contract(contract_id){
         session:window.getCookie("session")
     });
 }
+export async function api_get_contract_logs(contract_id,page,display_count){
+    let __data = new FormData();
+
+    if(contract_id != null) __data.append('contract_id', contract_id);
+	if(page != null) __data.append('page', page);
+	if(display_count != null) __data.append('display_count', display_count)
+
+    return await post("/get_contract_logs", __data,{
+        session:window.getCookie("session")
+    });
+}
 export async function api_update_epin_account(contract_id,epin){
     let __data = new FormData();
 

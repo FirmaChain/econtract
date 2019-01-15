@@ -10,6 +10,8 @@ import Footer from "./footer.comp"
 import Chatting from "./chatting.comp"
 import moment from "moment"
 import UAParser from "ua-parser-js"
+import Pager from "./pager"
+import queryString from "query-string"
 
 import Dropdown from "react-dropdown"
 import 'react-dropdown/style.css'
@@ -42,6 +44,8 @@ let mapDispatchToProps = {
     update_epin_account,
 }
 
+const LIST_DISPLAY_COUNT = 6
+
 @connect(mapStateToProps, mapDispatchToProps )
 export default class extends React.Component {
 	constructor(){
@@ -55,55 +59,74 @@ export default class extends React.Component {
             page_chat:0,
             last_chat_id:0,
             chat_list:[],
+
+            cur_log_page:0,
         };
 	}
 
 	componentDidMount(){
         (async()=>{
-            await window.showIndicator(translate("loading_contract"))
-            await this.props.fetch_user_info()
-            let contract_id = this.props.match.params.contract_id || 0
-            let contract, groups = []
-            if(this.props.user_info.account_type != 0) {
-                groups = await this.props.get_group_info(0)
-                contract = await this.props.get_contract(contract_id, this.props.user_info, groups)
-            } else {
-                contract = await this.props.get_contract(contract_id, this.props.user_info)
-            }
-            await window.hideIndicator()
-
-            if( this.props.location.state && this.props.location.state.select_tab ) {
-                this.setState({
-                    select_tab:this.props.location.state.select_tab
-                })
-            }
-
-            if(!contract) {
-                alert(translate("contract_is_encrypt_so_dont_enter"))
-                return history.goBack()
-            }
-
-            if(contract.payload.contract) {
-
-                if(contract.payload.contract.is_pin_used == 1 && contract.payload.contract.pin && contract.payload.contract.pin != "000000") 
-                    await this.props.update_epin_account(contract_id, contract.payload.contract.pin);
-
-                this.setState({
-                    ...contract.payload,
-                    groups
-                })
-            } else {
-                alert(translate("not_exist_contract"))
-                history.goBack()
-            }
-
-            await this.onChatLoadMore()
+            await this.onRefresh()
         })()
+    }
+
+    onRefresh = async (nextProps) => {
+        nextProps = !!nextProps ? nextProps : this.props
+
+        await window.showIndicator(translate("loading_contract"))
+        await this.props.fetch_user_info()
+        let contract_id = this.props.match.params.contract_id || 0
+        let contract, groups = []
+        let params = queryString.parse(nextProps.location.search)
+
+        if(this.props.user_info.account_type != 0) {
+            groups = await this.props.get_group_info(0)
+            contract = await this.props.get_contract(contract_id, this.props.user_info, groups)
+        } else {
+            contract = await this.props.get_contract(contract_id, this.props.user_info)
+        }
+        await window.hideIndicator()
+
+        if( this.props.location.state && this.props.location.state.select_tab ) {
+            this.setState({
+                select_tab:this.props.location.state.select_tab
+            })
+        }
+
+        if(!contract) {
+            alert(translate("contract_is_encrypt_so_dont_enter"))
+            return history.goBack()
+        }
+
+        if(contract.payload.contract) {
+
+            if(contract.payload.contract.is_pin_used == 1 && contract.payload.contract.pin && contract.payload.contract.pin != "000000") 
+                await this.props.update_epin_account(contract_id, contract.payload.contract.pin);
+
+            this.setState({
+                ...contract.payload,
+                groups
+            })
+        } else {
+            alert(translate("not_exist_contract"))
+            return history.goBack()
+        }
+
+        await this.onChatLoadMore()
     }
 
     componentWillReceiveProps(props){
         if(props.user_info === false){
             history.replace("/login")
+        }
+
+        let prev_log_page = queryString.parse(nextProps.location.search).log_page || 0
+        let log_page = queryString.parse(this.props.location.search).log_page || 0 
+
+        if(prev_log_page != log_page){
+            (async()=>{
+                await this.onRefresh(nextProps)
+            })()
         }
     }
 
@@ -191,6 +214,17 @@ export default class extends React.Component {
             }
         }
     }
+
+    onClickLogPage = async (page)=>{
+        if(this.state.cur_log_page == page - 1)
+            return;
+
+        let params = queryString.parse(this.props.location.search)
+        params.log_page = page - 1
+
+        history.push({pathname:this.props.match.url, search:`?${queryString.stringify(params)}`})
+    }
+
 
     render_information_deck() {
         switch(this.state.select_tab) {
@@ -336,7 +370,8 @@ export default class extends React.Component {
     }
 
     render_logs() {
-        let logs = this.state.logs
+        let logs = this.state.logs.list || []
+        let total_cnt = this.state.logs.total_cnt || 0
         logs = logs.map(e=>{
             let msg
 
@@ -415,6 +450,7 @@ export default class extends React.Component {
                 </div>
             })}
             {logs.length == 0 ? <div className="empty-log">{translate("no_history")}</div> : null}
+            <Pager max={Math.ceil(total_cnt/LIST_DISPLAY_COUNT)} cur={this.state.cur_log_page + 1 ||1} onClick={this.onClickLogPage} />
         </div>
     }
 
