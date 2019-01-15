@@ -134,11 +134,13 @@ export default class extends React.Component {
                     // TODO: Make branch between register and change
                     resp = await this.props.make_yearly_commitment(plan_id);
                     if(resp.code == 1) {
+                        alert(translate("subscribe_purchase_plan_monthly"))
                         await this.onRefresh()
                     }
                 } else {
                     resp = await this.props.make_monthly_commitment(plan_id);
                     if(resp.code == 1) {
+                        alert(translate("subscribe_purchase_plan_yearly"))
                         await this.onRefresh()
                     }
                 }
@@ -176,9 +178,11 @@ export default class extends React.Component {
                 let resp = await this.props.input_payment_info(encrypted_data, preview_data);
                 await this.onRefresh()
                 if(resp.code == 1) {
+                    alert(translate("card_info_register_msg"))
+                    await this.onRefresh();
                     r(true)
                 } else {
-                    alert("card info error")
+                    alert(translate("card_info_register_fail_msg"))
                     r(false)
                 }
             }
@@ -196,9 +200,10 @@ export default class extends React.Component {
             onResponse: async (change_count) => {
                 let resp = this.props.increase_account(change_count);
                 if (resp.code == 1) {
-                    console.log("purchase group member change will be success")
+                    alert(translate("group_member_change_count"))
+                    await this.onRefresh();
                 } else {
-                    console.log("purchase group member change will be fail")
+                    alert(translate("group_member_change_fail"))
                 }
             }
         })
@@ -258,7 +263,7 @@ export default class extends React.Component {
                         }
                         <div className="button-container">
                             <div className="button" onClick={this.onClickChangeRegularPayment}>{this.state.current_subscription ? translate("change") : translate("register")}</div>
-                            {this.current_subscription ? <div className="button">{translate("terminate")}</div> : null}
+                            {current_subscription ? <div className="button">{translate("terminate")}</div> : null}
                         </div>
                     </div>
                     {this.props.user_info.account_type != 0 ? <div className="box gray-box">

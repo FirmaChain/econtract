@@ -30,9 +30,11 @@ import {
 import CheckBox2 from "./checkbox2"
 
 let mapStateToProps = (state)=>{
+    let folders = [...state.template.folders]
+    folders.unshift({folder_id:-1, subject:translate("not_insert_folder")})
 	return {
         user_info:state.user.info,
-        template_folders:state.template.folders
+        template_folders:folders
 	}
 }
 
@@ -214,7 +216,6 @@ export default class extends React.Component {
 
 	render() {
         let folders = this.props.template_folders ? this.props.template_folders : []
-        folders.unshift({folder_id:-1, subject:translate("not_insert_folder")})
         return (<div className="upsert-template-page">
             <div className="header-page">
                 <div className="header">
