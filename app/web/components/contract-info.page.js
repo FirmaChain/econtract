@@ -25,6 +25,7 @@ import {
     get_group_info,
     get_chats,
     update_epin_account,
+    get_contract_logs,
     getGroupKey,
     select_subject,
 } from "../../common/actions"
@@ -42,6 +43,7 @@ let mapDispatchToProps = {
     get_group_info,
     get_chats,
     update_epin_account,
+    get_contract_logs,
 }
 
 const LIST_DISPLAY_COUNT = 6
@@ -103,9 +105,12 @@ export default class extends React.Component {
             if(contract.payload.contract.is_pin_used == 1 && contract.payload.contract.pin && contract.payload.contract.pin != "000000") 
                 await this.props.update_epin_account(contract_id, contract.payload.contract.pin);
 
+            delete contract.payload.logs
+
             this.setState({
                 ...contract.payload,
-                groups
+                cur_log_page:Number(params.log_page) || 0,
+                groups,
             })
         } else {
             alert(translate("not_exist_contract"))
@@ -113,10 +118,15 @@ export default class extends React.Component {
         }
 
         await this.onChatLoadMore()
+
+        let logs = (await this.props.get_contract_logs(contract_id, Number(params.log_page) || 0, LIST_DISPLAY_COUNT)).payload;
+        this.setState({
+            logs
+        })
     }
 
-    componentWillReceiveProps(props){
-        if(props.user_info === false){
+    componentWillReceiveProps(nextProps){
+        if(nextProps.user_info === false){
             history.replace("/login")
         }
 
@@ -222,7 +232,14 @@ export default class extends React.Component {
         let params = queryString.parse(this.props.location.search)
         params.log_page = page - 1
 
-        history.push({pathname:this.props.match.url, search:`?${queryString.stringify(params)}`})
+
+        let logs = (await this.props.get_contract_logs(this.state.contract.contract_id, Number(page - 1) || 0, LIST_DISPLAY_COUNT)).payload;
+        this.setState({
+            logs,
+            cur_log_page:page-1
+        })
+
+        //history.push({pathname:this.props.match.url, search:`?${queryString.stringify(params)}`})
     }
 
 
