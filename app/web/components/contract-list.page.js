@@ -269,7 +269,7 @@ export default class extends React.Component {
 			result = { id:"beforeOtherSign", title : "상대방 서명 전"}
 		}*/
 		else if(menu == "completed") {
-			result = { id:"completed", title : translate("completed")}
+			result = { id:"completed", title : translate("status_2")}
 		}
         else if(menu == "view-group") {
             result = { id:"view-group", title : translate("group_view_only")}
@@ -739,7 +739,7 @@ export default class extends React.Component {
 						<div className={"item" + (this.getTitle().id == "typing" ? " selected" : "")} onClick={this.move.bind(this, "typing")}><i className="icon fal fa-keyboard"></i> <div className="text">{translate("status_0")}</div></div>
 						<div className={"item" + (this.getTitle().id == "beforeMySign" ? " selected" : "")} onClick={this.move.bind(this, "beforeMySign")}><i className="icon far fa-file-import"></i> <div className="text">{translate("status_1")}</div></div>
 						{/*<div className={"item" + (this.getTitle().id == "beforeOtherSign" ? " selected" : "")} onClick={this.move.bind(this, "beforeOtherSign")}><i className="icon far fa-file-export"></i> <div className="text">상대방 서명 전</div></div>*/}
-						<div className={"item" + (this.getTitle().id == "completed" ? " selected" : "")} onClick={this.move.bind(this, "completed")}><i className="icon fal fa-check-circle"></i> <div className="text">{translate("completed")}</div></div>
+						<div className={"item" + (this.getTitle().id == "completed" ? " selected" : "")} onClick={this.move.bind(this, "completed")}><i className="icon fal fa-check-circle"></i> <div className="text">{translate("status_2")}</div></div>
                         {account_type != 0 ? <div className={"item" + (this.getTitle().id == "view-group" ? " selected" : "")} onClick={this.move.bind(this, "view-group")}><i className="icon fas fa-eye"></i> <div className="text">{translate("group_view_only")}</div></div> : null}
                         {account_type == 0 ? <div className={"item" + (this.getTitle().id == "my-view" ? " selected" : "")} onClick={this.move.bind(this, "my-view")}><i className="icon fas fa-eye"></i> <div className="text">{translate("viewer")}</div></div> : null}
 					</div>
