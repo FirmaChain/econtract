@@ -71,7 +71,8 @@ export default class extends React.Component {
             step:0,
             step1:0,
             sort_test:[],
-            email_verification: false
+            email_verification: false,
+            language: global.LANG,
         };
 
         {
@@ -760,7 +761,7 @@ export default class extends React.Component {
                 </div>
                 { type == 2 ? null : (this.state.email_verification ?
                     <div className="gray-but">{translate("complete_send")}</div> : 
-                    <div className="blue-but" onClick={this.onClickRequestEmail}>{translate("send_certification_mail")}</div>)
+                    <div className="blue-but" onClick={this.onClickRequestEmail}>{translate("send")}</div>)
                 }
                 
             </div>
@@ -1138,10 +1139,19 @@ export default class extends React.Component {
         else if(type == 2)
             step2_text = translate("input_manager_info")
 
-		return (<div className="maintain">
+		return (<div className="maintain" key={this.state.language}>
             <div className="register-common-page register-page">
                 <div className="left-logo">
                     <img src="/static/logo_blue.png" onClick={()=>history.push("/login")}/>
+                    <div className="flex-1"></div>
+                    <div className="language-dropdown">
+                        <div className="language">{this.state.language}</div>
+                        <div className="languages-dropdown">
+                            <div onClick={()=>{window.setCookie("LANGUAGE", "KR"); this.setState({language:"KR"})}}>Korean</div>
+                            <div onClick={()=>{window.setCookie("LANGUAGE", "EN"); this.setState({language:"EN"})}}>English</div>
+                            <div onClick={()=>{window.setCookie("LANGUAGE", "CN"); this.setState({language:"CN"})}}>Chinese</div>
+                        </div>
+                    </div>
                 </div>
                 <div className="desc-container">
                     <div className="info">

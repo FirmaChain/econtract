@@ -62,7 +62,7 @@ let mapDispatchToProps = {
     get_maximum_member_count,
 }
 
-const LIST_DISPLAY_COUNT = 1
+const LIST_DISPLAY_COUNT = 6
 
 @connect(mapStateToProps, mapDispatchToProps )
 export default class extends React.Component {
