@@ -245,6 +245,10 @@ export default class extends React.Component {
     }
 
     onChangeAccountNumber = async () => {
+        if(!this.state.current_subscription) {
+            return alert(translate("no_subscribe_no_change_group_member"))
+        }
+
         if(!this.state.partial_payment_info) {
             let result = await this.onChangeCardInfo()
             if(!result) return
@@ -252,7 +256,7 @@ export default class extends React.Component {
         window.openModal("PurchaseGroupMemberChange", {
             count:this.state.corp_member_count_max,
             onResponse: async (change_count) => {
-                let resp = this.props.increase_account(change_count);
+                let resp = await this.props.increase_account(change_count);
                 if (resp.code == 1) {
                     alert(translate("group_member_change_count"))
                     await this.onRefresh();
