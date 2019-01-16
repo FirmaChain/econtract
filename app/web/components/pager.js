@@ -7,8 +7,7 @@ const LIST_DISPLAY_COUNT = 8
 
 function render_left_btn(cur, display_count, onClick){
     if(cur-1 >= display_count/2){
-        console.log(Math.max(0, cur-display_count-1))
-        return <li className="slot chevron left" onClick={()=>{onClick(Math.max(0, cur-display_count-1))}}> <i className="fas fa-chevron-left" /> </li>
+        return <li className="slot chevron left" onClick={()=>{onClick(Math.max(1, cur-display_count-1))}}> <i className="fas fa-chevron-left" /> </li>
     }
     return <li></li>
 }
