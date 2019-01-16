@@ -313,7 +313,8 @@ export default class extends React.Component {
                 <div className="cluster">
                     <div className="box blue-box">
                         <div className="icon"><i className="fas fa-credit-card"></i></div>
-                        <div className="title">{accountTypeText} | {subscriptionText}</div>
+                        <div className="title">{accountTypeText}</div>
+                        <div className="sub-title">{subscriptionText}</div>
                         { (!current_subscription) ? [<div className="desc" key={Math.random()}>&nbsp;</div>, <div className="sub" key={Math.random()}>&nbsp;<br/>&nbsp;</div>] : [
                         <div className="desc" key={"curr_count"+current_subscription.unused_count+" "+current_subscription.total_count}>{translate("count_curr_all_ticket", [current_subscription.unused_count, current_subscription.total_count])}</div>,
                         <div className="sub" key={current_subscription.start_date}>
@@ -330,6 +331,7 @@ export default class extends React.Component {
                     {this.props.user_info.account_type != 0 ? <div className="box gray-box">
                         <div className="icon"><i className="fal fa-users"></i></div>
                         <div className="title">{translate("group_member_count")}</div>
+                        <div className="sub-title">&nbsp;</div>
                         <div className="desc">{translate("count_curr_all_person", [this.state.corp_member_count, this.state.corp_member_count_max])}</div>
                         <div className="sub">
                             &nbsp;<br/>

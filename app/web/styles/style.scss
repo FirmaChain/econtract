@@ -2761,12 +2761,12 @@ div.checkbox2-comp{
                 display: inline-flex;
                 flex-direction: column;
                 width:270px;
-                height:285px;
+                height:305px;
                 padding: 0 10px;
                 text-align: center;
 
                 >.icon {
-                    margin-top: 50px;
+                    margin-top: 40px;
 
                     >i {
                         font-size: 40px;
@@ -2777,6 +2777,11 @@ div.checkbox2-comp{
                     margin-top: 30px;
                     font-size: $font4;
                     font-weight: bold;
+                }
+
+                >.sub-title {
+                    margin-top: 5px;
+                    font-size: $font3;
                 }
 
                 >.desc {
@@ -2839,7 +2844,7 @@ div.checkbox2-comp{
                 display: inline-flex;
                 flex-direction: column;
                 width: 580px;
-                height: 285px;
+                height: 305px;
 
                 .bar {
                     padding: 0 10px;
