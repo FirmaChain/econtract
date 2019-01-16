@@ -2753,7 +2753,7 @@ div.checkbox2-comp{
                     display: block;
 
                     >.big-box {
-                        display: block;
+                        display: block !important;
                     }
                 }
             }
@@ -2765,6 +2765,7 @@ div.checkbox2-comp{
                 height:305px;
                 padding: 0 10px;
                 text-align: center;
+                min-width:270px;
 
                 >.icon {
                     margin-top: 40px;
@@ -2846,10 +2847,12 @@ div.checkbox2-comp{
                 flex-direction: column;
                 width: 580px;
                 height: 305px;
+                min-width:580px;
 
                 .bar {
                     padding: 0 10px;
                     flex:1;
+                    height:50%;
 
                     display: flex;
                     flex-direction: row;
