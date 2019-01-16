@@ -2120,6 +2120,23 @@ div.checkbox2-comp{
 
         >.editor {
             flex:1;
+            position: relative;
+
+            >.title {
+                padding:8px 20px;
+                border-bottom:1px solid $middlegray;
+
+                font-size: $font1;
+                font-weight: bold;
+                color:$black;
+
+                >.modify-status {
+                    font-size: $font1;
+                    color:$gray;
+                    margin-left: 10px;
+                    font-weight: initial;
+                }
+            }
 
             >.preview {
 

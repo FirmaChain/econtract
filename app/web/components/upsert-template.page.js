@@ -227,6 +227,10 @@ export default class extends React.Component {
                 </div>
                 <div className="container">
                     <div className="editor">
+                        <div className="title">
+                            <span> <i className="fas fa-keyboard"></i> &nbsp;{translate("web_editor_mode")} </span>
+                            <span className="modify-status">{this.state.contract_modify_status}</span>
+                        </div>
                         <FroalaEditor
                             tag='textarea'
                             config={this.config}
