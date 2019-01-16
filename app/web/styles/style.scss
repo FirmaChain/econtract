@@ -2750,6 +2750,10 @@ div.checkbox2-comp{
             @media screen and (max-width: 1360px) {
                 & {
                     display: block;
+
+                    >.big-box {
+                        display: block;
+                    }
                 }
             }
 
