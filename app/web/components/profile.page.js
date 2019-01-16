@@ -17,6 +17,9 @@ import GroupManagePage from "./group-manage.page"
 import Footer from "./footer.comp"
 import Web3 from "../../common/Web3"
 
+import Dropdown from "react-dropdown"
+import 'react-dropdown/style.css'
+
 import translate from "../../common/translate"
 
 import {
@@ -172,6 +175,17 @@ export default class extends React.Component {
             return <div />
 
         let account_type = this.props.user_info.account_type
+        let languages = [{
+            label:"Korean",
+            value:"KR"
+        }, {
+            label:"English",
+            value:"EN"
+        }, {
+            label:"Chinese",
+            value:"CN"
+        }]
+        let select_language = global.LANG
 
 		return (<div className="right-desc profile-page">
 			<div className="info-container">
@@ -209,7 +223,20 @@ export default class extends React.Component {
                             <div className="blue-but" onClick={this.onClickViewMasterkeyword}>{this.state.show_mnemonic ? translate("close") : translate("view")}</div>
                         </div>
                     </div>
-
+                    <div className="text-place">
+                        <div className="title">{translate("select_language")}</div>
+                        <div className="text-box">
+                            <Dropdown className="common-select"
+                                controlClassName="control"
+                                menuClassName="item"
+                                options={languages}
+                                onChange={e=>{
+                                    window.setCookie("LANGUAGE", e.value);
+                                    window.location.reload(true);
+                                }}
+                                value={select_language} />
+                        </div>
+                    </div>
 	            </div>
 	            {account_type != 0 ? <div className="info">
 	            	<div className="title">{translate("corp_info")}</div>
