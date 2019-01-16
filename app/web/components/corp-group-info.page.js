@@ -150,6 +150,10 @@ export default class extends React.Component {
     }
 
     onAddMember = async ()=>{
+        if(!this.props.current_subscription) {
+            return alert(translate("no_subscribe_dont_use_group_member"))
+        }
+
         if(this.state.add_email == "")
             return alert(translate("please_input_invite_member_email"))
         

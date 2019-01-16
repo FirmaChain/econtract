@@ -40,6 +40,7 @@ import {
     add_member_group,
     add_member_group_exist,
     all_invite_list,
+    get_current_subscription,
 } from "../../common/actions"
 
 let mapStateToProps = (state)=>{
@@ -71,6 +72,7 @@ let mapDispatchToProps = {
     add_member_group,
     add_member_group_exist,
     all_invite_list,
+    get_current_subscription,
 }
 
 const LIST_DISPLAY_COUNT = 6
@@ -98,6 +100,7 @@ export default class extends React.Component {
         await this.props.get_group_info(0)
         //let dodo = await this.props.get_corp_member_info(128, this.props.user_info.corp_key)
         await this.props.get_corp_member_info_all(this.props.user_info.corp_key, 1)
+        let current_subscription = (await this.props.get_current_subscription()).payload;
         let menu = nextProps.match.params.menu || "all"
         let account_id = nextProps.match.params.account_id || null
         let params = queryString.parse(nextProps.location.search)
@@ -105,6 +108,7 @@ export default class extends React.Component {
         let _ = {
             _group_id:menu,
             _account_id:account_id,
+            current_subscription: current_subscription || null
         }
 
         if(account_id) {
@@ -169,6 +173,11 @@ export default class extends React.Component {
 	}
 
     onClickAddGroupMember = async () => {
+
+        if(!this.state.current_subscription) {
+            return alert(translate("no_subscribe_dont_use_group_member"))
+        }
+
         let groups = await this.props.get_group_info(0)
         window.openModal("AddGroupMember", {
             list: groups.map(e=>{return {...e, value:e.group_id, label:e.title}}),
@@ -640,7 +649,7 @@ export default class extends React.Component {
 				</div>
 			</div>
             { ( !isNaN(group_id) && account_id == null ) ? 
-            <CorpGroupInfoPage {...this.props} group_id={group_id} onRefresh={this.onRefresh}/> :
+            <CorpGroupInfoPage {...this.props} current_subscription={this.state.current_subscription || null} group_id={group_id} onRefresh={this.onRefresh}/> :
             <div className="contract-list">
                 <div className="title">{this.getTitle().title}</div>
                 <div className="search">
