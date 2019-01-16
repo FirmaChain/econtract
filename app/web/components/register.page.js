@@ -1147,9 +1147,9 @@ export default class extends React.Component {
                     <div className="language-dropdown">
                         <div className="language">{this.state.language}</div>
                         <div className="languages-dropdown">
-                            <div onClick={()=>{window.setCookie("LANGUAGE", "KR"); this.setState({language:"KR"})}}>Korean</div>
-                            <div onClick={()=>{window.setCookie("LANGUAGE", "EN"); this.setState({language:"EN"})}}>English</div>
-                            <div onClick={()=>{window.setCookie("LANGUAGE", "CN"); this.setState({language:"CN"})}}>Chinese</div>
+                            <div onClick={()=>{window.setCookie("LANGUAGE", "KR"); window.location.reload(true)}}>Korean</div>
+                            <div onClick={()=>{window.setCookie("LANGUAGE", "EN"); window.location.reload(true)}}>English</div>
+                            <div onClick={()=>{window.setCookie("LANGUAGE", "CN"); window.location.reload(true)}}>Chinese</div>
                         </div>
                     </div>
                 </div>
