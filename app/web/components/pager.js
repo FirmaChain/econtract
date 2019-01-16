@@ -7,14 +7,15 @@ const LIST_DISPLAY_COUNT = 8
 
 function render_left_btn(cur, display_count, onClick){
     if(cur-1 >= display_count/2){
-        return <li className="slot chevron left" onClick={()=>{onClick(Math.max(0,cur-display_count-1))}}> <i className="fas fa-chevron-left" /> </li>
+        console.log(Math.max(0, cur-display_count-1))
+        return <li className="slot chevron left" onClick={()=>{onClick(Math.max(0, cur-display_count-1))}}> <i className="fas fa-chevron-left" /> </li>
     }
     return <li></li>
 }
 
 function render_right_btn(cur, max, display_count, onClick){
     if( max - display_count/2 > cur){
-        return <li className="slot chevron right" onClick={()=>{onClick(Math.min(max,cur+display_count+1))}}> <i className="fas fa-chevron-right" /> </li>
+        return <li className="slot chevron right" onClick={()=>{onClick(Math.min(max, cur+display_count+1))}}> <i className="fas fa-chevron-right" /> </li>
     }
     return <li></li>
 }
