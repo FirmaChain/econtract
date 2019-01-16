@@ -26,7 +26,7 @@ function render_li(cur, max, display_count, onClick){
     
     let target = Math.min(max , start + display_count)
     start = target - display_count
-    start = start < 0 ? 1 : start
+    start = start < 1 ? 1 : start
 
     for(let i=start; i <= target; i++ ){
         list.push(<li 
