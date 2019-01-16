@@ -2655,6 +2655,7 @@ div.checkbox2-comp{
     >.info-container {
         display: flex;
         flex-direction: row;
+        max-width: 800px;
 
         >.info {
             flex:1;
@@ -2721,8 +2722,8 @@ div.checkbox2-comp{
     }
 
     >.button-container {
-        text-align: right;
-        margin-top:30px;
+        text-align: center;
+        max-width: 800px;
 
         >.blue-but {
             display: inline-block;
@@ -2747,7 +2748,7 @@ div.checkbox2-comp{
         >.cluster {
             display: flex;
 
-            @media screen and (max-width: 1360px) {
+            @media screen and (max-width: 1264px) {
                 & {
                     display: block;
 

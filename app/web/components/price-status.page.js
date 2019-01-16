@@ -341,8 +341,7 @@ export default class extends React.Component {
                         <div className="button-container">
                             <div className="button" onClick={this.onChangeAccountNumber}>{translate("change")}</div>
                         </div>}
-                    </div> : null}
-                    {this.props.user_info.account_type != 2 ? <div className="big-box">
+                    </div> : null}{this.props.user_info.account_type != 2 ? <div className="big-box">
                         <div className="bar middlegray-bar">
                             <div className="left">
                                 <div className="title">{translate("one_time_ticket")}</div>
