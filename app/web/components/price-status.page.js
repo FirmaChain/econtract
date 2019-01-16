@@ -340,7 +340,7 @@ export default class extends React.Component {
                             <div className="button" onClick={this.onChangeAccountNumber}>{translate("change")}</div>
                         </div>}
                     </div> : null}
-                    <div className="big-box">
+                    {this.props.user_info.account_type != 2 ? <div className="big-box">
                         <div className="bar middlegray-bar">
                             <div className="left">
                                 <div className="title">{translate("one_time_ticket")}</div>
@@ -360,7 +360,7 @@ export default class extends React.Component {
                                 <div className="button" onClick={this.onChangeCardInfo}>{this.state.partial_payment_info ? translate("re_register") : translate("register")}</div>
                             </div>
                         </div>
-                    </div>
+                    </div> : null }
                 </div>
                 {this.props.user_info.account_type != 2 ?
                 <div className="list">
@@ -426,9 +426,11 @@ export default class extends React.Component {
                     }) : null}
                     {!payment_logs.list || payment_logs.list.length == 0 ? <div className="empty-item">{translate("empty_log")}</div>:null}
                 </div> : null}
-                <div className="pager-wrapper">
+                {this.props.user_info.account_type != 2 ? <div className="pager-wrapper">
                     <Pager max={Math.ceil(total_payment_cnt/LIST_DISPLAY_COUNT)} cur={this.state.cur_payment_page + 1 ||1} onClick={this.onClickPaymentLogPage} />
-                </div>
+                </div> : null}
+
+
                 {this.props.user_info.account_type != 2 ?
                 <div className="list">
                     <div className="title">{translate("ticket_use_logs")}</div>
@@ -449,9 +451,9 @@ export default class extends React.Component {
                     </div>
                     {!use_logs.list || use_logs.list.length == 0 ? <div className="empty-item">{translate("empty_log")}</div>:null}
                 </div> : null}
-                <div className="pager-wrapper">
+                {this.props.user_info.account_type != 2 ? <div className="pager-wrapper">
                     <Pager max={Math.ceil(total_use_cnt/LIST_DISPLAY_COUNT)} cur={this.state.cur_use_page + 1 ||1} onClick={this.onClickUseLogPage} />
-                </div>
+                </div> : null}
             </div>
         </div>)
 	}
