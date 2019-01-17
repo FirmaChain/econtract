@@ -34,17 +34,6 @@ export function list_template(folder_id = "all", page = 0, corp_key = null){
     return async function(dispatch){
         let resp = await api_list_template(folder_id, page)
 
-        if(resp && resp.code == 1) {
-            for(let v of resp.payload.list) {
-                if(!corp_key) {
-                    let masterKeyPublic = SeedToMasterKeyPublic(getMasterSeed())
-                    v.html = aes_decrypt(v.html, masterKeyPublic)
-                } else {
-                    v.html = aes_decrypt(v.html, Buffer.from(corp_key, 'hex'))
-                }
-            }
-        }
-
         dispatch({
             type:LIST_TEMPLATE,
             payload:resp.payload
@@ -111,9 +100,9 @@ export function get_template(template_id, corp_key = null){
 
         if(!corp_key) {
             let masterKeyPublic = SeedToMasterKeyPublic(getMasterSeed())
-            resp.payload.html = aes_decrypt(resp.payload.html, masterKeyPublic)
+            resp.payload.html = aes_decrypt(Buffer.from(resp.payload.html, 'hex'), masterKeyPublic)
         } else {
-            resp.payload.html = aes_decrypt(resp.payload.html, Buffer.from(corp_key, 'hex'))
+            resp.payload.html = aes_decrypt(Buffer.from(resp.payload.html, 'hex'), Buffer.from(corp_key, 'hex'))
         }
 
         /*if(resp.payload.html){
