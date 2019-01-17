@@ -46,6 +46,8 @@ export default class extends React.Component {
 	}
 
 	componentDidMount(){
+        localStorage.removeItem("browser_key")
+        localStorage.removeItem("browser_key_virgin")
     }
 
     goBack = ()=>{
