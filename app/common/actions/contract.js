@@ -19,23 +19,6 @@ import {
     api_get_lock_count,
     api_send_chat,
     api_get_contract_logs,
-/*    api_load_contract,
-    api_load_contract_info,
-    api_folder_list,
-    api_recently_contracts,
-    api_edit_contract,
-    api_send_chat,
-    api_fetch_chat,
-    api_confirm_contract,
-    api_reject_contract,
-    api_new_folder,
-    api_remove_folder,
-    api_move_to_folder,
-    api_folder_in_contracts,
-    api_all_folders,
-    api_update_epin,
-    api_clear_epin,
-    api_convert_doc,*/
 } from "../../../gen_api"
 
 import {

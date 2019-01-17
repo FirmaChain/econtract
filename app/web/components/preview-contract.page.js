@@ -87,7 +87,6 @@ export default class PreviewContract extends React.Component {
                         <i className="fal fa-times" onClick={()=>this.closeSelf()}></i>
                     </div>
                     <div className="title">{this.getTitle()}</div>
-                    { !!this.props.user_info ? <Information /> : null }
                 </div>
                 <div className="container">
                     <div className="contract-main-text">
