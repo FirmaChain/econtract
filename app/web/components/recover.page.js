@@ -86,7 +86,8 @@ export default class extends React.Component {
         let resp = await this.props.check_join_publickey(masterKeyPublic.toString('hex'));
         if(resp){
             this.setState({
-                step: this.state.step+1
+                step: this.state.step+1,
+                mnemonic: mnemonic,
             });
         }else{
             alert(translate("no_account_new_register"));
