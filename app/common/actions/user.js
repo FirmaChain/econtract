@@ -168,7 +168,7 @@ export function check_phone_verification_code(phone, code){
     }
 }
 
-export function register_new_account(account, info, email, name, eth, type){
+export function register_new_account(account, info, email, name, eth, type, public_info = null, corp_info = null, invitation_code = null){
     return async function(dispatch){
         let resp = (await api_register_account(
             account.browserKey.publicKey.toString('hex'),
@@ -180,7 +180,10 @@ export function register_new_account(account, info, email, name, eth, type){
             email, 
             name, 
             eth,
-            type
+            type,
+            public_info,
+            corp_info,
+            invitation_code,
         ));
 
         resp = {

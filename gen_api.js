@@ -251,15 +251,6 @@ export async function api_delete_invite_group_member(registration_code){
         session:window.getCookie("session")
     });
 }
-export async function api_new_corp(data){
-    let __data = new FormData();
-
-    if(data != null) __data.append('data', data)
-
-    return await post("/new_corp", __data,{
-        session:window.getCookie("session")
-    });
-}
 export async function api_create_group(title){
     let __data = new FormData();
 
@@ -747,7 +738,7 @@ export async function api_check_phone_verification_code(phone,code){
         session:window.getCookie("session")
     });
 }
-export async function api_register_account(publicbk,publicms,publicmsc,info,auth,eems,email,name,eth,account_type){
+export async function api_register_account(publicbk,publicms,publicmsc,info,auth,eems,email,name,eth,account_type,public_info,corp_info,invitation_code){
     let __data = new FormData();
 
     if(publicbk != null) __data.append('publicbk', publicbk);
@@ -759,7 +750,10 @@ export async function api_register_account(publicbk,publicms,publicmsc,info,auth
 	if(email != null) __data.append('email', email);
 	if(name != null) __data.append('name', name);
 	if(eth != null) __data.append('eth', eth);
-	if(account_type != null) __data.append('account_type', account_type)
+	if(account_type != null) __data.append('account_type', account_type);
+	if(public_info != null) __data.append('public_info', public_info);
+	if(corp_info != null) __data.append('corp_info', corp_info);
+	if(invitation_code != null) __data.append('invitation_code', invitation_code)
 
     return await post("/register_account", __data,{
         session:window.getCookie("session")

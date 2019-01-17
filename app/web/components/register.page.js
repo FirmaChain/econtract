@@ -658,41 +658,57 @@ export default class extends React.Component {
         let encryptedInfo = aes_encrypt(JSON.stringify(info), this.state.account.masterKeyPublic);
         
         await window.showIndicator()
-        let resp = await this.props.register_new_account(this.state.account, encryptedInfo, this.state.email, this.state.username, wallet.address, account_type)
-
-        if (resp.code == 1 && account_type == 1) {
+        let resp
+        if(account_type == 0) {
+            resp = await this.props.register_new_account(this.state.account, 
+                encryptedInfo, this.state.email, 
+                this.state.username, wallet.address, 
+                account_type)
+        } else if (account_type == 1) {
             let corpMasterKey = generateCorpKey();
             // inject into master's info
             let corpKey = get256bitDerivedPublicKey(corpMasterKey, "m/0'/0'");
             let encryptedCorpInfo = aes_encrypt(JSON.stringify(corp_info), corpKey);
-            let corpResp = await this.props.new_corp(encryptedCorpInfo);
+            /*let corpResp = await this.props.new_corp(encryptedCorpInfo);
             if (!corpResp) {
                 return alert(translate("fail_create_corp_info"));
-            }
-            info['corp_id'] = corpResp.corp_id;
+            }*/
+            //info['corp_id'] = corpResp.corp_id;
             info['corp_master_key'] = corpMasterKey.toString("hex");
             info['corp_key'] = corpKey.toString('hex');
             let encryptedInfo = aes_encrypt(JSON.stringify(info), this.state.account.masterKeyPublic);
-            let updateResp = await this.props.update_user_info(encryptedInfo);
+            /*let updateResp = await this.props.update_user_info(encryptedInfo);
             if (!updateResp) {
                 return alert(translate("fail_save_corp_key"));
-            }
+            }*/
 
             let encryptedPublicInfo = aes_encrypt(JSON.stringify(public_info), Buffer.from(info['corp_key'], 'hex'));
-            updateResp = await this.props.update_user_public_info(encryptedPublicInfo);
+            /*updateResp = await this.props.update_user_public_info(encryptedPublicInfo);
             if (!updateResp) {
                 return alert(translate("fail_save_public_info"));
-            }
+            }*/
+
+
+            resp = await this.props.register_new_account(this.state.account, 
+                encryptedInfo, this.state.email, 
+                this.state.username, wallet.address, 
+                account_type, encryptedPublicInfo, encryptedCorpInfo)
+
 
             let gresp = await this.props.create_group(translate("basic_group"));
             await this.props.update_group_public_key(gresp.group_id, info['corp_master_key']);
 
-        } else if (resp.code == 1 && account_type == 2) {
+        } else if (account_type == 2) {
             let encryptedPublicInfo = aes_encrypt(JSON.stringify(public_info), Buffer.from(info['corp_key'], 'hex'));
-            let consumeResp = await this.props.consume_invitation(this.state.registration_code, encryptedPublicInfo);
+            /*let consumeResp = await this.props.consume_invitation(this.state.registration_code, encryptedPublicInfo);
             if (!consumeResp) {
                 return alert(translate("fail_to_use_invite_code"));
-            }
+            }*/
+
+            resp = await this.props.register_new_account(this.state.account, 
+                encryptedInfo, this.state.email, 
+                this.state.username, wallet.address, 
+                account_type, encryptedPublicInfo, null, this.state.registration_code)
         }
         await window.hideIndicator()
         window.logout();
