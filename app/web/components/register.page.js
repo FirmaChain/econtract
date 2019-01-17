@@ -315,10 +315,10 @@ export default class extends React.Component {
 
         (async()=>{
             if(localStorage.getItem("browser_key") || localStorage.getItem("browser_key_virgin") == 0) {
-                let res = await window.confirm(translate("yes_this_device_verify_account_are_you_unverify_go_register_?"))
+                /*let res = await window.confirm(translate("yes_this_device_verify_account_are_you_unverify_go_register_?"))
                 if( !res ) {
                     return history.push("/login")
-                }
+                }*/
             }
             localStorage.removeItem("browser_key")
             localStorage.removeItem("browser_key_virgin")
@@ -695,9 +695,10 @@ export default class extends React.Component {
                 this.state.username, wallet.address, 
                 account_type, encryptedPublicInfo, encryptedCorpInfo)
 
-
-            let gresp = await this.props.create_group(translate("basic_group"));
-            await this.props.update_group_public_key(gresp.group_id, info['corp_master_key']);
+            if(resp.code == 1) {
+                let gresp = await this.props.create_group(translate("basic_group"));
+                await this.props.update_group_public_key(gresp.group_id, info['corp_master_key']);
+            }
 
         } else if (account_type == 2) {
             let encryptedPublicInfo = aes_encrypt(JSON.stringify(public_info), Buffer.from(info['corp_key'], 'hex'));
@@ -712,9 +713,9 @@ export default class extends React.Component {
                 account_type, encryptedPublicInfo, null, this.state.registration_code)
         }
         await window.hideIndicator()
-        window.logout();
 
         if(resp.code == 1){
+            window.logout();
             localStorage.setItem("browser_key_virgin", 0);
             history.push("/login");
             return alert(translate("success_register"))
