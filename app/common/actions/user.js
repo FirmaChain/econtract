@@ -91,6 +91,7 @@ export function fetch_user_info(){
                     account_id: resp.payload.account_id,
                     publickey_contract: resp.payload.publickey_contract,
                     account_type: resp.payload.account_type,
+                    corp_id: resp.payload.corp_id,
                 }
 
                 if(resp.payload.encrypted_group_keys) {
