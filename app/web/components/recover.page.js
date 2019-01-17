@@ -145,6 +145,7 @@ export default class extends React.Component {
     }
 
     keyPress = async(type, e) => {
+        e.stopPropagation()
         if(e.keyCode == 13){
             switch(type) {
                 case 0:
