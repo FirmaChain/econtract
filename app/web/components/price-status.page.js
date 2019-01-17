@@ -336,7 +336,7 @@ export default class extends React.Component {
                         <div className="icon"><i className="fal fa-users"></i></div>
                         <div className="title">{translate("group_member_count")}</div>
                         <div className="sub-title">&nbsp;</div>
-                        <div className="desc">{translate("count_curr_all_person", [this.state.corp_member_count, this.state.corp_member_count_max])}</div>
+                        <div className="desc">{this.state.corp_member_count_max ? translate("count_curr_all_person", [this.state.corp_member_count, this.state.corp_member_count_max]) : ""}</div>
                         <div className="sub">
                             &nbsp;<br/>
                             &nbsp;
