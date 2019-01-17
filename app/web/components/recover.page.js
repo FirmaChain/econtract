@@ -88,7 +88,8 @@ export default class extends React.Component {
         let resp = await this.props.check_join_publickey(masterKeyPublic.toString('hex'));
         if(resp){
             this.setState({
-                step: this.state.step+1
+                step: this.state.step+1,
+                mnemonic: mnemonic,
             });
         }else{
             alert(translate("no_account_new_register"));
@@ -108,31 +109,36 @@ export default class extends React.Component {
             return alert(translate("password_not_symmetry"))
         }
 
-        let mnemonic = this.state.mnemonic.trim();
-        getBrowserKey(true); // Reset browserkey
-        let auth = makeAuth(this.state.email, this.state.password);
-        let encryptedMasterSeed = makeMnemonic(auth, mnemonic);
+        try {
+            let mnemonic = this.state.mnemonic.trim();
+            getBrowserKey(true); // Reset browserkey
+            let auth = makeAuth(this.state.email, this.state.password);
+            let encryptedMasterSeed = makeMnemonic(auth, mnemonic);
 
-        let seed = mnemonicToSeed(mnemonic);
-        let masterKeyPublic = SeedToMasterKeyPublic(seed).toString('hex');
-        let browserKeyPublic = BrowserKeyBIP32().publicKey.toString('hex');
+            let seed = mnemonicToSeed(mnemonic);
+            let masterKeyPublic = SeedToMasterKeyPublic(seed).toString('hex');
+            let browserKeyPublic = BrowserKeyBIP32().publicKey.toString('hex');
 
-        await window.showIndicator()
-        let resp = await this.props.recover_account(browserKeyPublic, masterKeyPublic, auth.toString('hex'), encryptedMasterSeed, this.state.email);
-        await window.hideIndicator()
+            await window.showIndicator()
+            let resp = await this.props.recover_account(browserKeyPublic, masterKeyPublic, auth.toString('hex'), encryptedMasterSeed, this.state.email);
+            await window.hideIndicator()
 
-        if(resp.code == 1){
-            localStorage.setItem("browser_key_virgin", 0);
-            history.push("/login");
-            return alert(translate("now_you_login_available"))
-        } else if(resp.code == -3) {
-            return alert(translate("no_account_info"))
-        } else if(resp.code == -4) {
-            return alert(translate("fail_login_info_create"))
-        } else if(resp.code == -5) {
-            return alert(translate("no_masterkeyword_email_info"))
-        } else {
-            return alert(translate("unknown_error_occured"))
+            if(resp.code == 1){
+                localStorage.setItem("browser_key_virgin", 0);
+                history.push("/login");
+                return alert(translate("now_you_login_available"))
+            } else if(resp.code == -3) {
+                return alert(translate("no_account_info"))
+            } else if(resp.code == -4) {
+                return alert(translate("fail_login_info_create"))
+            } else if(resp.code == -5) {
+                return alert(translate("no_masterkeyword_email_info"))
+            } else {
+                return alert(translate("unknown_error_occured"))
+            }
+        } catch(err) {
+            console.log(err)
+            alert("error")
         }
     }
 
@@ -146,6 +152,7 @@ export default class extends React.Component {
     }
 
     keyPress = async(type, e) => {
+        e.stopPropagation()
         if(e.keyCode == 13){
             switch(type) {
                 case 0:
