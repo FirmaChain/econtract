@@ -600,6 +600,11 @@ export default class extends React.Component {
     }
 
     onClickFinishSortTest = async ()=>{
+        if(!this.isGoingFinish)
+            return
+
+        this.isGoingFinish = true
+
         if(this.state.sort_test.map(e=>e.word).join(" ") != this.state.mnemonic){
             this.setState({
                 shuffled_mnemonic:this.state.mnemonic.split(" ").map( (e, k) => { return {idx:k, word:e} } ).shuffle(),
@@ -679,8 +684,8 @@ export default class extends React.Component {
                 return alert(translate("fail_save_public_info"));
             }
 
-            let resp = await this.props.create_group(translate("basic_group"));
-            await this.props.update_group_public_key(resp.group_id, info['corp_master_key']);
+            let gresp = await this.props.create_group(translate("basic_group"));
+            await this.props.update_group_public_key(gresp.group_id, info['corp_master_key']);
 
         } else if (resp.code == 1 && account_type == 2) {
             let encryptedPublicInfo = aes_encrypt(JSON.stringify(public_info), Buffer.from(info['corp_key'], 'hex'));
@@ -697,12 +702,16 @@ export default class extends React.Component {
             history.push("/login");
             return alert(translate("success_register"))
         } else if(resp.code == -3) {
+            this.isGoingFinish = false
             return alert(translate("already_login_this_browser"))
         } else if(resp.code == -4) {
+            this.isGoingFinish = false
             return alert(translate("dont_create_session"))
         } else if(resp.code == -5) {
+            this.isGoingFinish = false
             return alert(translate("fail_create_account"))
         } else {
+            this.isGoingFinish = false
             return alert(translate("unknown_error_occured"))
         }
 
