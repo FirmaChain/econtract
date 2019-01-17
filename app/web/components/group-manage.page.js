@@ -26,6 +26,7 @@ import {
     exist_in_progress_contract,
     get_corp_member_count,
     get_maximum_member_count,
+    get_current_subscription,
 } from "../../common/actions"
 
 let mapStateToProps = (state)=>{
@@ -44,6 +45,7 @@ let mapDispatchToProps = {
     exist_in_progress_contract,
     get_corp_member_count,
     get_maximum_member_count,
+    get_current_subscription,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -65,6 +67,7 @@ export default class extends React.Component {
 
         await this.props.get_group_info(0)
         await this.props.get_corp_member_info_all(this.props.user_info.corp_key, 0)
+        let current_subscription = (await this.props.get_current_subscription()).payload;
 
         let corp_member_count = 0;
         let corp_member_count_max = 0;
@@ -76,6 +79,7 @@ export default class extends React.Component {
         this.setState({
             corp_member_count,
             corp_member_count_max,
+            current_subscription,
         })
     }
 
@@ -109,6 +113,10 @@ export default class extends React.Component {
     }
 
     onChangeAccountNumber = async () => {
+        if(!this.state.current_subscription) {
+            return alert(translate("no_subscribe_dont_use_group_member"))
+        }
+
         window.openModal("PurchaseGroupMemberChange", {
             count:this.state.corp_member_count_max,
             onResponse: async (change_count) => {

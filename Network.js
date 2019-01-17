@@ -20,8 +20,8 @@ export async function get(path,param={},headers={}){
         }
     }catch(err){
         console.log(err)
+        return null
     }
-    return null
 }
 
 export async function post(path,param={},headers={}){
@@ -50,5 +50,6 @@ export async function post(path,param={},headers={}){
         return blob
     }catch(err){
         console.log(err)
+        return null
     }
 }
