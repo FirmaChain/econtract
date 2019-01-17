@@ -67,6 +67,7 @@ let mapDispatchToProps = {
 export default class extends React.Component {
 	constructor(){
 		super();
+        this.isGoingFinish = false
 		this.state={
             step:0,
             step1:0,
@@ -600,7 +601,7 @@ export default class extends React.Component {
     }
 
     onClickFinishSortTest = async ()=>{
-        if(!this.isGoingFinish)
+        if(this.isGoingFinish)
             return
 
         this.isGoingFinish = true
@@ -717,6 +718,15 @@ export default class extends React.Component {
             localStorage.setItem("browser_key_virgin", 0);
             history.push("/login");
             return alert(translate("success_register"))
+        } else if(resp.code == -30) {
+            this.isGoingFinish = false
+            return alert(translate("fail_create_account"))
+        } else if(resp.code == -21) {
+            this.isGoingFinish = false
+            return alert(translate("fail_create_corp_info"))
+        } else if(resp.code == -22) {
+            this.isGoingFinish = false
+            return alert(translate("fail_create_account"))
         } else if(resp.code == -3) {
             this.isGoingFinish = false
             return alert(translate("already_login_this_browser"))
