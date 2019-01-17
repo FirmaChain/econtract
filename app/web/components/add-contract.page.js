@@ -151,7 +151,7 @@ export default class extends React.Component {
             }
 
             if( params.template_id && !isNaN(params.template_id) ) {
-                let template = await this.props.get_template(params.template_id)
+                let template = await this.props.get_template(params.template_id, this.props.user_info.corp_key || null)
                 this.setState({
                     template
                 })

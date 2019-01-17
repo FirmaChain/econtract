@@ -14,6 +14,8 @@ import {
     aes_decrypt,
     aes_encrypt,
     generate_random,
+    getMasterSeed,
+    SeedToMasterKeyPublic,
 } from "../../common/crypto_test"
 
 import { sha256 } from 'js-sha256'
@@ -28,9 +30,21 @@ export const FOLDER_LIST_TEMPLATE = "FOLDER_LIST_TEMPLATE"
 export const ADD_FOLDER_TEMPLATE = "ADD_FOLDER_TEMPLATE"
 
 
-export function list_template(folder_id = "all", page = 0){
+export function list_template(folder_id = "all", page = 0, corp_key = null){
     return async function(dispatch){
         let resp = await api_list_template(folder_id, page)
+
+        if(resp && resp.code == 1) {
+            for(let v of resp.payload.list) {
+                if(!corp_key) {
+                    let masterKeyPublic = SeedToMasterKeyPublic(getMasterSeed())
+                    v.html = aes_decrypt(v.html, masterKeyPublic)
+                } else {
+                    v.html = aes_decrypt(v.html, Buffer.from(corp_key, 'hex'))
+                }
+            }
+        }
+
         dispatch({
             type:LIST_TEMPLATE,
             payload:resp.payload
@@ -71,23 +85,37 @@ export function change_folder_template(folder_id, folder_name) {
     }
 }
 
-export function add_template(subject, folder_id, html){
+export function add_template(subject, folder_id, html, corp_key = null){
     return async function(){
         /*let entropy = sessionStorage.getItem("entropy");
         imgs = imgs.map(e=>aes_encrypt(e,entropy))*/
 
-        let encrypted_html = html
-        
+        let encrypted_html;
+        if(!corp_key) {
+            let masterKeyPublic = SeedToMasterKeyPublic(getMasterSeed())
+            encrypted_html = aes_encrypt(html, masterKeyPublic)
+        } else {
+            encrypted_html = aes_encrypt(html, Buffer.from(corp_key, 'hex'))
+        }
+
         let resp = await api_add_template(subject, folder_id, encrypted_html)
         return resp.payload
     }
 }
 
-export function get_template(template_id){
+export function get_template(template_id, corp_key = null){
     return async function(){
         // let entropy = sessionStorage.getItem("entropy");
 
         let resp = await api_get_template(template_id)
+
+        if(!corp_key) {
+            let masterKeyPublic = SeedToMasterKeyPublic(getMasterSeed())
+            resp.payload.html = aes_decrypt(resp.payload.html, masterKeyPublic)
+        } else {
+            resp.payload.html = aes_decrypt(resp.payload.html, Buffer.from(corp_key, 'hex'))
+        }
+
         /*if(resp.payload.html){
             try{
                resp.payload.html = JSON.parse(aes_decrypt(resp.payload.html,entropy))
@@ -101,14 +129,20 @@ export function get_template(template_id){
     }
 }
 
-export function update_template(template_id, folder_id, subject, html){
+export function update_template(template_id, folder_id, subject, html, corp_key = null){
     return async function(){
         /*let entropy = sessionStorage.getItem("entropy");
         html = aes_encrypt(JSON.stringify(html),entropy)*/
 
-        let encrypted_html = html
+        let encrypted_html;
+        if(!corp_key) {
+            let masterKeyPublic = SeedToMasterKeyPublic(getMasterSeed())
+            encrypted_html = aes_encrypt(html, masterKeyPublic)
+        } else {
+            encrypted_html = aes_encrypt(html, Buffer.from(corp_key, 'hex'))
+        }
 
-        let resp = await api_update_template(template_id, folder_id, subject, html)
+        let resp = await api_update_template(template_id, folder_id, subject, encrypted_html)
 
         return resp.payload
     }

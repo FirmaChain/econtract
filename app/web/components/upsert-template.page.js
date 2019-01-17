@@ -107,7 +107,7 @@ export default class extends React.Component {
             let templateId = this.props.match.params.template_id
 
             if(!!templateId) {
-                let templateData = await this.props.get_template(templateId)
+                let templateData = await this.props.get_template(templateId, this.props.user_info.corp_key || null)
                 let select_folder_label = null;
                 for(let v of folders) {
                     if(v.folder_id == templateData.folder_id) {
@@ -199,7 +199,7 @@ export default class extends React.Component {
             if(await window.confirm(translate("template_modify"), translate("are_u_modify_this_template"))){
                 this.blockFlag = true
                 await window.showIndicator()
-                await this.props.update_template(this.state.template_id, this.state.select_folder_id, this.state.title, this.state.model)
+                await this.props.update_template(this.state.template_id, this.state.select_folder_id, this.state.title, this.state.model, this.props.user_info.corp_key || null)
                 await window.hideIndicator()
                 history.goBack()
             }
@@ -207,7 +207,7 @@ export default class extends React.Component {
             if(await window.confirm(translate("register_template"), translate("are_u_register_this_template"))){
                 this.blockFlag = true
                 await window.showIndicator()
-                await this.props.add_template(this.state.title, this.state.select_folder_id, this.state.model)
+                await this.props.add_template(this.state.title, this.state.select_folder_id, this.state.model, this.props.user_info.corp_key || null)
                 await window.hideIndicator()
                 history.goBack()
             }

@@ -50,13 +50,14 @@ export default class extends React.Component {
         (async()=>{
             await window.showIndicator()
             await this.props.folder_list_template()
-            this.onRefresh()
+            await this.onRefresh()
             await window.hideIndicator()
         })()
     }
 
     onRefresh = async (nextProps) => {
-        await this.props.list_template(this.getTitle(nextProps).id, this.state.cur_page - 1)
+        nextProps = !!nextProps ? nextProps : this.props
+        await this.props.list_template(this.getTitle(nextProps).id, this.state.cur_page - 1, this.props.user_info.corp_key || null)
     }
 
     componentWillReceiveProps(nextProps){
@@ -79,7 +80,7 @@ export default class extends React.Component {
         if(await window.confirm(translate("template_delete"), translate("template_delete_desc_1", [selected.length]) )){
             await window.showIndicator()
             await this.props.remove_template(selected)
-            await this.props.list_template(this.getTitle().id, this.state.cur_page - 1)
+            await this.onRefresh()
             await window.hideIndicator()
             
             alert(translate("template_delete_desc_2"))
@@ -90,7 +91,7 @@ export default class extends React.Component {
         if(this.state.cur_page == page)
             return;
 
-        await this.props.list_template(this.getTitle().id, page - 1);
+        await this.onRefresh()
         this.setState({
             cur_page:page,
             templates_checks:[]
@@ -156,7 +157,7 @@ export default class extends React.Component {
         if(await window.confirm(translate("template_delete"), translate("are_u_delete_template", [subject]) )) {
             await window.showIndicator()
             await this.props.remove_template([template_id])
-            await this.props.list_template(this.getTitle().id, this.state.cur_page - 1)
+            await this.onRefresh()
             await window.hideIndicator()
             alert(translate("are_u_delete_template_desc", [subject]))
         }
