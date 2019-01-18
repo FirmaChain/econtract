@@ -55,10 +55,31 @@ export default class PreviewContract extends React.Component {
                 
                 return <div className="item" key={k}>
                     <div className="title">{translate("signer_counter", [k+1])}</div>
-                    {e.sign_info ? Object.entries(e.sign_info).map( (ee, kk) => {
+                    {(()=>{
+                        let user_type = e.user_info.user_type || 0
+
+                        let divs = []
+                        if(user_type == 0) {
+                            for(let v of this.props.contract.necessary_info.individual) {
+                                divs.push(<div className="info" key={v}>
+                                    <span className="first">{v}</span>&nbsp;:&nbsp;
+                                    <spann className="desc">{e.sign_info ? e.sign_info["#"+v] || translate("unregistered") : translate("unregistered")}</spann>
+                                </div>)
+                            }
+                        } else {
+                            for(let v of this.props.contract.necessary_info.corporation) {
+                                divs.push(<div className="info" key={v}>
+                                    <span className="first">{v}</span>&nbsp;:&nbsp;
+                                    <span className="last">{e.sign_info ? e.sign_info["#"+v] || translate("unregistered") : translate("unregistered")}</span>
+                                </div>)
+                            }
+                        }
+                        return divs
+                    })()}
+                    {/*e.sign_info ? Object.entries(e.sign_info).map( (ee, kk) => {
                         let title = ee[0].substring(1, ee[0].length)
                         return <div className="info" key={kk}><span className="first">{title}</span> : <span className="last">{ee[1]}</span></div>
-                    }) : <div className="info">{translate("not_yet_register_sign_info")}</div>}
+                    }) : <div className="info">{translate("not_yet_register_sign_info")}</div>*/}
                     {e.sign_info ? <div className="signature">
                         {translate("sign")}
                         {e.signature ? <img src={e.signature} /> : null }
