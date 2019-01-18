@@ -246,7 +246,7 @@ export default class extends React.Component {
     createHTML = () => {
         let head = <head>
             <title>E-Contract</title>
-            <meta charset="utf-8" />
+            <meta charSet="utf-8" />
         </head>
         let body = <body>
             <div className="preview-contract-page">
@@ -495,7 +495,7 @@ a.fr-command {
 
     onClickDownload = async () => {
         let data = this.createHTML()
-        let filename = `[E-Contract][${this.status_text(this.state.contract.status)}] ${this.state.contract.name}.html`;
+        let filename = `[${this.status_text(this.state.contract.status)}] ${this.state.contract.name}.html`;
 
         let file = new Blob([data], {type: 'text/html'});
         if (window.navigator.msSaveOrOpenBlob) // IE10+
