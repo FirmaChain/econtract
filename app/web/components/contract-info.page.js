@@ -495,7 +495,7 @@ a.fr-command {
 
     onClickDownload = async () => {
         let data = this.createHTML()
-        let filename = this.state.contract.name+".html";
+        let filename = `[E-Contract][${this.status_text(contract.status)}] ${this.state.contract.name}.html`;
 
         let file = new Blob([data], {type: 'text/html'});
         if (window.navigator.msSaveOrOpenBlob) // IE10+
