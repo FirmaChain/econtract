@@ -5,7 +5,6 @@ import {
     api_get_current_total_ticket,
     api_input_payment_info,
     api_get_payment_info,
-    api_select_subscription_plan,
     api_make_yearly_commitment,
     api_make_monthly_commitment,
     api_buy_onetime_ticket,
@@ -55,12 +54,6 @@ export function get_payment_info(){
 export function get_payment_log(page = 0, display_count = 6){
     return async function(){
         return (await api_get_payment_log(page, display_count))
-    };
-}
-
-export function select_subscription_plan(plan_id) {
-    return async function(){
-        return (await api_select_subscription_plan(plan_id))
     };
 }
 
