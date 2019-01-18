@@ -1077,7 +1077,7 @@ export default class extends React.Component {
                 </div>
                 <div className="selection-list">
                     {this.state.sort_test.map((e,k)=>{
-                        return <div className="item" key={k}>{e.word}</div>
+                        return <div className="item" key={e.idx}>{e.word}</div>
                     })}
                     {this.render_empty_slot()}
                 </div>
