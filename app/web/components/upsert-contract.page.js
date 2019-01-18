@@ -348,7 +348,7 @@ export default class extends React.Component {
 
         let default_arr = this.create_default_sign_info()
 
-        let _ = {...this.state.sign_info}
+        let _ = {...sign_info}
         sign_info_list.map( async (e, k) => {
             for(let v of default_arr) {
                 let textArr = translate(v.label, [], true)
@@ -570,7 +570,7 @@ export default class extends React.Component {
         return [
             {label:"individual_name", value:this.props.user_info.username || ""},
             {label:"individual_email", value:this.props.user_info.email || ""},
-            {label:"individual_address", value:this.props.user_info.address || ""},
+            {label:"individual_address", value:this.props.user_info.useraddress || ""},
             {label:"individual_phone", value:this.props.user_info.userphone || ""},
             {label:"corporation_name", value:this.props.user_info.company_name || ""},
             {label:"corporation_duns", value:this.props.user_info.duns_number || ""},
@@ -595,7 +595,7 @@ export default class extends React.Component {
                 for(let v of default_arr) {
                     let textArr = translate(v.label, [], true)
                     for(let vv of textArr) {
-                        if(e == vv) {
+                        if(e == vv && v.value != "") {
                             let _ = {...this.state.sign_info}
                             _["#"+vv] = v.value
                             text = v.value
