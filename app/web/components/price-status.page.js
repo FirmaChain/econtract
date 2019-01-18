@@ -310,7 +310,8 @@ export default class extends React.Component {
             card_info_string = `${_i.card_type} ${_i.partial_card_number} ${_i.name}`
         }
 
-        let is_yearly_plan = current_subscription && current_subscription.type != window.CONST.PAYMENT_LOG_TYPE.YEARLY_DISTRIBUTE_TICKET;
+        let is_not_yearly_plan = current_subscription && current_subscription.type != window.CONST.PAYMENT_LOG_TYPE.YEARLY_DISTRIBUTE_TICKET;
+        let is_current_subscription = !current_subscription
 
 		return (<div className="right-desc price-status-page">
             <div className="title">{translate("price_info")}</div>
@@ -329,8 +330,8 @@ export default class extends React.Component {
                         }
                         {this.props.user_info.account_type == 2 ? null : 
                         <div className="button-container">
-                            { is_yearly_plan ? <div className="button" onClick={this.onClickChangeRegularPayment}>{this.state.current_subscription ? translate("change") : translate("register")}</div> : null}
-                            { is_yearly_plan ? <div className="button">{translate("terminate")}</div> : null}
+                            { is_current_subscription || is_not_yearly_plan ? <div className="button" onClick={this.onClickChangeRegularPayment}>{this.state.current_subscription ? translate("change") : translate("register")}</div> : null}
+                            { is_not_yearly_plan ? <div className="button">{translate("terminate")}</div> : null}
                         </div>}
                     </div>
                     {this.props.user_info.account_type != 0 ? <div className="box gray-box">
