@@ -12,7 +12,6 @@ import moment from "moment"
 import UAParser from "ua-parser-js"
 import Pager from "./pager"
 import queryString from "query-string"
-import jsxToString from 'jsx-to-string';
 import ReactDOMServer from 'react-dom/server';
 
 import Dropdown from "react-dropdown"
