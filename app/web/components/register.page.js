@@ -611,6 +611,7 @@ export default class extends React.Component {
                 shuffled_mnemonic:this.state.mnemonic.split(" ").map( (e, k) => { return {idx:k, word:e} } ).shuffle(),
                 sort_test:[],
             })
+            this.isGoingFinish = false
             return alert(translate("please_check_master_keyword_order"))
         }
         let account_type = this.getAccountType()
