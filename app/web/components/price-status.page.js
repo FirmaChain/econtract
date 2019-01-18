@@ -310,6 +310,8 @@ export default class extends React.Component {
             card_info_string = `${_i.card_type} ${_i.partial_card_number} ${_i.name}`
         }
 
+        let is_yearly_plan = current_subscription && current_subscription.type != window.CONST.PAYMENT_LOG_TYPE.YEARLY_DISTRIBUTE_TICKET;
+
 		return (<div className="right-desc price-status-page">
             <div className="title">{translate("price_info")}</div>
             <div className="container">
@@ -327,8 +329,8 @@ export default class extends React.Component {
                         }
                         {this.props.user_info.account_type == 2 ? null : 
                         <div className="button-container">
-                            <div className="button" onClick={this.onClickChangeRegularPayment}>{this.state.current_subscription ? translate("change") : translate("register")}</div>
-                            {current_subscription ? <div className="button">{translate("terminate")}</div> : null}
+                            { is_yearly_plan ? <div className="button" onClick={this.onClickChangeRegularPayment}>{this.state.current_subscription ? translate("change") : translate("register")}</div> : null}
+                            { is_yearly_plan ? <div className="button">{translate("terminate")}</div> : null}
                         </div>}
                     </div>
                     {this.props.user_info.account_type != 0 ? <div className="box gray-box">
@@ -380,11 +382,13 @@ export default class extends React.Component {
                     {payment_logs.list ? payment_logs.list.map( (e,k) => {
                         let type
                         let count = ""
+                        let plan
                         switch(e.type) {
                             case window.CONST.PAYMENT_LOG_TYPE.YEARLY_COMMITMENT:
                                 break;
                             case window.CONST.PAYMENT_LOG_TYPE.YEARLY_PAYMENT_REGULAR:
-                                type = `${translate("YEARLY_PAYMENT_REGULAR")} ${e.total_count}`
+                                plan = this.state.subscription_plans.find(plan=>plan.plan_id == e.plan_id)
+                                type = `${translate("YEARLY_PAYMENT_REGULAR")} ${plan.ticket_count}`
                                 if(e.reference_id == "PENDING")
                                     type += ` (${translate("payment_pending")})`
                                 count = translate("ticket_msg", [e.total_count])
@@ -396,8 +400,8 @@ export default class extends React.Component {
                                 type = translate("YEARLY_DISTRIBUTE_TICKET")
                                 break;
                             case window.CONST.PAYMENT_LOG_TYPE.MONTHLY_PAYMENT_AND_DISTRIBUTE:
-
-                                type = `${translate("MONTHLY_PAYMENT_AND_DISTRIBUTE")} ${e.total_count}`
+                                plan = this.state.subscription_plans.find(plan=>plan.plan_id == e.plan_id)
+                                type = `${translate("MONTHLY_PAYMENT_AND_DISTRIBUTE")} ${plan.ticket_count}`
                                 if(e.reference_id == "PENDING")
                                     type += ` (${translate("payment_pending")})`
                                 count = translate("ticket_msg", [e.total_count])
