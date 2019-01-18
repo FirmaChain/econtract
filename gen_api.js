@@ -576,15 +576,6 @@ export async function api_increase_account(account_count){
         session:window.getCookie("session")
     });
 }
-export async function api_select_subscription_plan(plan_id){
-    let __data = new FormData();
-
-    if(plan_id != null) __data.append('plan_id', plan_id)
-
-    return await post("/select_subscription_plan", __data,{
-        session:window.getCookie("session")
-    });
-}
 export async function api_get_scheduled_subscription(){
     let __data = new FormData();
 
