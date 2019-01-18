@@ -352,7 +352,9 @@ class PurchaseGroupMemberChange extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            change_count:props.count,
+            member_count:props.member_count,
+            max_member_count:props.max_member_count,
+            change_count:null,
         };
     }
 
@@ -364,7 +366,10 @@ class PurchaseGroupMemberChange extends React.Component {
     }
 
     onResponse = () => {
-        this.props.onResponse && this.props.onResponse(this.state.change_count)
+        if(this.state.member_count < 5)
+            return alert(translate("more_than_default_number", [translate("modify_account_group_count"), 5]))
+
+        this.props.onResponse && this.props.onResponse(this.state.member_count)
         this.closeSelf();
     }
 
@@ -382,10 +387,13 @@ class PurchaseGroupMemberChange extends React.Component {
                         value={this.state.change_count}
                         placeholder={translate("please_input_modify_account_group_count")}/>
                 </div>
-            <div className="sub-title">{translate("info_of_now_account", [this.props.count])}</div>
+                <div className="sub-title">
+                    {translate("info_of_now_account", [this.props.member_count])}<br/>
+                    {translate("info_of_max_account", [this.props.max_member_count])}
+                </div>
                 <div className="sub-desc" dangerouslySetInnerHTML={{__html:translate("add_sub_account_purchase_desc")}}></div>
                 <div className="button">
-                    <div className="submit" onClick={this.onResponse}>{translate("add")}</div>
+                    <div className="submit" onClick={this.onResponse}>{translate("change")}</div>
                     <div className="cancel" onClick={this.closeSelf}>{translate("cancel")}</div>
                 </div>
             </div>

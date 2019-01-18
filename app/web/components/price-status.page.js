@@ -84,11 +84,11 @@ export default class extends React.Component {
         nextProps = !!nextProps ? nextProps : this.props
         let params = queryString.parse(nextProps.location.search)
 
-        let subscription_plans = (await this.props.get_subscribe_plan()).payload.map((e)=>{e.data = JSON.parse(e.data); return e});
+        let subscription_plans = (await this.props.get_subscribe_plan()).payload;
         let current_subscription = (await this.props.get_current_subscription()).payload;
         let current_onetime_ticket = (await this.props.get_current_onetime_ticket()).payload;
         let payment_info = (await this.props.get_payment_info()).payload;
-        let partial_payment_info = payment_info ? JSON.parse(payment_info.preview_data) : null;
+        let partial_payment_info = payment_info ? payment_info.preview_data : null;
         let current_subscription_payment = (await this.props.get_current_subscription_payment()).payload;
         let corp_member_count = 0;
         let corp_member_count_max = 0;
@@ -254,7 +254,8 @@ export default class extends React.Component {
             if(!result) return
         }
         window.openModal("PurchaseGroupMemberChange", {
-            count:this.state.corp_member_count_max,
+            member_count:this.state.corp_member_count,
+            max_member_count:this.state.corp_member_count_max,
             onResponse: async (change_count) => {
                 let resp = await this.props.increase_account(change_count);
                 if (resp.code == 1) {
