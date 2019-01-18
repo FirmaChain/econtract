@@ -44,7 +44,6 @@ export function fetch_user_info(){
         let entropy = sessionStorage.getItem("entropy")
         if(entropy){
             let resp = await api_encrypted_user_info()
-            console.log("resp", resp)
             if(resp.payload){
                 let user_info = decrypt_user_info(entropy, new Buffer(resp.payload.info.data) )
                 let corp_info = {}, public_info = {}

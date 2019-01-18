@@ -338,13 +338,29 @@ export default class extends React.Component {
     onClickRegiserSignInfo = async () => {
 
         let sign_info = Object.assign(this.state.sign_info, {}) || {}
+        
         let sign_info_list
-
         if(this.props.user_info.account_type == 0) {
             sign_info_list = this.state.contract.necessary_info.individual
         } else {
             sign_info_list = this.state.contract.necessary_info.corporation
         }
+
+        let default_arr = this.create_default_sign_info()
+
+        let _ = {...this.state.sign_info}
+        sign_info_list.map( async (e, k) => {
+            for(let v of default_arr) {
+                let textArr = translate(v.label, [], true)
+                for(let vv of textArr) {
+                    if(e == vv) {
+                        _["#"+vv] = v.value
+                    }
+                }
+            }
+        })
+        await this.setState({sign_info:_})
+        sign_info = Object.assign(this.state.sign_info, {}) || {}
 
         for(let v of sign_info_list) {
             if(!sign_info["#"+v] || sign_info["#"+v].trim() == "") {
@@ -396,6 +412,7 @@ export default class extends React.Component {
                 return alert(translate("input_all_sign_info"))
             }
         }
+
 
         window.openModal("DrawSign",{
             onFinish : async (signature)=>{
@@ -549,6 +566,19 @@ export default class extends React.Component {
         }
     }
 
+    create_default_sign_info() {
+        return [
+            {label:"individual_name", value:this.props.user_info.username || ""},
+            {label:"individual_email", value:this.props.user_info.email || ""},
+            {label:"individual_address", value:this.props.user_info.address || ""},
+            {label:"individual_phone", value:this.props.user_info.userphone || ""},
+            {label:"corporation_name", value:this.props.user_info.company_name || ""},
+            {label:"corporation_duns", value:this.props.user_info.duns_number || ""},
+            {label:"corporation_address", value:this.props.user_info.company_address || ""},
+            {label:"corporation_ceo_name", value:this.props.user_info.company_ceo || ""},
+        ]
+    }
+
     render_sign_form() {
         let sign_info_list
         if(this.props.user_info.account_type == 0) {
@@ -557,14 +587,28 @@ export default class extends React.Component {
             sign_info_list = this.state.contract.necessary_info.corporation
         }
 
+        let default_arr = this.create_default_sign_info()
+
         return <div className="bottom sign-form">
             {sign_info_list.map( (e, k) => {
+                let text
+                for(let v of default_arr) {
+                    let textArr = translate(v.label, [], true)
+                    for(let vv of textArr) {
+                        if(e == vv) {
+                            let _ = {...this.state.sign_info}
+                            _["#"+vv] = v.value
+                            text = v.value
+                        }
+                    }
+                }
                 return <div className="desc" key={e}>
                     <div className="title">{e}</div>
                     <div className="text-box">
                         <input className="common-textbox"
                             type="text"
-                            value={this.state.sign_info["#"+e]}
+                            disabled={!!text}
+                            value={text || this.state.sign_info["#"+e]}
                             onChange={(ee) => {
                                 let _ = {...this.state.sign_info}
                                 _["#"+e] = ee.target.value
