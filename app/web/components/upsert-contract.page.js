@@ -353,14 +353,15 @@ export default class extends React.Component {
             for(let v of default_arr) {
                 let textArr = translate(v.label, [], true)
                 for(let vv of textArr) {
-                    if(e == vv) {
+                    if(e == vv && v.value != "") {
                         _["#"+vv] = v.value
                     }
                 }
             }
         })
-        await this.setState({sign_info:_})
-        sign_info = Object.assign(this.state.sign_info, {}) || {}
+        sign_info = Object.assign(_, {}) || {}
+
+        console.log(sign_info)
 
         for(let v of sign_info_list) {
             if(!sign_info["#"+v] || sign_info["#"+v].trim() == "") {
