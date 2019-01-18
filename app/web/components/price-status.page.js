@@ -166,13 +166,13 @@ export default class extends React.Component {
                     // TODO: Make branch between register and change
                     resp = await this.props.make_yearly_commitment(plan_id);
                     if(resp.code == 1) {
-                        alert(translate("subscribe_purchase_plan_monthly"))
+                        alert(translate("subscribe_purchase_plan_yearly"))
                         await this.onRefresh()
                     }
                 } else {
                     resp = await this.props.make_monthly_commitment(plan_id);
                     if(resp.code == 1) {
-                        alert(translate("subscribe_purchase_plan_yearly"))
+                        alert(translate("subscribe_purchase_plan_monthly"))
                         await this.onRefresh()
                     }
                 }
