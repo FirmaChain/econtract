@@ -414,9 +414,6 @@ export default class extends React.Component {
                             case window.CONST.PAYMENT_LOG_TYPE.PROMOTION_DISTRIBUTE_TICKET:
                                 type = translate("PROMOTION_DISTRIBUTE_TICKET")
                                 break;
-                            case window.CONST.PAYMENT_LOG_TYPE.REFUND:
-                                type =translate("REFUND")
-                                break;
                             case window.CONST.PAYMENT_LOG_TYPE.MEMBER_PAYMENT_REGULAR:
                                 type = translate("MEMBER_PAYMENT_REGULAR")
                                 count = translate("count_curr_total_person", [e.total_count])
