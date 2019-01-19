@@ -378,7 +378,7 @@ class PurchaseGroupMemberChange extends React.Component {
             <div className="container">
                 <div className="icon"><i className="fal fa-ticket-alt"></i></div>
                 <div className="title">{translate("group_account_modify")}</div>
-                <div className="sub-title">{translate("group_account_add_desc", ["2000".number_format()])}</div>
+                <div className="sub-title">{translate("group_account_add_desc", [window.CONST.MEMBER_PRICE.number_format()])}</div>
 
                 <div className="text-box">
                     <div className="sub-title">{translate("modify_account_group_count")}</div>

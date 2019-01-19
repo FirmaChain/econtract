@@ -27,6 +27,7 @@ window.CONST = {
         ONETIME: 1,
         MONTHLY: 2,
         YEARLY: 3,
+        MEMBER: 4,
     },
     PAYMENT_LOG_TYPE: {
         YEARLY_COMMITMENT: 1,
@@ -40,6 +41,15 @@ window.CONST = {
         MEMBER_PAYMENT_UPGRADE: 9,
         PROMOTION_MEMBER: 10,
     },
+    PAYMENT_LOG_STATUS: {
+        PENDING:0,
+        SUCCESS:1,
+        TERMINATE:2,
+        REFUND:3,
+    },
+    MEMBER_PRICE: 2000,
+    ONE_TIME_TICKET_PRICE: 1500,
+    MEMBER_FREE_COUNT: 5,
 }
 
 global.Buffer = require('buffer').Buffer;
