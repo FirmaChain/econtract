@@ -35,6 +35,7 @@ import {
     buy_onetime_ticket,
     increase_account,
     get_maximum_member_count,
+    get_ticket_log,
 } from "../../common/actions"
 
 let mapStateToProps = (state)=>{
@@ -58,6 +59,7 @@ let mapDispatchToProps = {
     buy_onetime_ticket,
     increase_account,
     get_maximum_member_count,
+    get_ticket_log,
 }
 
 const LIST_DISPLAY_COUNT = 6
@@ -108,9 +110,11 @@ export default class extends React.Component {
         })
 
         let payment_logs = (await this.props.get_payment_log(this.state.cur_payment_page, LIST_DISPLAY_COUNT)).payload;
+        let use_logs = (await this.props.get_ticket_log(this.state.cur_use_page, LIST_DISPLAY_COUNT)).payload;
 
         this.setState({
             payment_logs,
+            use_logs,
         })
 
 
@@ -141,6 +145,10 @@ export default class extends React.Component {
         }
     }
 
+    moveContract = async (contract_id) => {
+        history.push(`/contract-info/${contract_id}`)
+    }
+
     onClickChangeRegularPayment = async () => {
         if(!this.state.partial_payment_info) {
             let result = await this.onChangeCardInfo()
@@ -151,6 +159,7 @@ export default class extends React.Component {
         let plan_yearly = subscribe_plans.filter(e=>e.type==3);
         let plan_monthly_options = plan_monthly.map((e)=>{return {value: e.plan_id, label: e.data.title}});
         let plan_yearly_options = plan_yearly.map((e)=>{return {value: e.plan_id, label: e.data.title}});
+
         window.openModal("PurchaseRegularPayment", {
             planMonthly: plan_monthly,
             planYearly: plan_yearly,
@@ -446,16 +455,12 @@ export default class extends React.Component {
                         <div className="list-head-item list-signer">서명자</div>
                         <div className="list-head-item list-date">차감 일자</div>
                     </div>
-                    <div className="item">
-                        <div className="list-body-item list-content">근로 계약서</div>
-                        <div className="list-body-item list-signer">윤대현, 박불이세 외 2명</div>
-                        <div className="list-body-item list-date">{moment().format("YYYY-MM-DD HH:mm:ss")}</div>
-                    </div>
-                    <div className="item">
-                        <div className="list-body-item list-content">외주 계약서</div>
-                        <div className="list-body-item list-signer">윤대현, 박불이세 외 2명</div>
-                        <div className="list-body-item list-date">{moment().format("YYYY-MM-DD HH:mm:ss")}</div>
-                    </div>
+                    {use_logs.list ? use_logs.list.map( (e,k) => {
+                        return <div className="item" key={e.log_id} onClick={this.moveContract.bind(this, e.contract_id)}>
+                            <div className="list-body-item list-content">{e.data.name}</div>
+                            <div className="list-body-item list-date">{moment(e.addedAt).format("YYYY-MM-DD HH:mm:ss")}</div>
+                        </div>
+                    }) : null}
                     {!use_logs.list || use_logs.list.length == 0 ? <div className="empty-item">{translate("empty_log")}</div>:null}
                 </div> : null}
                 {this.props.user_info.account_type != 2 ? <div className="pager-wrapper">

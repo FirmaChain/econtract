@@ -13,6 +13,7 @@ import {
     api_get_current_subscription_payment,
     api_get_maximum_member_count,
     api_check_ticket_count,
+    api_get_ticket_log,
 } from "../../../gen_api"
 
 export function get_subscribe_plan(){
@@ -55,6 +56,12 @@ export function get_payment_log(page = 0, display_count = 6){
     return async function(){
         return (await api_get_payment_log(page, display_count))
     };
+}
+
+export function get_ticket_log(page = 0, display_count = 6 ) {
+    return async function() {
+        return (await api_get_ticket_log(page, display_count))
+    }
 }
 
 export function make_yearly_commitment(plan_id) {
