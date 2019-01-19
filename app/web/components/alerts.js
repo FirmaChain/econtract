@@ -533,7 +533,7 @@ class PurchaseRegularPayment extends React.Component {
                     </div>
                 </div>
                 <div className="button">
-                    <div className="submit" onClick={this.onResponse}>{translate("change")}</div>
+                    <div className="submit" onClick={this.onResponse}>{this.props.is_current_subscription ? translate("change") : translate("register")}</div>
                     <div className="cancel" onClick={this.closeSelf}>{translate("cancel")}</div>
                 </div>
             </div>
