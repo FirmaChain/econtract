@@ -452,7 +452,7 @@ export default class extends React.Component {
                     <div className="title">{translate("ticket_use_logs")}</div>
                     <div className="head">
                         <div className="list-head-item list-content">계약명</div>
-                        <div className="list-head-item list-signer">서명자</div>
+                        {/*<div className="list-head-item list-signer">서명자</div>*/}
                         <div className="list-head-item list-date">차감 일자</div>
                     </div>
                     {use_logs.list ? use_logs.list.map( (e,k) => {
