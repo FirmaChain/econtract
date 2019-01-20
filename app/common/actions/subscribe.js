@@ -14,7 +14,6 @@ import {
     api_get_maximum_member_count,
     api_check_ticket_count,
     api_get_ticket_log,
-    api_get_onetime_ticket_plan,
 } from "../../../gen_api"
 
 export function get_subscribe_plan(){
@@ -106,11 +105,4 @@ export function check_ticket_count(){
         return (await api_check_ticket_count());
     };
 }
-
-export function get_onetime_ticket_plan() {
-    return async function() {
-        return (await api_get_onetime_ticket_plan());
-    }
-}
-
 

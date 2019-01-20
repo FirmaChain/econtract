@@ -36,7 +36,6 @@ import {
     increase_account,
     get_maximum_member_count,
     get_ticket_log,
-    get_onetime_ticket_plan,
 } from "../../common/actions"
 
 let mapStateToProps = (state)=>{
@@ -61,7 +60,6 @@ let mapDispatchToProps = {
     increase_account,
     get_maximum_member_count,
     get_ticket_log,
-    get_onetime_ticket_plan,
 }
 
 const LIST_DISPLAY_COUNT = 6
@@ -199,12 +197,14 @@ export default class extends React.Component {
     onBuyTicket = async () => {
         if(!this.state.partial_payment_info) {
             let result = await this.onChangeCardInfo()
-            if(!result) return
+            if(!result) return;
         }
 
-        let ticket_plan = (await this.props.get_onetime_ticket_plan()).payload
+        let onetime_ticket_plan = this.state.subscription_plans.filter(e=>e.type==1).sort((a,b)=>a.total_price-b.total_price)[0]
+
+        //let ticket_plan = (await this.props.get_onetime_ticket_plan()).payload
         window.openModal("PurchaseTicket", {
-            ticket_plan:ticket_plan,
+            ticket_plan:onetime_ticket_plan,
             onResponse: async (give_count) => {
                 let subscribe_plans = this.state.subscription_plans;
                 let plan_id = subscribe_plans.find(e=>e.type==1).plan_id;

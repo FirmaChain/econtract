@@ -48,9 +48,9 @@ window.CONST = {
         REFUND:3,
     },
     MEMBER_PRICE: 2000,
-    ONE_TIME_TICKET_PRICE: 1500,
-    MEMBER_FREE_COUNT: 5,
+    MEMBER_FREE_COUNT: 1,
 }
+
 
 global.Buffer = require('buffer').Buffer;
 global.process = require('process');
