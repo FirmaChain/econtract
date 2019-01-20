@@ -178,12 +178,16 @@ export default class extends React.Component {
                     if(resp.code == 1) {
                         alert(translate("subscribe_purchase_plan_yearly"))
                         await this.onRefresh()
+                    } else {
+                        return alert("error : ", resp.code)
                     }
                 } else {
                     resp = await this.props.make_monthly_commitment(plan_id);
                     if(resp.code == 1) {
                         alert(translate("subscribe_purchase_plan_monthly"))
                         await this.onRefresh()
+                    } else {
+                        return alert("error : ", resp.code)
                     }
                 }
             }
