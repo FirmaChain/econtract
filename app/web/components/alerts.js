@@ -369,7 +369,7 @@ class PurchaseGroupMemberChange extends React.Component {
         if(this.state.change_count < 5)
             return alert(translate("more_than_default_number", [translate("modify_account_group_count"), 5]))
 
-        this.props.onResponse && this.props.onResponse(this.state.member_count)
+        this.props.onResponse && this.props.onResponse(this.state.change_count)
         this.closeSelf();
     }
 
