@@ -614,6 +614,15 @@ export async function api_check_ticket_count(){
         session:window.getCookie("session")
     });
 }
+export async function api_get_onetime_ticket_plan(){
+    let __data = new FormData();
+
+    
+
+    return await post("/get_onetime_ticket_plan", __data,{
+        session:window.getCookie("session")
+    });
+}
 export async function api_add_template(subject,folder_id,html){
     let __data = new FormData();
 

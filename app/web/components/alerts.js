@@ -427,12 +427,13 @@ class PurchaseTicket extends React.Component {
     }
 
     render() {
+        let price = this.props.ticket_plan.total_price
         return <div className="purchase-ticket default-modal-container">
             <div className="container">
                 <div className="icon"><i className="fal fa-ticket-alt"></i></div>
                 <div className="title">{translate("buy_one_time_ticket")}</div>
                 <div className="sub-title">{translate("buy_one_time_ticket_desc")}</div>
-                <div className="content" dangerouslySetInnerHTML={{__html:translate("one_time_price_info", ["1500".number_format()])}}></div>
+                <div className="content" dangerouslySetInnerHTML={{__html:translate("one_time_price_info", [price.number_format()])}}></div>
 
                 <div className="text-box">
                     <div className="sub-title">{translate("will_buy_ticket_count")}</div>
@@ -441,7 +442,7 @@ class PurchaseTicket extends React.Component {
                         value={this.state.give_count}
                         placeholder={translate("please_input_will_buy_ticket_count")}/>
                 </div>
-                <div className="result" dangerouslySetInnerHTML={{__html:translate("price_info_msg", [(this.state.give_count * 1500).number_format()]) }}>
+                <div className="result" dangerouslySetInnerHTML={{__html:translate("price_info_msg", [(this.state.give_count * price).number_format()]) }}>
                     
                 </div>
                 <div className="button">

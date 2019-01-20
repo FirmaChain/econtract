@@ -36,6 +36,7 @@ import {
     increase_account,
     get_maximum_member_count,
     get_ticket_log,
+    get_onetime_ticket_plan,
 } from "../../common/actions"
 
 let mapStateToProps = (state)=>{
@@ -60,6 +61,7 @@ let mapDispatchToProps = {
     increase_account,
     get_maximum_member_count,
     get_ticket_log,
+    get_onetime_ticket_plan,
 }
 
 const LIST_DISPLAY_COUNT = 6
@@ -199,7 +201,10 @@ export default class extends React.Component {
             let result = await this.onChangeCardInfo()
             if(!result) return
         }
+
+        let ticket_plan = (await this.props.get_onetime_ticket_plan()).payload
         window.openModal("PurchaseTicket", {
+            ticket_plan:ticket_plan,
             onResponse: async (give_count) => {
                 let subscribe_plans = this.state.subscription_plans;
                 let plan_id = subscribe_plans.find(e=>e.type==1).plan_id;
