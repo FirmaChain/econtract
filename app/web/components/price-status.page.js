@@ -439,9 +439,17 @@ export default class extends React.Component {
                                 break;
                             case window.CONST.PAYMENT_LOG_TYPE.MEMBER_PAYMENT_REGULAR:
                                 type = translate("MEMBER_PAYMENT_REGULAR")
+                                if(e.status == window.CONST.PAYMENT_LOG_STATUS.PENDING)
+                                    type += ` (${translate("payment_pending")})`
                                 count = translate("count_curr_total_person", [e.total_count])
                                 break;
                             case window.CONST.PAYMENT_LOG_TYPE.MEMBER_PAYMENT_UPGRADE:
+                                type = translate("MEMBER_PAYMENT_UPGRADE") + " (" + translate("add_person_count", [e.data.delta]) + ")"
+                                if(e.status == window.CONST.PAYMENT_LOG_STATUS.PENDING)
+                                    type += ` (${translate("payment_pending")})`
+                                count = translate("count_curr_total_person", [e.total_count])
+                                break;
+                            case window.CONST.PAYMENT_LOG_TYPE.PROMOTION_MEMBER:
                                 type = translate("MEMBER_PAYMENT_UPGRADE")
                                 count = translate("count_curr_total_person", [e.total_count])
                                 break;
