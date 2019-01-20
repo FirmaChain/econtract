@@ -169,7 +169,7 @@ export default class extends React.Component {
             selectedYearlyIndex: plan_yearly[0].plan_id,
             selectPeriod: 0,
             account_type:this.props.user_info.account_type,
-            is_current_subscription: !this.state.current_subscription,
+            is_current_subscription: !!this.state.current_subscription,
             onResponse: async (period_type, plan_id) => {
                 let resp
                 if (period_type == 1) { // Yearly
