@@ -84,6 +84,8 @@ export default class extends React.Component {
         nextProps = !!nextProps ? nextProps : this.props
         let params = queryString.parse(nextProps.location.search)
 
+        await window.showIndicator()
+
         let subscription_plans = (await this.props.get_subscribe_plan()).payload;
         let current_subscription = (await this.props.get_current_subscription()).payload;
         let current_onetime_ticket = (await this.props.get_current_onetime_ticket()).payload;
@@ -111,6 +113,8 @@ export default class extends React.Component {
 
         let payment_logs = (await this.props.get_payment_log(this.state.cur_payment_page, LIST_DISPLAY_COUNT)).payload;
         let use_logs = (await this.props.get_ticket_log(this.state.cur_use_page, LIST_DISPLAY_COUNT)).payload;
+
+        await window.hideIndicator()
 
         this.setState({
             payment_logs,
