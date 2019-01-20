@@ -182,16 +182,32 @@ export default class extends React.Component {
                     if(resp.code == 1) {
                         alert(translate("subscribe_purchase_plan_yearly"))
                         await this.onRefresh()
+                    } else if(resp.code == -4) {
+                        return alert(translate("plan_not_exist"))
+                    } else if(resp.code == -5) {
+                        return alert(translate("already_subscribe"))
+                    } else if(resp.code == -6) {
+                        return alert(translate("not_exist_payment_info"))
+                    } else if(resp.code == -7) {
+                        return alert(translate("fail_to_pay"))
                     } else {
-                        return alert("error : ", resp.code)
+                        return alert("error : "+resp.code)
                     }
                 } else {
                     resp = await this.props.make_monthly_commitment(plan_id);
                     if(resp.code == 1) {
                         alert(translate("subscribe_purchase_plan_monthly"))
                         await this.onRefresh()
+                    } else if(resp.code == -4) {
+                        return alert(translate("plan_not_exist"))
+                    } else if(resp.code == -5) {
+                        return alert(translate("already_subscribe"))
+                    } else if(resp.code == -6) {
+                        return alert(translate("not_exist_payment_info"))
+                    } else if(resp.code == -7) {
+                        return alert(translate("fail_to_pay"))
                     } else {
-                        return alert("error : ", resp.code)
+                        return alert("error : "+resp.code)
                     }
                 }
             }
