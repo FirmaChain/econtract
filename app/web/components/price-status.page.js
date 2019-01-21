@@ -219,7 +219,7 @@ export default class extends React.Component {
     }
 
     onClickTerminateSubscription = async () => {
-        let resp = await this.props.terminate_monthly_subscription();
+        let resp = await this.props.terminate_monthly_terminate();
         console.log(resp);
         alert("done?");
     }
