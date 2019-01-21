@@ -577,6 +577,15 @@ export async function api_change_monthly_commitment(plan_id,count){
         session:window.getCookie("session")
     });
 }
+export async function api_terminate_monthly_commitment(){
+    let __data = new FormData();
+
+    
+
+    return await post("/terminate_monthly_commitment", __data,{
+        session:window.getCookie("session")
+    });
+}
 export async function api_buy_onetime_ticket(plan_id,count){
     let __data = new FormData();
 
