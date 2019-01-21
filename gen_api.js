@@ -567,13 +567,12 @@ export async function api_make_monthly_commitment(plan_id){
         session:window.getCookie("session")
     });
 }
-export async function api_change_monthly_commitment(plan_id,count){
+export async function api_reserve_monthly_commitment(plan_id){
     let __data = new FormData();
 
-    if(plan_id != null) __data.append('plan_id', plan_id);
-	if(count != null) __data.append('count', count)
+    if(plan_id != null) __data.append('plan_id', plan_id)
 
-    return await post("/change_monthly_commitment", __data,{
+    return await post("/reserve_monthly_commitment", __data,{
         session:window.getCookie("session")
     });
 }
