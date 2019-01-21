@@ -7,6 +7,8 @@ import {
     api_get_payment_info,
     api_make_yearly_commitment,
     api_make_monthly_commitment,
+    api_reserve_monthly_commitment,
+    api_terminate_monthly_commitment,
     api_buy_onetime_ticket,
     api_increase_account,
     api_get_payment_log,
@@ -73,6 +75,18 @@ export function make_yearly_commitment(plan_id) {
 export function make_monthly_commitment(plan_id) {
     return async function(){
         return (await api_make_monthly_commitment(plan_id))
+    };
+}
+
+export function reserve_monthly_commitment(plan_id) {
+    return async function(){
+        return (await api_reserve_monthly_commitment(plan_id))
+    };
+}
+
+export function terminate_monthly_commitment() {
+    return async function(){
+        return (await api_terminate_monthly_commitment())
     };
 }
 

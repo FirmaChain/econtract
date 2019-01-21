@@ -32,6 +32,8 @@ import {
     get_payment_log,
     make_yearly_commitment,
     make_monthly_commitment,
+    reserve_monthly_commitment,
+    terminate_monthly_commitment,
     buy_onetime_ticket,
     increase_account,
     get_maximum_member_count,
@@ -56,6 +58,8 @@ let mapDispatchToProps = {
     get_payment_log,
     make_yearly_commitment,
     make_monthly_commitment,
+    reserve_monthly_commitment,
+    terminate_monthly_commitment,
     buy_onetime_ticket,
     increase_account,
     get_maximum_member_count,
@@ -214,6 +218,12 @@ export default class extends React.Component {
         });
     }
 
+    onClickTerminateSubscription = async () => {
+        let resp = await this.props.terminate_monthly_subscription();
+        console.log(resp);
+        alert("done?");
+    }
+
     onBuyTicket = async () => {
         if(!this.state.partial_payment_info) {
             let result = await this.onChangeCardInfo()
@@ -370,7 +380,7 @@ export default class extends React.Component {
                         {this.props.user_info.account_type == 2 ? null : 
                         <div className="button-container">
                             { is_current_subscription || is_not_yearly_plan ? <div className="button" onClick={this.onClickChangeRegularPayment}>{this.state.current_subscription ? translate("change") : translate("register")}</div> : null}
-                            { is_not_yearly_plan ? <div className="button">{translate("terminate")}</div> : null}
+                            { is_not_yearly_plan ? <div className="button" onClick={this.onClickTerminateSubscription}>{translate("terminate")}</div> : null}
                         </div>}
                     </div>
                     {this.props.user_info.account_type != 0 ? <div className="box gray-box">
