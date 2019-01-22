@@ -201,6 +201,9 @@ export default class extends React.Component {
                     }
                 } else {
                     if (current) {
+                        if (this.state.current_subscription.plan_id == plan_id) {
+                            return alert("the same no meaning");
+                        }
                         let resp = await this.props.terminate_monthly_commitment();
                         console.log(resp);
                         alert("terminate done?");
