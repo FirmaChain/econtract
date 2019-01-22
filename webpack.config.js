@@ -33,19 +33,15 @@ plugins.push(new webpack.DefinePlugin({
 let optimization = {}
 if(NODE_ENV == "production") {
   optimization = {
-    minimizer: [
-      // we specify a custom UglifyJsPlugin here to get source maps in production
-      new UglifyJsPlugin({
-        cache: true,
-        parallel: true,
-        uglifyOptions: {
-          compress: false,
-          ecma: 6,
-          mangle: true
-        },
-        sourceMap: true
-      })
-    ]
+    splitChunks: {
+      cacheGroups: {
+        commons: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendors',
+          chunks: 'all'
+        }
+      }
+    }
   }
 }
 
@@ -97,7 +93,7 @@ let defaults = {
   devServer: {
     https: true
   },
-  optimization,
+  optimization: optimization,
   plugins: plugins
 };
 
