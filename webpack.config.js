@@ -102,6 +102,8 @@ let defaults = {
 let web_bundle = path.join(__dirname, "app", "web", "bin","bundle.js");
 let web_bundle_copy_script_plugin = new WebpackShellPlugin({});
 
+console.log(defaults)
+
 module.exports = [{
   ...defaults,
   entry: { 
