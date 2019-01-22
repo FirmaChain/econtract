@@ -15,20 +15,28 @@ let plugins = [
 ]
 
 let devtool = "source-map"
-process.env.NODE_ENV = "development"
+let NODE_ENV
+NODE_ENV = process.env.NODE_ENV || "development"
 
-console.log("build mode : ", process.env.NODE_ENV)
+console.log("build mode : ", NODE_ENV)
 
 plugins.push(new webpack.DefinePlugin({
   'process.env': {
-    'NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+    'NODE_ENV': JSON.stringify(NODE_ENV),
   }
 }))
+
+if(NODE_ENV == "production") {
+  plugins.push(new webpack.optimize.UglifyJsPlugin({
+     minimize: true,
+     compress: true
+  }))
+}
 
 let defaults = {
   context: __dirname,
   devtool: devtool,
-  mode:process.env.NODE_ENV,
+  mode:NODE_ENV,
   resolve: {
     extensions: ['*', '.jsx', '.scss', '.js', '.json', '.txt', '.html'],
     modules: [
