@@ -73,6 +73,9 @@ let defaults = {
   devServer: {
     https: true
   },
+  optimization: {
+    minimize: true
+  }
   plugins: plugins
 };
 
