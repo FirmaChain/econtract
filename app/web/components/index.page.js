@@ -68,7 +68,7 @@ export default class extends React.Component {
 							<div className="start-btn" onClick={()=>history.push("/login")}>{translate("INDEX_TITLE_3")}</div>
 						</div>
 					</div>
-					<div className="desc-container">
+					{/*<div className="desc-container">
 						<img className="right-img" src="/static/iphone.png" />
 						<div className="place">
 							<div className="title">
@@ -83,7 +83,7 @@ export default class extends React.Component {
 								{translate("MIDDLE1_DESC_5")}
 							</div>
 						</div>
-					</div>
+					</div>*/}
 				</div>
 				<div className="mid-section">
 					<div className="desc-container" style={{textAlign:"right"}}>
