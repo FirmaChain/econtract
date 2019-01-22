@@ -171,6 +171,16 @@ export default class extends React.Component {
         })
     }
 
+    onChangeInfoPhoneForm = async (name, e)=>{
+        let text = e.target.value;
+        text = text.replace(/[^0-9]/g,"")
+        text = window.phoneFomatter(text)
+        
+        this.setState({
+            [name]:text
+        })
+    }
+
 	render() {
         if(!this.props.user_info)
             return <div />
@@ -255,7 +265,7 @@ export default class extends React.Component {
                     </div>
                     <div className="text-place">
                         <div className="title">{translate("corporation_tel")}</div>
-                        <div className="text-box"><input className="common-textbox" type="text" disabled={account_type == 2} value={this.state.company_tel} onChange={this.onInfoChange.bind(this, "company_tel")}/></div>
+                        <div className="text-box"><input className="common-textbox" type="text" disabled={account_type == 2} value={this.state.company_tel} onChange={this.onChangeInfoPhoneForm.bind(this, "company_tel")}/></div>
                     </div>
 	            	<div className="text-place">
 	            		<div className="title">{translate("address")}</div>

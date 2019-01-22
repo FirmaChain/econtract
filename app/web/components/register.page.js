@@ -480,13 +480,7 @@ export default class extends React.Component {
     onChangePhoneForm = async (name, e)=>{
         let text = e.target.value;
         text = text.replace(/[^0-9]/g,"")
-        if(text.length >= 8){
-            text = `${text.slice(0,3)}-${text.slice(3,7)}-${text.slice(7,11)}`
-        }else if(text.length >= 4){
-            text = `${text.slice(0,3)}-${text.slice(3,7)}`
-        }else{
-            text = `${text.slice(0,3)}`
-        }
+        text = window.phoneFomatter(text)
         
         this.setState({
             [name]:text
@@ -962,7 +956,7 @@ export default class extends React.Component {
                 <div className="textbox">
                     <input className="common-textbox" type="text"
                         value={this.state.company_tel || ""}
-                        onChange={e=>this.setState({company_tel:e.target.value})}
+                        onChange={this.onChangePhoneForm.bind(this,"company_tel")}
                         placeholder={translate("please_input_corp_tel")}
                         disabled={this.getAccountType() == 2}/>
                 </div>
