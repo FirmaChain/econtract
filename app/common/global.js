@@ -49,6 +49,8 @@ window.CONST = {
     },
     MEMBER_PRICE: 2000,
     MEMBER_FREE_COUNT: 1,
+
+    IMP_USER_CODE: "imp80774794",
 }
 
 
@@ -161,6 +163,16 @@ export const decrypt_with_pin = function(raw, p){
 }
 window.email_regex = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
 window.SEPERATOR = "!-!-!-!-!"
+
+window.get_customer_uid = function(user_info) {
+  let user_code = "user_";
+  if(user_info.account_type == 0) {
+      user_code += "personal_" + user_info.account_id
+  } else {
+      user_code += "corp_" + user_info.corp_id
+  }
+  return user_code
+}
 
 window.ipfs_upload = async function (buf){
     const form = new FormData();

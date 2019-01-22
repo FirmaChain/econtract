@@ -66,6 +66,7 @@ let mapDispatchToProps = {
     get_ticket_log,
 }
 
+const IMP = window.IMP;
 const LIST_DISPLAY_COUNT = 6
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -250,8 +251,38 @@ export default class extends React.Component {
         window.openModal("PurchaseTicket", {
             ticket_plan:onetime_ticket_plan,
             onResponse: async (give_count) => {
+
+                let customer_uid = window.get_customer_uid(this.props.user_info)
+                IMP.init(window.CONST.IMP_USER_CODE);
+                let first_purchae_result = await new Promise( r => IMP.request_pay({
+                    pg: "html5_inicis",
+                    pay_method: "card", // "card"만 지원됩니다
+                    merchant_uid: "first_purchase", // 빌링키 발급용 주문번호
+                    customer_uid: customer_uid, // 카드(빌링키)와 1:1로 대응하는 값
+                    name: "최초인증결제",
+                    amount: 0, // 0 으로 설정하여 빌링키 발급만 진행합니다.
+                    buyer_email: this.props.user_info.email,
+                    buyer_name: this.props.account_type == 0 ? this.props.user_info.username : this.props.user_info.company_ceo,
+                    buyer_tel: "010-4242-4242",
+                    buyer_addr: "서울특별시 강남구 신사동",
+                    buyer_postcode: "01181"
+                }, (rsp) => { // callback
+                    if (rsp.success) {
+                        console.log(rsp)
+                        return r(1)
+                    } else {
+                        if(resp.error_code == "F1002")
+                            return r(0)
+                        return r(resp.error_code)
+                    }
+                }))
+
+                if(first_purchae_result == 1 || first_purchae_result == 0) {
+
+                }
+
                 let subscribe_plans = this.state.subscription_plans;
-                let plan_id = subscribe_plans.find(e=>e.type==1).plan_id;
+                let plan_id = subscribe_plans.filter(e=>e.type==1).sort((a,b)=>a.total_price-b.total_price)[0].plan_id;
                 let resp = await this.props.buy_onetime_ticket(plan_id, give_count);
                 if (resp.code == 1) {
                     await this.onRefresh();
@@ -261,7 +292,7 @@ export default class extends React.Component {
     }
 
     onChangeCardInfo = async () => {
-        let result = await new Promise( r => window.openModal("CardInfo", {
+        let result = true/*await new Promise( r => window.openModal("CardInfo", {
             onResponse: async (card_info) => {
                 //TODO: necessary to encrypt via firma's private key
                 let encrypted_data = JSON.stringify(card_info);
@@ -281,7 +312,7 @@ export default class extends React.Component {
                     r(false)
                 }
             }
-        }))
+        }))*/
         return result
     }
 
