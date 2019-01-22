@@ -4,7 +4,6 @@ const webpack = require('webpack');
 const autoprefixer = require('autoprefixer');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const WebpackShellPlugin = require('webpack-shell-plugin');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 let plugins = [
     new webpack.NoEmitOnErrorsPlugin(),
@@ -16,39 +15,20 @@ let plugins = [
 ]
 
 let devtool = "source-map"
-process.env.NODE_ENV = process.argv[2] || "development"
-if(process.argv[2] != "development" && process.argv[2] != "production" && process.argv[2] != "")
-  process.env.NODE_ENV = "development"
+process.env.NODE_ENV = "development"
 
 console.log("build mode : ", process.env.NODE_ENV)
 
-let NODE_ENV = process.env.NODE_ENV
-
 plugins.push(new webpack.DefinePlugin({
   'process.env': {
-    'NODE_ENV': JSON.stringify(NODE_ENV),
+    'NODE_ENV': JSON.stringify(process.env.NODE_ENV),
   }
 }))
-
-let optimization = {}
-/*if(NODE_ENV == "production") {
-  optimization = {
-    splitChunks: {
-      cacheGroups: {
-        commons: {
-          test: /[\\/]node_modules[\\/]/,
-          name: 'vendors',
-          chunks: 'all'
-        }
-      }
-    }
-  }
-}*/
 
 let defaults = {
   context: __dirname,
   devtool: devtool,
-  mode:NODE_ENV,
+  mode:process.env.NODE_ENV,
   resolve: {
     extensions: ['*', '.jsx', '.scss', '.js', '.json', '.txt', '.html'],
     modules: [
@@ -93,7 +73,6 @@ let defaults = {
   devServer: {
     https: true
   },
-  optimization: optimization,
   plugins: plugins
 };
 
@@ -101,8 +80,6 @@ let defaults = {
 //////web-config//////
 let web_bundle = path.join(__dirname, "app", "web", "bin","bundle.js");
 let web_bundle_copy_script_plugin = new WebpackShellPlugin({});
-
-console.log(defaults)
 
 module.exports = [{
   ...defaults,
