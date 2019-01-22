@@ -16,15 +16,15 @@ let plugins = [
 ]
 
 let devtool = "source-map"
-let NODE_ENV = process.argv[2] || "development"
+process.env.NODE_ENV = process.argv[2] || "development"
 if(process.argv[2] != "development" && process.argv[2] != "production" && process.argv[2] != "")
-  NODE_ENV = "development"
+  process.env.NODE_ENV = "development"
 
-console.log("build mode : ", NODE_ENV)
+console.log("build mode : ", process.env.NODE_ENV)
 
 plugins.push(new webpack.DefinePlugin({
   'process.env': {
-    'NODE_ENV': JSON.stringify("development"),
+    'NODE_ENV': JSON.stringify(process.env.NODE_ENV),
   }
 }))
 
@@ -50,7 +50,7 @@ if(NODE_ENV == "production") {
 let defaults = {
   context: __dirname,
   devtool: devtool,
-  mode:"development",
+  mode:process.env.NODE_ENV,
   resolve: {
     extensions: ['*', '.jsx', '.scss', '.js', '.json', '.txt', '.html'],
     modules: [
