@@ -4,6 +4,7 @@ const webpack = require('webpack');
 const autoprefixer = require('autoprefixer');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const WebpackShellPlugin = require('webpack-shell-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 let plugins = [
     new webpack.NoEmitOnErrorsPlugin(),
@@ -16,6 +17,9 @@ let plugins = [
 
 let devtool = "source-map"
 let NODE_ENV = process.argv[2] || "development"
+if(process.argv[2] != "development" && process.argv[2] != "production" && process.argv[2] != "")
+  NODE_ENV = "development"
+
 console.log("build mode : ", NODE_ENV)
 
 plugins.push(new webpack.DefinePlugin({
@@ -24,11 +28,23 @@ plugins.push(new webpack.DefinePlugin({
   }
 }))
 
+let optimization = {}
 if(NODE_ENV == "production") {
-  plugins.push(new webpack.optimize.UglifyJsPlugin({
-     minimize: true,
-     compress: true
-  }))
+  optimization = {
+    minimizer: [
+      // we specify a custom UglifyJsPlugin here to get source maps in production
+      new UglifyJsPlugin({
+        cache: true,
+        parallel: true,
+        uglifyOptions: {
+          compress: false,
+          ecma: 6,
+          mangle: true
+        },
+        sourceMap: true
+      })
+    ]
+  }
 }
 
 let defaults = {
@@ -79,6 +95,7 @@ let defaults = {
   devServer: {
     https: true
   },
+  optimization,
   plugins: plugins
 };
 
