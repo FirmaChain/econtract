@@ -51,6 +51,7 @@ window.CONST = {
     MEMBER_FREE_COUNT: 1,
 
     IMP_USER_CODE: "imp80774794",
+    FIRST_PURCHASE : "first_purchase",
 }
 
 

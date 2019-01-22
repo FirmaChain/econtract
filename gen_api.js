@@ -465,15 +465,6 @@ export async function api_get_current_subscription(){
         session:window.getCookie("session")
     });
 }
-export async function api_get_next_subscription_payment(){
-    let __data = new FormData();
-
-    
-
-    return await post("/get_next_subscription_payment", __data,{
-        session:window.getCookie("session")
-    });
-}
 export async function api_get_current_subscription_payment(){
     let __data = new FormData();
 

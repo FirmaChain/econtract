@@ -258,20 +258,20 @@ export default class extends React.Component {
                 let first_purchae_result = await new Promise( r => IMP.request_pay({
                     pg: "html5_inicis",
                     pay_method: "card", // "card"만 지원됩니다
-                    merchant_uid: "first_purchase", // 빌링키 발급용 주문번호
+                    merchant_uid: window.CONST.FIRST_PURCHASE, // 빌링키 발급용 주문번호
                     customer_uid: customer_uid, // 카드(빌링키)와 1:1로 대응하는 값
-                    name: "최초인증결제",
+                    name: translate("purchase_first_name"),
                     amount: 0, // 0 으로 설정하여 빌링키 발급만 진행합니다.
                     buyer_email: this.props.user_info.email,
                     buyer_name: this.props.account_type == 0 ? this.props.user_info.username : this.props.user_info.company_ceo,
-                    buyer_tel: this.props.account_type == 0 ? this.props.user_info.username : this.props.user_info.company_ceo,
-                    buyer_addr: "서울특별시 강남구 신사동",
-                    buyer_postcode: "01181"
-                }, (rsp) => { // callback
-                    if (rsp.success) {
-                        console.log(rsp)
+                    buyer_tel: this.props.account_type == 0 ? this.props.user_info.username : this.props.user_info.company_tel,
+                    buyer_addr: this.props.account_type == 0 ? this.props.user_info.useraddress : this.props.user_info.company_address,
+                }, (resp) => { // callback
+                    if (resp.success) {
+                        console.log(resp)
                         return r(1)
                     } else {
+                        console.log(resp)
                         if(resp.error_code == "F1002")
                             return r(0)
                         return r(resp.error_code)
@@ -280,6 +280,8 @@ export default class extends React.Component {
 
                 if(first_purchae_result == 1 || first_purchae_result == 0) {
 
+                } else {
+                    return alert(translate("fail_purchase_first"))
                 }
 
                 let subscribe_plans = this.state.subscription_plans;
