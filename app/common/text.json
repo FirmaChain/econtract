@@ -498,7 +498,7 @@
     "already_subscribe":["이미 구독 중입니다.","","您已有了使用权。"],
     "success_onetime_payment":["건별 이용권 결제에 성공하였습니다.","",""],
     "success_register":["회원가입에 성공하였습니다.","Registration was successful.","您已成功注册。"],
-    "purchase_first_name":["최초인증결제","",""],
+    "purchase_first_name":["최초인증결제","first verify purchase","first verify purchase"],
     "logout":["로그아웃","Sign out","退出"],
     "unregister_user_add_contract_popup_desc":["E-Contract 가입을 거치지 않고 서명을 할 경우, 해당 계약의 법적 효력을 증명할 수 없습니다.\u003cbr/\u003e\u003cbr/\u003e사용자를 추가하기 위해선 양측의 E-Contract 가입이 필수적이며, 가입 후 계약 정보 수정 화면에서 해당 사용자를 꼭 추가해주세요.","Both signers must be registered with the service. \u003cbr/\u003e\u003cbr/\u003e If signers do not register with E-Contract, we cannot ensure the legal enforceability of the resulting contract. \u003cbr/\u003e\u003cbr/\u003eYou can add users to the contract using the \"Edit Contract Information\" function.","如果您没有注册用户而签署合同的话，合同将失去法律效益。《br/》《br/》为了添加用户，双方必须注册用户。他们注册后需在\u201c编辑合同信息\u201d功能添加用户。"],
     "price":["요금","Pricing Information","价格"],
