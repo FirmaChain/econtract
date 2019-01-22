@@ -294,6 +294,7 @@ export default class extends React.Component {
         IMP.init(window.CONST.IMP_USER_CODE);
         let result = await new Promise( r => IMP.request_pay({
             pg: "html5_inicis",
+            language:global.LANG == "KR" ? "ko" : "en",
             pay_method: "card", // "card"만 지원됩니다
             merchant_uid: window.CONST.FIRST_PURCHASE+"_"+Math.floor(new Date().getTime() / 1000), // 빌링키 발급용 주문번호
             customer_uid: customer_uid, // 카드(빌링키)와 1:1로 대응하는 값
