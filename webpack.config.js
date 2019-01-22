@@ -22,9 +22,11 @@ if(process.argv[2] != "development" && process.argv[2] != "production" && proces
 
 console.log("build mode : ", process.env.NODE_ENV)
 
+let NODE_ENV = process.env.NODE_ENV
+
 plugins.push(new webpack.DefinePlugin({
   'process.env': {
-    'NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+    'NODE_ENV': JSON.stringify(NODE_ENV),
   }
 }))
 
@@ -50,7 +52,7 @@ if(NODE_ENV == "production") {
 let defaults = {
   context: __dirname,
   devtool: devtool,
-  mode:process.env.NODE_ENV,
+  mode:NODE_ENV,
   resolve: {
     extensions: ['*', '.jsx', '.scss', '.js', '.json', '.txt', '.html'],
     modules: [
