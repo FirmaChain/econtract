@@ -31,7 +31,7 @@ plugins.push(new webpack.DefinePlugin({
 }))
 
 let optimization = {}
-if(NODE_ENV == "production") {
+/*if(NODE_ENV == "production") {
   optimization = {
     splitChunks: {
       cacheGroups: {
@@ -43,7 +43,7 @@ if(NODE_ENV == "production") {
       }
     }
   }
-}
+}*/
 
 let defaults = {
   context: __dirname,
