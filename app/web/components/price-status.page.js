@@ -178,40 +178,51 @@ export default class extends React.Component {
             selectPeriod: 0,
             account_type:this.props.user_info.account_type,
             is_current_subscription: !!this.state.current_subscription,
-            onResponse: async (period_type, plan_id) => {
+            onResponse: async (period_type, plan_id, current) => {
                 let resp
                 if (period_type == 1) { // Yearly
-                    // TODO: Make branch between register and change
-                    resp = await this.props.make_yearly_commitment(plan_id);
-                    if(resp.code == 1) {
-                        alert(translate("subscribe_purchase_plan_yearly"))
-                        await this.onRefresh()
-                    } else if(resp.code == -4) {
-                        return alert(translate("plan_not_exist"))
-                    } else if(resp.code == -5) {
-                        return alert(translate("already_subscribe"))
-                    } else if(resp.code == -6) {
-                        return alert(translate("not_exist_payment_info"))
-                    } else if(resp.code == -7) {
-                        return alert(translate("fail_to_pay"))
-                    } else {
-                        return alert("error : "+resp.code)
+                    if (!current) {
+                        // TODO: Make branch between register and change
+                        resp = await this.props.make_yearly_commitment(plan_id);
+                        if(resp.code == 1) {
+                            alert(translate("subscribe_purchase_plan_yearly"))
+                            await this.onRefresh()
+                        } else if(resp.code == -4) {
+                            return alert(translate("plan_not_exist"))
+                        } else if(resp.code == -5) {
+                            return alert(translate("already_subscribe"))
+                        } else if(resp.code == -6) {
+                            return alert(translate("not_exist_payment_info"))
+                        } else if(resp.code == -7) {
+                            return alert(translate("fail_to_pay"))
+                        } else {
+                            return alert("error : "+resp.code)
+                        }
                     }
                 } else {
-                    resp = await this.props.make_monthly_commitment(plan_id);
-                    if(resp.code == 1) {
-                        alert(translate("subscribe_purchase_plan_monthly"))
-                        await this.onRefresh()
-                    } else if(resp.code == -4) {
-                        return alert(translate("plan_not_exist"))
-                    } else if(resp.code == -5) {
-                        return alert(translate("already_subscribe"))
-                    } else if(resp.code == -6) {
-                        return alert(translate("not_exist_payment_info"))
-                    } else if(resp.code == -7) {
-                        return alert(translate("fail_to_pay"))
+                    if (current) {
+                        let resp = await this.props.terminate_monthly_commitment();
+                        console.log(resp);
+                        alert("terminate done?");
+                        let resp2 = await this.props.reserve_monthly_commitment(plan_id);
+                        console.log(resp2);
+                        alert("reserve done?");
                     } else {
-                        return alert("error : "+resp.code)
+                        resp = await this.props.make_monthly_commitment(plan_id);
+                        if(resp.code == 1) {
+                            alert(translate("subscribe_purchase_plan_monthly"))
+                                await this.onRefresh()
+                        } else if(resp.code == -4) {
+                            return alert(translate("plan_not_exist"))
+                        } else if(resp.code == -5) {
+                            return alert(translate("already_subscribe"))
+                        } else if(resp.code == -6) {
+                            return alert(translate("not_exist_payment_info"))
+                        } else if(resp.code == -7) {
+                            return alert(translate("fail_to_pay"))
+                        } else {
+                            return alert("error : "+resp.code)
+                        }
                     }
                 }
             }
