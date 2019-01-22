@@ -165,14 +165,14 @@ export const decrypt_with_pin = function(raw, p){
 window.email_regex = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
 window.SEPERATOR = "!-!-!-!-!"
 
-window.get_customer_uid = function(user_info) {
+window.create_customer_uid = function(user_info) {
 	let user_code = "user_";
 	if(user_info.account_type == 0) {
 		user_code += "personal_" + user_info.account_id
 	} else {
 		user_code += "corp_" + user_info.corp_id
 	}
-	return user_code
+	return user_code+"_"+Math.floor(new Date().getTime() / 1000)
 }
 window.phoneFomatter = function(num) {
 

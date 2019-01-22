@@ -108,6 +108,7 @@ export default class extends React.Component {
             subscription_plans,
             current_subscription,
             current_onetime_ticket,
+            payment_info,
             partial_payment_info,
             current_subscription_payment,
             corp_member_count,
@@ -160,7 +161,7 @@ export default class extends React.Component {
 
     onClickChangeRegularPayment = async () => {
         if(!this.state.partial_payment_info) {
-            let result = await this.onChangeCardInfo()
+            let result = await this.onCheckCardInfo()
             if(!result) return
         }
         let subscribe_plans = this.state.subscription_plans;
@@ -242,7 +243,7 @@ export default class extends React.Component {
 
     onBuyTicket = async () => {
         if(!this.state.partial_payment_info) {
-            let result = await this.onChangeCardInfo()
+            let result = await this.onCheckCardInfo()
             if(!result) return;
         }
 
@@ -252,51 +253,23 @@ export default class extends React.Component {
         window.openModal("PurchaseTicket", {
             ticket_plan:onetime_ticket_plan,
             onResponse: async (give_count) => {
-
-                let customer_uid = window.get_customer_uid(this.props.user_info)
-                IMP.init(window.CONST.IMP_USER_CODE);
-                let first_purchae_result = await new Promise( r => IMP.request_pay({
-                    pg: "html5_inicis",
-                    pay_method: "card", // "card"만 지원됩니다
-                    merchant_uid: window.CONST.FIRST_PURCHASE, // 빌링키 발급용 주문번호
-                    customer_uid: customer_uid, // 카드(빌링키)와 1:1로 대응하는 값
-                    name: translate("purchase_first_name"),
-                    amount: 0, // 0 으로 설정하여 빌링키 발급만 진행합니다.
-                    buyer_email: this.props.user_info.email,
-                    buyer_name: this.props.account_type == 0 ? this.props.user_info.username : this.props.user_info.company_ceo,
-                    buyer_tel: this.props.account_type == 0 ? this.props.user_info.username : this.props.user_info.company_tel,
-                    buyer_addr: this.props.account_type == 0 ? this.props.user_info.useraddress : this.props.user_info.company_address,
-                }, (resp) => { // callback
-                    if (resp.success) {
-                        console.log(resp)
-                        return r(1)
+                if(await window.confirm(translate("purcahse_onetime_ticket"), translate("purcahse_onetime_ticket_desc", [give_count]))) {
+                    let subscribe_plans = this.state.subscription_plans;
+                    let plan_id = subscribe_plans.filter(e=>e.type==1).sort((a,b)=>a.total_price-b.total_price)[0].plan_id;
+                    let resp = await this.props.buy_onetime_ticket(plan_id, give_count);
+                    if (resp.code == 1) {
+                        alert(translate("success_onetime_payment"))
+                        await this.onRefresh();
                     } else {
-                        console.log(resp)
-                        if(resp.error_code == "F1002")
-                            return r(0)
-                        return r(resp.error_code)
+                        alert(translate("fail_onetime_payment"))
                     }
-                }))
-
-                if(first_purchae_result == 1 || first_purchae_result == 0) {
-
-                } else {
-                    return alert(translate("fail_purchase_first"))
-                }
-
-                let subscribe_plans = this.state.subscription_plans;
-                let plan_id = subscribe_plans.filter(e=>e.type==1).sort((a,b)=>a.total_price-b.total_price)[0].plan_id;
-                let resp = await this.props.buy_onetime_ticket(plan_id, give_count);
-                console.log(resp)
-                if (resp.code == 1) {
-                    await this.onRefresh();
                 }
             }
         })
     }
 
-    onChangeCardInfo = async () => {
-        let result = true/*await new Promise( r => window.openModal("CardInfo", {
+    onCheckCardInfo = async () => {
+        /*let result = await new Promise( r => window.openModal("CardInfo", {
             onResponse: async (card_info) => {
                 //TODO: necessary to encrypt via firma's private key
                 let encrypted_data = JSON.stringify(card_info);
@@ -304,8 +277,7 @@ export default class extends React.Component {
                 partial_info['partial_card_number'] = card_info.card_number.slice(0, 4)+"-xxxx-xxxx-xxxx";
                 partial_info['name'] = card_info.name;
                 partial_info['card_type'] = card_info.card_type;
-                let preview_data = JSON.stringify(partial_info);
-                let resp = await this.props.input_payment_info(encrypted_data, preview_data);
+                let resp = await this.props.input_payment_info(encrypted_data, partial_info);
                 await this.onRefresh()
                 if(resp.code == 1) {
                     alert(translate("card_info_register_msg"))
@@ -317,7 +289,57 @@ export default class extends React.Component {
                 }
             }
         }))*/
-        return result
+
+        let customer_uid = window.create_customer_uid(this.props.user_info)
+        IMP.init(window.CONST.IMP_USER_CODE);
+        let result = await new Promise( r => IMP.request_pay({
+            pg: "html5_inicis",
+            pay_method: "card", // "card"만 지원됩니다
+            merchant_uid: window.CONST.FIRST_PURCHASE+"_"+Math.floor(new Date().getTime() / 1000), // 빌링키 발급용 주문번호
+            customer_uid: customer_uid, // 카드(빌링키)와 1:1로 대응하는 값
+            name: translate("purchase_first_name"),
+            amount: 0, // 0 으로 설정하여 빌링키 발급만 진행합니다.
+            buyer_email: this.props.user_info.email,
+            buyer_name: this.props.account_type == 0 ? this.props.user_info.username : this.props.user_info.company_ceo,
+            buyer_tel: this.props.account_type == 0 ? this.props.user_info.username : this.props.user_info.company_tel,
+            buyer_addr: this.props.account_type == 0 ? this.props.user_info.useraddress : this.props.user_info.company_address,
+        }, async (resp) => { // callback
+            if (resp.success) {
+                let preview_data = {
+                    card_type:resp.card_name,
+                    pg_tid: resp.pg_tid,
+                    merchant_uid: resp.merchant_uid,
+                    buyer_name: resp.buyer_name,
+                }
+                console.log(preview_data)
+                let register_result = await this.props.input_payment_info(customer_uid, preview_data);
+                if(register_result.code == 1) {
+                    alert(translate("card_info_register_msg"))
+                    await this.onRefresh();
+                    return r(1)
+                } else {
+                    alert(translate("card_info_register_fail_msg"))
+                    return r(-999)
+                }
+                //alert(translate("success_register_card_info"))
+
+            } else {
+                console.log(resp)
+                if(resp.error_code == "F1002")
+                    return r(0)
+
+                let msg = translate("fail_purchase_first");
+                msg += `${translate("error_description")} : ${resp.error_msg}`;
+                alert(msg)
+                return r(resp.error_code)
+            }
+        }))
+
+        if(result == 1 || result == 0) {
+            return true
+        } else {
+            return false
+        }
     }
 
     onClickPaymentLogPage = async (page)=>{
@@ -346,7 +368,7 @@ export default class extends React.Component {
         }
 
         if(!this.state.partial_payment_info) {
-            let result = await this.onChangeCardInfo()
+            let result = await this.onCheckCardInfo()
             if(!result) return
         }
         window.openModal("PurchaseGroupMemberChange", {
@@ -405,7 +427,7 @@ export default class extends React.Component {
         let card_info_string = translate("no_register_status")
         if(this.state.partial_payment_info) {
             let _i = this.state.partial_payment_info
-            card_info_string = `${_i.card_type} ${_i.partial_card_number} ${_i.name}`
+            card_info_string = `${_i.card_type}`
         }
 
         let is_not_yearly_plan = current_subscription && current_subscription.type != window.CONST.PAYMENT_LOG_TYPE.YEARLY_DISTRIBUTE_TICKET;
@@ -457,15 +479,15 @@ export default class extends React.Component {
                                 <div className="button" onClick={this.onBuyTicket}>{translate("buy")}</div>
                             </div>
                         </div>
-                        {/*<div className="bar gray-bar">
+                        <div className="bar gray-bar">
                             <div className="left">
                                 <div className="title">{translate("card_info")}</div>
                                 <div className="desc">{card_info_string}</div>
                             </div>
                             <div className="right">
-                                <div className="button" onClick={this.onChangeCardInfo}>{this.state.partial_payment_info ? translate("re_register") : translate("register")}</div>
+                                <div className="button" onClick={this.onCheckCardInfo}>{this.state.partial_payment_info ? translate("re_register") : translate("register")}</div>
                             </div>
-                        </div>*/}
+                        </div>
                     </div> : null }
                 </div>
                 {this.props.user_info.account_type != 2 ?

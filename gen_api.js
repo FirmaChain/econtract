@@ -539,10 +539,10 @@ export async function api_get_ticket_log(page,display_count){
         session:window.getCookie("session")
     });
 }
-export async function api_input_payment_info(data,preview_data){
+export async function api_input_payment_info(customer_uid,preview_data){
     let __data = new FormData();
 
-    if(data != null) __data.append('data', data);
+    if(customer_uid != null) __data.append('customer_uid', customer_uid);
 	if(preview_data != null) __data.append('preview_data', preview_data)
 
     return await post("/input_payment_info", __data,{
