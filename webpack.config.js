@@ -74,7 +74,7 @@ let defaults = {
     https: true
   },
   optimization: {
-    minimize: true
+    minimize: false
   },
   plugins: plugins
 };
