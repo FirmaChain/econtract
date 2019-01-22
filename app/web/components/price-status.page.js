@@ -287,6 +287,7 @@ export default class extends React.Component {
                 let subscribe_plans = this.state.subscription_plans;
                 let plan_id = subscribe_plans.filter(e=>e.type==1).sort((a,b)=>a.total_price-b.total_price)[0].plan_id;
                 let resp = await this.props.buy_onetime_ticket(plan_id, give_count);
+                console.log(resp)
                 if (resp.code == 1) {
                     await this.onRefresh();
                 }
@@ -456,7 +457,7 @@ export default class extends React.Component {
                                 <div className="button" onClick={this.onBuyTicket}>{translate("buy")}</div>
                             </div>
                         </div>
-                        <div className="bar gray-bar">
+                        {/*<div className="bar gray-bar">
                             <div className="left">
                                 <div className="title">{translate("card_info")}</div>
                                 <div className="desc">{card_info_string}</div>
@@ -464,7 +465,7 @@ export default class extends React.Component {
                             <div className="right">
                                 <div className="button" onClick={this.onChangeCardInfo}>{this.state.partial_payment_info ? translate("re_register") : translate("register")}</div>
                             </div>
-                        </div>
+                        </div>*/}
                     </div> : null }
                 </div>
                 {this.props.user_info.account_type != 2 ?
