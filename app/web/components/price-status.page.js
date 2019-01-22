@@ -163,8 +163,8 @@ export default class extends React.Component {
             if(!result) return
         }
         let subscribe_plans = this.state.subscription_plans;
-        let plan_monthly = subscribe_plans.filter(e=>e.type==2);
-        let plan_yearly = subscribe_plans.filter(e=>e.type==3);
+        let plan_monthly = subscribe_plans.filter(e=>e.type==2).sort(function(a,b) {return a.total_price - b.total_price});
+        let plan_yearly = subscribe_plans.filter(e=>e.type==3).sort(function(a,b) {return a.total_price - b.total_price});
         let plan_monthly_options = plan_monthly.map((e)=>{return {value: e.plan_id, label: e.data.title}});
         let plan_yearly_options = plan_yearly.map((e)=>{return {value: e.plan_id, label: e.data.title}});
 
