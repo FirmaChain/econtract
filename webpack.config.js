@@ -15,7 +15,7 @@ let plugins = [
 ]
 
 let devtool = "source-map"
-let NODE_ENV = process.env.NODE_ENV || "development"
+let NODE_ENV = process.env.NODE_ENV
 
 console.log("build mode : ", NODE_ENV)
 
