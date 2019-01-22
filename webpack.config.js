@@ -50,7 +50,7 @@ if(NODE_ENV == "production") {
 let defaults = {
   context: __dirname,
   devtool: devtool,
-  mode:NODE_ENV,
+  mode:"development",
   resolve: {
     extensions: ['*', '.jsx', '.scss', '.js', '.json', '.txt', '.html'],
     modules: [
