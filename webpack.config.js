@@ -75,7 +75,7 @@ let defaults = {
   },
   optimization: {
     minimize: true
-  }
+  },
   plugins: plugins
 };
 
