@@ -263,7 +263,7 @@ export default class extends React.Component {
                     amount: 0, // 0 으로 설정하여 빌링키 발급만 진행합니다.
                     buyer_email: this.props.user_info.email,
                     buyer_name: this.props.account_type == 0 ? this.props.user_info.username : this.props.user_info.company_ceo,
-                    buyer_tel: "010-4242-4242",
+                    buyer_tel: this.props.account_type == 0 ? this.props.user_info.username : this.props.user_info.company_ceo,
                     buyer_addr: "서울특별시 강남구 신사동",
                     buyer_postcode: "01181"
                 }, (rsp) => { // callback

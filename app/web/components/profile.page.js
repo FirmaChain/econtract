@@ -83,6 +83,7 @@ export default class extends React.Component {
                 company_name: this.state.company_name.trim(),
                 duns_number: this.state.duns_number.trim(),
                 company_ceo: this.state.company_ceo.trim(),
+                company_tel: this.state.company_tel.trim(),
                 company_address: this.state.company_address.trim(),
             }
             public_info = {
@@ -248,10 +249,14 @@ export default class extends React.Component {
 	            		<div className="title">{translate("duns_number")}</div>
 	            		<div className="text-box"><input className="common-textbox" type="text" disabled={account_type == 2} value={this.state.duns_number} onChange={this.onInfoChange.bind(this, "duns_number")}/></div>
 	            	</div>
-	            	<div className="text-place">
-	            		<div className="title">{translate("corporation_ceo_name")}</div>
-	            		<div className="text-box"><input className="common-textbox" type="text" disabled={account_type == 2} value={this.state.company_ceo} onChange={this.onInfoChange.bind(this, "company_ceo")}/></div>
-	            	</div>
+                    <div className="text-place">
+                        <div className="title">{translate("corporation_ceo_name")}</div>
+                        <div className="text-box"><input className="common-textbox" type="text" disabled={account_type == 2} value={this.state.company_ceo} onChange={this.onInfoChange.bind(this, "company_ceo")}/></div>
+                    </div>
+                    <div className="text-place">
+                        <div className="title">{translate("corporation_tel")}</div>
+                        <div className="text-box"><input className="common-textbox" type="text" disabled={account_type == 2} value={this.state.company_tel} onChange={this.onInfoChange.bind(this, "company_tel")}/></div>
+                    </div>
 	            	<div className="text-place">
 	            		<div className="title">{translate("address")}</div>
 	            		<div className="text-box">
