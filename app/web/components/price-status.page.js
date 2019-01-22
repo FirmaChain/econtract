@@ -437,21 +437,20 @@ export default class extends React.Component {
                         <div className="list-head-item list-content">{translate("article")}</div>
                         {/*<div className="list-head-item list-purchase-type">{translate("purchase_way")}</div>*/}
                         <div className="list-head-item list-price">&nbsp;</div>
+                        <div className="list-head-item list-price">{translate("status")}</div>
                         <div className="list-head-item list-price">{translate("amount_of_money")}</div>
                         <div className="list-head-item list-date">{translate("date")}</div>
                     </div>
                     {payment_logs.list ? payment_logs.list.map( (e,k) => {
                         let type
                         let count = ""
-                        let plan
+                        let plan, status = ""
                         switch(e.type) {
                             case window.CONST.PAYMENT_LOG_TYPE.YEARLY_COMMITMENT:
                                 break;
                             case window.CONST.PAYMENT_LOG_TYPE.YEARLY_PAYMENT_REGULAR:
                                 plan = this.state.subscription_plans.find(plan=>plan.plan_id == e.plan_id)
                                 type = `${translate("YEARLY_PAYMENT_REGULAR")} ${plan.ticket_count}`
-                                if(e.status == window.CONST.PAYMENT_LOG_STATUS.PENDING)
-                                    type += ` (${translate("payment_pending")})`
                                 count = translate("ticket_msg", [e.total_count])
                                 break;
                             case window.CONST.PAYMENT_LOG_TYPE.YEARLY_PAYMENT_UPGRADE:
@@ -463,8 +462,6 @@ export default class extends React.Component {
                             case window.CONST.PAYMENT_LOG_TYPE.MONTHLY_PAYMENT_AND_DISTRIBUTE:
                                 plan = this.state.subscription_plans.find(plan=>plan.plan_id == e.plan_id)
                                 type = `${translate("MONTHLY_PAYMENT_AND_DISTRIBUTE")} ${plan.ticket_count}`
-                                if(e.status == window.CONST.PAYMENT_LOG_STATUS.PENDING)
-                                    type += ` (${translate("payment_pending")})`
                                 count = translate("ticket_msg", [e.total_count])
                                 break;
                             case window.CONST.PAYMENT_LOG_TYPE.ONETIME_PAYMENT_AND_DISTRIBUTE:
@@ -482,8 +479,6 @@ export default class extends React.Component {
                                 break;
                             case window.CONST.PAYMENT_LOG_TYPE.MEMBER_PAYMENT_UPGRADE:
                                 type = translate("MEMBER_PAYMENT_UPGRADE") + " (" + translate("add_person_count", [e.data.delta]) + ")"
-                                if(e.status == window.CONST.PAYMENT_LOG_STATUS.PENDING)
-                                    type += ` (${translate("payment_pending")})`
                                 count = translate("count_curr_total_person", [e.total_count])
                                 break;
                             case window.CONST.PAYMENT_LOG_TYPE.PROMOTION_MEMBER:
@@ -491,10 +486,26 @@ export default class extends React.Component {
                                 count = translate("count_curr_total_person", [e.total_count])
                                 break;
                         }
+
+                        switch(e.status) {
+                            case window.CONST.PAYMENT_LOG_STATUS.PENDING:
+                                status = translate("payment_pending");
+                                break;
+                            case window.CONST.PAYMENT_LOG_STATUS.SUCCESS:
+                                status = translate("payment_success");
+                                break;
+                            case window.CONST.PAYMENT_LOG_STATUS.TERMINATE:
+                                status = translate("payment_terminate");
+                                break;
+                            case window.CONST.PAYMENT_LOG_STATUS.REFUND:
+                                status = translate("payment_refund");
+                                break;
+                        }
                         return <div className="item" key={e.log_id}>
                             <div className="list-body-item list-content">{type}</div>
                             {/*<div className="list-body-item list-purchase-type">신용카드</div>*/}
                             <div className="list-body-item list-price">{count}</div>
+                            <div className="list-body-item list-price">{status}</div>
                             <div className="list-body-item list-price">{translate("count_number_moeny_last", [e.money_amount.number_format()])}</div>
                             <div className="list-body-item list-date">{moment(e.start_date).format("YYYY-MM-DD HH:mm:ss")}</div>
                         </div>
@@ -510,9 +521,9 @@ export default class extends React.Component {
                 <div className="list">
                     <div className="title">{translate("ticket_use_logs")}</div>
                     <div className="head">
-                        <div className="list-head-item list-content">계약명</div>
+                        <div className="list-head-item list-content">{translate("contract_name")}</div>
                         {/*<div className="list-head-item list-signer">서명자</div>*/}
-                        <div className="list-head-item list-date">차감 일자</div>
+                        <div className="list-head-item list-date">{translate("ticket_use_date")}</div>
                     </div>
                     {use_logs.list ? use_logs.list.map( (e,k) => {
                         return <div className="item" key={e.log_id} onClick={this.moveContract.bind(this, e.contract_id)}>
