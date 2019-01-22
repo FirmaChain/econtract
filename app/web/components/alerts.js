@@ -492,6 +492,24 @@ class PurchaseRegularPayment extends React.Component {
     }
 
     render() {
+        let monthly_master_account = window.CONST.MEMBER_FREE_COUNT;
+        let monthly_sub_account = window.CONST.MEMBER_FREE_COUNT;
+        let yearly_master_account = window.CONST.MEMBER_FREE_COUNT;
+        let yearly_sub_account = window.CONST.MEMBER_FREE_COUNT;
+        let monthly_data = this.state.select_monthly_plan.data;
+        let yearly_data = this.state.select_yearly_plan.data;
+        if (monthly_data && monthly_data.bundle) {
+            let monthly_bundle_member = monthly_data.bundle.find(e=>this.props.allPlans.find(f=>f.plan_id==e).type == window.CONST.SUBSCRIPTION_PLAN_TYPE.MEMBER);
+            if (monthly_bundle_member) {
+                monthly_sub_account = monthly_bundle_member.ticket_count - monthly_master_account;
+            }
+        }
+        if (yearly_data && yearly_data.bundle) {
+            let yearly_bundle_member = yearly_data.bundle.find(e=>this.props.allPlans.find(f=>f.plan_id==e).type == window.CONST.SUBSCRIPTION_PLAN_TYPE.MEMBER);
+            if (yearly_bundle_member) {
+                yearly_sub_account = yearly_bundle_member.ticket_count - yearly_master_account;
+            }
+        }
         return <div className="purchase-regular-payment-modal default-modal-container">
             <div className="container">
                 <div className="icon"><i className="fas fa-credit-card"></i></div>
@@ -512,7 +530,7 @@ class PurchaseRegularPayment extends React.Component {
                         <div className="price-info">{(this.state.select_monthly_plan.total_price ? this.state.select_monthly_plan.total_price : 0).number_format()}<span className="last">{translate("price_by_monthly")}</span></div>
                         <div className="sub">
                             {(this.state.select_monthly_plan.total_price ? this.state.select_monthly_plan.total_price : 0) / (this.state.select_monthly_plan.ticket_count ? this.state.select_monthly_plan.ticket_count : 1)} {translate("price_by_one_time")}<br/>
-                            {this.props.account_type == 0 ? null : translate("i_give_you_many_account", [1, 4])} 
+                            {this.props.account_type == 0 ? null : translate("i_give_you_many_account", [monthly_master_account, monthly_sub_account])} 
                         </div>
                     </div>
                     <div className={"btn" + (this.state.select_period == 1 ? " active" : "")} onClick={this.onClickType.bind(this, 1)}>
@@ -529,7 +547,7 @@ class PurchaseRegularPayment extends React.Component {
                         <div className="price-info">{(this.state.select_yearly_plan.total_price ? this.state.select_yearly_plan.total_price : 0).number_format()}<span className="last">{translate("price_by_yearly")}</span></div>
                         <div className="sub">
                             {(this.state.select_yearly_plan.total_price ? this.state.select_yearly_plan.total_price : 0) / (this.state.select_yearly_plan.ticket_count ? this.state.select_yearly_plan.ticket_count : 1)} {translate("price_by_one_time")}<br/>
-                            {this.props.account_type == 0 ? null : translate("i_give_you_many_account", [1, 4])} 
+                            {this.props.account_type == 0 ? null : translate("i_give_you_many_account", [yearly_master_account, yearly_sub_account])} 
                         </div>
                     </div>
                 </div>

@@ -169,6 +169,7 @@ export default class extends React.Component {
         let plan_yearly_options = plan_yearly.map((e)=>{return {value: e.plan_id, label: e.data.title}});
 
         window.openModal("PurchaseRegularPayment", {
+            allPlans: subscribe_plans,
             planMonthly: plan_monthly,
             planYearly: plan_yearly,
             planMonthlyOptions: plan_monthly_options,
