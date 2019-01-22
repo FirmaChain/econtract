@@ -338,6 +338,7 @@ export default class extends React.Component {
                         company_name: registration_info.company_name,
                         duns_number: registration_info.duns_number,
                         company_ceo: registration_info.company_ceo,
+                        company_tel: registration_info.company_tel,
                         company_address: registration_info.company_address,
                         corp_key: registration_info.corp_key,
                         corp_id: registration_info.corp_id,
@@ -556,6 +557,8 @@ export default class extends React.Component {
             return alert(translate("please_input_duns"))
         if(!this.state.company_ceo)
             return alert(translate("please_input_ceo_name"))
+        if(!this.state.company_tel)
+            return alert(translate("please_input_corp_tel"))
         if(!this.state.company_address)
             return alert(translate("please_input_corp_address"))
 
@@ -629,6 +632,7 @@ export default class extends React.Component {
                 company_name: this.state.company_name.trim(),
                 duns_number: this.state.duns_number.trim(),
                 company_ceo: this.state.company_ceo.trim(),
+                company_tel: this.state.company_tel.trim(),
                 company_address: this.state.company_address.trim(),
             }
             public_info = {
@@ -949,6 +953,17 @@ export default class extends React.Component {
                         value={this.state.company_ceo || ""}
                         onChange={e=>this.setState({company_ceo:e.target.value})}
                         placeholder={translate("please_input_ceo_name")}
+                        disabled={this.getAccountType() == 2}/>
+                </div>
+            </div>
+
+            <div className="text-place">
+                <div className="name">{translate("corporation_tel")}</div>
+                <div className="textbox">
+                    <input className="common-textbox" type="text"
+                        value={this.state.company_tel || ""}
+                        onChange={e=>this.setState({company_tel:e.target.value})}
+                        placeholder={translate("please_input_corp_tel")}
                         disabled={this.getAccountType() == 2}/>
                 </div>
             </div>

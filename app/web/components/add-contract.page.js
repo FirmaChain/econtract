@@ -290,7 +290,7 @@ export default class extends React.Component {
         if(this.state.is_use_pin) {
             if(this.state.pin_number == "" || this.state.pin_number.length != 6) {
                 this.is_register = false
-                return alert(translate("please_input_PIN"))
+                return alert(translate("please_input_pin"))
             } else if(this.state.pin_number == "000000") {
                 this.is_register = false
                 return alert(translate("you_dont_set_pin_000000"))
