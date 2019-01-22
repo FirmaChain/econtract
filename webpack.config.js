@@ -15,7 +15,7 @@ let plugins = [
 ]
 
 let devtool = "source-map"
-let NODE_ENV = process.argv[0] || "development"
+let NODE_ENV = process.argv[2] || "development"
 console.log("build mode : ", NODE_ENV)
 
 plugins.push(new webpack.DefinePlugin({
