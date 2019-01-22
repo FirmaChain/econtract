@@ -488,6 +488,8 @@ export default class extends React.Component {
                             case window.CONST.PAYMENT_LOG_TYPE.YEARLY_PAYMENT_REGULAR:
                                 plan = this.state.subscription_plans.find(plan=>plan.plan_id == e.plan_id)
                                 type = `${translate("YEARLY_PAYMENT_REGULAR")} ${plan.ticket_count}`
+                                if(e.status == window.CONST.PAYMENT_LOG_STATUS.PENDING)
+                                    type += ` (${translate("payment_pending")})`
                                 count = translate("ticket_msg", [e.total_count])
                                 break;
                             case window.CONST.PAYMENT_LOG_TYPE.YEARLY_PAYMENT_UPGRADE:
@@ -499,6 +501,8 @@ export default class extends React.Component {
                             case window.CONST.PAYMENT_LOG_TYPE.MONTHLY_PAYMENT_AND_DISTRIBUTE:
                                 plan = this.state.subscription_plans.find(plan=>plan.plan_id == e.plan_id)
                                 type = `${translate("MONTHLY_PAYMENT_AND_DISTRIBUTE")} ${plan.ticket_count}`
+                                if(e.status == window.CONST.PAYMENT_LOG_STATUS.PENDING)
+                                    type += ` (${translate("payment_pending")})`
                                 count = translate("ticket_msg", [e.total_count])
                                 break;
                             case window.CONST.PAYMENT_LOG_TYPE.ONETIME_PAYMENT_AND_DISTRIBUTE:
@@ -520,6 +524,8 @@ export default class extends React.Component {
                                 break;
                             case window.CONST.PAYMENT_LOG_TYPE.PROMOTION_MEMBER:
                                 type = translate("MEMBER_PAYMENT_UPGRADE")
+                                if(e.status == window.CONST.PAYMENT_LOG_STATUS.PENDING)
+                                    type += ` (${translate("payment_pending")})`
                                 count = translate("count_curr_total_person", [e.total_count])
                                 break;
                         }
