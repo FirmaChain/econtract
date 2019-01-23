@@ -489,8 +489,13 @@ class PurchaseRegularPayment extends React.Component {
     }
 
     onResponse = async () => {
+        let plan_id = this.state.select_period == 0 ? this.state.select_monthly_plan.plan_id : this.state.select_yearly_plan.plan_id
+        if (this.state.is_current_subscription && this.state.current_subscription.plan_id == plan_id) {
+            return alert(translate("dont_change_same_subscribe_plan"));
+        }
+
         this.closeSelf();
-        this.props.onResponse && (await this.props.onResponse(this.state.select_period, this.state.select_period == 0 ? this.state.select_monthly_plan.plan_id : this.state.select_yearly_plan.plan_id, this.props.is_current_subscription));
+        this.props.onResponse && (await this.props.onResponse(this.state.select_period, plan_id, this.props.is_current_subscription));
     }
 
     onClickType = (type) => {
