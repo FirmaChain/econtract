@@ -545,7 +545,7 @@ class PurchaseRegularPayment extends React.Component {
                         </div>
                         <div className="price-info">{(this.state.select_monthly_plan.total_price ? this.state.select_monthly_plan.total_price : 0).number_format()}<span className="last">{translate("price_by_monthly")}</span></div>
                         <div className="sub">
-                            {(this.state.select_monthly_plan.total_price ? this.state.select_monthly_plan.total_price : 0) / (this.state.select_monthly_plan.ticket_count ? this.state.select_monthly_plan.ticket_count : 1) / (this.state.select_monthly_plan.data.total_month ? this.state.select_monthly_plan.data.total_month : 12)} {translate("price_by_one_time")}<br/>
+                            {(this.state.select_monthly_plan.total_price ? this.state.select_monthly_plan.total_price : 0) / (this.state.select_monthly_plan.ticket_count ? this.state.select_monthly_plan.ticket_count : 1)} {translate("price_by_one_time")}<br/>
                             {this.props.account_type == 0 ? null : translate("i_give_you_many_account", [monthly_master_account, monthly_sub_account])} 
                         </div>
                     </div>
@@ -562,7 +562,7 @@ class PurchaseRegularPayment extends React.Component {
                         </div>
                         <div className="price-info">{(this.state.select_yearly_plan.total_price ? this.state.select_yearly_plan.total_price : 0).number_format()}<span className="last">{translate("price_by_yearly")}</span></div>
                         <div className="sub">
-                            {(this.state.select_yearly_plan.total_price ? this.state.select_yearly_plan.total_price : 0) / (this.state.select_yearly_plan.ticket_count ? this.state.select_yearly_plan.ticket_count : 1)} {translate("price_by_one_time")}<br/>
+                            {(this.state.select_yearly_plan.total_price ? this.state.select_yearly_plan.total_price : 0) / (this.state.select_yearly_plan.ticket_count ? this.state.select_yearly_plan.ticket_count : 1) / (this.state.select_monthly_plan.data.total_month ? this.state.select_monthly_plan.data.total_month : 12)} {translate("price_by_one_time")}<br/>
                             {this.props.account_type == 0 ? null : translate("i_give_you_many_account", [yearly_master_account, yearly_sub_account])} 
                         </div>
                     </div>
