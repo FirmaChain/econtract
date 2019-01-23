@@ -501,13 +501,13 @@ class PurchaseRegularPayment extends React.Component {
         let monthly_data = this.state.select_monthly_plan.data;
         let yearly_data = this.state.select_yearly_plan.data;
         if (monthly_data && monthly_data.bundle) {
-            let monthly_bundle_member = monthly_data.bundle.find(e=>this.props.allPlans.find(f=>f.plan_id==e).type == window.CONST.SUBSCRIPTION_PLAN_TYPE.MEMBER);
+            let monthly_bundle_member = this.props.allPlans.find(g=>g.plan_id==monthly_data.bundle.find(e=>this.props.allPlans.find(f=>f.plan_id==e).type == window.CONST.SUBSCRIPTION_PLAN_TYPE.MEMBER));
             if (monthly_bundle_member) {
                 monthly_sub_account = monthly_bundle_member.ticket_count - monthly_master_account;
             }
         }
         if (yearly_data && yearly_data.bundle) {
-            let yearly_bundle_member = yearly_data.bundle.find(e=>this.props.allPlans.find(f=>f.plan_id==e).type == window.CONST.SUBSCRIPTION_PLAN_TYPE.MEMBER);
+            let yearly_bundle_member = this.props.allPlans.find(g=>g.plan_id==yearly_data.bundle.find(e=>this.props.allPlans.find(f=>f.plan_id==e).type == window.CONST.SUBSCRIPTION_PLAN_TYPE.MEMBER));
             if (yearly_bundle_member) {
                 yearly_sub_account = yearly_bundle_member.ticket_count - yearly_master_account;
             }
