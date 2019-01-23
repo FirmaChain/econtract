@@ -164,7 +164,7 @@ export default class extends React.Component {
             let result = await this.onCheckCardInfo()
             if(!result) return
         }
-        let subscribe_plans = this.state.subscription_plans.filter(e=>e.enabled);
+        let subscribe_plans = this.state.subscription_plans;
         let plan_monthly = subscribe_plans.filter(e=>e.type==2).sort(function(a,b) {return a.total_price - b.total_price});
         let plan_yearly = subscribe_plans.filter(e=>e.type==3).sort(function(a,b) {return a.total_price - b.total_price});
         let plan_monthly_options = plan_monthly.map((e)=>{return {value: e.plan_id, label: e.data.title}});
