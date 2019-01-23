@@ -270,6 +270,7 @@ class CardInfo extends React.Component {
         if(!is_valid_cvc)
             return alert(translate("card_cvc_not_valid"))
 
+        this.closeSelf();
         this.props.onResponse && (await this.props.onResponse({
             card_type: card_type.toUpperCase(),
             name: this.state.name,
@@ -279,7 +280,6 @@ class CardInfo extends React.Component {
             year: this.state.selected_expiration_year,
             id_number: this.state.social_number_front,
         }) );
-        this.closeSelf();
 
     }
 
@@ -369,8 +369,10 @@ class PurchaseGroupMemberChange extends React.Component {
         if(this.state.change_count < 5)
             return alert(translate("more_than_default_number", [translate("modify_account_group_count"), 5]))
 
-        this.props.onResponse && (await this.props.onResponse(this.state.change_count))
+        await window.showIndicator()
         this.closeSelf();
+        this.props.onResponse && (await this.props.onResponse(this.state.change_count))
+        await window.hideIndicator()
     }
 
     render() {
@@ -422,8 +424,8 @@ class PurchaseTicket extends React.Component {
         if(this.state.give_count < 1)
             return alert(translate("too_low_ticket_count"))
 
-        this.props.onResponse && (await this.props.onResponse(this.state.give_count))
         this.closeSelf();
+        this.props.onResponse && (await this.props.onResponse(this.state.give_count))
     }
 
     render() {
@@ -481,8 +483,8 @@ class PurchaseRegularPayment extends React.Component {
     }
 
     onResponse = async () => {
-        this.props.onResponse && (await this.props.onResponse(this.state.select_period, this.state.select_period == 0 ? this.state.select_monthly_plan.plan_id : this.state.select_yearly_plan.plan_id, this.props.is_current_subscription));
         this.closeSelf();
+        this.props.onResponse && (await this.props.onResponse(this.state.select_period, this.state.select_period == 0 ? this.state.select_monthly_plan.plan_id : this.state.select_yearly_plan.plan_id, this.props.is_current_subscription));
     }
 
     onClickType = (type) => {

@@ -256,6 +256,7 @@ export default class extends React.Component {
                 let rr = await window.confirm(translate("purcahse_onetime_ticket"), translate("purcahse_onetime_ticket_desc", [give_count]))
                 console.log(rr)
                 if(rr) {
+                    await window.showIndicator()
                     let subscribe_plans = this.state.subscription_plans;
                     let plan_id = subscribe_plans.filter(e=>e.type==1).sort((a,b)=>a.total_price-b.total_price)[0].plan_id;
                     let resp = await this.props.buy_onetime_ticket(plan_id, give_count);
@@ -265,6 +266,7 @@ export default class extends React.Component {
                     } else {
                         alert(translate("fail_onetime_payment"))
                     }
+                    await window.hideIndicator()
                 }
             }
         })
