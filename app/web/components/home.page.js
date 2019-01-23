@@ -14,6 +14,7 @@ import moment from "moment"
 import ContractListPage from "./contract-list.page"
 import TemplatePage from "./template-list.page"
 import GroupPage from "./group.page"
+import ApprovalPage from "./approval.page"
 import Footer from "./footer.comp"
 
 import translate from "../../common/translate"
@@ -89,6 +90,10 @@ export default class extends React.Component {
                         <div className={(this.getStatus().includes("/template") ? "selected-item" : "item")} onClick={() => history.push("/template")}>
                             <div>{translate("template")}</div>
                         </div>
+                        { ( !!this.props.user_info && (this.props.user_info.account_type != 0) ) ? 
+                            <div className={(this.getStatus().includes("/approval") ? "selected-item" : "item")} onClick={() => history.push("/approval")}>
+                                <div>{translate("approval")}</div>
+                            </div>: ""}
                         { ( !!this.props.user_info && (this.props.user_info.account_type == 1) ) ? 
                             <div className={(this.getStatus().includes("/group") ? "selected-item" : "item")} onClick={() => history.push("/group")}>
                                 <div>{translate("group")}</div>
@@ -98,6 +103,7 @@ export default class extends React.Component {
                 </div>
                 <Route path="/home" render={() => <ContractListPage {...this.props}/>} />
                 <Route path="/template" render={() => <TemplatePage {...this.props}/>} />
+                <Route path="/approval" render={() => <ApprovalPage {...this.props}/>} />
                 <Route path="/group" render={() => <GroupPage {...this.props}/>} />
             </div>
 

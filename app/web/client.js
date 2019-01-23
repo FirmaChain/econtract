@@ -31,6 +31,7 @@ import ContractInfoPage from "./components/contract-info.page"
 import PreviewCOntractPage from "./components/preview-contract.page"
 
 import InformationPage from "./components/information.page"
+import ApprovalPage from "./components/approval.page"
 
 // import FolderPage from "./components/contract-folder-list.page"
 // import InFolderPage from "./components/home.page"
@@ -81,6 +82,8 @@ window.addEventListener("load",()=>{
 					<Route onEnter={resolver} exact path="/template/:menu" component={HomePage} />
 					<Route onEnter={resolver} exact path="/new-template" component={UpsertTemplatePage} />
 					<Route onEnter={resolver} exact path="/edit-template/:template_id" component={UpsertTemplatePage} />
+
+					<Route onEnter={resolver} exact path="/approval" component={HomePage} />
 
 					<Route onEnter={resolver} exact path="/group" component={HomePage} />
 					<Route onEnter={resolver} exact path="/group/:menu" component={HomePage} />
