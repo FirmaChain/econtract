@@ -235,7 +235,7 @@ class CardInfo extends React.Component {
         })
     }
 
-    onResponse = () => {
+    onResponse = async () => {
 
         if(!this.state.card_number || this.state.card_number == "")
             return alert(translate("please_input_card_number"))
@@ -270,7 +270,7 @@ class CardInfo extends React.Component {
         if(!is_valid_cvc)
             return alert(translate("card_cvc_not_valid"))
 
-        this.props.onResponse && this.props.onResponse({
+        this.props.onResponse && (await this.props.onResponse({
             card_type: card_type.toUpperCase(),
             name: this.state.name,
             card_number: this.state.card_number,
@@ -278,7 +278,7 @@ class CardInfo extends React.Component {
             month: this.state.selected_expiration_month,
             year: this.state.selected_expiration_year,
             id_number: this.state.social_number_front,
-        });
+        }) );
         this.closeSelf();
 
     }
@@ -365,11 +365,11 @@ class PurchaseGroupMemberChange extends React.Component {
         window.closeModal(this.props.modalId)
     }
 
-    onResponse = () => {
+    onResponse = async () => {
         if(this.state.change_count < 5)
             return alert(translate("more_than_default_number", [translate("modify_account_group_count"), 5]))
 
-        this.props.onResponse && this.props.onResponse(this.state.change_count)
+        this.props.onResponse && (await this.props.onResponse(this.state.change_count))
         this.closeSelf();
     }
 
@@ -418,11 +418,11 @@ class PurchaseTicket extends React.Component {
         window.closeModal(this.props.modalId)
     }
 
-    onResponse = () => {
+    onResponse = async () => {
         if(this.state.give_count < 1)
             return alert(translate("too_low_ticket_count"))
 
-        this.props.onResponse && this.props.onResponse(this.state.give_count)
+        this.props.onResponse && (await this.props.onResponse(this.state.give_count))
         this.closeSelf();
     }
 
@@ -480,8 +480,8 @@ class PurchaseRegularPayment extends React.Component {
         window.closeModal(this.props.modalId)
     }
 
-    onResponse = () => {
-        this.props.onResponse && this.props.onResponse(this.state.select_period, this.state.select_period == 0 ? this.state.select_monthly_plan.plan_id : this.state.select_yearly_plan.plan_id, this.props.is_current_subscription);
+    onResponse = async () => {
+        this.props.onResponse && (await this.props.onResponse(this.state.select_period, this.state.select_period == 0 ? this.state.select_monthly_plan.plan_id : this.state.select_yearly_plan.plan_id, this.props.is_current_subscription));
         this.closeSelf();
     }
 
