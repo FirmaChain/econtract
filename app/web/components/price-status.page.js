@@ -182,11 +182,19 @@ export default class extends React.Component {
             account_type:this.props.user_info.account_type,
             is_current_subscription: !!this.state.current_subscription,
             onResponse: async (period_type, plan_id, current) => {
+                let rr = await window.confirm(
+                    !!this.state.current_subscription ? translate("change_subscribe_plan") : translate("register_subscribe_plan"),
+                    !!this.state.current_subscription ? translate("change_subscribe_plan_desc") : translate("register_subscribe_plan_desc"))
+
+                if(!rr) return;
+
+                await window.showIndicator()
                 let resp
                 if (period_type == 1) { // Yearly
                     if (!current) {
                         // TODO: Make branch between register and change
                         resp = await this.props.make_yearly_commitment(plan_id);
+                        await window.hideIndicator()
                         if(resp.code == 1) {
                             alert(translate("subscribe_purchase_plan_yearly"))
                             await this.onRefresh()
@@ -205,19 +213,28 @@ export default class extends React.Component {
                 } else {
                     if (current) {
                         if (this.state.current_subscription.plan_id == plan_id) {
+                            await window.hideIndicator()
                             return alert("the same no meaning");
                         }
                         let resp = await this.props.terminate_monthly_commitment();
-                        console.log(resp);
-                        alert("terminate done?");
+                        if(resp.code != 1) {
+                            await window.hideIndicator()
+                            return alert("변경 프로세스 중 해지 프로세스에 실패하였습니다.");
+                        }
                         let resp2 = await this.props.reserve_monthly_commitment(plan_id);
-                        console.log(resp2);
-                        alert("reserve done?");
+                        if(resp2.code != 1) {
+                            await window.hideIndicator()
+                            return alert("변경 프로세스 중 재 예약 프로세스에 실패하였습니다.");
+                        }
+                        await window.hideIndicator()
+                        return alert("구독 변경에 성공하였습니다.")
+
                     } else {
                         resp = await this.props.make_monthly_commitment(plan_id);
+                        await window.hideIndicator()
                         if(resp.code == 1) {
-                            alert(translate("subscribe_purchase_plan_monthly"))
-                                await this.onRefresh()
+                            alert(translate("subscribe_purchase_plan_monthly"));
+                            await this.onRefresh()
                         } else if(resp.code == -4) {
                             return alert(translate("plan_not_exist"))
                         } else if(resp.code == -5) {
@@ -236,9 +253,15 @@ export default class extends React.Component {
     }
 
     onClickTerminateSubscription = async () => {
+        let rr = await window.confirm(translate("terminate_subscribe"), translate("terminate_subscribe_desc"))
+        if(!rr) return;
+
         let resp = await this.props.terminate_monthly_commitment();
-        console.log(resp);
-        alert("done?");
+        if(resp.code == 1) {
+            return alert(translate("success_subscribe_terminate"))
+        } else {
+            return alert(translate("fail_subscribe_terminate"))
+        }
     }
 
     onBuyTicket = async () => {
