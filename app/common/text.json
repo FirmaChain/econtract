@@ -574,6 +574,7 @@
     "subscribe_purchase_plan_yearly":["연간 결제 플랜이 구독되었습니다.","You have successfully purchased an annual subscription plan.","您成功购买了年支付。"],
     "input_all_sign_info":["서명 정보를 모두 입력해주세요.","Enter the required information.","请输入所有签署信息。"],
     "no_created_folder":["생성된 폴더가 없습니다.","There are no created folders.","不存在新创的合同。"],
+    "dont_change_same_subscribe_plan":["같은 플랜으로는 변경할 수 없습니다.","",""],
     "corp_user":["기업 회원","Business Account","企业会员"],
     "now_you_login_available":["이제 기존 계정으로 로그인할 수 있습니다.","You can now sign in with your account.","您现在可登录现有用户。"],
     "complete_join":["가입완료","Registration complete.","完成注册"],

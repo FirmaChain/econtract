@@ -181,7 +181,9 @@ export default class extends React.Component {
             selectPeriod: 0,
             account_type:this.props.user_info.account_type,
             is_current_subscription: !!this.state.current_subscription,
+            current_subscription: this.state.current_subscription,
             onResponse: async (period_type, plan_id, current) => {
+
                 let rr = await window.confirm(
                     !!this.state.current_subscription ? translate("change_subscribe_plan") : translate("register_subscribe_plan"),
                     !!this.state.current_subscription ? translate("change_subscribe_plan_desc") : translate("register_subscribe_plan_desc"))
@@ -212,10 +214,6 @@ export default class extends React.Component {
                     }
                 } else {
                     if (current) {
-                        if (this.state.current_subscription.plan_id == plan_id) {
-                            await window.hideIndicator()
-                            return alert("the same no meaning");
-                        }
                         let resp = await this.props.terminate_monthly_commitment();
                         if(resp.code != 1) {
                             await window.hideIndicator()
