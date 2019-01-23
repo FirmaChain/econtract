@@ -379,7 +379,10 @@ class PurchaseGroupMemberChange extends React.Component {
         return <div className="purchase-group-member-add default-modal-container">
             <div className="container">
                 <div className="icon"><i className="fal fa-ticket-alt"></i></div>
-                <div className="title">{translate("group_account_modify")}</div>
+                <div className="title">
+                    {translate("group_account_modify")}<br/>
+                    {translate("not_vat_include_price_desc")}
+                </div>
                 <div className="sub-title">{translate("group_account_add_desc", [window.CONST.MEMBER_PRICE.number_format()])}</div>
 
                 <div className="text-box">
@@ -434,7 +437,10 @@ class PurchaseTicket extends React.Component {
             <div className="container">
                 <div className="icon"><i className="fal fa-ticket-alt"></i></div>
                 <div className="title">{translate("buy_one_time_ticket")}</div>
-                <div className="sub-title">{translate("buy_one_time_ticket_desc")}</div>
+                <div className="sub-title">
+                    {translate("buy_one_time_ticket_desc")}<br/>
+                    {translate("not_vat_include_price_desc")}
+                </div>
                 <div className="content" dangerouslySetInnerHTML={{__html:translate("one_time_price_info", [price.number_format()])}}></div>
 
                 <div className="text-box">
@@ -516,7 +522,10 @@ class PurchaseRegularPayment extends React.Component {
             <div className="container">
                 <div className="icon"><i className="fas fa-credit-card"></i></div>
                 <div className="title">{translate("select_subscribe_purchase")}</div>
-                <div className="sub-title">{translate("select_subscribe_purchase_desc")}</div>
+                <div className="sub-title">
+                    {translate("select_subscribe_purchase_desc")}<br/>
+                    {translate("not_vat_include_price_desc")}
+                </div>
                 <div className="btn-container">
                     <div className={"btn" + (this.state.select_period == 0 ? " active" : "")} onClick={this.onClickType.bind(this, 0)}>
                         <div className="title">{translate("monthly_subscribe")}</div>
