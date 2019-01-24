@@ -317,6 +317,7 @@ export default class extends React.Component {
 
         let customer_uid = window.create_customer_uid(this.props.user_info)
         IMP.init(window.CONST.IMP_USER_CODE);
+        console.log("ㅁㄴㅇㅁㄴㅇ", this.props.account_type == 0 ? this.props.user_info.username : this.props.user_info.company_ceo)
         let result = await new Promise( r => IMP.request_pay({
             pg: "jtnet",
             language:global.LANG == "KR" ? "ko" : "en",
@@ -326,9 +327,9 @@ export default class extends React.Component {
             name: translate("purchase_first_name"),
             amount: 0, // 0 으로 설정하여 빌링키 발급만 진행합니다.
             buyer_email: this.props.user_info.email,
-            buyer_name: this.props.account_type == 0 ? this.props.user_info.username : this.props.user_info.company_ceo,
-            buyer_tel: this.props.account_type == 0 ? this.props.user_info.username : this.props.user_info.company_tel,
-            buyer_addr: this.props.account_type == 0 ? this.props.user_info.useraddress : this.props.user_info.company_address,
+            buyer_name: this.props.user_info.account_type == 0 ? this.props.user_info.username : this.props.user_info.company_ceo,
+            buyer_tel: this.props.user_info.account_type == 0 ? this.props.user_info.userphone : this.props.user_info.company_tel,
+            buyer_addr: this.props.user_info.account_type == 0 ? this.props.user_info.useraddress : this.props.user_info.company_address,
         }, async (resp) => { // callback
             if (resp.success) {
                 let preview_data = {
