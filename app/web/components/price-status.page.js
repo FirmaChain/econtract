@@ -318,7 +318,7 @@ export default class extends React.Component {
         let customer_uid = window.create_customer_uid(this.props.user_info)
         IMP.init(window.CONST.IMP_USER_CODE);
         let result = await new Promise( r => IMP.request_pay({
-            pg: "html5_inicis",
+            pg: "jtnet",
             language:global.LANG == "KR" ? "ko" : "en",
             pay_method: "card", // "card"만 지원됩니다
             merchant_uid: window.CONST.FIRST_PURCHASE+"_"+Math.floor(new Date().getTime() / 1000), // 빌링키 발급용 주문번호
