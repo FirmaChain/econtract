@@ -32,7 +32,7 @@ export default class extends React.Component {
 		this.state={
             cur_page:1,
             showOptions: null,
-            approvals_checks:[]
+            approval_checks:[]
         }
 	}
 
@@ -142,6 +142,7 @@ export default class extends React.Component {
 
     isCheckAll = () => {
         let approvals = this.state.approvals ? this.state.approvals : { list:[] }
+        console.log(approvals)
         return this.state.approval_checks.length == approvals.list.length 
     }
 
@@ -179,7 +180,7 @@ export default class extends React.Component {
 
 		return (<div className="approval-page">
             <div className="contract-group-menu">
-                <div className="left-top-button" onClick={this.onClickAddTemplate}>{translate("generate")}</div>
+                <div className="left-top-button" onClick={this.onClickAddTemplate}>{translate("approval_generate")}</div>
                 <div className="menu-list">
                     <div className="list">
                         <div className="title">

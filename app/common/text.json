@@ -230,6 +230,7 @@
     "yearly_purchase":["연간 결제","Annual Payment","年支付"],
     "group_member_email":["그룹원 이메일","Email Address (Group Member)","企业用户邮箱"],
     "creator":["생성자","Created","发件人"],
+    "approval_generate":["결재안 만들기","",""],
     "sign_waiting":["서명 대기중","Waiting for Signature","正在等待签署"],
     "change":["변경","Change","更换"],
     "are_u_delete_template":["\u0027{0}\u0027 템플릿을 삭제하시겠습니까?","Are you sure you want to delete {0}?","您确定要删除{0}模板吗？"],
