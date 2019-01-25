@@ -47,6 +47,12 @@ window.CONST = {
         TERMINATE:2,
         REFUND:3,
     },
+    APPROVAL_STATUS: {
+        DRAFT:0,
+        ING_APPROVAL:1,
+        COMPLETED:2,
+        REJECTED:3,
+    },
     MEMBER_PRICE: 2000,
     MEMBER_FREE_COUNT: 1,
     VAT_RATE : 1.1,

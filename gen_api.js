@@ -5,6 +5,17 @@
 
 import {post, get} from './Network.js';
 
+export async function api_new_approval(name,order_list,html){
+    let __data = new FormData();
+
+    if(name != null) __data.append('name', name);
+	if(order_list != null) __data.append('order_list', order_list);
+	if(html != null) __data.append('html', html)
+
+    return await post("/new_approval", __data,{
+        session:window.getCookie("session")
+    });
+}
 export async function api_convert_doc(file){
     let __data = new FormData();
 
