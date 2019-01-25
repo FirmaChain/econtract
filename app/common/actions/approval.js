@@ -34,7 +34,7 @@ export function list_approval(type, page = 0, search_text = "", display_count = 
 
         let resp = await api_list_approval(type, page, display_count, search_text);
         for(let v of resp.payload.list) {
-            v.html = aes_decrypt(Buffer.from(v.html, 'hex'), Buffer.from(corp_key, 'hex'));
+            if(v.html) v.html = aes_decrypt(Buffer.from(v.html, 'hex'), Buffer.from(corp_key, 'hex'));
         }
 
         dispatch({
