@@ -7,33 +7,23 @@ import translate from "../../common/translate"
 import Pager from "./pager"
 import history from '../history';
 import {
-    remove_template,
-    list_template,
-    folder_list_template,
-    add_folder_template,
-    remove_folder_template,
-    change_folder_template,
-    fetch_user_info,
+    new_approval,
+    list_approval,
 } from "../../common/actions"
 import moment from "moment"
 
 let mapStateToProps = (state)=>{
 	return {
-        folders:state.template.folders,
-        templates:state.template.templates,
         user_info:state.user.info,
 	}
 }
 
 let mapDispatchToProps = {
-    remove_template,
-    list_template,
-    folder_list_template,
-    add_folder_template,
-    remove_folder_template,
-    change_folder_template,
-    fetch_user_info,
+    new_approval,
+    list_approval,
 }
+
+const LIST_DISPLAY_COUNT = 6
 
 @connect(mapStateToProps, mapDispatchToProps )
 export default class extends React.Component {
@@ -42,14 +32,13 @@ export default class extends React.Component {
 		this.state={
             cur_page:1,
             showOptions: null,
-            templates_checks:[]
+            approvals_checks:[]
         }
 	}
 
 	componentDidMount(){
         (async()=>{
             await window.showIndicator()
-            await this.props.folder_list_template()
             await this.onRefresh()
             await window.hideIndicator()
         })()
@@ -57,7 +46,7 @@ export default class extends React.Component {
 
     onRefresh = async (nextProps) => {
         nextProps = !!nextProps ? nextProps : this.props
-        await this.props.list_template(this.getTitle(nextProps).id, this.state.cur_page - 1, this.props.user_info.corp_key || null)
+        await this.props.list_approval(this.getTitle(nextProps).type, this.state.cur_page - 1, LIST_DISPLAY_COUNT, this.props.user_info.corp_key || null)
     }
 
     componentWillReceiveProps(nextProps){
@@ -72,95 +61,26 @@ export default class extends React.Component {
         }
     }
 
-    onClickDelete = async()=>{
-        let selected = Object.keys(this.state.templates_checks).filter(e=>this.state.templates_checks[e].template_id)
-        if(selected.length == 0)
-            return alert(translate("plase_choice_delete_template"))
-
-        if(await window.confirm(translate("template_delete"), translate("template_delete_desc_1", [selected.length]) )){
-            await window.showIndicator()
-            await this.props.remove_template(selected)
-            await this.onRefresh()
-            await window.hideIndicator()
-            
-            alert(translate("template_delete_desc_2"))
-        }
-    }
-
-    onClickPage = async(page)=>{
-        if(this.state.cur_page == page)
-            return;
-
-        await this.onRefresh()
-        this.setState({
-            cur_page:page,
-            templates_checks:[]
-        })
-    }
-    onClickAddTemplate = () => {
-        history.push("/new-template")
-    }
-
-    onClickTemplate = (e)=>{
-        history.push(`/template-edit/${e.template_id}`)
-    }
-
-    onAddFolder = () => {
-        window.openModal("AddCommonModal", {
-            icon:"fas fa-folder",
-            title:translate("add_template_folder"),
-            subTitle:translate("new_folder_name"),
-            placeholder:translate("please_input_folder_name"),
-            onConfirm: async (folder_name) => {
-                if(!folder_name || folder_name.trim() == "") {
-                    return alert(translate("please_input_folder_name"))
-                }
-                let resp = await this.props.add_folder_template(folder_name.trim())
-
-                if(resp) {
-                    await this.props.folder_list_template()
-                }
-            }
-        })
-    }
-
     move = (folder_id) => {
         history.push(`/approval/${folder_id}`)
     }
 
-    isOpenOption(template_id) {
-        return this.state.showOption == template_id;
+    isOpenOption(approval_id) {
+        return this.state.showOption == approval_id;
     }
 
-    onClickOption(template_id, e) {
+    onClickOption(approval_id, e) {
         e.stopPropagation()
 
-        if(this.state.showOption == template_id) {
+        if(this.state.showOption == approval_id) {
             return this.setState({
                 showOption:null
             })
         }
 
         this.setState({
-            showOption:template_id
+            showOption:approval_id
         })
-    }
-
-    useTemplate = async (template_id, e) => {
-        e.stopPropagation()
-        history.push({pathname:"/add-contract", search:"?template_id="+template_id})
-    }
-
-    async onRemoveTemplate(template_id, subject, e) {
-        e.stopPropagation()
-
-        if(await window.confirm(translate("template_delete"), translate("are_u_delete_template", [subject]) )) {
-            await window.showIndicator()
-            await this.props.remove_template([template_id])
-            await this.onRefresh()
-            await window.hideIndicator()
-            alert(translate("are_u_delete_template_desc", [subject]))
-        }
     }
 
     getTitle(props) {
@@ -169,50 +89,31 @@ export default class extends React.Component {
         let menu = props.match.params.menu || "all"
         let folders = props.folders ? props.folders : []
 
-        for(let v of folders) {
-            if(menu == v.folder_id+"") {
-                return { id:v.folder_id, title:v.subject}
-            }
+        if( menu == "draft") {
+            return { type:1, id:"draft", title : translate("draft")}
         }
-        if(menu == "unclassified") {
-            return { id:"unclassified", title : translate("not_classfication_template")}
+        else if( menu == "ing_approval") {
+            return { type:2, id:"ing_approval", title : translate("ing_approval")}
         }
-        return { id:"all", title : translate("all_template")}
+        else if( menu == "completed_approval") {
+            return { type:3, id:"completed_approval", title : translate("completed_approval")}
+        }
+        else if( menu == "my_confirm") {
+            return { type:4, id:"my_confirm", title : translate("my_confirm")}
+        }
+        else if( menu == "rejected") {
+            return { type:5, id:"rejected", title : translate("rejected")}
+        }
+        else 
+            return { type:0, id:"all", title : translate("all_approval")}
     } 
 
-    onRemoveFolder = async (folder_id, folder_name) => {
-        if(await window.confirm(translate("template_folder_delete"), translate("template_folder_delete_desc", [folder_name]) )){
-            await this.props.remove_folder_template([folder_id])
-            history.push("/template")
-        }
-    }
-
-    onChangeFolderName = async () => {
-
-        window.openModal("AddCommonModal", {
-            icon:"fas fa-folder",
-            title:translate("change_template_folder_name"),
-            subTitle:translate("new_folder_name"),
-            placeholder: translate("change_template_folder_name_desc", [this.getTitle().title]),
-            onConfirm: async (folder_name) => {
-                if(!folder_name || folder_name.trim() == "") {
-                    return alert(translate("please_input_folder_name"))
-                }
-                let resp = await this.props.change_folder_template(this.getTitle().id, folder_name.trim())
-
-                if(resp) {
-                    await this.props.folder_list_template()
-                }
-            }
-        })
-    }
-
-    checkTemplate(template_id) {
-        let l = [...this.state.templates_checks], isCheckAll = false
+    checkApproval(approval_id) {
+        let l = [...this.state.approval_checks], isCheckAll = false
 
         let push_flag = true
         for(let i in l) {
-            if(l[i] == template_id) {
+            if(l[i] == approval_id) {
                 l.splice(i, 1)
                 push_flag = false
                 break;
@@ -220,49 +121,49 @@ export default class extends React.Component {
         }
 
         if(push_flag)
-            l.push(template_id)
+            l.push(approval_id)
 
         this.setState({
-            templates_checks:l
+            approval_checks:l
         })
     }
 
     checkAll = () => {
-        let templates = this.props.templates ? this.props.templates : { list:[] }
-        let check_list = templates.list.map( (e) => e.template_id )
+        let approvals = this.state.approvals ? this.state.approvals : { list:[] }
+        let check_list = approvals.list.map( (e) => e.approval_id )
 
         if(this.isCheckAll())
             check_list = []
 
         this.setState({
-            templates_checks:check_list
+            approval_checks:check_list
         })
     }
 
     isCheckAll = () => {
-        let templates = this.props.templates ? this.props.templates : { list:[] }
-        return this.state.templates_checks.length == templates.list.length 
+        let approvals = this.state.approvals ? this.state.approvals : { list:[] }
+        return this.state.approval_checks.length == approvals.list.length 
     }
 
-    render_template_slot(e, k) {
-        return <div className="item" key={e.template_id} onClick={()=>history.push(`/edit-template/${e.template_id}`)}>
+    render_approval_slot(e, k) {
+        return <div className="item" key={e.approval_id} onClick={()=>history.push(`/edit-approval/${e.approval_id}`)}>
             <div className="list-body-item list-chkbox">
                 <CheckBox2 size={18}
-                    on={this.state.templates_checks.includes(e.template_id) || false}
-                    onClick={this.checkTemplate.bind(this, e.template_id)}/>
+                    on={this.state.approval_checks.includes(e.approval_id) || false}
+                    onClick={this.checkApproval.bind(this, e.approval_id)}/>
             </div>
             <div className="list-body-item list-name">
-                {e.subject}
+                {e.name}
             </div>
             <div className="list-body-item list-date">{moment(e.addedAt).format("YYYY-MM-DD HH:mm:ss")}</div>
             <div className="list-body-item list-action">
                 <div className="button-container">
-                    <div className="action-button action-blue-but" onClick={this.useTemplate.bind(this, e.template_id)}>{translate("use")}</div>
-                    <div className="arrow-button arrow-blue-but" onClick={this.onClickOption.bind(this, e.template_id)} >
+                    <div className="action-button action-blue-but">{translate("use")}</div>
+                    <div className="arrow-button arrow-blue-but" onClick={this.onClickOption.bind(this, e.approval_id)} >
                         <i className="fas fa-caret-down"></i>
-                    <div className="arrow-dropdown" style={{display:!!this.isOpenOption(e.template_id) ? "initial" : "none"}}>
+                    <div className="arrow-dropdown" style={{display:!!this.isOpenOption(e.approval_id) ? "initial" : "none"}}>
                             <div className="container">
-                                <div className="move" onClick={this.onRemoveTemplate.bind(this, e.template_id, e.subject)}>{translate("remove")}</div>
+                                <div className="move">{translate("remove")}</div>
                             </div>
                         </div>
                     </div>
@@ -272,13 +173,11 @@ export default class extends React.Component {
     }
 
 	render() {
-        let folders = this.props.folders ? this.props.folders : []
+        let approvals = this.state.approvals ? this.state.approvals : { list:[] }
+        let total_cnt = approvals.total_cnt
+        let page_num = approvals.page_num
 
-        let templates = this.props.templates ? this.props.templates : { list:[] }
-        let total_cnt = templates.total_cnt
-        let page_num = templates.page_num
-
-		return (<div className="template-page">
+		return (<div className="approval-page">
             <div className="contract-group-menu">
                 <div className="left-top-button" onClick={this.onClickAddTemplate}>{translate("generate")}</div>
                 <div className="menu-list">
@@ -315,8 +214,7 @@ export default class extends React.Component {
             </div>
             <div className="contract-list">
                 <div className="title">
-                    { this.getTitle().title } &nbsp;
-                    { !isNaN(this.getTitle().id) ? <i className="fas fa-cog" onClick={this.onChangeFolderName}></i> : null }
+                    { this.getTitle().title }
                 </div>
                 <div className="list" style={{marginTop:"20px"}}>
                     <div className="head">
@@ -325,14 +223,14 @@ export default class extends React.Component {
                                 on={this.isCheckAll()}
                                 onClick={this.checkAll}/>
                         </div>
-                        <div className="list-head-item list-name">{translate("template_name")}</div>
+                        <div className="list-head-item list-name">{translate("approval_name")}</div>
                         <div className="list-head-item list-date">{translate("create_date")}</div>
                         <div className="list-head-item list-action"></div>
                     </div>
-                    {templates.list.map((e,k)=>{
-                        return this.render_template_slot(e,k)
+                    {approvals.list.map((e,k)=>{
+                        return this.render_approval_slot(e,k)
                     })}
-                    {templates.list.length == 0 ? <div className="empty-contract">{translate("not_template")}</div> : null}
+                    {approvals.list.length == 0 ? <div className="empty-contract">{translate("not_approval")}</div> : null}
                 </div>
                 
                 <Pager max={Math.ceil(total_cnt/page_num)} cur={this.state.cur_page||1} onClick={this.onClickPage} />

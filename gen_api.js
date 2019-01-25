@@ -16,6 +16,17 @@ export async function api_new_approval(name,order_list,html){
         session:window.getCookie("session")
     });
 }
+export async function api_list_approval(type,page,display_count){
+    let __data = new FormData();
+
+    if(type != null) __data.append('type', type);
+	if(page != null) __data.append('page', page);
+	if(display_count != null) __data.append('display_count', display_count)
+
+    return await post("/list_approval", __data,{
+        session:window.getCookie("session")
+    });
+}
 export async function api_convert_doc(file){
     let __data = new FormData();
 

@@ -25,3 +25,17 @@ export function new_approval(name, order_list, corp_key, html = null){
         return resp
     }
 }
+
+export function list_approval(type, page = 0, display_count = 6, corp_key) {
+    return async function() {
+        if(!corp_key) return false;
+
+        let resp = await api_list_approval(type, page, display_count);
+
+        for(let v of resp.payload.list) {
+            v.html = aes_decrypt(Buffer.from(v.html, 'hex'), Buffer.from(corp_key, 'hex'))
+        }
+
+        return resp.payload
+    }
+}

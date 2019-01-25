@@ -84,6 +84,7 @@ window.addEventListener("load",()=>{
 					<Route onEnter={resolver} exact path="/edit-template/:template_id" component={UpsertTemplatePage} />
 
 					<Route onEnter={resolver} exact path="/approval" component={HomePage} />
+					<Route onEnter={resolver} exact path="/approval/:menu" component={HomePage} />
 
 					<Route onEnter={resolver} exact path="/group" component={HomePage} />
 					<Route onEnter={resolver} exact path="/group/:menu" component={HomePage} />
