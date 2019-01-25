@@ -6,15 +6,19 @@ import CheckBox2 from "./checkbox2"
 import translate from "../../common/translate"
 import Pager from "./pager"
 import history from '../history';
+import moment from "moment"
+import queryString from "query-string"
+
+
 import {
     new_approval,
     list_approval,
 } from "../../common/actions"
-import moment from "moment"
 
 let mapStateToProps = (state)=>{
 	return {
         user_info:state.user.info,
+        approvals:state.approval.approvals,
 	}
 }
 
@@ -30,7 +34,7 @@ export default class extends React.Component {
 	constructor(){
 		super();
 		this.state={
-            cur_page:1,
+            cur_page:0,
             showOptions: null,
             approval_checks:[]
         }
@@ -46,7 +50,17 @@ export default class extends React.Component {
 
     onRefresh = async (nextProps) => {
         nextProps = !!nextProps ? nextProps : this.props
-        await this.props.list_approval(this.getTitle(nextProps).type, this.state.cur_page - 1, LIST_DISPLAY_COUNT, this.props.user_info.corp_key || null)
+
+        let params = queryString.parse(nextProps.location.search)
+
+        await this.setState({
+            approval_checks : [],
+            showGroupMenu: false,
+            showOptions: null,
+            cur_page:Number(params.page) || 0,
+            search_text: params.search_text || "",
+        })
+        await this.props.list_approval(this.getTitle(nextProps).type, Number(params.page) || 0, params.search_text || null, LIST_DISPLAY_COUNT, this.props.user_info.corp_key || null)
     }
 
     componentWillReceiveProps(nextProps){
@@ -56,9 +70,21 @@ export default class extends React.Component {
 
         let prevMenu = nextProps.match.params.menu || "all"
         let menu = this.props.match.params.menu || "all"
-        if(prevMenu != menu){
+
+        let prev_page = queryString.parse(nextProps.location.search).page || 0
+        let page = queryString.parse(this.props.location.search).page || 0 
+
+        let prev_search_text = queryString.parse(this.props.location.search).search_text || ""
+        let search_text = queryString.parse(nextProps.location.search).search_text || ""
+
+
+        if(prevMenu != menu || prev_page != page || prev_search_text != search_text) {
             this.onRefresh(nextProps)
         }
+    }
+
+    onClickAddApproval = () => {
+        history.push("/add-approval")
     }
 
     move = (folder_id) => {
@@ -104,8 +130,9 @@ export default class extends React.Component {
         else if( menu == "rejected") {
             return { type:5, id:"rejected", title : translate("rejected")}
         }
-        else 
+        else {
             return { type:0, id:"all", title : translate("all_approval")}
+        }
     } 
 
     checkApproval(approval_id) {
@@ -128,8 +155,18 @@ export default class extends React.Component {
         })
     }
 
+    onClickPage = async (page)=>{
+        if(this.state.cur_page == page - 1)
+            return;
+
+        let params = queryString.parse(this.props.location.search)
+        params.page = page - 1
+
+        history.push({pathname:this.props.match.url, search:`?${queryString.stringify(params)}`})
+    }
+
     checkAll = () => {
-        let approvals = this.state.approvals ? this.state.approvals : { list:[] }
+        let approvals = this.props.approvals ? this.props.approvals : { list:[] }
         let check_list = approvals.list.map( (e) => e.approval_id )
 
         if(this.isCheckAll())
@@ -141,8 +178,7 @@ export default class extends React.Component {
     }
 
     isCheckAll = () => {
-        let approvals = this.state.approvals ? this.state.approvals : { list:[] }
-        console.log(approvals)
+        let approvals = this.props.approvals ? this.props.approvals : { list:[] }
         return this.state.approval_checks.length == approvals.list.length 
     }
 
@@ -174,13 +210,13 @@ export default class extends React.Component {
     }
 
 	render() {
-        let approvals = this.state.approvals ? this.state.approvals : { list:[] }
+        let approvals = this.props.approvals ? this.props.approvals : { list:[] }
         let total_cnt = approvals.total_cnt
         let page_num = approvals.page_num
 
 		return (<div className="approval-page">
             <div className="contract-group-menu">
-                <div className="left-top-button" onClick={this.onClickAddTemplate}>{translate("approval_generate")}</div>
+                <div className="left-top-button" onClick={this.onClickAddApproval}>{translate("approval_generate")}</div>
                 <div className="menu-list">
                     <div className="list">
                         <div className="title">

@@ -1762,6 +1762,7 @@ div.checkbox2-comp{
         padding:20px 10px;
         padding-top: 50px;
         margin-bottom:90px;
+        min-height: calc(100% - 392px);
 
         >.row {
             display: flex;

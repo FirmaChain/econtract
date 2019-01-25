@@ -30,8 +30,10 @@ import UpsertContractPage from "./components/upsert-contract.page"
 import ContractInfoPage from "./components/contract-info.page"
 import PreviewCOntractPage from "./components/preview-contract.page"
 
-import InformationPage from "./components/information.page"
 import ApprovalPage from "./components/approval.page"
+import AddApprovalPage from "./components/add-approval.page"
+
+import InformationPage from "./components/information.page"
 
 // import FolderPage from "./components/contract-folder-list.page"
 // import InFolderPage from "./components/home.page"
@@ -85,6 +87,7 @@ window.addEventListener("load",()=>{
 
 					<Route onEnter={resolver} exact path="/approval" component={HomePage} />
 					<Route onEnter={resolver} exact path="/approval/:menu" component={HomePage} />
+					<Route onEnter={resolver} exact path="/add-approval" component={AddApprovalPage} />
 
 					<Route onEnter={resolver} exact path="/group" component={HomePage} />
 					<Route onEnter={resolver} exact path="/group/:menu" component={HomePage} />

@@ -307,6 +307,8 @@ export default class extends React.Component {
         let contract_name = this.state.contract_name.trim();
 
         if(contract_name.length > 80) {
+            this.blockFlag = false;
+            this.is_register = false
             return alert(translate("contract_name_must_be_80_letters"))
         }
 
@@ -366,6 +368,8 @@ export default class extends React.Component {
                 }
             }
             history.replace(`/edit-contract/${contract_id}`)
+        } else {
+            alert(translate("fail_register_contract"))
         }
         
         this.is_register = false

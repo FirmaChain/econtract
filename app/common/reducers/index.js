@@ -4,6 +4,7 @@ import document from "./document"
 import contract from "./contract"
 import group from "./group"
 import template from "./template"
+import approval from "./approval"
 
 export default function createStore(reducers){
     return combineReducers({
@@ -12,6 +13,7 @@ export default function createStore(reducers){
         contract,
         group,
         template,
+        approval,
         ...reducers
     })
 }
