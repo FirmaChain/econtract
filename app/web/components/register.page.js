@@ -632,6 +632,7 @@ export default class extends React.Component {
             public_info = {
                 email: this.state.email.trim(),
                 username: this.state.username.trim(),
+                department: this.state.department.trim(),
                 job: this.state.job.trim(),
                 userphone: this.state.userphone,
             }
@@ -647,7 +648,8 @@ export default class extends React.Component {
                 email: this.state.email.trim(),
                 username: this.state.username.trim(),
                 job: this.state.job.trim(),
-                userphone: this.state.userphone,
+                department: this.state.department.trim(),
+                userphone: this.state.userphone.trim(),
             }
         }
 
@@ -985,6 +987,16 @@ export default class extends React.Component {
                         value={this.state.username || ""}
                         onChange={e=>this.setState({username:e.target.value})}
                         placeholder={translate("please_input_manager_name")}/>
+                </div>
+            </div>
+
+            <div className="text-place">
+                <div className="name"></div>
+                <div className="textbox">
+                    <input className="common-textbox" type="text"
+                        value={this.state.department || ""}
+                        onChange={e=>this.setState({department:e.target.value})}
+                        placeholder={translate("please_input_manager_department")}/>
                 </div>
             </div>
 

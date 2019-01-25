@@ -379,11 +379,11 @@ class PurchaseGroupMemberChange extends React.Component {
         return <div className="purchase-group-member-add default-modal-container">
             <div className="container">
                 <div className="icon"><i className="fal fa-ticket-alt"></i></div>
-                <div className="title">
-                    {translate("group_account_modify")}<br/>
+                <div className="title">{translate("group_account_modify")}</div>
+                <div className="sub-title">
+                    {translate("group_account_add_desc", [window.CONST.MEMBER_PRICE.number_format()])}<br/>
                     {translate("not_vat_include_price_desc")}
                 </div>
-                <div className="sub-title">{translate("group_account_add_desc", [window.CONST.MEMBER_PRICE.number_format()])}</div>
 
                 <div className="text-box">
                     <div className="sub-title">{translate("modify_account_group_count")}</div>

@@ -89,6 +89,7 @@ export default class extends React.Component {
             public_info = {
                 email: this.props.user_info.email.trim(),
                 username: this.state.username.trim(),
+                department: this.state.department.trim(),
                 job: this.state.job.trim(),
                 userphone: this.state.userphone.trim(),
             }
@@ -101,6 +102,7 @@ export default class extends React.Component {
             public_info = {
                 email: this.props.user_info.email.trim(),
                 username: this.state.username.trim(),
+                department: this.state.department.trim(),
                 job: this.state.job.trim(),
                 userphone: this.state.userphone.trim(),
             }
@@ -206,6 +208,10 @@ export default class extends React.Component {
 	            		<div className="title">{translate("name")}</div>
 	            		<div className="text-box"><input className="common-textbox" type="text" value={this.state.username} onChange={this.onInfoChange.bind(this, "username")}/></div>
 	            	</div>
+                    {account_type != 0 ? <div className="text-place">
+                        <div className="title">{translate("department")}</div>
+                        <div className="text-box"><input className="common-textbox" type="text" value={this.state.department} onChange={this.onInfoChange.bind(this, "department")}/></div>
+                    </div> : null}
 	            	{account_type != 0 ? <div className="text-place">
 	            		<div className="title">{translate("job")}</div>
 	            		<div className="text-box"><input className="common-textbox" type="text" value={this.state.job} onChange={this.onInfoChange.bind(this, "job")}/></div>
