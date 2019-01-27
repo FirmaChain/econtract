@@ -154,10 +154,13 @@ export default class extends React.Component {
                 job:approval_user.public_info.job,
             }
 
+        	let all_group_member = await this.props.get_group_member_all(this.props.user_info.corp_key)
+
             this.setState({
                 order_list:[...this.state.order_list, info],
                 add_name:null,
                 add_account_id: null,
+                member_list:all_group_member.payload,
             })
         } else {
             return alert(translate("please_select_approval_user"));
@@ -258,14 +261,10 @@ export default class extends React.Component {
         if(_.length == 0)
             return;
 
-        //_ = [..._,..._,..._,..._,..._,..._,..._,..._,..._,..._,..._,..._,..._,..._]
-        console.log(_)
-
         return <div className="input-dropdown">
 	        <div className="info-container">
 	        {_.map( (e, k) => {
 	            return <div className="user" key={e.account_id} onClick={()=>{
-	            		console.log("ssssssss")
 	            		this.setState({add_account_id:e.account_id, add_name:e.public_info.username})
 	            	}}>
 		            <i className="icon fas fa-user-tie"></i>

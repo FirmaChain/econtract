@@ -27,6 +27,7 @@ import {
     exist_group_member,
     add_member_group_exist,
     all_invite_list,
+    get_group_member_all,
 } from "../../common/actions"
 
 let mapStateToProps = (state)=>{
@@ -47,6 +48,7 @@ let mapDispatchToProps = {
     exist_group_member,
     add_member_group_exist,
     all_invite_list,
+    get_group_member_all,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -55,7 +57,8 @@ export default class extends React.Component {
     constructor() {
         super()
         this.state = {
-            add_email:""
+            add_name:"",
+            add_name_focus: false,
         }
     }
 
@@ -91,7 +94,9 @@ export default class extends React.Component {
             }
         }
 
-        await this.setState({...info})
+        let all_group_member = await this.props.get_group_member_all(this.props.user_info.corp_key)
+
+        await this.setState({...info, all_member_list:all_group_member.payload})
         await window.hideIndicator()
 
     }
@@ -150,18 +155,20 @@ export default class extends React.Component {
     }
 
     onAddMember = async ()=>{
-        if(!this.props.current_subscription) {
-            return alert(translate("no_subscribe_dont_use_group_member"))
-        }
+        if(!this.props.current_subscription)
+            return alert(translate("no_subscribe_dont_use_group_member"));
 
-        if(this.state.add_email == "")
-            return alert(translate("please_input_invite_member_email"))
+        if(!this.state.add_account_id)
+            return alert(translate("please_select_invite_member_name"));
         
-        let email = this.state.add_email.trim()
+        //let name = this.state.add_name.trim()
 
-        if(!window.email_regex.test(email))
-            return alert(translate("no_email_regex"))
-        
+        let invite_user = this.state.all_member_list.find(e=>e.account_id == this.state.add_account_id)
+        if(!invite_user)
+            return alert(translate("please_select_invite_member_name"));
+
+        let email = invite_user.public_info.email
+        console.log("email", email)
 
         await window.showIndicator()
 
@@ -181,7 +188,7 @@ export default class extends React.Component {
         }
 
         if(exist.code == -5) {
-
+            //alert(translate("not_this_corp_user"))
             let data_for_inviter = {
                 email
             }
@@ -201,8 +208,11 @@ export default class extends React.Component {
             let resp = await this.props.add_member_group(this.getGroupId(), email, this.props.user_info.corp_key, data, data_for_inviter);
             if(resp) {
                 if(resp.code == 1) {
+                    let all_group_member = await this.props.get_group_member_all(this.props.user_info.corp_key)
                     this.setState({
-                        add_email:""
+                        add_name:null,
+                        add_account_id: null,
+                        all_member_list:all_group_member.payload,
                     })
                     alert(translate("success_invite_group"))
                 } else if(resp.code == 2) {
@@ -226,8 +236,11 @@ export default class extends React.Component {
             let resp = await this.props.add_member_group_exist(exist.payload.account_id, this.getGroupId(), email, data)
 
             if(resp.code == 1) {
+                let all_group_member = await this.props.get_group_member_all(this.props.user_info.corp_key)
                 this.setState({
-                    add_email:""
+                    add_name:null,
+                    add_account_id: null,
+                    all_member_list:all_group_member.payload,
                 })
                 await this.onRefresh()
                 alert(translate("success_invite_group"))
@@ -306,6 +319,37 @@ export default class extends React.Component {
         })
     }
 
+    render_add_group_input_dropdown() {
+        if(this.state.add_account_id != null || this.state.add_name == null || !this.state.add_name_focus)
+            return;
+
+        let search_text = this.state.add_name.trim()
+
+        if(search_text < 2)
+            return;
+
+        let _ = this.state.all_member_list.filter(e=>{
+            return e.public_info.username.includes(search_text)
+        })
+
+        if(_.length == 0)
+            return;
+
+        return <div className="input-dropdown">
+            <div className="info-container">
+            {_.map( (e, k) => {
+                return <div className="user" key={e.account_id} onClick={()=>{
+                        this.setState({add_account_id:e.account_id, add_name:e.public_info.username})
+                    }}>
+                    <i className="icon fas fa-user-tie"></i>
+                    <div className="name">{e.public_info.username}</div>
+                    <div className="email">{e.public_info.email}</div>
+                </div>
+            })}
+            </div>
+        </div>
+    }
+
 	render() {
         if(!this.state.group || this.getGroupId() == null )
             return <div></div>
@@ -365,18 +409,26 @@ export default class extends React.Component {
                 <div className="row">
                     <div className="right-form">
                         <div className="column column-flex-2">
-                            <div className="form-head">{translate("group_member_email")}</div>
+                            <div className="form-head">{translate("group_member_name")}</div>
                             <div className="form-input">
-                                <input className="common-textbox" id="email" type="email"
-                                    placeholder={translate("please_input_email")}
-                                    value={this.state.add_email || ""}
-                                    onChange={e=>this.setState({add_email:e.target.value})}/>
+                                <input className="common-textbox" type="text"
+                                    placeholder={translate("please_input_name")}
+                                    value={this.state.add_name || ""}
+                                    onFocus={e=>this.setState({add_name_focus:true})}
+                                    onBlur={e=>setTimeout(()=>this.setState({add_name_focus:false}), 100)}
+                                    onChange={e=>{
+                                        this.setState({
+                                            add_name:e.target.value,
+                                            add_account_id:null,
+                                        })
+                                    }}/>
+                                {this.render_add_group_input_dropdown()}
                             </div>
                         </div>
                         <div className="column">
                             <div className="form-head">&nbsp;</div>
                             <div className="form-input">
-                                <div className={"btn-add-user" + ( (this.state.add_email || "").length==0 ? "" : " btn-add-user-active" )} onClick={this.onAddMember}>{translate("add")}</div>
+                                <div className={"btn-add-user" + ( (this.state.add_name || "").length==0 ? "" : " btn-add-user-active" )} onClick={this.onAddMember}>{translate("add")}</div>
                             </div>
                         </div>
                     </div>
