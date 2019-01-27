@@ -259,17 +259,21 @@ export default class extends React.Component {
             return;
 
         //_ = [..._,..._,..._,..._,..._,..._,..._,..._,..._,..._,..._,..._,..._,..._]
+        console.log(_)
 
         return <div className="input-dropdown">
-        <div className="info-container">
-        {_.map( (e, k) => {
-            return <div className="user" key={e.account_id} onClick={()=>this.setState({add_account_id:e.account_id, add_name:e.public_info.username})}>
-	            <i className="icon fas fa-user-tie"></i>
-	            <div className="name">{e.public_info.username}</div>
-	            <div className="email">{e.public_info.email}</div>
-            </div>
-        })}
-        </div>
+	        <div className="info-container">
+	        {_.map( (e, k) => {
+	            return <div className="user" key={e.account_id} onClick={()=>{
+	            		console.log("ssssssss")
+	            		this.setState({add_account_id:e.account_id, add_name:e.public_info.username})
+	            	}}>
+		            <i className="icon fas fa-user-tie"></i>
+		            <div className="name">{e.public_info.username}</div>
+		            <div className="email">{e.public_info.email}</div>
+	            </div>
+	        })}
+	        </div>
         </div>
     }
 
@@ -305,11 +309,16 @@ export default class extends React.Component {
 		    				return
 		    			return <Draggable key={e.account_id} draggableId={e.account_id} index={k}>
 			    			{(provided, snapshot) => (
-			    				<div className="item"
+			    				<div className="item item-bottom-no-border"
 			    					ref={provided.innerRef}
 			    					style={getItemStyle(provided.draggableStyle, snapshot.isDragging)}
 								    {...provided.draggableProps}
 								    {...provided.dragHandleProps}>
+									<div className="vertical-line">
+										<div className="line"></div>
+										<div className="circle"></div>
+										<div className={`line ${k == order_list.length - 1 ? "line-transparent":""}`}></div>
+									</div>
 		                            <div className="icon">
 		                                <i className="fas fa-user-tie"></i>
 		                            </div>
@@ -417,7 +426,7 @@ export default class extends React.Component {
                                     placeholder={translate("please_input_approval_user_name")}
                                     value={this.state.add_name || ""}
                                     onFocus={e=>this.setState({add_name_focus:true})}
-                                    onBlur={e=>this.setState({add_name_focus:false})}
+                                    onBlur={e=>setTimeout(()=>this.setState({add_name_focus:false}), 100)}
                                     onChange={e=>{
                                         this.setState({
                                             add_name:e.target.value,
@@ -447,9 +456,14 @@ export default class extends React.Component {
                     </div>
                     <div className="right-form">
                         <div className="column">
-                            <div className="form-head">{translate("user_list")}</div>
+                            <div className="form-head">{translate("approval_line")}</div>
                             <div className="form-list">
-								{me ? <div className="item">
+								{me ? <div className="item item-bottom-no-border">
+									<div className="vertical-line">
+										<div className="line line-transparent"></div>
+										<div className="circle"></div>
+										<div className="line"></div>
+									</div>
 					                <div className="icon">
 					                    <i className="fas fa-user-tie"></i>
 					                </div>
@@ -457,9 +471,9 @@ export default class extends React.Component {
 					                    <div className="username">{me.username}<span>{me.department} {me.job}</span></div>
 					                    <div className="email">{me.email}</div>
 					                </div>
-					                <div className="privilege">{"결재자"}</div>
+					                <div className="privilege">{translate("drafter")}</div>
 					                <div className="action">
-					                </div>
+				                	</div>
 								</div> : null}
                                 {this.render_approval_list()}
                             </div>

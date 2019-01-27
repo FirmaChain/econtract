@@ -1862,7 +1862,7 @@ div.checkbox2-comp{
                         flex-direction: row;
                         align-items: center;
 
-                        padding:20px 20px;
+                        padding:0 20px;
                         border-bottom:1px solid $lightgray;
 
                         &:last-child {
@@ -1871,6 +1871,31 @@ div.checkbox2-comp{
 
                         &:hover {
                             background-color: $lightgray;
+                        }
+
+                        >.vertical-line {
+                            display: flex;
+                            flex-direction: column; 
+                            align-items: center;
+                            height:74px;
+
+                            >.line {
+                                width:1.2px;
+                                flex:1;
+                                background-color:$middlegray;
+                            }
+
+                            >.circle {
+                                width:10px;
+                                height:10px;
+                                border-radius:50%;
+                                background-color: $blue;
+                            }
+
+                            >.line-transparent {
+                                background-color: transparent;
+                            }
+
                         }
 
                         >.icon {
@@ -1941,6 +1966,10 @@ div.checkbox2-comp{
                                 width:100px;
                             }
                         }
+                    }
+
+                    .item-bottom-no-border {
+                        border-bottom: 0;
                     }
 
                     >.empty {
