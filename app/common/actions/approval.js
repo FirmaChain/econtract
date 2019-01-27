@@ -1,6 +1,9 @@
 import {
     api_new_approval,
     api_list_approval,
+    api_get_approval,
+    api_send_approval_chat,
+    api_get_approval_chats,
 } from "../../../gen_api"
 
 import {
@@ -46,4 +49,29 @@ export function list_approval(type, page = 0, search_text = "", display_count = 
     }
 }
 
+export function get_approval(approval_id, corp_key) {
+    return async function() {
+        let resp = await api_get_approval(approval_id);
 
+        if(resp.payload.approval.html) resp.payload.approval.html = aes_decrypt(Buffer.from(resp.payload.approval.html, 'hex'), Buffer.from(corp_key, 'hex'));
+        
+        for(let v of resp.payload.order_list) {
+            if(v.public_info) v.public_info = aes_decrypt(Buffer.from(v.public_info, 'hex'), Buffer.from(corp_key, 'hex'));
+        }
+
+        return resp;
+    }
+}
+
+
+export function send_approval_chat(approval_id, entity_id, corp_id, message){
+    return async function(){
+        return (await api_send_approval_chat(approval_id, entity_id, corp_id, message));
+    };
+}
+
+export function get_approval_chats(approval_id, page = 0, display_count = 20, last_chat_id = 0){
+    return async function(){
+        return (await api_get_approval_chats(approval_id, page, display_count, last_chat_id));
+    };
+}

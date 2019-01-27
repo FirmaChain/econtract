@@ -202,7 +202,7 @@ export default class extends React.Component {
         await window.hideIndicator()
 
         if(resp.code == 1) {
-            let approval_id = resp.payload
+            let approval_id = resp.payload.approval_id
             history.replace(`/edit-approval/${approval_id}`)
         } else {
             alert(translate("fail_register_approval"))
