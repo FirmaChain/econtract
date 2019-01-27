@@ -1122,7 +1122,7 @@ class AddGroupMember extends React.Component {
             <div className="container">
                 <div className="icon"><i className="fas fa-users"></i></div>
                 <div className="title">{translate("add_sub_account")}</div>
-                <div className="desc">{translate("add_sub_account_desc_1")}<br/>{translate("add_sub_account_desc_2")}</div>
+                <div className="desc">{translate("add_sub_account_desc_2")}</div>
 
                 <div className="text-box">
                     <div className="sub-title">{translate("email")}</div>

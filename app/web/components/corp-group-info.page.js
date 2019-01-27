@@ -244,6 +244,8 @@ export default class extends React.Component {
                 })
                 await this.onRefresh()
                 alert(translate("success_invite_group"))
+            } else if(resp.code == 2) {
+                alert(translate("already_this_group"))
             } else if(resp.code == -7) {
                 alert(translate("no_account_this_email"))
             } else if(resp.code == -8) {
@@ -252,8 +254,6 @@ export default class extends React.Component {
                 alert(translate("already_register_corporation"))
             }
 
-        } else if(exist.code == -6) {
-            alert(translate("already_this_group"))
         }
         await window.hideIndicator()
     }
