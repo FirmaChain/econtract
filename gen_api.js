@@ -322,6 +322,15 @@ export async function api_get_group_members(group_id){
         session:window.getCookie("session")
     });
 }
+export async function api_get_group_member_all(){
+    let __data = new FormData();
+
+    
+
+    return await post("/get_group_member_all", __data,{
+        session:window.getCookie("session")
+    });
+}
 export async function api_remove_group_member(group_id,account_id){
     let __data = new FormData();
 

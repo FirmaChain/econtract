@@ -22,6 +22,7 @@ import {
     api_exist_in_progress_contract,
     api_remove_corp_member,
     api_get_corp_member_count,
+    api_get_group_member_all,
 } from "../../../gen_api"
 
 import {
@@ -31,6 +32,7 @@ import {
     hmac_sha256,
     get256bitDerivedPublicKey,
     bip32_from_512bit,
+    decrypt_corp_info,
 } from "../../common/crypto_test"
 
 import Web3 from "../Web3"
@@ -281,3 +283,19 @@ export function get_corp_member_count() {
         return resp
     }
 }
+
+export function get_group_member_all(corp_key) {
+    return async function() {
+        let resp = await api_get_group_member_all()
+
+        for(let v of resp.payload) {
+            v.public_info = decrypt_corp_info(Buffer.from(corp_key, 'hex'), new Buffer(v.public_info.data) )
+        }
+
+        return resp
+    }
+}
+
+
+
+

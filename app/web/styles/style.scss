@@ -1857,7 +1857,7 @@ div.checkbox2-comp{
                     border-top: 1px solid $gray;
                     border-bottom: 1px solid $gray;
 
-                    >.item {
+                    .item {
                         display: flex;
                         flex-direction: row;
                         align-items: center;
@@ -2045,6 +2045,7 @@ div.checkbox2-comp{
 
                 .form-input {
                     display: flex;
+                    position: relative;
                     flex-direction: row;
                     max-width:400px;
                     min-height: 39px;
@@ -2069,6 +2070,62 @@ div.checkbox2-comp{
                         background-color: $blue;
                         border: 1px solid $blue;
                         color: white;
+                    }
+
+                    >.input-dropdown {
+                        position: absolute;
+                        z-index: 888;
+                        left: 0;
+                        top:0;
+                        margin-top: 45px;
+                        min-width:300px;
+                        width:100%;
+
+                        >.info-container {
+                            background-color: white;
+                            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+
+                            text-align: left;
+                            max-height: 300px;
+                            overflow-y: auto;
+
+                            >.line {
+                                background-color: $gray;
+                                height:1px;
+                            }
+
+                            >.user {
+                                display:flex;
+                                align-items: center;
+                                padding:20px 15px;
+                                cursor:pointer;
+
+                                >.icon {
+                                    font-size:22px;
+                                    margin-right: 10px;
+                                }
+
+                                >.name {
+                                    font-size: $font1;
+                                    color: $black;
+                                    cursor: pointer;
+                                    flex:1;
+                                }
+
+                                >.email {
+                                    font-size: $font0;
+                                    color: $gray;
+                                    margin-left:10px;
+                                    cursor: pointer;
+                                }
+                            }
+
+                            >div{
+                                &:hover{
+                                    background-color: $lightgray;
+                                }
+                            }
+                        }
                     }
                 }
 

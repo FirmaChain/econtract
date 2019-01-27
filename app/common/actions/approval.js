@@ -16,7 +16,7 @@ import { sha256 } from 'js-sha256'
 export const GET_APPROVALS = "GET_APPROVALS";
 
 export function new_approval(name, order_list, corp_key, html = null){
-    return async function(){
+    return async function() {
         if(!corp_key) return false;
 
         let encrypted_html = null;
