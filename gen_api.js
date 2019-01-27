@@ -28,6 +28,30 @@ export async function api_list_approval(type,page,display_count,search_text){
         session:window.getCookie("session")
     });
 }
+export async function api_get_chats(approval_id,page,display_count,last_chat_id){
+    let __data = new FormData();
+
+    if(approval_id != null) __data.append('approval_id', approval_id);
+	if(page != null) __data.append('page', page);
+	if(display_count != null) __data.append('display_count', display_count);
+	if(last_chat_id != null) __data.append('last_chat_id', last_chat_id)
+
+    return await post("/get_chats", __data,{
+        session:window.getCookie("session")
+    });
+}
+export async function api_send_chat(approval_id,entity_id,corp_id,message){
+    let __data = new FormData();
+
+    if(approval_id != null) __data.append('approval_id', approval_id);
+	if(entity_id != null) __data.append('entity_id', entity_id);
+	if(corp_id != null) __data.append('corp_id', corp_id);
+	if(message != null) __data.append('message', message)
+
+    return await post("/send_chat", __data,{
+        session:window.getCookie("session")
+    });
+}
 export async function api_convert_doc(file){
     let __data = new FormData();
 
