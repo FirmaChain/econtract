@@ -325,7 +325,7 @@ export default class extends React.Component {
 		                                <div className="username">{e.username}<span>{e.department} {e.job}</span></div>
 		                                <div className="email">{e.email}</div>
 		                            </div>
-		                            <div className="privilege">{"결재자"}</div>
+		                            <div className="privilege">{k == order_list.length - 1 ? translate("final_approval_user"):translate("approval_user")}</div>
 		                            <div className="action">
 		                                {e.account_id == this.props.user_info.account_id ?
 		                                    null:

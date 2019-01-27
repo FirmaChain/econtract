@@ -2197,7 +2197,7 @@ div.checkbox2-comp{
     }
 }
 
-.upsert-template-page {
+.upsert-page {
     display: flex;
     flex-direction: column;
     min-height: 100%;
@@ -2233,10 +2233,28 @@ div.checkbox2-comp{
                 }
             }
 
-            >.preview {
+            >.can-edit-text {
+                position:absolute;
+                right:30px;
+                bottom:30px;
+                z-index: 9999;
+                width:100%;
 
+                >div {
+                    max-width:900px;
+                    margin:auto;
+                    font-size:$font1;
+                    color:$gray;
+                    text-align: right;
+                }
             }
         }
+    }
+}
+
+.upsert-template-page {
+
+    >.header-page .container {
 
         >.info {
             min-width:150px;
@@ -2344,58 +2362,8 @@ div.checkbox2-comp{
 }
 
 .upsert-contract-page {
-    display: flex;
-    flex-direction: column;
-    min-height: 100%;
-
+    
     >.header-page .container {
-        display: flex;
-        flex-direction: row;
-
-        height: 100%;
-        max-height: calc(100% - 132px);
-        overflow-y: auto;
-
-        box-sizing: border-box;
-        position: relative;
-
-        >.editor {
-            flex:1;
-            position: relative;
-
-            >.title {
-                padding:8px 20px;
-                border-bottom:1px solid $middlegray;
-
-                font-size: $font1;
-                font-weight: bold;
-                color:$black;
-
-                >.modify-status {
-                    font-size: $font1;
-                    color:$gray;
-                    margin-left: 10px;
-                    font-weight: initial;
-                }
-            }
-
-            >.can-edit-text {
-                position:absolute;
-                right:30px;
-                bottom:30px;
-                z-index: 9999;
-                width:100%;
-
-                >div {
-                    max-width:900px;
-                    margin:auto;
-                    font-size:$font1;
-                    color:$gray;
-                    text-align: right;
-                }
-            }
-        }
-
         >.info {
             min-width:150px;
             max-width:300px;

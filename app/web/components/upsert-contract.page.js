@@ -105,29 +105,7 @@ export default class extends React.Component {
         //reconect
 
         this.config = {
-            key:"YD3H5F3F3c1A6B5B4E2A3C2C2G3C5B1D-17mB5idbyC-22nseB1zH-9==",
-            language:"ko",
-            height:"100%",
-            heightMax:"100%",
-            charCounterCount: false,
-            toolbarSticky: false,
-
-            fontFamily: {
-                "'Nanum Gothic',sans-serif":'나눔 고딕',
-                'Arial,Helvetica,sans-serif': 'Arial',
-                'Georgia,serif': 'Georgia',
-                'Impact,Charcoal,sans-serif': 'Impact',
-                'Tahoma,Geneva,sans-serif': 'Tahoma',
-                "'Times New Roman',Times,serif": 'Times New Roman',
-                'Verdana,Geneva,sans-serif': 'Verdana'
-            },
-
-            toolbarButtons:['paragraphFormat', 'fontFamily', 'fontSize', 'bold', 'italic', 'underline', 'strikeThrough', '|',
-                'color', 'align', 'outdent', 'indent', 'formatOL', 'formatUL', 'lineHeight', '|',
-                'subscript', 'superscript', 'quote', 'paragraphStyle', '-',
-                /*'insertLink', */'insertImage', 'insertTable', '|',
-                'specialCharacters', 'insertHR', 'selectAll', 'clearFormatting', '|',
-                'print', /*'getPDF', */'spellChecker', 'help', '|', 'undo', 'redo','fullscreen'],
+            ...window.CONST.FROALA,
 
             events : {
                 'froalaEditor.initialized' : (e, editor) => {
@@ -774,7 +752,7 @@ export default class extends React.Component {
         let corp_id = this.props.user_info.corp_id || -1
         let meOrGroup = select_subject(this.state.infos, this.state.groups, this.props.user_info.account_id, corp_id).my_info
 
-        return (<div className="upsert-contract-page">
+        return (<div className="upsert-page upsert-contract-page">
             <div className="header-page">
                 <div className="header">
                     <div className="left-icon">
