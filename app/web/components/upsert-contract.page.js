@@ -194,6 +194,12 @@ export default class extends React.Component {
         }
 
         let contract = await this.props.get_contract(contract_id, this.props.user_info, groups)
+
+        if(!contract) {
+            alert(translate("contract_is_encrypt_so_dont_enter"))
+            return history.goBack()
+        }
+        
         if(contract.payload.contract) {
             let sign_info = {}
             let me = select_subject(contract.payload.infos, groups, this.props.user_info.account_id, -1).my_info

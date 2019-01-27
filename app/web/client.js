@@ -32,6 +32,7 @@ import PreviewCOntractPage from "./components/preview-contract.page"
 
 import ApprovalPage from "./components/approval.page"
 import AddApprovalPage from "./components/add-approval.page"
+import UpsertApprovalPage from"./components/upsert-approval.page"
 
 import InformationPage from "./components/information.page"
 
@@ -88,6 +89,7 @@ window.addEventListener("load",()=>{
 					<Route onEnter={resolver} exact path="/approval" component={HomePage} />
 					<Route onEnter={resolver} exact path="/approval/:menu" component={HomePage} />
 					<Route onEnter={resolver} exact path="/add-approval" component={AddApprovalPage} />
+					<Route onEnter={resolver} exact path="/edit-approval/:approval_id" component={UpsertApprovalPage} />
 
 					<Route onEnter={resolver} exact path="/group" component={HomePage} />
 					<Route onEnter={resolver} exact path="/group/:menu" component={HomePage} />
