@@ -28,7 +28,7 @@ export async function api_list_approval(type,page,display_count,search_text){
         session:window.getCookie("session")
     });
 }
-export async function api_get_chats(approval_id,page,display_count,last_chat_id){
+export async function api_get_approval_chats(approval_id,page,display_count,last_chat_id){
     let __data = new FormData();
 
     if(approval_id != null) __data.append('approval_id', approval_id);
@@ -36,11 +36,11 @@ export async function api_get_chats(approval_id,page,display_count,last_chat_id)
 	if(display_count != null) __data.append('display_count', display_count);
 	if(last_chat_id != null) __data.append('last_chat_id', last_chat_id)
 
-    return await post("/get_chats", __data,{
+    return await post("/get_approval_chats", __data,{
         session:window.getCookie("session")
     });
 }
-export async function api_send_chat(approval_id,entity_id,corp_id,message){
+export async function api_send_approval_chat(approval_id,entity_id,corp_id,message){
     let __data = new FormData();
 
     if(approval_id != null) __data.append('approval_id', approval_id);
@@ -48,7 +48,16 @@ export async function api_send_chat(approval_id,entity_id,corp_id,message){
 	if(corp_id != null) __data.append('corp_id', corp_id);
 	if(message != null) __data.append('message', message)
 
-    return await post("/send_chat", __data,{
+    return await post("/send_approval_chat", __data,{
+        session:window.getCookie("session")
+    });
+}
+export async function api_get_approval(approval_id){
+    let __data = new FormData();
+
+    if(approval_id != null) __data.append('approval_id', approval_id)
+
+    return await post("/get_approval", __data,{
         session:window.getCookie("session")
     });
 }
