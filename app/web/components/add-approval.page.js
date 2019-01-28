@@ -417,6 +417,7 @@ export default class extends React.Component {
                         <div className="desc-head">{translate("approval_user_add")}</div>
                         <div className="desc-content">
                             {translate("approval_user_add_desc")}<br/>
+                            <br/>
                             {translate("approval_user_add_desc_drag")}
                         </div>
                     </div>
