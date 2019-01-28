@@ -425,7 +425,7 @@ export default class extends React.Component {
                                     placeholder={translate("please_input_approval_user_name")}
                                     value={this.state.add_name || ""}
                                     onFocus={e=>this.setState({add_name_focus:true})}
-                                    onBlur={e=>setTimeout(()=>this.setState({add_name_focus:false}), 100)}
+                                    onBlur={e=>setTimeout(()=>this.setState({add_name_focus:false}), 500)}
                                     onChange={e=>{
                                         this.setState({
                                             add_name:e.target.value,
