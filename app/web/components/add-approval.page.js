@@ -415,7 +415,10 @@ export default class extends React.Component {
                 <div className="row">
                     <div className="left-desc">
                         <div className="desc-head">{translate("approval_user_add")}</div>
-                        <div className="desc-content">{translate("approval_user_add_desc")}</div>
+                        <div className="desc-content">
+                            {translate("approval_user_add_desc")}<br/>
+                            {translate("approval_user_add_desc_drag")}
+                        </div>
                     </div>
                     <div className="right-form">
                         <div className="column column-flex-2">

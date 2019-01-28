@@ -2158,6 +2158,12 @@ div.checkbox2-comp{
                         border: 1px solid $blue;
                         color: white;
                     }
+
+                    >.common-select {
+                        >.control {
+                            width: 120px !important;
+                        }
+                    }
                 }
 
                 .checkbox-list {
