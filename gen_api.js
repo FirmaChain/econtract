@@ -52,6 +52,16 @@ export async function api_send_approval_chat(approval_id,entity_id,corp_id,messa
         session:window.getCookie("session")
     });
 }
+export async function api_update_approval_model(approval_id,model){
+    let __data = new FormData();
+
+    if(approval_id != null) __data.append('approval_id', approval_id);
+	if(model != null) __data.append('model', model)
+
+    return await post("/update_approval_model", __data,{
+        session:window.getCookie("session")
+    });
+}
 export async function api_get_approval(approval_id){
     let __data = new FormData();
 

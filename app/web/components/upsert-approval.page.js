@@ -29,7 +29,7 @@ import {
     get_approval,
     get_approval_chats,
     send_approval_chat,
-
+    update_approval_model,
 } from "../../common/actions"
 import CheckBox2 from "./checkbox2"
 
@@ -45,6 +45,7 @@ let mapDispatchToProps = {
     get_approval,
     get_approval_chats,
     send_approval_chat,
+    update_approval_model,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -111,7 +112,7 @@ export default class extends React.Component {
             model:"",
             select_folder_id:null,
             selected_menu:0,
-            contract_modify_status:"",
+            approval_modify_status:"",
             sign_mode:false,
             sign_info:{},
             open_users:[],
@@ -124,7 +125,7 @@ export default class extends React.Component {
 
     componentDidMount() {
         setTimeout(async()=>{
-            await window.showIndicator(translate("loding_contract_detail_data"))
+            await window.showIndicator(translate("loding_approval_detail_data"))
             await this.props.fetch_user_info()
             await this.onRefresh()
             this.subscribeChannel()
@@ -140,7 +141,7 @@ export default class extends React.Component {
             if(!this.state.contract)
                 return true
             
-            let out_flag = window._confirm(translate("are_u_stop_contract_modify_work_and_now_page_out"))
+            let out_flag = window._confirm(translate("are_u_stop_approval_modify_work_and_now_page_out"))
             if(out_flag)
                 history.block( () => true )
             return out_flag
@@ -157,8 +158,8 @@ export default class extends React.Component {
             return
 
         this.socket.emit('subscribe_channel', 'approval_'+this.state.approval.approval_id)
-        this.socket.on("receive_chat_"+this.state.approval.approval_id, this.onReceiveChat)
-        this.socket.on("refresh_"+this.state.approval.approval_id, this.onRefresh)
+        this.socket.on("receive_chat_approval_"+this.state.approval.approval_id, this.onReceiveChat)
+        this.socket.on("refresh_approval_"+this.state.approval.approval_id, this.onRefresh)
     }
 
     onRefresh = async () => {
@@ -167,8 +168,6 @@ export default class extends React.Component {
         let _state = {}
 
         let approval = await this.props.get_approval(approval_id, this.props.user_info.corp_key)
-
-        console.log(approval)
 
         if(!approval) {
             alert(translate("contract_is_encrypt_so_dont_enter"))
@@ -234,40 +233,23 @@ export default class extends React.Component {
         }})*/
     }
 
-    onClickContractSave = async () => {
+    onClickApprovalSave = async () => {
         let model = this.state.model
 
         if(this.state.approval.html == this.state.model)
             return;
-        //encrypt model
 
-        let r = await this.props.update_contract_model(this.state.contract.contract_id, model, this.state.contract.the_key)
+        let result = await window.confirm(translate("modify_approval"), translate("modify_approval_desc"))
+        if(!result) return;
+
+        let r = await this.props.update_approval_model(this.state.approval.approval_id, model, this.props.user_info.corp_key)
         if(r.code == 1) {
             this.setState({
-                contract_modify_status:translate("last_modify_contract_save") + " " + moment().format("YYYY-MM-DD HH:mm:ss")
+                approval_modify_status:translate("last_modify_contract_save") + " " + moment().format("YYYY-MM-DD HH:mm:ss")
             })
         } else if(r.code == -9) {
-            alert(translate("you_dont_update_alredy_complete_contract"))
+            alert(translate("you_dont_update_already_complete_approval"))
         }
-    }
-
-    onClickMoveEditPrivilege = async () => {
-
-        window.openModal("MoveCanEditAccount",{
-            user_infos: this.state.infos,
-            my_account_id: this.props.user_info.account_id,
-            onConfirm : async (user)=>{
-
-                if((this.state.contract.html || "") != this.state.model)
-                    if(window._confirm(translate("you_have_modify_content_save_and_pass_modify_verification")))
-                        await this.onClickContractSave();
-
-                await window.showIndicator()
-                let result = await this.props.move_contract_can_edit_account_id(this.state.contract.contract_id, user.entity_id, user.sub)
-                //await this.onRefresh()
-                await window.hideIndicator()
-            }
-        })
     }
 
     onToggleUser = (entity_id, corp_id, force_open) => {
@@ -298,17 +280,6 @@ export default class extends React.Component {
         }
         return false 
     }
-
-    textPrivilege(privilege) {
-        switch(privilege) {
-            case 1:
-                return translate("signer")
-                break;
-            case 2:
-                return translate("viewer")
-                break;
-        }
-    } 
 
     onChatLoadMore = async () => {
         if(this.end_chat)
@@ -373,22 +344,13 @@ export default class extends React.Component {
     render_info() {
         switch(this.state.selected_menu) {
             case 0:
-                return this.render_sign()
+                return this.render_approval_line()
             case 1:
                 return this.render_chat()
         }
     }
 
-    text_status(v) {
-        switch(v.privilege) {
-            case 1:
-                return v.signature ? translate("sign_all") : translate("status_1")
-            case 2:
-                return translate("viewer")
-        }
-    }
-
-    render_sign() {
+    render_approval_line() {
         return;
     }
 
@@ -423,7 +385,7 @@ export default class extends React.Component {
         let corp_id = this.props.user_info.corp_id || -1
         let meOrGroup = this.props.user_info
 
-        return (<div className="upsert-page upsert-contract-page">
+        return (<div className="upsert-page upsert-approval-page">
             <div className="header-page">
                 <div className="header">
                     <div className="left-icon">
@@ -436,22 +398,22 @@ export default class extends React.Component {
                     <div className="editor">
                         <div className="title">
                             <span> <i className="fas fa-keyboard"></i> &nbsp;{translate("web_editor_mode")} </span>
-                            <span className="modify-status">{this.state.contract_modify_status}</span>
+                            <span className="modify-status">{this.state.approval_modify_status}</span>
                         </div>
                         <FroalaEditor
                             tag='textarea'
                             config={this.config}
                             model={this.state.model}
-                            onModelChange={(model) => this.setState({model, contract_modify_status:translate("contract_modify")})} />
-                        { this.state.approval.status < 2 ? <div className="can-edit-text">
-                            <div>{translate("now_edit_privilege_who", [can_edit_name])}</div>
+                            onModelChange={(model) => this.setState({model, approval_modify_status:translate("approval_modify")})} />
+                        { this.state.approval.status == 1 ? <div className="can-edit-text">
+                            <div>{translate("now_approval_privilege_who", [can_edit_name])}</div>
                         </div> : null }
                     </div>
-                    {!this.state.sign_mode ? <div className="info">
+                    <div className="info">
                         <div className="top">
                             <div className={"menu" + (this.state.selected_menu == 0 ? " enable-menu" : "")} onClick={e=>this.setState({selected_menu:0})}>
-                                <i className="far fa-signature"></i>
-                                <div className="text">{translate("sign_info")}</div>
+                                <i className="fal fa-sitemap"></i>
+                                <div className="text">{translate("approval_line")}</div>
                             </div>
                             <div className={"menu" + (this.state.selected_menu == 1 ? " enable-menu" : "")} onClick={e=>this.setState({selected_menu:1})}>
                                 <i className="far fa-comments"></i>
@@ -459,45 +421,55 @@ export default class extends React.Component {
                             </div>
                         </div>
                         {this.render_info()}
-                    </div> : <div className="info">
-                        <div className="top">
-                            <div className="menu">
-                                <i className="far fa-signature"></i>
-                                <div className="text">{translate("sign_info_register")}</div>
-                            </div>
-                        </div>
-                        {this.render_sign_form()}
-                    </div>}
+                    </div>
                 </div>
             </div>
             <div className="bottom-container">
                 <div className="left">
                     <div className="but" onClick={this.onClickPreview}>
                         <i className="fal fa-eye"></i>
-                        {translate("contract_preview")}
+                        {translate("approval_preview")}
                     </div>
-                    { ( this.state.approval.status < 2 && this.state.approval.can_approval_account_id == this.props.user_info.account_id) ? [
-                        <div className="but" onClick={this.onClickMoveEditPrivilege} key={"edit_privilege"}>
-                            <i className="far fa-arrow-to-right"></i>
-                            {translate("move_edit_privilege")}
-                        </div>, <div className="but" onClick={this.onClickContractSave} key={"contract_save"}>
+                    { ( this.state.approval.status < 2 && this.state.approval.can_approval_account_id == this.props.user_info.account_id) ?
+                        <div className="but" onClick={this.onClickApprovalSave}>
                             <i className="far fa-save"></i>
                             {translate("modify_content_save")}
-                        </div>]
-                    : null}
+                        </div> : null}
                 </div>
                 {(()=>{
-                    if(meOrGroup.privilege == 2 || this.state.approval.status == 2) {
+                    //0 : 작성 중 1 : 결재 중 2 : 완료됨 3 : 반려됨
+                    let my_account_id = this.props.user_info.account_id
+                    let can_approval_account_id = this.state.approval.can_approval_account_id
+                    let creator_id = this.state.approval.account_id
+                    let status = this.state.approval.status
+
+                    if(status == 2) {
                         return <div className="sign" onClick={(e)=>history.goBack()}>
                             {translate("go_back")}
                         </div>
+                    } else if(status == 0 && my_account_id == can_approval_account_id){
+                        return <div className="sign" onClick={this.onStartApproval}>
+                            {translate("start_approval")}
+                        </div>
+                    } else if(status == 1 && my_account_id == can_approval_account_id && my_account_id != creator_id) {
+                        return [<div className="sign" onClick={this.onConfirmApproval}>
+                            {translate("confirm_approval")}
+                        </div>, <div className="sign" onClick={this.onRejectApproval}>
+                            {translate("reject_approval")}
+                        </div>]
+                    } else if(status == 3 && my_account_id == creator_id) {
+                        return <div className="sign" onClick={this.onStartApproval}>
+                            {translate("re_start_approval")}
+                        </div>
+                    } else if(status == 3 && my_account_id != creator_id) {
+                        return <div className="sign">
+                            {translate("re_approval_confirming")}
+                        </div>
+                    } else {
+                        return <div className="sign">
+                            {translate("ing_approval")}
+                        </div>
                     }
-
-                    return this.state.sign_mode ? <div className="sign" onClick={this.onToggleRegisterSignForm}>
-                        {translate("edit_mode")}
-                    </div> : <div className="sign" onClick={this.onClickRegisterSign}>
-                        {meOrGroup.signature ? translate("resign") : translate("go_sign")}
-                    </div>
                 })()}
                 
             </div>

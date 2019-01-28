@@ -4,6 +4,7 @@ import {
     api_get_approval,
     api_send_approval_chat,
     api_get_approval_chats,
+    api_update_approval_model,
 } from "../../../gen_api"
 
 import {
@@ -75,3 +76,11 @@ export function get_approval_chats(approval_id, page = 0, display_count = 20, la
         return (await api_get_approval_chats(approval_id, page, display_count, last_chat_id));
     };
 }
+
+export function update_approval_model(approval_id, model, corp_key){
+    return async function(){
+        let encrypted_model = aes_encrypt(model, Buffer.from(corp_key, 'hex'))
+        return (await api_update_approval_model(approval_id, encrypted_model));
+    };
+}
+

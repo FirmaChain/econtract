@@ -373,7 +373,7 @@ export default class extends React.Component {
             <div className="content">
                 <div className="row">
                     <div className="left-desc">
-                        <div className="desc-head">{translate("input_approval_name")}</div>
+                        <div className="desc-head">{translate("please_input_approval_name")}</div>
                         <div className="desc-content">{translate("please_input_this_approval_name")}</div>
                     </div>
                     <div className="right-form">

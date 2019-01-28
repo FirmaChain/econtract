@@ -279,7 +279,7 @@ export default class extends React.Component {
                 contract_modify_status:translate("last_modify_contract_save") + " " + moment().format("YYYY-MM-DD HH:mm:ss")
             })
         } else if(r.code == -9) {
-            alert(translate("you_dont_update_alredy_complete_contract"))
+            alert(translate("you_dont_update_already_complete_contract"))
         }
     }
 
