@@ -78,7 +78,7 @@ export default class extends React.Component {
         }
     }
 
-    render_chat_slot(e){
+    render_chat_contract_slot(e) {
         switch(e.type) {
             case 0: {
                 let user = this.props.infos.find(v=>v.corp_id == e.corp_id && v.entity_id == e.entity_id)
@@ -182,6 +182,48 @@ export default class extends React.Component {
         }
     }
 
+    render_chat_approval_slot(e) {
+        switch(e.type) {
+            case 0: {
+                let user = this.props.order_list.find(v=>v.account_id == e.entity_id)
+                if(!user) return;
+
+                let me = this.props.order_list.find(v=>v.account_id == this.props.user_info.account_id);
+
+                let isMine = me == user
+
+                let text
+                let data
+                try {
+                    data = JSON.parse(e.msg)
+                    text = data.text
+                } catch(err) {
+                    text = e.msg
+                }
+
+                let user_name = user.public_info.job + " " + user.public_info.username
+                if(user.is_exclude == 1)
+                    user_name = translate("byebye_template", [user_name])
+
+                return <div key={e.chat_id} className={isMine ? "chat-slot right" : "chat-slot left"}>
+                    { !isMine ? <img className="profile" src={`https://identicon-api.herokuapp.com/${user.entity_id}/70?format=png`}/> : null }
+                    <div className="msg">
+                        <div className="name">{user_name}</div>
+                        <div className="msg-text">{text}</div>
+                    </div>
+                </div>
+            }
+        }
+    }
+
+    render_chat_slot(e){
+        if(this.props.chatType == "approval") {
+            return this.render_chat_approval_slot(e)
+        } else {
+            return this.render_chat_contract_slot(e)
+        }
+    }
+
 
     render() {
         return <div className="chat-component">
@@ -192,7 +234,7 @@ export default class extends React.Component {
                 })}
                 <div className="bar" ref="bottom" />
             </div>
-            {this.props.contract.status != 2 && this.props.isSendable ?
+            {this.props.isSendable ?
                 <div className="input-container">
                     <input className="text-box" placeholder={translate("please_input_message")} value={this.state.chat_text || ""}
                         onKeyPress={this.onKeyDownChat}

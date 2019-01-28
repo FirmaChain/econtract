@@ -157,8 +157,8 @@ export default class extends React.Component {
             return
 
         this.socket.emit('subscribe_channel', 'approval_'+this.state.approval.approval_id)
-        this.socket.on("receive_approval_chat_"+this.state.approval.approval_id, this.onReceiveChat)
-        this.socket.on("refresh_approval_"+this.state.approval_id.approval_id, this.onRefresh)
+        this.socket.on("receive_chat_"+this.state.approval.approval_id, this.onReceiveChat)
+        this.socket.on("refresh_"+this.state.approval.approval_id, this.onRefresh)
     }
 
     onRefresh = async () => {
@@ -221,9 +221,11 @@ export default class extends React.Component {
             return alert(translate("please_write_content"))
         }
 
+        console.log(this.state.approval)
+
         window.openModal("PreviewContract",{
             title: this.state.approval.name,
-            model: this.state.approval.html,
+            model: this.state.model,
         })
 
         /*history.push({pathname:"/preview-contract", state:{
@@ -393,14 +395,14 @@ export default class extends React.Component {
     render_chat() {
         return <div className="bottom chat">
             <Chatting 
-                contract={this.state.approval}
-                infos={this.state.order_list}
+                approval={this.state.approval}
+                order_list={this.state.order_list}
                 user_info={this.state.user_info}
-                groups={this.state.groups}
                 chat_list={this.state.chat_list}
                 onSend={this.onClickSendChat}
                 onLoadMore={this.onChatLoadMore}
-                isSendable={true}
+                isSendable={this.state.approval.status != 2}
+                chatType={"approval"}
                 initialize={(scrollBottom) => {
                     this.setState({scrollBottom})
                 }}

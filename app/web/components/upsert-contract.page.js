@@ -737,7 +737,8 @@ export default class extends React.Component {
                 chat_list={this.state.chat_list}
                 onSend={this.onClickSendChat}
                 onLoadMore={this.onChatLoadMore}
-                isSendable={true}
+                isSendable={this.state.contract.status != 2}
+                chatType={"contract"}
                 initialize={(scrollBottom) => {
                     this.setState({scrollBottom})
                 }}

@@ -816,6 +816,7 @@ a.fr-command {
                             onSend={this.onClickSendChat}
                             onLoadMore={this.onChatLoadMore}
                             isSendable={false}
+                            chatType={"contract"}
                             initialize={(scrollBottom) => {
                                 this.setState({scrollBottom})
                             }}

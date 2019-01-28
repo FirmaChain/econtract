@@ -56,7 +56,7 @@ export function get_approval(approval_id, corp_key) {
         if(resp.payload.approval.html) resp.payload.approval.html = aes_decrypt(Buffer.from(resp.payload.approval.html, 'hex'), Buffer.from(corp_key, 'hex'));
         
         for(let v of resp.payload.order_list) {
-            if(v.public_info) v.public_info = aes_decrypt(Buffer.from(v.public_info, 'hex'), Buffer.from(corp_key, 'hex'));
+            if(v.public_info) v.public_info = JSON.parse(aes_decrypt(Buffer.from(v.public_info, 'hex'), Buffer.from(corp_key, 'hex')));
         }
 
         return resp;
