@@ -331,6 +331,7 @@ export default class extends React.Component {
             let email_address = params.email_address || "";
             (async() => {
                 let registration_info = await this.props.invite_information(email_address, registration_code);
+                console.log(registration_info)
                 if (registration_info) {
                     this.setState({
                         registration_code: registration_code,
