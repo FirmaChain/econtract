@@ -340,7 +340,7 @@ export default class extends React.Component {
 
                 if(corp_member_count_max <= corp_member_count) {
                     alert(translate("max_corp_member_count"))
-                    return history.goBack()
+                    return history.replace("/login")
                 }
 
                 if (registration_info) {
