@@ -629,7 +629,7 @@ export default class extends React.Component {
                             <div className="form-head">{translate("user_list")}</div>
                             <div className="form-list">
                                 {this.state.target_list.map((e, k)=>{
-                                    return <div className="item" key={k}>
+                                    return <div className="item padding-item" key={k}>
                                         <div className="icon">
                                         {
                                             (()=>{ switch(e.user_type) {
