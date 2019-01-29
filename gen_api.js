@@ -485,6 +485,16 @@ export async function api_get_corp_member_count(){
         session:window.getCookie("session")
     });
 }
+export async function api_get_corp_member_count_no_auth(corp_id,account_id){
+    let __data = new FormData();
+
+    if(corp_id != null) __data.append('corp_id', corp_id);
+	if(account_id != null) __data.append('account_id', account_id)
+
+    return await post("/get_corp_member_count_no_auth", __data,{
+        session:window.getCookie("session")
+    });
+}
 export async function api_exist_group_member(group_id,email){
     let __data = new FormData();
 

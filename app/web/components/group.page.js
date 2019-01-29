@@ -209,6 +209,7 @@ export default class extends React.Component {
                     company_tel: this.props.user_info.company_tel,
                     corp_key:this.props.user_info.corp_key,
                     corp_id:this.props.user_info.corp_id,
+                    owner_id:this.props.user_info.account_id,
                     group_id:group.group_id,
                     group_key,
                 }

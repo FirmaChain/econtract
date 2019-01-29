@@ -19,7 +19,7 @@ import {
     update_user_public_info,
     create_group,
     update_group_public_key,
-    get_corp_member_count,
+    get_corp_member_count_no_auth,
 } from "../../common/actions"
 import Web3 from "../../common/Web3"
 
@@ -62,7 +62,7 @@ let mapDispatchToProps = {
     update_user_public_info,
     create_group,
     update_group_public_key,
-    get_corp_member_count,
+    get_corp_member_count_no_auth,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -333,8 +333,10 @@ export default class extends React.Component {
             let email_address = params.email_address || "";
             (async() => {
                 let registration_info = await this.props.invite_information(email_address, registration_code);
-                let corp_member_count = (await this.props.get_corp_member_count()).payload.count
-                let corp_member_count_max = (await this.props.get_maximum_member_count()).payload.count;
+
+                let corp_count_resp = await this.props.get_corp_member_count_no_auth(registration_info.corp_id, registration_info.owner_id)
+                let corp_member_count = corp_count_resp.corp_member_count
+                let corp_member_count_max = corp_count_resp.corp_member_count_max
 
                 if(corp_member_count_max <= corp_member_count) {
                     alert(translate("max_corp_member_count"))
@@ -352,6 +354,7 @@ export default class extends React.Component {
                         company_address: registration_info.company_address,
                         corp_key: registration_info.corp_key,
                         corp_id: registration_info.corp_id,
+                        owner_id: registration_info.owner_id,
                         group_key: registration_info.group_key,
                         group_id: registration_info.group_id,
                         email_verification: true,
@@ -713,8 +716,9 @@ export default class extends React.Component {
 
         } else if (account_type == 2) {
 
-            let corp_member_count = (await this.props.get_corp_member_count()).payload.count
-            let corp_member_count_max = (await this.props.get_maximum_member_count()).payload.count;
+            let corp_count_resp = await this.props.get_corp_member_count_no_auth(this.state.corp_id, this.state.owner_id)
+            let corp_member_count = corp_count_resp.corp_member_count
+            let corp_member_count_max = corp_count_resp.corp_member_count_max
 
             if(corp_member_count_max <= corp_member_count)
                 return alert(translate("max_corp_member_count"));

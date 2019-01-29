@@ -23,6 +23,7 @@ import {
     api_remove_corp_member,
     api_get_corp_member_count,
     api_get_group_member_all,
+    api_get_corp_member_count_no_auth,
 } from "../../../gen_api"
 
 import {
@@ -293,6 +294,13 @@ export function get_group_member_all(corp_key) {
         }
 
         return resp
+    }
+}
+
+export function get_corp_member_count_no_auth(corp_id, account_id) {
+    return async function() {
+        let resp = await api_get_corp_member_count_no_auth()
+        return resp.payload
     }
 }
 
