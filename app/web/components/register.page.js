@@ -19,6 +19,7 @@ import {
     update_user_public_info,
     create_group,
     update_group_public_key,
+    get_corp_member_count,
 } from "../../common/actions"
 import Web3 from "../../common/Web3"
 
@@ -61,6 +62,7 @@ let mapDispatchToProps = {
     update_user_public_info,
     create_group,
     update_group_public_key,
+    get_corp_member_count,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -331,7 +333,14 @@ export default class extends React.Component {
             let email_address = params.email_address || "";
             (async() => {
                 let registration_info = await this.props.invite_information(email_address, registration_code);
-                console.log(registration_info)
+                let corp_member_count = (await this.props.get_corp_member_count()).payload.count
+                let corp_member_count_max = (await this.props.get_maximum_member_count()).payload.count;
+
+                if(corp_member_count_max <= corp_member_count) {
+                    alert(translate("max_corp_member_count"))
+                    return history.goBack()
+                }
+
                 if (registration_info) {
                     this.setState({
                         registration_code: registration_code,
@@ -703,6 +712,13 @@ export default class extends React.Component {
             }
 
         } else if (account_type == 2) {
+
+            let corp_member_count = (await this.props.get_corp_member_count()).payload.count
+            let corp_member_count_max = (await this.props.get_maximum_member_count()).payload.count;
+
+            if(corp_member_count_max <= corp_member_count)
+                return alert(translate("max_corp_member_count"));
+
             let encryptedPublicInfo = aes_encrypt(JSON.stringify(public_info), Buffer.from(info['corp_key'], 'hex'));
             /*let consumeResp = await this.props.consume_invitation(this.state.registration_code, encryptedPublicInfo);
             if (!consumeResp) {

@@ -351,9 +351,8 @@ export default class extends React.Component {
     }
 
     render_approval_line() {
-        console.log(this.state.order_list)
         return <div className="bottom signs">
-            <div className="title">{translate("count_curr_total_person", [3])}</div>
+            <div className="title">{translate("count_curr_total_person", [this.state.order_list.filter(e=>e.is_exclude==0).length])}</div>
             <div className="list">
                 {this.state.order_list.map((e, k) => {
                     return <div className="item" key={e.account_id}>
