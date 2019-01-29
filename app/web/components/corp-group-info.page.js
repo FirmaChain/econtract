@@ -378,6 +378,33 @@ export default class extends React.Component {
                 </div>
                 <div className="row">
                     <div className="right-form">
+                        <div className="column column-flex-2">
+                            <div className="form-head">{translate("group_member_name")}</div>
+                            <div className="form-input">
+                                <input className="common-textbox" type="text"
+                                    placeholder={translate("please_input_name")}
+                                    value={this.state.add_name || ""}
+                                    onFocus={e=>this.setState({add_name_focus:true})}
+                                    onBlur={e=>setTimeout(()=>this.setState({add_name_focus:false}), 100)}
+                                    onChange={e=>{
+                                        this.setState({
+                                            add_name:e.target.value,
+                                            add_account_id:null,
+                                        })
+                                    }}/>
+                                {this.render_add_group_input_dropdown()}
+                            </div>
+                        </div>
+                        <div className="column">
+                            <div className="form-head">&nbsp;</div>
+                            <div className="form-input">
+                                <div className={"btn-add-user" + ( (this.state.add_name || "").length==0 ? "" : " btn-add-user-active" )} onClick={this.onAddMember}>{translate("add")}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="right-form">
                         <div className="column">
                             <div className="form-head">{translate("group_member_list")}</div>
                             <div className="form-list">
@@ -404,34 +431,11 @@ export default class extends React.Component {
                     </div>
                 </div>
                 <div className="title">
-                    <div className="head">{translate("invite_group_member")}</div>
-                    <div className="desc">{translate("invite_group_member_desc_1")}<br/>{translate("invite_group_member_desc_2")}</div>
-                </div>
-                <div className="row">
-                    <div className="right-form">
-                        <div className="column column-flex-2">
-                            <div className="form-head">{translate("group_member_name")}</div>
-                            <div className="form-input">
-                                <input className="common-textbox" type="text"
-                                    placeholder={translate("please_input_name")}
-                                    value={this.state.add_name || ""}
-                                    onFocus={e=>this.setState({add_name_focus:true})}
-                                    onBlur={e=>setTimeout(()=>this.setState({add_name_focus:false}), 100)}
-                                    onChange={e=>{
-                                        this.setState({
-                                            add_name:e.target.value,
-                                            add_account_id:null,
-                                        })
-                                    }}/>
-                                {this.render_add_group_input_dropdown()}
-                            </div>
-                        </div>
-                        <div className="column">
-                            <div className="form-head">&nbsp;</div>
-                            <div className="form-input">
-                                <div className={"btn-add-user" + ( (this.state.add_name || "").length==0 ? "" : " btn-add-user-active" )} onClick={this.onAddMember}>{translate("add")}</div>
-                            </div>
-                        </div>
+                    <div className="head">{translate("invite_list_group")}</div>
+                    <div className="desc">
+                        {translate("invite_list_group_desc_1")}<br/>
+                        {translate("invite_list_group_desc_2")}<br/>
+                        {translate("invite_list_group_desc_3")}
                     </div>
                 </div>
                 <div className="row">
