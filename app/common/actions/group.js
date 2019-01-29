@@ -299,7 +299,7 @@ export function get_group_member_all(corp_key) {
 
 export function get_corp_member_count_no_auth(corp_id, account_id) {
     return async function() {
-        let resp = await api_get_corp_member_count_no_auth()
+        let resp = await api_get_corp_member_count_no_auth(corp_id, account_id)
         return resp.payload
     }
 }
