@@ -351,7 +351,17 @@ export default class extends React.Component {
     }
 
     render_approval_line() {
-        return;
+        console.log(this.state.order_list)
+        return <div className="bottom signs">
+            <div className="title">{translate("count_curr_total_person", [3])}</div>
+            <div className="list">
+                {this.state.order_list.map((e, k) => {
+                    return <div className="item" key={e.account_id}>
+                        {e.name}
+                    </div>
+                })}
+            </div>
+        </div>
     }
 
     render_chat() {
