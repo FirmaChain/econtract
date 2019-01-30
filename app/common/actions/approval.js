@@ -9,6 +9,7 @@ import {
     api_change_order_approval,
     api_remove_approval_user,
     api_start_approval,
+    api_confirm_approval,
 } from "../../../gen_api"
 
 import {
@@ -76,6 +77,11 @@ export function start_approval(approval_id) {
     }
 }
 
+export function confirm_approval(approval_id) {
+    return async function() {
+        return await api_confirm_approval(approval_id)
+    }
+}
 
 export function send_approval_chat(approval_id, entity_id, corp_id, message){
     return async function(){

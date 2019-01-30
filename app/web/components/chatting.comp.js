@@ -225,6 +225,18 @@ export default class extends React.Component {
                     {text}
                 </div>
             }
+            case 3: {
+                let data = JSON.parse(e.msg)
+                let entity = this.props.order_list.find(v=>v.account_id == data.entity_id)
+                if(!entity) return;
+                let user_name = entity.public_info.username
+                if(entity.is_exclude == 1)
+                    user_name = translate("byebye_template", [user_name])
+                let text = translate("who_is_confirm_approval﻿", [user_name])
+                return <div key={e.chat_id} className="notice">
+                    {text}
+                </div>
+            }
         }
     }
 

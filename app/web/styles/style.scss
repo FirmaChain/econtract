@@ -2219,7 +2219,7 @@ div.checkbox2-comp{
         flex-direction: row;
 
         height: 100%;
-        max-height: calc(100% - 132px);
+        max-height: calc(100% - 131px);
         overflow-y: auto;
 
         box-sizing: border-box;
@@ -2887,6 +2887,35 @@ div.checkbox2-comp{
         >.sign-disable {
             background-color:$gray;
             cursor:initial;
+        }
+
+
+        >.sign-container {
+            min-width:200px;
+            max-width:350px;
+            width:25%;
+            height:100%;
+
+            display: flex;
+
+            >.button {
+                flex:1;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                border-top: 1px solid $middlegray;
+                background-color:$blue;
+                cursor: pointer;
+
+                font-weight: bold;
+                font-size: $font3;
+                color: white;
+            }
+
+            >.red {
+                background-color:$red;
+            }
         }
     }
 }
@@ -4602,6 +4631,94 @@ div.checkbox2-comp{
 
             >input {
 
+            }
+        }
+
+        >.button {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+
+            margin-top: 40px;
+
+            >.confirm {
+                display: inline-block;
+                font-size: $font2;
+                cursor: pointer;
+                padding:10px 20px;
+                background-color: $blue;
+                border: 1px solid $blue;
+                color:white;
+                margin-right: 10px;
+                width:100px;
+                text-align: center;
+            }
+
+            >.cancel {
+                display: inline-block;
+                font-size: $font2;
+                cursor: pointer;
+                padding:10px 20px;
+                background-color: white;
+                border: 1px solid $blue;
+                color: $black;
+                margin-left: 10px;
+                width:100px;
+                text-align: center;
+            }
+        }
+    }
+}
+
+.textarea-modal {
+    background-color: #fff;
+    min-width: 200px;
+    width:400px;
+
+    >.container {
+        padding:50px;
+        text-align: center;
+
+        >.icon {
+
+            >i { 
+                font-size: 30px;
+            }
+        }
+
+        >.title {
+            font-size: $font5;
+            color: $black;
+            font-weight: bold;
+            margin-top: 18px;
+        }
+
+        >.text-box {
+            margin-top: 40px;
+            text-align: left;
+
+            >.sub-title {
+                font-size: $font2;
+                color:$black;
+                font-weight: bold;
+                margin-bottom:8px;
+                margin-left:5px;
+            }
+
+            >textarea.input-slot {
+                width:100%;
+                max-width:500px;
+                font-size: $font3;
+                height:100px;
+                color: $black;
+
+                border: 1px solid $blue;
+                outline:none;
+                resize:none;
+
+                padding:10px 10px;
+                margin-top:30px;
             }
         }
 

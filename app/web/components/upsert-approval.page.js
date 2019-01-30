@@ -36,6 +36,7 @@ import {
     change_order_approval,
     remove_approval_user,
     start_approval,
+    confirm_approval,
 } from "../../common/actions"
 import CheckBox2 from "./checkbox2"
 
@@ -57,6 +58,7 @@ let mapDispatchToProps = {
     change_order_approval,
     remove_approval_user,
     start_approval,
+    confirm_approval,
 }
 
 const reorder =  (list, startIndex, endIndex) => {
@@ -124,9 +126,6 @@ export default class extends React.Component {
             events : {
                 'froalaEditor.initialized' : (e, editor) => {
                     this.editor = editor;
-
-                    console.log("a",this.state.approval.can_approval_account_id)
-                    console.log("b",this.props.user_info.account_id)
 
                     if( !!this.state.approval && this.state.approval.can_approval_account_id != this.props.user_info.account_id) {
                         this.editor.edit.off();
@@ -224,9 +223,6 @@ export default class extends React.Component {
                 _state.model = model;
 
             await this.setState(_state)
-            
-            console.log("a",this.state.approval.can_approval_account_id)
-            console.log("b",this.props.user_info.account_id)
 
             if( !!this.editor && !!approval.payload.approval && _state.approval.can_approval_account_id != this.props.user_info.account_id) {
                 this.editor.edit.off();
@@ -459,6 +455,38 @@ export default class extends React.Component {
         } else {
             alert(translate("fail_start_approval_process"))
         }
+    }
+
+    onConfirmApproval = async () => {
+        let r = await window.confirm(translate("are_you_confirm_approval"), translate("are_you_confirm_approval_desc"))
+        if(!r) return;
+
+        let result = await this.props.confirm_approval(this.state.approval.approval_id);
+        if(result.code == 1) {
+            await this.onRefresh()
+            alert(translate("success_confirm_approval"))
+        } else {
+            alert(translate("fail_confirm_approval"))
+        }
+    }
+
+    onRejectApproval = async () => {
+
+        window.openModal("TextareaModal", {
+            icon:"fas fa-check",
+            title:translate("add_first_group"),
+            subTitle:translate("add_first_group_desc_1"),
+            placeholder:translate("please_input_group_name"),
+            onConfirm: async (reject_reason) => {
+                let result = await this.props.reject_approval(this.state.approval.approval_id);
+                if(result.code == 1) {
+                    await this.onRefresh()
+                    alert(translate("success_reject_approval"))
+                } else {
+                    alert(translate("fail_reject_approval"))
+                }
+            }
+        })
     }
 
     onDragEnd = async (result) => {
@@ -707,11 +735,14 @@ export default class extends React.Component {
                             {translate("start_approval")}
                         </div>
                     } else if(status == 1 && my_account_id == can_approval_account_id && my_account_id != creator_id) {
-                        return [<div className="sign" onClick={this.onConfirmApproval}>
-                            {translate("confirm_approval")}
-                        </div>, <div className="sign" onClick={this.onRejectApproval}>
-                            {translate("reject_approval")}
-                        </div>]
+                        return <div className="sign-container">
+                            <div className="button" onClick={this.onConfirmApproval}>
+                                {translate("confirm_approval")}
+                            </div>
+                            <div className="button red" onClick={this.onRejectApproval}>
+                                {translate("reject_approval")}
+                            </div>
+                        </div>
                     } else if(status == 3 && my_account_id == creator_id) {
                         return <div className="sign" onClick={this.onStartApproval}>
                             {translate("re_start_approval")}

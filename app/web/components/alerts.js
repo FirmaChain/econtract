@@ -57,6 +57,53 @@ class AddCommonModal extends React.Component {
     }
 }
 
+
+@modal
+class TextareaModal extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            text:""
+        }
+    }
+
+    componentDidMount() {
+        this.setState({
+            text: this.props.text || ""
+        })
+    }
+
+    closeSelf = () => {
+        window.closeModal(this.props.modalId)
+    }
+
+    onConfirm = () => {
+        this.props.onConfirm && this.props.onConfirm(this.state.text.trim())
+        this.closeSelf()
+    }
+
+    render() {
+        let cancelable = this.props.cancelable == undefined ? true : this.props.cancelable
+        return <div className="textarea-modal default-modal-container">
+            <div className="container">
+                <div className="icon"><i className={this.props.icon}></i></div>
+                <div className="title">{this.props.title}</div>
+                <div className="text-box">
+                    <div className="sub-title">{this.props.subTitle}</div>
+                    <textarea type="text" className="input-slot"
+                        onChange={(e)=>this.setState({text:e.target.value})}
+                        value={this.state.text}
+                        placeholder={this.props.placeholder}/>
+                </div>
+                <div className="button">
+                    <div className="confirm" onClick={this.onConfirm}>{this.props.confirmText || translate("create")}</div>
+                    { cancelable ? <div className="cancel" onClick={this.closeSelf}>{translate("cancel")}</div> : null }
+                </div>
+            </div>
+        </div>
+    }
+}
+
 @modal
 class RemoveCommonModal extends React.Component {
     constructor(props) {
@@ -677,6 +724,23 @@ class Confirm extends React.Component{
 
     closeSelf = ()=>{
         window.closeModal(this.props.modalId)
+    }
+
+    componentDidMount() {
+        document.addEventListener("keydown", this.onKeyDown, false);
+    }
+
+    componentWillUnmount(){
+        document.removeEventListener("keydown", this.onKeyDown, false);
+    }
+
+    onKeyDown = (e) => {
+        console.log(e)
+        if(e.key == "Enter") {
+            this.clickOk();
+        } else if(e.key == "Escape") {
+            this.clickNo();
+        }
     }
 
     render(){
