@@ -677,6 +677,7 @@
     "tickets_status":["이용권 현황","Balance","使用权状态"],
     "please_input_corp_address":["기업 주소를 입력해주세요.","Enter business address.","请输入企业地址。"],
     "email_certification":["이메일 인증","Verify Email","验证邮箱"],
+    "not_access_approval":["해당 결재안에 접근할 수 없습니다.","",""],
     "byebye_template":["(퇴장) {0}","(Exit) {0}","退场"],
     "already_register_email":["이미 가입된 이메일입니다.","This email address is already in use.","您输入的邮箱已被注册。"],
     "select_sign_object_desc":["계약에 서명하는 대상에 본인 포함 여부를 선택할 수 있습니다","Check \"Other\" if you want to give another user permission to view or sign this contract.","您可以选择签署方。"],

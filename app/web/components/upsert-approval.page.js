@@ -203,8 +203,8 @@ export default class extends React.Component {
 
         let approval = await this.props.get_approval(approval_id, this.props.user_info.corp_key)
 
-        if(!approval) {
-            alert(translate("contract_is_encrypt_so_dont_enter"))
+        if(approval.code != 1) {
+            alert(translate("not_access_approval"))
             return history.goBack()
         }
         
