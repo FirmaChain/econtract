@@ -10,6 +10,7 @@ import {
     api_remove_approval_user,
     api_start_approval,
     api_confirm_approval,
+    api_reject_approval,
 } from "../../../gen_api"
 
 import {
@@ -80,6 +81,12 @@ export function start_approval(approval_id) {
 export function confirm_approval(approval_id) {
     return async function() {
         return await api_confirm_approval(approval_id)
+    }
+}
+
+export function reject_approval(approval_id, reject_reason) {
+    return async function() {
+        return await api_reject_approval(approval_id, reject_reason)
     }
 }
 

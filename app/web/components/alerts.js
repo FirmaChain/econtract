@@ -735,7 +735,6 @@ class Confirm extends React.Component{
     }
 
     onKeyDown = (e) => {
-        console.log(e)
         if(e.key == "Enter") {
             this.clickOk();
         } else if(e.key == "Escape") {

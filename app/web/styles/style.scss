@@ -2790,7 +2790,18 @@ div.checkbox2-comp{
                         }
 
                         >.bottom {
+                            margin-left: 20px;
+                            margin-top: 20px;
 
+                            >.title {
+                                font-size: $font1;
+                                font-weight: bold;
+                            }
+
+                            >.comment {
+                                margin-top:5px;
+                                font-size: $font1;
+                            }
                         }
                     }
 

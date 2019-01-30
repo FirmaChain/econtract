@@ -99,6 +99,16 @@ export async function api_confirm_approval(approval_id){
         session:window.getCookie("session")
     });
 }
+export async function api_reject_approval(approval_id,reject_reason){
+    let __data = new FormData();
+
+    if(approval_id != null) __data.append('approval_id', approval_id);
+	if(reject_reason != null) __data.append('reject_reason', reject_reason)
+
+    return await post("/reject_approval", __data,{
+        session:window.getCookie("session")
+    });
+}
 export async function api_remove_approval_user(approval_id,remove_account_id){
     let __data = new FormData();
 

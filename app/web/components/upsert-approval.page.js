@@ -37,6 +37,7 @@ import {
     remove_approval_user,
     start_approval,
     confirm_approval,
+    reject_approval,
 } from "../../common/actions"
 import CheckBox2 from "./checkbox2"
 
@@ -59,6 +60,7 @@ let mapDispatchToProps = {
     remove_approval_user,
     start_approval,
     confirm_approval,
+    reject_approval,
 }
 
 const reorder =  (list, startIndex, endIndex) => {
@@ -473,12 +475,13 @@ export default class extends React.Component {
     onRejectApproval = async () => {
 
         window.openModal("TextareaModal", {
-            icon:"fas fa-check",
-            title:translate("add_first_group"),
-            subTitle:translate("add_first_group_desc_1"),
-            placeholder:translate("please_input_group_name"),
+            icon:"fal fa-vote-nay",
+            title:translate("reject_approval_title"),
+            subTitle:translate("reject_approval_desc"),
+            placeholder:translate("reject_approval_reason_placeholder"),
+            confirmText:translate("reject_approval"),
             onConfirm: async (reject_reason) => {
-                let result = await this.props.reject_approval(this.state.approval.approval_id);
+                let result = await this.props.reject_approval(this.state.approval.approval_id, reject_reason);
                 if(result.code == 1) {
                     await this.onRefresh()
                     alert(translate("success_reject_approval"))
@@ -523,6 +526,8 @@ export default class extends React.Component {
     render_approval_line() {
         let drafter = this.state.order_list[0]
         let disable = this.state.approval.status != window.CONST.APPROVAL_STATUS.DRAFT && this.state.approval.status != window.CONST.APPROVAL_STATUS.REJECTED
+        if(!disable)
+            disable = this.state.approval.account_id != this.props.user_info.account_id
         let status_text
         switch(this.state.approval.status) {
             case 0:
@@ -614,9 +619,10 @@ export default class extends React.Component {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div className="bottom">
-                                                {e.comment}
-                                            </div>
+                                            {e.comment ? <div className="bottom">
+                                                <div className="title">{translate("opinion")}</div>
+                                                <div className="comment">{e.comment}</div>
+                                            </div> : null}
                                         </div>
                                     )}
                                 </Draggable>
