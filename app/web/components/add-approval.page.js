@@ -33,6 +33,7 @@ let mapDispatchToProps = {
     select_userinfo_with_email,
     get_group_member_all,
 }
+
 const reorder =  (list, startIndex, endIndex) => {
   const result = Array.from(list);
   const [removed] = result.splice(startIndex, 1);
@@ -53,8 +54,9 @@ const getItemStyle = (draggableStyle, isDragging) => ({
   // styles we need to apply on draggables(드래그에 필요한 스타일 적용)
   ...draggableStyle
 });
+
 const getListStyle = (isDraggingOver) => ({
-  background: isDraggingOver ? 'lightgray' : 'transparent',
+  background: isDraggingOver ? '#f4f4f4' : 'transparent',
 });
 
 

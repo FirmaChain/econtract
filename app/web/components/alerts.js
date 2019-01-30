@@ -1153,6 +1153,98 @@ class AddGroupMember extends React.Component {
 }
 
 
+@modal
+class AddCorpMemberName extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            add_name:null,
+            add_account_id: null,
+        };
+    }
+
+    componentDidMount() {
+
+    }
+
+    closeSelf = ()=>{
+        window.closeModal(this.props.modalId)
+    }
+
+    onConfirm = async ()=>{
+        if(!this.state.add_account_id)
+            return alert(translate("please_select_user"))
+
+        let result = false
+        if(this.props.onConfirm) {
+            await window.showIndicator()
+            result = await this.props.onConfirm(this.state.add_account_id)
+            await window.hideIndicator()
+        }
+
+        if(result) this.closeSelf()
+    }
+
+    render_add_input_dropdown() {
+        let search_text = ""
+        if(this.state.add_name)
+            search_text = this.state.add_name.trim()
+
+        let _ = this.props.member_list.filter(e=>{
+            return e.public_info.username.includes(search_text)
+        })
+
+        if(_.length == 0)
+            return;
+
+        return <div className="user-dropdown">
+            <div className="info-container">
+            {_.map( (e, k) => {
+                return <div className={`user ${this.state.add_account_id == e.account_id ? "user-active":""}`} key={e.account_id} onClick={()=>{
+                        this.setState({add_account_id:e.account_id, add_name:e.public_info.username})
+                    }}>
+                    {this.props.user_div(e, k)}
+                </div>
+            })}
+            </div>
+        </div>
+    }
+
+    render() {
+        return <div className="add-corp-member-name-modal default-modal-container">
+            <div className="container">
+                <div className="icon"><i className="fas fa-users"></i></div>
+                <div className="title">{this.props.title}</div>
+                <div className="desc">{this.props.desc}</div>
+
+                <div className="text-box">
+                    <div className="sub-title">{this.props.input_title}</div>
+                    <input className="common-textbox" type="text"
+                        placeholder={translate("please_input_approval_user_name")}
+                        value={this.state.add_name || ""}
+                        onFocus={e=>this.setState({add_name_focus:true})}
+                        onBlur={e=>setTimeout(()=>this.setState({add_name_focus:false}), 500)}
+                        onChange={e=>{
+                            this.setState({
+                                add_name:e.target.value,
+                                add_account_id:null,
+                            })
+                        }}/>
+                </div>
+                
+                {this.render_add_input_dropdown()}
+
+                <div className="button">
+                    <div className="submit" onClick={this.onConfirm}>{translate("add")}</div>
+                    <div className="cancel" onClick={this.closeSelf}>{translate("cancel")}</div>
+                </div>
+            </div>
+        </div>
+    }
+
+}
+
+
 
 
 

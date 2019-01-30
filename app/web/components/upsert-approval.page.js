@@ -18,6 +18,7 @@ import translate from "../../common/translate"
 import Information from "./information.comp"
 import Footer from "./footer.comp"
 import Chatting from "./chatting.comp"
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 import Dropdown from "react-dropdown"
 import 'react-dropdown/style.css'
@@ -30,6 +31,9 @@ import {
     get_approval_chats,
     send_approval_chat,
     update_approval_model,
+    add_approval_user,
+    get_group_member_all,
+    change_order_approval,
 } from "../../common/actions"
 import CheckBox2 from "./checkbox2"
 
@@ -46,7 +50,35 @@ let mapDispatchToProps = {
     get_approval_chats,
     send_approval_chat,
     update_approval_model,
+    add_approval_user,
+    get_group_member_all,
+    change_order_approval,
 }
+
+const reorder =  (list, startIndex, endIndex) => {
+  const result = Array.from(list);
+  const [removed] = result.splice(startIndex, 1);
+  result.splice(endIndex, 0, removed);
+
+  return result;
+};
+
+const getItemStyle = (draggableStyle, isDragging) => ({
+  // some basic styles to make the items look a bit nicer(아이템을 보기 좋게 만드는 몇 가지 기본 스타일)
+  userSelect: 'none',
+  // padding: 16,
+  // marginBottom: 8,
+
+  // change background colour if dragging(드래깅시 배경색 변경)
+  // background: isDragging ? 'lightgreen' : 'grey',
+
+  // styles we need to apply on draggables(드래그에 필요한 스타일 적용)
+  ...draggableStyle
+});
+
+const getListStyle = (isDraggingOver) => ({
+  background: isDraggingOver ? '#f4f4f4' : 'transparent',
+});
 
 @connect(mapStateToProps, mapDispatchToProps )
 export default class extends React.Component {
@@ -162,7 +194,7 @@ export default class extends React.Component {
         this.socket.on("refresh_approval_"+this.state.approval.approval_id, this.onRefresh)
     }
 
-    onRefresh = async () => {
+    onRefresh = async (refresh_model = true) => {
         let approval_id = this.props.match.params.approval_id || 0
         let groups = [];
         let _state = {}
@@ -179,8 +211,9 @@ export default class extends React.Component {
             _state = {
                 ..._state,
                 ...approval.payload,
-                model,
             }
+            if(refresh_model)
+                _state.model = model;
 
             await this.setState(_state)
 
@@ -341,6 +374,77 @@ export default class extends React.Component {
         this.state.scrollBottom && this.state.scrollBottom()
     }
 
+    onAddApprovalUser = async () => {
+        await window.showIndicator();
+        let all_group_member = await this.props.get_group_member_all(this.props.user_info.corp_key)
+        await window.hideIndicator();
+        window.openModal("AddCorpMemberName",{
+            title: translate("approval_user_add"),
+            desc: translate("approval_user_add_desc"),
+            input_title: translate("approval_user_name"),
+            member_list: all_group_member.payload,
+            user_div: (e, k) => {
+                return [
+                    <i className="icon fas fa-user-tie" key={"icon"}></i>,
+                    <div className="name" key={"name"}>{e.public_info.username}</div>,
+                    <div className="email" key={"email"}>{e.public_info.email}</div>,
+                ]
+            },
+            onConfirm: async (add_account_id) => {
+                let approval_user = all_group_member.payload.find(e=>e.account_id == add_account_id)
+
+                if(approval_user) {
+                    for(let v of this.state.order_list) {
+                        if( !!v.account_id && v.account_id == approval_user.account_id ) {
+                            return alert(translate("already_add_user"))
+                        }
+                    }
+                    let info = {
+                        account_id:approval_user.account_id,
+                        username:approval_user.public_info.username,
+                        email:approval_user.public_info.email,
+                        department:approval_user.public_info.department || "",
+                        job:approval_user.public_info.job || "",
+                    }
+
+                    let result = await this.props.add_approval_user(this.state.approval.approval_id, add_account_id)
+                    if(result.code == 1) {
+                        await this.onRefresh(false)
+                        return true;
+                    } else {
+                        alert(translate("fail_add_approval_user"))
+                        return false;
+                    }
+                } else {
+                    alert(translate("please_select_approval_user"));
+                    return false;
+                }
+            }
+        })
+    }
+
+    onDragEnd = async (result) => {
+        if(!result.destination) {
+            return;
+        }
+
+        const order_list = reorder(
+            this.state.order_list,
+            result.source.index,
+            result.destination.index
+        );
+
+        let order_list_min = order_list.map( (e, k) => e.account_id)
+
+        let r = await this.props.change_order_approval(this.state.approval.approval_id, order_list_min)
+
+        await this.setState({
+            order_list
+        });
+
+        if(r.payload) this.onRefresh(false)
+    }
+
     render_info() {
         switch(this.state.selected_menu) {
             case 0:
@@ -351,44 +455,111 @@ export default class extends React.Component {
     }
 
     render_approval_line() {
+        let drafter = this.state.order_list[0]
+        let disable = this.state.approval.status != window.CONST.APPROVAL_STATUS.DRAFT && this.state.approval.status != window.CONST.APPROVAL_STATUS.REJECTED
+        let status_text
+        switch(this.state.approval.status) {
+            case 0:
+                status_text = translate("draft")
+                break;
+            case 1:
+                status_text = translate("ing_approval")
+                break;
+            case 2:
+                status_text = translate("completed_approval")
+                break;
+            case 3:
+                status_text = translate("rejected")
+                break;
+        }
+
         return <div className="bottom approval-line">
-            <div className="title">{translate("count_curr_total_person", [this.state.order_list.filter(e=>e.is_exclude==0).length])}</div>
+            <div className="title" dangerouslySetInnerHTML={{__html:translate("now_status_text", [status_text])}}></div>
             <div className="list">
-                {this.state.order_list.map((e, k) => {
-                    let role
-                    let is_last = e.order_num == this.state.order_list.length - 1
-                    if(e.order_num == 0)
-                        role = translate("drafter")
-                    else if(is_last)
-                        role = translate("final_approval_user")
-                    else
-                        role = translate("approval_user")
-
-                    console.log(e)
-
-                    return <div className="item" key={e.account_id}>
-                        <div className="approval-line-shape">
-                            <div className="circle"></div>
-                            {is_last ? null : <div className="line"></div>}
+                <div className="item" key={drafter.account_id}>
+                    <div className="approval-line-shape">
+                        <div className="circle"></div>
+                        <div className="line"></div>
+                    </div>
+                    <div className="top">
+                        <div className="left">
+                            {translate("drafter")}
                         </div>
-                        <div className="top">
-                            <div className="left">
-                                {role}
+                        <div className="right">
+                            <div className="name">
+                                {drafter.name} <span className="job">{drafter.public_info.job}</span>
                             </div>
-                            <div className="right">
-                                <div className="name">
-                                    {e.name} <span className="job">{e.public_info.job}</span>
-                                </div>
-                                <div className="desc">
-                                    # {e.public_info.department}
-                                </div>
+                            <div className="desc">
+                                # {drafter.public_info.department}
                             </div>
-                        </div>
-                        <div className="bottom">
-                            {e.comment}
                         </div>
                     </div>
-                })}
+                    <div className="bottom">
+                        {drafter.comment}
+                    </div>
+                </div>
+                <DragDropContext onDragEnd={this.onDragEnd}>
+                    <Droppable droppableId="droppable"
+                        isDropDisabled={disable}>
+                    {(provided, snapshot) => (
+                        <div ref={provided.innerRef}
+                            style={getListStyle(snapshot.isDraggingOver)}
+                            {...provided.droppableProps}>
+                            {this.state.order_list.map((e, k) => {
+                                if(k == 0)
+                                    return
+
+                                let role
+                                let is_last = k == this.state.order_list.length - 1
+                                if(k == 0)
+                                    role = translate("drafter")
+                                else if(is_last)
+                                    role = translate("final_approval_user")
+                                else
+                                    role = translate("approval_user")
+
+                                return <Draggable key={e.account_id} draggableId={e.account_id} index={k}
+                                    isDragDisabled={disable}>
+                                    {(provided, snapshot) => (
+                                        <div className="item" key={e.account_id}
+                                            ref={provided.innerRef}
+                                            style={getItemStyle(provided.draggableStyle, snapshot.isDragging)}
+                                            {...provided.draggableProps}
+                                            {...provided.dragHandleProps}>
+
+                                            <div className="approval-line-shape">
+                                                <div className="circle"></div>
+                                                {is_last ? null : <div className="line"></div>}
+                                            </div>
+                                            <div className="top">
+                                                <div className="left">
+                                                    {role}
+                                                </div>
+                                                <div className="right">
+                                                    <div className="name">
+                                                        {e.name} <span className="job">{e.public_info.job}</span>
+                                                    </div>
+                                                    <div className="desc">
+                                                        # {e.public_info.department}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="bottom">
+                                                {e.comment}
+                                            </div>
+                                        </div>
+                                    )}
+                                </Draggable>
+                            })}
+                        </div>
+                        )}
+                    </Droppable>
+                </DragDropContext>
+
+                <div className="add-approval-user" onClick={this.onAddApprovalUser}>
+                    <i className="fal fa-plus"></i>
+                    <div className="text">{translate("add_approval_user")}</div>
+                </div>
             </div>
         </div>
     }

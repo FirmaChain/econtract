@@ -5,6 +5,8 @@ import {
     api_send_approval_chat,
     api_get_approval_chats,
     api_update_approval_model,
+    api_add_approval_user,
+    api_change_order_approval,
 } from "../../../gen_api"
 
 import {
@@ -82,5 +84,17 @@ export function update_approval_model(approval_id, model, corp_key){
         let encrypted_model = aes_encrypt(model, Buffer.from(corp_key, 'hex'))
         return (await api_update_approval_model(approval_id, encrypted_model));
     };
+}
+
+export function add_approval_user(approval_id, add_account_id) {
+    return async function() {
+        return await api_add_approval_user(approval_id, add_account_id)
+    }
+}
+
+export function change_order_approval(approval_id, order_list) {
+    return async function() {
+        return await api_change_order_approval(approval_id, JSON.stringify(order_list))
+    }
 }
 

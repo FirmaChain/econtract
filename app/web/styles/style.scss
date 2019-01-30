@@ -2269,8 +2269,8 @@ div.checkbox2-comp{
     >.header-page .container {
 
         >.info {
-            min-width:150px;
-            max-width:300px;
+            min-width:200px;
+            max-width:350px;
             width:25%;
 
             >.title {
@@ -2356,8 +2356,8 @@ div.checkbox2-comp{
         }
 
         >.submit {
-            min-width:150px;
-            max-width:300px;
+            min-width:200px;
+            max-width:350px;
             width:25%;
             height:100%;
 
@@ -2377,8 +2377,8 @@ div.checkbox2-comp{
 
     >.header-page .container {
         >.info {
-            min-width:150px;
-            max-width:300px;
+            min-width:200px;
+            max-width:350px;
             width:25%;
 
             border-left: 1px solid $middlegray;
@@ -2622,8 +2622,8 @@ div.checkbox2-comp{
         }
 
         >.sign {
-            min-width:150px;
-            max-width:300px;
+            min-width:200px;
+            max-width:350px;
             width:25%;
             height:100%;
 
@@ -2646,8 +2646,8 @@ div.checkbox2-comp{
 
     >.header-page .container {
         >.info {
-            min-width:150px;
-            max-width:300px;
+            min-width:200px;
+            max-width:350px;
             width:25%;
 
             border-left: 1px solid $middlegray;
@@ -2702,7 +2702,6 @@ div.checkbox2-comp{
 
                 >.title {
                     font-size: $font1;
-                    font-weight: bold;
                     color: $black;
                     padding:10px;
                     border-bottom: 1px solid $middlegray;
@@ -2711,7 +2710,7 @@ div.checkbox2-comp{
 
                 >.list {
 
-                    >.item {
+                    .item {
                         position:relative;
                         box-sizing:border-box;
                         background-color:white;
@@ -2785,6 +2784,30 @@ div.checkbox2-comp{
 
                         }
                     }
+
+                    .add-approval-user {
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: center;
+                        align-items: center;
+                        border:1px solid $middlegray;
+                        border-style:dashed;
+                        border-radius:3px;
+                        padding:20px 0;
+                        margin: 10px;
+                        background-color:white;
+                        cursor:pointer;
+
+                        >.text {
+                            font-size: $font2;
+                            margin-left:5px;
+                        }
+
+                        >i {
+                            font-size:15px;
+                            margin-top:2px;
+                        }
+                    }
                 }
             }
 
@@ -2834,8 +2857,8 @@ div.checkbox2-comp{
         }
 
         >.sign {
-            min-width:150px;
-            max-width:300px;
+            min-width:200px;
+            max-width:350px;
             width:25%;
             height:100%;
 
@@ -5754,6 +5777,157 @@ div.checkbox2-comp{
             }
         }
 
+
+        >.button {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+
+            margin-top: 40px;
+
+            >.submit {
+                margin: auto;
+                margin-right:10px;
+
+                font-size: $font4;
+                font-weight: bold;
+                color: white;
+                cursor: pointer;
+
+                background-color: $blue;
+                border:1px solid $blue;
+                padding:15px;
+                flex:1;
+            }
+
+            >.cancel {
+                margin: auto;
+
+                font-size: $font4;
+                font-weight: bold;
+                color: $blue;
+                cursor: pointer;
+
+                border:1px solid $blue;
+                padding:15px;
+                flex:1;
+            }
+        }
+
+    }
+}
+
+
+.add-corp-member-name-modal {
+    background-color: #fff;
+    min-width: 200px;
+    width:500px;
+
+    >.container {
+        padding:55px;
+        text-align: center;
+
+        >.icon {
+            >i { 
+                font-size: 30px;
+            }
+        }
+
+        >.title {
+            font-size: $font5;
+            font-weight: bold;
+            color: $black;
+            margin-top: 18px;
+        }
+
+        >.desc {
+            text-align: center;
+            font-size: $font2;
+            color: $black;
+            margin-bottom: 20px;
+            margin-top: 20px;
+        }
+
+        >.text-box {
+            margin-top: 40px;
+            text-align: left;
+            position:relative;
+
+            >.sub-title {
+                font-size: $font2;
+                color:$black;
+                font-weight: bold;
+                margin-bottom:8px;
+                margin-left:5px;
+            }
+
+            >input {
+
+            }
+
+            >.common-select {
+                
+                .control {
+                    width:100% !important;
+                }
+            }
+        }
+
+
+        >.user-dropdown {
+            margin-top:10px;
+            border:1px solid $middlegray;
+
+            >.info-container {
+                background-color: white;
+
+                text-align: left;
+                max-height: 300px;
+                overflow-y: auto;
+
+                >.line {
+                    background-color: $gray;
+                    height:1px;
+                }
+
+                >.user-active {
+                    background-color:$lightgray;
+                }
+
+                >.user {
+                    display:flex;
+                    align-items: center;
+                    padding:20px 15px;
+                    cursor:pointer;
+
+                    >.icon {
+                        font-size:22px;
+                        margin-right: 10px;
+                    }
+
+                    >.name {
+                        font-size: $font1;
+                        color: $black;
+                        cursor: pointer;
+                        flex:1;
+                    }
+
+                    >.email {
+                        font-size: $font0;
+                        color: $gray;
+                        margin-left:10px;
+                        cursor: pointer;
+                    }
+                }
+
+                >div{
+                    &:hover{
+                        background-color: $lightgray;
+                    }
+                }
+            }
+        }
 
         >.button {
             display: flex;

@@ -71,6 +71,26 @@ export async function api_get_approval(approval_id){
         session:window.getCookie("session")
     });
 }
+export async function api_add_approval_user(approval_id,add_account_id){
+    let __data = new FormData();
+
+    if(approval_id != null) __data.append('approval_id', approval_id);
+	if(add_account_id != null) __data.append('add_account_id', add_account_id)
+
+    return await post("/add_approval_user", __data,{
+        session:window.getCookie("session")
+    });
+}
+export async function api_change_order_approval(approval_id,order_list){
+    let __data = new FormData();
+
+    if(approval_id != null) __data.append('approval_id', approval_id);
+	if(order_list != null) __data.append('order_list', order_list)
+
+    return await post("/change_order_approval", __data,{
+        session:window.getCookie("session")
+    });
+}
 export async function api_convert_doc(file){
     let __data = new FormData();
 
