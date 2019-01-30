@@ -155,6 +155,32 @@ export default class extends React.Component {
         })
     }
 
+    onClickSearch = async () => {
+        if(!!this.state.search_text && this.state.search_text != "" && this.state.search_text.length < 2) {
+            return alert(translate("please_input_search_query_more_2"))
+        }
+
+        if(!!this.state.search_text && this.state.search_text == "") {
+            return history.push(this.props.match.url)
+        }
+
+        let params = queryString.parse(this.props.location.search)
+        delete params.page
+        params.search_text = this.state.search_text
+
+        history.push({pathname:this.props.match.url, search:`?${queryString.stringify(params)}`})
+    }
+    
+    onKeyPress = async (type, e) => {
+        if(e.keyCode == 13){
+            switch(type) {
+                case "search":
+                    await this.onClickSearch()
+                    break;
+            }
+        }
+    }
+
     onClickPage = async (page)=>{
         if(this.state.cur_page == page - 1)
             return;
@@ -268,6 +294,14 @@ export default class extends React.Component {
             <div className="contract-list">
                 <div className="title">
                     { this.getTitle().title }
+                </div>
+                <div className="search">
+                    <input className="common-textbox" type="text"
+                        placeholder={translate("please_input_search_query_more_2")}
+                        onKeyDown={this.onKeyPress.bind(this, "search")}
+                        value={this.state.search_text || ""}
+                        onChange={e=>this.setState({search_text:e.target.value})}/>
+                    <div className="blue-but" onClick={this.onClickSearch}>{translate("search")}</div>
                 </div>
                 <div className="list" style={{marginTop:"20px"}}>
                     <div className="head">
