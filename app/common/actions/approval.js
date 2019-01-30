@@ -7,6 +7,7 @@ import {
     api_update_approval_model,
     api_add_approval_user,
     api_change_order_approval,
+    api_remove_approval_user,
 } from "../../../gen_api"
 
 import {
@@ -89,6 +90,12 @@ export function update_approval_model(approval_id, model, corp_key){
 export function add_approval_user(approval_id, add_account_id) {
     return async function() {
         return await api_add_approval_user(approval_id, add_account_id)
+    }
+}
+
+export function remove_approval_user(approval_id, remove_account_id) {
+    return async function() {
+        return await api_remove_approval_user(approval_id, remove_account_id)
     }
 }
 

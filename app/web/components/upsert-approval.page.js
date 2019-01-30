@@ -34,6 +34,7 @@ import {
     add_approval_user,
     get_group_member_all,
     change_order_approval,
+    remove_approval_user,
 } from "../../common/actions"
 import CheckBox2 from "./checkbox2"
 
@@ -53,6 +54,7 @@ let mapDispatchToProps = {
     add_approval_user,
     get_group_member_all,
     change_order_approval,
+    remove_approval_user,
 }
 
 const reorder =  (list, startIndex, endIndex) => {
@@ -374,6 +376,20 @@ export default class extends React.Component {
         this.state.scrollBottom && this.state.scrollBottom()
     }
 
+    onRemoveApprovalUser = async (account_id, name) => {
+        let result = await window.confirm(translate("remove_approval_user_title"), translate("remove_approval_user_desc", [name]))
+
+        if(result) {
+            let result = await this.props.remove_approval_user(this.state.approval.approval_id, account_id)
+            if(result.code == 1) {
+                this.onRefresh(false)
+                return alert(translate("remove_approval_user_success"))
+            } else {
+                return alert(translate("remove_approval_user_fail"))
+            }
+        }
+    }
+
     onAddApprovalUser = async () => {
         await window.showIndicator();
         let all_group_member = await this.props.get_group_member_all(this.props.user_info.corp_key)
@@ -522,6 +538,7 @@ export default class extends React.Component {
                                     isDragDisabled={disable}>
                                     {(provided, snapshot) => (
                                         <div className="item" key={e.account_id}
+                                            onClick={this.onRemoveApprovalUser.bind(this, e.account_id, e.name)}
                                             ref={provided.innerRef}
                                             style={getItemStyle(provided.draggableStyle, snapshot.isDragging)}
                                             {...provided.draggableProps}
