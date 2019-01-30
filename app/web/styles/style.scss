@@ -2719,6 +2719,15 @@ div.checkbox2-comp{
                         margin:10px;
                         padding:15px;
 
+                        >.remove-approval-user {
+                            position:absolute;
+                            top:0;
+                            right:0;
+                            cursor:pointer;
+                            padding:10px;
+                            font-size:17px;
+                        }
+
                         >.approval-line-shape {
                             position:absolute;
                             height:calc(100% + 20px);

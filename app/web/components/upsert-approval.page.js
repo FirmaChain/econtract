@@ -538,11 +538,14 @@ export default class extends React.Component {
                                     isDragDisabled={disable}>
                                     {(provided, snapshot) => (
                                         <div className="item" key={e.account_id}
-                                            onClick={this.onRemoveApprovalUser.bind(this, e.account_id, e.name)}
                                             ref={provided.innerRef}
                                             style={getItemStyle(provided.draggableStyle, snapshot.isDragging)}
                                             {...provided.draggableProps}
                                             {...provided.dragHandleProps}>
+
+                                            {disable ? null : <div className="remove-approval-user" onClick={this.onRemoveApprovalUser.bind(this, e.account_id, e.name)}>
+                                                <i class="far fa-times"></i>
+                                            </div>}
 
                                             <div className="approval-line-shape">
                                                 <div className="circle"></div>
