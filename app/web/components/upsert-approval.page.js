@@ -550,7 +550,7 @@ export default class extends React.Component {
                 <div className="item" key={drafter.account_id}>
                     <div className="approval-line-shape">
                         <div className={`circle ${drafter.confirm == 1 ? "enable-shape" : ""}`}></div>
-                        <div className={`line ${drafter.confirm == 1 ? "enable-shape" : ""}`}></div>
+                        <div className={`line ${this.state.order_list[1].confirm == 1 ? "enable-shape" : ""}`}></div>
                     </div>
                     <div className="top">
                         <div className="left">
@@ -603,7 +603,7 @@ export default class extends React.Component {
                                             </div>}
 
                                             <div className="approval-line-shape">
-                                                <div className={`circle ${(e.confirm == 1 || this.state.order_list[k - 1].confirm == 1) ? "enable-shape" : ""}`}></div>
+                                                <div className={`circle ${e.confirm == 1 ? "enable-shape" : ""}`}></div>
                                                 {is_last ? null : <div className={`line ${e.confirm == 1 ? "enable-shape" : ""}`}></div>}
                                             </div>
                                             <div className="top">
