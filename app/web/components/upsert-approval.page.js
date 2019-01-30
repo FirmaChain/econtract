@@ -351,12 +351,42 @@ export default class extends React.Component {
     }
 
     render_approval_line() {
-        return <div className="bottom signs">
+        return <div className="bottom approval-line">
             <div className="title">{translate("count_curr_total_person", [this.state.order_list.filter(e=>e.is_exclude==0).length])}</div>
             <div className="list">
                 {this.state.order_list.map((e, k) => {
+                    let role
+                    let is_last = e.order_num == this.state.order_list.length - 1
+                    if(e.order_num == 0)
+                        role = translate("drafter")
+                    else if(is_last)
+                        role = translate("final_approval_user")
+                    else
+                        role = translate("approval_user")
+
+                    console.log(e)
+
                     return <div className="item" key={e.account_id}>
-                        {e.name}
+                        <div className="approval-line-shape">
+                            <div className="circle"></div>
+                            {is_last ? null : <div className="line"></div>}
+                        </div>
+                        <div className="top">
+                            <div className="left">
+                                {role}
+                            </div>
+                            <div className="right">
+                                <div className="name">
+                                    {e.name} <span className="job">{e.public_info.job}</span>
+                                </div>
+                                <div className="desc">
+                                    # {e.public_info.department}
+                                </div>
+                            </div>
+                        </div>
+                        <div className="bottom">
+                            {e.comment}
+                        </div>
                     </div>
                 })}
             </div>
