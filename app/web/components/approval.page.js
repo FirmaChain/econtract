@@ -160,7 +160,7 @@ export default class extends React.Component {
             return alert(translate("please_input_search_query_more_2"))
         }
 
-        if(!!this.state.search_text && this.state.search_text == "") {
+        if(!this.state.search_text || (!!this.state.search_text && this.state.search_text == "") ) {
             return history.push(this.props.match.url)
         }
 
@@ -170,7 +170,7 @@ export default class extends React.Component {
 
         history.push({pathname:this.props.match.url, search:`?${queryString.stringify(params)}`})
     }
-    
+
     onKeyPress = async (type, e) => {
         if(e.keyCode == 13){
             switch(type) {
