@@ -183,6 +183,21 @@ export default class extends React.Component {
     }
 
     render_approval_slot(e, k) {
+        let status_text
+        switch(e.status) {
+            case window.CONST.APPROVAL_STATUS.DRAFT:
+                status_text = translate("draft")
+                break;
+            case window.CONST.APPROVAL_STATUS.ING_APPROVAL:
+                status_text = translate("ing_approval")
+                break;
+            case window.CONST.APPROVAL_STATUS.COMPLETED:
+                status_text = translate("completed_approval")
+                break;
+            case window.CONST.APPROVAL_STATUS.REJECTED:
+                status_text = translate("rejected")
+                break;
+        }
         return <div className="item" key={e.approval_id} onClick={()=>history.push(`/edit-approval/${e.approval_id}`)}>
             <div className="list-body-item list-chkbox">
                 <CheckBox2 size={18}
@@ -192,6 +207,7 @@ export default class extends React.Component {
             <div className="list-body-item list-name">
                 {e.name}
             </div>
+            <div className="list-body-item list-status">{status_text}</div>
             <div className="list-body-item list-date">{moment(e.addedAt).format("YYYY-MM-DD HH:mm:ss")}</div>
             <div className="list-body-item list-action">
                 <div className="button-container">
@@ -261,6 +277,7 @@ export default class extends React.Component {
                                 onClick={this.checkAll}/>
                         </div>
                         <div className="list-head-item list-name">{translate("approval_name")}</div>
+                        <div className="list-head-item list-status">{translate("status")}</div>
                         <div className="list-head-item list-date">{translate("create_date")}</div>
                         <div className="list-head-item list-action"></div>
                     </div>

@@ -125,16 +125,11 @@ export default class extends React.Component {
                 'froalaEditor.initialized' : (e, editor) => {
                     this.editor = editor;
 
-                    if( !!this.state.approval) {
-                        let now_edit_account_id
-                        for(let v of this.state.order_list) {
-                            if(v.confirm == 0) {
-                                now_edit_account_id = v.account_id
-                                break;
-                            }
-                        }
-                        if(now_edit_account_id != this.props.user_info.account_id)
-                            this.editor.edit.off();
+                    console.log("a",this.state.approval.can_approval_account_id)
+                    console.log("b",this.props.user_info.account_id)
+
+                    if( !!this.state.approval && this.state.approval.can_approval_account_id != this.props.user_info.account_id) {
+                        this.editor.edit.off();
                     } else {
                         this.editor.edit.on()
                     }
@@ -229,17 +224,12 @@ export default class extends React.Component {
                 _state.model = model;
 
             await this.setState(_state)
+            
+            console.log("a",this.state.approval.can_approval_account_id)
+            console.log("b",this.props.user_info.account_id)
 
-            if( !!this.editor && !!approval.payload.approval ) {
-                let now_edit_account_id
-                for(let v of _state.order_list) {
-                    if(v.confirm == 0) {
-                        now_edit_account_id = v.account_id
-                        break;
-                    }
-                }
-                if(now_edit_account_id != this.props.user_info.account_id)
-                    this.editor.edit.off();
+            if( !!this.editor && !!approval.payload.approval && _state.approval.can_approval_account_id != this.props.user_info.account_id) {
+                this.editor.edit.off();
             } else {
                 this.editor.edit.on()
             }
