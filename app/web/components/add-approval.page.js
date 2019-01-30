@@ -18,6 +18,7 @@ import {
     new_approval,
     select_userinfo_with_email,
     get_group_member_all,
+    get_template,
 } from "../../common/actions"
 import CheckBox2 from "./checkbox2"
 
@@ -32,6 +33,7 @@ let mapDispatchToProps = {
     new_approval,
     select_userinfo_with_email,
     get_group_member_all,
+    get_template,
 }
 
 const reorder =  (list, startIndex, endIndex) => {
@@ -116,12 +118,12 @@ export default class extends React.Component {
             }]
         })
 
-        /*if( params.template_id && !isNaN(params.template_id) ) {
+        if( params.template_id && !isNaN(params.template_id) ) {
             let template = await this.props.get_template(params.template_id, this.props.user_info.corp_key || null)
             this.setState({
                 template
             })
-        }*/
+        }
     }
 
     componentWillReceiveProps(props){
@@ -172,6 +174,9 @@ export default class extends React.Component {
     onClickRegister = async ()=>{
         if(this.is_register)
             return
+
+        if(this.state.order_list.length == 1)
+            return alert(translate("please_add_approval_user"))
         
         this.is_register = true
 

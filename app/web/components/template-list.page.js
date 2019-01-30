@@ -146,9 +146,12 @@ export default class extends React.Component {
         })
     }
 
-    useTemplate = async (template_id, e) => {
+    useTemplate = async (template_id, type, e) => {
         e.stopPropagation()
-        history.push({pathname:"/add-contract", search:"?template_id="+template_id})
+        if(type == 0)
+            history.push({pathname:"/add-contract", search:"?template_id="+template_id})
+        else if(type == 1)
+            history.push({pathname:"/add-approval", search:"?template_id="+template_id})
     }
 
     async onRemoveTemplate(template_id, subject, e) {
@@ -257,11 +260,12 @@ export default class extends React.Component {
             <div className="list-body-item list-date">{moment(e.addedAt).format("YYYY-MM-DD HH:mm:ss")}</div>
             <div className="list-body-item list-action">
                 <div className="button-container">
-                    <div className="action-button action-blue-but" onClick={this.useTemplate.bind(this, e.template_id)}>{translate("use")}</div>
+                    <div className="action-button action-blue-but" onClick={this.useTemplate.bind(this, e.template_id, 0)}>{translate("use")}</div>
                     <div className="arrow-button arrow-blue-but" onClick={this.onClickOption.bind(this, e.template_id)} >
                         <i className="fas fa-caret-down"></i>
                     <div className="arrow-dropdown" style={{display:!!this.isOpenOption(e.template_id) ? "initial" : "none"}}>
                             <div className="container">
+                                <div className="move" onClick={this.useTemplate.bind(this, e.template_id, 1)}>{translate("approval_generate")}</div>
                                 <div className="move" onClick={this.onRemoveTemplate.bind(this, e.template_id, e.subject)}>{translate("remove")}</div>
                             </div>
                         </div>

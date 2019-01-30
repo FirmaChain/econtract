@@ -245,6 +245,7 @@
     "card_cvc_not_valid":["카드 CVC가 유효하지 않습니다.","The credit card CVC is not valid.","信用卡CVC号码错误。"],
     "now_approval_privilege_who":["현재 {0} 님이 결재 권한을 갖고 있습니다.","{0}\u0027s turn to approve.","现在{0}具有裁决权限。"],
     "go_email_verification":["이메일 인증을 진행해주세요.","Verify your email address.","请验证您的邮箱。"],
+    "please_add_approval_user":["결재자를 추가해주세요.","",""],
     "corporation_manager_name":["담당자 성함","Deputy Full Name","负责人姓名"],
     "footer_corp_info":["주식회사 피르마 솔루션즈 | 서울시 성동구 성수이로 58 | \u003cb\u003e대표이사\u003c\/b\u003e 권승훈 | \u003cb\u003e사업자등록번호\u003c\/b\u003e 261-88-01086 | \u003cb\u003e전화번호\u003c\/b\u003e 070-4276-9499\u003cbr/\u003e","Firma Solutions Co. Ltd. 58 | Seongsui-ro, Seongsu-dong 2(i)-ga, Seongdong-gu, Seoul | Daniel Kwon | Business Registration Number 261-88-01086 | Tel. (+82) 070-4276-9499","Firma Solutions Co. Ltd. 58 | Seongsui-ro, Seongsu-dong 2(i)-ga, Seongdong-gu, Seoul | Daniel Kwon | Business Registration Number 261-88-01086 | Tel. (+82) 070-4276-9499"],
     "yearly_purchase":["연간 결제","Annual Payment","年支付"],
