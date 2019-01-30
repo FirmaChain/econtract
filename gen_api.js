@@ -81,6 +81,15 @@ export async function api_add_approval_user(approval_id,add_account_id){
         session:window.getCookie("session")
     });
 }
+export async function api_start_approval(approval_id){
+    let __data = new FormData();
+
+    if(approval_id != null) __data.append('approval_id', approval_id)
+
+    return await post("/start_approval", __data,{
+        session:window.getCookie("session")
+    });
+}
 export async function api_remove_approval_user(approval_id,remove_account_id){
     let __data = new FormData();
 

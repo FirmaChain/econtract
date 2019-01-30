@@ -2750,7 +2750,7 @@ div.checkbox2-comp{
                                 background-color: $gray;
                             }
 
-                            >.enable {
+                            >.enable-shape {
                                 background-color: $blue;
                             }
                         }
@@ -2882,6 +2882,11 @@ div.checkbox2-comp{
             font-weight: bold;
             font-size: $font3;
             color: white;
+        }
+
+        >.sign-disable {
+            background-color:$gray;
+            cursor:initial;
         }
     }
 }

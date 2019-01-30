@@ -8,6 +8,7 @@ import {
     api_add_approval_user,
     api_change_order_approval,
     api_remove_approval_user,
+    api_start_approval,
 } from "../../../gen_api"
 
 import {
@@ -66,6 +67,12 @@ export function get_approval(approval_id, corp_key) {
         }
 
         return resp;
+    }
+}
+
+export function start_approval(approval_id) {
+    return async function() {
+        return await api_start_approval(approval_id);
     }
 }
 

@@ -35,6 +35,7 @@ import {
     get_group_member_all,
     change_order_approval,
     remove_approval_user,
+    start_approval,
 } from "../../common/actions"
 import CheckBox2 from "./checkbox2"
 
@@ -55,6 +56,7 @@ let mapDispatchToProps = {
     get_group_member_all,
     change_order_approval,
     remove_approval_user,
+    start_approval,
 }
 
 const reorder =  (list, startIndex, endIndex) => {
@@ -122,8 +124,17 @@ export default class extends React.Component {
             events : {
                 'froalaEditor.initialized' : (e, editor) => {
                     this.editor = editor;
-                    if( !!this.state.approval && this.props.user_info.account_id != this.state.approval.can_approval_account_id ) {
-                        this.editor.edit.off()
+
+                    if( !!this.state.approval) {
+                        let now_edit_account_id
+                        for(let v of this.state.order_list) {
+                            if(v.confirm == 0) {
+                                now_edit_account_id = v.account_id
+                                break;
+                            }
+                        }
+                        if(now_edit_account_id != this.props.user_info.account_id)
+                            this.editor.edit.off();
                     } else {
                         this.editor.edit.on()
                     }
@@ -219,8 +230,16 @@ export default class extends React.Component {
 
             await this.setState(_state)
 
-            if( !!this.editor && !!approval.payload.approval && this.props.user_info.account_id != approval.payload.approval.can_approval_account_id ) {
-                this.editor.edit.off()
+            if( !!this.editor && !!approval.payload.approval ) {
+                let now_edit_account_id
+                for(let v of _state.order_list) {
+                    if(v.confirm == 0) {
+                        now_edit_account_id = v.account_id
+                        break;
+                    }
+                }
+                if(now_edit_account_id != this.props.user_info.account_id)
+                    this.editor.edit.off();
             } else {
                 this.editor.edit.on()
             }
@@ -439,6 +458,19 @@ export default class extends React.Component {
         })
     }
 
+    onStartApproval = async () => {
+        let r = await window.confirm(translate("are_you_start_approval"), translate("are_you_start_approval_desc"))
+        if(!r) return;
+
+        let result = await this.props.start_approval(this.state.approval.approval_id)
+        if(result.code == 1) {
+            alert(translate("start_approval_process"))
+            await this.onRefresh()
+        } else {
+            alert(translate("fail_start_approval_process"))
+        }
+    }
+
     onDragEnd = async (result) => {
         if(!result.destination) {
             return;
@@ -494,8 +526,8 @@ export default class extends React.Component {
             <div className="list">
                 <div className="item" key={drafter.account_id}>
                     <div className="approval-line-shape">
-                        <div className="circle"></div>
-                        <div className="line"></div>
+                        <div className={`circle ${drafter.confirm == 1 ? "enable-shape" : ""}`}></div>
+                        <div className={`line ${drafter.confirm == 1 ? "enable-shape" : ""}`}></div>
                     </div>
                     <div className="top">
                         <div className="left">
@@ -544,12 +576,12 @@ export default class extends React.Component {
                                             {...provided.dragHandleProps}>
 
                                             {disable ? null : <div className="remove-approval-user" onClick={this.onRemoveApprovalUser.bind(this, e.account_id, e.name)}>
-                                                <i class="far fa-times"></i>
+                                                <i className="far fa-times"></i>
                                             </div>}
 
                                             <div className="approval-line-shape">
-                                                <div className="circle"></div>
-                                                {is_last ? null : <div className="line"></div>}
+                                                <div className={`circle ${(e.confirm == 1 || this.state.order_list[k - 1].confirm == 1) ? "enable-shape" : ""}`}></div>
+                                                {is_last ? null : <div className={`line ${e.confirm == 1 ? "enable-shape" : ""}`}></div>}
                                             </div>
                                             <div className="top">
                                                 <div className="left">
@@ -576,10 +608,10 @@ export default class extends React.Component {
                     </Droppable>
                 </DragDropContext>
 
-                <div className="add-approval-user" onClick={this.onAddApprovalUser}>
+                {disable ? null : <div className="add-approval-user" onClick={this.onAddApprovalUser}>
                     <i className="fal fa-plus"></i>
                     <div className="text">{translate("add_approval_user")}</div>
-                </div>
+                </div>}
             </div>
         </div>
     }
@@ -607,9 +639,12 @@ export default class extends React.Component {
             return <div></div>
 
         let can_edit_name
+        let now_edit_account_id
         for(let v of this.state.order_list) {
-            if(v.account_id == this.state.approval.can_approval_account_id) {
+            if(v.confirm == 0) {
                 can_edit_name = v.public_info.username
+                now_edit_account_id = v.account_id
+                break;
             }
         }
         let corp_id = this.props.user_info.corp_id || -1
@@ -660,7 +695,7 @@ export default class extends React.Component {
                         <i className="fal fa-eye"></i>
                         {translate("approval_preview")}
                     </div>
-                    { ( this.state.approval.status < 2 && this.state.approval.can_approval_account_id == this.props.user_info.account_id) ?
+                    { ( this.state.approval.status < 2 && now_edit_account_id == this.props.user_info.account_id) ?
                         <div className="but" onClick={this.onClickApprovalSave}>
                             <i className="far fa-save"></i>
                             {translate("modify_content_save")}
@@ -696,7 +731,7 @@ export default class extends React.Component {
                             {translate("re_approval_confirming")}
                         </div>
                     } else {
-                        return <div className="sign">
+                        return <div className="sign sign-disable">
                             {translate("ing_approval")}
                         </div>
                     }
