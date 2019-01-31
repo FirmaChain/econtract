@@ -244,7 +244,7 @@ export default class extends React.Component {
                 let user_name = entity.public_info.username
                 if(entity.is_exclude == 1)
                     user_name = translate("byebye_template", [user_name])
-                let text = translate("who_is_confirm_approval﻿", [user_name])
+                let text = translate("who_is_confirm_approval", [user_name])
                 return <div key={e.chat_id} className="notice">
                     {text}
                 </div>
