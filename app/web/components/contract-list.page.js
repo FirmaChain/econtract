@@ -229,6 +229,7 @@ export default class extends React.Component {
 
 	onClickAddContract() {
         window.openModal("StartContract",{
+            is_approval:this.props.user_info.account_type != 0,
             onClick:async(type)=>{
                 if(type == 1) {
                     history.push("/add-contract")

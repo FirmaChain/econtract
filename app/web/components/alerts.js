@@ -660,6 +660,13 @@ class StartContract extends React.Component{
                             <div className="sub">{translate("use_template_desc_1")}<br/>{translate("use_template_desc_2")}</div>
                         </div>
                     </div>
+                    {this.props.is_approval ? <div className="btn" onClick={this.onClick.bind(this, 2)}>
+                        <i className="fal fa-file-alt"></i>
+                        <div className="btn-desc">
+                            <div className="title">{translate("use_approval")}</div>
+                            <div className="sub">{translate("use_approval_desc_1")}<br/>{translate("use_approval_desc_2")}</div>
+                        </div>
+                    </div>:null}
                 </div>
                 <div className="cancel" onClick={this.closeSelf}>{translate("cancel")}</div>
             </div>
