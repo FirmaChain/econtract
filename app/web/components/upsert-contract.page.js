@@ -285,14 +285,16 @@ export default class extends React.Component {
 
     onClickMoveEditPrivilege = async () => {
 
+        if((this.state.contract.html || "") != this.state.model)
+            if(window._confirm(translate("you_have_modify_content_save_and_pass_modify_verification")))
+                await this.onClickContractSave();
+            else
+                return;
+
         window.openModal("MoveCanEditAccount",{
             user_infos: this.state.infos,
             my_account_id: this.props.user_info.account_id,
             onConfirm : async (user)=>{
-
-                if((this.state.contract.html || "") != this.state.model)
-                    if(window._confirm(translate("you_have_modify_content_save_and_pass_modify_verification")))
-                        await this.onClickContractSave();
 
                 await window.showIndicator()
                 let result = await this.props.move_contract_can_edit_account_id(this.state.contract.contract_id, user.entity_id, user.sub)
@@ -320,6 +322,12 @@ export default class extends React.Component {
     }
 
     onClickRegiserSignInfo = async () => {
+
+        if((this.state.contract.html || "") != this.state.model)
+            if(window._confirm(translate("Are_U_have_modify_content_save_and_register_sign_info")))
+                await this.onClickContractSave()
+            else
+                return;
 
         let sign_info = Object.assign(this.state.sign_info, {}) || {}
         
@@ -354,10 +362,6 @@ export default class extends React.Component {
                 sign_info["#"+v] = sign_info["#"+v].trim()
             }
         }
-
-        if((this.state.contract.html || "") != this.state.model)
-            if(window._confirm(translate("Are_U_have_modify_content_save_and_register_sign_info")))
-                await this.onClickContractSave()
 
         await window.showIndicator()
         let r = await this.props.update_contract_sign_info(this.state.contract.contract_id, sign_info, this.state.contract.the_key)
