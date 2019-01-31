@@ -38,6 +38,7 @@ import {
     start_approval,
     confirm_approval,
     reject_approval,
+    update_approval_name,
 } from "../../common/actions"
 import CheckBox2 from "./checkbox2"
 
@@ -61,6 +62,7 @@ let mapDispatchToProps = {
     start_approval,
     confirm_approval,
     reject_approval,
+    update_approval_name,
 }
 
 const reorder =  (list, startIndex, endIndex) => {
@@ -451,6 +453,22 @@ export default class extends React.Component {
         })
     }
 
+    onClickChangeName = async () => {
+        window.openModal("AddCommonModal", {
+            icon:"fal fa-align-left",
+            title:translate("change_approval_subject"),
+            subTitle:translate("change_approval_name_sub"),
+            placeholder:translate("please_input_approval_name"),
+            confirmText:translate("change"),
+            onConfirm: async (name) => {
+                if(!name || name.trim() == "") {
+                    return alert(translate("please_input_approval_name"))
+                }
+                let resp = await this.props.update_approval_name(this.state.approval.approval_id, name.trim())
+            }
+        })
+    }
+
     onStartApproval = async () => {
         let model = this.state.model
         if(this.state.approval.html != model) {
@@ -741,6 +759,11 @@ export default class extends React.Component {
                         <i className="fal fa-eye"></i>
                         {translate("approval_preview")}
                     </div>
+                    { ( this.state.approval.status < 2 && this.state.approval.account_id == this.props.user_info.account_id) ?
+                        <div className="but" onClick={this.onClickChangeName}>
+                            <i className="fal fa-align-left"></i>
+                            {translate("change_subject")}
+                        </div> : null}
                     { ( this.state.approval.status < 2 && now_edit_account_id == this.props.user_info.account_id) ?
                         <div className="but" onClick={this.onClickApprovalSave}>
                             <i className="far fa-save"></i>
@@ -749,10 +772,10 @@ export default class extends React.Component {
                 </div>
                 {(()=>{
                     //0 : 작성 중 1 : 결재 중 2 : 완료됨 3 : 반려됨
-                    let my_account_id = this.props.user_info.account_id
-                    let can_approval_account_id = this.state.approval.can_approval_account_id
-                    let creator_id = this.state.approval.account_id
-                    let status = this.state.approval.status
+                    let my_account_id = this.props.user_info.account_id;
+                    let can_approval_account_id = this.state.approval.can_approval_account_id;
+                    let creator_id = this.state.approval.account_id;
+                    let status = this.state.approval.status;
 
                     if(status == 2) {
                         return <div className="sign" onClick={(e)=>history.goBack()}>

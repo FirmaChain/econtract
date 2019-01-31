@@ -11,6 +11,7 @@ import {
     api_start_approval,
     api_confirm_approval,
     api_reject_approval,
+    api_update_approval_name,
 } from "../../../gen_api"
 
 import {
@@ -124,6 +125,12 @@ export function remove_approval_user(approval_id, remove_account_id) {
 export function change_order_approval(approval_id, order_list) {
     return async function() {
         return await api_change_order_approval(approval_id, JSON.stringify(order_list))
+    }
+}
+
+export function update_approval_name(approval_id, subject) {
+    return async function() {
+        return await api_update_approval_name(approval_id, subject)
     }
 }
 

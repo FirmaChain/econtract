@@ -62,6 +62,16 @@ export async function api_update_approval_model(approval_id,model){
         session:window.getCookie("session")
     });
 }
+export async function api_update_approval_name(approval_id,name){
+    let __data = new FormData();
+
+    if(approval_id != null) __data.append('approval_id', approval_id);
+	if(name != null) __data.append('name', name)
+
+    return await post("/update_approval_name", __data,{
+        session:window.getCookie("session")
+    });
+}
 export async function api_get_approval(approval_id){
     let __data = new FormData();
 
