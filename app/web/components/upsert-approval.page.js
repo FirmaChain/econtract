@@ -289,6 +289,7 @@ export default class extends React.Component {
             this.setState({
                 approval_modify_status:translate("last_modify_contract_save") + " " + moment().format("YYYY-MM-DD HH:mm:ss")
             })
+            await this.onRefresh()
         } else if(r.code == -9) {
             alert(translate("you_dont_update_already_complete_approval"))
         }
