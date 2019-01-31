@@ -465,6 +465,7 @@ export default class extends React.Component {
                     return alert(translate("please_input_approval_name"))
                 }
                 let resp = await this.props.update_approval_name(this.state.approval.approval_id, name.trim())
+                await this.onRefresh(false)
             }
         })
     }
