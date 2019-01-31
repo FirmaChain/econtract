@@ -279,10 +279,10 @@ export default class extends React.Component {
         let model = this.state.model
 
         if(this.state.approval.html == model)
-            return;
+            return false;
 
         let result = await window.confirm(translate("modify_approval"), translate("modify_approval_desc"))
-        if(!result) return;
+        if(!result) return false;
 
         let r = await this.props.update_approval_model(this.state.approval.approval_id, model, this.props.user_info.corp_key)
         if(r.code == 1) {
