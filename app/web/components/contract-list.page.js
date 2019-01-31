@@ -227,7 +227,7 @@ export default class extends React.Component {
         return result
     }
 
-	onClickAddContract() {
+	onClickAddContract = () => {
         window.openModal("StartContract",{
             is_approval:this.props.user_info.account_type != 0,
             onClick:async(type)=>{
