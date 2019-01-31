@@ -292,6 +292,7 @@ export default class extends React.Component {
         } else if(r.code == -9) {
             alert(translate("you_dont_update_already_complete_approval"))
         }
+        return true;
     }
 
     onToggleUser = (entity_id, corp_id, force_open) => {
