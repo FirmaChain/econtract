@@ -161,6 +161,11 @@ export default class extends React.Component {
 
             if( params.approval_id && !isNaN(params.approval_id) ) {
                 let approval = await this.props.get_approval(params.approval_id, this.props.user_info.corp_key || null)
+                if(approval.payload.approval.status != window.CONST.APPROVAL_STATUS.COMPLETED) {
+                    alert(translate("no_completed_approval_use_contract"))
+                    this.blockFlag = true
+                    return history.goBack();
+                }
                 this.setState({
                     approval:approval.payload.approval
                 })

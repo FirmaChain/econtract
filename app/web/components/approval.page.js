@@ -242,10 +242,13 @@ export default class extends React.Component {
             <div className="list-body-item list-date">{moment(e.addedAt).format("YYYY-MM-DD HH:mm:ss")}</div>
             <div className="list-body-item list-action">
                 <div className="button-container">
-                    <div className="action-button action-blue-but" onClick={this.useApproval.bind(this, e.approval_id)}>{translate("use")}</div>
-                    <div className="arrow-button arrow-blue-but" onClick={this.onClickOption.bind(this, e.approval_id)} >
+                    {e.status == window.CONST.APPROVAL_STATUS.COMPLETED ? 
+                        <div className="action-button action-blue-but" onClick={this.useApproval.bind(this, e.approval_id)}>{translate("use")}</div> : 
+                        <div className="action-button action-transparent-but" onClick={()=>history.push(`/edit-approval/${e.approval_id}`)}>{translate("view")}</div>
+                    }
+                    <div className={`arrow-button ${e.status == window.CONST.APPROVAL_STATUS.COMPLETED ? "arrow-blue-but":"arrow-transparent-but"}`} onClick={this.onClickOption.bind(this, e.approval_id)} >
                         <i className="fas fa-caret-down"></i>
-                    <div className="arrow-dropdown" style={{display:!!this.isOpenOption(e.approval_id) ? "initial" : "none"}}>
+                        <div className="arrow-dropdown" style={{display:!!this.isOpenOption(e.approval_id) ? "initial" : "none"}}>
                             <div className="container">
                                 <div className="move">{translate("remove")}</div>
                             </div>
