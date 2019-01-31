@@ -104,11 +104,13 @@ export default class extends React.Component {
     onRefresh = async (nextProps) => {
         nextProps = !!nextProps ? nextProps : this.props
 
+        await window.showIndicator();
+
         let all_group_member = await this.props.get_group_member_all(this.props.user_info.corp_key)
 
         let params = queryString.parse(nextProps.location.search)
 
-        this.setState({
+        await this.setState({
             can_approval_account_id:this.props.user_info.account_id,
             member_list: all_group_member.payload,
             order_list:[{
@@ -126,6 +128,7 @@ export default class extends React.Component {
                 template
             })
         }
+        await window.hideIndicator();
     }
 
     componentWillReceiveProps(props){
