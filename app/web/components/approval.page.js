@@ -208,6 +208,11 @@ export default class extends React.Component {
         return this.state.approval_checks.length == approvals.list.length 
     }
 
+    useApproval = (approval_id, e) => {
+        e.stopPropagation();
+        history.push({pathname:"/add-contract", search:"?approval_id="+approval_id})
+    }
+
     render_approval_slot(e, k) {
         let status_text
         switch(e.status) {
@@ -237,7 +242,7 @@ export default class extends React.Component {
             <div className="list-body-item list-date">{moment(e.addedAt).format("YYYY-MM-DD HH:mm:ss")}</div>
             <div className="list-body-item list-action">
                 <div className="button-container">
-                    <div className="action-button action-blue-but">{translate("use")}</div>
+                    <div className="action-button action-blue-but" onClick={this.useApproval.bind(this, e.approval_id)}>{translate("use")}</div>
                     <div className="arrow-button arrow-blue-but" onClick={this.onClickOption.bind(this, e.approval_id)} >
                         <i className="fas fa-caret-down"></i>
                     <div className="arrow-dropdown" style={{display:!!this.isOpenOption(e.approval_id) ? "initial" : "none"}}>

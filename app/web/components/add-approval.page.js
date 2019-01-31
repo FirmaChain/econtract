@@ -19,6 +19,7 @@ import {
     select_userinfo_with_email,
     get_group_member_all,
     get_template,
+    get_approval,
 } from "../../common/actions"
 import CheckBox2 from "./checkbox2"
 
@@ -34,6 +35,7 @@ let mapDispatchToProps = {
     select_userinfo_with_email,
     get_group_member_all,
     get_template,
+    get_approval,
 }
 
 const reorder =  (list, startIndex, endIndex) => {

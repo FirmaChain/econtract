@@ -21,6 +21,7 @@ import {
     update_epin_account,
     update_epin_group,
     get_template,
+    get_approval,
     genPIN,
 } from "../../common/actions"
 import CheckBox2 from "./checkbox2"
@@ -40,6 +41,7 @@ let mapDispatchToProps = {
     update_epin_account,
     update_epin_group,
     get_template,
+    get_approval,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -154,6 +156,13 @@ export default class extends React.Component {
                 let template = await this.props.get_template(params.template_id, this.props.user_info.corp_key || null)
                 this.setState({
                     template
+                })
+            }
+
+            if( params.approval_id && !isNaN(params.approval_id) ) {
+                let approval = await this.props.get_approval(params.approval_id, this.props.user_info.corp_key || null)
+                this.setState({
+                    approval:approval.payload.approval
                 })
             }
 
@@ -348,12 +357,15 @@ export default class extends React.Component {
         let is_pin_used = this.state.is_use_pin;
         let pin = is_pin_used ? this.state.pin_number : "000000";
 
-        let template_model = null
+        let pre_model = null
         if(this.state.template) {
-            template_model = Buffer.from(this.state.template.html).toString()
+            pre_model = Buffer.from(this.state.template.html).toString()
+        }
+        else if(this.state.approval) {
+            pre_model = Buffer.from(this.state.approval.html).toString()   
         }
 
-        let resp =  await this.props.new_contract(contract_name, counterparties, pin, necessary_info, this.state.can_edit_account_id, !!is_pin_used ? 1 : 0, template_model);
+        let resp =  await this.props.new_contract(contract_name, counterparties, pin, necessary_info, this.state.can_edit_account_id, !!is_pin_used ? 1 : 0, pre_model);
 
         if(resp.code == 1) {
             let contract_id = resp.payload.contract_id
@@ -384,7 +396,16 @@ export default class extends React.Component {
             title: this.state.template.subject,
             model: Buffer.from(this.state.template.html).toString(),
         })
+    }
 
+    onViewApproval = () => {
+        if(!this.state.approval)
+            return;
+
+        window.openModal("PreviewContract",{
+            title: this.state.approval.name,
+            model: Buffer.from(this.state.approval.html).toString(),
+        })
     }
 
     onClickRemoveCounterparty = (k, e)=>{
@@ -518,6 +539,30 @@ export default class extends React.Component {
                             <div className="form-head"></div>
                             <div className="form-input">
                                 <div className="btn-add-user btn-add-user-active" onClick={this.onViewTemplate}>{translate("preview_template")}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div> : null}
+
+
+                {this.state.approval ? <div className="row">
+                    <div className="left-desc">
+                        <div className="desc-head">{translate("selected_approval")}</div>
+                        <div className="desc-content">{translate("use_approval_this_contract")}</div>
+                    </div>
+                    <div className="right-form">
+                        <div className="column">
+                            <div className="form-head"></div>
+                            <div className="form-input">
+                                <input className="common-textbox" type="text"
+                                    value={this.state.approval.name || ""}
+                                    disabled />
+                            </div>
+                        </div>
+                        <div className="column">
+                            <div className="form-head"></div>
+                            <div className="form-input">
+                                <div className="btn-add-user btn-add-user-active" onClick={this.onViewApproval}>{translate("preview_approval")}</div>
                             </div>
                         </div>
                     </div>
