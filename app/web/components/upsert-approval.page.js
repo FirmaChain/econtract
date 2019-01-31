@@ -452,8 +452,8 @@ export default class extends React.Component {
     onStartApproval = async () => {
         let model = this.state.model
         if(this.state.approval.html != model) {
-            let result = await window.confirm(translate("modify_article"), translate("modify_article_you_keep_going"));
-            if(result) await this.onClickApprovalSave();
+            //let result = await window.confirm(translate("modify_article"), translate("modify_article_you_keep_going"));
+            /*if(result) */await this.onClickApprovalSave();
         }
 
         let r = await window.confirm(translate("are_you_start_approval"), translate("are_you_start_approval_desc"))
