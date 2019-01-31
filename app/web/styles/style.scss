@@ -2761,8 +2761,17 @@ div.checkbox2-comp{
 
                             >.left {
                                 width:70px;
-                                font-size:$font1;
                                 margin-left:20px;
+
+                                >.title {
+                                    font-size:$font1;
+                                }
+
+                                >.status {
+                                    font-size:$font1;
+                                    font-weight: bold;
+                                    margin-top:5px;
+                                }
                             }
 
                             >.right {

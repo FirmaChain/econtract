@@ -385,6 +385,7 @@
     "add_contract_in_group_desc_1":["해당 계약이 선택하신 그룹에 추가됩니다.","Contract will be added to selected group.","合同将添加到所选定的团体中。"],
     "who_is_move_edit_privilege":["{0}님이 {1}님에게 수정 권한을 넘겼습니다.","{0} has transfered permission to edit to {1}.","{0}给{1}专递编辑权限。"],
     "no_account_info":["일치하는 계정 정보가 없습니다.","There is no account matching the information you provided.","没有匹配的用户。"],
+    "wait_approve":["결재 대기","",""],
     "edit":["편집","Edit","编辑"],
     "individual_join_term_agree":["개인 가입 약관 동의","Terms of Service (Individual)","同意条款（个人用户）"],
     "not_vat_include_price_desc":["하기의 금액은 VAT가 포함되지 않은 금액입니다.","Sum does not account for value-added tax.",""],
@@ -743,6 +744,7 @@
     "my_confirm":["내 승인","My Approval","我的裁决"],
     "add_contract_in_group":["그룹에 계약 추가하기","Add Contract to Group","把合同添加到团体"],
     "master_keyword":["마스터 키워드","Master Keyword","Master Keyword"],
+    "approve":["승인","",""],
     "no_verify_desc":["E-Contract를 처음 시작하거나, 접속된 브라우저가 인증되지 않은 상태일 경우 아래의 방법으로 E-Contract를 시작할 수 있습니다.","If you are using E-Contract for the first time, please register as an individual or business.\nIf you already have an account. go to [Sign in with Existing Account].","如果您第一次使用电子合同或您的浏览器还没有验证，可以参考以下说明"],
     "user":["사용자","User","用户"]
 }

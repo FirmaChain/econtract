@@ -554,7 +554,8 @@ export default class extends React.Component {
                     </div>
                     <div className="top">
                         <div className="left">
-                            {translate("drafter")}
+                            <div className="title">{translate("drafter")}</div>
+                            <div className="status">{drafter.confirm == 1 ? translate("approve") : ""}</div>
                         </div>
                         <div className="right">
                             <div className="name">
@@ -589,6 +590,14 @@ export default class extends React.Component {
                                 else
                                     role = translate("approval_user")
 
+                                let status_text = e.confirm == 1 ? translate("approve") : ""
+                                if(e.confirm == 0 && this.state.order_list[k - 1].confirm == 1) {
+                                    status_text = translate("wait_approve")
+                                } else if(e.confirm == 0 && e.status == 3 && !!e.comment) {
+                                    status_text = translate("rejected")
+                                }
+
+
                                 return <Draggable key={e.account_id} draggableId={e.account_id} index={k}
                                     isDragDisabled={disable}>
                                     {(provided, snapshot) => (
@@ -608,7 +617,8 @@ export default class extends React.Component {
                                             </div>
                                             <div className="top">
                                                 <div className="left">
-                                                    {role}
+                                                    <div className="title">{role}</div>
+                                                    <div className="status">{status_text}</div>
                                                 </div>
                                                 <div className="right">
                                                     <div className="name">
