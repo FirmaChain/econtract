@@ -235,6 +235,8 @@ export default class extends React.Component {
                     history.push("/add-contract")
                 } else if(type == 2) {
                     history.push("/template")
+                } else if(type == 3) {
+                    history.push("/approval")
                 }
             }
         })
