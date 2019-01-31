@@ -278,7 +278,7 @@ export default class extends React.Component {
     onClickApprovalSave = async () => {
         let model = this.state.model
 
-        if(this.state.approval.html == this.state.model)
+        if(this.state.approval.html == model)
             return;
 
         let result = await window.confirm(translate("modify_approval"), translate("modify_approval_desc"))
@@ -384,6 +384,9 @@ export default class extends React.Component {
     }
 
     onRemoveApprovalUser = async (account_id, name) => {
+        if(this.state.order_list.length == 2)
+            return alert(translate("more_than_2_approval_user"));
+
         let result = await window.confirm(translate("remove_approval_user_title"), translate("remove_approval_user_desc", [name]))
 
         if(result) {
@@ -447,6 +450,12 @@ export default class extends React.Component {
     }
 
     onStartApproval = async () => {
+        let model = this.state.model
+        if(this.state.approval.html != model) {
+            let result = await window.confirm(translate("modify_article_you_keep_going"));
+            if(result) await this.onClickApprovalSave();
+        }
+
         let r = await window.confirm(translate("are_you_start_approval"), translate("are_you_start_approval_desc"))
         if(!r) return;
 
