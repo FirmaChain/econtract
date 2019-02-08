@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron')
+/*const { app, BrowserWindow } = require('electron')
 
 function createWindow () {
 	win = new BrowserWindow({ width: 1200, height: 800, backgroundColor: '#2e2c29' })
@@ -20,4 +20,4 @@ app.on('activate', () => {
 	if (win === null) {
 		createWindow()
 	}
-})
+})*/
