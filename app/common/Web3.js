@@ -268,6 +268,13 @@ class Web3Wrapper {
             return await this.web3.eth.getTransactionReceipt("0x"+transactionId)
         }
     }
+
+    sign(data, privateKey) {
+        let list = this.allAccounts();
+        let account = list[0];
+        let signed = account.sign(data);
+        return signed;
+    }
 }
 
 let _web3 = new Web3Wrapper();
