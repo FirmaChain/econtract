@@ -1,3 +1,6 @@
+import React from "react"
+import ReactDOM from "react-dom"
+import ReactDOMServer from 'react-dom/server';
 import {
     api_new_contract,
     api_get_contracts,
