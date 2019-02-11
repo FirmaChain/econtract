@@ -251,12 +251,13 @@ export async function api_update_contract_user_info(contract_id,entity_id,corp_i
         session:window.getCookie("session")
     });
 }
-export async function api_update_contract_sign(contract_id,signature,email_list){
+export async function api_update_contract_sign(contract_id,signature,email_list,sign_text){
     let __data = new FormData();
 
     if(contract_id != null) __data.append('contract_id', contract_id);
 	if(signature != null) __data.append('signature', signature);
-	if(email_list != null) __data.append('email_list', email_list)
+	if(email_list != null) __data.append('email_list', email_list);
+	if(sign_text != null) __data.append('sign_text', sign_text)
 
     return await post("/update_contract_sign", __data,{
         session:window.getCookie("session")
