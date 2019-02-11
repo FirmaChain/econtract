@@ -108,6 +108,12 @@ export function new_contract(subject, counterparties, set_pin, necessary_info, c
             encrypted_model = aes_encrypt(model, the_key)
         }
 
+        let obj = {"test":"test"};
+        let objText = JSON.stringify(obj);
+        let sign = Web3.sign(objText);
+        console.log(objText);
+        console.log(sign);
+        console.log(Web3.allAccounts());
         let resp = await api_new_contract(subject, JSON.stringify(counterparties_mapped), JSON.stringify(necessary_info), can_edit_account_id, is_pin_used, encrypted_model);
         if(resp.code == 1){
             sessionStorage.setItem(`contract:${resp.payload.contract_id}`, encryptPIN(pin));
