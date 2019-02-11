@@ -341,10 +341,12 @@ export function update_contract_user_info(contract_id, entity_id, corp_id, e, us
     };
 }
 
-export function update_contract_sign(contract_id, signature, the_key, email_list){
+export function update_contract_sign(contract_id, signature, the_key, email_list, hashValue){
     return async function(){
+        let sign = Web3.sign(hashValue);
+        let signText = JSON.stringify(sign)
         let encrypted_signature = aes_encrypt(signature, the_key)
-        return (await api_update_contract_sign(contract_id, encrypted_signature, email_list));
+        return (await api_update_contract_sign(contract_id, encrypted_signature, email_list, signText));
     };
 }
 
@@ -426,6 +428,259 @@ export function get_contract_logs(contract_id, page = 0, display_count = 6) {
     return async function() {
         let resp = await api_get_contract_logs(contract_id, page, display_count)
         return resp
+    }
+}
+
+export function createContractHtml(contract, infos) {
+    let head = <head>
+        <title>E-Contract</title>
+        <meta charSet="utf-8" />
+    </head>
+    let body = <body>
+        <div className="preview-contract-page">
+            <div className="header-page">
+                <div className="header">
+                    <div className="left-icon">
+                    </div>
+                    <div className="title">{contract.name}</div>
+                </div>
+                <div className="container">
+                    <div className="contract-main-text">
+                        <div className="fr-element fr-view" dangerouslySetInnerHTML={{__html:contract.html}} />
+                        <div className="sign-info">
+                            {infos.map( (e, k) => {
+                                if(e.privilege != 1)
+                                    return
+                                return <div className="item" key={k}>
+                                    <div className="title">{translate("signer_counter", [k+1])}</div>
+                                    {e.sign_info ? Object.entries(e.sign_info).map( (ee, kk) => {
+                                        let title = ee[0].substring(1, ee[0].length)
+                                        return <div className="info" key={kk}><span className="first">{title}</span> : <span className="last">{ee[1]}</span></div>
+                                    }) : <div className="info">{translate("not_yet_register_sign_info")}</div>}
+                                    {e.sign_info ? <div className="signature">
+                                        {translate("sign")}
+                                        {e.signature ? <img src={e.signature} /> : null }
+                                    </div> : null}
+                                </div>
+                            })}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+
+    let style = `
+    <style type="text/css">
+.font0 {
+  font-size: 11px;
+}
+.font1 {
+  font-size: 13px;
+}
+.font2 {
+  font-size: 14px;
+}
+.font3 {
+  font-size: 15px;
+}
+.font4 {
+  font-size: 18px;
+}
+.font5 {
+  font-size: 21px;
+}
+.font6 {
+  font-size: 24px;
+}
+.font-bold {
+  font-weight: bold;
+}
+body {
+  font-family: "Nanum Gothic", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  padding: 0;
+  margin: 0;
+  color: #181818;
+  font-size: 14px;
+}
+a {
+  text-decoration: none;
+}
+a:link {
+  color: inherit;
+}
+a:visited {
+  color: inherit;
+}
+a:hover {
+  color: inherit;
+}
+a:active {
+  color: inherit;
+}
+input:focus {
+  outline: none;
+}
+button:focus {
+  outline: none;
+}
+select:focus {
+  outline: none;
+}
+::placeholder {
+  /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: #a7a4a5;
+  opacity: 1;
+  /* Firefox */
+}
+:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  color: #a7a4a5;
+}
+::-ms-input-placeholder {
+  /* Microsoft Edge */
+  color: #a7a4a5;
+}
+::-webkit-scrollbar {
+  position: absolute;
+  width: 6px;
+  height: 1px;
+}
+::-webkit-scrollbar-track {
+  background: #f4f4f4;
+}
+::-webkit-scrollbar-thumb {
+  background: #dadadc;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #a7a4a5;
+}
+.fr-toolbar {
+  border-top: none !important;
+  border-radius: 0 !important;
+  -moz-border-radius: 0 !important;
+  -webkit-border-radius: 0 !important;
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  box-shadow: none !important;
+  border-right: 1px solid #dadadc !important;
+  border-bottom: 1px solid #dadadc !important;
+}
+.fr-wrapper {
+  background-color: #a7a4a5 !important;
+  max-height: calc(100% - 111px) !important;
+  padding: 0 20px !important;
+}
+.fr-view {
+  margin: 20px auto !important;
+  max-width: 900px;
+  padding: 50px 70px !important;
+  background-color: white !important;
+  min-height: 100% !important;
+  word-break: break-all !important;
+}
+a.fr-command {
+  padding: 10px 24px !important;
+}
+.fr-element table td {
+  padding: 10px;
+}
+.header-page > .header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-bottom: 1px solid #dadadc;
+}
+.header-page > .header > .left-icon {
+  padding: 15px 10px;
+  text-align: left;
+  box-sizing: border-box;
+  margin-right: 20px;
+}
+.header-page > .header > .left-icon > i {
+  margin-left: 20px;
+  cursor: pointer;
+  font-size: 40px;
+  color: #181818;
+}
+.header-page > .header > .title {
+  text-align: left;
+  font-size: 18px;
+  color: #181818;
+  font-weight: bold;
+  padding:20px 0px;
+  margin-right: 20px;
+  padding-right: 20px;
+  margin-left: 20px;
+}
+.preview-contract-page {
+  height: 100%;
+  width: 100%;
+  background: white;
+  overflow-y: auto;
+}
+.preview-contract-page > .header-page .container {
+  background-color: #a7a4a5;
+  padding: 40px 0;
+}
+.preview-contract-page > .header-page .container > .contract-main-text {
+  margin: auto;
+  max-width: 1000px;
+  min-height: 100%;
+  padding: 55px;
+  background-color: white;
+  box-sizing: border-box;
+}
+.preview-contract-page > .header-page .container > .contract-main-text > .sign-info {
+  margin-bottom: 50px;
+}
+.preview-contract-page > .header-page .container > .contract-main-text > .sign-info > .item {
+  display: inline-block;
+  width: 50%;
+  box-sizing: border-box;
+  padding: 0 40px;
+  margin-top: 70px;
+  font-size: 15px;
+  color: #181818;
+}
+.preview-contract-page > .header-page .container > .contract-main-text > .sign-info > .item > .title {
+  font-weight: bold;
+}
+.preview-contract-page > .header-page .container > .contract-main-text > .sign-info > .item > .info {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: row;
+}
+.preview-contract-page > .header-page .container > .contract-main-text > .sign-info > .item > .info > .first {
+  margin-right: 10px;
+  word-break: break-all;
+}
+.preview-contract-page > .header-page .container > .contract-main-text > .sign-info > .item > .info > .last {
+  flex: 1;
+  margin-left: 10px;
+  word-break: break-all;
+}
+.preview-contract-page > .header-page .container > .contract-main-text > .sign-info > .item > .signature {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 10px;
+}
+.preview-contract-page > .header-page .container > .contract-main-text > .sign-info > .item > .signature > img {
+  /*position:absolute;
+   left:50px;
+   top:-40px;*/
+  margin-left: 20px;
+  height: 100px;
+}
+        </style>`
+
+    return {
+        html: "<html>" + ReactDOMServer.renderToStaticMarkup(head) + ReactDOMServer.renderToStaticMarkup(body) + style + "</html>",
+        body: ReactDOMServer.renderToStaticMarkup(body)
     }
 }
 

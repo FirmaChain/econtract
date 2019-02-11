@@ -9,6 +9,7 @@ import 'froala-editor/css/froala_editor.pkgd.min.css';
 
 import FroalaEditor from 'react-froala-wysiwyg';
 import socketIOClient from 'socket.io-client'
+import { sha256 } from 'js-sha256'
  
 import { connect } from 'react-redux';
 import { Link, Prompt } from 'react-router-dom'

@@ -14,6 +14,7 @@ import { connect } from 'react-redux';
 import { Link, Prompt } from 'react-router-dom'
 import history from '../history';
 import pdfjsLib from "pdfjs-dist"
+import { sha256 } from "js-sha256"
 import translate from "../../common/translate"
 import Information from "./information.comp"
 import Footer from "./footer.comp"
@@ -41,6 +42,7 @@ import {
     send_chat,
     check_ticket_count,
     select_subject,
+    createContractHtml,
 
 } from "../../common/actions"
 import CheckBox2 from "./checkbox2"
@@ -408,11 +410,13 @@ export default class extends React.Component {
                 let exist_ticket = (await this.props.check_ticket_count()).payload
                 if(!exist_ticket)
                     return alert(translate("no_ticket_please_charge"))
+
+                let contract_body = createContractHtml(this.state.contract, this.state.infos).body
                 
                 if(await window.confirm(translate("ticket_use_notify"), translate("ticket_use_notify_desc"))) {
                     await window.showIndicator()
                     let email_list = this.state.infos.filter(e=>window.email_regex.test(e.sub)).map(e=>e.sub)
-                    let r = await this.props.update_contract_sign(this.state.contract.contract_id, signature, this.state.contract.the_key, email_list)
+                    let r = await this.props.update_contract_sign(this.state.contract.contract_id, signature, this.state.contract.the_key, email_list, sha256(contract_body))
                     if(r.code == -9) {
                         return alert(translate("you_dont_update_complete_contract_sign"))
                     } else if(r.code == -11) {
