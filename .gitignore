@@ -322,3 +322,4 @@ Temporary Items
 
 # End of https://www.gitignore.io/api/node,android,objective-c,reactnative,visualstudiocode
 config.json
+electron/release-builds
