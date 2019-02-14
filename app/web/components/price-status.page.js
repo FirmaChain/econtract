@@ -170,6 +170,9 @@ export default class extends React.Component {
         let plan_monthly_options = plan_monthly.map((e)=>{return {value: e.plan_id, label: e.data.title}});
         let plan_yearly_options = plan_yearly.map((e)=>{return {value: e.plan_id, label: e.data.title}});
 
+        console.log(plan_monthly)
+        console.log(plan_yearly)
+
         window.openModal("PurchaseRegularPayment", {
             allPlans: subscribe_plans,
             planMonthly: plan_monthly,
@@ -195,7 +198,12 @@ export default class extends React.Component {
                 if (period_type == 1) { // Yearly
                     if (!current) {
                         // TODO: Make branch between register and change
-                        resp = await this.props.make_yearly_commitment(plan_id);
+                        //resp = await this.props.make_yearly_commitment(plan_id);
+
+                        let select_plan = plan_yearly.find(e => e.plan_id == plan_id)
+                        await this.temporaryPurchaseFunction("연간 구독 결제 " + select_plan.ticket_count, select_plan.total_price)
+                        resp = {code:1}
+
                         await window.hideIndicator()
                         if(resp.code == 1) {
                             alert(translate("subscribe_purchase_plan_yearly"))
@@ -215,20 +223,23 @@ export default class extends React.Component {
                 } else {
                     if (current) {
                         let resp = await this.props.terminate_monthly_commitment();
+                        await window.hideIndicator()
                         if(resp.code != 1) {
-                            await window.hideIndicator()
                             return alert("변경 프로세스 중 해지 프로세스에 실패하였습니다.");
                         }
                         let resp2 = await this.props.reserve_monthly_commitment(plan_id);
                         if(resp2.code != 1) {
-                            await window.hideIndicator()
                             return alert("변경 프로세스 중 재 예약 프로세스에 실패하였습니다.");
                         }
-                        await window.hideIndicator()
                         return alert("구독 변경에 성공하였습니다.")
 
                     } else {
-                        resp = await this.props.make_monthly_commitment(plan_id);
+                        //resp = await this.props.make_monthly_commitment(plan_id);
+
+                        let select_plan = plan_monthly.find(e => e.plan_id == plan_id)
+                        await this.temporaryPurchaseFunction("월간 구독 결제 " + select_plan.ticket_count, select_plan.total_price)
+                        resp = {code:1}
+
                         await window.hideIndicator()
                         if(resp.code == 1) {
                             alert(translate("subscribe_purchase_plan_monthly"));
@@ -262,6 +273,61 @@ export default class extends React.Component {
         }
     }
 
+    temporaryPurchaseFunction = async (name, amount) => {
+        amount = Math.floor(amount)
+        let customer_uid = window.create_customer_uid(this.props.user_info)
+        IMP.init(window.CONST.IMP_USER_CODE);
+        let result = await new Promise( r => IMP.request_pay({
+            pg: "jtnet",
+            language:global.LANG == "KR" ? "ko" : "en",
+            pay_method: "card", // "card"만 지원됩니다
+            merchant_uid: name+"_"+Math.floor(new Date().getTime() / 1000), // 빌링키 발급용 주문번호
+            customer_uid: customer_uid, // 카드(빌링키)와 1:1로 대응하는 값
+            name: name,
+            amount: amount, // 0 으로 설정하여 빌링키 발급만 진행합니다.
+            buyer_email: this.props.user_info.email,
+            buyer_name: this.props.user_info.account_type == 0 ? this.props.user_info.username : this.props.user_info.company_ceo,
+            buyer_tel: this.props.user_info.account_type == 0 ? this.props.user_info.userphone : this.props.user_info.company_tel,
+            buyer_addr: this.props.user_info.account_type == 0 ? this.props.user_info.useraddress : this.props.user_info.company_address,
+        }, async (resp) => { // callback
+            if (resp.success) {
+                let preview_data = {
+                    card_type:resp.card_name,
+                    pg_tid: resp.pg_tid,
+                    merchant_uid: resp.merchant_uid,
+                    buyer_name: resp.buyer_name,
+                }
+                console.log(preview_data)
+                let register_result = await this.props.input_payment_info(customer_uid, preview_data);
+                if(register_result.code == 1) {
+                    alert("결제가 성공적으로 완료되었습니다.")
+                    await this.onRefresh();
+                    return r(1)
+                } else {
+                    alert("결제에 실패하였습니다.")
+                    return r(-999)
+                }
+                //alert(translate("success_register_card_info"))
+
+            } else {
+                console.log(resp)
+                if(resp.error_code == "F1002")
+                    return r(0)
+
+                let msg = "결제에 실패하였습니다.";
+                msg += `${translate("error_description")} : ${resp.error_msg}`;
+                alert(msg)
+                return r(resp.error_code)
+            }
+        }))
+
+        if(result == 1 || result == 0) {
+            return true
+        } else {
+            return false
+        }
+    }
+
     onBuyTicket = async () => {
         if(!this.state.partial_payment_info) {
             let result = await this.onCheckCardInfo()
@@ -275,10 +341,10 @@ export default class extends React.Component {
             ticket_plan:onetime_ticket_plan,
             onResponse: async (give_count) => {
                 let rr = await window.confirm(translate("purcahse_onetime_ticket"), translate("purcahse_onetime_ticket_desc", [give_count]))
-                console.log(rr)
                 if(rr) {
-                    await window.showIndicator()
-                    let subscribe_plans = this.state.subscription_plans;
+                    //await window.showIndicator()
+                    // recently code. must be rollback
+                    /*let subscribe_plans = this.state.subscription_plans;
                     let plan_id = subscribe_plans.filter(e=>e.type==1).sort((a,b)=>a.total_price-b.total_price)[0].plan_id;
                     let resp = await this.props.buy_onetime_ticket(plan_id, give_count);
                     if (resp.code == 1) {
@@ -286,8 +352,10 @@ export default class extends React.Component {
                         await this.onRefresh();
                     } else {
                         alert(translate("fail_onetime_payment"))
-                    }
-                    await window.hideIndicator()
+                    }*/
+                    await this.temporaryPurchaseFunction("건별 이용권 구매" + give_count, give_count * 1500 * 1.1)
+
+                    //await window.hideIndicator()
                 }
             }
         })
@@ -317,7 +385,6 @@ export default class extends React.Component {
 
         let customer_uid = window.create_customer_uid(this.props.user_info)
         IMP.init(window.CONST.IMP_USER_CODE);
-        console.log("ㅁㄴㅇㅁㄴㅇ", this.props.account_type == 0 ? this.props.user_info.username : this.props.user_info.company_ceo)
         let result = await new Promise( r => IMP.request_pay({
             pg: "jtnet",
             language:global.LANG == "KR" ? "ko" : "en",
@@ -506,7 +573,7 @@ export default class extends React.Component {
                                 <div className="button" onClick={this.onBuyTicket}>{translate("buy")}</div>
                             </div>
                         </div>
-                        <div className="bar gray-bar">
+                        {/*<div className="bar gray-bar">
                             <div className="left">
                                 <div className="title">{translate("card_info")}</div>
                                 <div className="desc">{card_info_string}</div>
@@ -514,7 +581,7 @@ export default class extends React.Component {
                             <div className="right">
                                 <div className="button" onClick={this.onCheckCardInfo}>{this.state.partial_payment_info ? translate("re_register") : translate("register")}</div>
                             </div>
-                        </div>
+                        </div>*/}
                     </div> : null }
                 </div>
                 {this.props.user_info.account_type != 2 ?
