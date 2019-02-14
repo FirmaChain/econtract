@@ -35,7 +35,7 @@ export default class extends React.Component {
             await this.props.fetch_user_info()
             await window.hideIndicator()
 
-            alert("서비스 검수 기간 중입니다. 검수 기간은 2019/02/11 까지로 예정되어 있으며 완료되는 순간 모든 계약 데이터와 계정 정보가 초기화 됩니다.")
+            alert("서비스 검수 기간 중입니다. 검수 기간은 2019/02/19 까지로 예정되어 있으며 완료되는 순간 모든 계약 데이터와 계정 정보가 초기화 됩니다.")
         })()
     }
 
