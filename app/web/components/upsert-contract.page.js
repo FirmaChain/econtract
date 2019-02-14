@@ -411,7 +411,7 @@ export default class extends React.Component {
                 if(!exist_ticket)
                     return alert(translate("no_ticket_please_charge"))
 
-                let contract_body = createContractHtml(this.state.contract, this.state.infos).body
+                let contract_body = createContractHtml(this.state.contract, this.state.infos).exclude_sign_body
                 
                 if(await window.confirm(translate("ticket_use_notify"), translate("ticket_use_notify_desc"))) {
                     await window.showIndicator()

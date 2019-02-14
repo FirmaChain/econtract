@@ -112,12 +112,6 @@ export function new_contract(subject, counterparties, set_pin, necessary_info, c
             encrypted_model = aes_encrypt(model, the_key)
         }
 
-        let obj = {"test":"test"};
-        let objText = JSON.stringify(obj);
-        let sign = Web3.sign(objText);
-        console.log(objText);
-        console.log(sign);
-        console.log(Web3.allAccounts());
         let resp = await api_new_contract(subject, JSON.stringify(counterparties_mapped), JSON.stringify(necessary_info), can_edit_account_id, is_pin_used, encrypted_model);
         if(resp.code == 1){
             sessionStorage.setItem(`contract:${resp.payload.contract_id}`, encryptPIN(pin));
@@ -353,7 +347,7 @@ export function update_contract_user_info(contract_id, entity_id, corp_id, e, us
 
 export function update_contract_sign(contract_id, signature, the_key, email_list, hashValue){
     return async function(){
-        let sign = Web3.sign(hashValue);
+        let sign = Web3.sign(JSON.stringify({hash:hashValue}));
         let signText = JSON.stringify(sign)
         let encrypted_signature = aes_encrypt(signature, the_key)
         return (await api_update_contract_sign(contract_id, encrypted_signature, email_list, signText));
@@ -471,6 +465,36 @@ export function createContractHtml(contract, infos) {
                                         {translate("sign")}
                                         {e.signature ? <img src={e.signature} /> : null }
                                     </div> : null}
+                                </div>
+                            })}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+
+    let exclude_sign_body = <body>
+        <div className="preview-contract-page">
+            <div className="header-page">
+                <div className="header">
+                    <div className="left-icon">
+                    </div>
+                    <div className="title">{contract.name}</div>
+                </div>
+                <div className="container">
+                    <div className="contract-main-text">
+                        <div className="fr-element fr-view" dangerouslySetInnerHTML={{__html:contract.html}} />
+                        <div className="sign-info">
+                            {infos.map( (e, k) => {
+                                if(e.privilege != 1)
+                                    return
+                                return <div className="item" key={k}>
+                                    <div className="title">{translate("signer_counter", [k+1])}</div>
+                                    {e.sign_info ? Object.entries(e.sign_info).map( (ee, kk) => {
+                                        let title = ee[0].substring(1, ee[0].length)
+                                        return <div className="info" key={kk}><span className="first">{title}</span> : <span className="last">{ee[1]}</span></div>
+                                    }) : <div className="info">{translate("not_yet_register_sign_info")}</div>}
                                 </div>
                             })}
                         </div>
@@ -690,7 +714,8 @@ a.fr-command {
 
     return {
         html: "<html>" + ReactDOMServer.renderToStaticMarkup(head) + ReactDOMServer.renderToStaticMarkup(body) + style + "</html>",
-        body: ReactDOMServer.renderToStaticMarkup(body)
+        body: ReactDOMServer.renderToStaticMarkup(body),
+        exclude_sign_body: ReactDOMServer.renderToStaticMarkup(exclude_sign_body),
     }
 }
 
