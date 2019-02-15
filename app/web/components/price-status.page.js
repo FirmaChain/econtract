@@ -362,6 +362,7 @@ export default class extends React.Component {
     }
 
     onCheckCardInfo = async () => {
+        return true;
         /*let result = await new Promise( r => window.openModal("CardInfo", {
             onResponse: async (card_info) => {
                 //TODO: necessary to encrypt via firma's private key
