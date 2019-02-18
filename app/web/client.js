@@ -68,6 +68,9 @@ window.addEventListener("load",()=>{
 		<Router history={history}>
 			<Provider store={store}>
 				<Container>
+					<Route onEnter={resolver} exact path="/verification" component={LoginPage} />
+					<Route onEnter={resolver} exact path="/verification/:id" component={VerificationPage} />
+
 					<Route onEnter={resolver} exact path="/" component={IndexPage} />
 					<Route onEnter={resolver} exact path="/login" component={LoginPage} />
 					<Route onEnter={resolver} exact path="/register" component={RegisterPage} />
@@ -113,9 +116,6 @@ window.addEventListener("load",()=>{
 					<Route onEnter={resolver} exact path="/template" component={TemplatePage} />
 					<Route onEnter={resolver} exact path="/add-template" component={AddTemplatePage} />
 					<Route onEnter={resolver} exact path="/template-edit/:id" component={EditTemplatePage} />*/}
-
-					<Route onEnter={resolver} exact path="/verification" component={VerificationPage} />
-					<Route onEnter={resolver} exact path="/verification/:id" component={VerificationPage} />
 				</Container>
 			</Provider>
 		</Router>,
