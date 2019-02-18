@@ -7,22 +7,35 @@ import translate from "../../common/translate"
 import { sha256 } from 'js-sha256'
 import Web3 from "../../common/Web3"
 
+import {
+    fetch_user_info,
+} from "../../common/actions"
+
+let mapStateToProps = (state)=>{
+    return {
+        user_info:state.user.info
+    }
+}
+
+let mapDispatchToProps = {
+    fetch_user_info
+}
+
+@connect(mapStateToProps, mapDispatchToProps )
 export default class extends React.Component {
-	constructor(){
-		super()
+	constructor(props){
+		super(props)
 		this.state={
             step:0,
-            percent:0
+            percent:0,
+            contract_name : this.props.match.params.id || null
         }
 	}
 
 	componentDidMount(){
-        this.setState({
-            contract_name : this.props.match.params.id
-        })
     }
 
-    componentWillReceiveProps(props){
+    componentWillReceiveProps(nextProps){
     }
 
     onClickUploadFile = async (e)=>{
