@@ -1571,7 +1571,8 @@ setInterval(()=>{
             "/",
             '/login',
             '/register',
-            '/recover'
+            '/recover',
+            '/verification',
         ]
         if( exclude.indexOf(location.pathname) == -1 ){
             location.href="/"

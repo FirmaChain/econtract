@@ -69,7 +69,7 @@ window.addEventListener("load",()=>{
 			<Provider store={store}>
 				<Container>
 					<Route onEnter={resolver} exact path="/verification" component={VerificationPage} />
-					{/*<Route onEnter={resolver} exact path="/login2/:id" component={LoginPage} />*/}
+					<Route onEnter={resolver} exact path="/login2/:id" component={LoginPage} />
 
 					<Route onEnter={resolver} exact path="/" component={IndexPage} />
 					<Route onEnter={resolver} exact path="/login" component={LoginPage} />
