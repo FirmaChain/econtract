@@ -4,21 +4,9 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom'
 import history from '../history'
 import translate from "../../common/translate"
-import {
-    fetch_user_info
-} from "../../common/actions"
 import { sha256 } from 'js-sha256'
 import Web3 from "../../common/Web3"
 
-let mapStateToProps = (state)=>{
-	return {
-	}
-}
-
-let mapDispatchToProps = {
-}
-
-@connect(mapStateToProps, mapDispatchToProps )
 export default class extends React.Component {
 	constructor(){
 		super()
