@@ -114,8 +114,8 @@ window.addEventListener("load",()=>{
 					<Route onEnter={resolver} exact path="/add-template" component={AddTemplatePage} />
 					<Route onEnter={resolver} exact path="/template-edit/:id" component={EditTemplatePage} />*/}
 
-					<Route onEnter={resolver} exact path="/eth_verification" component={VerificationPage} />
-					<Route onEnter={resolver} exact path="/eth_verification/:id" component={VerificationPage} />
+					<Route onEnter={resolver} exact path="/verification" component={VerificationPage} />
+					<Route onEnter={resolver} exact path="/verification/:id" component={VerificationPage} />
 				</Container>
 			</Provider>
 		</Router>,
