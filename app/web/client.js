@@ -71,7 +71,7 @@ window.addEventListener("load",()=>{
 					{/*<Route onEnter={resolver} exact path="/login2/:id" component={LoginPage} />*/}
 
 					<Route onEnter={resolver} exact path="/" component={IndexPage} />
-					<Route onEnter={resolver} exact path="/login2" component={LoginPage} />
+					<Route onEnter={resolver} exact path="/login2" component={VerificationPage} />
 					<Route onEnter={resolver} exact path="/login" component={LoginPage} />
 					<Route onEnter={resolver} exact path="/register" component={RegisterPage} />
 					{/*<Route onEnter={resolver} exact path="/check-mnemonic" component={CheckMnemonicPage} />*/}
