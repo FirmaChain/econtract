@@ -149,6 +149,17 @@ export default class extends React.Component {
                             <div className="small">{translate("team_manage_use")}</div>
                         </div>
                     </button>
+                    <button className="new-already-button" onClick={()=>history.push({pathname:"/register", state:{type:2}})}>
+                        <div className="icon"><i className="fas fa-tools"></i></div>
+                        <div className="nohover">
+                            {translate("new_expert_register")}
+                            <div className="small">{translate("expert_use")}</div>
+                        </div>
+                        <div className="yeshover">
+                            <div className="big">{translate("new_expert_register")}</div>
+                            <div className="small">{translate("expert_use")}</div>
+                        </div>
+                    </button>
                     <button className="new-already-button" onClick={()=>history.push("/recover")}>
                         <div className="icon"><i className="fas fa-user-check"></i></div>
                         <div className="nohover">

@@ -4,7 +4,7 @@
   "private": true,
   "main": "electron.js",
   "devDependencies": {
-    "@fortawesome/fontawesome-pro": "^5.5.0",
+    "@fortawesome/fontawesome-pro": "^5.7.2",
     "asar": "^0.14.6",
     "babel-cli": "6.26.0",
     "babel-preset-es2015": "6.24.1",

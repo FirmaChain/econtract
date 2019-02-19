@@ -13,7 +13,7 @@ export default class extends React.Component {
 		this.state={
             step:0,
             percent:0,
-            contract_name : this.props.match.params.id || null
+            contract_name : this.props.match.params.id || null,
         }
 	}
 
