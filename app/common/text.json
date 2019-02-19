@@ -110,7 +110,7 @@
     "user_email":["사용자 이메일","Email","用户邮箱"],
     "template_folder_delete_desc":["{0} 을/를 정말 삭제하시겠습니까?","Are you sure you want to delete {0}?","您确定删除文件夹{0}吗？"],
     "REFUND":["환불","Refund","退款"],
-    "FOOTER_2":["서울시 성동구 성동이로 58, P-Tower 5층 ㅣ 사업자등록번호 261-88-0108 | 대표이사 권승훈 | 대표 전화번호 070-4276-9499","Seoul, Seongdong-gu, Seongdonge-ro 58, P-Tower 5th floor ㅣ CRN 261-88-0108","Seoul, Seongdong-gu, Seongdonge-ro 58, P-Tower 5th floor ㅣ CRN 261-88-0108"],
+    "FOOTER_2":["서울시 성동구 성동이로 58, P-Tower 5층 ㅣ 사업자등록번호 261-88-01086 | 대표이사 권승훈 | 대표 전화번호 070-4276-9499","Seoul, Seongdong-gu, Seongdonge-ro 58, P-Tower 5th floor ㅣ CRN 261-88-01086","Seoul, Seongdong-gu, Seongdonge-ro 58, P-Tower 5th floor ㅣ CRN 261-88-01086"],
     "pre_purchase_date":["다음 결제일","Payment Due Date","下个付款日"],
     "purchase_way":["결제 수단","Payment Method","付款方式"],
     "user_list":["사용자 리스트","User List","用户名单"],

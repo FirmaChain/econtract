@@ -650,6 +650,16 @@ export default class extends React.Component {
                 userphone: this.state.userphone,
             }
             info = {}
+        } else if(account_type == 100) { // 기업 관리자 계정
+            info = {}
+            corp_info = {}
+            public_info = {
+                email: this.state.email.trim(),
+                username: this.state.username.trim(),
+                department: this.state.department.trim(),
+                job: this.state.job.trim(),
+                userphone: this.state.userphone,
+            }
         } else if(account_type == 2) { // 기업 직원 계정
             info = {
                 corp_id: this.state.corp_id,

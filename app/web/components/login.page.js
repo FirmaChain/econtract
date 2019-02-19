@@ -149,7 +149,7 @@ export default class extends React.Component {
                             <div className="small">{translate("team_manage_use")}</div>
                         </div>
                     </button>
-                    <button className="new-already-button" onClick={()=>history.push({pathname:"/register", state:{type:2}})}>
+                    <button className="new-already-button" onClick={()=>history.push({pathname:"/register", state:{type:100}})}>
                         <div className="icon"><i className="fas fa-tools"></i></div>
                         <div className="nohover">
                             {translate("new_expert_register")}
