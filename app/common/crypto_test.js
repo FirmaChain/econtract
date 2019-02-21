@@ -58,6 +58,13 @@ export function generateBrowserKey() {
 	return digest;
 }
 
+export function generateNewBrowserKey(id, pw) {
+    let digest1 = hmac_sha512("FirmaChain browser seed aux", id);
+    let digest2 = hmac_sha512("FirmaChain browser seed aux", pw);
+    let digest = hmac_sha512("FirmaChain browser seed", Buffer.concat([digest1, digest2]));
+    return digest;
+}
+
 export function generateCorpKey() {
 	let mnemonic = generateMnemonic();
 	let entropy = bip39.mnemonicToEntropy(mnemonic);
