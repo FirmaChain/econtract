@@ -333,6 +333,10 @@ export default class extends React.Component {
             let email_address = params.email_address || "";
             (async() => {
                 let registration_info = await this.props.invite_information(email_address, registration_code);
+                if(registration_info == null) {
+                    alert(translate("not_validate_invite_code"))
+                    return history.goBack()
+                }
 
                 let corp_count_resp = await this.props.get_corp_member_count_no_auth(registration_info.corp_id, registration_info.owner_id)
                 let corp_member_count = corp_count_resp.corp_member_count
@@ -343,26 +347,21 @@ export default class extends React.Component {
                     return history.replace("/login")
                 }
 
-                if (registration_info) {
-                    this.setState({
-                        registration_code: registration_code,
-                        email: email_address,
-                        company_name: registration_info.company_name,
-                        duns_number: registration_info.duns_number,
-                        company_ceo: registration_info.company_ceo,
-                        company_tel: registration_info.company_tel,
-                        company_address: registration_info.company_address,
-                        corp_key: registration_info.corp_key,
-                        corp_id: registration_info.corp_id,
-                        owner_id: registration_info.owner_id,
-                        group_key: registration_info.group_key,
-                        group_id: registration_info.group_id,
-                        email_verification: true,
-                    });
-                } else {
-                    alert(translate("not_validate_invite_code"));
-                    history.goBack();
-                }
+                this.setState({
+                    registration_code: registration_code,
+                    email: email_address,
+                    company_name: registration_info.company_name,
+                    duns_number: registration_info.duns_number,
+                    company_ceo: registration_info.company_ceo,
+                    company_tel: registration_info.company_tel,
+                    company_address: registration_info.company_address,
+                    corp_key: registration_info.corp_key,
+                    corp_id: registration_info.corp_id,
+                    owner_id: registration_info.owner_id,
+                    group_key: registration_info.group_key,
+                    group_id: registration_info.group_id,
+                    email_verification: true,
+                });
             })();
         }
     }
