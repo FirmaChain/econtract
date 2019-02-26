@@ -40,14 +40,16 @@ export function generateMnemonic() {
 	return mnemonic;
 }
 
-export function getBrowserKey(forcedGenerate=false) {
-	let browserKey = localStorage.getItem("browser_key");
+export function getBrowserKey(id = null, pw = null, forcedGenerate=false) {
+	/*let browserKey = localStorage.getItem("browser_key");
 	if (forcedGenerate || browserKey == null) {
 		browserKey = generateBrowserKey().toString("base64");
 		localStorage.setItem("browser_key", browserKey);
         localStorage.setItem("browser_key_virgin", 1);
 	}
-	return Buffer.from(browserKey, "base64");
+	return Buffer.from(browserKey, "base64");*/
+
+    return Buffer.from(getNewBrowserKey(id, pw, forcedGenerate), "base64");
 }
 
 export function generateBrowserKey() {
@@ -58,11 +60,20 @@ export function generateBrowserKey() {
 	return digest;
 }
 
-export function generateNewBrowserKey(id, pw) {
-    let digest1 = hmac_sha512("FirmaChain browser seed aux", id);
-    let digest2 = hmac_sha512("FirmaChain browser seed aux", pw);
-    let digest = hmac_sha512("FirmaChain browser seed", Buffer.concat([digest1, digest2]));
-    return digest;
+function getNewBrowserKey(id, pw, forcedGenerate=false) {
+    let browserKey = localStorage.getItem("browser_key");
+    if (forcedGenerate || browserKey == null) {
+        if (id == null || pw == null)
+            throw "empty id or pw";
+
+        let digest1 = hmac_sha512("FirmaChain browser seed aux", id);
+        let digest2 = hmac_sha512("FirmaChain browser seed aux", pw);
+        let digest = hmac_sha512("FirmaChain browser seed", Buffer.concat([digest1, digest2]));
+        browserKey = digest.toString("base64")
+        localStorage.setItem("browser_key", browserKey);
+        localStorage.setItem("browser_key_virgin", 1);
+    }
+    return browserKey;
 }
 
 export function generateCorpKey() {
@@ -106,7 +117,7 @@ export function showMnemonic(auth) {
 }
 
 export function makeAuth(id, pw) {
-	let browserKey = getBrowserKey();
+	let browserKey = getBrowserKey(id, pw, true);
 	let hmackey = get256bitDerivedPublicKey(browserKey, "m/0'/0'");
 	let hmacpw = hmac_sha256(hmackey, pw);
 	let msg = Buffer.concat([hmackey, Buffer.from(id, "utf8"), hmacpw]);

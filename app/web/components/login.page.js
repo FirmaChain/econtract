@@ -5,6 +5,9 @@ import { Link } from 'react-router-dom'
 import history from '../history'
 import translate from "../../common/translate"
 import {
+    getNewBrowserKey,
+} from "../../common/crypto_test"
+import {
     login_account,
     fetch_user_info
 } from "../../common/actions"
@@ -26,7 +29,9 @@ let mapDispatchToProps = {
 export default class extends React.Component {
 	constructor(){
 		super();
-		this.state={};
+		this.state={
+            go_to_login:false
+        };
 	}
 
 	componentDidMount(){
@@ -34,7 +39,6 @@ export default class extends React.Component {
             await window.showIndicator()
             await this.props.fetch_user_info()
             await window.hideIndicator()
-
         })()
     }
 
@@ -56,7 +60,7 @@ export default class extends React.Component {
             } else if(resp.code == -4){
                 alert(translate("please_check_email_password"));
             } else if(resp.eems){
-                localStorage.setItem("browser_key_virgin", 0);
+                //localStorage.setItem("browser_key_virgin", 0);
                 await this.props.fetch_user_info()
                 if(!this.props.user_info.email.includes("test")) {
                     alert("서비스 결제 모듈 검수 기간 중입니다. 검수 기간은 2019/03/10 까지로 예정되어 있으며 완료되는 순간 모든 계약 데이터와 계정 정보가 초기화 됩니다.")
@@ -74,9 +78,10 @@ export default class extends React.Component {
         await window.showIndicator();
         if (window._confirm(translate("re_login_desc_2"))) { 
             localStorage.removeItem("browser_key");
-            localStorage.removeItem("browser_key_virgin");
+            this.setState({go_to_login:false})
+            //localStorage.removeItem("browser_key_virgin");
             alert(translate("browser_auth_is_unlock"));
-            this.setState({is_clear_browser_key: true});
+            //this.setState({is_clear_browser_key: true});
         }
         await window.hideIndicator();
     }
@@ -85,8 +90,9 @@ export default class extends React.Component {
         await window.showIndicator();
         if (window._confirm(translate("re_login_desc_3"))) {
             localStorage.removeItem("browser_key");
-            localStorage.removeItem("browser_key_virgin");
-            this.setState({is_clear_browser_key: true});
+            this.setState({go_to_login:false})
+            //localStorage.removeItem("browser_key_virgin");
+            //this.setState({is_clear_browser_key: true});
             history.push("/recover");
         }
         await window.hideIndicator();
@@ -163,7 +169,7 @@ export default class extends React.Component {
                             <div className="small">{translate("expert_use")}</div>
                         </div>
                     </button>*/}
-                    <button className="new-already-button" onClick={()=>history.push("/recover")}>
+                    <button className="new-already-button" onClick={()=>this.setState({go_to_login:true})/*history.push("/recover")*/}>
                         <div className="icon"><i className="fas fa-user-check"></i></div>
                         <div className="nohover">
                             {translate("original_account_login")}
@@ -211,10 +217,13 @@ export default class extends React.Component {
         if(this.props.user_info !== false) {
             return <div />
         }
+        console.log("this.state.go_to_login", this.state.go_to_login)
+        console.log("localStorage.getItem(browser_key)", localStorage.getItem("browser_key"))
+        console.log( (!this.state.go_to_login || !localStorage.getItem("browser_key")) )
 
         return (<div className="maintain">
             {
-                (!localStorage.getItem("browser_key") || localStorage.getItem("browser_key_virgin") == true) ? 
+                (!localStorage.getItem("browser_key") && !this.state.go_to_login /*localStorage.getItem("browser_key_virgin") == true*/) ? 
                     this.render_new() : this.render_login()  
             }
             <Footer />

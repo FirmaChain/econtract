@@ -316,14 +316,14 @@ export default class extends React.Component {
         }
 
         (async()=>{
-            if(localStorage.getItem("browser_key") || localStorage.getItem("browser_key_virgin") == 0) {
+            if(localStorage.getItem("browser_key") /*|| localStorage.getItem("browser_key_virgin") == 0*/) {
                 /*let res = await window.confirm(translate("yes_this_device_verify_account_are_you_unverify_go_register_?"))
                 if( !res ) {
                     return history.push("/login")
                 }*/
             }
             localStorage.removeItem("browser_key")
-            localStorage.removeItem("browser_key_virgin")
+            //localStorage.removeItem("browser_key_virgin")
         })()
 
         if(this.getAccountType() == 2) {
@@ -747,7 +747,7 @@ export default class extends React.Component {
 
         if(resp.code == 1){
             window.logout();
-            localStorage.setItem("browser_key_virgin", 0);
+            //localStorage.setItem("browser_key_virgin", 0);
             history.push("/login");
             return alert(translate("success_register"))
         } else if(resp.code == -30) {

@@ -83,7 +83,7 @@ export default class extends React.Component {
     }
 
     render_login() {
-        if (!localStorage.getItem("browser_key") || localStorage.getItem("browser_key_virgin") == 1) { // Actually unreachable case
+        if (!localStorage.getItem("browser_key") /*|| localStorage.getItem("browser_key_virgin") == 1*/) { // Actually unreachable case
             return (
             <div className="page">
                 <div className="column-300">
