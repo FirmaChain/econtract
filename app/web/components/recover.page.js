@@ -111,7 +111,7 @@ export default class extends React.Component {
 
         try {
             let mnemonic = this.state.mnemonic.trim();
-            getBrowserKey(true); // Reset browserkey
+            getBrowserKey(this.state.email, this.state.password, true); // Reset browserkey
             let auth = makeAuth(this.state.email, this.state.password);
             let encryptedMasterSeed = makeMnemonic(auth, mnemonic);
 
@@ -205,7 +205,7 @@ export default class extends React.Component {
             </div>
 
             <div className="text-place">
-                <div className="name">{translate("password")}</div>
+                <div className="name">{translate("new_password")}</div>
                 <div className="textbox">
                     <input className="common-textbox" type="password"
                         value={this.state.password || ""}
@@ -246,7 +246,7 @@ export default class extends React.Component {
         let title = "", desc = ""
 
         if(this.state.step == 0){
-            title = translate("master_keyword_input")
+            title = translate("master_keyword_input_new")
             desc = translate("master_keyword_input_desc")
         }else if(this.state.step == 1){
             title = translate("set_password")

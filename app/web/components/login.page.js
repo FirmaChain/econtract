@@ -88,13 +88,13 @@ export default class extends React.Component {
 
     onClickRecoverAccount = async () => {
         await window.showIndicator();
-        if (window._confirm(translate("re_login_desc_3"))) {
+        //if (window._confirm(translate("re_login_desc_3"))) {
             localStorage.removeItem("browser_key");
             this.setState({go_to_login:false})
             //localStorage.removeItem("browser_key_virgin");
             //this.setState({is_clear_browser_key: true});
             history.push("/recover");
-        }
+        //}
         await window.hideIndicator();
     }
 
@@ -202,12 +202,11 @@ export default class extends React.Component {
                 <br/>
                 <div className="register-btn" onClick={this.onClickClearBrowserKey}>{translate("new_register")}</div>
 
-                {/*<div className="other">
+                <div className="other">
                     <div className="recover-account" onClick={this.onClickRecoverAccount}>
-                        {translate("another_account_login")}<br/>
-                        {translate("browser_verification_unlock")}
+                        {translate("you_lost_account")}<br/>
                     </div>
-                </div>*/}
+                </div>
             </div>
 		</div>);
    }

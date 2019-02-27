@@ -582,7 +582,7 @@ export default class extends React.Component {
                                 <div className="button" onClick={this.onBuyTicket}>{translate("buy")}</div>
                             </div>
                         </div>
-                        {/*<div className="bar gray-bar">
+                        {this.props.user_info.email.includes("test") ? null : <div className="bar gray-bar">
                             <div className="left">
                                 <div className="title">{translate("card_info")}</div>
                                 <div className="desc">{card_info_string}</div>
@@ -590,7 +590,7 @@ export default class extends React.Component {
                             <div className="right">
                                 <div className="button" onClick={this.onCheckCardInfo}>{this.state.partial_payment_info ? translate("re_register") : translate("register")}</div>
                             </div>
-                        </div>*/}
+                        </div>}
                     </div> : null }
                 </div>
                 {this.props.user_info.account_type != 2 ?
