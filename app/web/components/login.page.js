@@ -76,13 +76,13 @@ export default class extends React.Component {
 
     onClickClearBrowserKey = async ()=>{
         await window.showIndicator();
-        if (window._confirm(translate("re_login_desc_2"))) { 
+        //if (window._confirm(translate("re_login_desc_2"))) { 
             localStorage.removeItem("browser_key");
             this.setState({go_to_login:false})
             //localStorage.removeItem("browser_key_virgin");
-            alert(translate("browser_auth_is_unlock"));
+            //alert(translate("browser_auth_is_unlock"));
             //this.setState({is_clear_browser_key: true});
-        }
+        //}
         await window.hideIndicator();
     }
 
@@ -202,12 +202,12 @@ export default class extends React.Component {
                 <br/>
                 <div className="register-btn" onClick={this.onClickClearBrowserKey}>{translate("new_register")}</div>
 
-                <div className="other">
+                {/*<div className="other">
                     <div className="recover-account" onClick={this.onClickRecoverAccount}>
                         {translate("another_account_login")}<br/>
                         {translate("browser_verification_unlock")}
                     </div>
-                </div>
+                </div>*/}
             </div>
 		</div>);
    }
@@ -217,10 +217,10 @@ export default class extends React.Component {
         if(this.props.user_info !== false) {
             return <div />
         }
-        console.log("this.state.go_to_login", this.state.go_to_login)
+        /*console.log("this.state.go_to_login", this.state.go_to_login)
         console.log("localStorage.getItem(browser_key)", localStorage.getItem("browser_key"))
         console.log( (!this.state.go_to_login || !localStorage.getItem("browser_key")) )
-
+*/
         return (<div className="maintain">
             {
                 (!localStorage.getItem("browser_key") && !this.state.go_to_login /*localStorage.getItem("browser_key_virgin") == true*/) ? 
