@@ -120,47 +120,14 @@ export default class extends React.Component {
         (async()=>{
             let user = await this.props.fetch_user_info()
 
+            console.log("user", user)
+
             if(!user) {
                 return history.push("/login")
             }
 
             if(!!this.props.location.state && !!this.props.location.state.contract_id) {
-                let contract_id = this.props.location.state.contract_id;
-                let resp, groups;
-                if(this.props.user_info.account_type != 0) {
-                    groups = await this.props.get_group_info(0)
-                    resp = await this.props.get_contract(contract_id, this.props.user_info, groups)
-                } else {
-                    resp = await this.props.get_contract(contract_id, this.props.user_info)
-                }
-                delete resp.payload.logs
-                let contract = resp.payload.contract
-                let infos = resp.payload.infos
-
-                console.log("resp.payload", resp.payload)
-
-                let target_list = infos.map( (e) => {
-                    return {
-                        user_type:e.account_type == 0 ? 0 : 1,
-                        // WIP
-                    }
-                })
-
-                let _ = {
-                    data:{...resp.payload},
-                    contract_name:contract.name,
-                    edit_mode:true,
-                    target_list:[
-
-                    ]
-                }
-
-                if(contract.is_pin_used == 1) {
-                    _.is_use_pin = true;
-                    _.pin_number = contract.pin; 
-                }
-                await this.setState(_)
-
+                await this.edit_initialize(user);
             } else {
                 await this.initialize(user);
             }
@@ -181,6 +148,101 @@ export default class extends React.Component {
         if(props.user_info === false){
             history.replace("/login")
         }
+    }
+
+    edit_initialize = async (user) => {
+        let contract_id = this.props.location.state.contract_id;
+        let resp, groups;
+        if(this.props.user_info.account_type != 0) {
+            groups = await this.props.get_group_info(0)
+            resp = await this.props.get_contract(contract_id, this.props.user_info, groups)
+        } else {
+            resp = await this.props.get_contract(contract_id, this.props.user_info)
+        }
+        delete resp.payload.logs
+        let contract = resp.payload.contract
+        let infos = resp.payload.infos
+
+        console.log("resp.payload", resp.payload)
+
+        let target_list = infos.map( (e) => {
+            let user_type = e.account_type == 0 ? 0 : 1
+            if(e.account_type == null)
+                user_type = 2;
+
+            let role = [e.privilege]
+            if(contract.account_id == e.entity_id && e.corp_id == 0)
+                role.unshift(0);
+
+            let user
+
+            if(e.corp_id == 0) {
+                user = {
+                    user_type:user_type,
+                    account_id: e.entity_id,
+                    username:e.user_info.username,
+                    email:e.user_info.email,
+                    public_key:Buffer.from(e.publickey_contract).toString("hex"),
+                    role:role,
+                }
+            } else if(e.corp_id > 0) {
+                user = {
+                    user_type:user_type,
+                    corp_id:e.corp_id,
+                    group_id:e.entity_id,
+                    title:e.user_info.title,
+                    public_key:Buffer.from(e.user_info.public_key).toString("hex"),
+                    role:role,
+                }
+            }
+
+            if(e.user_info.company_name)
+                user.company_name = e.user_info.company_name
+
+            return user
+        })
+
+        let _ = {
+            data:{...resp.payload},
+            contract_name:contract.name,
+            can_edit_account_id:contract.can_edit_account_id,
+            edit_mode:true,
+            target_list:target_list,
+        }
+
+        if(contract.is_pin_used == 1) {
+            _.is_use_pin = true;
+            _.pin_number = contract.pin; 
+        }
+        console.log(this.state.individual)
+        console.log(contract.necessary_info.individual)
+
+        let individual = [...this.state.individual]
+        for(let v of contract.necessary_info.individual) {
+            if( !this.state.individual.map(e=>e.title).includes(v) ) {
+                individual.push({
+                    deletable:true,
+                    title:v.title,
+                    checked:true
+                })
+            }
+        }
+        let corporation = [...this.state.corporation]
+        for(let v of contract.necessary_info.corporation) {
+            if( !this.state.corporation.map(e=>e.title).includes(v) ) {
+                corporation.push({
+                    deletable:true,
+                    title:v.title,
+                    checked:true
+                })
+            }
+        }
+
+        _.individual = individual;
+        _.corporation = corporation;
+
+        console.log("_", _)
+        await this.setState(_)
     }
 
     initialize = async (user) => {
@@ -555,7 +617,7 @@ export default class extends React.Component {
                 <span className="back" onClick={()=> history.goBack()}>
                     <i className="fal fa-chevron-left"></i> <span>{translate("go_back")}</span>
                 </span>
-                <div className="text">{translate("register_contract_info")}</div>
+                <div className="text">{!!this.state.edit_mode ? translate("modify_contract_info") : translate("register_contract_info")}</div>
             </div>
             <div className="content">
                 <div className="row">
@@ -730,6 +792,9 @@ export default class extends React.Component {
                             <div className="form-head">{translate("user_list")}</div>
                             <div className="form-list">
                                 {this.state.target_list.map((e, k)=>{
+                                    let removable = k != 0
+                                    if(!!this.state.edit_mode && e.role.includes(1))
+                                        removable = false
                                     return <div className="item padding-item" key={k}>
                                         <div className="icon">
                                         {
@@ -774,9 +839,8 @@ export default class extends React.Component {
                                             <div className="name">{translate("modify_privilege")}</div>
                                         </div>
                                         <div className="action">
-                                            {k == 0 ?
-                                                null:
-                                                <div className="delete" onClick={this.onClickRemoveCounterparty.bind(this, k, e)}>{translate("remove")}</div>
+                                            {removable ?
+                                                <div className="delete" onClick={this.onClickRemoveCounterparty.bind(this, k, e)}>{translate("remove")}</div> : null
                                             }
                                         </div>
                                     </div>

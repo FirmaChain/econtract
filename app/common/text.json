@@ -404,6 +404,7 @@
     "re_password":["비밀번호 확인","Confirm Password","请输入密码。"],
     "drafter":["기안자","Requester","请求人"],
     "my_confirm":["내 승인","My Approval","我的裁决"],
+    "modify_contract_info":["계약정보 수정","",""],
     "approve":["승인","Approve","承认"],
     "no_verify_desc":["E-Contract를 처음 시작하거나, 접속된 브라우저가 인증되지 않은 상태일 경우 아래의 방법으로 E-Contract를 시작할 수 있습니다.","If you are using E-Contract for the first time, please register as an individual or business.\nIf you already have an account. go to [Sign in with Existing Account].","如果您第一次使用电子合同或您的浏览器还没有验证，可以参考以下说明。"],
     "user":["사용자","User","用户"],
