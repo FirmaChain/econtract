@@ -519,8 +519,8 @@ export default class extends React.Component {
                             </div>
                             <div className="buttons">
                                 <div className="flex1">&nbsp;</div>
-                                <div className="blue-button" 
-                                    onClick={(e)=>history.push(`/edit-contract/${this.state.contract.contract_id}`)}>{this.state.contract.status != 2 ? translate("edit"):translate("view_contract")}</div>
+                                <div className="blue-button" onClick={(e)=>history.push({pathname:"/add-contract", state:{contract_id:this.state.contract.contract_id}})}>{translate("modify_information")}</div>
+                                <div className="blue-button" onClick={(e)=>history.push(`/edit-contract/${this.state.contract.contract_id}`)}>{this.state.contract.status != 2 ? translate("edit"):translate("view_contract")}</div>
                                 <div className="blue-button" onClick={this.onClickDownload}>{translate("download")}</div>
                                 {/*<div className="transparent-button">설정</div>*/}
                             </div>

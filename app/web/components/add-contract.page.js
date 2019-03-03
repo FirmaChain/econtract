@@ -22,6 +22,7 @@ import {
     update_epin_group,
     get_template,
     get_approval,
+    get_contract,
     genPIN,
 } from "../../common/actions"
 import CheckBox2 from "./checkbox2"
@@ -42,6 +43,7 @@ let mapDispatchToProps = {
     update_epin_group,
     get_template,
     get_approval,
+    get_contract,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -117,60 +119,51 @@ export default class extends React.Component {
 	componentDidMount(){
         (async()=>{
             let user = await this.props.fetch_user_info()
-            let params = queryString.parse(this.props.location.search)
 
             if(!user) {
                 return history.push("/login")
             }
 
-            if(user.account_type == 0) {
-                this.setState({
-                    can_edit_account_id:this.props.user_info.account_id,
-                    target_list:[{
-                        user_type:0,
-                        account_id: user.account_id,
-                        username:user.username,
-                        email:user.email,
-                        public_key:user.publickey_contract,
-                        role:[0, 1],
-                    }]
-                })
-            } else if(user.account_type == 1 || user.account_type == 2) {
-                this.setState({
-                    can_edit_account_id:this.props.user_info.account_id,
-                    target_list:[{
-                        user_type:1,
-                        account_id: user.account_id,
-                        username:user.username,
-                        email:user.email,
-                        public_key:user.publickey_contract,
-                        company_name:user.company_name,
-                        role:[0, 1],
-                    }]
-                })
-            } else {
-
-            }
-
-            if( params.template_id && !isNaN(params.template_id) ) {
-                let template = await this.props.get_template(params.template_id, this.props.user_info.corp_key || null)
-                this.setState({
-                    template
-                })
-            }
-
-            if( params.approval_id && !isNaN(params.approval_id) ) {
-                let approval = await this.props.get_approval(params.approval_id, this.props.user_info.corp_key || null)
-                if(approval.payload.approval.status != window.CONST.APPROVAL_STATUS.COMPLETED) {
-                    alert(translate("no_completed_approval_use_contract"))
-                    this.blockFlag = true
-                    return history.goBack();
+            if(!!this.props.location.state && !!this.props.location.state.contract_id) {
+                let contract_id = this.props.location.state.contract_id;
+                let resp, groups;
+                if(this.props.user_info.account_type != 0) {
+                    groups = await this.props.get_group_info(0)
+                    resp = await this.props.get_contract(contract_id, this.props.user_info, groups)
+                } else {
+                    resp = await this.props.get_contract(contract_id, this.props.user_info)
                 }
-                this.setState({
-                    approval:approval.payload.approval
-                })
-            }
+                delete resp.payload.logs
+                let contract = resp.payload.contract
+                let infos = resp.payload.infos
 
+                console.log("resp.payload", resp.payload)
+
+                let target_list = infos.map( (e) => {
+                    return {
+                        user_type:e.account_type == 0 ? 0 : 1,
+                        // WIP
+                    }
+                })
+
+                let _ = {
+                    data:{...resp.payload},
+                    contract_name:contract.name,
+                    edit_mode:true,
+                    target_list:[
+
+                    ]
+                }
+
+                if(contract.is_pin_used == 1) {
+                    _.is_use_pin = true;
+                    _.pin_number = contract.pin; 
+                }
+                await this.setState(_)
+
+            } else {
+                await this.initialize(user);
+            }
         })()
 
 
@@ -187,6 +180,58 @@ export default class extends React.Component {
     componentWillReceiveProps(props){
         if(props.user_info === false){
             history.replace("/login")
+        }
+    }
+
+    initialize = async (user) => {
+        let params = queryString.parse(this.props.location.search)
+
+        if(user.account_type == 0) {
+            this.setState({
+                can_edit_account_id:this.props.user_info.account_id,
+                target_list:[{
+                    user_type:0,
+                    account_id: user.account_id,
+                    username:user.username,
+                    email:user.email,
+                    public_key:user.publickey_contract,
+                    role:[0, 1],
+                }]
+            })
+        } else if(user.account_type == 1 || user.account_type == 2) {
+            this.setState({
+                can_edit_account_id:this.props.user_info.account_id,
+                target_list:[{
+                    user_type:1,
+                    account_id: user.account_id,
+                    username:user.username,
+                    email:user.email,
+                    public_key:user.publickey_contract,
+                    company_name:user.company_name,
+                    role:[0, 1],
+                }]
+            })
+        } else {
+
+        }
+
+        if( params.template_id && !isNaN(params.template_id) ) {
+            let template = await this.props.get_template(params.template_id, this.props.user_info.corp_key || null)
+            this.setState({
+                template
+            })
+        }
+
+        if( params.approval_id && !isNaN(params.approval_id) ) {
+            let approval = await this.props.get_approval(params.approval_id, this.props.user_info.corp_key || null)
+            if(approval.payload.approval.status != window.CONST.APPROVAL_STATUS.COMPLETED) {
+                alert(translate("no_completed_approval_use_contract"))
+                this.blockFlag = true
+                return history.goBack();
+            }
+            this.setState({
+                approval:approval.payload.approval
+            })
         }
     }
 
@@ -322,8 +367,22 @@ export default class extends React.Component {
 
         if(contract_name.length > 80) {
             this.blockFlag = false;
+            this.is_register = false;
+            return alert(translate("contract_name_must_be_80_letters"));
+        }
+
+        let includeGroup = false;
+        for( let v of counterparties ) {
+            if( v.user_type == 2 ) {
+                includeGroup = true;
+                break;
+            }
+        }
+
+        if(this.props.user_info.account_type != 0 && includeGroup == false) {
+            this.blockFlag = false;
             this.is_register = false
-            return alert(translate("contract_name_must_be_80_letters"))
+            return alert(translate("if_corporation_account_at_least_one_group"));
         }
 
         let counterparties = this.state.target_list.map(e=> {
@@ -340,20 +399,6 @@ export default class extends React.Component {
             };
         });
 
-        let includeGroup = false;
-        for( let v of counterparties ) {
-            if( v.user_type == 2 ) {
-                includeGroup = true;
-                break;
-            }
-        }
-
-        if(this.props.user_info.account_type != 0 && includeGroup == false) {
-            this.blockFlag = false;
-            this.is_register = false
-            return alert(translate("if_corporation_account_at_least_one_group"));
-        }
-
 
         let individual_info = this.state.individual.filter(e=>e.force||e.checked).map(e=>e.title);
         let corporation_info = this.state.corporation.filter(e=>e.force||e.checked).map(e=>e.title);
@@ -362,31 +407,36 @@ export default class extends React.Component {
         let is_pin_used = this.state.is_use_pin;
         let pin = is_pin_used ? this.state.pin_number : "000000";
 
-        let pre_model = null
-        if(this.state.template) {
-            pre_model = Buffer.from(this.state.template.html).toString()
-        }
-        else if(this.state.approval) {
-            pre_model = Buffer.from(this.state.approval.html).toString()   
-        }
+        if(!!this.state.edit_mode) {
+            console.log("asdasdasds")
 
-        let resp =  await this.props.new_contract(contract_name, counterparties, pin, necessary_info, this.state.can_edit_account_id, !!is_pin_used ? 1 : 0, pre_model);
+        } else {
+            let pre_model = null;
+            if(this.state.template) {
+                pre_model = Buffer.from(this.state.template.html).toString()
+            }
+            else if(this.state.approval) {
+                pre_model = Buffer.from(this.state.approval.html).toString()   
+            }
 
-        if(resp.code == 1) {
-            let contract_id = resp.payload.contract_id
-            if (is_pin_used) {
-                await this.props.update_epin_account(contract_id, pin);
-                if( includeGroup ) {
-                    for( let v of counterparties ) {
-                        if( v.user_type == 2 ) {
-                            await this.props.update_epin_group(v.corp_id, v.group_id, contract_id, this.props.user_info, pin)
+            let resp =  await this.props.new_contract(contract_name, counterparties, pin, necessary_info, this.state.can_edit_account_id, !!is_pin_used ? 1 : 0, pre_model);
+
+            if(resp.code == 1) {
+                let contract_id = resp.payload.contract_id
+                if (is_pin_used) {
+                    await this.props.update_epin_account(contract_id, pin);
+                    if( includeGroup ) {
+                        for( let v of counterparties ) {
+                            if( v.user_type == 2 ) {
+                                await this.props.update_epin_group(v.corp_id, v.group_id, contract_id, this.props.user_info, pin)
+                            }
                         }
                     }
                 }
+                history.replace(`/edit-contract/${contract_id}`)
+            } else {
+                alert(translate("fail_register_contract"))
             }
-            history.replace(`/edit-contract/${contract_id}`)
-        } else {
-            alert(translate("fail_register_contract"))
         }
         
         this.is_register = false
@@ -613,6 +663,7 @@ export default class extends React.Component {
                                             pin_number:genPIN()
                                         })
                                     }}
+                                    disabled={!!this.state.edit_mode}
                                     text={translate("pin_security_use")}/>
                             </div>
                         </div>
@@ -794,7 +845,7 @@ export default class extends React.Component {
                 </div>
 
                 <div className="bottom-container">
-                    <div className="regist-contract" onClick={this.onClickRegister}>{translate("register_space")}</div>
+                    <div className="regist-contract" onClick={this.onClickRegister}>{!!this.state.edit_mode ? translate("modify_space") : translate("register_space")}</div>
                 </div>
             </div>
             <Footer />
