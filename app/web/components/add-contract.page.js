@@ -489,7 +489,7 @@ export default class extends React.Component {
                     await this.props.update_epin_account(contract_id, pin);
                     if( includeGroup ) {
                         for( let v of counterparties ) {
-                            if( v.user_type == 2 ) {
+                            if( v.user_type == 2 && v.corp_id == this.props.user_info.corp_id ) {
                                 await this.props.update_epin_group(v.corp_id, v.group_id, contract_id, this.props.user_info, pin)
                             }
                         }
