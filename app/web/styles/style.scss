@@ -526,7 +526,7 @@ div.checkbox2-comp{
                 }
 
                 >.line {
-                    width:140px;
+                    width:150px;
                     height:1px;
                     background-color:$gray;
                 }
@@ -543,7 +543,7 @@ div.checkbox2-comp{
                 >.item{
                     font-size: $font2;
                     font-weight: bold;
-                    width:150px;
+                    width:165px;
                     box-sizing: border-box;
                     color: $gray;
                     text-align: center;
@@ -740,6 +740,15 @@ div.checkbox2-comp{
             }
         }
 
+        >.recover-password {
+            text-align: center;
+            letter-spacing:3px;
+            font-size:$font5;
+
+            padding:80px 10px;
+            max-width: 720px;
+        }
+
         >.selection-list {
             margin-top:30px;
             max-width: 720px;
@@ -767,7 +776,8 @@ div.checkbox2-comp{
         }
 
         >.reference {
-            font-size: $font1;
+            max-width:800px;
+            font-size: $font3;
             margin-top:30px;
             margin-left:10px;
         }
@@ -3648,7 +3658,7 @@ div.checkbox2-comp{
                     >.item{
                         font-size: $font2;
                         font-weight: bold;
-                        width:150px;
+                        width:165px;
                         box-sizing: border-box;
                         color: $gray;
                         text-align: center;

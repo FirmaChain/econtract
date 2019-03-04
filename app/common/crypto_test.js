@@ -176,6 +176,12 @@ export function new_account(id, pw){
 	let masterKeyPublicContract = SeedToMasterKeyPublicContract(seed)
 	let browserKey = BrowserKeyBIP32();
 
+    const possible = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
+    let passphrase2_length = 12;
+    let passphrase2 = "";
+    for (let i = 0; i < passphrase2_length; i++)
+        passphrase2 += possible.charAt(Math.floor(Math.random() * possible.length));
+
 	return {
 		auth:auth,
 		encryptedMasterSeed:encryptedMasterSeed,
@@ -183,7 +189,8 @@ export function new_account(id, pw){
 		seed:seed,
 		masterKeyPublic:masterKeyPublic,
 		masterKeyPublicContract:masterKeyPublicContract,
-		browserKey:browserKey
+		browserKey:browserKey,
+        recoverPassword:passphrase2
 	}
 }
 

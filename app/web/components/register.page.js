@@ -38,6 +38,7 @@ import {
     generateCorpKey,
     get256bitDerivedPublicKey,
     aes_encrypt,
+    aes_decrypt,
     ecdsa_verify,
     new_account,
 } from "../../common/crypto_test"
@@ -305,6 +306,16 @@ export default class extends React.Component {
 	}
 
 	componentDidMount(){
+        let account = new_account("pbes0707@gmail.com", "asdasdasd");
+        console.log(account)
+        this.setState({
+            step:3,
+            account:account,
+            //mnemonic:account.rawMnemonic,
+            recover_password:account.recoverPassword
+        })
+
+
         if(!this.props.user_info){
             (async()=>{
                 await window.showIndicator()
@@ -489,7 +500,7 @@ export default class extends React.Component {
         await window.hideIndicator();
     }
 
-    onChangePhoneForm = async (name, e)=>{
+    onChangePhoneForm = async (name, e) => {
         let text = e.target.value;
         text = text.replace(/[^0-9]/g,"")
         text = window.phoneFomatter(text)
@@ -497,6 +508,16 @@ export default class extends React.Component {
         this.setState({
             [name]:text
         })
+    }
+
+    clickCopy = async (text) => {
+        let t = document.createElement("textarea");
+        document.body.appendChild(t);
+        t.value = text;
+        t.select();
+        document.execCommand('copy');
+        document.body.removeChild(t);
+        alert(translate("success_copy"));
     }
 
     onClickNextBtnAccountInfo = async ()=>{
@@ -552,7 +573,8 @@ export default class extends React.Component {
         this.setState({
             step:this.state.step + 1,
             account:account,
-            mnemonic:account.rawMnemonic,
+            //mnemonic:account.rawMnemonic,
+            recover_password:account.recoverPassword
         })
     }
 
@@ -579,16 +601,17 @@ export default class extends React.Component {
         this.setState({
             step:this.state.step + 1,
             account:account,
-            mnemonic:account.rawMnemonic,
+            //mnemonic:account.rawMnemonic,
+            recover_password:account.recoverPassword
         })
     }
 
-    onClickSaveMnemonic = ()=>{
+    /*onClickSaveMnemonic = ()=>{
         let anchor = document.createElement('a');
         anchor.target = "_blank";
         anchor.href = "/static/recovery_phrase_document.pdf";
         anchor.click();
-    }
+    }*/
 
     onClickSortTest = (item)=>{
         let sort_test = [...this.state.sort_test]
@@ -609,20 +632,21 @@ export default class extends React.Component {
         })
     }
 
-    onClickFinishSortTest = async ()=>{
+    onClickFinishRegister = async ()=>{
         if(this.isGoingFinish)
             return
 
         this.isGoingFinish = true
 
-        if(this.state.sort_test.map(e=>e.word).join(" ") != this.state.mnemonic){
+        // master keyword progress
+        /*if(this.state.sort_test.map(e=>e.word).join(" ") != this.state.mnemonic){
             this.setState({
                 shuffled_mnemonic:this.state.mnemonic.split(" ").map( (e, k) => { return {idx:k, word:e} } ).shuffle(),
                 sort_test:[],
             })
             this.isGoingFinish = false
             return alert(translate("please_check_master_keyword_order"))
-        }
+        }*/
         let account_type = this.getAccountType()
         let info, corp_info, public_info
 
@@ -680,6 +704,20 @@ export default class extends React.Component {
 
         let wallet = Web3.walletWithPK(privateKey)
         let encryptedInfo = aes_encrypt(JSON.stringify(info), this.state.account.masterKeyPublic);
+
+
+        let emk = aes_encrypt(this.state.account.rawMnemonic, Buffer.from(this.state.account.recoverPassword, 'hex'))
+        console.log("emk", emk)
+        try {
+            let mk = aes_decrypt(Buffer.from(emk, 'hex'), Buffer.from("a423c1e4d113", 'hex'))
+            console.log("mk", mk)
+        } catch(err) {
+            console.log(err)
+        }
+
+        if(mk != this.state.account.rawMnemonic) {
+            return alert("something is very wrong. check rawMnemonic");
+        }
         
         await window.showIndicator()
         let resp
@@ -687,7 +725,7 @@ export default class extends React.Component {
             resp = await this.props.register_new_account(this.state.account, 
                 encryptedInfo, this.state.email, 
                 this.state.username, wallet.address, 
-                account_type)
+                account_type, emk)
         } else if (account_type == 1) {
             let corpMasterKey = generateCorpKey();
             // inject into master's info
@@ -716,7 +754,7 @@ export default class extends React.Component {
             resp = await this.props.register_new_account(this.state.account, 
                 encryptedInfo, this.state.email, 
                 this.state.username, wallet.address, 
-                account_type, encryptedPublicInfo, encryptedCorpInfo)
+                account_type, emk, encryptedPublicInfo, encryptedCorpInfo)
 
             if(resp.code == 1) {
                 let gresp = await this.props.create_group(translate("basic_group"));
@@ -741,7 +779,7 @@ export default class extends React.Component {
             resp = await this.props.register_new_account(this.state.account, 
                 encryptedInfo, this.state.email, 
                 this.state.username, wallet.address, 
-                account_type, encryptedPublicInfo, null, this.state.registration_code)
+                account_type, emk, encryptedPublicInfo, null, this.state.registration_code)
         }
         await window.hideIndicator()
 
@@ -1085,26 +1123,30 @@ export default class extends React.Component {
         return (<div className="content">
             <div className="master-keyword-container">
                 <div className="sub-title-container">
-                    <div className="title">{translate("master_keyword")}</div>
-                    <div className="what-is-masterkeyword" onClick={this.openWhatIsMasterkeywordModal}>{translate("what_is_master_keyword")}</div>
+                    <div className="title">{translate("recover_password")}</div>
+                    {/*<div className="what-is-masterkeyword" onClick={this.openWhatIsMasterkeywordModal}>{translate("what_is_recover_password")}</div>*/}
                 </div>
-                <div className="list">
+                {/*<div className="list">
                     {this.state.mnemonic.split(" ").map((e,k)=>{
                         return <div key={e+k} className="item">{k+1}. {e}</div>
                     })}
+                </div>*/}
+                <div className="recover-password">
+                    {translate("recover_password")} : <b onClick={this.clickCopy.bind(this, this.state.recover_password)}>{this.state.recover_password}</b>
                 </div>
 
                 <div className="reference">
-                    {translate("master_keyword_must_be_save_desc_1")}<br/>
-                    {translate("master_keyword_must_be_save_desc_2")}
+                    {translate("recover_password_must_be_save_desc_1")}<br/>
+                    <br/>
+                    {translate("recover_password_must_be_save_desc_2")}<br/>
                 </div>
             </div>
 
             <div className="bottom-container">
-                <div className="transparent-button" onClick={this.onClickSaveMnemonic}>
+                {/*<div className="transparent-button" onClick={this.onClickSaveMnemonic}>
                     {translate("download_saveform")}
-                </div>
-                <div className="confirm-button" onClick={this.next_term}>
+                </div>*/}
+                <div className="confirm-button" onClick={this.onClickFinishRegister /*next_term*/}>
                     {translate("confirm")}
                 </div>
             </div>
@@ -1147,7 +1189,7 @@ export default class extends React.Component {
             </div>
             <div className="bottom-container">
                 <div className="back-button" onClick={this.prev_term}>{translate("go_back")}</div>
-                <div className="confirm-button" onClick={this.onClickFinishSortTest}>{translate("complete_join")}</div>
+                <div className="confirm-button" onClick={this.onClickFinishRegister}>{translate("complete_join")}</div>
             </div>
         </div>)
     }
@@ -1202,13 +1244,15 @@ export default class extends React.Component {
                 title = translate("input_corporation_info")
                 desc = translate("input_corporation_info_desc")
             }
-        }else if(this.state.step == 3){
-            title = translate("save_master_keyword")
-            desc = translate("save_master_keyword_desc_1")
-        }else if(this.state.step == 4){
+        } else if(this.state.step == 3){
+            title = translate("save_recover_password")
+            desc = translate("save_recover_password_desc_1")
+            /*title = translate("save_master_keyword")
+            desc = translate("save_master_keyword_desc_1")*/
+        } /*else if(this.state.step == 4){
             title = translate("save_master_keyword")
             desc = translate("save_master_keyword_desc_2")
-        }
+        }*/
 
         return <div className="top">
             <div className="title">{title}</div>
@@ -1257,7 +1301,7 @@ export default class extends React.Component {
                             <div className={`item ${this.state.step == 0 ? "enable": ""}`}>{translate("terms_agree")}</div>
                             <div className={`item ${this.state.step == 1 ? "enable": ""}`}>{translate("input_account_info")}</div>
                             <div className={`item ${this.state.step == 2 ? "enable": ""}`}>{step2_text}</div>
-                            <div className={`item ${this.state.step == 3 || this.state.step == 4 ? "enable": ""}`}>{translate("master_keyword_issue")}</div>
+                            <div className={`item ${this.state.step == 3 || this.state.step == 4 ? "enable": ""}`}>{translate("recover_password_issue")}</div>
                         </div>
                     </div>
                     <div className="desc">

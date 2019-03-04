@@ -181,7 +181,6 @@ export function add_member_group(group_id, email, corp_key, data_plain, data_for
 
 export function add_member_group_exist(account_id, group_id, email, data_plain) {
     return async function() {
-
         const possible = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
         let passphrase2_length = 32;
         let passphrase2 = "";
