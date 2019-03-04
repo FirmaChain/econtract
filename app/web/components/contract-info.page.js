@@ -27,6 +27,7 @@ import {
     get_chats,
     update_epin_account,
     get_contract_logs,
+    modify_contract_user_info,
     getGroupKey,
     select_subject,
     createContractHtml,
@@ -46,6 +47,7 @@ let mapDispatchToProps = {
     get_chats,
     update_epin_account,
     get_contract_logs,
+    modify_contract_user_info,
 }
 
 const LIST_DISPLAY_COUNT = 6
@@ -80,14 +82,14 @@ export default class extends React.Component {
         await window.showIndicator(translate("loading_contract"))
         await this.props.fetch_user_info()
         let contract_id = this.props.match.params.contract_id || 0
-        let contract, groups = []
+        let resp, groups = []
         let params = queryString.parse(nextProps.location.search)
 
         if(this.props.user_info.account_type != 0) {
             groups = await this.props.get_group_info(0)
-            contract = await this.props.get_contract(contract_id, this.props.user_info, groups)
+            resp = await this.props.get_contract(contract_id, this.props.user_info, groups)
         } else {
-            contract = await this.props.get_contract(contract_id, this.props.user_info)
+            resp = await this.props.get_contract(contract_id, this.props.user_info)
         }
         await window.hideIndicator()
 
@@ -97,20 +99,54 @@ export default class extends React.Component {
             })
         }
 
-        if(!contract) {
+        if(!resp) {
             alert(translate("contract_is_encrypt_so_dont_enter"))
             return history.goBack()
         }
 
-        if(contract.payload.contract) {
+        if(resp.payload.contract) {
 
-            if(contract.payload.contract.is_pin_used == 1 && contract.payload.contract.pin && contract.payload.contract.pin != "000000") 
-                await this.props.update_epin_account(contract_id, contract.payload.contract.pin);
+            if(resp.payload.contract.is_pin_used == 1 && resp.payload.contract.pin && resp.payload.contract.pin != "000000") 
+                await this.props.update_epin_account(contract_id, resp.payload.contract.pin);
 
-            delete contract.payload.logs
+            delete resp.payload.logs
+
+            if(resp.payload.contract.status != 2) {
+                let contract = resp.payload.contract
+                let infos = resp.payload.infos
+
+                let corp_id = this.props.user_info.corp_id || -1
+                let me = select_subject(infos, this.state.groups, this.props.user_info.account_id, corp_id, contract.is_pin_used).my_info
+                
+                let contract_user_info = {
+                    ...me.user_info,
+                    username:this.props.user_info.username,
+                };
+                if(this.props.user_info.account_type != 0) {
+                    contract_user_info.company_name = this.props.user_info.company_name;
+                }
+
+                let update_flag = false
+                if(Object.keys(contract_user_info).length != Object.keys(me.user_info).length) update_flag = true;
+                else if(!update_flag) {
+                    for(let v of Object.entries(contract_user_info)) {
+                        for(let w of Object.entries(me.user_info)) {
+                            if(v[0] == w[0] && v[1] != w[1]) {
+                                update_flag = true;
+                                break;
+                            }
+                        }
+                        if(update_flag) break;
+                    }
+                }
+                if(update_flag) {
+                    let r = await this.props.modify_contract_user_info(contract.contract_id, this.props.user_info.account_id, 0, contract_user_info, contract.the_key)
+                    console.log(r);
+                }
+            }
 
             this.setState({
-                ...contract.payload,
+                ...resp.payload,
                 cur_log_page:Number(params.log_page) || 0,
                 groups,
             })

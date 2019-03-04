@@ -23,6 +23,7 @@ import {
     api_get_lock_count,
     api_send_chat,
     api_get_contract_logs,
+    api_modify_contract_user_info,
 } from "../../../gen_api"
 
 import {
@@ -431,6 +432,13 @@ export function get_lock_count(group_id) {
 export function get_contract_logs(contract_id, page = 0, display_count = 6) {
     return async function() {
         let resp = await api_get_contract_logs(contract_id, page, display_count)
+        return resp
+    }
+}
+
+export function modify_contract_user_info(contract_id, entity_id, corp_id, user_info, the_key) {
+    return async function() {
+        let resp = await api_modify_contract_user_info(contract_id, entity_id, corp_id, aes_encrypt(JSON.stringify(user_info), the_key))
         return resp
     }
 }
