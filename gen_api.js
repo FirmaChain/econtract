@@ -162,18 +162,6 @@ export async function api_new_contract(subject,counterparties,necessary_info_str
         session:window.getCookie("session")
     });
 }
-export async function api_edit_contract(subject,counterparties,necessary_info_string,can_edit_account_id){
-    let __data = new FormData();
-
-    if(subject != null) __data.append('subject', subject);
-	if(counterparties != null) __data.append('counterparties', counterparties);
-	if(necessary_info_string != null) __data.append('necessary_info_string', necessary_info_string);
-	if(can_edit_account_id != null) __data.append('can_edit_account_id', can_edit_account_id)
-
-    return await post("/edit_contract", __data,{
-        session:window.getCookie("session")
-    });
-}
 export async function api_add_counterparties(contract_id,counterparties){
     let __data = new FormData();
 
@@ -181,6 +169,18 @@ export async function api_add_counterparties(contract_id,counterparties){
 	if(counterparties != null) __data.append('counterparties', counterparties)
 
     return await post("/add_counterparties", __data,{
+        session:window.getCookie("session")
+    });
+}
+export async function api_modify_contract_user_info(contract_id,entity_id,corp_id,user_info){
+    let __data = new FormData();
+
+    if(contract_id != null) __data.append('contract_id', contract_id);
+	if(entity_id != null) __data.append('entity_id', entity_id);
+	if(corp_id != null) __data.append('corp_id', corp_id);
+	if(user_info != null) __data.append('user_info', user_info)
+
+    return await post("/modify_contract_user_info", __data,{
         session:window.getCookie("session")
     });
 }
