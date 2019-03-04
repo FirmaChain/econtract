@@ -126,11 +126,11 @@ export default class extends React.Component {
                 return history.push("/login")
             }
 
-            if(!!this.props.location.state && !!this.props.location.state.contract_id) {
+            /*if(!!this.props.location.state && !!this.props.location.state.contract_id) {
                 await this.edit_initialize(user);
-            } else {
+            } else {*/
                 await this.initialize(user);
-            }
+            //}
         })()
 
 
@@ -214,8 +214,6 @@ export default class extends React.Component {
             _.is_use_pin = true;
             _.pin_number = contract.pin; 
         }
-        console.log(this.state.individual)
-        console.log(contract.necessary_info.individual)
 
         let individual = [...this.state.individual]
         for(let v of contract.necessary_info.individual) {
@@ -241,7 +239,6 @@ export default class extends React.Component {
         _.individual = individual;
         _.corporation = corporation;
 
-        console.log("_", _)
         await this.setState(_)
     }
 

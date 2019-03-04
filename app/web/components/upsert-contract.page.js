@@ -218,6 +218,9 @@ export default class extends React.Component {
                 sign_info,
             }
 
+            if(me.sign_info == null && me.privilege == 1)
+                await this.onClickRegiserSignInfo() 
+
             await this.setState(_state)
 
             if( !!this.editor && !!contract.payload.contract && this.props.user_info.account_id != contract.payload.contract.can_edit_account_id ) {
@@ -354,8 +357,6 @@ export default class extends React.Component {
             }
         })
         sign_info = Object.assign(_, {}) || {}
-
-        console.log(sign_info)
 
         for(let v of sign_info_list) {
             if(!sign_info["#"+v] || sign_info["#"+v].trim() == "") {
