@@ -118,7 +118,6 @@ export default class extends React.Component {
                         this.editor.edit.on()
                     }
 
-
                     if(!!this.editor && !!this.state.contract && this.state.contract.status == 2) {
                         this.editor.edit.off()
                     }
