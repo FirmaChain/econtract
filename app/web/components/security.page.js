@@ -69,6 +69,7 @@ export default class extends React.Component {
 
 	componentDidMount(){
         setTimeout(async () => {
+            await this.fetch_user_info()
             await this.onRefresh();
         })
     }
@@ -201,6 +202,41 @@ export default class extends React.Component {
         })
     }
 
+    onClickRegister2FAOTP = async () => {
+        if(this.state.otp_temp_token == "") {
+            return alert(translate("please_input_otp_token"))
+        }
+
+        if(this.state.otp_temp_token.length != 6) {
+            return alert(translate("otp_token_length_is_6"))
+        }
+
+        await window.showIndicator();
+
+        let resp = await this.props.register_2fa_otp(this.state.otp_temp_token)
+
+        if(resp.code == 1) {
+            alert(translate("success_register_2fa_otp"));
+            await this.props.fetch_user_info();
+            await this.onRefresh();
+        } else if(resp.code == -6) {
+            alert(translate("no_temp_register_server"))
+        } else if(resp.code == -7) {
+            alert(translate("token_not_matched"))
+        } else {
+            alert("error otp register. please contact developer");
+        }
+        await window.hideIndicator();
+    }
+
+    onClickOTPApp = async (type) => {
+        if(type == 0) {
+            window.open("https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2", "_blank")
+        } else {
+            window.open("https://itunes.apple.com/kr/app/google-authenticator/id388497605?mt=8&ls=1", "_blank")
+        }
+    }
+
 	render() {
         if(!this.props.user_info)
             return <div />
@@ -230,13 +266,42 @@ export default class extends React.Component {
                         <div className="title">{translate("google_2fa_otp")}</div>
                         <div className="text-box">
                             {this.props.user_info.use_otp == 0 ? 
-                                <div className="blue-but" onClick={this.onClickIssue2FAOtp}>{translate("issue")}</div> : 
+                                <div className="transparent-but long-but"><i className="far fa-shield"></i> {translate("no_use_otp")}</div> : 
                                 <div className="transparent-but long-but"><i className="far fa-shield-alt"></i> {translate("already_use_otp")}</div>}
-                            {this.props.user_info.use_otp == 1 ? <div className="blue-but">{translate("re_issue_otp")}</div>: null}
+                            {this.props.user_info.use_otp == 0 ? 
+                                <div className="blue-but" onClick={this.onClickIssue2FAOtp}>{translate("issue")}</div> : 
+                                <div className="blue-but">{translate("re_issue_otp")}</div>}
                         </div>
                     </div>
                     {this.state.issue_ing_2fa_otp ? <div className="otp-place">
-                        <img src={`https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl=200x200&chld=M|0&cht=qr&chl=${this.state.secret.otpauth_url}`}/>
+                        <div className="title">1. {translate("otp_app_download")}</div>
+                        <div className="otp-app-download">
+                            <div className="app" onClick={this.onClickOTPApp.bind(this, 0)}><i className="fab fa-android"></i> &nbsp;{translate("android")}</div>
+                            <div className="app" onClick={this.onClickOTPApp.bind(this, 1)}><i className="fab fa-apple"></i> &nbsp;{translate("ios")}</div>
+                        </div>
+
+                        <div className="title">2. {translate("otp_secret_title")}</div>
+                        <div className="qr-code">
+                            <img src={`https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl=200x200&chld=M|0&cht=qr&chl=${this.state.secret.otpauth_url}`}/>
+                            <div className="desc" dangerouslySetInnerHTML={{__html:translate("otp_qr_code_desc")}}></div>
+                        </div>
+                        <div className="secret-box">
+                            {translate("otp_secret_key", [this.state.secret.base32])}<br/>
+                            <br/>
+                            <b>{translate("must_save_this_secret")}</b>
+                        </div>
+                        <div className="title">3. {translate("input_otp_token")}</div>
+                        <div className="text-box">
+                            <input className="common-textbox" 
+                                type="text" 
+                                value={this.state.otp_temp_token} 
+                                placeholder={translate("please_input_otp_token")} 
+                                onChange={e=>(this.setState({otp_temp_token:e.target.value.trim()}))}/>
+                        </div>
+
+                        <div className="confirm-container">
+                            <div className="blue-but" onClick={this.onClickRegister2FAOTP}>{translate("register")}</div>
+                        </div>
                     </div> : null}
                 </div>
             </div>

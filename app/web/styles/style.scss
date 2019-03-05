@@ -3234,7 +3234,8 @@ div.checkbox2-comp{
                     }
 
                     >.long-but {
-                        width:220px;
+                        width:280px;
+                        cursor:initial;
                     }
 
                     .control {
@@ -3247,6 +3248,92 @@ div.checkbox2-comp{
 
                     >.hide {
                         display: none;
+                    }
+                }
+            }
+
+            >.otp-place {
+                display: flex;
+                flex-direction: column;
+                border:1px solid $blue;
+                padding:15px;
+
+                >.title {
+                    font-size: $font4;
+                    color: $black;
+                    font-weight: bold;
+                }
+
+                >.qr-code {
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+
+                    >img {
+                        width:200px;
+                    }
+
+                    >.desc {
+                        font-size:$font3;
+                    }
+                }
+
+                >.secret-box {
+                    margin-bottom:30px;
+                    margin-left:10px;
+                    font-size:$font3;
+                    color:$black;
+                    word-break: break-all;
+                }
+
+                >.otp-app-download {
+                    display: flex;
+                    flex-direction: row;
+                    margin-top:10px;
+                    margin-bottom:30px;
+
+                    >.app {
+                        display: inline-block;
+                        font-size: $font2;
+                        cursor: pointer;
+                        padding:10px 20px;
+                        background-color: $blue;
+                        color:white;
+                        margin-right: 20px;
+                        width:90px;
+                        text-align: center;
+                    }
+                }
+
+                >.text-box {
+                    display: flex;
+                    flex-direction: row;
+                    margin-top: 15px;
+                    margin-left:10px;
+
+                    >input {
+                        font-size: $font3;
+                        color: $black;
+                        max-width:420px;
+                        width:90%;
+                    }
+                }
+
+                >.confirm-container {
+                    margin-top:30px;
+                    margin-bottom:20px;
+                    text-align: right;
+
+                    >.blue-but {
+                        display: inline-block;
+                        font-size: $font4;
+                        cursor: pointer;
+                        padding:15px 20px;
+                        background-color: $blue;
+                        color:white;
+                        margin-left: 10px;
+                        width:100px;
+                        text-align: center;
                     }
                 }
             }
