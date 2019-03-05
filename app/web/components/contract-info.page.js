@@ -335,12 +335,14 @@ export default class extends React.Component {
                         return alert(translate("already_add_group"))
                     }
                 }
+                await window.showIndicator();
                 let contract = this.state.contract;
                 let result = await this.props.add_counterparties(contract.contract_id, [group], groups, this.props.user_info, this.state.infos, contract.is_pin_used, contract.pin)
                 if(contract.is_pin_used == 1) {
                     await this.props.update_epin_group(group.corp_id, group.group_id, contract.contract_id, this.props.user_info, contract.pin)
                 }
-                console.log("result", result)
+                await this.onRefresh()
+                await window.hideIndicator();
             }
         })
     }
@@ -349,7 +351,10 @@ export default class extends React.Component {
         await window.showIndicator();
         let result = await this.props.remove_counterparty(this.state.contract.contract_id, corp_id, entity_id)
         if(result.code == 1) {
-            return alert(translate("success_remove_counterparty"))
+            await this.onRefresh()
+            alert(translate("success_remove_counterparty"))
+        } else {
+            alert(translate("fail_remove_counterparty"))
         }
         await window.hideIndicator();
     }
