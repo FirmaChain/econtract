@@ -274,7 +274,7 @@ export default class extends React.Component {
                                 <div className="transparent-but long-but"><i className="far fa-shield-alt"></i> {translate("already_use_otp")}</div>}
                             {this.props.user_info.use_otp == 0 ? 
                                 <div className="blue-but" onClick={this.onClickIssue2FAOtp}>{translate("issue")}</div> : 
-                                <div className="blue-but">{translate("re_issue_otp")}</div>}
+                                null/*<div className="blue-but">{translate("re_issue_otp")}</div>*/}
                         </div>
                     </div>
                     {this.state.issue_ing_2fa_otp ? <div className="otp-place">
