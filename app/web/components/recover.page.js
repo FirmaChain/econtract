@@ -368,7 +368,7 @@ export default class extends React.Component {
                             <div className={`circle ${this.state.step == 1 ? "enable-circle": ""}`}></div>
                         </div>
                         <div className="step-text">
-                            <div className={`item ${this.state.step == 0 ? "enable": ""}`}>{translate("input_master_keyword")}</div>
+                            <div className={`item ${this.state.step == 0 ? "enable": ""}`}>{translate("input_recover_password")}</div>
                             <div className={`item ${this.state.step == 1 ? "enable": ""}`}>{translate("set_password")}</div>
                         </div>
                     </div>
