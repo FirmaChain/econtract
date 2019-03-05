@@ -568,7 +568,7 @@ export default class extends React.Component {
             data,
             onConfirm:(group)=>{
                 for(let v of this.state.target_list) {
-                    if( !!v.corp_id && !!v.group_id && v.corp_id == group.corp_id && v.group_id == group.group_id) {
+                    if( !!v.corp_id && !!v.group_id && v.corp_id == group.corp_id && v.group_id == group.group_id && v.is_exclude == 0) {
                         return alert(translate("already_add_group"))
                     }
                 }

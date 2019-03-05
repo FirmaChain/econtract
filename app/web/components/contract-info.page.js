@@ -331,7 +331,7 @@ export default class extends React.Component {
             data,
             onConfirm: async (group)=>{
                 for(let v of this.state.infos) {
-                    if( v.corp_id == group.corp_id && v.entity_id == group.group_id) {
+                    if( v.corp_id == group.corp_id && v.entity_id == group.group_id && v.is_exclude == 0) {
                         return alert(translate("already_add_group"))
                     }
                 }
