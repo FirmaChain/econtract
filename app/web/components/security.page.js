@@ -69,7 +69,7 @@ export default class extends React.Component {
 
 	componentDidMount(){
         setTimeout(async () => {
-            await this.fetch_user_info()
+            await this.props.fetch_user_info()
             await this.onRefresh();
         })
     }
@@ -217,6 +217,10 @@ export default class extends React.Component {
 
         if(resp.code == 1) {
             alert(translate("success_register_2fa_otp"));
+            this.setState({
+                issue_ing_2fa_otp:false,
+                secret:null,
+            })
             await this.props.fetch_user_info();
             await this.onRefresh();
         } else if(resp.code == -6) {
