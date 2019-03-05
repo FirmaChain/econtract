@@ -206,6 +206,7 @@ export default class extends React.Component {
             data:{...resp.payload},
             contract_name:contract.name,
             can_edit_account_id:contract.can_edit_account_id,
+            payer_account_id:contract.payer_account_id,
             edit_mode:true,
             target_list:target_list,
         }
@@ -248,6 +249,7 @@ export default class extends React.Component {
         if(user.account_type == 0) {
             this.setState({
                 can_edit_account_id:this.props.user_info.account_id,
+                payer_account_id:this.props.user_info.account_id,
                 target_list:[{
                     user_type:0,
                     account_id: user.account_id,
@@ -260,6 +262,7 @@ export default class extends React.Component {
         } else if(user.account_type == 1 || user.account_type == 2) {
             this.setState({
                 can_edit_account_id:this.props.user_info.account_id,
+                payer_account_id:this.props.user_info.account_id,
                 target_list:[{
                     user_type:1,
                     account_id: user.account_id,
@@ -405,6 +408,11 @@ export default class extends React.Component {
             return alert(translate("please_set_edit_privilege"))
         }
 
+        if(this.state.payer_account_id == null) {
+            this.is_register = false
+            return alert(translate("please_set_payer"))
+        }
+
         if(this.state.is_use_pin) {
             if(this.state.pin_number == "" || this.state.pin_number.length != 6) {
                 this.is_register = false
@@ -478,7 +486,7 @@ export default class extends React.Component {
                 pre_model = Buffer.from(this.state.approval.html).toString()   
             }
 
-            let resp =  await this.props.new_contract(contract_name, counterparties, pin, necessary_info, this.state.can_edit_account_id, !!is_pin_used ? 1 : 0, pre_model);
+            let resp =  await this.props.new_contract(contract_name, counterparties, pin, necessary_info, this.state.can_edit_account_id, this.state.payer_account_id, !!is_pin_used ? 1 : 0, pre_model);
 
             if(resp.code == 1) {
                 let contract_id = resp.payload.contract_id
@@ -828,12 +836,22 @@ export default class extends React.Component {
                                         }
                                         <div className="privilege">{this.getRoleText(e.role)}</div>
                                         <div className="can-edit">
-                                            <CheckBox2 size={18} disabled={e.role.includes(2)}
-                                                on={this.state.can_edit_account_id == e.account_id}
-                                                onClick={ v => {
-                                                    this.setState({can_edit_account_id:e.account_id})
-                                                }} />
-                                            <div className="name">{translate("modify_privilege")}</div>
+                                            <div className="box">
+                                                <CheckBox2 size={18} disabled={e.role.includes(2)}
+                                                    on={this.state.can_edit_account_id == e.account_id}
+                                                    onClick={ v => {
+                                                        this.setState({can_edit_account_id:e.account_id})
+                                                    }} />
+                                                <div className="name">{translate("modify_privilege")}</div>
+                                            </div>
+                                            <div className="box">
+                                                <CheckBox2 size={18} disabled={e.role.includes(2)}
+                                                    on={this.state.payer_account_id == e.account_id}
+                                                    onClick={ v => {
+                                                        this.setState({payer_account_id:e.account_id})
+                                                    }} />
+                                                <div className="name">{translate("price_charge")}</div>
+                                            </div>
                                         </div>
                                         <div className="action">
                                             {removable ?

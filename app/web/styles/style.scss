@@ -2009,10 +2009,17 @@ div.checkbox2-comp{
                         >.can-edit {
                             width:120px;
                             display: flex;
-                            flex-direction:row;
+                            flex-direction:column;
                             align-items: center;
 
-                            >.name {
+                            >.box {
+                                display: flex;
+                                flex-direction:row;
+                                align-items: center;
+                                margin-bottom:5px;
+                            }
+
+                            .name {
                                 margin-left:10px;
                                 font-size: $font1;
                                 color:$black;
