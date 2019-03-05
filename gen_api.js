@@ -985,6 +985,15 @@ export async function api_check_join_publickey(publicms){
         session:window.getCookie("session")
     });
 }
+export async function api_get_emk(email){
+    let __data = new FormData();
+
+    if(email != null) __data.append('email', email)
+
+    return await post("/get_emk", __data,{
+        session:window.getCookie("session")
+    });
+}
 export async function api_login_account(publicbk,nonce,sign){
     let __data = new FormData();
 

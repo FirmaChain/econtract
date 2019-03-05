@@ -17,6 +17,7 @@ import {
     api_update_user_public_info,
     api_update_username,
     api_re_issue_recover_password,
+    api_get_emk,
 } from "../../../gen_api"
 
 import {
@@ -268,6 +269,12 @@ export function select_userinfo_with_email(email){
         //     email:email,
         //     username:"윤대현"+(Math.floor(Math.random()*30))
         // }
+    }
+}
+
+export function get_emk(email) {
+    return async function() {
+        return await api_get_emk(email);
     }
 }
 

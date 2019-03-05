@@ -4,10 +4,6 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom'
 import history from '../history';
 import translate from "../../common/translate"
-import {
-    recover_account,
-    check_join_publickey,
-} from "../../common/actions"
 import Web3 from "../../common/Web3"
 
 import Footer from "./footer.comp"
@@ -20,7 +16,15 @@ import {
     SeedToMasterKeyPublic,
     BrowserKeyBIP32,
     validateMnemonic,
+    aes_decrypt,
+    aes_encrypt,
 } from "../../common/crypto_test"
+
+import {
+    recover_account,
+    check_join_publickey,
+    get_emk,
+} from "../../common/actions"
 
 let mapStateToProps = (state)=>{
 	return {
@@ -30,6 +34,7 @@ let mapStateToProps = (state)=>{
 let mapDispatchToProps = {
     recover_account,
     check_join_publickey,
+    get_emk,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -97,6 +102,52 @@ export default class extends React.Component {
         await window.hideIndicator();
         return;
     };
+
+    onClickRecoverPassword = async () => {
+        if (!this.state.recover_email || this.state.recover_email == "") {
+            return alert(translate("please_input_recover_email"));
+        }
+
+        if (!this.state.recover_password || this.state.recover_password == "") {
+            return alert(translate("please_input_recover_password_example"));
+        }
+
+        await window.showIndicator();
+
+        let resp = await this.props.get_emk(this.state.recover_email);
+        console.log(resp)
+        if(resp.code == -5) {
+            await window.hideIndicator();
+            return alert(translate("no_register_account_with_email"));
+        }
+
+        let mk;
+        try {
+            mk = aes_decrypt(Buffer.from(resp.payload.emk, 'hex'), Buffer.from(this.state.recover_password, 'hex'))
+        } catch(err) {
+            await window.hideIndicator();
+            return alert(translate("no_match_recover_password"))
+        }
+
+        if (!validateMnemonic(mk)) {
+            return alert(translate("not_validate_master_keyword"));
+        }
+
+        let seed = mnemonicToSeed(mk);
+        let masterKeyPublic = SeedToMasterKeyPublic(seed);
+
+        let resp = await this.props.check_join_publickey(masterKeyPublic.toString('hex'));
+        if(resp){
+            this.setState({
+                step: this.state.step+1,
+                mnemonic: mk,
+            });
+        } else {
+            alert(translate("no_account_new_register"));
+        }
+
+        await window.hideIndicator();
+    }
 
     onClickRecoverMyAccount = async()=>{
         if(!this.state.email || this.state.email == ""){
@@ -222,12 +273,12 @@ export default class extends React.Component {
                 </div>
 
                 <div className="reference">
-                    {translate("word_12_master_keyword_input_msg")}
+                    {translate("correct_recover_password_input_msg")}
                 </div>
             </div>
 
             <div className="bottom-container">
-                <div className="confirm-button" onClick={this.onClickInputMnemonic}>
+                <div className="confirm-button" onClick={this.onClickRecoverPassword}>
                     {translate("next")}
                 </div>
             </div>
