@@ -18,6 +18,8 @@ import {
     api_update_username,
     api_re_issue_recover_password,
     api_get_emk,
+    api_issue_2fa_otp,
+    api_register_2fa_otp,
 } from "../../../gen_api"
 
 import {
@@ -47,6 +49,7 @@ export function fetch_user_info(){
         if(entropy){
             let resp = await api_encrypted_user_info()
             if(resp.payload){
+                console.log("resp.payload", resp.payload)
                 let user_info = decrypt_user_info(entropy, new Buffer(resp.payload.info.data) )
                 let corp_info = {}, public_info = {}
                 let _ = {}
@@ -93,6 +96,8 @@ export function fetch_user_info(){
                     publickey_contract: resp.payload.publickey_contract,
                     account_type: resp.payload.account_type,
                     corp_id: resp.payload.corp_id,
+                    use_otp: resp.payload.use_otp,
+                    otp_secret: resp.payload.otp_secret,
                 }
 
                 if(resp.payload.encrypted_group_keys) {
@@ -138,6 +143,20 @@ export function fetch_user_info(){
             payload:false
         })
         return false;
+    }
+}
+
+export function issue_2fa_otp() {
+    return async function(dispatch) {
+        let resp = await api_issue_2fa_otp();
+        return resp;
+    }
+}
+
+export function register_2fa_otp(token) {
+    return async function() {
+        let resp = await api_register_2fa_otp(token);
+        return resp;
     }
 }
 

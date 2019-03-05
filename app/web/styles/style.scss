@@ -3154,6 +3154,106 @@ div.checkbox2-comp{
     }
 }
 
+
+.security-page {
+
+    >.info-container {
+        display: flex;
+        flex-direction: row;
+        max-width: 840px;
+
+        >.info {
+            flex:1;
+
+            >.title {
+                font-size: $font3;
+                color: $black;
+                font-weight:bold;
+                margin-bottom:30px;
+            }
+            
+            >.text-place {
+                margin-bottom:25px;
+
+                >.title {
+                    font-size: $font2;
+                    color: $black;
+                }
+
+                >.text-box {
+                    display: flex;
+                    flex-direction: row;
+                    margin-top: 10px;
+
+                    >input {
+                        font-size: $font1;
+                        color: $black;
+                        max-width:420px;
+                        width:90%;
+                    }
+
+                    >.master-keyword {
+                        font-size: $font1;
+                        color: $black;
+                        width:290px;
+                        padding-left:10px;
+                    }
+
+                    >.recover-password {
+                        font-size: $font3;
+                        color: $black;
+                        width:200px;
+                        display: flex;
+                        align-items: center;
+                        padding-left:10px;
+                        font-weight: bold;
+                    }
+
+                    >.blue-but {
+                        display: inline-block;
+                        font-size: $font1;
+                        cursor: pointer;
+                        padding:10px 20px;
+                        background-color: $blue;
+                        color:white;
+                        margin-left: 10px;
+                        width:50px;
+                        text-align: center;
+                    }
+
+                    >.transparent-but {
+                        display: inline-block;
+                        font-size: $font1;
+                        cursor: pointer;
+                        padding:10px 20px;
+                        color:$blue;
+                        margin-left: 10px;
+                        width:50px;
+                        text-align: center;
+                        border:1px solid $blue;
+                    }
+
+                    >.long-but {
+                        width:220px;
+                    }
+
+                    .control {
+                        width:220px !important;
+                    }
+
+                    .item {
+                        width:220px;
+                    }
+
+                    >.hide {
+                        display: none;
+                    }
+                }
+            }
+        }
+    }
+}
+
 .price-status-page {
     
     >.container {

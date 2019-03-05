@@ -102,6 +102,7 @@ window.addEventListener("load",()=>{
 					<Route onEnter={resolver} exact path="/profile" component={InformationPage} />
 					<Route onEnter={resolver} exact path="/price-status" component={InformationPage} />
 					<Route onEnter={resolver} exact path="/group-manage" component={InformationPage} />
+					<Route onEnter={resolver} exact path="/security" component={InformationPage} />
 
 					<Route onEnter={resolver} exact path="/add-contract" component={AddContractPage} />
 					<Route onEnter={resolver} exact path="/edit-contract/:contract_id" component={UpsertContractPage} />

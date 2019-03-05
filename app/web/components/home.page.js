@@ -29,7 +29,7 @@ let mapStateToProps = (state)=>{
 }
 
 let mapDispatchToProps = {
-    fetch_user_info
+    fetch_user_info,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )

@@ -14,6 +14,7 @@ import moment from "moment"
 import ProfilePage from "./profile.page"
 import PriceStatusPage from "./price-status.page"
 import GroupManagePage from "./group-manage.page"
+import SecurityPage from "./security.page"
 import Footer from "./footer.comp"
 import Web3 from "../../common/Web3"
 
@@ -86,6 +87,9 @@ export default class extends React.Component {
         else if(menu == "/group-manage") {
             return { id:"/group-manage", title : translate("group_manage")}
         }
+        else if(menu == "/security") {
+            return { id:"/security", title : translate("security")}
+        }
         return { id:"/profile", title : translate("my_info")}
     }
 
@@ -106,11 +110,13 @@ export default class extends React.Component {
                         <div className="title">{translate("setting")}</div>
                         <div className={"item" + (this.getTitle().id == "/profile" ? " selected" : "")} onClick={this.move.bind(this, "profile")}><i className=" icon far fa-info-circle"></i>{translate("my_info")}</div>
                         <div className={"item" + (this.getTitle().id == "/price-status" ? " selected" : "")} onClick={this.move.bind(this, "price-status")}><i className="icon far fa-file-invoice-dollar"></i>{translate("price")}</div>
+                        <div className={"item" + (this.getTitle().id == "/security" ? " selected" : "")} onClick={this.move.bind(this, "security")}><i className="icon far fa-shield-check"></i>{translate("security")}</div>
                         {this.props.user_info.account_type == 1 ? <div className={"item" + (this.getTitle().id == "/group-manage" ? " selected" : "")} onClick={this.move.bind(this, "group-manage")}><i className="icon far fa-users"></i>{translate("group_manage")}</div> : null}
                     </div>
                     <Route path="/profile" render={() => <ProfilePage {...this.props}/>} />
                     <Route path="/price-status" render={() => <PriceStatusPage {...this.props}/>} />
                     <Route path="/group-manage" render={() => <GroupManagePage {...this.props}/>} />
+                    <Route path="/security" render={() => <SecurityPage {...this.props}/>} />
                 </div>
             </div>
             <Footer />

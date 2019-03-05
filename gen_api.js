@@ -906,6 +906,24 @@ export async function api_encrypted_user_info(){
         session:window.getCookie("session")
     });
 }
+export async function api_issue_2fa_otp(){
+    let __data = new FormData();
+
+    
+
+    return await post("/issue_2fa_otp", __data,{
+        session:window.getCookie("session")
+    });
+}
+export async function api_register_2fa_otp(token){
+    let __data = new FormData();
+
+    if(token != null) __data.append('token', token)
+
+    return await post("/register_2fa_otp", __data,{
+        session:window.getCookie("session")
+    });
+}
 export async function api_request_email_verification(email){
     let __data = new FormData();
 

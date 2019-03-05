@@ -166,50 +166,6 @@ export default class extends React.Component {
     	return alert(translate("success_modify_public_info"))
     }
 
-    reIssueRecoverPassword = async () => {
-        let account_type = this.props.user_info.account_type;
-        let info_data = this.createInformation(account_type)
-        let info = info_data.info;
-
-        const possible = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
-        let passphrase2_length = 12;
-        let passphrase2 = "";
-        for (let i = 0; i < passphrase2_length; i++)
-            passphrase2 += possible.charAt(Math.floor(Math.random() * possible.length));
-
-        let mnemonic = entropyToMnemonic(sessionStorage.getItem("entropy"))
-
-        let emk = aes_encrypt(mnemonic, Buffer.from(passphrase2, 'hex'))
-        let mk;
-        try {
-            mk = aes_decrypt(Buffer.from(emk, 'hex'), Buffer.from(passphrase2, 'hex'))
-        } catch(err) {
-            console.log(err)
-        }
-
-        if(mk != mnemonic) {
-            return alert("something is very wrong. check rawMnemonic");
-        }
-
-        info.recover_password = passphrase2;
-
-        try {
-
-            await this.props.update_username(this.state.username)
-            let masterKeyPublic = SeedToMasterKeyPublic(getMasterSeed())
-            let encryptedInfo = aes_encrypt(JSON.stringify(info), masterKeyPublic);
-            let resp = await this.props.re_issue_recover_password(emk, encryptedInfo)
-
-            await this.props.fetch_user_info()
-            await this.onRefresh()
-            await this.textCopy(this.state.recover_password)
-        } catch( err ) {
-            console.log(err)
-            return alert(translate("error_re_issue_recover_password_msg"))
-        }
-        return alert(translate("success_re_issue_recover_password"))
-    }
-
     textCopy = async (text) => {
         let t = document.createElement("textarea");
         document.body.appendChild(t);
@@ -246,18 +202,6 @@ export default class extends React.Component {
             }
         }
         await window.hideIndicator()
-    }
-
-    onClickViewMasterkeyword = async () => {
-        this.setState({
-            show_mnemonic:!this.state.show_mnemonic
-        })
-    }
-
-    onClickViewRecoverPassword = async () => {
-        this.setState({
-            show_recover_password:!this.state.show_recover_password
-        })
     }
 
     onChangeInfoPhoneForm = async (name, e) => {
@@ -320,21 +264,6 @@ export default class extends React.Component {
 	            			<div className="blue-but" onClick={this.onClickFindAddress.bind(this, "personal")}>{translate("find")}</div>
 	            		</div>
 	            	</div> : null}
-                    <div className="text-place">
-                        <div className="title">{translate("recover_password")}</div>
-                        <div className="text-box">
-                            <div className={"recover-password" + (this.state.show_recover_password ? "" : " hide")}>{this.state.recover_password}</div>
-                            <div className={"transparent-but" + (this.state.show_recover_password ? "" : " hide")} onClick={this.reIssueRecoverPassword}>{translate("re_issue")}</div>
-                            <div className="blue-but" onClick={this.onClickViewRecoverPassword}>{this.state.show_recover_password ? translate("close") : translate("view")}</div>
-                        </div>
-                    </div>
-                    <div className="text-place">
-                        <div className="title">{translate("master_keyword")}</div>
-                        <div className="text-box">
-                            <div className={"master-keyword" + (this.state.show_mnemonic ? "" : " hide")}>{entropyToMnemonic(sessionStorage.getItem("entropy"))}</div>
-                            <div className="blue-but" onClick={this.onClickViewMasterkeyword}>{this.state.show_mnemonic ? translate("close") : translate("view")}</div>
-                        </div>
-                    </div>
                     <div className="text-place">
                         <div className="title">{translate("select_language")}</div>
                         <div className="text-box">
