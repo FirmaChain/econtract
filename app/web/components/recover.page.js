@@ -207,7 +207,7 @@ export default class extends React.Component {
         if(e.keyCode == 13){
             switch(type) {
                 case 0:
-                this.onClickInputMnemonic()
+                this.onClickRecoverPassword()
                 break;
                 case 1:
                 this.onClickRecoverMyAccount()
