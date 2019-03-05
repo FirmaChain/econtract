@@ -428,11 +428,11 @@ export default class extends React.Component {
                     </div> : null}
                 </div>
             })}
-            <div className="action">
+            {this.state.contract.status != 2 ? <div className="action">
                 {this.state.edit_mode ? <div className="transparent-but" onClick={this.addMember}><i className="fal fa-plus"></i> {translate("user_add")}</div>:null}
                 {this.state.edit_mode && is_corp ? <div className="transparent-but" onClick={this.addGroup}><i className="fal fa-plus"></i> {translate("group_add_2")}</div> : null}
                 <div className={this.state.edit_mode ? "blue-but":"transparent-but"} onClick={(e)=>{this.setState({edit_mode:!this.state.edit_mode})}}>{this.state.edit_mode ? translate("complete") : translate("edit_mode")}</div>
-            </div>
+            </div> : null}
         </div>
     }
 
