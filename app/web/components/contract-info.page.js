@@ -349,7 +349,7 @@ export default class extends React.Component {
 
     onRemoveCounterparty = async (corp_id, entity_id) => {
         let is_corp = this.props.user_info.account_type == 1 || this.props.user_info.account_type == 2
-        if(is_corp && this.state.infos.filter(e=>e.corp_id != 0 && e.corp_id == this.props.user_info.corp_id).length == 1) {
+        if(is_corp && this.state.infos.filter(e=>e.is_exclude == 0 && e.corp_id != 0 && e.corp_id == this.props.user_info.corp_id).length == 1) {
             return alert(translate("at_least_one_group_in_contract"))
         }
 
@@ -358,6 +358,8 @@ export default class extends React.Component {
         if(result.code == 1) {
             await this.onRefresh()
             alert(translate("success_remove_counterparty"))
+        } else if(result.code == -10) {
+            alert(translate("at_least_one_group_in_contract"))
         } else {
             alert(translate("fail_remove_counterparty"))
         }
