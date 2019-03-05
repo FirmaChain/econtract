@@ -407,9 +407,11 @@ export default class extends React.Component {
 
         window.openModal("DrawSign",{
             onFinish : async (signature)=>{
-                let exist_ticket = (await this.props.check_ticket_count()).payload
-                if(!exist_ticket)
-                    return alert(translate("no_ticket_please_charge"))
+                if(this.props.user_info.account_id == this.state.contract.payer_account_id) {
+                    let exist_ticket = (await this.props.check_ticket_count()).payload
+                    if(!exist_ticket)
+                        return alert(translate("no_ticket_please_charge"))
+                }
 
                 let contract_body = createContractHtml(this.state.contract, this.state.infos).exclude_sign_body
                 
@@ -419,12 +421,13 @@ export default class extends React.Component {
                     let r = await this.props.update_contract_sign(this.state.contract.contract_id, signature, this.state.contract.the_key, email_list, sha256(contract_body))
                     if(r.code == -9) {
                         return alert(translate("you_dont_update_complete_contract_sign"))
-                    } else if(r.code == -11) {
+                    } /*else if(r.code == -11) {
                         return alert(tranlate("no_ticket_no_sign_please_charge"))
                     } else if(r.code == -12) {
                         let no_ticket_users = r.no_ticket_users.map(e => this.state.infos.find(ee=>e.entity_id == ee.entity_id && e.corp_id == ee.corp_id))
                         return alert(translate("i_have_ticket_but_other_no_ticket", [no_ticket_users.map(e=>e.user_info.username).join(", ")]))
-
+                    } */else if(r.code == -19) {
+                        return alert(translate("payer_do_not_have_ticket"))
                     }
                     else alert(translate("complete_sign_register"))
                     this.blockFlag = true

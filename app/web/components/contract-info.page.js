@@ -362,7 +362,7 @@ export default class extends React.Component {
         let contract = this.state.contract
         let review = this.state.review || {}
 
-        let meOrGroup, creator;
+        let meOrGroup, creator, payer;
         let users = [];
         let isAccount = false
         for(let v of this.state.infos) {
@@ -373,6 +373,9 @@ export default class extends React.Component {
 
             if(v.corp_id == 0 && v.entity_id == contract.account_id)
                 creator = v
+
+            if(v.corp_id == 0 && v.entity_id == contract.payer_account_id)
+                payer = v
 
             if(v.privilege == 1) {
                 let user_name = v.user_info.username ? v.user_info.username : v.user_info.title
@@ -441,6 +444,10 @@ export default class extends React.Component {
             <div className="item">
                 <div className="title">{translate("receive_contract_user")}</div>
                 <div className="desc">{users}</div>
+            </div>
+            <div className="item">
+                <div className="title">{translate("payer")}</div>
+                <div className="desc">{payer.user_info.username}</div>
             </div>
         </div>
     }
