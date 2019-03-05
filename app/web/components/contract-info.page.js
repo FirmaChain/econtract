@@ -325,7 +325,7 @@ export default class extends React.Component {
         })
         window.openModal("OneAddModal", {
             icon:"fal fa-users",
-            title:translate("user_add_group"),
+            title:translate("contract_add_group"),
             subTitle:translate("group_select"),
             desc:translate("select_group_member_contract_view_user_add"),
             data,
