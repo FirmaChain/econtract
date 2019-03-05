@@ -104,7 +104,7 @@ export default class extends React.Component {
     };
 
     onClickRecoverPassword = async () => {
-        if (!this.state.recover_email || this.state.recover_email == "") {
+        if (!this.state.email || this.state.email == "") {
             return alert(translate("please_input_recover_email"));
         }
 
@@ -114,7 +114,7 @@ export default class extends React.Component {
 
         await window.showIndicator();
 
-        let resp = await this.props.get_emk(this.state.recover_email);
+        let resp = await this.props.get_emk(this.state.email);
         console.log(resp)
         if(resp.code == -5) {
             await window.hideIndicator();
@@ -136,7 +136,7 @@ export default class extends React.Component {
         let seed = mnemonicToSeed(mk);
         let masterKeyPublic = SeedToMasterKeyPublic(seed);
 
-        let resp = await this.props.check_join_publickey(masterKeyPublic.toString('hex'));
+        resp = await this.props.check_join_publickey(masterKeyPublic.toString('hex'));
         if(resp){
             this.setState({
                 step: this.state.step+1,
@@ -255,8 +255,8 @@ export default class extends React.Component {
                     <div className="name">{translate("recover_email")}</div>
                     <div className="textbox">
                         <input className="common-textbox" type="email"
-                            value={this.state.recover_email || ""}
-                            onChange={e=>this.setState({recover_email:e.target.value})}
+                            value={this.state.email || ""}
+                            onChange={e=>this.setState({email:e.target.value})}
                             placeholder={translate("please_input_recover_email")}/>
                     </div>
                 </div>
