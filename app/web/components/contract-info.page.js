@@ -348,6 +348,11 @@ export default class extends React.Component {
     }
 
     onRemoveCounterparty = async (corp_id, entity_id) => {
+        let is_corp = this.props.user_info.account_type == 1 || this.props.user_info.account_type == 2
+        if(is_corp && this.state.infos.filter(e=>e.corp_id != 0 && e.corp_id == this.props.user_info.corp_id).length == 1) {
+            return alert(translate("at_least_one_group_in_contract"))
+        }
+
         await window.showIndicator();
         let result = await this.props.remove_counterparty(this.state.contract.contract_id, corp_id, entity_id)
         if(result.code == 1) {
