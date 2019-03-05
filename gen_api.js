@@ -173,6 +173,17 @@ export async function api_add_counterparties(contract_id,counterparties){
         session:window.getCookie("session")
     });
 }
+export async function api_remove_counterparty(contract_id,corp_id,entity_id){
+    let __data = new FormData();
+
+    if(contract_id != null) __data.append('contract_id', contract_id);
+	if(corp_id != null) __data.append('corp_id', corp_id);
+	if(entity_id != null) __data.append('entity_id', entity_id)
+
+    return await post("/remove_counterparty", __data,{
+        session:window.getCookie("session")
+    });
+}
 export async function api_modify_contract_user_info(contract_id,entity_id,corp_id,user_info){
     let __data = new FormData();
 

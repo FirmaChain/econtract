@@ -28,6 +28,9 @@ import {
     update_epin_account,
     get_contract_logs,
     modify_contract_user_info,
+    add_counterparties,
+    update_epin_group,
+    remove_counterparty,
     getGroupKey,
     select_subject,
     createContractHtml,
@@ -48,6 +51,9 @@ let mapDispatchToProps = {
     update_epin_account,
     get_contract_logs,
     modify_contract_user_info,
+    add_counterparties,
+    update_epin_group,
+    remove_counterparty,
 }
 
 const LIST_DISPLAY_COUNT = 6
@@ -61,6 +67,7 @@ export default class extends React.Component {
 
 		this.state={
             select_tab:0,
+            edit_mode: false,
 
             page_chat:0,
             last_chat_id:0,
@@ -141,7 +148,6 @@ export default class extends React.Component {
                 }
                 if(update_flag) {
                     let r = await this.props.modify_contract_user_info(contract.contract_id, this.props.user_info.account_id, 0, contract_user_info, contract.the_key)
-                    console.log(r);
                 }
             }
 
@@ -150,6 +156,7 @@ export default class extends React.Component {
                 cur_log_page:Number(params.log_page) || 0,
                 groups,
             })
+            console.log(resp.payload)
         } else {
             alert(translate("not_exist_contract"))
             return history.goBack()
@@ -232,8 +239,6 @@ export default class extends React.Component {
             return translate("status_0")
         } else if(status == 1) {
 
-            console.log(infos)
-
             let sign_user = infos.map( (v, k) => {
                 return {
                     corp_id : v.corp_id,
@@ -301,6 +306,53 @@ export default class extends React.Component {
         }
     }
 
+    addMember = async () => {
+
+    }
+
+    addGroup = async () => {
+        let groups = await this.props.get_group_info(0)
+        let data = groups.map((e) => {
+            return {
+                user_type:2,
+                corp_id: e.corp_id,
+                group_id : e.group_id,
+                title : e.title,
+                public_key : Buffer.from(e.group_public_key).toString("hex"),
+                company_name:this.props.user_info.company_name,
+                role:[2],
+            }
+        })
+        window.openModal("OneAddModal", {
+            icon:"fal fa-users",
+            title:translate("user_add_group"),
+            subTitle:translate("group_select"),
+            desc:translate("select_group_member_contract_view_user_add"),
+            data,
+            onConfirm: async (group)=>{
+                for(let v of this.state.infos) {
+                    if( v.corp_id == group.corp_id && v.entity_id == group.group_id) {
+                        return alert(translate("already_add_group"))
+                    }
+                }
+                let contract = this.state.contract;
+                let result = await this.props.add_counterparties(contract.contract_id, [group], groups, this.props.user_info, this.state.infos, contract.is_pin_used, contract.pin)
+                if(contract.is_pin_used == 1) {
+                    await this.props.update_epin_group(group.corp_id, group.group_id, contract.contract_id, this.props.user_info, contract.pin)
+                }
+                console.log("result", result)
+            }
+        })
+    }
+
+    onRemoveCounterparty = async (corp_id, entity_id) => {
+        await window.showIndicator();
+        let result = await this.props.remove_counterparty(this.state.contract.contract_id, corp_id, entity_id)
+        if(result.code == 1) {
+            return alert(translate("success_remove_counterparty"))
+        }
+        await window.hideIndicator();
+    }
 
     render_information_deck() {
         switch(this.state.select_tab) {
@@ -314,10 +366,16 @@ export default class extends React.Component {
     }
 
     render_users() {
+        let is_corp = this.props.user_info.account_type == 1 || this.props.user_info.account_type == 2
         return <div className="deck users">
             {this.state.infos.map((e, k)=>{
                 if(e.is_exclude == 1)
-                    return
+                    return;
+
+                let removeable = false;
+                if(is_corp && e.corp_id == this.props.user_info.corp_id) {
+                    removeable = true;
+                }
 
                 return <div className="item" key={e.entity_id+"_"+e.corp_id}>
                     <div className="icon">
@@ -353,8 +411,16 @@ export default class extends React.Component {
                     }
                     <div className="privilege">{this.getRoleText(e.entity_id, e.corp_id, e.privilege)}</div>
                     <div className="is-sign">{e.privilege != 1 ? "" : (e.signature ? translate("sign_all") : translate("status_1"))}</div>
+                    {this.state.edit_mode ? <div className="action">
+                        {removeable ? <div className="transparent-but" onClick={this.onRemoveCounterparty.bind(this, e.corp_id, e.entity_id)}>{translate("remove")}</div> : null}
+                    </div> : null}
                 </div>
             })}
+            <div className="action">
+                <div className="transparent-but" onClick={this.addMember}><i className="fal fa-plus"></i> {translate("user_add")}</div>
+                {is_corp ? <div className="transparent-but" onClick={this.addGroup}><i className="fal fa-plus"></i> {translate("group_add_2")}</div> : null}
+                <div className={this.state.edit_mode ? "blue-but":"transparent-but"} onClick={(e)=>{this.setState({edit_mode:!this.state.edit_mode})}}>{this.state.edit_mode ? translate("complete") : translate("edit_mode")}</div>
+            </div>
         </div>
     }
 

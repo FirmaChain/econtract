@@ -24,6 +24,7 @@ import {
     api_send_chat,
     api_get_contract_logs,
     api_modify_contract_user_info,
+    api_remove_counterparty,
 } from "../../../gen_api"
 
 import {
@@ -309,6 +310,12 @@ export function add_counterparties(contract_id, counterparties, groups, user_inf
         });
         let res = await api_add_counterparties( contract_id, JSON.stringify(counterparties_mapped) )
         return res
+    }
+}
+
+export function remove_counterparty(contract_id, corp_id, entity_id) {
+    return async function() {
+        return await api_remove_counterparty(contract_id, corp_id, entity_id);
     }
 }
 
