@@ -1014,6 +1014,16 @@ export async function api_select_userinfo_with_email(email){
         session:window.getCookie("session")
     });
 }
+export async function api_re_issue_recover_password(emk,encrypted_info){
+    let __data = new FormData();
+
+    if(emk != null) __data.append('emk', emk);
+	if(encrypted_info != null) __data.append('encrypted_info', encrypted_info)
+
+    return await post("/re_issue_recover_password", __data,{
+        session:window.getCookie("session")
+    });
+}
 export async function api_update_user_info(encrypted_info){
     let __data = new FormData();
 

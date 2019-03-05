@@ -16,6 +16,7 @@ import {
     api_update_corp_info,
     api_update_user_public_info,
     api_update_username,
+    api_re_issue_recover_password,
 } from "../../../gen_api"
 
 import {
@@ -109,7 +110,7 @@ export function fetch_user_info(){
 
                             update_group_keys[data.group_id] = data.group_key
                         } catch(e) {
-                            console.log("encrypted_group_key"+e)
+                            console.log("error encrypted_group_key"+e)
                         }
                     }
 
@@ -267,6 +268,12 @@ export function select_userinfo_with_email(email){
         //     email:email,
         //     username:"윤대현"+(Math.floor(Math.random()*30))
         // }
+    }
+}
+
+export function re_issue_recover_password(emk, encrypted_info) {
+    return async function() {
+        return await api_re_issue_recover_password(emk, encrypted_info)
     }
 }
 

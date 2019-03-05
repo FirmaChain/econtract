@@ -62,7 +62,7 @@ export default class extends React.Component {
             } else if(resp.eems){
                 //localStorage.setItem("browser_key_virgin", 0);
                 await this.props.fetch_user_info()
-                if(!this.props.user_info.email.includes("test")) {
+                if(this.props.user_info.email.includes("test")) {
                     alert("서비스 결제 모듈 검수 기간 중입니다. 검수 기간은 2019/03/10 까지로 예정되어 있으며 완료되는 순간 모든 계약 데이터와 계정 정보가 초기화 됩니다.")
                 }
                 history.replace("/home")

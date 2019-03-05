@@ -26,6 +26,7 @@ import {
     SeedToMasterKeyPublic,
     getMasterSeed,
     aes_encrypt,
+    aes_decrypt,
     entropyToMnemonic,
 } from "../../common/crypto_test"
 
@@ -35,6 +36,7 @@ import {
     update_user_public_info,
     update_corp_info,
     update_username,
+    re_issue_recover_password,
 } from "../../common/actions"
 
 let mapStateToProps = (state)=>{
@@ -49,6 +51,7 @@ let mapDispatchToProps = {
     update_user_public_info,
     update_corp_info,
     update_username,
+    re_issue_recover_password,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -59,26 +62,45 @@ export default class extends React.Component {
 	}
 
 	componentDidMount(){
-		if(this.props.user_info) {
-			let info = this.props.user_info
-
-			this.setState({
-				...info
-			})
-		}
+        setTimeout(async () => {
+            await this.onRefresh();
+        })
     }
 
-    onSaveInformation = async () => {		
-		let account_type = this.props.user_info.account_type;
-		let info, corp_info, public_info
+    onRefresh = async () => {
+        if(this.props.user_info) {
+            let info = this.props.user_info
+
+            this.setState({
+                ...info
+            })
+        }
+    }
+
+    createInformation(account_type) {
+        let info, corp_info, public_info
         if(account_type == 0) { // 개인 계정
             info = {
                 email: this.props.user_info.email.trim(),
                 username: this.state.username.trim(),
                 userphone: this.state.userphone.trim(),
                 useraddress: this.state.useraddress.trim(),
+                recover_password: this.state.recover_password,
             }
         } else if(account_type == 1) { // 기업 관리자 계정
+            info = {
+                corp_master_key:this.state.corp_master_key,
+                corp_key:this.state.corp_key,
+                group_keys:this.state.group_keys,
+                recover_password: this.state.recover_password,
+            }
+            public_info = {
+                email: this.props.user_info.email.trim(),
+                username: this.state.username.trim(),
+                department: this.state.department.trim(),
+                job: this.state.job.trim(),
+                userphone: this.state.userphone.trim(),
+            }
             corp_info = {
                 company_name: this.state.company_name.trim(),
                 duns_number: this.state.duns_number.trim(),
@@ -86,38 +108,43 @@ export default class extends React.Component {
                 company_tel: this.state.company_tel.trim(),
                 company_address: this.state.company_address.trim(),
             }
-            public_info = {
-                email: this.props.user_info.email.trim(),
-                username: this.state.username.trim(),
-                department: this.state.department.trim(),
-                job: this.state.job.trim(),
-                userphone: this.state.userphone.trim(),
-            }
-            info = {/*
-                corp_id:this.state.corp_id,
-                corp_master_key:this.state.corp_master_key,
-                corp_key:this.state.corp_key,*/
-            }
         } else if(account_type == 2) { // 기업 직원 계정
+            info = {
+                corp_id: this.state.corp_id,
+                corp_key: this.state.corp_key,
+                group_keys: this.state.group_keys,
+                recover_password: this.state.recover_password,
+            }
             public_info = {
                 email: this.props.user_info.email.trim(),
                 username: this.state.username.trim(),
                 department: this.state.department.trim(),
                 job: this.state.job.trim(),
                 userphone: this.state.userphone.trim(),
-            }
-            info = {
-                /*corp_id:this.state.corp_id,
-                corp_key:this.state.corp_key,*/
             }
         }
+        return {
+            info,
+            corp_info,
+            public_info,
+        }
+    }
+
+    onSaveInformation = async () => {
+		let account_type = this.props.user_info.account_type;
+		let info, corp_info, public_info
+
+        let info_data = this.createInformation(account_type)
+        info = info_data.info;
+        corp_info = info_data.corp_info;
+        public_info = info_data.public_info;
+
         try {
             await this.props.update_username(this.state.username)
-            if(account_type == 0) {
-    	    	let masterKeyPublic = SeedToMasterKeyPublic(getMasterSeed())
-    	        let encryptedInfo = aes_encrypt(JSON.stringify(info), masterKeyPublic);
-    	        await this.props.update_user_info(encryptedInfo)
-            }
+
+	    	let masterKeyPublic = SeedToMasterKeyPublic(getMasterSeed())
+	        let encryptedInfo = aes_encrypt(JSON.stringify(info), masterKeyPublic);
+	        await this.props.update_user_info(encryptedInfo)
 
 	        if(account_type == 1) {
 	        	let encryptedCorpInfo = aes_encrypt(JSON.stringify(corp_info), Buffer.from(this.props.user_info.corp_key,'hex'))
@@ -130,12 +157,66 @@ export default class extends React.Component {
             }
 
 	        await this.props.fetch_user_info()
+
     	} catch( err ) {
     		console.log(err)
     		return alert(translate("error_modify_public_info_msg"))
 
     	}
     	return alert(translate("success_modify_public_info"))
+    }
+
+    reIssueRecoverPassword = async () => {
+        let account_type = this.props.user_info.account_type;
+        let info_data = this.createInformation(account_type)
+        let info = info_data.info;
+
+        const possible = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
+        let passphrase2_length = 12;
+        let passphrase2 = "";
+        for (let i = 0; i < passphrase2_length; i++)
+            passphrase2 += possible.charAt(Math.floor(Math.random() * possible.length));
+
+        let mnemonic = entropyToMnemonic(sessionStorage.getItem("entropy"))
+
+        let emk = aes_encrypt(mnemonic, Buffer.from(passphrase2, 'hex'))
+        let mk;
+        try {
+            mk = aes_decrypt(Buffer.from(emk, 'hex'), Buffer.from(passphrase2, 'hex'))
+        } catch(err) {
+            console.log(err)
+        }
+
+        if(mk != mnemonic) {
+            return alert("something is very wrong. check rawMnemonic");
+        }
+
+        info.recover_password = passphrase2;
+
+        try {
+
+            await this.props.update_username(this.state.username)
+            let masterKeyPublic = SeedToMasterKeyPublic(getMasterSeed())
+            let encryptedInfo = aes_encrypt(JSON.stringify(info), masterKeyPublic);
+            let resp = await this.props.re_issue_recover_password(emk, encryptedInfo)
+
+            await this.props.fetch_user_info()
+            await this.onRefresh()
+            await this.textCopy(this.state.recover_password)
+        } catch( err ) {
+            console.log(err)
+            return alert(translate("error_re_issue_recover_password_msg"))
+        }
+        return alert(translate("success_re_issue_recover_password"))
+    }
+
+    textCopy = async (text) => {
+        let t = document.createElement("textarea");
+        document.body.appendChild(t);
+        t.value = text;
+        t.select();
+        document.execCommand('copy');
+        document.body.removeChild(t);
     }
 
     onInfoChange = (propertyName, e) => {
@@ -173,7 +254,13 @@ export default class extends React.Component {
         })
     }
 
-    onChangeInfoPhoneForm = async (name, e)=>{
+    onClickViewRecoverPassword = async () => {
+        this.setState({
+            show_recover_password:!this.state.show_recover_password
+        })
+    }
+
+    onChangeInfoPhoneForm = async (name, e) => {
         let text = e.target.value;
         text = text.replace(/[^0-9]/g,"")
         text = window.phoneFomatter(text)
@@ -233,6 +320,14 @@ export default class extends React.Component {
 	            			<div className="blue-but" onClick={this.onClickFindAddress.bind(this, "personal")}>{translate("find")}</div>
 	            		</div>
 	            	</div> : null}
+                    <div className="text-place">
+                        <div className="title">{translate("recover_password")}</div>
+                        <div className="text-box">
+                            <div className={"recover-password" + (this.state.show_recover_password ? "" : " hide")}>{this.state.recover_password}</div>
+                            <div className={"transparent-but" + (this.state.show_recover_password ? "" : " hide")} onClick={this.reIssueRecoverPassword}>{translate("re_issue")}</div>
+                            <div className="blue-but" onClick={this.onClickViewRecoverPassword}>{this.state.show_recover_password ? translate("close") : translate("view")}</div>
+                        </div>
+                    </div>
                     <div className="text-place">
                         <div className="title">{translate("master_keyword")}</div>
                         <div className="text-box">

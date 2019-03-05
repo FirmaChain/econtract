@@ -306,14 +306,14 @@ export default class extends React.Component {
 	}
 
 	componentDidMount(){
-        let account = new_account("pbes0707@gmail.com", "asdasdasd");
+        /*let account = new_account("pbes0707@gmail.com", "asdasdasd");
         console.log(account)
         this.setState({
             step:3,
             account:account,
             //mnemonic:account.rawMnemonic,
             recover_password:account.recoverPassword
-        })
+        })*/
 
 
         if(!this.props.user_info){
@@ -656,8 +656,19 @@ export default class extends React.Component {
                 username: this.state.username.trim(),
                 userphone: this.state.userphone,
                 useraddress: this.state.useraddress.trim(),
+                recover_password: this.state.account.recoverPassword,
             }
         } else if(account_type == 1) { // 기업 관리자 계정
+            info = {
+                recover_password: this.state.account.recoverPassword,
+            }
+            public_info = {
+                email: this.state.email.trim(),
+                username: this.state.username.trim(),
+                department: this.state.department.trim(),
+                job: this.state.job.trim(),
+                userphone: this.state.userphone,
+            }
             corp_info = {
                 company_name: this.state.company_name.trim(),
                 duns_number: this.state.duns_number.trim(),
@@ -665,6 +676,10 @@ export default class extends React.Component {
                 company_tel: this.state.company_tel.trim(),
                 company_address: this.state.company_address.trim(),
             }
+        } else if(account_type == 100) { // 전문가 계정
+            info = {
+                recover_password: this.state.account.recoverPassword,
+            }
             public_info = {
                 email: this.state.email.trim(),
                 username: this.state.username.trim(),
@@ -672,24 +687,14 @@ export default class extends React.Component {
                 job: this.state.job.trim(),
                 userphone: this.state.userphone,
             }
-            info = {}
-        } else if(account_type == 100) { // 기업 관리자 계정
-            info = {}
             corp_info = {}
-            public_info = {
-                email: this.state.email.trim(),
-                username: this.state.username.trim(),
-                department: this.state.department.trim(),
-                job: this.state.job.trim(),
-                userphone: this.state.userphone,
-            }
         } else if(account_type == 2) { // 기업 직원 계정
             info = {
                 corp_id: this.state.corp_id,
                 corp_key: this.state.corp_key,
                 group_keys: { [this.state.group_id] : this.state.group_key },
+                recover_password: this.state.account.recoverPassword,
             }
-
             public_info = {
                 email: this.state.email.trim(),
                 username: this.state.username.trim(),
@@ -707,10 +712,9 @@ export default class extends React.Component {
 
 
         let emk = aes_encrypt(this.state.account.rawMnemonic, Buffer.from(this.state.account.recoverPassword, 'hex'))
-        console.log("emk", emk)
+        let mk;
         try {
-            let mk = aes_decrypt(Buffer.from(emk, 'hex'), Buffer.from("a423c1e4d113", 'hex'))
-            console.log("mk", mk)
+            mk = aes_decrypt(Buffer.from(emk, 'hex'), Buffer.from(this.state.account.recoverPassword, 'hex'))
         } catch(err) {
             console.log(err)
         }

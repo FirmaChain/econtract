@@ -3038,7 +3038,7 @@ div.checkbox2-comp{
     >.info-container {
         display: flex;
         flex-direction: row;
-        max-width: 800px;
+        max-width: 840px;
 
         >.info {
             flex:1;
@@ -3066,18 +3066,25 @@ div.checkbox2-comp{
                     >input {
                         font-size: $font1;
                         color: $black;
-                        max-width:400px;
+                        max-width:420px;
                         width:90%;
                     }
 
                     >.master-keyword {
                         font-size: $font1;
                         color: $black;
-                        width:300px;
+                        width:290px;
+                        padding-left:10px;
                     }
 
-                    >.hide {
-                        display: none;
+                    >.recover-password {
+                        font-size: $font3;
+                        color: $black;
+                        width:200px;
+                        display: flex;
+                        align-items: center;
+                        padding-left:10px;
+                        font-weight: bold;
                     }
 
                     >.blue-but {
@@ -3092,12 +3099,28 @@ div.checkbox2-comp{
                         text-align: center;
                     }
 
+                    >.transparent-but {
+                        display: inline-block;
+                        font-size: $font1;
+                        cursor: pointer;
+                        padding:10px 20px;
+                        color:$blue;
+                        margin-left: 10px;
+                        width:50px;
+                        text-align: center;
+                        border:1px solid $blue;
+                    }
+
                     .control {
-                        width:200px !important;
+                        width:220px !important;
                     }
 
                     .item {
-                        width:200px;
+                        width:220px;
+                    }
+
+                    >.hide {
+                        display: none;
                     }
                 }
             }
