@@ -191,6 +191,48 @@ export default class extends React.Component {
             </div>
         </div>)
     }
+
+    render_recover_password(){
+        return (<div className="content">
+            <div className="master-keyword-container">
+                {/*<div className="sub-title-container">
+                    <div className="title">{translate("recover_password")}</div>
+                    <div className="what-is-masterkeyword" onClick={this.openWhyMasterkeywordReInputModal}>{translate("why_master_keyword_re")}</div>
+                </div>*/}
+
+                <div className="text-place">
+                    <div className="name">{translate("recover_email")}</div>
+                    <div className="textbox">
+                        <input className="common-textbox" type="email"
+                            value={this.state.recover_email || ""}
+                            onChange={e=>this.setState({recover_email:e.target.value})}
+                            placeholder={translate("please_input_recover_email")}/>
+                    </div>
+                </div>
+
+                <div className="text-place">
+                    <div className="name">{translate("recover_password")}</div>
+                    <div className="textbox">
+                        <input className="common-textbox" type="text"
+                            value={this.state.recover_password || ""}
+                            onKeyDown={this.keyPress.bind(this, 0)}
+                            onChange={e=>this.setState({recover_password:e.target.value})}
+                            placeholder={translate("please_input_recover_password_example")}/>
+                    </div>
+                </div>
+
+                <div className="reference">
+                    {translate("word_12_master_keyword_input_msg")}
+                </div>
+            </div>
+
+            <div className="bottom-container">
+                <div className="confirm-button" onClick={this.onClickInputMnemonic}>
+                    {translate("next")}
+                </div>
+            </div>
+        </div>)
+    }
     
     render_account(){
         return (<div className="content">
@@ -236,7 +278,7 @@ export default class extends React.Component {
 
     render_content(){
         if(this.state.step == 0){
-            return this.render_masterkey();
+            return this.render_recover_password();
         }else if(this.state.step == 1){
             return this.render_account();
         }

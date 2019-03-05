@@ -370,7 +370,10 @@ export default class extends React.Component {
     }
 
     onCheckCardInfo = async () => {
-        return true;
+        if(this.props.user_info.email == "test1@gmail.com") {
+            return true
+        }
+        //return true;
         /*let result = await new Promise( r => window.openModal("CardInfo", {
             onResponse: async (card_info) => {
                 //TODO: necessary to encrypt via firma's private key
