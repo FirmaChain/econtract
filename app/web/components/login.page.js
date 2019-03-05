@@ -56,7 +56,7 @@ export default class extends React.Component {
         } else {
             let resp = await this.props.login_account(this.state.email || "", this.state.password || "")
             if(resp.code == -3){
-                alert(translate("re_login_desc_1"))
+                alert(translate("please_check_email_password"))
             } else if(resp.code == -4){
                 alert(translate("please_check_email_password"));
             } else if(resp.eems){
