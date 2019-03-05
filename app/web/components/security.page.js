@@ -192,6 +192,15 @@ export default class extends React.Component {
             show_recover_password:!this.state.show_recover_password
         })
     }
+    
+    textCopy = async (text) => {
+        let t = document.createElement("textarea");
+        document.body.appendChild(t);
+        t.value = text;
+        t.select();
+        document.execCommand('copy');
+        document.body.removeChild(t);
+    }
 
     onClickIssue2FAOtp = async () => {
         let resp = await this.props.issue_2fa_otp()
