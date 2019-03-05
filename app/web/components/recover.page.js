@@ -293,6 +293,7 @@ export default class extends React.Component {
                     <input className="common-textbox" type="text"
                         value={this.state.email || ""}
                         onChange={e=>this.setState({email:e.target.value})}
+                        disabled={true}
                         placeholder={translate("please_input_register_account_email")}/>
                 </div>
             </div>
