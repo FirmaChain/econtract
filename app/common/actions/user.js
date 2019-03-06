@@ -20,6 +20,7 @@ import {
     api_get_emk,
     api_issue_2fa_otp,
     api_register_2fa_otp,
+    api_terminate_2fa_otp,
 } from "../../../gen_api"
 
 import {
