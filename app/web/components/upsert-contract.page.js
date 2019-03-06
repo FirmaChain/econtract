@@ -217,10 +217,10 @@ export default class extends React.Component {
                 sign_info,
             }
 
-            if(me.sign_info == null && me.privilege == 1)
-                await this.onClickRegiserSignInfo() 
-
             await this.setState(_state)
+
+            if(me.sign_info == null && me.privilege == 1)
+                await this.onClickRegiserSignInfo();
 
             if( !!this.editor && !!contract.payload.contract && this.props.user_info.account_id != contract.payload.contract.can_edit_account_id ) {
                 this.editor.edit.off()
@@ -326,7 +326,6 @@ export default class extends React.Component {
     }
 
     onClickRegiserSignInfo = async () => {
-
         if((this.state.contract.html || "") != this.state.model)
             if(window._confirm(translate("Are_U_have_modify_content_save_and_register_sign_info")))
                 await this.onClickContractSave()
