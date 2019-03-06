@@ -204,7 +204,6 @@ export default class extends React.Component {
 
     onClickIssue2FAOtp = async () => {
         let resp = await this.props.issue_2fa_otp()
-        console.log(resp)
         this.setState({
             issue_ing_2fa_otp: true,
             secret: resp.payload.secret,
