@@ -106,6 +106,10 @@ export default class extends React.Component{
         history.push("/profile")
     }
 
+    onSecurity = () => {
+        history.push("/security")
+    }
+
     onPriceStatusInfo = ()=>{
         history.push("/price-status")
     }
@@ -157,6 +161,7 @@ export default class extends React.Component{
                         </div>
                         <div className="line"></div>
                         <div className="my-info" onClick={this.onMyInfo}>{translate("my_info")}</div>
+                        <div className="my-info" onClick={this.onSecurity}>{translate("security")}</div>
                         {info.account_type == 1 ? <div className="my-info" onClick={this.onGroupInfo}>{translate("group_manage")}</div> : null}
                         <div className="logout" onClick={this.onLogout}>{translate("logout")}</div>
                     </div>
