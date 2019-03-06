@@ -220,7 +220,7 @@ export default class extends React.Component {
             await this.setState(_state)
 
             if(me.sign_info == null && me.privilege == 1)
-                await this.onClickRegiserSignInfo();
+                await this.onClickRegiserSignInfo(true);
 
             if( !!this.editor && !!contract.payload.contract && this.props.user_info.account_id != contract.payload.contract.can_edit_account_id ) {
                 this.editor.edit.off()
@@ -308,7 +308,10 @@ export default class extends React.Component {
         })
     }
 
-    onToggleRegisterSignForm = async () => {
+    onToggleRegisterSignForm = async (force_close = false) => {
+        if(force_open)
+            this.state.sign_mode = true;
+
         this.state.sign_mode ? this.editor.toolbar.show() : this.editor.toolbar.hide()
 
         let wrapper = document.getElementsByClassName("fr-wrapper")[0]
@@ -325,7 +328,7 @@ export default class extends React.Component {
         })
     }
 
-    onClickRegiserSignInfo = async () => {
+    onClickRegiserSignInfo = async (force_close = false) => {
         if((this.state.contract.html || "") != this.state.model)
             if(window._confirm(translate("Are_U_have_modify_content_save_and_register_sign_info")))
                 await this.onClickContractSave()
@@ -368,7 +371,7 @@ export default class extends React.Component {
         let r = await this.props.update_contract_sign_info(this.state.contract.contract_id, sign_info, this.state.contract.the_key)
         if(r.code == -9) alert(translate("you_dont_update_complete_contract_sign_info"))
         //await this.onRefresh()
-        this.onToggleRegisterSignForm()
+        this.onToggleRegisterSignForm(force_close)
         await window.hideIndicator()
     }
 
