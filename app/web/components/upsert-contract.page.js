@@ -309,7 +309,7 @@ export default class extends React.Component {
     }
 
     onToggleRegisterSignForm = async (force_close = false) => {
-        if(force_open)
+        if(force_close)
             this.state.sign_mode = true;
 
         this.state.sign_mode ? this.editor.toolbar.show() : this.editor.toolbar.hide()
