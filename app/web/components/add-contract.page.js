@@ -51,6 +51,7 @@ export default class extends React.Component {
 	constructor(){
         super();
         this.blockFlag = false
+        this.is_register = false
         this.roles = [
             {value:0, label: translate("creator")},
             {value:1, label: translate("signer")},
@@ -382,7 +383,7 @@ export default class extends React.Component {
         })
     }
 
-    onClickAddIndivisual = ()=>{
+    onClickAddIndivisual = () => {
         if(!this.state.add_individual_info){
             return alert(translate("please_input_name_of_this"))
         }
@@ -394,10 +395,10 @@ export default class extends React.Component {
                 deletable:true
             }],
             add_individual_info:""
-        })
+        });
     }
 
-    onClickRegister = async ()=>{
+    onClickRegister = async () => {
         if(this.is_register)
             return
         
@@ -432,24 +433,11 @@ export default class extends React.Component {
 
         let contract_name = this.state.contract_name.trim();
 
+
         if(contract_name.length > 80) {
             this.blockFlag = false;
             this.is_register = false;
             return alert(translate("contract_name_must_be_80_letters"));
-        }
-
-        let includeGroup = false;
-        for( let v of counterparties ) {
-            if( v.user_type == 2 ) {
-                includeGroup = true;
-                break;
-            }
-        }
-
-        if(this.props.user_info.account_type != 0 && includeGroup == false) {
-            this.blockFlag = false;
-            this.is_register = false
-            return alert(translate("if_corporation_account_at_least_one_group"));
         }
 
         let counterparties = this.state.target_list.map(e=> {
@@ -465,6 +453,20 @@ export default class extends React.Component {
                 role,
             };
         });
+
+        let includeGroup = false;
+        for( let v of counterparties ) {
+            if( v.user_type == 2 ) {
+                includeGroup = true;
+                break;
+            }
+        }
+
+        if(this.props.user_info.account_type != 0 && includeGroup == false) {
+            this.blockFlag = false;
+            this.is_register = false
+            return alert(translate("if_corporation_account_at_least_one_group"));
+        }
 
 
         let individual_info = this.state.individual.filter(e=>e.force||e.checked).map(e=>e.title);
