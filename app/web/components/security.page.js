@@ -38,6 +38,7 @@ import {
     update_username,
     re_issue_recover_password,
     issue_2fa_otp,
+    terminate_2fa_otp,
     register_2fa_otp,
 } from "../../common/actions"
 
@@ -55,6 +56,7 @@ let mapDispatchToProps = {
     update_username,
     re_issue_recover_password,
     issue_2fa_otp,
+    terminate_2fa_otp,
     register_2fa_otp,
 }
 
