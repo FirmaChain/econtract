@@ -627,8 +627,10 @@ export default class extends React.Component {
         let corp_id = this.props.user_info.corp_id || -1
         let meOrGroup = select_subject(user_infos, this.state.groups, this.props.user_info.account_id, corp_id).my_info
 
+        console.log("meOrGroup", meOrGroup)
+
         return <div className="bottom signs">
-            <div className="title">{translate("count_curr_total_person", [user_infos.filter(e=>e.privilege==1).length])}</div>
+            <div className="title">{translate("count_curr_total_person", [user_infos.filter(e=>e.is_exclude == 0).length])}</div>
             <div className="user-container me">
                 <div className="user" onClick={this.onToggleUser.bind(this, meOrGroup.entity_id, meOrGroup.corp_id, false)}>
                     <i className="icon fas fa-user-edit"></i>
@@ -689,8 +691,8 @@ export default class extends React.Component {
                 if(e == meOrGroup)
                     return null
 
-                if(info.user_info.user_type == 2) 
-                    return null
+                /*if(info.user_info.user_type == 2) 
+                    return null*/
 
                 return <div className="user-container" key={e.entity_id+"_"+e.corp_id}>
                     <div className="user" onClick={this.onToggleUser.bind(this, e.entity_id, e.corp_id, false)}>
