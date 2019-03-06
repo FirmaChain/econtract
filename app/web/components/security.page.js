@@ -219,6 +219,7 @@ export default class extends React.Component {
         } else {
             alert(translate("fail_terminate_2fa_otp"))
         }
+        await this.props.fetch_user_info();
         await this.onRefresh();
     }
 
