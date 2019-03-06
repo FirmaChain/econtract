@@ -126,7 +126,7 @@ export default class extends React.Component {
                 <div className="top">
                     <div className="left">
                         <div className="content1 font5 font-bold">{translate("start_e_contract")}</div>
-                        <div className="content2 font0"><i className="fas fa-lock-alt"></i> &nbsp; {translate("connect_browser_title_1")} <u onClick={this.openNotVerifiedBrowserModal}>{translate("connect_browser_title_2")}</u> {translate("connect_browser_title_3")}</div>
+                        {/*<div className="content2 font0"><i className="fas fa-lock-alt"></i> &nbsp; {translate("connect_browser_title_1")} <u onClick={this.openNotVerifiedBrowserModal}>{translate("connect_browser_title_2")}</u> {translate("connect_browser_title_3")}</div>*/}
                     </div>
                     <div className="right">
                         <div className="content3 font2">
@@ -186,14 +186,15 @@ export default class extends React.Component {
    }
 
    render_login() {
+        // desc2 onClick={this.openVerifiedBrowserModal}
 		return (<div className="login-common-page login-page">
             <div className="left-logo">
                 <img src="/static/logo_blue.png" onClick={()=>history.push("/")}/>
             </div>
             <div className="container">
                 <div className="title">{translate("start_e_contract")}</div>
-                <div className="desc1"><i className="fas fa-lock-open-alt"></i> &nbsp; {translate("this_browser_was_verificated")}</div>
-                <div className="desc2" onClick={this.openVerifiedBrowserModal}>{translate("what_is_verified_browser")}</div>
+                <div className="desc1">{/*<i className="fas fa-lock-open-alt"></i> &nbsp; translate("this_browser_was_verificated")*/}</div>
+                <div className="desc2">{/*translate("what_is_verified_browser")*/}</div>
 
                 <div className="textbox"><input className="common-textbox" id="email" type="email" placeholder={translate("please_input_email")} value={this.state.email || ""} onChange={e=>this.setState({email:e.target.value})}/></div>
                 <div className="textbox"><input className="common-textbox" id="password" type="password" placeholder={translate("please_input_password")} value={this.state.password || ""} onKeyDown={this.keyPress} onChange={e=>this.setState({password:e.target.value})}/></div>
