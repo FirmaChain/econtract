@@ -125,29 +125,31 @@ export default class extends React.Component {
                 let corp_id = this.props.user_info.corp_id || -1
                 let me = select_subject(infos, this.state.groups, this.props.user_info.account_id, corp_id, contract.is_pin_used).my_info
                 
-                let contract_user_info = {
-                    ...me.user_info,
-                    username:this.props.user_info.username,
-                };
-                if(this.props.user_info.account_type != 0) {
-                    contract_user_info.company_name = this.props.user_info.company_name;
-                }
-
-                let update_flag = false
-                if(Object.keys(contract_user_info).length != Object.keys(me.user_info).length) update_flag = true;
-                else if(!update_flag) {
-                    for(let v of Object.entries(contract_user_info)) {
-                        for(let w of Object.entries(me.user_info)) {
-                            if(v[0] == w[0] && v[1] != w[1]) {
-                                update_flag = true;
-                                break;
-                            }
-                        }
-                        if(update_flag) break;
+                if(me) {
+                    let contract_user_info = {
+                        ...me.user_info,
+                        username:this.props.user_info.username,
+                    };
+                    if(this.props.user_info.account_type != 0) {
+                        contract_user_info.company_name = this.props.user_info.company_name;
                     }
-                }
-                if(update_flag) {
-                    let r = await this.props.modify_contract_user_info(contract.contract_id, this.props.user_info.account_id, 0, contract_user_info, contract.the_key)
+
+                    let update_flag = false
+                    if(Object.keys(contract_user_info).length != Object.keys(me.user_info).length) update_flag = true;
+                    else if(!update_flag) {
+                        for(let v of Object.entries(contract_user_info)) {
+                            for(let w of Object.entries(me.user_info)) {
+                                if(v[0] == w[0] && v[1] != w[1]) {
+                                    update_flag = true;
+                                    break;
+                                }
+                            }
+                            if(update_flag) break;
+                        }
+                    }
+                    if(update_flag) {
+                        let r = await this.props.modify_contract_user_info(contract.contract_id, this.props.user_info.account_id, 0, contract_user_info, contract.the_key)
+                    }
                 }
             }
 
