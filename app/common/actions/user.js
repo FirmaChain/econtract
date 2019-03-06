@@ -153,6 +153,13 @@ export function issue_2fa_otp() {
     }
 }
 
+export function terminate_2fa_otp() {
+    return async function() {
+        let resp = await api_terminate_2fa_otp();
+        return resp;
+    }
+}
+
 export function register_2fa_otp(token) {
     return async function() {
         let resp = await api_register_2fa_otp(token);

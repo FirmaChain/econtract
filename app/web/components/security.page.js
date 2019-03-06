@@ -192,7 +192,7 @@ export default class extends React.Component {
             show_recover_password:!this.state.show_recover_password
         })
     }
-    
+
     textCopy = async (text) => {
         let t = document.createElement("textarea");
         document.body.appendChild(t);
@@ -208,6 +208,16 @@ export default class extends React.Component {
             issue_ing_2fa_otp: true,
             secret: resp.payload.secret,
         })
+    }
+
+    onClickTerminate2FAOtp = async () => {
+        let resp = await this.props.terminate_2fa_otp()
+        if(resp.code == 1) {
+            alert(translate("success_terminate_2fa_otp"))
+        } else {
+            alert(translate("fail_terminate_2fa_otp"))
+        }
+        await this.onRefresh();
     }
 
     onClickRegister2FAOTP = async () => {
@@ -282,7 +292,7 @@ export default class extends React.Component {
                                 <div className="transparent-but long-but"><i className="far fa-shield-alt"></i> {translate("already_use_otp")}</div>}
                             {this.props.user_info.use_otp == 0 ? 
                                 <div className="blue-but" onClick={this.onClickIssue2FAOtp}>{translate("issue")}</div> : 
-                                null/*<div className="blue-but">{translate("re_issue_otp")}</div>*/}
+                                <div className="blue-but" onClick={this.onClickTerminate2FAOtp}>{translate("terminate_2fa_otp")}</div>}
                         </div>
                     </div>
                     {this.state.issue_ing_2fa_otp ? <div className="otp-place">

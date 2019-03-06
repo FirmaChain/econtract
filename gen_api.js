@@ -915,6 +915,15 @@ export async function api_issue_2fa_otp(){
         session:window.getCookie("session")
     });
 }
+export async function api_terminate_2fa_otp(){
+    let __data = new FormData();
+
+    
+
+    return await post("/terminate_2fa_otp", __data,{
+        session:window.getCookie("session")
+    });
+}
 export async function api_register_2fa_otp(token){
     let __data = new FormData();
 
