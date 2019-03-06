@@ -601,7 +601,8 @@ export default class extends React.Component {
                     onConfirm:async (group)=>{
                         // add_contract_info group
                         //let detail_contract = await this.props.get_contract(contract.contract_id, this.props.user_info, groups)
-                        let result = await this.props.add_counterparties(contract.contract_id, [group], groups, this.props.user_info, contract.user_infos, contract.is_pin_used, pin)
+                        console.log(contract.user_infos)
+                        let result = await this.props.add_counterparties(contract.contract_id, [group], groups, this.props.user_info, [contract], contract.is_pin_used, pin)
                         
                         if(contract.is_pin_used == 1) {
                             await this.props.update_epin_account(contract.contract_id, pin);
