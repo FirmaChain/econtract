@@ -726,10 +726,17 @@ export default class extends React.Component {
         await window.showIndicator()
         let resp
         if(account_type == 0) {
-            resp = await this.props.register_new_account(this.state.account, 
-                encryptedInfo, this.state.email, 
-                this.state.username, wallet.address, 
-                account_type, emk)
+            try{
+                resp = await this.props.register_new_account(this.state.account, 
+                    encryptedInfo, this.state.email, 
+                    this.state.username, wallet.address, 
+                    account_type, emk)
+            } catch(err) {
+                this.isGoingFinish = false
+                console.log("network error")
+                await window.hideIndicator()
+                return;
+            }
         } else if (account_type == 1) {
             let corpMasterKey = generateCorpKey();
             // inject into master's info
@@ -754,11 +761,17 @@ export default class extends React.Component {
                 return alert(translate("fail_save_public_info"));
             }*/
 
-
-            resp = await this.props.register_new_account(this.state.account, 
-                encryptedInfo, this.state.email, 
-                this.state.username, wallet.address, 
-                account_type, emk, encryptedPublicInfo, encryptedCorpInfo)
+            try {
+                resp = await this.props.register_new_account(this.state.account, 
+                    encryptedInfo, this.state.email, 
+                    this.state.username, wallet.address, 
+                    account_type, emk, encryptedPublicInfo, encryptedCorpInfo)
+            } catch(err) {
+                this.isGoingFinish = false
+                console.log("network error")
+                await window.hideIndicator()
+                return;
+            }
 
             if(resp.code == 1) {
                 let gresp = await this.props.create_group(translate("basic_group"));
@@ -780,10 +793,17 @@ export default class extends React.Component {
                 return alert(translate("fail_to_use_invite_code"));
             }*/
 
-            resp = await this.props.register_new_account(this.state.account, 
-                encryptedInfo, this.state.email, 
-                this.state.username, wallet.address, 
-                account_type, emk, encryptedPublicInfo, null, this.state.registration_code)
+            try {
+                resp = await this.props.register_new_account(this.state.account, 
+                    encryptedInfo, this.state.email, 
+                    this.state.username, wallet.address, 
+                    account_type, emk, encryptedPublicInfo, null, this.state.registration_code)
+            } catch(err) {
+                this.isGoingFinish = false
+                console.log("network error")
+                await window.hideIndicator()
+                return;
+            }
         }
         await window.hideIndicator()
 
