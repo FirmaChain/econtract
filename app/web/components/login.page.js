@@ -9,6 +9,7 @@ import {
 } from "../../common/crypto_test"
 import {
     login_account,
+    login_2fa_otp_auth,
     fetch_user_info
 } from "../../common/actions"
 
@@ -22,6 +23,7 @@ let mapStateToProps = (state)=>{
 
 let mapDispatchToProps = {
     login_account,
+    login_2fa_otp_auth,
     fetch_user_info
 }
 
@@ -54,12 +56,35 @@ export default class extends React.Component {
         if (!this.state.email || !this.state.password) {
             alert(translate("please_check_email_password"));
         } else {
-            let resp = await this.props.login_account(this.state.email || "", this.state.password || "")
+            let resp = await this.props.login_account(this.state.email || "", this.state.password || "");
+            console.log(resp)
             if(resp.code == -3){
                 alert(translate("please_check_email_password"))
             } else if(resp.code == -4){
                 alert(translate("please_check_email_password"));
-            } else if(resp.eems){
+            } else if(resp.code == 2) {
+                window.openModal("AddCommonModal", {
+                    icon:"fas fa-users",
+                    title:translate("input_otp_title"),
+                    subTitle:translate("input_otp_desc"),
+                    placeholder:translate("input_otp_placeholder"),
+                    cancelable:false,
+                    onConfirm: async (token) => {
+                        let resp = await this.props.login_2fa_otp_auth(this.state.email || "", this.state.password || "", token.trim());
+                        if(resp.code == 1 && resp.eems) {
+                            await this.props.fetch_user_info()
+                            if(this.props.user_info.email.includes("test")) {
+                                alert("서비스 결제 모듈 검수 기간 중입니다. 검수 기간은 2019/03/10 까지로 예정되어 있으며 완료되는 순간 모든 계약 데이터와 계정 정보가 초기화 됩니다.")
+                            }
+                            return history.replace("/home")
+                        } else if(resp.code == -5) {
+                            alert(translate("input_wrong_otp_token"))
+                        } else {
+                            alert(translate("invalidate_request"))
+                        }
+                    }
+                })
+            } else if(resp.code == 1 && resp.eems){
                 //localStorage.setItem("browser_key_virgin", 0);
                 await this.props.fetch_user_info()
                 if(this.props.user_info.email.includes("test")) {

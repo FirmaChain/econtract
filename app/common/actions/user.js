@@ -21,6 +21,7 @@ import {
     api_issue_2fa_otp,
     api_register_2fa_otp,
     api_terminate_2fa_otp,
+    api_login_2fa_otp_auth,
 } from "../../../gen_api"
 
 import {
@@ -250,15 +251,54 @@ export function login_account(user_id, password){
             ...resp.payload
         }
 
-        if(resp.eems){
+        if(resp.code == 1 && resp.eems){
             window.setCookie("session", resp.session, 0.125)
             window.setCookie("session_update", Date.now(), 0.125)
 
             let entropy = getUserEntropy(auth, resp.eems)
             sessionStorage.setItem("entropy", entropy)
             sessionStorage.setItem("login_id", user_id)
-/*
-            dispatch({
+
+            /*dispatch({
+                type:SUCCESS_LOGIN,
+                paylaod:{
+                    session: resp.session,
+                    entropy: entropy
+                }
+            })*/
+        }
+
+        return resp;
+    }
+}
+
+export function login_2fa_otp_auth(user_id, password, otp_token) {
+    return async function(dispatch){
+        let nonce = Date.now();
+        let auth = makeAuth(user_id, password);
+        let sign = makeSignData("FirmaChain Login", auth, nonce);
+
+        let resp = (await api_login_account(
+            sign.publicKey.toString('hex'),
+            nonce,
+            sign.payload,
+            otp_token
+        ))
+
+        resp = {
+            code:resp.code,
+            ...resp.payload
+        }
+
+        if(resp.code == 1 && resp.eems){
+            window.setCookie("session", resp.session, 0.125)
+            window.setCookie("session_update", Date.now(), 0.125)
+
+            let entropy = getUserEntropy(auth, resp.eems)
+            sessionStorage.setItem("entropy", entropy)
+            sessionStorage.setItem("login_id", user_id)
+
+            /*dispatch({
                 type:SUCCESS_LOGIN,
                 paylaod:{
                     session: resp.session,

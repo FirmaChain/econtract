@@ -1044,6 +1044,18 @@ export async function api_login_account(publicbk,nonce,sign){
         session:window.getCookie("session")
     });
 }
+export async function api_login_2fa_otp_auth(publicbk,nonce,sign,otp_token){
+    let __data = new FormData();
+
+    if(publicbk != null) __data.append('publicbk', publicbk);
+	if(nonce != null) __data.append('nonce', nonce);
+	if(sign != null) __data.append('sign', sign);
+	if(otp_token != null) __data.append('otp_token', otp_token)
+
+    return await post("/login_2fa_otp_auth", __data,{
+        session:window.getCookie("session")
+    });
+}
 export async function api_find_user_with_code_email(email){
     let __data = new FormData();
 
