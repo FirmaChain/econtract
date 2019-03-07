@@ -1572,6 +1572,7 @@ setInterval(()=>{
             '/login',
             '/register',
             '/recover',
+            '/old-recover',
             '/verification',
         ]
         if( exclude.indexOf(location.pathname) == -1 ){
