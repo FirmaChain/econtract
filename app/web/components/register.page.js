@@ -650,6 +650,8 @@ export default class extends React.Component {
         let account_type = this.getAccountType()
         let info, corp_info, public_info
 
+        department = this.state.department || ""
+
         if(account_type == 0) { // 개인 계정
             info = {
                 email: this.state.email.trim(),
@@ -665,7 +667,7 @@ export default class extends React.Component {
             public_info = {
                 email: this.state.email.trim(),
                 username: this.state.username.trim(),
-                department: this.state.department.trim(),
+                department: department.trim(),
                 job: this.state.job.trim(),
                 userphone: this.state.userphone,
             }
@@ -683,7 +685,7 @@ export default class extends React.Component {
             public_info = {
                 email: this.state.email.trim(),
                 username: this.state.username.trim(),
-                department: this.state.department.trim(),
+                department: department.trim(),
                 job: this.state.job.trim(),
                 userphone: this.state.userphone,
             }
@@ -699,7 +701,7 @@ export default class extends React.Component {
                 email: this.state.email.trim(),
                 username: this.state.username.trim(),
                 job: this.state.job.trim(),
-                department: this.state.department.trim(),
+                department: department.trim(),
                 userphone: this.state.userphone.trim(),
             }
         }
