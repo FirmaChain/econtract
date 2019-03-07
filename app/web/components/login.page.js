@@ -69,6 +69,7 @@ export default class extends React.Component {
                     subTitle:translate("input_otp_desc"),
                     placeholder:translate("input_otp_placeholder"),
                     cancelable:false,
+                    confirmText:translate("login"),
                     onConfirm: async (token) => {
                         let resp = await this.props.login_2fa_otp_auth(this.state.email || "", this.state.password || "", token.trim());
                         if(resp.code == 1 && resp.eems) {

@@ -765,7 +765,7 @@
     "master_keyword_must_be_save_desc_1":["필요할 때 사용할 수 있도록 상단의 12개의 키워드들을 순서대로 종이에 옮겨 적어 안전하게 보관하십시오.","Write down the 12-piece master keyword above in correct order and store it somewhere safe.","请按正确顺序记下上面的12个Master Keyword并将其存储在安全的地方。"],
     "not_this_corp_user":["해당 기업의 계정이 아닙니다.","The account is not associated with this business.","这不是该企业的用户。"],
     "master_keyword_must_be_save_desc_2":["안전하게 계정을 보호하기 위해서는 전자매체에 저장하거나 타인에게 양도하는 등의 행동을 하지 않는 것을 권장합니다.","For security purposes, we recommend that you do not store it on an electronic device or reveal it to someone else.","为保护您的用户，建议您不要执行任何危险操作，例如，将其存储在电子媒体上或传输给他人。"],
-    "input_otp_desc":["OTP 기계에 표시되는 6자리 숫자를 입력해주세요.","",""],
+    "input_otp_desc":["OTP에 표시되는 6자리 숫자를 입력해주세요.","",""],
     "no_register_status":["미등록 상태","No payment information.","未登录"],
     "ticket_msg":["{0}건","{0} contracts","{0}份"],
     "fail_group_member_withdraw":["해당 그룹원 탈퇴에 실패하였습니다.","Failed to remove group member.","无法删除用户。"],

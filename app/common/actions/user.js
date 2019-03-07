@@ -278,7 +278,7 @@ export function login_2fa_otp_auth(user_id, password, otp_token) {
         let auth = makeAuth(user_id, password);
         let sign = makeSignData("FirmaChain Login", auth, nonce);
 
-        let resp = (await api_login_account(
+        let resp = (await api_login_2fa_otp_auth(
             sign.publicKey.toString('hex'),
             nonce,
             sign.payload,
