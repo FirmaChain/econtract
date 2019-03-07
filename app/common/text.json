@@ -171,6 +171,7 @@
     "no_account_new_register":["일치하는 계정이 없습니다. 새로 가입해주세요.","Account could not be found. Please register again.","该用户找不到。请再次注册。"],
     "input_master_keyword":["마스터 키워드 입력","Master Keyword","输入Master Keyword"],
     "what_is_verified_browser":["인증된 브라우저란?","What is an authenticated device?","什么是验证浏览器？"],
+    "really_otp_terminate_?":["정말 OTP 보안을 해제하시겠습니까?","",""],
     "contract_name_must_be_80_letters":["계약명은 80자 이하로 구성되어야 합니다.","Title must be under 80 characters.","合同名称的长度不得超过80个字符。"],
     "invite_group_member":["그룹원 초대하기","Invite Group Members","邀请企业用户"],
     "BOTTOM_RIGHT_DESC":["계약 당사자들에게 제공되는 실시간 메시지 기능과 컨펌하기 기능은 계약 진행에 있어서 모두가 만족하는 계약이 될 수 있게끔 합니다.","E-Contract provides Web editor, live messenger, and internal approval to facilitate the contracting process.","实时消息功能和确认功能可满足您的所有需求"],

@@ -213,6 +213,9 @@ export default class extends React.Component {
     }
 
     onClickTerminate2FAOtp = async () => {
+        if(!window._confirm(translate("really_otp_terminate_?")))
+            return;
+
         let resp = await this.props.terminate_2fa_otp()
         if(resp.code == 1) {
             alert(translate("success_terminate_2fa_otp"))
