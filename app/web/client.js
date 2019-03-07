@@ -21,6 +21,7 @@ import IndexPage from "./components/index.page"
 import LoginPage from "./components/login.page"
 import RegisterPage from "./components/register.page"
 import RecoverPage from "./components/recover.page"
+import OldRecoverPage from "./components/old-recover.page"
 import HomePage from "./components/home.page"
 import TemplatePage from "./components/template-list.page"
 import UpsertTemplatePage from "./components/upsert-template.page"
@@ -76,6 +77,7 @@ window.addEventListener("load",()=>{
 					<Route onEnter={resolver} exact path="/register" component={RegisterPage} />
 					{/*<Route onEnter={resolver} exact path="/check-mnemonic" component={CheckMnemonicPage} />*/}
 					<Route onEnter={resolver} exact path="/recover" component={RecoverPage} />
+					<Route onEnter={resolver} exact path="/old-recover" component={OldRecoverPage} />
 
 					<Route onEnter={resolver} exact path="/home" component={HomePage} />
 					<Route onEnter={resolver} exact path="/home/:menu" component={HomePage} />
