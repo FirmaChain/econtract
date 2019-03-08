@@ -384,9 +384,9 @@ export default class extends React.Component {
             return alert(translate("if_no_model_you_dont_sign"))
         }
 
-        let exist_ticket = (await this.props.check_ticket_count()).payload
+        /*let exist_ticket = (await this.props.check_ticket_count()).payload
         if(!exist_ticket)
-            return alert(translate("no_ticket_please_charge"))
+            return alert(translate("no_ticket_please_charge"))*/
 
         let me = select_subject(this.state.infos, [], this.props.user_info.account_id, -1).my_info
         if(me == null)
