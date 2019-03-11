@@ -488,6 +488,8 @@ export default class extends React.Component {
                 pre_model = Buffer.from(this.state.approval.html).toString()   
             }
 
+            await window.showIndicator();
+
             let resp =  await this.props.new_contract(contract_name, counterparties, pin, necessary_info, this.state.can_edit_account_id, this.state.payer_account_id, !!is_pin_used ? 1 : 0, pre_model);
 
             if(resp.code == 1) {
@@ -506,6 +508,7 @@ export default class extends React.Component {
             } else {
                 alert(translate("fail_register_contract"))
             }
+            await window.hideIndicator();
         }
         
         this.is_register = false
