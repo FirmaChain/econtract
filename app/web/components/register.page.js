@@ -650,7 +650,7 @@ export default class extends React.Component {
         let account_type = this.getAccountType()
         let info, corp_info, public_info
 
-        department = this.state.department || ""
+        let department = this.state.department || ""
 
         if(account_type == 0) { // 개인 계정
             info = {
