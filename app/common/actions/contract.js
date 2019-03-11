@@ -108,7 +108,7 @@ export function new_contract(subject, counterparties, set_pin, necessary_info, c
                 eckai: sealContractAuxKey(e.public_key, shared_key),
                 user_info: aes_encrypt(JSON.stringify(e), the_key),
             };
-            if(e.user_type == 1)
+            if(e.user_type == 1 || e.user_type == 0)
                 mapped_data.email = e.email
 
             return mapped_data
