@@ -98,8 +98,9 @@ export function new_contract(subject, counterparties, set_pin, necessary_info, c
             is_pin_used = false
         let shared_key = generate_random(31);
         let the_key = getContractKey(pin, shared_key);
+        console.log(counterparties)
         let counterparties_mapped = counterparties.map(e=>{
-            return {
+            let mapped_data = {
                 user_type: e.user_type,
                 entity_id: e.user_type == 2 ? e.group_id : e.account_id,
                 corp_id: e.user_type == 2 ? e.corp_id : DUMMY_CORP_ID,
@@ -107,6 +108,10 @@ export function new_contract(subject, counterparties, set_pin, necessary_info, c
                 eckai: sealContractAuxKey(e.public_key, shared_key),
                 user_info: aes_encrypt(JSON.stringify(e), the_key),
             };
+            if(e.user_type == 1)
+                mapped_data.email = e.email
+
+            return mapped_data
         });
 
         let encrypted_model = null
