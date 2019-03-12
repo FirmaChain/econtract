@@ -84,7 +84,7 @@ export default class extends React.Component {
     }
 
     onClickTemplate = async(e)=>{
-        history.push(`/template-edit/${e.template_id}`)
+        history.push(`/e-contract/template-edit/${e.template_id}`)
     }
 
     onClickDelCell = async(e)=>{
@@ -131,7 +131,7 @@ export default class extends React.Component {
                             <button className="danger" onClick={this.onClickDelete}>선택 삭제</button>
                         </div> : <div className="right-align">
                             <button onClick={this.onClickDeleteMode}>템플릿 삭제</button>
-                            <button onClick={()=>history.push("add-template")} >템플릿 추가</button>
+                            <button onClick={()=>history.push("/e-contract/add-template")} >템플릿 추가</button>
                         </div>}
 
                     </div>

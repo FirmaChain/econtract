@@ -82,7 +82,7 @@ export default class extends React.Component{
 
         if(left_time <= 0) {
             this.deleteSession()
-            history.push("/login")
+            history.push("/e-contract/login")
         } else {
             this.setState({
                 left_hour,
@@ -103,19 +103,19 @@ export default class extends React.Component{
     }
 
     onMyInfo = ()=>{
-        history.push("/profile")
+        history.push("/e-contract/profile")
     }
 
     onSecurity = () => {
-        history.push("/security")
+        history.push("/e-contract/security")
     }
 
     onPriceStatusInfo = ()=>{
-        history.push("/price-status")
+        history.push("/e-contract/price-status")
     }
 
     onGroupInfo = () => {
-        history.push("/group-manage")
+        history.push("/e-contract/group-manage")
     }
 
     deleteSession = () => {
@@ -124,7 +124,7 @@ export default class extends React.Component{
 
     onLogout = () => {
         this.deleteSession()
-        history.push("/login")
+        history.push("/e-contract/login")
     }
     
     render(){

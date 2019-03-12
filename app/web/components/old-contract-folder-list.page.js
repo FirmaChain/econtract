@@ -52,7 +52,7 @@ export default class extends React.Component {
 
     componentWillReceiveProps(props){
         if(props.user_info === false){
-            history.replace("/login")
+            history.replace("/e-contract/login")
         }
     }
     

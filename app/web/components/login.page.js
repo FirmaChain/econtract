@@ -46,7 +46,7 @@ export default class extends React.Component {
 
     componentWillReceiveProps(props){
         if(!!props.user_info){
-            return history.push("/home")
+            return history.push("/e-contract/home")
         }
     }
     
@@ -79,7 +79,7 @@ export default class extends React.Component {
                             if(this.props.user_info.email.includes("test")) {
                                 alert("서비스 결제 모듈 검수 기간 중입니다. 검수 기간은 2019/03/10 까지로 예정되어 있으며 완료되는 순간 모든 계약 데이터와 계정 정보가 초기화 됩니다.")
                             }
-                            return history.replace("/home")
+                            return history.replace("/e-contract/home")
                         } else if(resp.code == -5) {
                             alert(translate("input_wrong_otp_token"))
                         } else {
@@ -93,7 +93,7 @@ export default class extends React.Component {
                 if(this.props.user_info.email.includes("test")) {
                     alert("서비스 결제 모듈 검수 기간 중입니다. 검수 기간은 2019/03/10 까지로 예정되어 있으며 완료되는 순간 모든 계약 데이터와 계정 정보가 초기화 됩니다.")
                 }
-                history.replace("/home")
+                history.replace("/e-contract/home")
             } else{
                 alert("login error")
             }
@@ -186,7 +186,7 @@ export default class extends React.Component {
                             <div className="small">{translate("team_manage_use")}</div>
                         </div>
                     </button>
-                    {/*<button className="new-already-button" onClick={()=>history.push({pathname:"/register", state:{type:100}})}>
+                    {/*<button className="new-already-button" onClick={()=>history.push({pathname:"/register", state:{type:3}})}>
                         <div className="icon"><i className="fas fa-tools"></i></div>
                         <div className="nohover">
                             {translate("new_expert_register")}

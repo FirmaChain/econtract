@@ -62,7 +62,7 @@ export default class extends React.Component {
 
     componentWillReceiveProps(nextProps){
         if(nextProps.user_info === false) {
-            history.replace("/login")
+            history.replace("/e-contract/login")
         }
 
         let prevMenu = nextProps.match.params.menu || "all"
@@ -98,11 +98,11 @@ export default class extends React.Component {
         })
     }
     onClickAddTemplate = () => {
-        history.push("/new-template")
+        history.push("/e-contract/new-template")
     }
 
     onClickTemplate = (e)=>{
-        history.push(`/template-edit/${e.template_id}`)
+        history.push(`/e-contract/template-edit/${e.template_id}`)
     }
 
     onAddFolder = () => {
@@ -125,7 +125,7 @@ export default class extends React.Component {
     }
 
     move = (folder_id) => {
-        history.push(`/template/${folder_id}`)
+        history.push(`/e-contract/template/${folder_id}`)
     }
 
     isOpenOption(template_id) {
@@ -149,9 +149,9 @@ export default class extends React.Component {
     useTemplate = async (template_id, type, e) => {
         e.stopPropagation()
         if(type == 0)
-            history.push({pathname:"/add-contract", search:"?template_id="+template_id})
+            history.push({pathname:"/e-contract/add-contract", search:"?template_id="+template_id})
         else if(type == 1)
-            history.push({pathname:"/add-approval", search:"?template_id="+template_id})
+            history.push({pathname:"/e-contract/add-approval", search:"?template_id="+template_id})
     }
 
     async onRemoveTemplate(template_id, subject, e) {
@@ -186,7 +186,7 @@ export default class extends React.Component {
     onRemoveFolder = async (folder_id, folder_name) => {
         if(await window.confirm(translate("template_folder_delete"), translate("template_folder_delete_desc", [folder_name]) )){
             await this.props.remove_folder_template([folder_id])
-            history.push("/template")
+            history.push("/e-contract/template")
         }
     }
 
@@ -248,7 +248,7 @@ export default class extends React.Component {
     }
 
     render_template_slot(e, k) {
-        return <div className="item" key={e.template_id} onClick={()=>history.push(`/edit-template/${e.template_id}`)}>
+        return <div className="item" key={e.template_id} onClick={()=>history.push(`/e-contract/edit-template/${e.template_id}`)}>
             <div className="list-body-item list-chkbox">
                 <CheckBox2 size={18}
                     on={this.state.templates_checks.includes(e.template_id) || false}

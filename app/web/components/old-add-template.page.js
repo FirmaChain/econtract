@@ -40,7 +40,7 @@ export default class extends React.Component {
         await new Promise(r=>setTimeout(r,100))
         
         let template_id = await this.props.add_template(this.state.subject, this.state.imgs)
-        history.replace(`/template-edit/${template_id}`)
+        history.replace(`/e-contract/template-edit/${template_id}`)
         await window.hideIndicator()
     }
 

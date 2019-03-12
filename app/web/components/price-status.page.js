@@ -139,7 +139,7 @@ export default class extends React.Component {
 
     componentWillReceiveProps(nextProps){
         if(nextProps.user_info === false) {
-            history.replace("/login")
+            history.replace("/e-contract/login")
         }
 
         let prev_payment_page = queryString.parse(nextProps.location.search).payment_page || 0
@@ -156,7 +156,7 @@ export default class extends React.Component {
     }
 
     moveContract = async (contract_id) => {
-        history.push(`/contract-info/${contract_id}`)
+        history.push(`/e-contract/contract-info/${contract_id}`)
     }
 
     onClickChangeRegularPayment = async () => {

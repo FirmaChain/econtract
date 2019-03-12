@@ -121,7 +121,7 @@ export default class extends React.Component {
         })
     }
     onClickContract=(contract_id)=>{
-        history.push(`/contract-editor/${contract_id}`)
+        history.push(`/e-contract/contract-editor/${contract_id}`)
     }
     onClickMoveSel=(k)=>{
         let move_select = [...this.state.move_select]

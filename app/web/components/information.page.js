@@ -54,7 +54,7 @@ export default class extends React.Component {
 
     componentWillReceiveProps(props){
         if(props.user_info === false){
-            history.replace("/login")
+            history.replace("/e-contract/login")
         }else{
             this.update_balance(props)
         }
@@ -101,17 +101,17 @@ export default class extends React.Component {
             <div className="header-page">
                 <div className="header">
                     <div className="left-logo">
-                        <img src="/static/logo_blue.png" onClick={()=>history.push("/home")}/>
+                        <img src="/static/logo_blue.png" onClick={()=>history.push("/e-contract/home")}/>
                     </div>
                     { !!this.props.user_info ? <Information /> : null }
                 </div>
                 <div className="information-page">
                     <div className="left-list">
                         <div className="title">{translate("setting")}</div>
-                        <div className={"item" + (this.getTitle().id == "/profile" ? " selected" : "")} onClick={this.move.bind(this, "profile")}><i className=" icon far fa-info-circle"></i>{translate("my_info")}</div>
-                        <div className={"item" + (this.getTitle().id == "/price-status" ? " selected" : "")} onClick={this.move.bind(this, "price-status")}><i className="icon far fa-file-invoice-dollar"></i>{translate("price")}</div>
-                        <div className={"item" + (this.getTitle().id == "/security" ? " selected" : "")} onClick={this.move.bind(this, "security")}><i className="icon far fa-shield-check"></i>{translate("security")}</div>
-                        {this.props.user_info.account_type == 1 ? <div className={"item" + (this.getTitle().id == "/group-manage" ? " selected" : "")} onClick={this.move.bind(this, "group-manage")}><i className="icon far fa-users"></i>{translate("group_manage")}</div> : null}
+                        <div className={"item" + (this.getTitle().id == "/profile" ? " selected" : "")} onClick={this.move.bind(this, "e-contract/profile")}><i className=" icon far fa-info-circle"></i>{translate("my_info")}</div>
+                        <div className={"item" + (this.getTitle().id == "/price-status" ? " selected" : "")} onClick={this.move.bind(this, "e-contract/price-status")}><i className="icon far fa-file-invoice-dollar"></i>{translate("price")}</div>
+                        <div className={"item" + (this.getTitle().id == "/security" ? " selected" : "")} onClick={this.move.bind(this, "e-contract/security")}><i className="icon far fa-shield-check"></i>{translate("security")}</div>
+                        {this.props.user_info.account_type == 1 ? <div className={"item" + (this.getTitle().id == "/group-manage" ? " selected" : "")} onClick={this.move.bind(this, "e-contract/group-manage")}><i className="icon far fa-users"></i>{translate("group_manage")}</div> : null}
                     </div>
                     <Route path="/profile" render={() => <ProfilePage {...this.props}/>} />
                     <Route path="/price-status" render={() => <PriceStatusPage {...this.props}/>} />

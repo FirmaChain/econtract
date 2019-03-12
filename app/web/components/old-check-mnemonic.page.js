@@ -39,7 +39,7 @@ export default class extends React.Component {
 
     componentWillReceiveProps(props){
         if(!props.user_info){
-            return history.push("/login")
+            return history.push("/e-contract/login")
         }
     }
     
@@ -64,7 +64,7 @@ export default class extends React.Component {
     }
 
     onClickOK = async()=>{
-        history.push("/profile");
+        history.push("/e-contract/profile");
     }
 
     onClickSaveMnemonic = ()=>{

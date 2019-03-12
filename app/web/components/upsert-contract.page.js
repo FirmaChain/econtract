@@ -239,7 +239,7 @@ export default class extends React.Component {
 
     componentWillReceiveProps(props){
         if(props.user_info === false){
-            history.replace("/login")
+            history.replace("/e-contract/login")
         }
     }
 
@@ -446,7 +446,7 @@ export default class extends React.Component {
         alert(translate("complete_sign_register"))
         this.blockFlag = true
         await window.hideIndicator()
-        history.replace(`/contract-info/${this.props.match.params.contract_id}`)
+        history.replace(`/e-contract/contract-info/${this.props.match.params.contract_id}`)
     }
 
     onToggleUser = (entity_id, corp_id, force_open) => {

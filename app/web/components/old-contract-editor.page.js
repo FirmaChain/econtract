@@ -74,7 +74,7 @@ export default class extends React.Component {
                         }, contract_info.epin ? true : false)
                     }catch(err){
                         alert("문서 로드에 실패했습니다.")
-                        history.replace("/home")    
+                        history.replace("/e-contract/home")    
                     }
                     this.blockFlag = 1;
                 }else{
@@ -108,7 +108,7 @@ export default class extends React.Component {
             } else {
                 this.blockFlag = 0;
                 alert("이 계약에 접근할 수 없습니다. 로그인 상태를 확인해주세요.");
-                history.replace("/login")
+                history.replace("/e-contract/login")
             }
             
             await window.hideIndicator()
@@ -131,7 +131,7 @@ export default class extends React.Component {
 
     componentWillReceiveProps(props){
         if(props.user_info === false){
-            history.replace("/login")
+            history.replace("/e-contract/login")
         }
     }
 
@@ -339,7 +339,7 @@ export default class extends React.Component {
                     if(resp){
                         this.blockFlag = 0
                         alert("성공적으로 저장했습니다.")
-                        history.replace("/home")
+                        history.replace("/e-contract/home")
                     }else{
                         alert("저장에 문제가 발생했습니다.")
                     }
@@ -404,7 +404,7 @@ export default class extends React.Component {
     onClickDetail = async() => {
         if(await confirm("다음으로","변경된 내용이 있다면 먼저 저장해주세요. 다음으로 넘어가시겠습니까?")){
             this.blockFlag = 0
-            history.push(`/contract-confirm/${this.state.contract_id}/${this.state.revision}`)
+            history.push(`/e-contract/contract-confirm/${this.state.contract_id}/${this.state.revision}`)
         }
     }
 
