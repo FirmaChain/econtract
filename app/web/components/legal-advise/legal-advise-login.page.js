@@ -2,18 +2,18 @@ import React from "react"
 import ReactDOM from "react-dom"
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom'
-import history from '../history'
-import translate from "../../common/translate"
+import history from '../../history'
+import translate from "../../../common/translate"
 import {
     getNewBrowserKey,
-} from "../../common/crypto_test"
+} from "../../../common/crypto_test"
 import {
     login_account,
     login_2fa_otp_auth,
     fetch_user_info
-} from "../../common/actions"
+} from "../../../common/actions"
 
-import Footer from "./footer.comp"
+import Footer from "../footer.comp"
 
 let mapStateToProps = (state)=>{
 	return {
@@ -46,7 +46,7 @@ export default class extends React.Component {
 
     componentWillReceiveProps(props){
         if(!!props.user_info){
-            return history.push("/e-contract/home")
+            return history.push("/legal-advise/home")
         }
     }
     
@@ -79,7 +79,7 @@ export default class extends React.Component {
                             if(this.props.user_info.email.includes("test")) {
                                 alert("서비스 결제 모듈 검수 기간 중입니다. 검수 기간은 2019/03/10 까지로 예정되어 있으며 완료되는 순간 모든 계약 데이터와 계정 정보가 초기화 됩니다.")
                             }
-                            return history.replace("/e-contract/home")
+                            return history.replace("/legal-advise/home")
                         } else if(resp.code == -5) {
                             alert(translate("input_wrong_otp_token"))
                         } else {
@@ -93,7 +93,7 @@ export default class extends React.Component {
                 if(this.props.user_info.email.includes("test")) {
                     alert("서비스 결제 모듈 검수 기간 중입니다. 검수 기간은 2019/03/10 까지로 예정되어 있으며 완료되는 순간 모든 계약 데이터와 계정 정보가 초기화 됩니다.")
                 }
-                history.replace("/e-contract/home")
+                history.replace("/legal-advise/home")
             } else{
                 alert("login error")
             }
@@ -153,12 +153,12 @@ export default class extends React.Component {
             <div className="container">
                 <div className="top">
                     <div className="left">
-                        <div className="content1 font5 font-bold">{translate("start_e_contract")}</div>
+                        <div className="content1 font5 font-bold">{translate("start_legal_advise")}</div>
                         {/*<div className="content2 font0"><i className="fas fa-lock-alt"></i> &nbsp; {translate("connect_browser_title_1")} <u onClick={this.openNotVerifiedBrowserModal}>{translate("connect_browser_title_2")}</u> {translate("connect_browser_title_3")}</div>*/}
                     </div>
                     <div className="right">
                         <div className="content3 font2">
-                            {translate("no_verify_desc")}
+                            {translate("start_legal_advise_desc")}
                         </div>
                     </div>
                 </div>
@@ -186,7 +186,7 @@ export default class extends React.Component {
                             <div className="small">{translate("team_manage_use")}</div>
                         </div>
                     </button>
-                    {/*<button className="new-already-button" onClick={()=>history.push({pathname:"/register", state:{type:3}})}>
+                    <button className="new-already-button" onClick={()=>history.push({pathname:"/register", state:{type:3}})}>
                         <div className="icon"><i className="fas fa-tools"></i></div>
                         <div className="nohover">
                             {translate("new_expert_register")}
@@ -196,7 +196,7 @@ export default class extends React.Component {
                             <div className="big">{translate("new_expert_register")}</div>
                             <div className="small">{translate("expert_use")}</div>
                         </div>
-                    </button>*/}
+                    </button>
                     <button className="new-already-button" onClick={()=>this.setState({go_to_login:true})/*history.push("/recover")*/}>
                         <div className="icon"><i className="fas fa-user-check"></i></div>
                         <div className="nohover">
