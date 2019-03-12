@@ -87,7 +87,8 @@ export default class extends React.Component {
         nextProps = !!nextProps ? nextProps : this.props
 
         await window.showIndicator(translate("loading_contract"))
-        await this.props.fetch_user_info()
+        await this.props.fetch_user_info();
+
         let contract_id = this.props.match.params.contract_id || 0
         let resp, groups = []
         let params = queryString.parse(nextProps.location.search)
