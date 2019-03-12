@@ -623,7 +623,7 @@ export default class extends React.Component {
                                 type = `${translate("YEARLY_PAYMENT_REGULAR")} ${plan.ticket_count}`
                                 if(e.status == window.CONST.PAYMENT_LOG_STATUS.PENDING)
                                     type += ` (${translate("payment_pending")})`
-                                count = translate("ticket_msg", [plan.ticket_count])
+                                count = translate("yearly_purchase_count", [plan.ticket_count])
                                 break;
                             case window.CONST.PAYMENT_LOG_TYPE.YEARLY_PAYMENT_UPGRADE:
                                 type = translate("YEARLY_PAYMENT_UPGRADE")

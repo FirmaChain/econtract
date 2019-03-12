@@ -626,6 +626,7 @@
     "fail_cancel_invitation":["초대 취소에 실패하였습니다.","Failed to cancel invitation.","无法取消邀请。"],
     "register_link_copy":["가입 링크 복사","Copy Registration Link","复制注册链接"],
     "success_modify_public_info":["회원정보 수정에 성공하였습니다.","Account information was edited successfully.","成功编辑用户信息"],
+    "yearly_purchase_count":["{0}건/월","",""],
     "please_set_move_folder":["계약이 이동될 폴더를 선택해주세요.","Select folder to which to move contract.","请选择要移动合同的文件夹。"],
     "you_really_leave_this_page_contract":["계약 작성을 중단하고 현재 페이지를 나가시겠습니까?","Are you sure you want to stop drafting? You will leave this page.","您想停止创建合同并离开当前页面吗？"],
     "user_add":["사용자 추가","Add User","添加用户"],
