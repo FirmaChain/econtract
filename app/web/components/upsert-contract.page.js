@@ -370,7 +370,8 @@ export default class extends React.Component {
 
         await window.showIndicator()
         let r = await this.props.update_contract_sign_info(this.state.contract.contract_id, sign_info, this.state.contract.the_key)
-        if(r.code == -9) alert(translate("you_dont_update_complete_contract_sign_info"))
+        if(r.code == -9) alert(translate("you_dont_update_complete_contract_sign_info"));
+        if(force_close) await this.onRefresh();
         //await this.onRefresh()
         this.onToggleRegisterSignForm(force_close)
         await window.hideIndicator()

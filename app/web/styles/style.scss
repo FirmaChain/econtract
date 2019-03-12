@@ -20,6 +20,8 @@ $superlightgray : #fcfcfc;
 $middlegray : #dadadc;
 $red : #cc0000;
 
+$global-font : "Nanum Gothic", sans-serif;
+
 .font0 {
     font-size: $font0;
 }
@@ -46,7 +48,7 @@ $red : #cc0000;
 }
 
 body{
-    font-family: "Nanum Gothic", sans-serif;
+    font-family: $global-font;
 
     // font-family: -apple-system, BlinkMacSystemFont, Sans-serif;
     -webkit-font-smoothing: antialiased;
@@ -76,6 +78,9 @@ a{
 input:focus { outline: none; }
 button:focus { outline: none; }
 select:focus { outline:none; }
+textarea {
+    font-family: $global-font;
+}
 
 ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
     color: $gray;
