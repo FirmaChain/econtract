@@ -481,6 +481,7 @@ export default class extends React.Component {
             member_count:this.state.corp_member_count,
             max_member_count:this.state.corp_member_count_max,
             onResponse: async (change_count) => {
+                await window.showIndicator();
                 let resp = await this.props.increase_account(change_count);
                 if (resp.code == 1) {
                     alert(translate("group_member_change_count"))
@@ -488,6 +489,7 @@ export default class extends React.Component {
                 } else {
                     alert(translate("group_member_change_fail"))
                 }
+                await window.hideIndicator();
             }
         })
     }

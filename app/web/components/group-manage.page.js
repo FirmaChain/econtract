@@ -27,6 +27,7 @@ import {
     get_corp_member_count,
     get_maximum_member_count,
     get_current_subscription,
+    increase_account,
 } from "../../common/actions"
 
 let mapStateToProps = (state)=>{
@@ -46,6 +47,7 @@ let mapDispatchToProps = {
     get_corp_member_count,
     get_maximum_member_count,
     get_current_subscription,
+    increase_account,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -121,12 +123,15 @@ export default class extends React.Component {
             member_count:this.state.corp_member_count,
             max_member_count:this.state.corp_member_count_max,
             onResponse: async (change_count) => {
-                let resp = this.props.increase_account(change_count);
+                await window.showIndicator();
+                let resp = await this.props.increase_account(change_count);
                 if (resp.code == 1) {
-                    console.log("purchase group member change will be success")
+                    alert(translate("group_member_change_count"))
+                    await this.onRefresh();
                 } else {
-                    console.log("purchase group member change will be fail")
+                    alert(translate("group_member_change_fail"))
                 }
+                await window.hideIndicator();
             }
         })
     }
