@@ -47,7 +47,7 @@ export const SUCCESS_LOGIN = "SUCCESS_LOGIN"
 
 export function fetch_user_info(){
     return async function(dispatch){
-        let entropy = sessionStorage.getItem("entropy")
+        let entropy = localStorage.getItem("entropy")
         if(entropy){
             let resp = await api_encrypted_user_info()
             if(resp.payload){
@@ -226,7 +226,7 @@ export function register_new_account(account, info, email, name, eth, type, emk,
             window.setCookie("session", resp.session, 0.125)
             window.setCookie("session_update", Date.now(), 0.125)
             let entropy = getUserEntropy(auth, eems)
-            sessionStorage.setItem("entropy", entropy)
+            localStorage.setItem("entropy", entropy)
         }
         return resp;
     }
@@ -255,8 +255,8 @@ export function login_account(user_id, password){
             window.setCookie("session_update", Date.now(), 0.125)
 
             let entropy = getUserEntropy(auth, resp.eems)
-            sessionStorage.setItem("entropy", entropy)
-            sessionStorage.setItem("login_id", user_id)
+            localStorage.setItem("entropy", entropy)
+            localStorage.setItem("login_id", user_id)
 
             /*dispatch({
                 type:SUCCESS_LOGIN,
@@ -294,8 +294,8 @@ export function login_2fa_otp_auth(user_id, password, otp_token) {
             window.setCookie("session_update", Date.now(), 0.125)
 
             let entropy = getUserEntropy(auth, resp.eems)
-            sessionStorage.setItem("entropy", entropy)
-            sessionStorage.setItem("login_id", user_id)
+            localStorage.setItem("entropy", entropy)
+            localStorage.setItem("login_id", user_id)
 
             /*dispatch({
                 type:SUCCESS_LOGIN,

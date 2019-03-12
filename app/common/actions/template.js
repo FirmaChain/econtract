@@ -76,7 +76,7 @@ export function change_folder_template(folder_id, folder_name) {
 
 export function add_template(subject, folder_id, html, corp_key = null){
     return async function(){
-        /*let entropy = sessionStorage.getItem("entropy");
+        /*let entropy = localStorage.getItem("entropy");
         imgs = imgs.map(e=>aes_encrypt(e,entropy))*/
 
         let encrypted_html;
@@ -94,7 +94,7 @@ export function add_template(subject, folder_id, html, corp_key = null){
 
 export function get_template(template_id, corp_key = null){
     return async function(){
-        // let entropy = sessionStorage.getItem("entropy");
+        // let entropy = localStorage.getItem("entropy");
 
         let resp = await api_get_template(template_id)
 
@@ -120,7 +120,7 @@ export function get_template(template_id, corp_key = null){
 
 export function update_template(template_id, folder_id, subject, html, corp_key = null){
     return async function(){
-        /*let entropy = sessionStorage.getItem("entropy");
+        /*let entropy = localStorage.getItem("entropy");
         html = aes_encrypt(JSON.stringify(html),entropy)*/
 
         let encrypted_html;

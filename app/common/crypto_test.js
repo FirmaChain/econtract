@@ -318,7 +318,7 @@ export function decryptPIN(epin, group_key=null){
 
 export function getMasterSeed() {
     try {
-        let entropy = sessionStorage.getItem("entropy");
+        let entropy = localStorage.getItem("entropy");
         let mnemonic = bip39.entropyToMnemonic(entropy);
         let seed = bip39.mnemonicToSeed(mnemonic);
         return seed;

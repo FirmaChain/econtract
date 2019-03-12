@@ -152,7 +152,7 @@ export default class extends React.Component {
         for (let i = 0; i < passphrase2_length; i++)
             passphrase2 += possible.charAt(Math.floor(Math.random() * possible.length));
 
-        let mnemonic = entropyToMnemonic(sessionStorage.getItem("entropy"))
+        let mnemonic = entropyToMnemonic(localStorage.getItem("entropy"))
 
         let emk = aes_encrypt(mnemonic, Buffer.from(passphrase2, 'hex'))
         let mk;
@@ -287,7 +287,7 @@ export default class extends React.Component {
                     <div className="text-place">
                         <div className="title">{translate("master_keyword")}</div>
                         <div className="text-box">
-                            <div className={"master-keyword" + (this.state.show_mnemonic ? "" : " hide")}>{entropyToMnemonic(sessionStorage.getItem("entropy"))}</div>
+                            <div className={"master-keyword" + (this.state.show_mnemonic ? "" : " hide")}>{entropyToMnemonic(localStorage.getItem("entropy"))}</div>
                             <div className="blue-but" onClick={this.onClickViewMasterkeyword}>{this.state.show_mnemonic ? translate("close") : translate("view")}</div>
                         </div>
                     </div>

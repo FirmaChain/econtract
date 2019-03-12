@@ -358,11 +358,15 @@ window.html2Doc = function (element, filename = ''){
 		window.logout = async function() {
 			window.eraseCookie("session")
 			window.eraseCookie("session_update")
-			sessionStorage.removeItem("user_id");
-			sessionStorage.removeItem("entropy");
+			localStorage.removeItem("user_id");
+			localStorage.removeItem("entropy");
 			let keys = Object.keys(sessionStorage);
 			for (let i = 0; i < keys.length; i++) {
 				sessionStorage.removeItem(keys[i]);
+			}
+			keys = Object.keys(localStorage);
+			for (let i = 0; i < keys.length; i++) {
+				localStorage.removeItem(keys[i]);
 			}
 		}
 

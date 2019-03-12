@@ -124,9 +124,9 @@ export function new_contract(subject, message, counterparties, set_pin, necessar
         }
 
         let resp = await api_new_contract(subject, JSON.stringify(counterparties_mapped), JSON.stringify(necessary_info), can_edit_account_id, payer_account_id, is_pin_used, encrypted_model, encrypted_message, message);
-        if(resp.code == 1) {
+        /*if(resp.code == 1) {
             sessionStorage.setItem(`contract:${resp.payload.contract_id}`, encryptPIN(pin));
-        }
+        }*/
         return resp;
     }
 }
@@ -155,7 +155,7 @@ export function get_contracts(type, status, page, display_count = 10, sub_status
                 let shared_key;
                 let pin = "000000";
                 if(subject.isAccount) {
-                    let entropy = sessionStorage.getItem("entropy");
+                    let entropy = localStorage.getItem("entropy");
                     if (!entropy) return null;
                     if (v.is_pin_used && v.is_pin_null == 0) {
                         pin = decryptPIN(Buffer.from(subject.my_info.epin, 'hex').toString('hex'));
@@ -205,7 +205,7 @@ export function get_contract(contract_id, user_info, groups = []) {
             let pin = "000000";
 
             if(subject.isAccount) {
-                let entropy = sessionStorage.getItem("entropy");
+                let entropy = localStorage.getItem("entropy");
                 if (!entropy) return null;
                 if (resp.payload.contract.is_pin_used && subject.my_info.is_pin_null == 0) {
                     pin = decryptPIN(Buffer.from(subject.my_info.epin, 'hex').toString('hex'));
@@ -255,7 +255,7 @@ export function is_correct_pin(contract, pin_to_be_verified, infos, user_info, g
         let shared_key;
         let pin = "000000";
         if(subject.isAccount) {
-            let entropy = sessionStorage.getItem("entropy");
+            let entropy = localStorage.getItem("entropy");
             if (!entropy) return null;
             if (contract.is_pin_used) {
                 pin = pin_to_be_verified
@@ -293,7 +293,7 @@ export function add_counterparties(contract_id, counterparties, groups, user_inf
         let shared_key;
         let pin = real_pin;
         if(subject.isAccount) {
-            let entropy = sessionStorage.getItem("entropy");
+            let entropy = localStorage.getItem("entropy");
             if (!entropy) return null;
             if (is_pin_used && pin == "000000") {
                 pin = decryptPIN(Buffer.from(subject.my_info.epin, 'hex').toString('hex'));
@@ -766,7 +766,7 @@ async function getPIN(contract_id) {
 
 async function getTheKey(contract_id, pin) {
     let contract_info = (await api_load_contract_info(contract_id)).payload;
-    let entropy = sessionStorage.getItem("entropy");
+    let entropy = localStorage.getItem("entropy");
     if (!contract_info || !entropy) return null;
     let shared_key = unsealContractAuxKey(entropy, contract_info.eckai);
     let the_key = getContractKey(pin, shared_key);
