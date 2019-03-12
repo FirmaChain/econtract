@@ -64,8 +64,10 @@ export default class extends React.Component {
 
 	componentDidMount(){
         setTimeout(async () => {
+            await window.showIndicator();
             await this.props.fetch_user_info();
             await this.onRefresh();
+            await window.hideIndicator();
         })
     }
 

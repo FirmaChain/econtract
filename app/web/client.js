@@ -16,36 +16,31 @@ import history from './history'
 import pdfjsLib from "pdfjs-dist"
 pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.js';
 
-import Container from "./components/container.comp"
 import IndexPage from "./components/index.page"
-import LoginPage from "./components/login.page"
+import Container from "./components/container.comp"
+
 import RegisterPage from "./components/register.page"
 import RecoverPage from "./components/recover.page"
 import OldRecoverPage from "./components/old-recover.page"
+
+import LoginPage from "./components/login.page"
 import HomePage from "./components/home.page"
 import TemplatePage from "./components/template-list.page"
 import UpsertTemplatePage from "./components/upsert-template.page"
-
 import AddContractPage from "./components/add-contract.page"
 import UpsertContractPage from "./components/upsert-contract.page"
 import ContractInfoPage from "./components/contract-info.page"
 import PreviewCOntractPage from "./components/preview-contract.page"
-
 import ApprovalPage from "./components/approval.page"
 import AddApprovalPage from "./components/add-approval.page"
 import UpsertApprovalPage from"./components/upsert-approval.page"
-
 import InformationPage from "./components/information.page"
-
-// import FolderPage from "./components/contract-folder-list.page"
-// import InFolderPage from "./components/home.page"
-// import AddTemplatePage from "./components/old-add-template.page"
-// import EditTemplatePage from "./components/edit-template.page"
-// import ContractEditorPage from "./components/contract-editor.page"
-// import ContractConfirmPage from "./components/contract-confirm.page"
 import VerificationPage from "./components/verification.page"
 import CorpGroupInfoPage from "./components/corp-group-info.page"
 import GroupPage from "./components/group.page"
+
+import LegalAdviseLoginPage from "./components/legal-advise/legal-advise-login.page"
+
 
 import { current_platform } from "../common/utils"
 
@@ -74,13 +69,13 @@ window.addEventListener("load",()=>{
 
 					<Route onEnter={resolver} exact path="/" component={IndexPage} />
 					<Route onEnter={resolver} exact path="/register" component={RegisterPage} />
-					{/*<Route onEnter={resolver} exact path="/check-mnemonic" component={CheckMnemonicPage} />*/}
 					<Route onEnter={resolver} exact path="/recover" component={RecoverPage} />
 					<Route onEnter={resolver} exact path="/old-recover" component={OldRecoverPage} />
 
+
 					<Route onEnter={resolver} exact path="/e-contract/login" component={LoginPage} />
 					
-					<Route onEnter={resolver} exact path="/e-contract/" component={HomePage} />
+					<Route onEnter={resolver} exact path="/e-contract" component={HomePage} />
 					<Route onEnter={resolver} exact path="/e-contract/home" component={HomePage} />
 					<Route onEnter={resolver} exact path="/e-contract/home/:menu" component={HomePage} />
 					<Route onEnter={resolver} exact path="/e-contract/home/folder/:menu" component={HomePage} />
@@ -111,16 +106,12 @@ window.addEventListener("load",()=>{
 					<Route onEnter={resolver} exact path="/e-contract/add-contract" component={AddContractPage} />
 					<Route onEnter={resolver} exact path="/e-contract/edit-contract/:contract_id" component={UpsertContractPage} />
 					<Route onEnter={resolver} exact path="/e-contract/contract-info/:contract_id" component={ContractInfoPage} />
-					{/*<Route onEnter={resolver} exact path="/preview-contract" component={PreviewCOntractPage} />
+					{/*<Route onEnter={resolver} exact path="/preview-contract" component={PreviewCOntractPage} />*/}
 
-					<Route onEnter={resolver} exact path="/folder" component={FolderPage} />
-					<Route onEnter={resolver} exact path="/folder/:id" component={InFolderPage} />
-					<Route onEnter={resolver} exact path="/contract-editor/:id" component={ContractEditorPage} />
-					<Route onEnter={resolver} exact path="/contract-confirm/:id/:revision" component={ContractConfirmPage} />
+					<Route onEnter={resolver} exact path="/legal-advise/login" component={LegalAdviseLoginPage} />
 
-					<Route onEnter={resolver} exact path="/template" component={TemplatePage} />
-					<Route onEnter={resolver} exact path="/add-template" component={AddTemplatePage} />
-					<Route onEnter={resolver} exact path="/template-edit/:id" component={EditTemplatePage} />*/}
+					<Route onEnter={resolver} exact path="/legal-advise" component={LoginPage} />
+
 				</Container>
 			</Provider>
 		</Router>,
