@@ -84,8 +84,8 @@ window.addEventListener("load",()=>{
 					<Route onEnter={resolver} exact path="/e-contract/home/:menu" component={HomePage} />
 					<Route onEnter={resolver} exact path="/e-contract/home/folder/:menu" component={HomePage} />
 
-					<Route onEnter={resolver} exact path="/e-contracthome/:group_id/:menu" component={HomePage} />
-					<Route onEnter={resolver} exact path="/e-contracthome/:group_id/folder/:menu" component={HomePage} />
+					<Route onEnter={resolver} exact path="/e-contract/home/:group_id/:menu" component={HomePage} />
+					<Route onEnter={resolver} exact path="/e-contract/home/:group_id/folder/:menu" component={HomePage} />
 
 					<Route onEnter={resolver} exact path="/e-contract/template" component={HomePage} />
 					<Route onEnter={resolver} exact path="/e-contract/template/:menu" component={HomePage} />

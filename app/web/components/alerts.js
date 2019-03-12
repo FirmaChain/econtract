@@ -1569,11 +1569,11 @@ setInterval(()=>{
     }else{
         let exclude = [
             "/",
-            '/login',
+            '/e-contract/login',
             '/register',
             '/recover',
             '/old-recover',
-            '/verification',
+            '/e-contract/verification',
         ]
         if( exclude.indexOf(location.pathname) == -1 ){
             location.href="/"

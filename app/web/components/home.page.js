@@ -81,30 +81,30 @@ export default class extends React.Component {
             <div className="header-page">
                 <div className="header">
                     <div className="left-logo">
-                        <img src="/static/logo_blue.png" onClick={()=>history.push("/e-contract/home")}/>
+                        <img src="/static/logo_blue.png" onClick={()=>history.push("/")}/>
                     </div>
                     <div className="menu">
-                        <div className={(this.getStatus().includes("/home") ? "selected-item" : "item")} onClick={() => history.push("/e-contract/home")}>
+                        <div className={(this.getStatus().includes("/e-contract/home") ? "selected-item" : "item")} onClick={() => history.push("/e-contract/home")}>
                             <div>{translate("contract")}</div>
                         </div>
                         { ( !!this.props.user_info && (this.props.user_info.account_type != 0) ) ? 
-                            <div className={(this.getStatus().includes("/approval") ? "selected-item" : "item")} onClick={() => history.push("/e-contract/approval")}>
+                            <div className={(this.getStatus().includes("/e-contract/approval") ? "selected-item" : "item")} onClick={() => history.push("/e-contract/approval")}>
                                 <div>{translate("approval")}</div>
                             </div>: ""}
-                        <div className={(this.getStatus().includes("/template") ? "selected-item" : "item")} onClick={() => history.push("/e-contract/template")}>
+                        <div className={(this.getStatus().includes("/e-contract/template") ? "selected-item" : "item")} onClick={() => history.push("/e-contract/template")}>
                             <div>{translate("template")}</div>
                         </div>
                         { ( !!this.props.user_info && (this.props.user_info.account_type == 1) ) ? 
-                            <div className={(this.getStatus().includes("/group") ? "selected-item" : "item")} onClick={() => history.push("/e-contract/group")}>
+                            <div className={(this.getStatus().includes("/e-contract/group") ? "selected-item" : "item")} onClick={() => history.push("/e-contract/group")}>
                                 <div>{translate("group")}</div>
                             </div>: ""}
                     </div>
                     { !!this.props.user_info ? <Information /> : null }
                 </div>
-                <Route path="/home" render={() => <ContractListPage {...this.props}/>} />
-                <Route path="/template" render={() => <TemplatePage {...this.props}/>} />
-                <Route path="/approval" render={() => <ApprovalPage {...this.props}/>} />
-                <Route path="/group" render={() => <GroupPage {...this.props}/>} />
+                <Route path="/e-contract/home" render={() => <ContractListPage {...this.props}/>} />
+                <Route path="/e-contract/template" render={() => <TemplatePage {...this.props}/>} />
+                <Route path="/e-contract/approval" render={() => <ApprovalPage {...this.props}/>} />
+                <Route path="/e-contract/group" render={() => <GroupPage {...this.props}/>} />
             </div>
 
             <Footer />
