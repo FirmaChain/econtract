@@ -58,7 +58,21 @@ export default class extends React.Component {
         } else {
             let resp = await this.props.login_account(this.state.email || "", this.state.password || "", window.CONST.SERVICE_TYPE.E_CONTRACT);
             if(resp.code == -11) {
-                alert(translate("dont_use_this_account_service"))
+                let account_text
+                switch(resp.account_type) {
+                    case window.CONST.ACCOUNT_TYPE.PERSONAL:
+                        account_text = translate("personal_account");
+                        break;
+                    case window.CONST.ACCOUNT_TYPE.CORP_MASTER:
+                    case window.CONST.ACCOUNT_TYPE.CORP_SUB:
+                        account_text = translate("corp_account");
+                        break;
+                    case window.CONST.ACCOUNT_TYPE.EXPERT:
+                        account_text = translate("expert_account");
+                        break;
+                }
+                
+                alert(translate("dont_use_this_account_service", [account_text]))
                 return history.replace("/")
             } else if(resp.code == -3){
                 alert(translate("please_check_email_password"))
