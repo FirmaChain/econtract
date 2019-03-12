@@ -618,10 +618,12 @@ export default class extends React.Component {
                                 break;
                             case window.CONST.PAYMENT_LOG_TYPE.YEARLY_PAYMENT_REGULAR:
                                 plan = this.state.subscription_plans.find(plan=>plan.plan_id == e.plan_id)
+                                console.log("plan", plan)
+                                console.log("e", e)
                                 type = `${translate("YEARLY_PAYMENT_REGULAR")} ${plan.ticket_count}`
                                 if(e.status == window.CONST.PAYMENT_LOG_STATUS.PENDING)
                                     type += ` (${translate("payment_pending")})`
-                                count = translate("ticket_msg", [e.total_count])
+                                count = translate("ticket_msg", [plan.ticket_count])
                                 break;
                             case window.CONST.PAYMENT_LOG_TYPE.YEARLY_PAYMENT_UPGRADE:
                                 type = translate("YEARLY_PAYMENT_UPGRADE")
