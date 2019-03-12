@@ -64,6 +64,7 @@ export default class extends React.Component {
             target_other:true,
             is_use_pin:false,
             contract_name:"",
+            contract_message:"",
             individual:[{
                 deletable:false,
                 title:translate("individual_name"),
@@ -164,8 +165,6 @@ export default class extends React.Component {
         let contract = resp.payload.contract
         let infos = resp.payload.infos
 
-        console.log("resp.payload", resp.payload)
-
         let target_list = infos.map( (e) => {
             let user_type = e.account_type == 0 ? 0 : 1
             if(e.account_type == null)
@@ -206,6 +205,7 @@ export default class extends React.Component {
         let _ = {
             data:{...resp.payload},
             contract_name:contract.name,
+            contract_message:contract.message,
             can_edit_account_id:contract.can_edit_account_id,
             payer_account_id:contract.payer_account_id,
             edit_mode:true,
@@ -432,7 +432,7 @@ export default class extends React.Component {
         this.blockFlag = true;
 
         let contract_name = this.state.contract_name.trim();
-
+        let contract_message = this.state.contract_message ? this.state.contract_message.trim() : null;
 
         if(contract_name.length > 80) {
             this.blockFlag = false;
@@ -490,7 +490,7 @@ export default class extends React.Component {
 
             await window.showIndicator();
 
-            let resp =  await this.props.new_contract(contract_name, counterparties, pin, necessary_info, this.state.can_edit_account_id, this.state.payer_account_id, !!is_pin_used ? 1 : 0, pre_model);
+            let resp =  await this.props.new_contract(contract_name, contract_message, counterparties, pin, necessary_info, this.state.can_edit_account_id, this.state.payer_account_id, !!is_pin_used ? 1 : 0, pre_model);
 
             if(resp.code == 1) {
                 let contract_id = resp.payload.contract_id
@@ -643,6 +643,25 @@ export default class extends React.Component {
                                     value={this.state.contract_name || ""}
                                     placeholder={translate("please_input_this_contract_name")}
                                     onChange={e=>this.setState({contract_name:e.target.value})}/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="row">
+                    <div className="left-desc">
+                        <div className="desc-head">{translate("input_contract_message")}</div>
+                        <div className="desc-content">{translate("please_input_this_contract_message")}</div>
+                    </div>
+                    <div className="right-form">
+                        <div className="column">
+                            <div className="form-head"></div>
+                            <div className="form-input">
+                                <textarea className="common-textbox common-textarea"
+                                    rows="4"
+                                    value={this.state.contract_message || ""}
+                                    placeholder={translate("please_input_this_contract_message")}
+                                    onChange={e=>this.setState({contract_message:e.target.value})}></textarea>
                             </div>
                         </div>
                     </div>

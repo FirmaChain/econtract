@@ -91,14 +91,13 @@ export function getGroupKey(user_info, group_id) {
     }
 }
 
-export function new_contract(subject, counterparties, set_pin, necessary_info, can_edit_account_id, payer_account_id, is_pin_used = false, model = null) {
+export function new_contract(subject, message, counterparties, set_pin, necessary_info, can_edit_account_id, payer_account_id, is_pin_used = false, model = null) {
     return async function(dispatch){
         let pin = set_pin ? set_pin : "000000";
         if(!set_pin)
             is_pin_used = false
         let shared_key = generate_random(31);
         let the_key = getContractKey(pin, shared_key);
-        console.log(counterparties)
         let counterparties_mapped = counterparties.map(e=>{
             let mapped_data = {
                 user_type: e.user_type,
@@ -119,8 +118,13 @@ export function new_contract(subject, counterparties, set_pin, necessary_info, c
             encrypted_model = aes_encrypt(model, the_key)
         }
 
-        let resp = await api_new_contract(subject, JSON.stringify(counterparties_mapped), JSON.stringify(necessary_info), can_edit_account_id, payer_account_id, is_pin_used, encrypted_model);
-        if(resp.code == 1){
+        let encrypted_message = null
+        if(message) {
+            encrypted_message = aes_encrypt(message, the_key)
+        }
+
+        let resp = await api_new_contract(subject, JSON.stringify(counterparties_mapped), JSON.stringify(necessary_info), can_edit_account_id, payer_account_id, is_pin_used, encrypted_model, encrypted_message);
+        if(resp.code == 1) {
             sessionStorage.setItem(`contract:${resp.payload.contract_id}`, encryptPIN(pin));
         }
         return resp;
