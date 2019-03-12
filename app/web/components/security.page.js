@@ -88,6 +88,7 @@ export default class extends React.Component {
 
     createInformation(account_type) {
         let info, corp_info, public_info
+        let department = this.state.department || ""
         if(account_type == 0) { // 개인 계정
             info = {
                 email: this.props.user_info.email.trim(),
@@ -106,7 +107,7 @@ export default class extends React.Component {
             public_info = {
                 email: this.props.user_info.email.trim(),
                 username: this.state.username.trim(),
-                department: this.state.department.trim(),
+                department: department.trim(),
                 job: this.state.job.trim(),
                 userphone: this.state.userphone.trim(),
             }
@@ -127,7 +128,7 @@ export default class extends React.Component {
             public_info = {
                 email: this.props.user_info.email.trim(),
                 username: this.state.username.trim(),
-                department: this.state.department.trim(),
+                department: department.trim(),
                 job: this.state.job.trim(),
                 userphone: this.state.userphone.trim(),
             }
