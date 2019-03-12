@@ -46,7 +46,7 @@ export default class extends React.Component {
 
     componentWillReceiveProps(props){
         if(!!props.user_info){
-            return history.push("/legal-advise/home")
+            return history.replace("/legal-advise/home")
         }
     }
     
