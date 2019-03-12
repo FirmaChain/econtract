@@ -123,7 +123,7 @@ export function new_contract(subject, message, counterparties, set_pin, necessar
             encrypted_message = aes_encrypt(message, the_key)
         }
 
-        let resp = await api_new_contract(subject, JSON.stringify(counterparties_mapped), JSON.stringify(necessary_info), can_edit_account_id, payer_account_id, is_pin_used, encrypted_model, encrypted_message);
+        let resp = await api_new_contract(subject, JSON.stringify(counterparties_mapped), JSON.stringify(necessary_info), can_edit_account_id, payer_account_id, is_pin_used, encrypted_model, encrypted_message, message);
         if(resp.code == 1) {
             sessionStorage.setItem(`contract:${resp.payload.contract_id}`, encryptPIN(pin));
         }
