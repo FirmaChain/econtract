@@ -80,6 +80,7 @@ window.addEventListener("load",()=>{
 
 					<Route onEnter={resolver} exact path="/e-contract/login" component={LoginPage} />
 					
+					<Route onEnter={resolver} exact path="/e-contract/" component={HomePage} />
 					<Route onEnter={resolver} exact path="/e-contract/home" component={HomePage} />
 					<Route onEnter={resolver} exact path="/e-contract/home/:menu" component={HomePage} />
 					<Route onEnter={resolver} exact path="/e-contract/home/folder/:menu" component={HomePage} />

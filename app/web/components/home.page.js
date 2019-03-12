@@ -99,6 +99,7 @@ export default class extends React.Component {
                     </div>
                     { !!this.props.user_info ? <Information /> : null }
                 </div>
+                <Route exact path="/e-contract" render={() => <ContractListPage {...this.props}/>} />
                 <Route path="/e-contract/home" render={() => <ContractListPage {...this.props}/>} />
                 <Route path="/e-contract/template" render={() => <TemplatePage {...this.props}/>} />
                 <Route path="/e-contract/approval" render={() => <ApprovalPage {...this.props}/>} />
