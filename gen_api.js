@@ -1035,12 +1035,13 @@ export async function api_get_emk(email){
         session:window.getCookie("session")
     });
 }
-export async function api_login_account(publicbk,nonce,sign){
+export async function api_login_account(publicbk,nonce,sign,service_type){
     let __data = new FormData();
 
     if(publicbk != null) __data.append('publicbk', publicbk);
 	if(nonce != null) __data.append('nonce', nonce);
-	if(sign != null) __data.append('sign', sign)
+	if(sign != null) __data.append('sign', sign);
+	if(service_type != null) __data.append('service_type', service_type)
 
     return await post("/login_account", __data,{
         session:window.getCookie("session")

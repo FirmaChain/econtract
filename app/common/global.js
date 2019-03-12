@@ -12,6 +12,16 @@ import fs from "../web/filesystem"
 // window.Promise = global.Promise = CancelablePromise;
 
 window.CONST = {
+    SERVICE_TYPE: {
+        E_CONTRACT: 0,
+        LEGAL_ADVISE: 1,
+    },
+    ACCOUNT_TYPE: {
+    	PERSONAL: 0,
+    	CORP_MASTER: 1,
+    	CORP_SUB: 2,
+    	EXPERT: 3,
+    },
     CONTRACT_LOG: {
         CREATE: 1,
         READ: 2,
