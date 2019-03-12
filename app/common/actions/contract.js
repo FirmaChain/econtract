@@ -119,7 +119,7 @@ export function new_contract(subject, message, counterparties, set_pin, necessar
         }
 
         let encrypted_message = null
-        if(message) {
+        if(!!message) {
             encrypted_message = aes_encrypt(message, the_key)
         }
 
