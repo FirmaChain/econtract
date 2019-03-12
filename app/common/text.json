@@ -212,7 +212,7 @@
     "register_email":["등록한 이메일","Email Address","邮箱"],
     "input_hash_file_hash_different":["입력하신 해시값과 파일의 해시값이 다릅니다.","The hash value you have entered is different from the hash value of the file.","您所输入哈希值与文件哈希值不一致。"],
     "new_corp_register":["신규 기업 가입","Register as Business","新企业用户"],
-    "start_legal_advise_desc":["적재적소에 필요한 법률 자문 서비스 ! 크고 작은 계약 / 사건들에 대해서 방문할 필요 없이, 저렴하게, 신속하게 법률 자문을 얻어봅시다!","",""],
+    "start_legal_advise_desc":["적재적소에 필요한 법률 자문 서비스. 크고 작은 계약 / 사건들에 대해서 방문할 필요 없이, 저렴하게, 신속하게 법률 자문을 얻어봅시다!","",""],
     "price_info_msg":["금액 : \u003cspan className\u003d\"price\"\u003e{0}\u003c\/span\u003e 원","Total : \u003cspan className\u003d\"price\"\u003e{0}\u003c\/span\u003e KRW","金额"],
     "use_approval":["결재안 사용하기","Use Approved Contract","使用裁决"],
     "reject_approval_desc":["해당 결재를 반려합니다. 반려 사유를 적어주세요.","Approval request will be rejected. Enter reason for rejection.","拒绝该裁决。请输入拒绝的原因。"],

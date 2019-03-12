@@ -337,7 +337,7 @@ export default class extends React.Component {
             //localStorage.removeItem("browser_key_virgin")
         })()
 
-        if(this.getAccountType() == 2) {
+        if(this.getAccountType() == window.CONST.ACCOUNT_TYPE.CORP_SUB) {
             let params = queryString.parse(this.props.location.search)
 
             let registration_code = params.registration_code || "";
@@ -371,7 +371,7 @@ export default class extends React.Component {
                     owner_id: registration_info.owner_id,
                     group_key: registration_info.group_key,
                     group_id: registration_info.group_id,
-                    email_verification: true,
+                    email_verification: false,
                 });
             })();
         }
@@ -898,17 +898,17 @@ export default class extends React.Component {
                     <input className="common-textbox" type="email"
                         value={this.state.email || ""} 
                         onChange={e=>this.setState({email:e.target.value})}
-                        disabled={this.getAccountType() == 2 || this.state.email_verification}
+                        disabled={this.state.email_verification}
                         placeholder={translate("please_input_email_correct")}/>
                 </div>
-                { type == 2 ? null : (this.state.email_verification ?
+                { type == window.CONST.ACCOUNT_TYPE.CORP_SUB ? null : (this.state.email_verification ?
                     <div className="gray-but">{translate("complete_send")}</div> : 
                     <div className="blue-but" onClick={this.onClickRequestEmail}>{translate("send")}</div>)
                 }
                 
             </div>
 
-            {type == 2 ? null : 
+            {type == window.CONST.ACCOUNT_TYPE.CORP_SUB ? null : 
                 <div className="text-place">
                     <div className="name">{translate("email_certification")}</div>
                     <div className="textbox">
@@ -1032,7 +1032,7 @@ export default class extends React.Component {
                         value={this.state.company_name || ""}
                         onChange={e=>this.setState({company_name:e.target.value})}
                         placeholder={translate("please_input_corp_name")}
-                        disabled={this.getAccountType() == 2}/>
+                        disabled={this.getAccountType() == window.CONST.ACCOUNT_TYPE.CORP_SUB}/>
                 </div>
             </div>
 
@@ -1043,7 +1043,7 @@ export default class extends React.Component {
                         value={this.state.duns_number || ""}
                         onChange={e=>this.setState({duns_number:e.target.value})}
                         placeholder={translate("please_input_duns")}
-                        disabled={this.getAccountType() == 2}/>
+                        disabled={this.getAccountType() == window.CONST.ACCOUNT_TYPE.CORP_SUB}/>
                 </div>
             </div>
 
@@ -1054,7 +1054,7 @@ export default class extends React.Component {
                         value={this.state.company_ceo || ""}
                         onChange={e=>this.setState({company_ceo:e.target.value})}
                         placeholder={translate("please_input_ceo_name")}
-                        disabled={this.getAccountType() == 2}/>
+                        disabled={this.getAccountType() == window.CONST.ACCOUNT_TYPE.CORP_SUB}/>
                 </div>
             </div>
 
@@ -1065,7 +1065,7 @@ export default class extends React.Component {
                         value={this.state.company_tel || ""}
                         onChange={this.onChangePhoneForm.bind(this,"company_tel")}
                         placeholder={translate("please_input_corp_tel")}
-                        disabled={this.getAccountType() == 2}/>
+                        disabled={this.getAccountType() == window.CONST.ACCOUNT_TYPE.CORP_SUB}/>
                 </div>
             </div>
 
@@ -1078,7 +1078,7 @@ export default class extends React.Component {
                         placeholder={translate("please_input_address_correct")}
                         disabled={this.getAccountType() == 2}/>
                 </div>
-                { this.getAccountType() == 2 ? null : <div className="blue-but" onClick={this.onClickFindAddress.bind(this, 1)}>
+                { this.getAccountType() == window.CONST.ACCOUNT_TYPE.CORP_SUB ? null : <div className="blue-but" onClick={this.onClickFindAddress.bind(this, 1)}>
                     {translate("search")}
                 </div>}
             </div>
@@ -1238,9 +1238,9 @@ export default class extends React.Component {
             return this.render_email();
         }else if(this.state.step == 2){
             let type = this.getAccountType()
-            if(type == 0)
+            if(type == window.CONST.ACCOUNT_TYPE.PERSONAL)
                 return this.render_personal();
-            else if(type == 1 || type == 2)
+            else if(type == window.CONST.ACCOUNT_TYPE.CORP_MASTER || type == window.CONST.ACCOUNT_TYPE.CORP_SUB)
                 return this.render_company();
         }else if(this.state.step == 3){
             return this.render_masterkey();
@@ -1253,31 +1253,31 @@ export default class extends React.Component {
         let type = this.getAccountType()
         let title = "", desc = ""
         if(this.state.step == 0){
-            if(type == 0) {
+            if(type == window.CONST.ACCOUNT_TYPE.PERSONAL) {
                 title = translate("individual_join_term_agree")
                 desc = translate("individual_join_term_agree_desc")
             }
-            else if(type == 1) {
+            else if(type == window.CONST.ACCOUNT_TYPE.CORP_MASTER) {
                 title = translate("corporation_join_term_agree")
                 desc = translate("corporation_join_term_agree_desc")
             }
-            else if(type == 2) {
+            else if(type == window.CONST.ACCOUNT_TYPE.CORP_SUB) {
                 title = translate("coporation_staff_account_join_term_agree")
                 desc = translate("coporation_staff_account_join_term_agree_desc")
             }
         }else if(this.state.step == 1){
             title = translate("input_account_info")
-            if(type == 0)
+            if(type == window.CONST.ACCOUNT_TYPE.PERSONAL)
                 desc = translate("input_account_info_desc_1")
-            else if(type == 1)
+            else if(type == window.CONST.ACCOUNT_TYPE.CORP_MASTER)
                 desc = translate("input_account_info_desc_2")
-            else if(type == 2)
+            else if(type == window.CONST.ACCOUNT_TYPE.CORP_SUB)
                 desc = translate("input_account_info_desc_3")
         }else if(this.state.step == 2){
-            if(type == 0) {
+            if(type == window.CONST.ACCOUNT_TYPE.PERSONAL) {
                 title = translate("input_user_info")
                 desc = translate("input_user_info_desc")
-            } else if(type == 1 || type == 2) {
+            } else if(type == window.CONST.ACCOUNT_TYPE.CORP_MASTER || type == window.CONST.ACCOUNT_TYPE.CORP_SUB) {
                 title = translate("input_corporation_info")
                 desc = translate("input_corporation_info_desc")
             }
@@ -1301,11 +1301,11 @@ export default class extends React.Component {
 
         let type = this.getAccountType()
         let step2_text = ""
-        if(type == 0)
+        if(type == window.CONST.ACCOUNT_TYPE.PERSONAL)
             step2_text = translate("input_user_info")
-        else if(type == 1)
+        else if(type == window.CONST.ACCOUNT_TYPE.CORP_MASTER)
             step2_text = translate("input_corporation_info")
-        else if(type == 2)
+        else if(type == window.CONST.ACCOUNT_TYPE.CORP_SUB)
             step2_text = translate("input_manager_info")
 
 		return (<div className="maintain" key={this.state.language}>
