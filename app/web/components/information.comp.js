@@ -10,7 +10,7 @@ import {
 import moment from "moment"
 
 function onClickAddContract(){
-    history.push("/add-contract")
+    history.push("/e-contract/add-contract")
 }
 
 let mapStateToProps = (state)=>{
@@ -52,7 +52,7 @@ export default class extends React.Component{
 
     componentWillReceiveProps(props){
         if(props.user_info === false){
-            history.replace("/login")
+            history.replace("/e-contract/login")
         }
     }
 

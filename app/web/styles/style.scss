@@ -7466,11 +7466,13 @@ table.table{
                         margin-top:40px;
                         cursor:pointer;
                         font-weight:bold;
+                        margin-right: 10px;
 
                         &:hover {
                             background-color:white;
                             color:#333;
                         }
+
                     }
                 }
             }

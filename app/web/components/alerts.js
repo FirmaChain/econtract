@@ -1127,7 +1127,7 @@ class ContractListModal extends React.Component {
     }
 
     onMoveContract = (contract_id) => {
-        history.push("/contract-info/"+contract_id)
+        history.push("/e-contract/contract-info/"+contract_id)
     }
 
 

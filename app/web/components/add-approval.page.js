@@ -80,7 +80,7 @@ export default class extends React.Component {
         (async()=>{
             let user = await this.props.fetch_user_info()
             if(!user) {
-                return history.push("/login")
+                return history.push("/e-contract/login")
             }
 
             if(user.account_type == 0) {
@@ -133,7 +133,7 @@ export default class extends React.Component {
 
     componentWillReceiveProps(props){
         if(props.user_info === false){
-            history.replace("/login")
+            history.replace("/e-contract/login")
         }
     }
 
@@ -215,7 +215,7 @@ export default class extends React.Component {
 
         if(resp.code == 1) {
             let approval_id = resp.payload.approval_id
-            history.replace(`/edit-approval/${approval_id}`)
+            history.replace(`/e-contract/edit-approval/${approval_id}`)
         } else {
             alert(translate("fail_register_approval"))
         }

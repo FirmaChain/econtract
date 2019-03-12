@@ -65,7 +65,7 @@ export default class extends React.Component {
 
     componentWillReceiveProps(nextProps){
         if(nextProps.user_info === false) {
-            history.replace("/login")
+            history.replace("/e-contract/login")
         }
 
         let prevMenu = nextProps.match.params.menu || "all"
@@ -84,11 +84,11 @@ export default class extends React.Component {
     }
 
     onClickAddApproval = () => {
-        history.push("/add-approval")
+        history.push("/e-contract/add-approval")
     }
 
     move = (folder_id) => {
-        history.push(`/approval/${folder_id}`)
+        history.push(`/e-contract/approval/${folder_id}`)
     }
 
     isOpenOption(approval_id) {
@@ -210,7 +210,7 @@ export default class extends React.Component {
 
     useApproval = (approval_id, e) => {
         e.stopPropagation();
-        history.push({pathname:"/add-contract", search:"?approval_id="+approval_id})
+        history.push({pathname:"/e-contract/add-contract", search:"?approval_id="+approval_id})
     }
 
     render_approval_slot(e, k) {
@@ -229,7 +229,7 @@ export default class extends React.Component {
                 status_text = translate("rejected")
                 break;
         }
-        return <div className="item" key={e.approval_id} onClick={()=>history.push(`/edit-approval/${e.approval_id}`)}>
+        return <div className="item" key={e.approval_id} onClick={()=>history.push(`/e-contract/edit-approval/${e.approval_id}`)}>
             <div className="list-body-item list-chkbox">
                 <CheckBox2 size={18}
                     on={this.state.approval_checks.includes(e.approval_id) || false}
@@ -244,7 +244,7 @@ export default class extends React.Component {
                 <div className="button-container">
                     {e.status == window.CONST.APPROVAL_STATUS.COMPLETED ? 
                         <div className="action-button action-blue-but" onClick={this.useApproval.bind(this, e.approval_id)}>{translate("use")}</div> : 
-                        <div className="action-button action-transparent-but" onClick={()=>history.push(`/edit-approval/${e.approval_id}`)}>{translate("view")}</div>
+                        <div className="action-button action-transparent-but" onClick={()=>history.push(`/e-contract/edit-approval/${e.approval_id}`)}>{translate("view")}</div>
                     }
                     <div className={`arrow-button ${e.status == window.CONST.APPROVAL_STATUS.COMPLETED ? "arrow-blue-but":"arrow-transparent-but"}`} onClick={this.onClickOption.bind(this, e.approval_id)} >
                         <i className="fas fa-caret-down"></i>

@@ -125,7 +125,7 @@ export default class extends React.Component {
             console.log("user", user)
 
             if(!user) {
-                return history.push("/login")
+                return history.push("/e-contract/login")
             }
 
             /*if(!!this.props.location.state && !!this.props.location.state.contract_id) {
@@ -148,7 +148,7 @@ export default class extends React.Component {
 
     componentWillReceiveProps(props){
         if(props.user_info === false){
-            history.replace("/login")
+            history.replace("/e-contract/login")
         }
     }
 
@@ -504,7 +504,7 @@ export default class extends React.Component {
                         }
                     }
                 }
-                history.replace(`/edit-contract/${contract_id}`)
+                history.replace(`/e-contract/edit-contract/${contract_id}`)
             } else {
                 alert(translate("fail_register_contract"))
             }
@@ -619,7 +619,7 @@ export default class extends React.Component {
         return (<div className="upsert-contract-group-page header-page">
             <div className="header">
                 <div className="left-logo">
-                    <img src="/static/logo_blue.png" onClick={()=>history.push("/home")}/>
+                    <img src="/static/logo_blue.png" onClick={()=>history.push("/e-contract/home")}/>
                 </div>
                 { !!this.props.user_info ? <Information /> : null }
             </div>

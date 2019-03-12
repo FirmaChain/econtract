@@ -119,11 +119,11 @@ export default class extends React.Component {
                 } else if(account_type == 2) {
                     window.logout()
                     alert(translate("no_group_what_you_have"))
-                    history.replace("/login")
+                    history.replace("/e-contract/login")
                 }
             } else if(!group_id) {
                 if(groups) {
-                    history.replace(`/home/${groups[0].group_id}/recently`)
+                    history.replace(`/e-contract/home/${groups[0].group_id}/recently`)
                 }
             }
             await this.setState({groups})
@@ -146,7 +146,7 @@ export default class extends React.Component {
 
     componentWillReceiveProps(nextProps){
         if(nextProps.user_info === false) {
-            history.replace("/login")
+            history.replace("/e-contract/login")
         }
 
         let prevMenu = nextProps.match.params.menu || "recently"
@@ -232,11 +232,11 @@ export default class extends React.Component {
             is_approval:this.props.user_info.account_type != 0,
             onClick:async(type)=>{
                 if(type == 1) {
-                    history.push("/add-contract")
+                    history.push("/e-contract/add-contract")
                 } else if(type == 2) {
-                    history.push("/template")
+                    history.push("/e-contract/template")
                 } else if(type == 3) {
-                    history.push("/approval")
+                    history.push("/e-contract/approval")
                 }
             }
         })
@@ -318,13 +318,13 @@ export default class extends React.Component {
         let group_id = this.props.match.params.group_id || null
 
         if(!!group_id)
-            return history.push(`/home/${group_id}/${pageName}`)
+            return history.push(`/e-contract/home/${group_id}/${pageName}`)
 
-        return history.push(`/home/${pageName}`)
+        return history.push(`/e-contract/home/${pageName}`)
     }
 
     moveGroup(group_id) {
-        history.push(`/home/${group_id}/${this.getTitle().id}`)
+        history.push(`/e-contract/home/${group_id}/${this.getTitle().id}`)
     }
 
     onClickOption(contract_id, e) {
@@ -342,7 +342,7 @@ export default class extends React.Component {
 
     onClickSign(contract_id, e) {
         e.stopPropagation();
-        history.push(`/edit-contract/${contract_id}`)
+        history.push(`/e-contract/edit-contract/${contract_id}`)
     }
 
     onClickSearch = async () => {
@@ -492,7 +492,7 @@ export default class extends React.Component {
         e.stopPropagation()
         select_tab = select_tab ? select_tab : 0
         let move_info = {
-            pathname:type==0 ? `/contract-info/${contract.contract_id}` : `/edit-contract/${contract.contract_id}`,
+            pathname:type==0 ? `/e-contract/contract-info/${contract.contract_id}` : `/e-contract/edit-contract/${contract.contract_id}`,
             state:{ select_tab }
         }
         if(this.props.user_info.account_type == 0 ) {

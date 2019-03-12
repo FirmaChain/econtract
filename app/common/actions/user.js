@@ -221,14 +221,14 @@ export function register_new_account(account, info, email, name, eth, account_ty
             ...resp.payload
         }
 
-        if (account_type == window.CONST.ACCOUNT_TYPE.CORP_MASTER) {
+        /*if (account_type == window.CONST.ACCOUNT_TYPE.CORP_MASTER) {
             let auth = account.auth;
             let eems = Buffer.from(account.encryptedMasterSeed, 'hex').toString('base64');
             window.setCookie("session", resp.session, 0.125)
             window.setCookie("session_update", Date.now(), 0.125)
             let entropy = getUserEntropy(auth, eems)
             localStorage.setItem("entropy", entropy)
-        }
+        }*/
         return resp;
     }
 }

@@ -147,7 +147,7 @@ export default class extends React.Component {
                 let resp = this.props.hide_group(this.getGroupId())
                 if(resp){
                     alert(translate("success_remove_group"))
-                    return history.push("/group")
+                    return history.push("/e-contract/group")
                 }
                 alert(translate("fail_remove"))
             }

@@ -648,7 +648,7 @@ export default class extends React.Component {
             return alert(translate("please_check_master_keyword_order"))
         }*/
         let account_type = this.getAccountType()
-        let info, corp_info, public_info
+        let info, corp_info, public_info, open_info
 
         let department = this.state.department || ""
 
@@ -696,14 +696,13 @@ export default class extends React.Component {
             info = {
                 recover_password: this.state.account.recoverPassword,
             }
-            public_info = {
+            open_info = {
                 email: this.state.email.trim(),
                 username: this.state.username.trim(),
-                department: department.trim(),
-                job: this.state.job.trim(),
                 userphone: this.state.userphone,
+                useraddress: this.state.useraddress.trim(),
+                recover_password: this.state.account.recoverPassword,
             }
-            corp_info = {}
         }
 
         let keyPair = SeedToEthKey(this.state.account.seed, "0'/0/0");
@@ -727,7 +726,7 @@ export default class extends React.Component {
         
         await window.showIndicator()
         let resp
-        if(account_type == 0) {
+        if(account_type == window.CONST.ACCOUNT_TYPE.PERSONAL) {
             try{
                 resp = await this.props.register_new_account(this.state.account, 
                     encryptedInfo, this.state.email, 
@@ -739,7 +738,7 @@ export default class extends React.Component {
                 await window.hideIndicator()
                 return;
             }
-        } else if (account_type == 1) {
+        } else if (account_type == window.CONST.ACCOUNT_TYPE.CORP_MASTER) {
             let corpMasterKey = generateCorpKey();
             // inject into master's info
             let corpKey = get256bitDerivedPublicKey(corpMasterKey, "m/0'/0'");
@@ -780,7 +779,7 @@ export default class extends React.Component {
                 await this.props.update_group_public_key(gresp.group_id, info['corp_master_key']);
             }
 
-        } else if (account_type == 2) {
+        } else if (account_type == window.CONST.ACCOUNT_TYPE.CORP_SUB) {
 
             let corp_count_resp = await this.props.get_corp_member_count_no_auth(this.state.corp_id, this.state.owner_id)
             let corp_member_count = corp_count_resp.corp_member_count
@@ -799,7 +798,19 @@ export default class extends React.Component {
                 resp = await this.props.register_new_account(this.state.account, 
                     encryptedInfo, this.state.email, 
                     this.state.username, wallet.address, 
-                    account_type, emk, encryptedPublicInfo, null, this.state.registration_code)
+                    account_type, emk, encryptedPublicInfo, null, null, this.state.registration_code)
+            } catch(err) {
+                this.isGoingFinish = false
+                console.log("network error")
+                await window.hideIndicator()
+                return;
+            }
+        } else if (account_type == window.CONST.ACCOUNT_TYPE.EXPERT) {
+            try{
+                resp = await this.props.register_new_account(this.state.account, 
+                    encryptedInfo, this.state.email, 
+                    this.state.username, wallet.address, 
+                    account_type, emk, null, null, JSON.stringify(open_info))
             } catch(err) {
                 this.isGoingFinish = false
                 console.log("network error")

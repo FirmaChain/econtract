@@ -48,11 +48,11 @@ export default class extends React.Component {
                 if(user == -2) {
                     window.logout()
                     alert(translate("already_withdraw_account"))
-                    history.replace("/login")
+                    history.replace("/e-contract/login")
                 } else if(user == -3) {
                     window.logout()
                     alert(translate("no_group_account"))
-                    history.replace("/login")
+                    history.replace("/e-contract/login")
                 }
                 await window.hideIndicator()
             })()
@@ -61,7 +61,7 @@ export default class extends React.Component {
 
     componentWillReceiveProps(props){
         if(props.user_info === false){
-            history.replace("/login")
+            history.replace("/e-contract/login")
         }
     }
 
@@ -81,21 +81,21 @@ export default class extends React.Component {
             <div className="header-page">
                 <div className="header">
                     <div className="left-logo">
-                        <img src="/static/logo_blue.png" onClick={()=>history.push("/home")}/>
+                        <img src="/static/logo_blue.png" onClick={()=>history.push("/e-contract/home")}/>
                     </div>
                     <div className="menu">
-                        <div className={(this.getStatus().includes("/home") ? "selected-item" : "item")} onClick={() => history.push("/home")}>
+                        <div className={(this.getStatus().includes("/home") ? "selected-item" : "item")} onClick={() => history.push("/e-contract/home")}>
                             <div>{translate("contract")}</div>
                         </div>
                         { ( !!this.props.user_info && (this.props.user_info.account_type != 0) ) ? 
-                            <div className={(this.getStatus().includes("/approval") ? "selected-item" : "item")} onClick={() => history.push("/approval")}>
+                            <div className={(this.getStatus().includes("/approval") ? "selected-item" : "item")} onClick={() => history.push("/e-contract/approval")}>
                                 <div>{translate("approval")}</div>
                             </div>: ""}
-                        <div className={(this.getStatus().includes("/template") ? "selected-item" : "item")} onClick={() => history.push("/template")}>
+                        <div className={(this.getStatus().includes("/template") ? "selected-item" : "item")} onClick={() => history.push("/e-contract/template")}>
                             <div>{translate("template")}</div>
                         </div>
                         { ( !!this.props.user_info && (this.props.user_info.account_type == 1) ) ? 
-                            <div className={(this.getStatus().includes("/group") ? "selected-item" : "item")} onClick={() => history.push("/group")}>
+                            <div className={(this.getStatus().includes("/group") ? "selected-item" : "item")} onClick={() => history.push("/e-contract/group")}>
                                 <div>{translate("group")}</div>
                             </div>: ""}
                     </div>

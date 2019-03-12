@@ -57,15 +57,16 @@ export default class extends React.Component {
 								</div>
 							</div>
 							{/*<div className="whatis" onClick={()=>window.open("https://firmachain.org", "_blank")}>{translate("what_is_firmachain")}</div>*/}
-							{user_info ? null : 
-								<div className="login-place"><div className="login-btn" onClick={()=>history.push("/login")}>{translate("login_and_register")}</div></div>}
+							{/*user_info ? null : 
+								<div className="login-place"><div className="login-btn" onClick={()=>history.push("/login")}>{translate("login_and_register")}</div></div>*/}
 						</div>
 					</div>
 					<div className="mid">
 						<div className="mid-container">
 							<div className="title">{translate("INDEX_TITLE_1")}</div>
 							<div className="sub-title"><b>{translate("INDEX_TITLE_2")}</b></div>
-							<div className="start-btn" onClick={()=>history.push("/login")}>{translate("INDEX_TITLE_3")}</div>
+							<div className="start-btn" onClick={()=>history.push("/e-contract/login")}>{translate("INDEX_TITLE_3")}</div>
+							<div className="start-btn" onClick={()=>history.push("/legal-advise/login")}>{translate("go_legal_advise_title")}</div>
 						</div>
 					</div>
 					{/*<div className="desc-container">

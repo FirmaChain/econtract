@@ -130,7 +130,7 @@ export default class extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         if(nextProps.user_info === false) {
-            return history.replace("/login")
+            return history.replace("/e-contract/login")
         }
 
         let prevMenu = this.props.match.params.menu || "all"
@@ -336,22 +336,22 @@ export default class extends React.Component {
 	} 
 
     move(pageName) {
-        history.push(`/group/${pageName}`)
+        history.push(`/e-contract/group/${pageName}`)
     }
 
     async moveGroup(group_id) {
         await this.props.openGroup(group_id)
-        history.push(`/group/${group_id}`)
+        history.push(`/e-contract/group/${group_id}`)
     }
 
     async moveGroupMember(group_id, account_id) {
         await this.props.openGroup(group_id)
-        history.push(`/group/${group_id}/${account_id}`)
+        history.push(`/e-contract/group/${group_id}/${account_id}`)
     }
 
     /*openGroupInfo(group_id, e) {
         e.stopPropagation()
-        history.push(`/group-info/${group_id}`)
+        history.push(`/e-contract/group-info/${group_id}`)
     }*/
 
     async openCloseGroup(group_id, e) {
@@ -482,7 +482,7 @@ export default class extends React.Component {
         e.stopPropagation()
         select_tab = select_tab ? select_tab : 0
         let move_info = {
-            pathname:type==0 ? `/contract-info/${contract.contract_id}` : `/edit-contract/${contract.contract_id}`,
+            pathname:type==0 ? `/e-contract/contract-info/${contract.contract_id}` : `/e-contract/edit-contract/${contract.contract_id}`,
             state:{ select_tab }
         }
         history.push(move_info)

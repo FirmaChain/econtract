@@ -69,46 +69,47 @@ window.addEventListener("load",()=>{
 		<Router history={history}>
 			<Provider store={store}>
 				<Container>
-					<Route onEnter={resolver} exact path="/verification" component={VerificationPage} />
-					<Route onEnter={resolver} exact path="/login2/:id" component={LoginPage} />
+					<Route onEnter={resolver} exact path="/e-contract/verification" component={VerificationPage} />
+					{/*<Route onEnter={resolver} exact path="/login2/:id" component={LoginPage} />*/}
 
 					<Route onEnter={resolver} exact path="/" component={IndexPage} />
-					<Route onEnter={resolver} exact path="/login" component={LoginPage} />
 					<Route onEnter={resolver} exact path="/register" component={RegisterPage} />
 					{/*<Route onEnter={resolver} exact path="/check-mnemonic" component={CheckMnemonicPage} />*/}
 					<Route onEnter={resolver} exact path="/recover" component={RecoverPage} />
 					<Route onEnter={resolver} exact path="/old-recover" component={OldRecoverPage} />
 
-					<Route onEnter={resolver} exact path="/home" component={HomePage} />
-					<Route onEnter={resolver} exact path="/home/:menu" component={HomePage} />
-					<Route onEnter={resolver} exact path="/home/folder/:menu" component={HomePage} />
+					<Route onEnter={resolver} exact path="/e-contract/login" component={LoginPage} />
+					
+					<Route onEnter={resolver} exact path="/e-contract/home" component={HomePage} />
+					<Route onEnter={resolver} exact path="/e-contract/home/:menu" component={HomePage} />
+					<Route onEnter={resolver} exact path="/e-contract/home/folder/:menu" component={HomePage} />
 
-					<Route onEnter={resolver} exact path="/home/:group_id/:menu" component={HomePage} />
-					<Route onEnter={resolver} exact path="/home/:group_id/folder/:menu" component={HomePage} />
+					<Route onEnter={resolver} exact path="/e-contracthome/:group_id/:menu" component={HomePage} />
+					<Route onEnter={resolver} exact path="/e-contracthome/:group_id/folder/:menu" component={HomePage} />
 
-					<Route onEnter={resolver} exact path="/template" component={HomePage} />
-					<Route onEnter={resolver} exact path="/template/:menu" component={HomePage} />
-					<Route onEnter={resolver} exact path="/new-template" component={UpsertTemplatePage} />
-					<Route onEnter={resolver} exact path="/edit-template/:template_id" component={UpsertTemplatePage} />
+					<Route onEnter={resolver} exact path="/e-contract/template" component={HomePage} />
+					<Route onEnter={resolver} exact path="/e-contract/template/:menu" component={HomePage} />
+					<Route onEnter={resolver} exact path="/e-contract/new-template" component={UpsertTemplatePage} />
+					<Route onEnter={resolver} exact path="/e-contract/edit-template/:template_id" component={UpsertTemplatePage} />
 
-					<Route onEnter={resolver} exact path="/approval" component={HomePage} />
-					<Route onEnter={resolver} exact path="/approval/:menu" component={HomePage} />
-					<Route onEnter={resolver} exact path="/add-approval" component={AddApprovalPage} />
-					<Route onEnter={resolver} exact path="/edit-approval/:approval_id" component={UpsertApprovalPage} />
+					<Route onEnter={resolver} exact path="/e-contract/approval" component={HomePage} />
+					<Route onEnter={resolver} exact path="/e-contract/approval/:menu" component={HomePage} />
+					<Route onEnter={resolver} exact path="/e-contract/add-approval" component={AddApprovalPage} />
+					<Route onEnter={resolver} exact path="/e-contract/edit-approval/:approval_id" component={UpsertApprovalPage} />
 
-					<Route onEnter={resolver} exact path="/group" component={HomePage} />
-					<Route onEnter={resolver} exact path="/group/:menu" component={HomePage} />
-					<Route onEnter={resolver} exact path="/group/:menu/:account_id" component={HomePage} />
+					<Route onEnter={resolver} exact path="/e-contract/group" component={HomePage} />
+					<Route onEnter={resolver} exact path="/e-contract/group/:menu" component={HomePage} />
+					<Route onEnter={resolver} exact path="/e-contract/group/:menu/:account_id" component={HomePage} />
 					{/*<Route onEnter={resolver} exact path="/group-info/:group_id" component={CorpGroupInfoPage} />*/}
 
-					<Route onEnter={resolver} exact path="/profile" component={InformationPage} />
-					<Route onEnter={resolver} exact path="/price-status" component={InformationPage} />
-					<Route onEnter={resolver} exact path="/group-manage" component={InformationPage} />
-					<Route onEnter={resolver} exact path="/security" component={InformationPage} />
+					<Route onEnter={resolver} exact path="/e-contract/profile" component={InformationPage} />
+					<Route onEnter={resolver} exact path="/e-contract/price-status" component={InformationPage} />
+					<Route onEnter={resolver} exact path="/e-contract/group-manage" component={InformationPage} />
+					<Route onEnter={resolver} exact path="/e-contract/security" component={InformationPage} />
 
-					<Route onEnter={resolver} exact path="/add-contract" component={AddContractPage} />
-					<Route onEnter={resolver} exact path="/edit-contract/:contract_id" component={UpsertContractPage} />
-					<Route onEnter={resolver} exact path="/contract-info/:contract_id" component={ContractInfoPage} />
+					<Route onEnter={resolver} exact path="/e-contract/add-contract" component={AddContractPage} />
+					<Route onEnter={resolver} exact path="/e-contract/edit-contract/:contract_id" component={UpsertContractPage} />
+					<Route onEnter={resolver} exact path="/e-contract/contract-info/:contract_id" component={ContractInfoPage} />
 					{/*<Route onEnter={resolver} exact path="/preview-contract" component={PreviewCOntractPage} />
 
 					<Route onEnter={resolver} exact path="/folder" component={FolderPage} />
