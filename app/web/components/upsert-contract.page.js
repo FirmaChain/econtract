@@ -408,38 +408,45 @@ export default class extends React.Component {
             }
         }
 
-
-        window.openModal("DrawSign",{
+        let signature_data = await new Promise(resolve=>window.openModal("DrawSign",{
             onFinish : async (signature)=>{
                 if(this.props.user_info.account_id == this.state.contract.payer_account_id) {
                     let exist_ticket = (await this.props.check_ticket_count()).payload
-                    if(!exist_ticket)
-                        return alert(translate("no_ticket_please_charge"))
-                }
-
-                let contract_body = createContractHtml(this.state.contract, this.state.infos).exclude_sign_body
-                console.log("asdasdasd")
-                if(await window.confirm(translate("ticket_use_notify"), translate("ticket_use_notify_desc"))) {
-                    await window.showIndicator()
-                    let email_list = this.state.infos.filter(e=>window.email_regex.test(e.sub)).map(e=>e.sub)
-                    let r = await this.props.update_contract_sign(this.state.contract.contract_id, signature, this.state.contract.the_key, email_list, sha256(contract_body))
-                    if(r.code == -9) {
-                        return alert(translate("you_dont_update_complete_contract_sign"))
-                    } /*else if(r.code == -11) {
-                        return alert(tranlate("no_ticket_no_sign_please_charge"))
-                    } else if(r.code == -12) {
-                        let no_ticket_users = r.no_ticket_users.map(e => this.state.infos.find(ee=>e.entity_id == ee.entity_id && e.corp_id == ee.corp_id))
-                        return alert(translate("i_have_ticket_but_other_no_ticket", [no_ticket_users.map(e=>e.user_info.username).join(", ")]))
-                    } */else if(r.code == -19) {
-                        return alert(translate("payer_do_not_have_ticket"))
+                    if(!exist_ticket) {
+                        alert(translate("no_ticket_please_charge"))
+                        resolve(false)
                     }
-                    else alert(translate("complete_sign_register"))
-                    this.blockFlag = true
-                    await window.hideIndicator()
-                    history.replace(`/contract-info/${this.props.match.params.contract_id}`)
                 }
+                resolve(signature)
+                return true;
             }
-        })
+        }) );
+
+        if(!signature_data) return;
+
+        if( this.props.user_info.account_id == this.state.contract.payer_account_id && 
+            (await window.confirm(translate("ticket_use_notify"), translate("ticket_use_notify_desc"))) == false )
+            return;
+
+        let contract_body = createContractHtml(this.state.contract, this.state.infos).exclude_sign_body
+
+        await window.showIndicator()
+        let email_list = this.state.infos.filter(e=>window.email_regex.test(e.sub)).map(e=>e.sub)
+        let r = await this.props.update_contract_sign(this.state.contract.contract_id, signature_data, this.state.contract.the_key, email_list, sha256(contract_body))
+        if(r.code == -9) {
+            return alert(translate("you_dont_update_complete_contract_sign"));
+        } /*else if(r.code == -11) {
+            return alert(tranlate("no_ticket_no_sign_please_charge"))
+        } else if(r.code == -12) {
+            let no_ticket_users = r.no_ticket_users.map(e => this.state.infos.find(ee=>e.entity_id == ee.entity_id && e.corp_id == ee.corp_id))
+            return alert(translate("i_have_ticket_but_other_no_ticket", [no_ticket_users.map(e=>e.user_info.username).join(", ")]))
+        } */else if(r.code == -19) {
+            return alert(translate("payer_do_not_have_ticket"));
+        }
+        alert(translate("complete_sign_register"))
+        this.blockFlag = true
+        await window.hideIndicator()
+        history.replace(`/contract-info/${this.props.match.params.contract_id}`)
     }
 
     onToggleUser = (entity_id, corp_id, force_open) => {

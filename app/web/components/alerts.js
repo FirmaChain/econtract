@@ -904,13 +904,13 @@ class DrawSign extends React.Component{
     componentDidMount(){
     }
 
-    finishDraw = ()=>{
+    finishDraw = async () => {
         if(!this.first_drawing)
-            return alert(translate("please_draw_sign"))
+            return alert(translate("please_draw_sign"));
 
-        let dataUrl = this.refs.canvas.toDataURL("image/png")
-        this.props.onFinish(dataUrl)
-        window.closeModal(this.props.modalId)
+        let dataUrl = this.refs.canvas.toDataURL("image/png");
+        let result = await this.props.onFinish(dataUrl);
+        if(result) window.closeModal(this.props.modalId);
     }
 
     dataURItoBlob(dataURI) {
