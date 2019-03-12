@@ -652,7 +652,7 @@ export default class extends React.Component {
 
         let department = this.state.department || ""
 
-        if(account_type == 0) { // 개인 계정
+        if(account_type == window.CONST.ACCOUNT_TYPE.PERSONAL) { // 개인 계정
             info = {
                 email: this.state.email.trim(),
                 username: this.state.username.trim(),
@@ -660,7 +660,7 @@ export default class extends React.Component {
                 useraddress: this.state.useraddress.trim(),
                 recover_password: this.state.account.recoverPassword,
             }
-        } else if(account_type == 1) { // 기업 관리자 계정
+        } else if(account_type == window.CONST.ACCOUNT_TYPE.CORP_MASTER) { // 기업 관리자 계정
             info = {
                 recover_password: this.state.account.recoverPassword,
             }
@@ -678,19 +678,7 @@ export default class extends React.Component {
                 company_tel: this.state.company_tel.trim(),
                 company_address: this.state.company_address.trim(),
             }
-        } else if(account_type == 100) { // 전문가 계정
-            info = {
-                recover_password: this.state.account.recoverPassword,
-            }
-            public_info = {
-                email: this.state.email.trim(),
-                username: this.state.username.trim(),
-                department: department.trim(),
-                job: this.state.job.trim(),
-                userphone: this.state.userphone,
-            }
-            corp_info = {}
-        } else if(account_type == 2) { // 기업 직원 계정
+        } else if(account_type == window.CONST.ACCOUNT_TYPE.CORP_SUB) { // 기업 직원 계정
             info = {
                 corp_id: this.state.corp_id,
                 corp_key: this.state.corp_key,
@@ -704,6 +692,18 @@ export default class extends React.Component {
                 department: department.trim(),
                 userphone: this.state.userphone.trim(),
             }
+        } else if(account_type == window.CONST.ACCOUNT_TYPE.EXPERT) { // 전문가 계정
+            info = {
+                recover_password: this.state.account.recoverPassword,
+            }
+            public_info = {
+                email: this.state.email.trim(),
+                username: this.state.username.trim(),
+                department: department.trim(),
+                job: this.state.job.trim(),
+                userphone: this.state.userphone,
+            }
+            corp_info = {}
         }
 
         let keyPair = SeedToEthKey(this.state.account.seed, "0'/0/0");

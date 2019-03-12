@@ -40,6 +40,7 @@ import {
     issue_2fa_otp,
     terminate_2fa_otp,
     register_2fa_otp,
+    create_encrypted_info,
 } from "../../common/actions"
 
 let mapStateToProps = (state)=>{
@@ -87,57 +88,7 @@ export default class extends React.Component {
     }
 
     createInformation(account_type) {
-        let info, corp_info, public_info
-        let department = this.state.department || ""
-        if(account_type == 0) { // 개인 계정
-            info = {
-                email: this.props.user_info.email.trim(),
-                username: this.state.username.trim(),
-                userphone: this.state.userphone.trim(),
-                useraddress: this.state.useraddress.trim(),
-                recover_password: this.state.recover_password,
-            }
-        } else if(account_type == 1) { // 기업 관리자 계정
-            info = {
-                corp_master_key:this.state.corp_master_key,
-                corp_key:this.state.corp_key,
-                group_keys:this.state.group_keys,
-                recover_password: this.state.recover_password,
-            }
-            public_info = {
-                email: this.props.user_info.email.trim(),
-                username: this.state.username.trim(),
-                department: department.trim(),
-                job: this.state.job.trim(),
-                userphone: this.state.userphone.trim(),
-            }
-            corp_info = {
-                company_name: this.state.company_name.trim(),
-                duns_number: this.state.duns_number.trim(),
-                company_ceo: this.state.company_ceo.trim(),
-                company_tel: this.state.company_tel.trim(),
-                company_address: this.state.company_address.trim(),
-            }
-        } else if(account_type == 2) { // 기업 직원 계정
-            info = {
-                corp_id: this.state.corp_id,
-                corp_key: this.state.corp_key,
-                group_keys: this.state.group_keys,
-                recover_password: this.state.recover_password,
-            }
-            public_info = {
-                email: this.props.user_info.email.trim(),
-                username: this.state.username.trim(),
-                department: department.trim(),
-                job: this.state.job.trim(),
-                userphone: this.state.userphone.trim(),
-            }
-        }
-        return {
-            info,
-            corp_info,
-            public_info,
-        }
+        return create_encrypted_info(account_type, this.props.user_info, this.state)
     }
 
 

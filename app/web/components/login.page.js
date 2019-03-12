@@ -56,9 +56,11 @@ export default class extends React.Component {
         if (!this.state.email || !this.state.password) {
             alert(translate("please_check_email_password"));
         } else {
-            let resp = await this.props.login_account(this.state.email || "", this.state.password || "");
-            console.log(resp)
-            if(resp.code == -3){
+            let resp = await this.props.login_account(this.state.email || "", this.state.password || "", window.CONST.SERVICE_TYPE.E_CONTRACT);
+            if(resp.code == -11) {
+                alert(translate("dont_use_this_account_service"))
+                return history.replace("/")
+            } else if(resp.code == -3){
                 alert(translate("please_check_email_password"))
             } else if(resp.code == -4){
                 alert(translate("please_check_email_password"));

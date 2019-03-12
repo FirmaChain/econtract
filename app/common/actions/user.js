@@ -196,7 +196,7 @@ export function check_phone_verification_code(phone, code){
     }
 }
 
-export function register_new_account(account, info, email, name, eth, type, emk, public_info = null, corp_info = null, invitation_code = null){
+export function register_new_account(account, info, email, name, eth, account_type, emk, public_info = null, corp_info = null, open_info = null, invitation_code = null){
     return async function(dispatch){
         let resp = (await api_register_account(
             account.browserKey.publicKey.toString('hex'),
@@ -208,10 +208,11 @@ export function register_new_account(account, info, email, name, eth, type, emk,
             email, 
             name, 
             eth,
-            type,
+            account_type,
             emk,
             public_info,
             corp_info,
+            open_info,
             invitation_code,
         ));
 
@@ -220,7 +221,7 @@ export function register_new_account(account, info, email, name, eth, type, emk,
             ...resp.payload
         }
 
-        if (type != 0) {
+        if (account_type == window.CONST.ACCOUNT_TYPE.CORP_MASTER) {
             let auth = account.auth;
             let eems = Buffer.from(account.encryptedMasterSeed, 'hex').toString('base64');
             window.setCookie("session", resp.session, 0.125)
@@ -232,7 +233,7 @@ export function register_new_account(account, info, email, name, eth, type, emk,
     }
 }
 
-export function login_account(user_id, password){
+export function login_account(user_id, password, service_type){
     return async function(dispatch){
 
         let nonce = Date.now();
@@ -242,7 +243,8 @@ export function login_account(user_id, password){
         let resp = (await api_login_account(
             sign.publicKey.toString('hex'),
             nonce,
-            sign.payload
+            sign.payload,
+            service_type
         ))
 
         resp = {
@@ -371,6 +373,61 @@ export function update_corp_info(encrypted_corp_info){
 export function update_username(username) {
     return async function() {
         return (await api_update_username(username))
+    }
+}
+
+export function create_encrypted_info(account_type, user_info, state) {
+    let info, public_info, corp_info
+    let department = state.department || ""
+    if(account_type == window.CONST.ACCOUNT_TYPE.PERSONAL) { // 개인 계정
+        info = {
+            email: user_info.email.trim(),
+            username: state.username.trim(),
+            userphone: state.userphone.trim(),
+            useraddress: state.useraddress.trim(),
+            recover_password: state.recover_password,
+        }
+    } else if(account_type == window.CONST.ACCOUNT_TYPE.CORP_MASTER) { // 기업 관리자 계정
+        info = {
+            corp_master_key:state.corp_master_key,
+            corp_key:state.corp_key,
+            group_keys:state.group_keys,
+            recover_password: state.recover_password,
+        }
+        public_info = {
+            email: user_info.email.trim(),
+            username: state.username.trim(),
+            department: department.trim(),
+            job: state.job.trim(),
+            userphone: state.userphone.trim(),
+        }
+        corp_info = {
+            company_name: state.company_name.trim(),
+            duns_number: state.duns_number.trim(),
+            company_ceo: state.company_ceo.trim(),
+            company_tel: state.company_tel.trim(),
+            company_address: state.company_address.trim(),
+        }
+    } else if(account_type == window.CONST.ACCOUNT_TYPE.CORP_SUB) { // 기업 직원 계정
+        info = {
+            corp_id: state.corp_id,
+            corp_key: state.corp_key,
+            group_keys: state.group_keys,
+            recover_password: state.recover_password,
+        }
+        public_info = {
+            email: user_info.email.trim(),
+            username: state.username.trim(),
+            department: department.trim(),
+            job: state.job.trim(),
+            userphone: state.userphone.trim(),
+        }
+    }
+
+    return {
+        info,
+        corp_info,
+        public_info,
     }
 }
 

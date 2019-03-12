@@ -973,7 +973,7 @@ export async function api_check_phone_verification_code(phone,code){
         session:window.getCookie("session")
     });
 }
-export async function api_register_account(publicbk,publicms,publicmsc,info,auth,eems,email,name,eth,account_type,emk,public_info,corp_info,invitation_code){
+export async function api_register_account(publicbk,publicms,publicmsc,info,auth,eems,email,name,eth,account_type,emk,public_info,corp_info,open_info,invitation_code){
     let __data = new FormData();
 
     if(publicbk != null) __data.append('publicbk', publicbk);
@@ -989,6 +989,7 @@ export async function api_register_account(publicbk,publicms,publicmsc,info,auth
 	if(emk != null) __data.append('emk', emk);
 	if(public_info != null) __data.append('public_info', public_info);
 	if(corp_info != null) __data.append('corp_info', corp_info);
+	if(open_info != null) __data.append('open_info', open_info);
 	if(invitation_code != null) __data.append('invitation_code', invitation_code)
 
     return await post("/register_account", __data,{
