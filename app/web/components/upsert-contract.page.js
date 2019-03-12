@@ -418,7 +418,7 @@ export default class extends React.Component {
                 }
 
                 let contract_body = createContractHtml(this.state.contract, this.state.infos).exclude_sign_body
-                
+                console.log("asdasdasd")
                 if(await window.confirm(translate("ticket_use_notify"), translate("ticket_use_notify_desc"))) {
                     await window.showIndicator()
                     let email_list = this.state.infos.filter(e=>window.email_regex.test(e.sub)).map(e=>e.sub)
