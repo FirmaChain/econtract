@@ -237,6 +237,7 @@ export function get_contract(contract_id, user_info, groups = []) {
                 }
             })
             resp.payload.contract.html = resp.payload.contract.html ? aes_decrypt(Buffer.from(resp.payload.contract.html, 'hex').toString('hex'), the_key) : resp.payload.contract.html
+            resp.payload.contract.message = resp.payload.contract.message ? aes_decrypt(Buffer.from(resp.payload.contract.message, 'hex').toString('hex'), the_key) : resp.payload.contract.message
             resp.payload.contract.necessary_info = JSON.parse(resp.payload.contract.necessary_info)
             resp.payload.contract.the_key = the_key
             resp.payload.contract.pin = pin

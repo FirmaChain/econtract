@@ -678,6 +678,13 @@ export default class extends React.Component {
                                 </div>
                                 {this.render_information_deck()}
                             </div>
+
+                            <div className="invitation-message">
+                                <div className="title">{translate("invitation_message")}</div>
+                                <div className="message">
+
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div className="chat">
