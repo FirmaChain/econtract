@@ -220,7 +220,7 @@ export default class extends React.Component {
                 <img src="/static/logo_blue.png" onClick={()=>history.push("/")}/>
             </div>
             <div className="container">
-                <div className="title">{translate("start_e_contract")}</div>
+                <div className="title">{translate("start_legal_advise")}</div>
                 <div className="desc1">{/*<i className="fas fa-lock-open-alt"></i> &nbsp; translate("this_browser_was_verificated")*/}</div>
                 <div className="desc2">{/*translate("what_is_verified_browser")*/}</div>
 
