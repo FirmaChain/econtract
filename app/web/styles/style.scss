@@ -3928,7 +3928,7 @@ div.checkbox2-comp{
                         border-bottom:1px solid $middlegray;
                         border-left:1px solid $middlegray;
                         border-right:1px solid $middlegray;
-                        margin-bottom:100px;
+                        margin-bottom:40px;
                     }
 
                     >.users {
@@ -4170,11 +4170,16 @@ div.checkbox2-comp{
                 >.invitation-message {
                     
                     >.title {
-
+                        font-size: $font4;
+                        font-weight: bold;
+                        color:$blue;
                     }
 
                     >.message {
-                        
+                        font-size: $font2;
+                        color:$black;
+                        margin-top: 15px;
+                        margin-left: 5px;
                     }
                 }
             }

@@ -682,7 +682,7 @@ export default class extends React.Component {
                             <div className="invitation-message">
                                 <div className="title">{translate("invitation_message")}</div>
                                 <div className="message">
-
+                                    {this.state.contract.message || translate("no_invitation_message")}
                                 </div>
                             </div>
                         </div>
