@@ -1156,6 +1156,139 @@ export default class extends React.Component {
         </div>)
     }
 
+    render_expert() {
+        return (<div className="content">
+            <div className="text-place">
+                <div className="name">{translate("corp_info")}</div>
+                <div className="textbox">
+                    <input className="common-textbox" type="text"
+                        value={this.state.company_name || ""}
+                        onChange={e=>this.setState({company_name:e.target.value})}
+                        placeholder={translate("please_input_corp_name")}
+                        disabled={this.getAccountType() == window.CONST.ACCOUNT_TYPE.CORP_SUB}/>
+                </div>
+            </div>
+
+            <div className="text-place">
+                <div className="name"></div>
+                <div className="textbox">
+                    <input className="common-textbox" type="text"
+                        value={this.state.duns_number || ""}
+                        onChange={e=>this.setState({duns_number:e.target.value})}
+                        placeholder={translate("please_input_duns")}
+                        disabled={this.getAccountType() == window.CONST.ACCOUNT_TYPE.CORP_SUB}/>
+                </div>
+            </div>
+
+            <div className="text-place">
+                <div className="name">{translate("corporation_ceo_name")}</div>
+                <div className="textbox">
+                    <input className="common-textbox" type="text"
+                        value={this.state.company_ceo || ""}
+                        onChange={e=>this.setState({company_ceo:e.target.value})}
+                        placeholder={translate("please_input_ceo_name")}
+                        disabled={this.getAccountType() == window.CONST.ACCOUNT_TYPE.CORP_SUB}/>
+                </div>
+            </div>
+
+            <div className="text-place">
+                <div className="name">{translate("corporation_tel")}</div>
+                <div className="textbox">
+                    <input className="common-textbox" type="text"
+                        value={this.state.company_tel || ""}
+                        onChange={this.onChangePhoneForm.bind(this,"company_tel")}
+                        placeholder={translate("please_input_corp_tel")}
+                        disabled={this.getAccountType() == window.CONST.ACCOUNT_TYPE.CORP_SUB}/>
+                </div>
+            </div>
+
+            <div className="text-place">
+                <div className="name">{translate("corporation_address")}</div>
+                <div className="textbox">
+                    <input className="common-textbox" type="text"
+                        value={this.state.company_address || ""} 
+                        onChange={e=>this.setState({company_address:e.target.value})}
+                        placeholder={translate("please_input_address_correct")}
+                        disabled={this.getAccountType() == 2}/>
+                </div>
+                { this.getAccountType() == window.CONST.ACCOUNT_TYPE.CORP_SUB ? null : <div className="blue-but" onClick={this.onClickFindAddress.bind(this, 1)}>
+                    {translate("search")}
+                </div>}
+            </div>
+
+            <div className="split-line"></div>
+
+            <div className="text-place">
+                <div className="name">{translate("manager_info")}</div>
+                <div className="textbox">
+                    <input className="common-textbox" type="text"
+                        value={this.state.username || ""}
+                        onChange={e=>this.setState({username:e.target.value})}
+                        placeholder={translate("please_input_manager_name")}/>
+                </div>
+            </div>
+
+            <div className="text-place">
+                <div className="name"></div>
+                <div className="textbox">
+                    <input className="common-textbox" type="text"
+                        value={this.state.department || ""}
+                        onChange={e=>this.setState({department:e.target.value})}
+                        placeholder={translate("please_input_manager_department")}/>
+                </div>
+            </div>
+
+            <div className="text-place">
+                <div className="name"></div>
+                <div className="textbox">
+                    <input className="common-textbox" type="text"
+                        value={this.state.job || ""}
+                        onChange={e=>this.setState({job:e.target.value})}
+                        placeholder={translate("please_input_manager_job")}/>
+                </div>
+            </div>
+
+            <div className="text-place">
+                <div className="name">{translate("individual_phone")}</div>
+                <div className="textbox">
+                    <input className="common-textbox" type="text"
+                        value={this.state.userphone || ""} 
+                        onChange={this.onChangePhoneForm.bind(this,"userphone")}
+                        disabled={this.state.verificated_phone}
+                        placeholder={translate("please_input_certification_number")}/>
+                </div>
+                { this.state.verificated_phone ? null :
+                    <div className="blue-but" onClick={this.onClickRequestPhone}>
+                        {translate("send")}
+                    </div>
+                }
+            </div>
+
+            <div className="text-place">
+                <div className="name">{translate("certification_number")}</div>
+                <div className="textbox">
+                    <input className="common-textbox" type="text"
+                        value={this.state.phone_verification_code || ""} 
+                        onChange={e=>this.setState({phone_verification_code:e.target.value})} 
+                        disabled={this.state.verificated_phone}
+                        placeholder={translate("please_input_certification_number")}/>
+                </div>
+                { this.state.verificated_phone ? null : 
+                    <div className={ this.state.phone_verification_code_sent ? "blue-but":"gray-but"} onClick={this.onClickVerificatePhone}>
+                        {translate("confirm")}
+                    </div>
+                }
+            </div>
+
+            <div className="bottom-container">
+                <div className="back-button" onClick={this.prev_term}>{translate("go_back")}</div>
+                <div className="confirm-button" onClick={this.onClickNextBtnCompanyInfo}>
+                    {translate("confirm")}
+                </div>
+            </div>
+        </div>)
+    }
+
     render_masterkey(){
         return (<div className="content">
             <div className="master-keyword-container">
@@ -1242,6 +1375,8 @@ export default class extends React.Component {
                 return this.render_personal();
             else if(type == window.CONST.ACCOUNT_TYPE.CORP_MASTER || type == window.CONST.ACCOUNT_TYPE.CORP_SUB)
                 return this.render_company();
+            else if(type == window.CONST.ACCOUNT_TYPE.EXPERT)
+                return this.render_expert();
         }else if(this.state.step == 3){
             return this.render_masterkey();
         }else if(this.state.step == 4){
@@ -1265,6 +1400,10 @@ export default class extends React.Component {
                 title = translate("coporation_staff_account_join_term_agree")
                 desc = translate("coporation_staff_account_join_term_agree_desc")
             }
+            else if(type == window.CONST.ACCOUNT_TYPE.EXPERT) {
+                title = translate("expert_join_term_agree")
+                desc = translate("expert_join_term_agree_desc")
+            }
         }else if(this.state.step == 1){
             title = translate("input_account_info")
             if(type == window.CONST.ACCOUNT_TYPE.PERSONAL)
@@ -1273,6 +1412,8 @@ export default class extends React.Component {
                 desc = translate("input_account_info_desc_2")
             else if(type == window.CONST.ACCOUNT_TYPE.CORP_SUB)
                 desc = translate("input_account_info_desc_3")
+            else if(type == window.CONST.ACCOUNT_TYPE.EXPERT)
+                desc = translate("input_account_info_desc_4")
         }else if(this.state.step == 2){
             if(type == window.CONST.ACCOUNT_TYPE.PERSONAL) {
                 title = translate("input_user_info")
@@ -1280,6 +1421,9 @@ export default class extends React.Component {
             } else if(type == window.CONST.ACCOUNT_TYPE.CORP_MASTER || type == window.CONST.ACCOUNT_TYPE.CORP_SUB) {
                 title = translate("input_corporation_info")
                 desc = translate("input_corporation_info_desc")
+            } else if(type == window.CONST.ACCOUNT_TYPE.EXPERT) {
+                title = translate("input_expert_detail_info")
+                desc = translate("input_expert_info_desc")
             }
         } else if(this.state.step == 3){
             title = translate("save_recover_password")
@@ -1307,6 +1451,8 @@ export default class extends React.Component {
             step2_text = translate("input_corporation_info")
         else if(type == window.CONST.ACCOUNT_TYPE.CORP_SUB)
             step2_text = translate("input_manager_info")
+        else if(type == window.CONST.ACCOUNT_TYPE.EXPERT)
+            step2_text = translate("input_expert_info")
 
 		return (<div className="maintain" key={this.state.language}>
             <div className="register-common-page register-page">
