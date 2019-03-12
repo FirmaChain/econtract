@@ -64,8 +64,15 @@ export default class extends React.Component {
 
 	componentDidMount(){
         setTimeout(async () => {
+            await this.props.fetch_user_info();
             await this.onRefresh();
         })
+    }
+
+    componentWillReceiveProps(props){
+        if(props.user_info === false){
+            history.replace("/e-contract/login")
+        }
     }
 
     onRefresh = async () => {

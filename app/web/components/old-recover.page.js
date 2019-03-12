@@ -130,7 +130,7 @@ export default class extends React.Component {
 
             if(resp.code == 1){
                 localStorage.setItem("browser_key_virgin", 0);
-                history.push("/e-contract/login");
+                history.push("/");
                 return alert(translate("now_you_login_available"))
             } else if(resp.code == -3) {
                 return alert(translate("no_account_info"))
@@ -268,7 +268,7 @@ export default class extends React.Component {
 		return (<div className="maintain">
             <div className="register-common-page register-page">
                 <div className="left-logo">
-                    <img src="/static/logo_blue.png" onClick={()=>history.push("/e-contract/login")}/>
+                    <img src="/static/logo_blue.png" onClick={()=>history.push("/")}/>
                 </div>
                 <div className="desc-container">
                     <div className="info">

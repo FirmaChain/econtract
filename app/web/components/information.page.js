@@ -81,16 +81,16 @@ export default class extends React.Component {
         props = !!props ? props : this.props
         let menu = props.match.path || "/profile"
 
-        if(menu == "/price-status") {
-            return { id:"/price-status", title : translate("price")}
+        if(menu == "/e-contract/price-status") {
+            return { id:"/e-contract/price-status", title : translate("price")}
         }
-        else if(menu == "/group-manage") {
-            return { id:"/group-manage", title : translate("group_manage")}
+        else if(menu == "/e-contract/group-manage") {
+            return { id:"/e-contract/group-manage", title : translate("group_manage")}
         }
-        else if(menu == "/security") {
-            return { id:"/security", title : translate("security")}
+        else if(menu == "/e-contract/security") {
+            return { id:"/e-contract/security", title : translate("security")}
         }
-        return { id:"/profile", title : translate("my_info")}
+        return { id:"/e-contract/profile", title : translate("my_info")}
     }
 
 	render() {
@@ -108,15 +108,15 @@ export default class extends React.Component {
                 <div className="information-page">
                     <div className="left-list">
                         <div className="title">{translate("setting")}</div>
-                        <div className={"item" + (this.getTitle().id == "/profile" ? " selected" : "")} onClick={this.move.bind(this, "e-contract/profile")}><i className=" icon far fa-info-circle"></i>{translate("my_info")}</div>
-                        <div className={"item" + (this.getTitle().id == "/price-status" ? " selected" : "")} onClick={this.move.bind(this, "e-contract/price-status")}><i className="icon far fa-file-invoice-dollar"></i>{translate("price")}</div>
-                        <div className={"item" + (this.getTitle().id == "/security" ? " selected" : "")} onClick={this.move.bind(this, "e-contract/security")}><i className="icon far fa-shield-check"></i>{translate("security")}</div>
-                        {this.props.user_info.account_type == 1 ? <div className={"item" + (this.getTitle().id == "/group-manage" ? " selected" : "")} onClick={this.move.bind(this, "e-contract/group-manage")}><i className="icon far fa-users"></i>{translate("group_manage")}</div> : null}
+                        <div className={"item" + (this.getTitle().id == "/e-contract/profile" ? " selected" : "")} onClick={this.move.bind(this, "e-contract/profile")}><i className=" icon far fa-info-circle"></i>{translate("my_info")}</div>
+                        <div className={"item" + (this.getTitle().id == "/e-contract/price-status" ? " selected" : "")} onClick={this.move.bind(this, "e-contract/price-status")}><i className="icon far fa-file-invoice-dollar"></i>{translate("price")}</div>
+                        <div className={"item" + (this.getTitle().id == "/e-contract/security" ? " selected" : "")} onClick={this.move.bind(this, "e-contract/security")}><i className="icon far fa-shield-check"></i>{translate("security")}</div>
+                        {this.props.user_info.account_type == 1 ? <div className={"item" + (this.getTitle().id == "/e-contract/group-manage" ? " selected" : "")} onClick={this.move.bind(this, "e-contract/group-manage")}><i className="icon far fa-users"></i>{translate("group_manage")}</div> : null}
                     </div>
-                    <Route path="/profile" render={() => <ProfilePage {...this.props}/>} />
-                    <Route path="/price-status" render={() => <PriceStatusPage {...this.props}/>} />
-                    <Route path="/group-manage" render={() => <GroupManagePage {...this.props}/>} />
-                    <Route path="/security" render={() => <SecurityPage {...this.props}/>} />
+                    <Route path="/e-contract/profile" render={() => <ProfilePage {...this.props}/>} />
+                    <Route path="/e-contract/price-status" render={() => <PriceStatusPage {...this.props}/>} />
+                    <Route path="/e-contract/group-manage" render={() => <GroupManagePage {...this.props}/>} />
+                    <Route path="/e-contract/security" render={() => <SecurityPage {...this.props}/>} />
                 </div>
             </div>
             <Footer />

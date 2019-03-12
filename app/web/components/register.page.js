@@ -379,7 +379,7 @@ export default class extends React.Component {
 
     componentWillReceiveProps(props) {
         if(props.user_info) {
-            history.replace("/e-contract/home")
+            history.replace("/")
         }
     }
 
@@ -823,7 +823,7 @@ export default class extends React.Component {
         if(resp.code == 1){
             window.logout();
             //localStorage.setItem("browser_key_virgin", 0);
-            history.push("/e-contract/login");
+            history.push("/");
             return alert(translate("success_register"))
         } else if(resp.code == -30) {
             this.isGoingFinish = false
@@ -1311,7 +1311,7 @@ export default class extends React.Component {
 		return (<div className="maintain" key={this.state.language}>
             <div className="register-common-page register-page">
                 <div className="left-logo">
-                    <img src="/static/logo_blue.png" onClick={()=>history.push("/e-contract/login")}/>
+                    <img src="/static/logo_blue.png" onClick={()=>history.push("/")}/>
                     <div className="flex-1"></div>
                     <div className="language-dropdown">
                         <div className="language">{this.state.language}</div>

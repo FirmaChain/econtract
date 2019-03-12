@@ -75,8 +75,6 @@ export default class extends React.Component {
         if(!this.props.user_info || this.props.user_info == -2)
             return <div />
 
-        console.log(this.props.user_info)
-
 		return (<div className="maintain">
             <div className="header-page">
                 <div className="header">
