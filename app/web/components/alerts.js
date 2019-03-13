@@ -1570,6 +1570,7 @@ setInterval(()=>{
         let exclude = [
             "/",
             '/e-contract/login',
+            '/legal-advise/login',
             '/register',
             '/recover',
             '/old-recover',
