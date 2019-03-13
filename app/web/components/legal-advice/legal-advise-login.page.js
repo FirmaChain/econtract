@@ -46,7 +46,7 @@ export default class extends React.Component {
 
     componentWillReceiveProps(props){
         if(!!props.user_info){
-            return history.replace("/legal-advise/home")
+            return history.replace("/legal-advice/home")
         }
     }
     
@@ -56,7 +56,7 @@ export default class extends React.Component {
         if (!this.state.email || !this.state.password) {
             alert(translate("please_check_email_password"));
         } else {
-            let resp = await this.props.login_account(this.state.email || "", this.state.password || "", window.CONST.SERVICE_TYPE.LEGAL_ADVISE);
+            let resp = await this.props.login_account(this.state.email || "", this.state.password || "", window.CONST.SERVICE_TYPE.LEGAL_ADVICE);
             if(resp.code == -11) {
                 let account_text
                 switch(resp.account_type) {
@@ -93,7 +93,7 @@ export default class extends React.Component {
                             if(this.props.user_info.email.includes("test")) {
                                 alert("서비스 결제 모듈 검수 기간 중입니다. 검수 기간은 2019/03/10 까지로 예정되어 있으며 완료되는 순간 모든 계약 데이터와 계정 정보가 초기화 됩니다.")
                             }
-                            return history.replace("/legal-advise/home")
+                            return history.replace("/legal-advice/home")
                         } else if(resp.code == -5) {
                             alert(translate("input_wrong_otp_token"))
                         } else {
@@ -107,7 +107,7 @@ export default class extends React.Component {
                 if(this.props.user_info.email.includes("test")) {
                     alert("서비스 결제 모듈 검수 기간 중입니다. 검수 기간은 2019/03/10 까지로 예정되어 있으며 완료되는 순간 모든 계약 데이터와 계정 정보가 초기화 됩니다.")
                 }
-                history.replace("/legal-advise/home")
+                history.replace("/legal-advice/home")
             } else{
                 alert("login error")
             }
@@ -167,12 +167,12 @@ export default class extends React.Component {
             <div className="container">
                 <div className="top">
                     <div className="left">
-                        <div className="content1 font5 font-bold">{translate("start_legal_advise")}</div>
+                        <div className="content1 font5 font-bold">{translate("start_legal_advice")}</div>
                         {/*<div className="content2 font0"><i className="fas fa-lock-alt"></i> &nbsp; {translate("connect_browser_title_1")} <u onClick={this.openNotVerifiedBrowserModal}>{translate("connect_browser_title_2")}</u> {translate("connect_browser_title_3")}</div>*/}
                     </div>
                     <div className="right">
                         <div className="content3 font2">
-                            {translate("start_legal_advise_desc")}
+                            {translate("start_legal_advice_desc")}
                         </div>
                     </div>
                 </div>
@@ -234,7 +234,7 @@ export default class extends React.Component {
                 <img src="/static/logo_blue.png" onClick={()=>history.push("/")}/>
             </div>
             <div className="container">
-                <div className="title">{translate("start_legal_advise")}</div>
+                <div className="title">{translate("start_legal_advice")}</div>
                 <div className="desc1">{/*<i className="fas fa-lock-open-alt"></i> &nbsp; translate("this_browser_was_verificated")*/}</div>
                 <div className="desc2">{/*translate("what_is_verified_browser")*/}</div>
 

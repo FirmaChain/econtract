@@ -39,7 +39,7 @@ import VerificationPage from "./components/verification.page"
 import CorpGroupInfoPage from "./components/corp-group-info.page"
 import GroupPage from "./components/group.page"
 
-import LegalAdviseLoginPage from "./components/legal-advise/legal-advise-login.page"
+import LegalAdviceLoginPage from "./components/legal-advice/legal-advice-login.page"
 
 
 import { current_platform } from "../common/utils"
@@ -108,9 +108,9 @@ window.addEventListener("load",()=>{
 					<Route onEnter={resolver} exact path="/e-contract/contract-info/:contract_id" component={ContractInfoPage} />
 					{/*<Route onEnter={resolver} exact path="/preview-contract" component={PreviewCOntractPage} />*/}
 
-					<Route onEnter={resolver} exact path="/legal-advise/login" component={LegalAdviseLoginPage} />
+					<Route onEnter={resolver} exact path="/legal-advice/login" component={LegalAdviceLoginPage} />
 
-					<Route onEnter={resolver} exact path="/legal-advise" component={LoginPage} />
+					<Route onEnter={resolver} exact path="/legal-advice" component={LoginPage} />
 
 				</Container>
 			</Provider>

@@ -14,7 +14,7 @@ import fs from "../web/filesystem"
 window.CONST = {
     SERVICE_TYPE: {
         E_CONTRACT: 0,
-        LEGAL_ADVISE: 1,
+        LEGAL_ADVICE: 1,
     },
     ACCOUNT_TYPE: {
     	PERSONAL: 0,
