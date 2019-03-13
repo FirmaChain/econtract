@@ -695,10 +695,110 @@ div.checkbox2-comp{
         }
     }
 
+    .add-title {
+        margin-bottom:20px;
+        width:150px;
+        font-size: $font2;
+        font-weight: bold;
+    }
+
+    .add-list {
+        width:100%;
+        margin: 0px 5px;
+        max-width:600px;
+        margin-bottom:20px;
+
+        >.item {
+            display: flex;
+            flex-direction: column; 
+
+            >.row {
+                display: flex;
+                flex-direction: row; 
+
+                >.box {
+                    margin-right:10px;
+
+                    &:last-child {
+                        margin-right:0;
+                    }
+
+                    >.title {
+                        margin-bottom:5px;
+                        margin-left:5px;
+                        font-size: $font1;
+                    }
+
+                    >.desc {
+
+                        .control {
+                            width:200px !important;
+                            padding: 10px 15px;
+                            font-size: $font1;
+                        }
+                    }
+                }
+            }
+            
+            >.career {
+                display: flex;
+                flex-direction: column; 
+                justify-content: center;
+                margin-top:10px;
+
+                >.title {
+                    margin-bottom:5px;
+                    margin-left:5px;
+                    font-size: $font1;
+                }
+
+                >.item {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: center;
+
+                    >.blue-but {
+                        display: inline-block;
+                        font-size: $font1;
+                        cursor: pointer;
+                        padding:10px 20px;
+                        background-color: $blue;
+                        color:white;
+                        margin-left: 20px;
+                        width:100px;
+                        text-align: center;
+                    }
+
+                    >.gray-but {
+                        display: inline-block;
+                        font-size: $font1;
+                        cursor: pointer;
+                        padding:10px 20px;
+                        background-color: $lightgray;
+                        color:$gray;
+                        margin-left: 20px;
+                        width:100px;
+                        text-align: center;
+                    }
+                }
+            }
+
+            .width200 {
+                width:200px;
+            }
+
+            .flex1 {
+                flex:1;
+            }
+
+        }
+
+    }
+
 
     .split-line {
-        max-width: 720px;
-        border-top:1px solid $gray;
+        max-width: 800px;
+        border-top:1.1px solid $gray;
         margin-top:50px;
         margin-bottom:50px;
         margin-left:5px;

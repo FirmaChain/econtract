@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom'
 import history from '../history';
 import translate from "../../common/translate"
 import queryString from "query-string"
+import Dropdown from "react-dropdown"
+import 'react-dropdown/style.css'
 import {
     request_email_verification_code,
     check_email_verification_code,
@@ -72,7 +74,7 @@ export default class extends React.Component {
 		super();
         this.isGoingFinish = false
 		this.state={
-            step:0,
+            step:2,
             step1:0,
             sort_test:[],
             email_verification: false,
@@ -1157,94 +1159,20 @@ export default class extends React.Component {
     }
 
     render_expert() {
+        let list = [
+            {value:"lawyer", label: "변호사"},
+            {value:"asqqd", label: "회계사"},
+            {value:"ffqfq", label: "노무사"},
+            {value:"qwfcv", label: "세무사"},
+        ]
         return (<div className="content">
             <div className="text-place">
-                <div className="name">{translate("corp_info")}</div>
-                <div className="textbox">
-                    <input className="common-textbox" type="text"
-                        value={this.state.company_name || ""}
-                        onChange={e=>this.setState({company_name:e.target.value})}
-                        placeholder={translate("please_input_corp_name")}
-                        disabled={this.getAccountType() == window.CONST.ACCOUNT_TYPE.CORP_SUB}/>
-                </div>
-            </div>
-
-            <div className="text-place">
-                <div className="name"></div>
-                <div className="textbox">
-                    <input className="common-textbox" type="text"
-                        value={this.state.duns_number || ""}
-                        onChange={e=>this.setState({duns_number:e.target.value})}
-                        placeholder={translate("please_input_duns")}
-                        disabled={this.getAccountType() == window.CONST.ACCOUNT_TYPE.CORP_SUB}/>
-                </div>
-            </div>
-
-            <div className="text-place">
-                <div className="name">{translate("corporation_ceo_name")}</div>
-                <div className="textbox">
-                    <input className="common-textbox" type="text"
-                        value={this.state.company_ceo || ""}
-                        onChange={e=>this.setState({company_ceo:e.target.value})}
-                        placeholder={translate("please_input_ceo_name")}
-                        disabled={this.getAccountType() == window.CONST.ACCOUNT_TYPE.CORP_SUB}/>
-                </div>
-            </div>
-
-            <div className="text-place">
-                <div className="name">{translate("corporation_tel")}</div>
-                <div className="textbox">
-                    <input className="common-textbox" type="text"
-                        value={this.state.company_tel || ""}
-                        onChange={this.onChangePhoneForm.bind(this,"company_tel")}
-                        placeholder={translate("please_input_corp_tel")}
-                        disabled={this.getAccountType() == window.CONST.ACCOUNT_TYPE.CORP_SUB}/>
-                </div>
-            </div>
-
-            <div className="text-place">
-                <div className="name">{translate("corporation_address")}</div>
-                <div className="textbox">
-                    <input className="common-textbox" type="text"
-                        value={this.state.company_address || ""} 
-                        onChange={e=>this.setState({company_address:e.target.value})}
-                        placeholder={translate("please_input_address_correct")}
-                        disabled={this.getAccountType() == 2}/>
-                </div>
-                { this.getAccountType() == window.CONST.ACCOUNT_TYPE.CORP_SUB ? null : <div className="blue-but" onClick={this.onClickFindAddress.bind(this, 1)}>
-                    {translate("search")}
-                </div>}
-            </div>
-
-            <div className="split-line"></div>
-
-            <div className="text-place">
-                <div className="name">{translate("manager_info")}</div>
+                <div className="name">이름</div>
                 <div className="textbox">
                     <input className="common-textbox" type="text"
                         value={this.state.username || ""}
                         onChange={e=>this.setState({username:e.target.value})}
-                        placeholder={translate("please_input_manager_name")}/>
-                </div>
-            </div>
-
-            <div className="text-place">
-                <div className="name"></div>
-                <div className="textbox">
-                    <input className="common-textbox" type="text"
-                        value={this.state.department || ""}
-                        onChange={e=>this.setState({department:e.target.value})}
-                        placeholder={translate("please_input_manager_department")}/>
-                </div>
-            </div>
-
-            <div className="text-place">
-                <div className="name"></div>
-                <div className="textbox">
-                    <input className="common-textbox" type="text"
-                        value={this.state.job || ""}
-                        onChange={e=>this.setState({job:e.target.value})}
-                        placeholder={translate("please_input_manager_job")}/>
+                        placeholder={"이름을 입력해주세요."}/>
                 </div>
             </div>
 
@@ -1278,6 +1206,70 @@ export default class extends React.Component {
                         {translate("confirm")}
                     </div>
                 }
+            </div>
+
+            <div className="text-place">
+                <div className="name">{"주소"}</div>
+                <div className="textbox">
+                    <input className="common-textbox" type="text"
+                        value={this.state.company_address || ""} 
+                        onChange={e=>this.setState({company_address:e.target.value})}
+                        placeholder={translate("please_input_address_correct")}
+                        disabled={this.getAccountType() == 2}/>
+                </div>
+                <div className="blue-but" onClick={this.onClickFindAddress.bind(this, 1)}>
+                    {translate("search")}
+                </div>
+            </div>
+
+            <div className="split-line"></div>
+
+            <div className="add-title">자문 분야</div>
+            <div className="add-list">
+                <div className="item">
+                    <div className="row">
+                        <div className="box width200">
+                            <div className="title">분야</div>
+                            <div className="desc">
+                                <Dropdown className="common-select"
+                                    controlClassName="control"
+                                    menuClassName="item"
+                                    placeholder={"자문 분야 선택"}
+                                    options={list}
+                                    onChange={e=>{this.setState({expert_part:e.value, expert_part_label:e.label})}}
+                                    value={this.state.expert_part_label} />
+                            </div>
+                        </div>
+                        <div className="box flex1">
+                            <div className="title">자격증 사진</div>
+                            <div className="desc">
+                                <input className="common-textbox" type="file" accept="image/x-png,image/gif,image/jpeg" />
+                            </div>
+                        </div>
+                    </div>
+                    <div className="career">
+                        <div className="title">경력</div>
+                        <div className="item">
+                            <input className="common-textbox" type="text"
+                                value={this.state.career_text || ""}
+                                onChange={e=>this.setState({career_text:e.target.value})}
+                                placeholder={"예 ) 2018 ~ 2020 사법고시 합격"}/>
+                            <div className="blue-but">추가</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div className="split-line"></div>
+
+            <div className="text-place">
+                <div className="name">소개 문구</div>
+                <div className="textbox">
+                    <input className="common-textbox" type="text"
+                        value={this.state.introduction || ""}
+                        onChange={e=>this.setState({introduction:e.target.value})}
+                        placeholder={"자기 소개를 입력해주세요."}/>
+                </div>
             </div>
 
             <div className="bottom-container">
@@ -1404,7 +1396,7 @@ export default class extends React.Component {
                 title = translate("expert_join_term_agree")
                 desc = translate("expert_join_term_agree_desc")
             }
-        }else if(this.state.step == 1){
+        } else if(this.state.step == 1){
             title = translate("input_account_info")
             if(type == window.CONST.ACCOUNT_TYPE.PERSONAL)
                 desc = translate("input_account_info_desc_1")
@@ -1414,7 +1406,7 @@ export default class extends React.Component {
                 desc = translate("input_account_info_desc_3")
             else if(type == window.CONST.ACCOUNT_TYPE.EXPERT)
                 desc = translate("input_account_info_desc_4")
-        }else if(this.state.step == 2){
+        } else if(this.state.step == 2){
             if(type == window.CONST.ACCOUNT_TYPE.PERSONAL) {
                 title = translate("input_user_info")
                 desc = translate("input_user_info_desc")
