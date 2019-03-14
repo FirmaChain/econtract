@@ -596,7 +596,7 @@
     "PIN_number":["PIN","PIN","PIN"],
     "success_cancel_invitation":["초대를 취소하였습니다.","Invitation has been cancelled.","邀请已被取消。"],
     "send_code_error_occured":["인증번호 전송에 문제가 생겼습니다!\\n계속 문제가 발생할 경우 관리자에게 문의해주세요.","Failed to send verification code. If the problem continues, please contact the administrator.","发送验证码。如问题仍然存在，请联系管理员。"],
-    "social_number_front_or_duns_number_desc":["법인 카드 중 무기명 카드는 사업자 번호 10자리를 입력해 주시고, 기명 카드는 발급자의 생년월일을 적어주세요.","",""],
+    "social_number_front_or_duns_number_desc":["* 법인 카드 중 무기명 카드는 사업자 번호 10자리를 입력해 주시고, 기명 카드는 발급자의 생년월일을 적어주세요.","",""],
     "remove_group_desc_1":["{0} 그룹을 삭제합니다.\u003cbr/\u003e삭제하시겠습니까?","Are you sure you want to remove group {0}?","删除{0}团体。\u003cbr/\u003e您确定删除吗？"],
     "privacy_statement":["개인정보취급방침","Privacy Policy","隐私权政策"],
     "download":["다운로드","Download","下载"],
