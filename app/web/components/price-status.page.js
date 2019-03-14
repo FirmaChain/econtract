@@ -199,10 +199,6 @@ export default class extends React.Component {
                     if (!current) {
 
                         let select_plan = plan_yearly.find(e => e.plan_id == plan_id)
-                        if(this.props.user_info.email == "test1@gmail.com") {
-                            await this.temporaryPurchaseFunction("연간 구독 결제 " + select_plan.ticket_count, select_plan.total_price)
-                            resp = {code:1}
-                        }
 
                         // TODO: Make branch between register and change
                         resp = await this.props.make_yearly_commitment(plan_id);
@@ -239,10 +235,6 @@ export default class extends React.Component {
                     } else {
 
                         let select_plan = plan_monthly.find(e => e.plan_id == plan_id)
-                        if(this.props.user_info.email == "test1@gmail.com") {
-                            await this.temporaryPurchaseFunction("월간 구독 결제 " + select_plan.ticket_count, select_plan.total_price)
-                            resp = {code:1}
-                        }
 
                         resp = await this.props.make_monthly_commitment(plan_id);
 
@@ -278,7 +270,7 @@ export default class extends React.Component {
             return alert(translate("fail_subscribe_terminate"))
         }
     }
-
+/*
     temporaryPurchaseFunction = async (name, amount) => {
         amount = Math.floor(amount)
         let customer_uid = window.create_customer_uid(this.props.user_info)
@@ -333,7 +325,7 @@ export default class extends React.Component {
             return false
         }
     }
-
+*/
     onBuyTicket = async () => {
         if(!this.state.partial_payment_info) {
             let result = await this.onCheckCardInfo()
@@ -348,10 +340,6 @@ export default class extends React.Component {
             onResponse: async (give_count) => {
                 let rr = await window.confirm(translate("purcahse_onetime_ticket"), translate("purcahse_onetime_ticket_desc", [give_count]))
                 if(rr) {
-                    if(this.props.user_info.email == "test1@gmail.com") {
-                        return await this.temporaryPurchaseFunction("건별 이용권 구매" + give_count, give_count * 1500 * 1.1)
-                    }
-
                     await window.showIndicator()
                     let subscribe_plans = this.state.subscription_plans;
                     let plan_id = subscribe_plans.filter(e=>e.type==1).sort((a,b)=>a.total_price-b.total_price)[0].plan_id;
@@ -370,9 +358,9 @@ export default class extends React.Component {
     }
 
     onCheckCardInfo = async () => {
-        if(this.props.user_info.email == "test1@gmail.com") {
+        /*if(this.props.user_info.email == "test1@gmail.com") {
             return true
-        }
+        }*/
         //return true;
         /*let result = await new Promise( r => window.openModal("CardInfo", {
             onResponse: async (card_info) => {
