@@ -314,13 +314,13 @@ class CardInfo extends React.Component {
 
         let card_type = creditcardutils.parseCardType(this.state.card_number)
         let is_valid_expiry = creditcardutils.validateCardExpiry(this.state.selected_expiration_month, this.state.selected_expiration_year)
-        let is_valid_cvc = creditcardutils.validateCardCVC(this.state.cvc, card_type)
+        //let is_valid_cvc = creditcardutils.validateCardCVC(this.state.cvc, card_type)
 
         if(!is_valid_expiry)
             return alert(translate("card_expiry_not_valid"))
-
+/*
         if(!is_valid_cvc)
-            return alert(translate("card_cvc_not_valid"))
+            return alert(translate("card_cvc_not_valid"))*/
 
         this.closeSelf();
         this.props.onResponse && (await this.props.onResponse({
