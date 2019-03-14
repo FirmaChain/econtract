@@ -383,6 +383,7 @@ class CardInfo extends React.Component {
                         onChange={(e)=>this.setState({social_number_front:e.target.value})}
                         value={this.state.social_number_front}
                         placeholder={translate("please_input_social_number_front")}/>
+                    <div className="sub-title">{translate("social_number_front_or_duns_number_desc")}</div>
                 </div>
                 <div className="text-box">
                     <div className="sub-title">{translate("card_front_password_2")}</div>
