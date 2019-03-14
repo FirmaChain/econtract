@@ -362,7 +362,7 @@ export default class extends React.Component {
             return true
         }*/
         //return true;
-        /*let result = await new Promise( r => window.openModal("CardInfo", {
+        let result = await new Promise( r => window.openModal("CardInfo", {
             onResponse: async (card_info) => {
                 //TODO: necessary to encrypt via firma's private key
                 let encrypted_data = JSON.stringify(card_info);
@@ -381,9 +381,9 @@ export default class extends React.Component {
                     r(false)
                 }
             }
-        }))*/
+        }))
 
-        let customer_uid = window.create_customer_uid(this.props.user_info)
+        /*let customer_uid = window.create_customer_uid(this.props.user_info)
         IMP.init(window.CONST.IMP_USER_CODE);
         let result = await new Promise( r => IMP.request_pay({
             pg: "jtnet",
@@ -427,7 +427,7 @@ export default class extends React.Component {
                 alert(msg)
                 return r(resp.error_code)
             }
-        }))
+        }))*/
 
         if(result == 1 || result == 0) {
             return true

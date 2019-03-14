@@ -320,11 +320,11 @@ class CardInfo extends React.Component {
         this.closeSelf();
         this.props.onResponse && (await this.props.onResponse({
             card_type: card_type.toUpperCase(),
-            name: this.state.name,
+            social_number_front: this.state.social_number_front,
             card_number: this.state.card_number,
-            cvc: this.state.cvc,
             month: this.state.selected_expiration_month,
             year: this.state.selected_expiration_year,
+            card_front_password_2: this.state.card_front_password_2,
             id_number: this.state.social_number_front,
         }) );
 
@@ -349,20 +349,13 @@ class CardInfo extends React.Component {
                         value={this.state.card_type_label}
                         placeholder={translate("purchase_info_card_type_no")}/>
                 </div>
-                <div className="text-box">
+                {/*<div className="text-box">
                     <div className="sub-title">CVC</div>
                     <input type="number" className="common-textbox"
                         onChange={(e)=>this.setState({cvc:e.target.value})}
                         value={this.state.cvc}
                         placeholder={translate("please_input_cvc")}/>
-                </div>
-                <div className="text-box">
-                    <div className="sub-title">{translate("name")}</div>
-                    <input type="text" className="common-textbox"
-                        onChange={(e)=>this.setState({name:e.target.value})}
-                        value={this.state.name}
-                        placeholder={translate("please_input_name")}/>
-                </div>
+                </div>*/}
                 <div className="text-box">
                     <div className="sub-title">{translate("validation_date")}</div>
                     <Dropdown className="common-select"
@@ -379,11 +372,18 @@ class CardInfo extends React.Component {
                         value={this.state.selected_expiration_year_label} placeholder={translate("year")} />
                 </div>
                 <div className="text-box">
-                    <div className="sub-title">{translate("social_number_front")}</div>
+                    <div className="sub-title">{translate("social_number_front_or_duns_number")}</div>
                     <input type="number" className="common-textbox"
                         onChange={(e)=>this.setState({social_number_front:e.target.value})}
                         value={this.state.social_number_front}
                         placeholder={translate("please_input_social_number_front")}/>
+                </div>
+                <div className="text-box">
+                    <div className="sub-title">{translate("card_front_number_2")}</div>
+                    <input type="password" className="common-textbox"
+                        onChange={(e)=>this.setState({card_front_password_2:e.target.value})}
+                        value={this.state.card_front_password_2}
+                        placeholder={translate("please_card_front_number_2")}/>
                 </div>
                 <div className="button">
                     <div className="submit" onClick={this.onResponse}>{translate("confirm")}</div>
