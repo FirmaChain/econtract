@@ -387,7 +387,11 @@ class CardInfo extends React.Component {
                 <div className="text-box">
                     <div className="sub-title">{translate("card_front_password_2")}</div>
                     <input type="password" className="common-textbox"
-                        onChange={(e)=>this.setState({card_front_password_2:e.target.value})}
+                        onChange={(e)=>{
+                            if(e.target.value && e.target.value.length > 2)
+                                return;
+                            this.setState({card_front_password_2:e.target.value})
+                        }}
                         value={this.state.card_front_password_2}
                         placeholder={translate("please_card_front_password_2")}/>
                 </div>
