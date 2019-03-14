@@ -301,7 +301,7 @@ class CardInfo extends React.Component {
 
         if(!this.state.social_number_front || this.state.social_number_front == "")
             return alert(translate("please_input_social_number_front"))
-        
+
         if(!this.state.card_front_password_2 || this.state.card_front_password_2 == "")
             return alert(translate("please_card_front_password_2"))
 
@@ -325,7 +325,7 @@ class CardInfo extends React.Component {
         this.closeSelf();
         this.props.onResponse && (await this.props.onResponse({
             card_type: card_type.toUpperCase(),
-            card_number: this.state.card_number,
+            card_number: this.state.card_number.trim().replace(/(\s*)/gi, "-"),
             expiry: this.state.selected_expiration_year + "-" + this.state.selected_expiration_month,
             birth: this.state.social_number_front,
             pwd_2digit: this.state.card_front_password_2,
