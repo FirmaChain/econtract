@@ -17,7 +17,7 @@ export default class extends React.Component {
                 Copyright 2018 Firma Solutions Co. Ltd. All right reserved
             </div>
             <div className="right">
-                <span onClick={this.download.bind(this, "https://e-contract.io/static/[E-Contract]%20Terms%20&%20Conditions.pdf")}>{translate("service_term")}</span> | <span onClick={this.download.bind(this, "https://e-contract.io/static/[E-Contract]%20Privacy%20Policy.pdf")}>{translate("privacy_statement")}</span> <br/>
+                <span onClick={this.download.bind(this, "https://duite.io/static/[E-Contract]%20Terms%20&%20Conditions.pdf")}>{translate("service_term")}</span> | <span onClick={this.download.bind(this, "https://duite.io/static/[E-Contract]%20Privacy%20Policy.pdf")}>{translate("privacy_statement")}</span> <br/>
                 developer@firma-solutions.com
             </div>
         </div>)
