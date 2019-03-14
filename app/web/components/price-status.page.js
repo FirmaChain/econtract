@@ -365,12 +365,12 @@ export default class extends React.Component {
         let result = await new Promise( r => window.openModal("CardInfo", {
             onResponse: async (card_info) => {
                 //TODO: necessary to encrypt via firma's private key
-                let encrypted_data = JSON.stringify(card_info);
                 let partial_info = {};
-                partial_info['partial_card_number'] = card_info.card_number.slice(0, 4)+"-xxxx-xxxx-xxxx";
-                partial_info['name'] = card_info.name;
-                partial_info['card_type'] = card_info.card_type;
-                let resp = await this.props.input_payment_info(encrypted_data, partial_info);
+                partial_info['card_number'] = card_info.card_number.slice(0, 4)+"-xxxx-xxxx-xxxx";
+                partial_info['expiry'] = card_info.expiry;
+                partial_info['birth'] = card_info.birth;
+                partial_info['pwd_2digit'] = card_info.pwd_2digit;
+                let resp = await this.props.input_payment_info(card_info, partial_info);
                 await this.onRefresh()
                 if(resp.code == 1) {
                     alert(translate("card_info_register_msg"))

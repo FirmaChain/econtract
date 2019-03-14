@@ -42,9 +42,9 @@ export function get_current_total_ticket(){
     };
 }
 
-export function input_payment_info(customer_uid, preview_data){
+export function input_payment_info(data, preview_data){
     return async function(){
-        return (await api_input_payment_info(customer_uid, JSON.stringify(preview_data) ));
+        return (await api_input_payment_info(JSON.stringify(data), JSON.stringify(preview_data) ));
     };
 }
 

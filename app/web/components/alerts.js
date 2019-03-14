@@ -320,12 +320,10 @@ class CardInfo extends React.Component {
         this.closeSelf();
         this.props.onResponse && (await this.props.onResponse({
             card_type: card_type.toUpperCase(),
-            social_number_front: this.state.social_number_front,
             card_number: this.state.card_number,
-            month: this.state.selected_expiration_month,
-            year: this.state.selected_expiration_year,
-            card_front_password_2: this.state.card_front_password_2,
-            id_number: this.state.social_number_front,
+            expiry: this.state.selected_expiration_year + "-" + this.state.selected_expiration_month,
+            birth: this.state.social_number_front,
+            pwd_2digit: this.state.card_front_password_2,
         }) );
 
     }
