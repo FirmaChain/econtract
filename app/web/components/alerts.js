@@ -281,6 +281,10 @@ class CardInfo extends React.Component {
             card_type_label,
         })
     }
+    int_pad = (n, width) => {
+        n = n + '';
+        return n.length >= width ? n : new Array(width - n.length + 1).join('0') + n;
+    }
 
     onResponse = async () => {
 
@@ -325,12 +329,11 @@ class CardInfo extends React.Component {
         this.closeSelf();
         this.props.onResponse && (await this.props.onResponse({
             card_type: card_type.toUpperCase(),
-            card_number: this.state.card_number.trim().replace(/(\s*)/gi, "-"),
-            expiry: this.state.selected_expiration_year + "-" + this.state.selected_expiration_month,
+            card_number: this.state.card_number.trim().replace(/ /gi, "-"),
+            expiry: this.state.selected_expiration_year + "-" + this.int_pad(this.state.selected_expiration_month, 2),
             birth: this.state.social_number_front,
             pwd_2digit: this.state.card_front_password_2,
         }) );
-
     }
 
     render() {
