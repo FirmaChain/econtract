@@ -368,8 +368,8 @@ export default class extends React.Component {
                 let partial_info = {};
                 partial_info['card_number'] = card_info.card_number.slice(0, 4)+"-xxxx-xxxx-xxxx";
                 partial_info['expiry'] = card_info.expiry;
+                partial_info['card_type'] = card_info.card_type;
                 partial_info['birth'] = card_info.birth;
-                partial_info['pwd_2digit'] = card_info.pwd_2digit;
                 let resp = await this.props.input_payment_info(card_info, partial_info);
                 await this.onRefresh()
                 if(resp.code == 1) {
@@ -523,7 +523,8 @@ export default class extends React.Component {
         let card_info_string = translate("no_register_status")
         if(this.state.partial_payment_info) {
             let _i = this.state.partial_payment_info
-            card_info_string = `${_i.card_type}`
+            console.log("this.state.partial_payment_info", this.state.partial_payment_info)
+            card_info_string = `${_i.card_type} ${_i.card_number}`
         }
 
         let is_not_yearly_plan = current_subscription && current_subscription.type != window.CONST.PAYMENT_LOG_TYPE.YEARLY_DISTRIBUTE_TICKET;
