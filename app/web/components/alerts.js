@@ -286,12 +286,12 @@ class CardInfo extends React.Component {
 
         if(!this.state.card_number || this.state.card_number == "")
             return alert(translate("please_input_card_number"))
-
+/*
         if(!this.state.cvc || this.state.cvc == "")
             return alert(translate("please_input_cvc"))
 
         if(!this.state.name || this.state.name == "")
-            return alert(translate("please_input_name"))
+            return alert(translate("please_input_name"))*/
 
         if(!this.state.selected_expiration_month || this.state.selected_expiration_month == "")
             return alert(translate("please_input_expiration_month"))
@@ -301,6 +301,11 @@ class CardInfo extends React.Component {
 
         if(!this.state.social_number_front || this.state.social_number_front == "")
             return alert(translate("please_input_social_number_front"))
+        
+        if(!this.state.card_front_password_2 || this.state.card_front_password_2 == "")
+            return alert(translate("please_card_front_password_2"))
+
+        
 
 
         let is_valid = creditcardutils.validateCardNumber(this.state.card_number)
@@ -377,11 +382,11 @@ class CardInfo extends React.Component {
                         placeholder={translate("please_input_social_number_front")}/>
                 </div>
                 <div className="text-box">
-                    <div className="sub-title">{translate("card_front_number_2")}</div>
+                    <div className="sub-title">{translate("card_front_password_2")}</div>
                     <input type="password" className="common-textbox"
                         onChange={(e)=>this.setState({card_front_password_2:e.target.value})}
                         value={this.state.card_front_password_2}
-                        placeholder={translate("please_card_front_number_2")}/>
+                        placeholder={translate("please_card_front_password_2")}/>
                 </div>
                 <div className="button">
                     <div className="submit" onClick={this.onResponse}>{translate("confirm")}</div>
