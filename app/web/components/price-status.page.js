@@ -377,7 +377,7 @@ export default class extends React.Component {
                     await this.onRefresh();
                     r(true)
                 } else {
-                    alert(translate("card_info_register_fail_msg"))
+                    alert(translate(`card_info_register_fail_msg : ${resp.message}`))
                     r(false)
                 }
             }
@@ -429,7 +429,7 @@ export default class extends React.Component {
             }
         }))*/
 
-        if(result == 1 || result == 0) {
+        if(result) {
             return true
         } else {
             return false
