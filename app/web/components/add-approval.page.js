@@ -258,7 +258,7 @@ export default class extends React.Component {
     }
 
     render_add_approval_input_dropdown() {
-        if(this.state.add_account_id != null || this.state.add_name == null || !this.state.add_name_focus)
+        if(this.state.add_account_id != null || this.state.add_name == null || !this.state.add_name_focus || !this.state.member_list)
             return;
 
         let search_text = this.state.add_name.trim()
