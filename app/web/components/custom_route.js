@@ -29,7 +29,7 @@ class MyRoute extends React.Component{
 		if (match.path !== nextMatch.path) {
 		} else if (location !== nextLocation) {
 		}
-	  }
+	}
 	
 	render(){
 		if(this.state.chrome)
