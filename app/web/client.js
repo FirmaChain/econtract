@@ -60,6 +60,7 @@ function resolver(props){
 }
 
 window.addEventListener("load",()=>{
+	Sentry.init({ dsn: 'https://de06b74cdf0745d2bebb3e2ffed3f008@sentry.io/1416070' });
 	ReactDOM.render(
 		<Router history={history}>
 			<Provider store={store}>
