@@ -70,7 +70,7 @@ window.CONST = {
 	IMP_USER_CODE: "imp80774794",
 	FIRST_PURCHASE : "first_purchase",
 	FROALA: {
-        key:"YD3H5F3F3c1A6B5B4E2A3C2C2G3C5B1D-17mB5idbyC-22nseB1zH-9==",
+        key:"sD1H2B1D2lA6F6E5E3A1E3C10A3A5F6gxhwkeC5kl==",
         language:"ko",
         height:"100%",
         heightMax:"100%",
