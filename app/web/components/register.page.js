@@ -903,31 +903,29 @@ export default class extends React.Component {
                         disabled={this.state.email_verification}
                         placeholder={translate("please_input_email_correct")}/>
                 </div>
-                { type == window.CONST.ACCOUNT_TYPE.CORP_SUB ? null : (this.state.email_verification ?
+                { this.state.email_verification ?
                     <div className="gray-but">{translate("complete_send")}</div> : 
                     <div className="blue-but" onClick={this.onClickRequestEmail}>{translate("send")}</div>)
                 }
                 
             </div>
 
-            {type == window.CONST.ACCOUNT_TYPE.CORP_SUB ? null : 
-                <div className="text-place">
-                    <div className="name">{translate("email_certification")}</div>
-                    <div className="textbox">
-                        <input className="common-textbox" type="text"
-                            value={this.state.verification_code || ""}
-                            onKeyDown={this.keyPress.bind(this, 0)}
-                            onChange={e=>this.setState({verification_code:e.target.value})}
-                            disabled={this.state.email_verification}
-                            placeholder={translate("please_input_certification_number")}/>
-                    </div>
-                    {this.state.email_verification ? null : 
-                        <div className={this.state.step1 == 1 ? "blue-but" : "gray-but"} onClick={this.onClickVerificateEmail}>
-                            {translate("confirm")}
-                        </div>
-                    }
+            <div className="text-place">
+                <div className="name">{translate("email_certification")}</div>
+                <div className="textbox">
+                    <input className="common-textbox" type="text"
+                        value={this.state.verification_code || ""}
+                        onKeyDown={this.keyPress.bind(this, 0)}
+                        onChange={e=>this.setState({verification_code:e.target.value})}
+                        disabled={this.state.email_verification}
+                        placeholder={translate("please_input_certification_number")}/>
                 </div>
-            }
+                {this.state.email_verification ? null : 
+                    <div className={this.state.step1 == 1 ? "blue-but" : "gray-but"} onClick={this.onClickVerificateEmail}>
+                        {translate("confirm")}
+                    </div>
+                }
+            </div>
 
             <div className="text-place">
                 <div className="name">{translate("password")}</div>
