@@ -193,7 +193,7 @@ export default class extends React.Component {
     }
 
     onChatLoadMore = async () => {
-        if(this.end_chat)
+        if(this.end_chat || !this.state.contract.contract_id)
             return false
 
         let chats = await this.props.get_chats(this.state.contract.contract_id, this.state.page_chat, 30, this.state.last_chat_id)
