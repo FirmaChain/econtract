@@ -905,7 +905,7 @@ export default class extends React.Component {
                 </div>
                 { this.state.email_verification ?
                     <div className="gray-but">{translate("complete_send")}</div> : 
-                    <div className="blue-but" onClick={this.onClickRequestEmail}>{translate("send")}</div>)
+                    <div className="blue-but" onClick={this.onClickRequestEmail}>{translate("send")}</div>
                 }
                 
             </div>
