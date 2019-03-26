@@ -632,7 +632,18 @@ export default class extends React.Component {
 
         if(this.state.advisory_list.length < 1)
             return alert(translate("please_input_advisory_more_than_1"));
-        
+
+        for(let v of this.state.advisory_list) {
+            if(v.field == null) {
+                return alert(translate("please_input_advisory_field"))
+            }
+            if(v.certificate_pic_file == null) {
+                return alert(translate("please_input_advisory_certificate_file", [v.field]))
+            }
+            if(v.career.length < 1) {
+                return alert(translate("please_add_career_more_than_1"))
+            }
+        }
 
         let account = new_account(this.state.email, this.state.password);
         this.setState({
@@ -1477,7 +1488,7 @@ export default class extends React.Component {
 
             <div className="bottom-container">
                 <div className="back-button" onClick={this.prev_term}>{translate("go_back")}</div>
-                <div className="confirm-button" onClick={this.onClickNextBtnCompanyInfo}>
+                <div className="confirm-button" onClick={this.onClickNextBtnExpertInfo}>
                     {translate("confirm")}
                 </div>
             </div>
