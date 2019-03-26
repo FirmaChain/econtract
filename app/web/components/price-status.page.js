@@ -224,13 +224,13 @@ export default class extends React.Component {
                         let resp = await this.props.terminate_monthly_commitment();
                         await window.hideIndicator()
                         if(resp.code != 1) {
-                            return alert("변경 프로세스 중 해지 프로세스에 실패하였습니다.");
+                            return alert(translate("purchase_fail_change_delete"));
                         }
                         let resp2 = await this.props.reserve_monthly_commitment(plan_id);
                         if(resp2.code != 1) {
-                            return alert("변경 프로세스 중 재 예약 프로세스에 실패하였습니다.");
+                            return alert(translate("purchase_fail_change_resubmit"));
                         }
-                        return alert("구독 변경에 성공하였습니다.")
+                        return alert(translate("success_change_monthly_yearly"))
 
                     } else {
 

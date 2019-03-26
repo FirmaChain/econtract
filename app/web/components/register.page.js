@@ -74,7 +74,7 @@ export default class extends React.Component {
 		super();
         this.isGoingFinish = false
 		this.state={
-            step:0,
+            step:2,
             step1:0,
             sort_test:[],
             email_verification: false,
@@ -376,6 +376,18 @@ export default class extends React.Component {
                     email_verification: false,
                 });
             })();
+        } else if(this.getAccountType() == window.CONST.ACCOUNT_TYPE.EXPERT) {
+            this.setState({
+                profile_pic:"/static/empty_user.jpg",
+                profile_pic_file:null,
+                advisory_list:[{
+                    field:null,
+                    certificate_pic_name:"",
+                    certificate_pic_file:null,
+                    career_text:"",
+                    career:[]
+                }]
+            })
         }
     }
 
@@ -608,6 +620,29 @@ export default class extends React.Component {
         })
     }
 
+    onClickNextBtnExpertInfo = async ()=>{
+        if(!this.state.username)
+            return alert(translate("please_input_name"));
+        if(!this.state.verificated_phone)
+            return alert(translate("please_verify_phone"));
+        if(!this.state.useraddress)
+            return alert(translate("please_input_address"));
+        if(!this.state.introduce_article)
+            return alert(translate("please_input_introduce_me"));
+
+        if(this.state.advisory_list.length < 1)
+            return alert(translate("please_input_advisory_more_than_1"));
+        
+
+        let account = new_account(this.state.email, this.state.password);
+        this.setState({
+            step:this.state.step + 1,
+            account:account,
+            //mnemonic:account.rawMnemonic,
+            recover_password:account.recoverPassword
+        })
+    }
+
     /*onClickSaveMnemonic = ()=>{
         let anchor = document.createElement('a');
         anchor.target = "_blank";
@@ -632,6 +667,85 @@ export default class extends React.Component {
         this.setState({
             sort_test:sort_test
         })
+    }
+
+    onClickUploadProfilePic = async (e) => {
+        let file = e.target.files[0];
+        if(!file) return;
+        await window.showIndicator();
+        let sizeMb = file.size / 1024 / 1024;
+        if(sizeMb > 2) {
+            await window.hideIndicator();
+            return alert(translate("do_not_upload_more_than_2mb_size"))
+        }
+
+        var reader = new FileReader();
+        reader.onload = (read) => {
+            this.setState({profile_pic:read.target.result})
+        }
+        reader.readAsDataURL(file);
+        console.log(file)
+        await this.setState({profile_pic_file:file})
+        await window.hideIndicator();
+    }
+
+    onClickUploadCertificatePic = async (k, e) => {
+        let file = e.target.files[0];
+        if(!file) return;
+        await window.showIndicator();
+        let sizeMb = file.size / 1024 / 1024;
+        if(sizeMb > 2) {
+            await window.hideIndicator();
+            return alert(translate("do_not_upload_more_than_2mb_size"))
+        }
+        let n = [...this.state.advisory_list]
+        n[k].certificate_pic_name = file.name;
+        n[k].certificate_pic_file = file;
+        await this.setState({advisory_list:n})
+        await window.hideIndicator();
+    }
+
+    onClickAddAdvisory = async (e) => {
+        this.setState({advisory_list:[...this.state.advisory_list, {
+            field:null,
+            certificate_pic_name:"",
+            certificate_pic_file:null,
+            career_text:"",
+            career:[]
+        }]})
+    }
+
+    onClickAddCareer = async (k, e) => {
+        let n = [...this.state.advisory_list];
+
+        if(!n[k].career_text || n[k].career_text == "") {
+            return alert(translate("please_input_career_text"))
+        }
+        if(!n[k].career_start_year || n[k].career_start_year == "") {
+            return alert(translate("please_input_career_start_year"))
+        }
+
+        n[k].career.push({
+            text:n[k].career_text,
+            start_year:n[k].career_start_year,
+            end_year:n[k].career_end_year,
+        })
+        n[k].career_text = ""
+        n[k].career_start_year = ""
+        n[k].career_end_year = ""
+        this.setState({advisory_list:n})
+    }
+
+    onClickRemoveCareer = async (k, career_index, e) => {
+        let n = [...this.state.advisory_list]
+        n[k].career.splice(career_index, 1)
+        this.setState({advisory_list:n})
+    }
+
+    onClickRemoveAdvisory = async (index, e) => {
+        let n = [...this.state.advisory_list]
+        n.splice(index, 1)
+        this.setState({advisory_list: n})
     }
 
     onClickFinishRegister = async ()=>{
@@ -699,12 +813,20 @@ export default class extends React.Component {
                 recover_password: this.state.account.recoverPassword,
             }
             open_info = {
-                email: this.state.email.trim(),
-                username: this.state.username.trim(),
-                userphone: this.state.userphone,
-                useraddress: this.state.useraddress.trim(),
-                recover_password: this.state.account.recoverPassword,
+                user_info: {
+                    email: this.state.email.trim(),
+                    username: this.state.username.trim(),
+                    userphone: this.state.userphone,
+                    useraddress: this.state.useraddress.trim(),
+                    introduce_article: this.state.introduce_article.trim(),
+                },
+                advisory_list: this.state.advisory_list.map(e=>{return {
+                    field:e.field,
+                    certificate_pic_name:e.certificate_pic_name,
+                    career:e.career
+                }})
             }
+            return;
         }
 
         let keyPair = SeedToEthKey(this.state.account.seed, "0'/0/0");
@@ -1158,19 +1280,22 @@ export default class extends React.Component {
 
     render_expert() {
         let list = [
-            {value:"lawyer", label: "변호사"},
-            {value:"asqqd", label: "회계사"},
-            {value:"ffqfq", label: "노무사"},
-            {value:"qwfcv", label: "세무사"},
+            {value:"0", label: translate("expert_0")},
+            {value:"1", label: translate("expert_1")},
+            {value:"2", label: translate("expert_2")},
+            {value:"3", label: translate("expert_3")},
+            {value:"4", label: translate("expert_4")},
+            {value:"5", label: translate("expert_5")},
+            {value:"6", label: translate("expert_6")},
         ]
         return (<div className="content">
             <div className="text-place">
-                <div className="name">이름</div>
+                <div className="name">{translate("name")}</div>
                 <div className="textbox">
                     <input className="common-textbox" type="text"
                         value={this.state.username || ""}
                         onChange={e=>this.setState({username:e.target.value})}
-                        placeholder={"이름을 입력해주세요."}/>
+                        placeholder={translate("please_input_name")}/>
                 </div>
             </div>
 
@@ -1207,13 +1332,12 @@ export default class extends React.Component {
             </div>
 
             <div className="text-place">
-                <div className="name">{"주소"}</div>
+                <div className="name">{translate("address")}</div>
                 <div className="textbox">
                     <input className="common-textbox" type="text"
-                        value={this.state.company_address || ""} 
-                        onChange={e=>this.setState({company_address:e.target.value})}
-                        placeholder={translate("please_input_address_correct")}
-                        disabled={this.getAccountType() == 2}/>
+                        value={this.state.useraddress || ""} 
+                        onChange={e=>this.setState({useraddress:e.target.value})}
+                        placeholder={translate("please_input_address_correct")}/>
                 </div>
                 <div className="blue-but" onClick={this.onClickFindAddress.bind(this, 1)}>
                     {translate("search")}
@@ -1221,53 +1345,134 @@ export default class extends React.Component {
             </div>
 
             <div className="split-line"></div>
+            <div className="add-title">{translate("expert_info")}</div>
 
-            <div className="add-title">자문 분야</div>
-            <div className="add-list">
-                <div className="item">
-                    <div className="row">
-                        <div className="box width200">
-                            <div className="title">분야</div>
-                            <div className="desc">
-                                <Dropdown className="common-select"
-                                    controlClassName="control"
-                                    menuClassName="item"
-                                    placeholder={"자문 분야 선택"}
-                                    options={list}
-                                    onChange={e=>{this.setState({expert_part:e.value, expert_part_label:e.label})}}
-                                    value={this.state.expert_part_label} />
-                            </div>
-                        </div>
-                        <div className="box flex1">
-                            <div className="title">자격증 사진</div>
-                            <div className="desc">
-                                <input className="common-textbox" type="file" accept="image/x-png,image/gif,image/jpeg" />
-                            </div>
-                        </div>
-                    </div>
-                    <div className="career">
-                        <div className="title">경력</div>
-                        <div className="item">
-                            <input className="common-textbox" type="text"
-                                value={this.state.career_text || ""}
-                                onChange={e=>this.setState({career_text:e.target.value})}
-                                placeholder={"예 ) 2018 ~ 2020 사법고시 합격"}/>
-                            <div className="blue-but">추가</div>
-                        </div>
-                    </div>
+            <div className="profile-pic">
+                <div className="title">{translate("profile_pic")}</div>
+                <div className="upload-image">
+                    <img className="img" src={this.state.profile_pic}/>
+                    <div className="blue-but" onClick={()=>this.refs["profile-file"].click()}>{translate("choose_pic")}</div>
+                    <input ref="profile-file" className="hidden-file" type="file" accept="image/x-png,image/jpeg" onChange={this.onClickUploadProfilePic} />
+                </div>
+            </div>
+            <div className="text-place textarea-place">
+                <div className="name">{translate("introduce_me")}</div>
+                <div className="textbox">
+                    <textarea className="common-textbox" type="text"
+                        value={this.state.introduce_article || ""} 
+                        onChange={e=>this.setState({introduce_article:e.target.value})}
+                        placeholder={translate("please_input_introduce_me")}
+                        disabled={this.getAccountType() == 2}></textarea>
                 </div>
             </div>
 
             <div className="split-line"></div>
 
-            <div className="text-place">
-                <div className="name">소개 문구</div>
-                <div className="textbox">
-                    <input className="common-textbox" type="text"
-                        value={this.state.introduction || ""}
-                        onChange={e=>this.setState({introduction:e.target.value})}
-                        placeholder={"자기 소개를 입력해주세요."}/>
-                </div>
+            <div className="add-title">
+                {translate("advisory_field")}
+                <div className="flex1"></div>
+                <div className="blue-but" onClick={this.onClickAddAdvisory}>{translate("advisory_add")}</div>
+            </div>
+
+            <div className="add-list">
+                {this.state.advisory_list ? this.state.advisory_list.map((e, k) => {
+                    return <div className="item" key={k}>
+                        <div className="row">
+                            <div className="box">
+                                <div className="title">{translate("field")}</div>
+                                <div className="desc">
+                                    <Dropdown className="common-select"
+                                        controlClassName="control"
+                                        menuClassName="item"
+                                        placeholder={translate("advisory_field_select")}
+                                        options={list}
+                                        onChange={e=>{
+                                            let n = [...this.state.advisory_list]
+                                            n[k].field = e.value;
+                                            n[k].field_label = e.label;
+                                            this.setState({advisory_list:n})
+                                        }}
+                                        value={this.state.advisory_list[k].field_label} />
+                                </div>
+                                <div className="button">
+                                    {this.state.advisory_list.length > 1 ? <div className="gray-but" onClick={this.onClickRemoveAdvisory.bind(this, k)}>{translate("delete")}</div> : null}
+                                </div>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="box">
+                                <div className="title">{translate("certificate_pic")}</div>
+                                <div className="desc">
+                                    <input className="common-textbox" 
+                                        type="text"
+                                        placeholder={translate("no_certificate")}
+                                        value={this.state.advisory_list[k].certificate_pic_name} disabled />
+                                    <input ref={`ceriticate_${k}`} className="hidden-file" type="file" accept="image/x-png,image/jpeg" onChange={this.onClickUploadCertificatePic.bind(this, k)}/>
+                                </div>
+                                <div className="button">
+                                    <div className="blue-but" onClick={()=>this.refs[`ceriticate_${k}`].click()}>{translate("upload")}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="box">
+                                <div className="title">{translate("career")}</div>
+                                <div className="desc">
+                                    <input className="common-textbox half" type="number"
+                                        value={this.state.advisory_list[k].career_start_year || ""}
+                                        onChange={e=>{
+                                            let n = [...this.state.advisory_list]
+                                            n[k].career_start_year = e.target.value;
+                                            this.setState({advisory_list:n})
+                                        }}
+                                        placeholder={translate("begin_year")}/>
+                                    <input className="common-textbox half" type="number"
+                                        value={this.state.advisory_list[k].career_end_year || ""}
+                                        onChange={e=>{
+                                            let n = [...this.state.advisory_list]
+                                            n[k].career_end_year = e.target.value;
+                                            this.setState({advisory_list:n})
+                                        }}
+                                        placeholder={translate("end_year")}/>
+                                </div>
+                                <br/>
+                                <div className="button">
+                                </div>
+                            </div>
+                            <div className="box">
+                                <div className="title"></div>
+                                <div className="desc">
+                                    {translate("if_now_keep_going_you_dont_input")}<br/>
+                                    {translate("please_input_past_career_first")}
+                                </div>
+                            </div>
+                            <div className="box">
+                                <div className="title"></div>
+                                <div className="desc">
+                                    <input className="common-textbox" type="text"
+                                        value={this.state.advisory_list[k].career_text || ""}
+                                        onChange={e=>{
+                                            let n = [...this.state.advisory_list]
+                                            n[k].career_text = e.target.value;
+                                            this.setState({advisory_list:n})
+                                        }}
+                                        placeholder={translate("history_example")}/>
+                                </div>
+                                <div className="button">
+                                    <div className="blue-but" onClick={this.onClickAddCareer.bind(this, k)}>{translate("career_add")}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="row">
+                            {this.state.advisory_list[k].career.map((e, career_index) => {
+                                return <div className="career-item" key={career_index}>
+                                    <div className="text">{e.start_year} ~ {e.end_year || translate("now")} | {e.text}</div>
+                                    <div className="delete-but" onClick={this.onClickRemoveCareer.bind(this, k, career_index)}><i className="far fa-times"></i></div>
+                                </div>
+                            })}
+                        </div>
+                    </div>
+                }) : null}
             </div>
 
             <div className="bottom-container">
