@@ -34,6 +34,15 @@ export {
 } from "./CryptoUtil";
 
 let serverDB = {};
+
+export function generateRandomKey(length = 16) {
+    const possible = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
+    let passphrase = "";
+    for (let i = 0; i < length; i++)
+        passphrase += possible.charAt(Math.floor(Math.random() * possible.length));
+    return passphrase;
+}
+
 export function generateMnemonic() {
 	let mnemonic = bip39.generateMnemonic();
 	//let mnemonic = bip39.entropyToMnemonic('000102030405060708090a0b0c0d0e0f');

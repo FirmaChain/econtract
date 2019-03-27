@@ -11,6 +11,11 @@ import queryString from "query-string"
 
 import Dropdown from "react-dropdown"
 import 'react-dropdown/style.css'
+import CheckBox2 from "./checkbox2"
+
+import {
+    generateRandomKey,
+} from "../../common/crypto_test"
 
 import {
     fetch_user_info,
@@ -25,13 +30,6 @@ import {
     get_contract,
     genPIN,
 } from "../../common/actions"
-import CheckBox2 from "./checkbox2"
-
-let mapStateToProps = (state)=>{
-	return {
-        user_info:state.user.info
-	}
-}
 
 let mapDispatchToProps = {
     fetch_user_info,
@@ -44,6 +42,12 @@ let mapDispatchToProps = {
     get_template,
     get_approval,
     get_contract,
+}
+
+let mapStateToProps = (state)=>{
+    return {
+        user_info:state.user.info
+    }
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -377,7 +381,7 @@ export default class extends React.Component {
                         email:data.email,
                         cell_phone_number:data.cell_phone_number,
                         role:[this.state.add_role],
-                        public_key:resp.publickey_contract,
+                        contract_open_key:generateRandomKey(16),
                     }
 
                     this.setState({
