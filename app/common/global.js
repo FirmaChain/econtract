@@ -30,6 +30,7 @@ window.CONST = {
         CHANGE_SIGN: 5,
         GIVE_MODIFY: 6,
     },
+    NO_REGISTER_USER_CORP_ID: -1,
     DUMMY_CORP_ID: 0,
     DUMMY_GROUP_ID: 0,
     DUMMY_CONTRACT_ID: 0,

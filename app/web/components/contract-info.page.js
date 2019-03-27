@@ -396,6 +396,8 @@ export default class extends React.Component {
                     <div className="icon">
                     {
                         (()=>{ switch(e.user_info.user_type) {
+                            case -1:
+                                return <i className="fas fa-user-tag"></i>
                             case 0:
                                 return <i className="fas fa-user"></i>
                             case 1:
@@ -407,6 +409,12 @@ export default class extends React.Component {
                     </div>
                     {
                         (()=>{ switch(e.user_info.user_type) {
+                            case -1:
+                                return <div className="desc">
+                                    <div className="username">({translate("not_regist_user")}) {e.user_info.username}</div>
+                                    <div className="email">{e.user_info.email}</div>
+                                    <div className="cell-phone-number">{e.user_info.cell_phone_number}</div>
+                                </div>
                             case 0:
                                 return <div className="desc">
                                     <div className="username">{e.user_info.username}</div>

@@ -123,7 +123,6 @@ export function new_contract(subject, message, counterparties, set_pin, necessar
             if(e.user_type != -1)
                 mapped_data.eckai = sealContractAuxKey(e.public_key, shared_key);
             else {
-                console.log("the_key", the_key, typeof(the_key))
                 mapped_data.encrypted_key = aes_encrypt(the_key, Buffer.from(e.contract_open_key, 'hex'))
                 mapped_data.cell_phone_number = e.cell_phone_number;
             }
