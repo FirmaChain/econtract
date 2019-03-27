@@ -98,17 +98,30 @@ export function new_contract(subject, message, counterparties, set_pin, necessar
             is_pin_used = false
         let shared_key = generate_random(31);
         let the_key = getContractKey(pin, shared_key);
+
+        let no_sign_user_index = 1;
         let counterparties_mapped = counterparties.map(e=>{
+            let temp_corp_id = e.user_type == 2 ? e.corp_id : DUMMY_CORP_ID
+            if(e.user_type == -1)
+                temp_corp_id = -1;
+
+            let temp_entity_id = e.user_type == 2 ? e.group_id : e.account_id
+            if(e.user_type == -1) {
+                temp_entity_id = no_sign_user_index;
+                no_sign_user_index++;
+            }
+
             let mapped_data = {
                 user_type: e.user_type,
-                entity_id: e.user_type == 2 ? e.group_id : e.account_id,
-                corp_id: e.user_type == 2 ? e.corp_id : DUMMY_CORP_ID,
+                entity_id: temp_entity_id,
+                corp_id: temp_corp_id,
                 role: e.role,
-                eckai: sealContractAuxKey(e.public_key, shared_key),
                 user_info: aes_encrypt(JSON.stringify(e), the_key),
             };
-            if(e.user_type == 1 || e.user_type == 0)
-                mapped_data.email = e.email
+            if(!!e.email) mapped_data.email = e.email;
+
+            if(e.user_type != -1)
+                mapped_data.eckai = sealContractAuxKey(e.public_key, shared_key);
 
             return mapped_data
         });
@@ -201,7 +214,7 @@ export function get_contract(contract_id, user_info, groups = []) {
             let subject = select_subject(resp.payload.infos, groups, user_info.account_id, corp_id, resp.payload.contract.is_pin_used);
             if (!subject.my_info) return null;
 
-            let shared_key;
+            let shared_key, the_key;
             let pin = "000000";
 
             if(subject.isAccount) {
@@ -218,7 +231,7 @@ export function get_contract(contract_id, user_info, groups = []) {
                 }
                 shared_key = unsealContractAuxKeyGroup(group_key, Buffer.from(subject.my_info.eckai, 'hex').toString('hex'));
             }
-            let the_key = getContractKey(pin, shared_key);
+            the_key = getContractKey(pin, shared_key);
 
             try {
                 JSON.parse(aes_decrypt(Buffer.from(resp.payload.infos[0].user_info, 'hex').toString('hex'), the_key))
@@ -308,15 +321,32 @@ export function add_counterparties(contract_id, counterparties, groups, user_inf
         }
         let the_key = getContractKey(pin, shared_key);
 
+        let no_sign_user_index = 1;
         let counterparties_mapped = counterparties.map(e=>{
-            return {
+            let temp_corp_id = e.user_type == 2 ? e.corp_id : DUMMY_CORP_ID
+            if(e.user_type == -1)
+                temp_corp_id = -1;
+
+            let temp_entity_id = e.user_type == 2 ? e.group_id : e.account_id
+            if(e.user_type == -1) {
+                temp_entity_id = no_sign_user_index;
+                no_sign_user_index++;
+            }
+
+            let mapped_data = {
                 user_type: e.user_type,
-                entity_id: e.user_type == 2 ? e.group_id : e.account_id,
-                corp_id: e.user_type == 2 ? e.corp_id : DUMMY_CORP_ID,
+                entity_id: temp_entity_id,
+                corp_id: temp_corp_id,
                 role: e.role,
-                eckai: sealContractAuxKey(e.public_key, shared_key),
                 user_info: aes_encrypt(JSON.stringify(e), the_key),
             };
+
+            if(!!e.email) mapped_data.email = e.email;
+
+            if(e.user_type != -1)
+                mapped_data.eckai = sealContractAuxKey(e.public_key, shared_key);
+
+            return mapped_data;
         });
         let res = await api_add_counterparties( contract_id, JSON.stringify(counterparties_mapped) )
         return res

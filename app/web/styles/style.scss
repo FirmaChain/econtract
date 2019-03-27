@@ -2218,6 +2218,11 @@ div.checkbox2-comp{
                                 color: $black;
                                 font-size: $font1;
                             }
+
+                            >.cell-phone-number {
+                                color: $gray;
+                                font-size: $font1;
+                            }
                         }
 
                         >.privilege {
@@ -2231,6 +2236,10 @@ div.checkbox2-comp{
                             display: flex;
                             flex-direction:column;
                             align-items: center;
+
+                            >.no-regist-user {
+                                font-weight: bold;
+                            }
 
                             >.box {
                                 display: flex;
@@ -6640,6 +6649,89 @@ div.checkbox2-comp{
             }
         }
 
+    }
+}
+
+.no-sign-user-add-modal {
+    background-color: #fff;
+    min-width: 200px;
+    width:400px;
+
+    >.container {
+        padding:50px;
+        text-align: center;
+
+        >.icon {
+
+            >i { 
+                font-size: 30px;
+            }
+        }
+
+        >.title {
+            font-size: $font5;
+            color: $black;
+            font-weight: bold;
+            margin-top: 18px;
+        }
+
+        >.sub-desc {
+            font-size: $font2;
+            color: $black;
+            margin-top: 18px;
+        }
+
+        >.text-box {
+            margin-top: 20px;
+            text-align: left;
+
+            >.sub-title {
+                font-size: $font2;
+                color:$black;
+                font-weight: bold;
+                margin-bottom:8px;
+                margin-left:5px;
+            }
+
+            >input {
+
+            }
+        }
+
+        >.button {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+
+            margin-top: 40px;
+
+            >.confirm {
+                display: inline-block;
+                font-size: $font2;
+                cursor: pointer;
+                padding:10px 20px;
+                background-color: $blue;
+                border: 1px solid $blue;
+                color:white;
+                margin-right: 10px;
+                width:100px;
+                text-align: center;
+            }
+
+            >.cancel {
+                display: inline-block;
+                font-size: $font2;
+                cursor: pointer;
+                padding:10px 20px;
+                background-color: white;
+                border: 1px solid $blue;
+                color: $black;
+                margin-left: 10px;
+                width:100px;
+                text-align: center;
+            }
+        }
     }
 }
 

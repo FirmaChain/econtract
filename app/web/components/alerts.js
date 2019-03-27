@@ -1325,6 +1325,90 @@ class AddCorpMemberName extends React.Component {
 
 }
 
+@modal
+class NoSignUserAdd extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            email:"",
+            name:"",
+            cell_phone_number:""
+        }
+    }
+
+    componentDidMount() {
+        this.setState({
+            email: this.props.email || "",
+            name: this.props.name || ""
+        })
+    }
+
+    closeSelf = () => {
+        window.closeModal(this.props.modalId)
+    }
+
+    onConfirm = async () => {
+        if(this.state.cell_phone_number == null || this.state.cell_phone_number.length != 13 || !/^0\d{2}-\d{4}-\d{4}$/.test(this.state.cell_phone_number))
+            return alert(translate("please_input_correct_phone"))
+
+        if(!!this.props.onConfirm) {
+            await this.props.onConfirm({
+                email:this.state.email,
+                name:this.state.name,
+                cell_phone_number:this.state.cell_phone_number
+            });
+        }
+        this.closeSelf()
+    }
+
+
+    onChangePhoneForm = async (name, e) => {
+        let text = e.target.value;
+        text = text.replace(/[^0-9]/g,"")
+        text = window.phoneFomatter(text)
+        
+        this.setState({
+            [name]:text
+        })
+    }
+
+    render() {
+        return <div className="no-sign-user-add-modal default-modal-container">
+            <div className="container">
+                <div className="icon"><i className="far fa-user-tag"></i></div>
+                <div className="title">{translate("no_sign_user_add_title")}</div>
+                <div className="sub-desc">{translate("no_sign_user_add_desc")}</div>
+                <div className="text-box">
+                    <div className="sub-title">{translate("email")}</div>
+                    <input type="text" className="common-textbox"
+                        onChange={(e)=>this.setState({email:e.target.value})}
+                        value={this.state.email}
+                        disabled={!this.props.email_enable}
+                        placeholder={this.props.placeholder}/>
+                </div>
+                <div className="text-box">
+                    <div className="sub-title">{translate("name")}</div>
+                    <input type="text" className="common-textbox"
+                        onChange={(e)=>this.setState({name:e.target.value})}
+                        value={this.state.name}
+                        placeholder={this.props.placeholder}/>
+                </div>
+                <div className="text-box">
+                    <div className="sub-title">{translate("cellphone_number")}</div>
+                    <input type="text" className="common-textbox"
+                        onChange={this.onChangePhoneForm.bind(this,"cell_phone_number")}
+                        value={this.state.cell_phone_number}
+                        placeholder={this.props.placeholder}/>
+                </div>
+                <div className="button">
+                    <div className="confirm" onClick={this.onConfirm}>{translate("add")}</div>
+                    <div className="cancel" onClick={this.closeSelf}>{translate("cancel")}</div>
+                </div>
+            </div>
+        </div>
+    }
+}
+
 
 
 

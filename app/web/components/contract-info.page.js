@@ -310,7 +310,7 @@ export default class extends React.Component {
     }
 
     addMember = async () => {
-
+        
     }
 
     addGroup = async () => {

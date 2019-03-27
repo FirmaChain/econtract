@@ -357,7 +357,35 @@ export default class extends React.Component {
                 add_email:""
             })
         }else{
-            return alert(translate("no_user_this_email"))
+
+            window.openModal("NoSignUserAdd", {
+                email:this.state.add_email,
+                email_enable: false,
+                onConfirm: async (data)=>{
+
+                    console.log(data)
+
+                    for(let v of this.state.target_list) {
+                        if( !!v.email && v.email == data.email ) {
+                            return alert(translate("already_add_user"))
+                        }
+                    }
+
+                    let info = {
+                        user_type:-1,
+                        username:data.name,
+                        email:data.email,
+                        cell_phone_number:data.cell_phone_number,
+                        role:[this.state.add_role],
+                        public_key:resp.publickey_contract,
+                    }
+
+                    this.setState({
+                        target_list:[...this.state.target_list, info],
+                        add_email:""
+                    })
+                }
+            })
         }
     }
 
@@ -777,7 +805,7 @@ export default class extends React.Component {
                     <div className="left-desc">
                         <div className="desc-head">{translate("user_add")}</div>
                         <div className="desc-content">{translate("user_add_desc")}</div>
-                        <div className="desc-link" onClick={this.openServiceNoRegisterModal}>{translate("unregister_user_enable_sign_?")}</div>
+                        {/*<div className="desc-link" onClick={this.openServiceNoRegisterModal}>{translate("unregister_user_enable_sign_?")}</div>*/}
                     </div>
                     <div className="right-form">
                         <div className="column column-flex-2">
@@ -828,6 +856,8 @@ export default class extends React.Component {
                                         <div className="icon">
                                         {
                                             (()=>{ switch(e.user_type) {
+                                                case -1:
+                                                    return <i className="fas fa-user-tag"></i>
                                                 case 0:
                                                     return <i className="fas fa-user"></i>
                                                 case 1:
@@ -840,6 +870,13 @@ export default class extends React.Component {
                                         </div>
                                         {
                                             (()=>{ switch(e.user_type) {
+                                                case -1:
+                                                    return <div className="desc">
+                                                        <div className="username">{e.username}</div>
+                                                        <div className="email">{e.email}</div>
+                                                        <div className="cell-phone-number">{e.cell_phone_number}</div>
+                                                    </div>
+                                                    break;
                                                 case 0:
                                                     return <div className="desc">
                                                         <div className="username">{e.username}</div>
@@ -860,22 +897,23 @@ export default class extends React.Component {
                                         }
                                         <div className="privilege">{this.getRoleText(e.role)}</div>
                                         <div className="can-edit">
-                                            <div className="box">
-                                                <CheckBox2 size={18} disabled={e.role.includes(2)}
+                                            {e.user_type == -1 ? <div className="no-regist-user">{translate("not_regist_user")}</div> : null}
+                                            {e.user_type != -1 ? <div className="box">
+                                                <CheckBox2 size={18} disabled={e.role.includes(2) || e.user_type == -1}
                                                     on={this.state.can_edit_account_id == e.account_id}
                                                     onClick={ v => {
                                                         this.setState({can_edit_account_id:e.account_id})
                                                     }} />
                                                 <div className="name">{translate("modify_privilege")}</div>
-                                            </div>
-                                            <div className="box">
-                                                <CheckBox2 size={18} disabled={e.role.includes(2)}
+                                            </div> : null}
+                                            {e.user_type != -1 ? <div className="box">
+                                                <CheckBox2 size={18} disabled={e.role.includes(2) || e.user_type == -1}
                                                     on={this.state.payer_account_id == e.account_id}
                                                     onClick={ v => {
                                                         this.setState({payer_account_id:e.account_id})
                                                     }} />
                                                 <div className="name">{translate("price_charge")}</div>
-                                            </div>
+                                            </div> : null}
                                         </div>
                                         <div className="action">
                                             {removable ?
