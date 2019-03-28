@@ -544,7 +544,7 @@ export function createContractHtml(contract, infos) {
                 <div className="container">
                     <div className="contract-main-text">
                         <div className="fr-element fr-view" dangerouslySetInnerHTML={{__html:contract.html}} />
-                        <div className="sign-info">
+                        {/*<div className="sign-info">
                             {infos.map( (e, k) => {
                                 if(e.privilege != 1)
                                     return
@@ -556,7 +556,7 @@ export function createContractHtml(contract, infos) {
                                     }) : <div className="info">{translate("not_yet_register_sign_info")}</div>}
                                 </div>
                             })}
-                        </div>
+                        </div>*/}
                     </div>
                 </div>
             </div>
@@ -728,6 +728,7 @@ a.fr-command {
 }
 .preview-contract-page > .header-page .container > .contract-main-text > .sign-info {
   margin-bottom: 50px;
+  display: flex;
 }
 .preview-contract-page > .header-page .container > .contract-main-text > .sign-info > .item {
   display: inline-block;

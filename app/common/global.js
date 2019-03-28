@@ -93,7 +93,8 @@ window.CONST = {
             'subscript', 'superscript', 'quote', 'paragraphStyle', '-',
             /*'insertLink', */'insertImage', 'insertTable', '|',
             'specialCharacters', 'insertHR', 'selectAll', 'clearFormatting', '|',
-            'print', /*'getPDF', */'spellChecker', 'help', '|', 'undo', 'redo','fullscreen'],
+            'print', /*'getPDF', */'spellChecker', 'help', '|', 'undo', 'redo','fullscreen', 'sign'],
+
 	}
 
 }

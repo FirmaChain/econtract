@@ -77,13 +77,39 @@ export default class extends React.Component {
 	constructor(){
         super();
 
-        /*$.FroalaEditor.DefineIcon('getPDF', {NAME: 'file-pdf'});
-        $.FroalaEditor.RegisterCommand('getPDF', {
-            title: 'getPDF',
+        /*$.FroalaEditor.DefineIcon('sign', {NAME: 'stamp'});
+        $.FroalaEditor.RegisterCommand('sign', {
+            title: 'sign',
             focus: true,
             undo: true,
             refreshAfterCallback: true,
-            callback: () => {
+            options:{
+                v1: '갑',
+                v2: '을',
+            },
+            callback: (cmd, val) => {
+                console.log(cmd, val);
+                let sel = window.getSelection();
+                if (sel.getRangeAt && sel.rangeCount) {
+                    let range = sel.getRangeAt(0);
+                    range.deleteContents();
+                    let sign_object = document.createElement("div");
+                    sign_object.className = 't-sign';
+
+                    let text = document.createTextNode("갑의 서명 영역");
+                    sign_object.appendChild(text);
+
+                    console.log(sign_object)
+                    range.insertNode( sign_object );
+                }
+                console.log(sel);
+         
+            },
+            refresh: ($btn) => {
+                //console.log ('do refresh');
+            },
+            refreshOnShow: ($btn, $dropdown) => {
+                //console.log ('do refresh when show');
             }
         })*/
         this.blockFlag = false;
@@ -143,6 +169,8 @@ export default class extends React.Component {
             page_chat:0,
             last_chat_id:0,
             chat_list:[],
+
+            toolbar_open:false,
         }
     }
 
@@ -309,7 +337,6 @@ export default class extends React.Component {
     }
 
     onToggleRegisterSignForm = async (force_close = false) => {
-        console.log(force_close)
         if(force_close)
             this.state.sign_mode = true;
 
@@ -352,7 +379,7 @@ export default class extends React.Component {
             for(let v of default_arr) {
                 let textArr = translate(v.label, [], true)
                 for(let vv of textArr) {
-                    if(e == vv && v.value != "") {
+                    if( (_["#"+vv] == null || _["#"+vv] == "") && e == vv && v.value != "") {
                         _["#"+vv] = v.value
                     }
                 }
@@ -555,6 +582,47 @@ export default class extends React.Component {
         this.state.scrollBottom && this.state.scrollBottom()
     }
 
+    saveSelection = () => {
+        let sel;
+        if (window.getSelection) {
+            sel = window.getSelection();
+            if (sel.getRangeAt && sel.rangeCount) {
+                return sel.getRangeAt(0);
+            }
+        } else if (document.selection && document.selection.createRange) {
+            return document.selection.createRange();
+        }
+        return null;
+    }
+
+    restoreSelection = (range) => {
+        if (range) {
+            let sel;
+            if (window.getSelection) {
+                sel = window.getSelection();
+                sel.removeAllRanges();
+                sel.addRange(range);
+            } else if (document.selection && range.select) {
+                range.select();
+            }
+        }
+    }
+
+    onAddEditorSign = async (user, e) => {
+        /*e.stopPropagation();
+        e.preventDefault();*/
+
+        let selRange = this.saveSelection()
+        this.restoreSelection(selRange)
+        this.editor.events.focus(true);
+
+        console.log(this.editor.html)
+        console.log(`<span class="t-sign corp_${user.corp_id} entity_${user.entity_id}" contentEditable="false">${translate("sign_user", [user.user_info.username])}</span>`)
+        this.editor.html.insert(`<span class="t-sign corp_${user.corp_id} entity_${user.entity_id}" contentEditable="false">${translate("sign_user", [user.user_info.username])}</span>`)
+
+        this.editor.undo.saveStep();
+    }
+
     render_info() {
         switch(this.state.selected_menu) {
             case 0:
@@ -614,8 +682,8 @@ export default class extends React.Component {
                     <div className="text-box">
                         <input className="common-textbox"
                             type="text"
-                            disabled={!!text}
-                            value={text || this.state.sign_info["#"+e]}
+                            /*disabled={!!text}*/
+                            value={this.state.sign_info["#"+e]}
                             onChange={(ee) => {
                                 let _ = {...this.state.sign_info}
                                 _["#"+e] = ee.target.value
@@ -634,8 +702,6 @@ export default class extends React.Component {
 
         let corp_id = this.props.user_info.corp_id || -1
         let meOrGroup = select_subject(user_infos, this.state.groups, this.props.user_info.account_id, corp_id).my_info
-
-        console.log("meOrGroup", meOrGroup)
 
         return <div className="bottom signs">
             <div className="title">{translate("count_curr_total_person", [user_infos.filter(e=>e.is_exclude == 0).length])}</div>
@@ -688,8 +754,11 @@ export default class extends React.Component {
             </div>
             {user_infos.map( (e, k) => {
                 let info = e
-                if(e.corp_id == 0) {
-                    info.name = e.user_info.username
+                if(e.user_info.user_type == 0 || e.user_info.user_type == 1) {
+                    info.name = e.user_info.username;
+                    info.sub = e.user_info.email;
+                } else if(e.user_info.user_type == -1) {
+                    info.name = `(${translate("not_regist_user")}) ${e.user_info.username}`
                     info.sub = e.user_info.email
                 } else {
                     info.name = e.user_info.title
@@ -729,8 +798,15 @@ export default class extends React.Component {
                                         <div className="desc">{e.sign_info ? e.sign_info["#"+v] || translate("unregistered") : translate("unregistered")}</div>
                                     </div>)
                                 }
-                            } else {
+                            } else if(user_type == 1){
                                 for(let v of contract.necessary_info.corporation) {
+                                    divs.push(<div className="text-place" key={v}>
+                                        <div className="title">{v}</div>
+                                        <div className="desc">{e.sign_info ? e.sign_info["#"+v] || translate("unregistered") : translate("unregistered")}</div>
+                                    </div>)
+                                }
+                            } else if(user_type == -1) {
+                                for(let v of contract.necessary_info.individual) {
                                     divs.push(<div className="text-place" key={v}>
                                         <div className="title">{v}</div>
                                         <div className="desc">{e.sign_info ? e.sign_info["#"+v] || translate("unregistered") : translate("unregistered")}</div>
@@ -770,6 +846,51 @@ export default class extends React.Component {
         </div>
     }
 
+    render_sign_info = () => {
+        if(!this.state.infos && !this.state.contract)
+            return
+
+        return <div className="sign-info">
+            {this.state.infos.map( (e, k) => {
+                if(e.privilege != 1)
+                    return
+                
+                return <div className="item" key={k}>
+                    <div className="title">{translate("signer_counter", [k+1])}</div>
+                    {(()=>{
+                        let user_type = e.user_info.user_type || 0
+
+                        let divs = []
+                        if(user_type == 0) {
+                            for(let v of this.state.contract.necessary_info.individual) {
+                                divs.push(<div className="info" key={v}>
+                                    <span className="first">{v}</span>&nbsp;:&nbsp;
+                                    <spann className="desc">{e.sign_info ? e.sign_info["#"+v] || translate("unregistered") : translate("unregistered")}</spann>
+                                </div>)
+                            }
+                        } else {
+                            for(let v of this.state.contract.necessary_info.corporation) {
+                                divs.push(<div className="info" key={v}>
+                                    <span className="first">{v}</span>&nbsp;:&nbsp;
+                                    <span className="last">{e.sign_info ? e.sign_info["#"+v] || translate("unregistered") : translate("unregistered")}</span>
+                                </div>)
+                            }
+                        }
+                        return divs
+                    })()}
+                    {/*e.sign_info ? Object.entries(e.sign_info).map( (ee, kk) => {
+                        let title = ee[0].substring(1, ee[0].length)
+                        return <div className="info" key={kk}><span className="first">{title}</span> : <span className="last">{ee[1]}</span></div>
+                    }) : <div className="info">{translate("not_yet_register_sign_info")}</div>*/}
+                    {e.sign_info ? <div className="signature">
+                        {translate("sign")}
+                        {e.signature ? <img src={e.signature} /> : null }
+                    </div> : null}
+                </div>
+            })}
+        </div>
+    }
+
 	render() {
         if(!this.props.user_info || !this.state.contract)
             return <div></div>
@@ -806,6 +927,23 @@ export default class extends React.Component {
                         { this.state.contract.status < 2 ? <div className="can-edit-text">
                             <div>{translate("now_edit_privilege_who", [can_edit_name])}</div>
                         </div> : null }
+                        { this.state.contract.status < 2 ? <div className="floating">
+                            <div>
+                                <div className="circle" unselectable="on" onClick={()=>this.setState({toolbar_open:!this.state.toolbar_open})}>
+                                    <i className={`far fa-plus ${this.state.toolbar_open ? "spin-start-anim" : "spin-end-anim"}`}></i>
+                                </div>
+                            </div>
+                        </div>: null}
+
+                        { this.state.contract.status < 2 && this.state.toolbar_open ? <div className="tool-bar">
+                            <div>
+                                {this.state.infos.filter( e=>e.privilege == 1 ).map( (e, k) => {
+                                    return <div className="but" key={k} unselectable="on" onClick={this.onAddEditorSign.bind(this, e)}>
+                                        {translate("sign_user", [e.user_info.username])}
+                                    </div>
+                                })}
+                            </div>
+                        </div> : null}
                     </div>
                     {!this.state.sign_mode ? <div className="info">
                         <div className="top">

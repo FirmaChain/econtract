@@ -44,7 +44,7 @@ export default class PreviewContract extends React.Component {
         window.closeModal(this.props.modalId)
     }
 
-    render_sign_info = () => {
+    /*render_sign_info = () => {
         if(!this.props.infos && !this.props.contract)
             return
 
@@ -79,7 +79,7 @@ export default class PreviewContract extends React.Component {
                     {/*e.sign_info ? Object.entries(e.sign_info).map( (ee, kk) => {
                         let title = ee[0].substring(1, ee[0].length)
                         return <div className="info" key={kk}><span className="first">{title}</span> : <span className="last">{ee[1]}</span></div>
-                    }) : <div className="info">{translate("not_yet_register_sign_info")}</div>*/}
+                    }) : <div className="info">{translate("not_yet_register_sign_info")}</div>}
                     {e.sign_info ? <div className="signature">
                         {translate("sign")}
                         {e.signature ? <img src={e.signature} /> : null }
@@ -87,7 +87,7 @@ export default class PreviewContract extends React.Component {
                 </div>
             })}
         </div>
-    }
+    }*/
 
     getTitle() {
         if(this.props.contract && this.props.contract.name) {
@@ -101,6 +101,18 @@ export default class PreviewContract extends React.Component {
         if(!this.props.model)
             return <div></div>
 
+        let model = this.props.model;
+        for(let v of this.props.infos) {
+            let regex = new RegExp(`<\\s*span\\s*class="t-sign corp_${v.corp_id} entity_${v.entity_id}"[^>]*>(.*?)<\\s*\/\\s*span>`, "gi")
+            let aa = model.match(regex);
+
+            if(v.signature)
+                model = model.replace(regex, `<img src="${v.signature}" style="margin-left: 20px;height: 100px;"/>`)
+            else
+                model = model.replace(regex, `<span class="no-sign-place">${translate("no_sign_place", [v.user_info.username])}</span>`)
+        }
+
+
         return (<div className="preview-contract-page">
             <div className="header-page">
                 <div className="header">
@@ -111,8 +123,7 @@ export default class PreviewContract extends React.Component {
                 </div>
                 <div className="container">
                     <div className="contract-main-text">
-                        <div className="fr-element fr-view" dangerouslySetInnerHTML={{__html:this.props.model}} />
-                        {this.render_sign_info()}
+                        <div className="fr-element fr-view" dangerouslySetInnerHTML={{__html:model}} />
                     </div>
                 </div>
             </div>

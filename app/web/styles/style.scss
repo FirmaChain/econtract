@@ -12,6 +12,7 @@ $font1: 13px;
 $font0: 11px;
 
 $blue : #324b5f;
+$blue_hover : #223647;
 $middleblack : #555555;
 $black : #181818;
 $gray : #a7a4a5;
@@ -2506,6 +2507,113 @@ div.checkbox2-comp{
                     text-align: right;
                 }
             }
+
+            >.floating {
+                position:absolute;
+                right:40px;
+                bottom:50px;
+                z-index: 9999;
+
+                >div {
+                    display: flex;
+                    justify-content: flex-end;
+                    align-items: flex-end;
+
+                    max-width:900px;
+                    margin:auto;
+                    text-align: right;
+                    float: right;
+
+                    >.circle {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+
+                        width:60px;
+                        height:60px;
+                        background-color:$blue;
+                        color:white;
+                        border-radius:50px;
+                        text-align:center;
+                        box-shadow: 2px 2px 3px $black;
+
+                        cursor:pointer;
+                        user-select: none;
+
+                        >i {
+                            font-size: 25px;
+                            transition:all 300ms ease;
+                        }
+
+                        .spin-start-anim {
+                            animation: spin-start 300ms ease;
+                            animation-fill-mode: forwards;
+                        }
+
+                        .spin-end-anim {
+                            animation: spin-end 300ms ease;
+                            animation-fill-mode: forwards;
+                        }
+
+                        &:hover {
+                            background-color: $blue_hover;
+                            box-shadow: 2px 2px 3px $middleblack;
+                        }
+
+                        @keyframes spin-start {
+                            from {
+                                transform:rotate(0deg);
+                            }
+                            to {
+                                transform:rotate(45deg);
+                            }
+                        }
+
+                        @keyframes spin-end {
+                            from {
+                                transform:rotate(45deg);
+                            }
+                            to {
+                                transform:rotate(0deg);
+                            }
+                        }
+                    }
+
+                }
+            }
+
+            >.tool-bar {
+                position:absolute;
+                right:40px;
+                bottom:120px;
+                z-index: 9999;
+
+                >div {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: flex-end;
+                    align-items: flex-end;
+
+                    max-width:900px;
+                    margin:auto;
+                    text-align: right;
+                    float: right;
+
+                    >.but {
+                        border-radius:20px;
+                        padding:10px 20px;
+                        min-width: 150px;
+
+                        margin-top:10px;
+                        color:$black;
+                        border: 1px solid $blue;
+                        text-align: center;
+                        cursor: pointer;
+                        user-select: none;
+                        background-color:white;
+                    }
+                }
+            }
         }
     }
 }
@@ -2620,6 +2728,21 @@ div.checkbox2-comp{
 }
 
 .upsert-contract-page {
+
+    .t-sign {
+        display: inline-flex;
+        justify-content: center;
+        align-items:center;
+        text-align: center;
+        height: 100px;
+        width: 200px;
+        padding: 20px 10px;
+        box-sizing: border-box;
+        font-size: $font3;
+        margin:5px;
+        color:$middleblack;
+        border:1px dashed $gray;
+    }
 
     >.header-page .container {
         >.info {
@@ -4441,8 +4564,21 @@ div.checkbox2-comp{
             background-color: white;
             box-sizing:border-box;
 
+            .no-sign-place {
+                display: inline-flex;
+                justify-content: center;
+                align-items: center;
+
+                width: 180px;
+                height: 80px;
+                border: 1px dashed $gray;
+                margin-right:10px;
+                padding:10px;
+            }
+
             >.sign-info {
                 margin-bottom:50px;
+                display: flex;
 
                 >.item {
                     display: inline-block;
