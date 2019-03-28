@@ -1040,7 +1040,6 @@ export default class extends React.Component {
                     <div className="gray-but">{translate("complete_send")}</div> : 
                     <div className="blue-but" onClick={this.onClickRequestEmail}>{translate("send")}</div>
                 }
-                
             </div>
 
             <div className="text-place">

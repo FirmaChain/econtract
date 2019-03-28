@@ -616,8 +616,6 @@ export default class extends React.Component {
         this.restoreSelection(selRange)
         this.editor.events.focus(true);
 
-        console.log(this.editor.html)
-        console.log(`<span class="t-sign corp_${user.corp_id} entity_${user.entity_id}" contentEditable="false">${translate("sign_user", [user.user_info.username])}</span>`)
         this.editor.html.insert(`<span class="t-sign corp_${user.corp_id} entity_${user.entity_id}" contentEditable="false">${translate("sign_user", [user.user_info.username])}</span>`)
 
         this.editor.undo.saveStep();
@@ -935,7 +933,7 @@ export default class extends React.Component {
                             </div>
                         </div>: null}
 
-                        { this.state.contract.status < 2 && this.state.toolbar_open ? <div className="tool-bar">
+                        { this.state.contract.status < 2 ? <div className={`tool-bar ${this.state.toolbar_open ? "fade-start-anim" : "fade-end-anim"}`}>
                             <div>
                                 {this.state.infos.filter( e=>e.privilege == 1 ).map( (e, k) => {
                                     return <div className="but" key={k} unselectable="on" onClick={this.onAddEditorSign.bind(this, e)}>

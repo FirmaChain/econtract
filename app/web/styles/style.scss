@@ -2585,8 +2585,16 @@ div.checkbox2-comp{
             >.tool-bar {
                 position:absolute;
                 right:40px;
-                bottom:120px;
-                z-index: 9999;
+                bottom:50px;
+                z-index: 9998;
+                
+                transition:all 300ms;
+                background-color:white;
+                padding:0 25px;
+                padding-bottom:70px;
+                padding-top:25px;
+                border-radius:40px;
+                box-shadow: 0 0 5px $middleblack;
 
                 >div {
                     display: flex;
@@ -2600,18 +2608,53 @@ div.checkbox2-comp{
                     float: right;
 
                     >.but {
-                        border-radius:20px;
-                        padding:10px 20px;
                         min-width: 150px;
 
-                        margin-top:10px;
-                        color:$black;
-                        border: 1px solid $blue;
+                        margin-top:20px;
+                        border: 1px dashed $gray;
                         text-align: center;
                         cursor: pointer;
                         user-select: none;
                         background-color:white;
+
+                        display: inline-flex;
+                        justify-content: center;
+                        align-items: center;
+                        height: 100px;
+                        width: 200px;
+                        padding: 20px 10px;
+                        box-sizing: border-box;
+                        font-size: $font3;
+                        margin: 5px;
+                        color: $gray;
+
+                        &:hover {
+                            background-color: $lightgray;
+                            color: $black;
+                            border: 1px dashed $black;
+                        }
                     }
+                }
+            }
+
+
+            .fade-start-anim {
+                animation: fade-start 300ms ease;
+                animation-fill-mode: forwards;
+            }
+
+            .fade-end-anim {
+                display: none;
+            }
+
+            @keyframes fade-start {
+                from {
+                    opacity:0;
+                    height: 200px;
+                }
+                to {
+                    opacity:1;
+                    height: initial;
                 }
             }
         }
