@@ -457,6 +457,7 @@
     "plase_choice_delete_template":["삭제 할 템플릿을 선택해주세요.","Select template to delete.","请选择要删除的模板。"],
     "expert_5":["감정평가사","Certified Appraiser","鉴定评估师"],
     "expert_6":["변리사","Patent Attorney","专利师"],
+    "sign_place_add_title":["서명 영역 추가","",""],
     "group_view_only":["그룹 보기 전용","Group View Only","仅团体可阅览"],
     "signer_counter":["계약자 {0}","Signer(s) {0}","签署人 {0}"],
     "fail_start_approval_process":["결재 프로세스 시작에 실패하였습니다.","Failed to start approval process.","无法开始裁决。"],

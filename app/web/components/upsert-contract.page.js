@@ -925,7 +925,7 @@ export default class extends React.Component {
                         { this.state.contract.status < 2 ? <div className="can-edit-text">
                             <div>{translate("now_edit_privilege_who", [can_edit_name])}</div>
                         </div> : null }
-                        { this.state.contract.status < 2 ? <div className="floating">
+                        { this.state.contract.status < 2 && this.state.contract.can_edit_account_id == this.props.user_info.account_id ? <div className="floating">
                             <div>
                                 <div className="circle" unselectable="on" onClick={()=>this.setState({toolbar_open:!this.state.toolbar_open})}>
                                     <i className={`far fa-plus ${this.state.toolbar_open ? "spin-start-anim" : "spin-end-anim"}`}></i>
@@ -933,8 +933,9 @@ export default class extends React.Component {
                             </div>
                         </div>: null}
 
-                        { this.state.contract.status < 2 ? <div className={`tool-bar ${this.state.toolbar_open ? "fade-start-anim" : "fade-end-anim"}`}>
+                        { this.state.contract.status < 2 && this.state.contract.can_edit_account_id == this.props.user_info.account_id ? <div className={`tool-bar ${this.state.toolbar_open ? "fade-start-anim" : "fade-end-anim"}`}>
                             <div>
+                                <div className="sign-title">{translate("sign_place_add_title")}</div>
                                 {this.state.infos.filter( e=>e.privilege == 1 ).map( (e, k) => {
                                     return <div className="but" key={k} unselectable="on" onClick={this.onAddEditorSign.bind(this, e)}>
                                         {translate("sign_user", [e.user_info.username])}

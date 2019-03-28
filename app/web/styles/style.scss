@@ -2607,6 +2607,16 @@ div.checkbox2-comp{
                     text-align: right;
                     float: right;
 
+                    >.sign-title {
+                        text-align: left;
+                        width: 100%;
+                        font-size: $font5;
+                        font-weight: bold;
+                        color:$black;
+                        margin-left: 5px;
+                        margin-bottom:10px;
+                    }
+
                     >.but {
                         min-width: 150px;
 

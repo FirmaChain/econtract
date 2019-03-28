@@ -38,6 +38,19 @@ export default class PreviewContract extends React.Component {
             alert(translate("wrong_url_enter"))
             return this.closeSelf()
         }
+
+        let model = this.props.model;
+        for(let v of this.props.infos) {
+            let regex = new RegExp(`<\\s*span\\s*class="t-sign corp_${v.corp_id} entity_${v.entity_id}"[^>]*>(.*?)<\\s*\/\\s*span>`, "gi")
+            let aa = model.match(regex);
+
+            if(v.signature)
+                model = model.replace(regex, `<img src="${v.signature}" style="margin-left: 20px;height: 100px;"/>`)
+            else
+                model = model.replace(regex, `<span class="no-sign-place">${translate("no_sign_place", [v.user_info.username])}</span>`)
+        }
+
+        this.setState({model:model})
     }
 
     closeSelf = () => {
@@ -98,20 +111,8 @@ export default class PreviewContract extends React.Component {
     }
 
 	render() {
-        if(!this.props.model)
+        if(!this.state.model)
             return <div></div>
-
-        let model = this.props.model;
-        for(let v of this.props.infos) {
-            let regex = new RegExp(`<\\s*span\\s*class="t-sign corp_${v.corp_id} entity_${v.entity_id}"[^>]*>(.*?)<\\s*\/\\s*span>`, "gi")
-            let aa = model.match(regex);
-
-            if(v.signature)
-                model = model.replace(regex, `<img src="${v.signature}" style="margin-left: 20px;height: 100px;"/>`)
-            else
-                model = model.replace(regex, `<span class="no-sign-place">${translate("no_sign_place", [v.user_info.username])}</span>`)
-        }
-
 
         return (<div className="preview-contract-page">
             <div className="header-page">
@@ -123,7 +124,7 @@ export default class PreviewContract extends React.Component {
                 </div>
                 <div className="container">
                     <div className="contract-main-text">
-                        <div className="fr-element fr-view" dangerouslySetInnerHTML={{__html:model}} />
+                        <div className="fr-element fr-view" dangerouslySetInnerHTML={{__html:this.state.model}} />
                     </div>
                 </div>
             </div>
