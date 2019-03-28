@@ -499,6 +499,18 @@ export function createContractHtml(contract, infos) {
         <title>E-Contract</title>
         <meta charSet="utf-8" />
     </head>
+
+    let model = contract.html;
+    for(let v of infos) {
+        let regex = new RegExp(`<\\s*span\\s*class="t-sign corp_${v.corp_id} entity_${v.entity_id}"[^>]*>(.*?)<\\s*\/\\s*span>`, "gi")
+        let aa = model.match(regex);
+
+        if(v.signature)
+            model = model.replace(regex, `<img src="${v.signature}" style="margin-left: 20px;height: 100px;"/>`)
+        else
+            model = model.replace(regex, `<span class="no-sign-place">${translate("no_sign_place", [v.user_info.username])}</span>`)
+    }
+
     let body = <body>
         <div className="preview-contract-page">
             <div className="header-page">
@@ -509,8 +521,8 @@ export function createContractHtml(contract, infos) {
                 </div>
                 <div className="container">
                     <div className="contract-main-text">
-                        <div className="fr-element fr-view" dangerouslySetInnerHTML={{__html:contract.html}} />
-                        <div className="sign-info">
+                        <div className="fr-element fr-view" dangerouslySetInnerHTML={{__html:model}} />
+                        {/*<div className="sign-info">
                             {infos.map( (e, k) => {
                                 if(e.privilege != 1)
                                     return
@@ -526,7 +538,7 @@ export function createContractHtml(contract, infos) {
                                     </div> : null}
                                 </div>
                             })}
-                        </div>
+                        </div>*/}
                     </div>
                 </div>
             </div>
