@@ -1409,6 +1409,76 @@ class NoSignUserAdd extends React.Component {
     }
 }
 
+@modal
+class UnlockContractPublic extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            contract_open_key:""
+        }
+    }
+
+    componentDidMount() {
+    }
+
+    closeSelf = () => {
+        window.closeModal(this.props.modalId)
+    }
+
+    onConfirm = async () => {
+        if(!!this.props.onConfirm) {
+            let result = await this.props.onConfirm(this.state.contract_open_key);
+            if(result) this.closeSelf()
+        }
+    }
+
+    render() {
+        let creator = this.props.infos.find(e=>e.corp_id == 0 && e.entity_id == this.props.contract.account_id)
+        console.log(creator)
+
+        return <div className="unlock-contract-public-modal default-modal-container">
+            <div className="container">
+                <div className="icon"><i className="far fa-pencil"></i></div>
+                <div className="title">{translate("unlock_contract_public_title")}</div>
+                <div className="desc">{translate("unlock_contract_public_desc")}</div>
+
+                <div className="text-box">
+                    <div className="sub-title">{translate("unlock_contract_open_key")}</div>
+                    <input type="text" className="common-textbox"
+                        onChange={(e)=>this.setState({contract_open_key:e.target.value})}
+                        value={this.state.contract_open_key}
+                        placeholder={translate("contract_open_key_placeholder")}/>
+                </div>
+
+                <div className="text-box">
+                    <div className="sub-title">{translate("contract_name")}</div>
+                    <div className="text">{this.props.contract.name}</div>
+                    <div className="sub-desc">{translate("dont_know_contract_open_key_please_ask_creator")}</div>
+                </div>
+                
+                {/*<div className="text-box">
+                    <div className="sub-title">{translate("contract_creator")}</div>
+                    <div className="user">
+                        <div className="item">
+                            <div className="icon"><i className="far fa-user"></i></div>
+                            <div className="desc">
+                                <div className="username">{creator.user_info.username}</div>
+                                <div className="email">{creator.user_info.email}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="">{translate("dont_know_contract_open_key_please_ask_creator")}</div>
+                </div>*/}
+
+                <div className="button">
+                    <div className="submit" onClick={this.onConfirm}>{translate("unlock_contract_public_title")}</div>
+                </div>
+            </div>
+        </div>
+    }
+}
+
+
 
 
 

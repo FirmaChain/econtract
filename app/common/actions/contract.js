@@ -124,7 +124,7 @@ export function new_contract(subject, message, counterparties, set_pin, necessar
             if(e.user_type != -1)
                 mapped_data.eckai = sealContractAuxKey(e.public_key, shared_key);
             else {
-                mapped_data.encrypted_key = aes_encrypt(the_key, Buffer.from(e.contract_open_key, 'hex'))
+                mapped_data.encrypted_key = aes_encrypt(Buffer.from(the_key, 'hex').toString('hex'), Buffer.from(e.contract_open_key))
                 mapped_data.cell_phone_number = e.cell_phone_number;
             }
 

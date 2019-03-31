@@ -400,7 +400,7 @@ export default class extends React.Component {
         })
     }
 
-    onClickAddCorporation = ()=>{
+    /*onClickAddCorporation = ()=>{
         if(!this.state.add_corporation_info){
             return alert(translate("please_input_name_of_this"))
         }
@@ -428,7 +428,7 @@ export default class extends React.Component {
             }],
             add_individual_info:""
         });
-    }
+    }*/
 
     onClickRegister = async () => {
         if(this.is_register)
@@ -633,10 +633,10 @@ export default class extends React.Component {
         if(e.keyCode == 13){
             switch(type) {
                 case 0:
-                this.onClickAddIndivisual()
+                //this.onClickAddIndivisual()
                 break;
                 case 1:
-                this.onClickAddCorporation()
+                //this.onClickAddCorporation()
                 break;
             }
         }
@@ -930,7 +930,7 @@ export default class extends React.Component {
                     </div>
                 </div>
 
-                <div className="row">
+                {/*<div className="row">
                     <div className="left-desc">
                         <div className="desc-head">{translate("sign_info")}</div>
                         <div className="desc-content">{translate("sign_info_desc")}</div>
@@ -985,7 +985,7 @@ export default class extends React.Component {
                             </div>
                         </div>
                     </div>
-                </div>
+                </div>*/}
 
                 <div className="bottom-container">
                     <div className="regist-contract" onClick={this.onClickRegister}>{!!this.state.edit_mode ? translate("modify_space") : translate("register_space")}</div>

@@ -6933,6 +6933,150 @@ div.checkbox2-comp{
     }
 }
 
+.unlock-contract-public-modal {
+    background-color: #fff;
+    min-width: 200px;
+    width:600px;
+
+
+    >.container {
+        padding:50px;
+        text-align: center;
+
+        >.icon {
+
+            >i { 
+                font-size: 30px;
+            }
+        }
+
+        >.title {
+            font-size: $font5;
+            color: $black;
+            font-weight: bold;
+            margin-top: 18px;
+        }
+
+        >.desc {
+            text-align: center;
+            font-size: $font2;
+            color: $black;
+            margin-bottom: 20px;
+            margin-top: 20px;
+        }
+
+
+        >.text-box {
+            margin-top: 40px;
+            text-align: left;
+
+            >.sub-title {
+                font-size: $font2;
+                color:$black;
+                font-weight: bold;
+                margin-bottom:8px;
+                margin-left:5px;
+            }
+
+            >input {
+
+            }
+
+            >.text {
+                font-size: $font5;
+                margin-left:10px;
+                font-weight: bold;
+            }
+
+            >.sub-desc {
+                font-size:$font0;
+                color:$gray;
+                margin-top:10px;
+                margin-left:10px;
+            }
+            
+            >.item {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+
+                padding:20px 20px;
+                border-bottom:1px solid $lightgray;
+
+                &:last-child {
+                    border-bottom: 0;
+                }
+
+                &:hover {
+                    background-color: $lightgray;
+                }
+
+                >.icon {
+                    width:40px;
+                    padding-right: 10px;
+                    text-align: center;
+
+                    >i {
+                        font-size: 22px;
+                        color: $black;
+                    }
+                }
+
+
+                >.desc {
+                    flex:1;
+
+                    >.username {
+                        color: $black;
+                        font-weight: bold;
+                        font-size: $font2;
+
+                        >span {
+                            color: $gray;
+                            font-size: $font0;
+                            margin-left:10px;
+                        }
+                    }
+
+                    >.email {
+                        color: $black;
+                        font-size: $font1;
+                    }
+
+                    >.cell-phone-number {
+                        color: $gray;
+                        font-size: $font0;
+                    }
+                }
+            }
+        }
+
+        >.button {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+
+            margin-top: 40px;
+
+            >.submit {
+                margin: auto;
+                margin-right:10px;
+
+                font-size: $font4;
+                font-weight: bold;
+                color: white;
+                cursor: pointer;
+
+                background-color: $blue;
+                border:1px solid $blue;
+                padding:15px;
+                flex:1;
+            }
+        }
+    }
+}
+
 
 
 

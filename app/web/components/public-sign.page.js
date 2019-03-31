@@ -136,9 +136,16 @@ export default class extends React.Component {
             this.setState({
                 ...resp.payload
             })
+
+            window.openModal("UnlockContractPublic", {
+                contract:resp.payload.contract,
+                infos:resp.payload.infos,
+                onConfirm:this.unlock_contract
+            })
         }
         else if(resp.code == -6) {
-            alert("링크가 유효하지 않습니다.")
+            alert(translate("invalidate_link"))
+            return history.goBack();
         }
     }
 
@@ -146,20 +153,25 @@ export default class extends React.Component {
 
     }
 
-    unlock_contract = () => {
+    unlock_contract = (contract_open_key) => {
+        console.log("contract_open_key", contract_open_key)
         let the_key;
         try {
-            the_key = aes_decrypt(Buffer.from(this.state.ek, 'hex'), Buffer.from(this.state.contract_open_key, 'hex'))
+            the_key = aes_decrypt(Buffer.from(this.state.ek, 'hex'), Buffer.from(contract_open_key))
         } catch(err) {
             console.log(err)
+            alert(translate("fail_input_contract_open_key"))
+            return false
         }
-        the_key = Buffer.from(the_key, "hex")
+        the_key = Buffer.from(the_key, 'hex');
 
         try {
-            JSON.parse(aes_decrypt(Buffer.from(this.state.infos[0].user_info, 'hex').toString('hex'), the_key))
+            let a = JSON.parse(aes_decrypt(Buffer.from(this.state.infos[0].user_info, 'hex').toString('hex'), the_key))
+            console.log(a)
         } catch( err ) {
             console.log(err)
-            return alert("asdasd")
+            alert(translate("fail_input_contract_open_key"))
+            return false
         }
         let _ = {...this.state}
 
@@ -175,24 +187,15 @@ export default class extends React.Component {
         _.contract.html = _.contract.html ? aes_decrypt(Buffer.from(_.contract.html, 'hex').toString('hex'), the_key) : _.contract.html
         _.contract.message = _.contract.message ? aes_decrypt(Buffer.from(_.contract.message, 'hex').toString('hex'), the_key) : _.contract.message
         _.contract.necessary_info = JSON.parse(_.contract.necessary_info)
+        _.contract.the_key = the_key;
 
         this.setState(_)
-    }
-
-    render_code() {
-        return <div className="public-sign-code">
-            <div>열람 비밀번호를 입력해주세요.</div>
-            <input className="common-textbox"
-                type="text"
-                value={this.state.contract_open_key}
-                onChange={(e) => this.setState({contract_open_key:e.target.value})} />
-            <div onClick={this.unlock_contract}>확인</div>
-        </div>
+        return true;
     }
 
     render() {
         if(this.state.step == 0) {
-            return this.render_code();
+            return <div></div>
         } else {
             return this.render_main();
         }
