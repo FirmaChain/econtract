@@ -552,7 +552,7 @@ export default class extends React.Component {
             return false
         }
 
-        let corp_id = this.props.user_info.corp_id || -1
+        let corp_id = this.props.user_info.corp_id || 0
         let meOrGroup = select_subject(this.state.infos, this.state.groups, this.props.user_info.account_id, corp_id)
 
         let msg = {
@@ -698,7 +698,7 @@ export default class extends React.Component {
         let contract = this.state.contract;
         let user_infos = this.state.infos;
 
-        let corp_id = this.props.user_info.corp_id || -1
+        let corp_id = this.props.user_info.corp_id || 0
         let meOrGroup = select_subject(user_infos, this.state.groups, this.props.user_info.account_id, corp_id).my_info
 
         return <div className="bottom signs">
@@ -899,7 +899,7 @@ export default class extends React.Component {
                 can_edit_name = v.user_info.username
             }
         }
-        let corp_id = this.props.user_info.corp_id || -1
+        let corp_id = this.props.user_info.corp_id || 0
         let meOrGroup = select_subject(this.state.infos, this.state.groups, this.props.user_info.account_id, corp_id).my_info
 
         return (<div className="upsert-page upsert-contract-page">
@@ -996,7 +996,6 @@ export default class extends React.Component {
                         {meOrGroup.signature ? translate("resign") : translate("go_sign")}
                     </div>
                 })()}
-                
             </div>
 		</div>);
 	}

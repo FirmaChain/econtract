@@ -62,11 +62,12 @@ export function select_subject(infos, groups, account_id, corp_id, is_pin_used =
     let my_infos = infos.filter(e=>{
         if(is_pin_used && e.is_pin_null == 1)
             return false
-        return (e.corp_id == DUMMY_CORP_ID && e.entity_id == account_id) || e.corp_id == corp_id
+        return (e.corp_id == DUMMY_CORP_ID && e.entity_id == account_id) || e.corp_id == corp_id || (corp_id == -1 && e.entity_id == account_id)
     });
+    console.log("my_infos", my_infos)
 
     let group_ids = groups.map(e=>e.group_id)
-    let my_info = my_infos.find(e=>e.corp_id == DUMMY_CORP_ID) || my_infos.find(e=>group_ids.indexOf(e.entity_id) != -1);
+    let my_info = my_infos.find(e=>e.corp_id == DUMMY_CORP_ID) || my_infos.find(e=>group_ids.indexOf(e.entity_id) != -1) || my_infos.find(e=>e.corp_id == -1 && e.entity_id == account_id) 
     my_info = my_info ? my_info : null;
     return {
         my_info,

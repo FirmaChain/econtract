@@ -123,7 +123,7 @@ export default class extends React.Component {
                 let contract = resp.payload.contract
                 let infos = resp.payload.infos
 
-                let corp_id = this.props.user_info.corp_id || -1
+                let corp_id = this.props.user_info.corp_id || 0
                 let me = select_subject(infos, this.state.groups, this.props.user_info.account_id, corp_id, contract.is_pin_used).my_info
                 
                 if(me) {
@@ -236,7 +236,7 @@ export default class extends React.Component {
         let contract = this.state.contract
         let infos = this.state.infos
 
-        let corp_id = this.props.user_info.corp_id || -1
+        let corp_id = this.props.user_info.corp_id || 0
         let me = select_subject(infos, this.state.groups, this.props.user_info.account_id, corp_id, contract.is_pin_used).my_info
         if(status == 0) {
             return translate("status_0")
