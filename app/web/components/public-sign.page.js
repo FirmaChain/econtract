@@ -124,8 +124,23 @@ export default class extends React.Component {
     componentDidMount() {
         setTimeout(async()=>{
             await window.showIndicator(translate("loding_contract_detail_data"))
+            let resp = await this.props.get_contract_public_link(this.props.match.params.code)
             
-            await this.onRefresh()
+            if(resp.code == 1) {
+                this.setState({
+                    ...resp.payload
+                })
+
+                window.openModal("UnlockContractPublic", {
+                    contract:resp.payload.contract,
+                    infos:resp.payload.infos,
+                    onConfirm:this.unlock_contract
+                })
+            }
+            else if(resp.code == -6) {
+                alert(translate("invalidate_link"))
+                return history.goBack();
+            }
             await window.hideIndicator()
         })
     }
@@ -146,22 +161,17 @@ export default class extends React.Component {
 
     onRefresh = async () => {
         let resp = await this.props.get_contract_public_link(this.props.match.params.code)
-        
-        if(resp.code == 1) {
-            this.setState({
-                ...resp.payload
-            })
-
-            window.openModal("UnlockContractPublic", {
-                contract:resp.payload.contract,
-                infos:resp.payload.infos,
-                onConfirm:this.unlock_contract
-            })
-        }
-        else if(resp.code == -6) {
-            alert(translate("invalidate_link"))
-            return history.goBack();
-        }
+            
+            if(resp.code == 1) {
+                this.setState({
+                    ...resp.payload
+                })
+                await this.unlock_contract(this.state.contract_open_key || "")
+            }
+            else if(resp.code == -6) {
+                alert(translate("invalidate_link"))
+                return history.goBack();
+            }
     }
 
     unlock_contract = async (contract_open_key) => {
@@ -200,6 +210,7 @@ export default class extends React.Component {
         _.contract.the_key = the_key;
 
         _.model = _.contract.html;
+        _.contract_open_key = contract_open_key;
 
         _.step = 1;
         await this.setState(_)
@@ -410,9 +421,10 @@ export default class extends React.Component {
         let certificate_number = await new Promise(resolve => {
             window.openModal("AddCommonModal", {
                 icon:"far fa-sms",
-                title:"문자 인증",
-                subTitle:"서명을 하기 위해서는 문자 인증이 필요합니다.",
-                placeholder:"핸드폰으로 전송된 문자 인증 번호를 입력해주세요.",
+                title:translate("confirm_sign_sms_verify_title"),
+                subTitle:translate("confirm_sign_sms_verify_desc"),
+                placeholder:translate("confirm_sign_sms_verify_placeholder"),
+                confirmText:translate("confirm"),
                 cancelable:true,
                 onConfirm: async (certificate_number) => {
                     resolve(certificate_number)
@@ -434,7 +446,7 @@ export default class extends React.Component {
             this.state.contract.contract_id, this.state.entity_id, 
             signature_data, this.state.contract.the_key, email_list, 
             sha256(contract_body), me.user_info.cell_phone_number, certificate_number, true);
-
+        await window.hideIndicator()
         if(r.code == -9) {
             return alert(translate("you_dont_update_complete_contract_sign"));
         } /*else if(r.code == -11) {
@@ -444,10 +456,11 @@ export default class extends React.Component {
             return alert(translate("i_have_ticket_but_other_no_ticket", [no_ticket_users.map(e=>e.user_info.username).join(", ")]))
         } */else if(r.code == -19) {
             return alert(translate("payer_do_not_have_ticket"));
+        } else if(r.code == -17) {
+            return alert(translate("fail_sign_sms"))
         }
         alert(translate("complete_sign_register"))
         this.blockFlag = true
-        await window.hideIndicator()
         await this.setState({step:2})
     }
 
@@ -467,13 +480,22 @@ export default class extends React.Component {
         let corp_id = -1
         let meOrGroup = select_subject(user_infos, [], this.state.entity_id, corp_id).my_info
 
+        let username = "";
+        if(!!meOrGroup.user_info.username) {
+            if(meOrGroup.user_info.user_type == -1)
+                username = `(${translate("not_regist_user")}) `
+            username += meOrGroup.user_info.username
+        }
+        else
+            username = meOrGroup.user_info.title;
+
         return <div className="bottom signs">
             <div className="title">{translate("count_curr_total_person", [user_infos.filter(e=>e.is_exclude == 0).length])}</div>
             <div className="user-container me">
                 <div className="user" onClick={this.onToggleUser.bind(this, meOrGroup.entity_id, meOrGroup.corp_id, false)}>
                     <i className="icon fas fa-user-edit"></i>
                     <div className="user-info">
-                        <div className="name">{meOrGroup.user_info.username ? meOrGroup.user_info.username : meOrGroup.user_info.title}<span>{this.text_status(meOrGroup)}</span></div>
+                        <div className="name">{username}<span>{this.text_status(meOrGroup)}</span></div>
                         <div className="email">{meOrGroup.user_info.email ? meOrGroup.user_info.email : meOrGroup.user_info.company_name}</div>
                     </div>
                     {this.isOpenUser(meOrGroup.entity_id, meOrGroup.corp_id) ? <i className="arrow fas fa-caret-up"></i> : <i className="arrow fas fa-caret-down"></i>}
@@ -734,7 +756,9 @@ export default class extends React.Component {
     }
 
     render_complete() {
-
+        return <div>
+            서명이 완료되었습니다.
+        </div>
     }
 
     render() {

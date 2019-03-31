@@ -460,6 +460,7 @@ export default class extends React.Component {
         await window.showIndicator()
         let email_list = this.state.infos.filter(e=>window.email_regex.test(e.sub)).map(e=>e.sub)
         let r = await this.props.update_contract_sign(this.state.contract.contract_id, signature_data, this.state.contract.the_key, email_list, sha256(contract_body))
+        await window.hideIndicator()
         if(r.code == -9) {
             return alert(translate("you_dont_update_complete_contract_sign"));
         } /*else if(r.code == -11) {
@@ -472,7 +473,6 @@ export default class extends React.Component {
         }
         alert(translate("complete_sign_register"))
         this.blockFlag = true
-        await window.hideIndicator()
         history.replace(`/e-contract/contract-info/${this.props.match.params.contract_id}`)
     }
 
