@@ -1746,14 +1746,13 @@ setInterval(()=>{
         ]
         let home_flag = true
         for(let v of exclude) {
-            if(v.indexOf(location.pathname) != -1) {
+            if(location.pathname.indexOf(v) != -1) {
                 home_flag = false
                 break;
             }
         }
-        console.log("home_flag", home_flag)
         if(home_flag) {
-            //location.href = "/";
+            location.href = "/";
         }
     }
 },1000)
