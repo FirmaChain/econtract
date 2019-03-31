@@ -421,8 +421,8 @@ export default class extends React.Component {
                 onCancel: async () => {
                     resolve(false)
                 },
-            }
-        }));
+            })
+        });
 
         if(!certificate_number) return;
 
@@ -434,7 +434,7 @@ export default class extends React.Component {
             this.state.contract.contract_id, this.state.entity_id, 
             signature_data, this.state.contract.the_key, email_list, 
             sha256(contract_body), me.user_info.cell_phone_number, certificate_number, true);
-        
+
         if(r.code == -9) {
             return alert(translate("you_dont_update_complete_contract_sign"));
         } /*else if(r.code == -11) {
