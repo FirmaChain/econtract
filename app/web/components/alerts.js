@@ -1751,7 +1751,9 @@ setInterval(()=>{
                 break;
             }
         }
-        if(home_flag)
-            location.href = "/";
+        console.log("home_flag", home_flag)
+        if(home_flag) {
+            //location.href = "/";
+        }
     }
 },1000)
