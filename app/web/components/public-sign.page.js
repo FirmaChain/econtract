@@ -166,7 +166,7 @@ export default class extends React.Component {
                 this.setState({
                     ...resp.payload
                 })
-                await this.unlock_contract(this.state.contract_open_key || "")
+                await this.unlock_contract(this.state.contract_open_key || "", false)
             }
             else if(resp.code == -6) {
                 alert(translate("invalidate_link"))
@@ -174,7 +174,7 @@ export default class extends React.Component {
             }
     }
 
-    unlock_contract = async (contract_open_key) => {
+    unlock_contract = async (contract_open_key, move_step = true) => {
         let the_key;
         try {
             the_key = aes_decrypt(Buffer.from(this.state.ek, 'hex'), Buffer.from(contract_open_key))
@@ -211,8 +211,8 @@ export default class extends React.Component {
 
         _.model = _.contract.html;
         _.contract_open_key = contract_open_key;
-
-        _.step = 1;
+        if(move_step) _.step = 1;
+        
         await this.setState(_)
 
         this.subscribeChannel()
