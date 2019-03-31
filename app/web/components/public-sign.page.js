@@ -333,6 +333,78 @@ export default class extends React.Component {
     }
 
 
+    onClickRegisterSign = async () => {
+        if( (this.state.contract.html || "") != this.state.model)
+            return alert(translate("if_modify_content_not_sign"))
+
+        if( this.state.contract.html == null || this.state.contract.html == "") {
+            return alert(translate("if_no_model_you_dont_sign"))
+        }
+
+        /*let exist_ticket = (await this.props.check_ticket_count()).payload
+        if(!exist_ticket)
+            return alert(translate("no_ticket_please_charge"))*/
+
+        let me = select_subject(this.state.infos, [], this.state.account_id, -1).my_info
+        if(me == null)
+            return;
+
+        let sign_info_list
+        if(this.props.user_info.account_type == 0) {
+            sign_info_list = this.state.contract.necessary_info.individual
+        } else {
+            sign_info_list = this.state.contract.necessary_info.corporation
+        }
+
+        let sign_info = me.sign_info || {}
+
+        for(let v of sign_info_list) {
+            if(!sign_info["#"+v] || sign_info["#"+v] == "") {
+                return alert(translate("input_all_sign_info"))
+            }
+        }
+
+        let signature_data = await new Promise(resolve=>window.openModal("DrawSign",{
+            onFinish : async (signature)=>{
+                if(this.props.user_info.account_id == this.state.contract.payer_account_id) {
+                    let exist_ticket = (await this.props.check_ticket_count()).payload
+                    if(!exist_ticket) {
+                        alert(translate("no_ticket_please_charge"))
+                        resolve(false)
+                    }
+                }
+                resolve(signature)
+                return true;
+            }
+        }) );
+
+        if(!signature_data) return;
+
+        if( this.props.user_info.account_id == this.state.contract.payer_account_id && 
+            (await window.confirm(translate("ticket_use_notify"), translate("ticket_use_notify_desc"))) == false )
+            return;
+
+        let contract_body = createContractHtml(this.state.contract, this.state.infos).exclude_sign_body
+
+        await window.showIndicator()
+        let email_list = this.state.infos.filter(e=>window.email_regex.test(e.sub)).map(e=>e.sub)
+        let r = await this.props.update_contract_sign(this.state.contract.contract_id, signature_data, this.state.contract.the_key, email_list, sha256(contract_body))
+        if(r.code == -9) {
+            return alert(translate("you_dont_update_complete_contract_sign"));
+        } /*else if(r.code == -11) {
+            return alert(tranlate("no_ticket_no_sign_please_charge"))
+        } else if(r.code == -12) {
+            let no_ticket_users = r.no_ticket_users.map(e => this.state.infos.find(ee=>e.entity_id == ee.entity_id && e.corp_id == ee.corp_id))
+            return alert(translate("i_have_ticket_but_other_no_ticket", [no_ticket_users.map(e=>e.user_info.username).join(", ")]))
+        } */else if(r.code == -19) {
+            return alert(translate("payer_do_not_have_ticket"));
+        }
+        alert(translate("complete_sign_register"))
+        this.blockFlag = true
+        await window.hideIndicator()
+        history.replace(`/e-contract/contract-info/${this.props.match.params.contract_id}`)
+    }
+
     render_info() {
         switch(this.state.selected_menu) {
             case 0:
@@ -372,7 +444,14 @@ export default class extends React.Component {
 
                         let divs = []
                         if(user_type == -1) {
-                            console.log(meOrGroup)
+                            divs.push(<div className="text-place" key={"cellphone_number"+meOrGroup.entity_id}>
+                                <div className="title">{translate("cellphone_number")}</div>
+                                <div className="desc">{meOrGroup.user_info.cell_phone_number}</div>
+                            </div>)
+                            divs.push(<div className="text-place" key={"email"+meOrGroup.entity_id}>
+                                <div className="title">{translate("email")}</div>
+                                <div className="desc">{meOrGroup.user_info.email}</div>
+                            </div>)
                         } else if(user_type == 0) {
                             for(let v of contract.necessary_info.individual) {
                                 divs.push(<div className="text-place" key={v}>
@@ -439,7 +518,16 @@ export default class extends React.Component {
                                 return
 
                             let divs = []
-                            if(user_type == 0) {
+                            if(user_type == -1) {
+                                divs.push(<div className="text-place" key={"cellphone_number"+e.entity_id}>
+                                    <div className="title">{translate("cellphone_number")}</div>
+                                    <div className="desc">{e.user_info.cell_phone_number}</div>
+                                </div>)
+                                divs.push(<div className="text-place" key={"email"+e.entity_id}>
+                                    <div className="title">{translate("email")}</div>
+                                    <div className="desc">{e.user_info.email}</div>
+                                </div>)
+                            } else if(user_type == 0) {
                                 for(let v of contract.necessary_info.individual) {
                                     divs.push(<div className="text-place" key={v}>
                                         <div className="title">{v}</div>
@@ -448,13 +536,6 @@ export default class extends React.Component {
                                 }
                             } else if(user_type == 1){
                                 for(let v of contract.necessary_info.corporation) {
-                                    divs.push(<div className="text-place" key={v}>
-                                        <div className="title">{v}</div>
-                                        <div className="desc">{e.sign_info ? e.sign_info["#"+v] || translate("unregistered") : translate("unregistered")}</div>
-                                    </div>)
-                                }
-                            } else if(user_type == -1) {
-                                for(let v of contract.necessary_info.individual) {
                                     divs.push(<div className="text-place" key={v}>
                                         <div className="title">{v}</div>
                                         <div className="desc">{e.sign_info ? e.sign_info["#"+v] || translate("unregistered") : translate("unregistered")}</div>
@@ -514,7 +595,7 @@ export default class extends React.Component {
             <div className="header-page">
                 <div className="header">
                     <div className="left-icon">
-                        <i className="fal fa-times" onClick={()=>history.goBack()}></i>
+                        &nbsp;
                     </div>
                     <div className="title">{this.state.contract.name}</div>
                 </div>

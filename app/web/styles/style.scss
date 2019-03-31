@@ -1440,7 +1440,8 @@ div.checkbox2-comp{
         display: flex;
         flex-direction: row;
         align-items: center;
-
+        height: 70px;
+        
         border-bottom:1px solid $middlegray;
 
         >.left-logo {
@@ -2472,7 +2473,7 @@ div.checkbox2-comp{
         color:$middleblack;
         border:1px dashed $gray;
     }
-    
+
 
     >.header-page .container {
         >.info {

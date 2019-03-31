@@ -416,7 +416,7 @@ export default class extends React.Component {
         if(!exist_ticket)
             return alert(translate("no_ticket_please_charge"))*/
 
-        let me = select_subject(this.state.infos, [], this.props.user_info.account_id, -1).my_info
+        let me = select_subject(this.state.infos, [], this.props.user_info.account_id, window.CONST.PERSONAL_CORP_ID).my_info;
         if(me == null)
             return;
 
@@ -723,7 +723,16 @@ export default class extends React.Component {
                         if( meOrGroup.privilege != 1 ) return;
 
                         let divs = []
-                        if(user_type == 0) {
+                        if(user_type == -1) {
+                            divs.push(<div className="text-place" key={"cellphone_number"+meOrGroup.entity_id}>
+                                <div className="title">{translate("cellphone_number")}</div>
+                                <div className="desc">{meOrGroup.user_info.cell_phone_number}</div>
+                            </div>)
+                            divs.push(<div className="text-place" key={"email"+meOrGroup.entity_id}>
+                                <div className="title">{translate("email")}</div>
+                                <div className="desc">{meOrGroup.user_info.email}</div>
+                            </div>)
+                        } else if(user_type == 0) {
                             for(let v of contract.necessary_info.individual) {
                                 divs.push(<div className="text-place" key={v}>
                                     <div className="title">{v}</div>
@@ -789,7 +798,16 @@ export default class extends React.Component {
                                 return
 
                             let divs = []
-                            if(user_type == 0) {
+                            if(user_type == -1) {
+                                divs.push(<div className="text-place" key={"cellphone_number"+e.entity_id}>
+                                    <div className="title">{translate("cellphone_number")}</div>
+                                    <div className="desc">{e.user_info.cell_phone_number}</div>
+                                </div>)
+                                divs.push(<div className="text-place" key={"email"+e.entity_id}>
+                                    <div className="title">{translate("email")}</div>
+                                    <div className="desc">{e.user_info.email}</div>
+                                </div>)
+                            } else if(user_type == 0) {
                                 for(let v of contract.necessary_info.individual) {
                                     divs.push(<div className="text-place" key={v}>
                                         <div className="title">{v}</div>
