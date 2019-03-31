@@ -844,6 +844,7 @@
     "ticket_msg":["{0}건","{0} contracts","{0}份"],
     "fail_group_member_withdraw":["해당 그룹원 탈퇴에 실패하였습니다.","Failed to remove group member.","无法删除用户。"],
     "subscribe_purchase_plan_yearly":["연간 결제 플랜이 구독되었습니다.","You have subscribed successfully to an annual plan.","您成功购买了年支付。"],
+    "no_register_user_add_contract_info_cellphone_number_correctly":["* 서명할 때 문자 인증이 필요하므로 상대방의 전화번호를 정확하게 기재해주세요.","",""],
     "profile_pic":["프로필 사진","Profile Picture","头像"],
     "please_input_recover_email":["복구할 이메일을 입력해주세요.","Enter the email address to recover.","请输入您要修复的邮箱。"],
     "input_all_sign_info":["서명 정보를 모두 입력해주세요.","Enter the required information.","请输入所有签署信息。"],

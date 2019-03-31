@@ -1441,7 +1441,7 @@ div.checkbox2-comp{
         flex-direction: row;
         align-items: center;
         height: 70px;
-        
+
         border-bottom:1px solid $middlegray;
 
         >.left-logo {
@@ -7175,6 +7175,12 @@ div.checkbox2-comp{
 
             >input {
 
+            }
+
+            >.desc {
+                margin-top:5px;
+                font-size:$font1;
+                color:$middleblack;
             }
         }
 

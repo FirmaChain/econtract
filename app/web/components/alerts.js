@@ -1402,6 +1402,7 @@ class NoSignUserAdd extends React.Component {
                         onChange={this.onChangePhoneForm.bind(this,"cell_phone_number")}
                         value={this.state.cell_phone_number}
                         placeholder={this.props.placeholder}/>
+                    <div className="desc">{translate("no_register_user_add_contract_info_cellphone_number_correctly")}</div>
                 </div>
                 <div className="button">
                     <div className="confirm" onClick={this.onConfirm}>{translate("add")}</div>
