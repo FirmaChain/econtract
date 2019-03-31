@@ -806,21 +806,20 @@ class MoveCanEditAccount extends React.Component {
     }
 
     render() {
+        let availabe_user_infos = this.props.user_infos.filter(e=>e.privilege == 1 && this.props.my_account_id != e.entity_id && e.corp_id != -1)
         return <div className="move-can-edit-account-modal default-modal-container">
             <div className="container">
                 <div className="icon"><i className="fas fa-arrow-alt-right"></i></div>
                 <div className="title">{translate("move_edit_privilege")}</div>
                 <div className="sub-title">{translate("move_edit_privilege_desc")}</div>
                 <div className="content">
-                {this.props.user_infos.map( (e, k) => {
-                    if(e.privilege != 1 || this.props.my_account_id == e.entity_id)
-                        return
-
+                {availabe_user_infos.map( (e, k) => {
                     return <div className={"item" + (this.state.select == e ? " enable" : "")} key={k} onClick={this.onSelect.bind(this, e)}>
                         <div className="name">{e.user_info.username ? e.user_info.username : e.user_info.title}</div>
                         <div className="email">{e.user_info.email ? e.user_info.email : e.user_info.company_name}</div>
                     </div>
                 })}
+                {availabe_user_infos.length == 0 ? <div className="item">{translate("not_available_move_user")}</div> : null}
                 </div>
                 <div className="button">
                     <div className="confirm" onClick={this.onConfirm}>{translate("move_edit_privilege")}</div>
@@ -1434,7 +1433,6 @@ class UnlockContractPublic extends React.Component {
 
     render() {
         let creator = this.props.infos.find(e=>e.corp_id == 0 && e.entity_id == this.props.contract.account_id)
-        console.log(creator)
 
         return <div className="unlock-contract-public-modal default-modal-container">
             <div className="container">

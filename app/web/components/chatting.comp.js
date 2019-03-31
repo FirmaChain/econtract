@@ -17,7 +17,6 @@ import CheckBox2 from "./checkbox2"
 
 let mapStateToProps = (state)=>{
 	return {
-        user_info:state.user.info,
 	}
 }
 
@@ -33,8 +32,8 @@ export default class extends React.Component {
         }
         this.block_scroll = false
         this.block_chat = false
+        console.log(this.props)
     }
-
     componentDidMount() {
         this.refs.bottom.scrollIntoView(/*{ behavior: "smooth" }*/);
         this.refs.list_of_chat.addEventListener('scroll', async (e) => {
@@ -79,12 +78,13 @@ export default class extends React.Component {
     }
 
     render_chat_contract_slot(e) {
+
         switch(e.type) {
             case 0: {
                 let user = this.props.infos.find(v=>v.corp_id == e.corp_id && v.entity_id == e.entity_id)
                 if(!user) return
 
-                let corp_id = this.props.user_info.corp_id || -1
+                let corp_id = this.props.user_info.corp_id || window.CONST.PERSONAL_CORP_ID
                 let meOrGroup = select_subject(this.props.infos, this.props.groups, this.props.user_info.account_id, corp_id).my_info
 
                 let isMine = meOrGroup == user
@@ -264,6 +264,9 @@ export default class extends React.Component {
     }
 
     render_chat_slot(e){
+        if(!this.props.user_info)
+            return;
+
         if(this.props.chatType == "approval") {
             return this.render_chat_approval_slot(e)
         } else {

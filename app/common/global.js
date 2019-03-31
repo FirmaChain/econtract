@@ -31,6 +31,7 @@ window.CONST = {
         GIVE_MODIFY: 6,
     },
     NO_REGISTER_USER_CORP_ID: -1,
+    PERSONAL_CORP_ID: -1000,
     DUMMY_CORP_ID: 0,
     DUMMY_GROUP_ID: 0,
     DUMMY_CONTRACT_ID: 0,

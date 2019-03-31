@@ -28,6 +28,7 @@ import moment from 'moment'
 
 import {
     get_contract_public_link,
+    get_chats,
     select_subject,
     createContractHtml,
 
@@ -45,6 +46,7 @@ let mapStateToProps = (state)=>{
 
 let mapDispatchToProps = {
     get_contract_public_link,
+    get_chats,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -54,7 +56,7 @@ export default class extends React.Component {
 
         this.blockFlag = false;
         this.disconnect = false
-        /*this.socket = socketIOClient(config.HOST)
+        this.socket = socketIOClient(config.HOST)
         this.socket.on('disconnect', async () => {
             //console.log("disconnect socket")
             this.disconnect = true
@@ -69,7 +71,7 @@ export default class extends React.Component {
                     continue
                 }
             }
-        })*/
+        })
         //reconect
 
         this.config = {
@@ -129,6 +131,15 @@ export default class extends React.Component {
             this.socket.disconnect()
     }
 
+    subscribeChannel() {
+        if(!this.state.contract)
+            return
+
+        this.socket.emit('subscribe_channel', this.state.contract.contract_id)
+        this.socket.on("receive_chat_"+this.state.contract.contract_id, this.onReceiveChat)
+        this.socket.on("refresh_contract_"+this.state.contract.contract_id, this.onRefresh)
+    }
+
     onRefresh = async () => {
         let resp = await this.props.get_contract_public_link(this.props.match.params.code)
         
@@ -149,7 +160,7 @@ export default class extends React.Component {
         }
     }
 
-    unlock_contract = (contract_open_key) => {
+    unlock_contract = async (contract_open_key) => {
         let the_key;
         try {
             the_key = aes_decrypt(Buffer.from(this.state.ek, 'hex'), Buffer.from(contract_open_key))
@@ -184,11 +195,17 @@ export default class extends React.Component {
         _.contract.necessary_info = JSON.parse(_.contract.necessary_info)
         _.contract.the_key = the_key;
 
+        _.model = _.contract.html;
+
         _.step = 1;
-        this.setState(_)
+        await this.setState(_)
+
+        this.subscribeChannel()
+        await this.onChatLoadMore()
+
         return true;
     }
-    
+
 
     isOpenUser = (entity_id, corp_id) => {
         for(let v of this.state.open_users) {
@@ -235,40 +252,6 @@ export default class extends React.Component {
         return false
     }
 
-    onClickSendChat = async (text)=>{
-        if(this.disconnect) {
-            alert(translate("broken_chat_connection_plaese_refresh"))
-            return false
-        }
-        
-        if(text.length == 0) {
-            alert(translate("input_message"));
-            return false
-        }
-
-        let corp_id = this.props.user_info.corp_id || 0
-        let meOrGroup = select_subject(this.state.infos, this.state.groups, this.props.user_info.account_id, corp_id)
-
-        let msg = {
-            text
-        }
-
-        if(!meOrGroup.isAccount) {
-            msg.username = this.props.user_info.username;
-            msg.account_id = this.props.user_info.account_id;
-        }
-        meOrGroup = meOrGroup.my_info
-
-        let result = await this.props.send_chat(this.state.contract.contract_id, meOrGroup.entity_id, meOrGroup.corp_id, JSON.stringify(msg))
-        if(result.code == 1) {
-            /*let all_chats = [...this.state.chat_list, result.payload]
-            all_chats = all_chats.sort( (a, b) => a.chat_id - b.chat_id )
-            await this.setState({chat_list:all_chats})*/
-            return true
-        }
-        return false
-    }
-
     onReceiveChat = async (chat) => {
         let all_chats = [...this.state.chat_list, chat]
         all_chats = all_chats.sort( (a, b) => a.chat_id - b.chat_id )
@@ -284,6 +267,48 @@ export default class extends React.Component {
             case 2:
                 return translate("viewer")
         }
+    }
+
+
+    saveSelection = () => {
+        let sel;
+        if (window.getSelection) {
+            sel = window.getSelection();
+            if (sel.getRangeAt && sel.rangeCount) {
+                return sel.getRangeAt(0);
+            }
+        } else if (document.selection && document.selection.createRange) {
+            return document.selection.createRange();
+        }
+        return null;
+    }
+
+
+    restoreSelection = (range) => {
+        if (range) {
+            let sel;
+            if (window.getSelection) {
+                sel = window.getSelection();
+                sel.removeAllRanges();
+                sel.addRange(range);
+            } else if (document.selection && range.select) {
+                range.select();
+            }
+        }
+    }
+
+
+    onAddEditorSign = async (user, e) => {
+        /*e.stopPropagation();
+        e.preventDefault();*/
+
+        let selRange = this.saveSelection()
+        this.restoreSelection(selRange)
+        this.editor.events.focus(true);
+
+        this.editor.html.insert(`<span class="t-sign corp_${user.corp_id} entity_${user.entity_id}" contentEditable="false">${translate("sign_user", [user.user_info.username])}</span>`)
+
+        this.editor.undo.saveStep();
     }
 
 
@@ -324,8 +349,6 @@ export default class extends React.Component {
         let corp_id = -1
         let meOrGroup = select_subject(user_infos, [], this.state.entity_id, corp_id).my_info
 
-        console.log(meOrGroup)
-
         return <div className="bottom signs">
             <div className="title">{translate("count_curr_total_person", [user_infos.filter(e=>e.is_exclude == 0).length])}</div>
             <div className="user-container me">
@@ -345,10 +368,12 @@ export default class extends React.Component {
                     {(()=> {
                         let user_type = meOrGroup.user_info.user_type || 0
 
-                        if( meOrGroup.privilege != 1 ) return
+                        if( meOrGroup.privilege != 1 ) return;
 
                         let divs = []
-                        if(user_type == 0) {
+                        if(user_type == -1) {
+                            console.log(meOrGroup)
+                        } else if(user_type == 0) {
                             for(let v of contract.necessary_info.individual) {
                                 divs.push(<div className="text-place" key={v}>
                                     <div className="title">{v}</div>
@@ -451,17 +476,20 @@ export default class extends React.Component {
     }
 
     render_chat() {
+        let user_info = {account_id:this.state.entity_id, corp_id:-1}
         return <div className="bottom chat">
             <Chatting 
                 contract={this.state.contract}
                 infos={this.state.infos}
-                user_info={this.state.user_info}
+                user_info={user_info}
                 groups={this.state.groups}
                 chat_list={this.state.chat_list}
-                onSend={this.onClickSendChat}
+                onSend={null}
                 onLoadMore={this.onChatLoadMore}
                 isSendable={this.state.contract.status != 2}
                 chatType={"contract"}
+                isSendable={false}
+                aaa={{asdsd:"asdasd"}}
                 initialize={(scrollBottom) => {
                     this.setState({scrollBottom})
                 }}
@@ -470,6 +498,8 @@ export default class extends React.Component {
     }
 
     render_main() {
+        if(!this.state.contract)
+            return <div></div>
 
         let can_edit_name
         for(let v of this.state.infos) {
@@ -477,10 +507,10 @@ export default class extends React.Component {
                 can_edit_name = v.user_info.username
             }
         }
+        let corp_id = -1
+        let meOrGroup = select_subject(this.state.infos, [], this.state.entity_id, corp_id).my_info
 
-        console.log(this.state)
-
-        return <div className="public-sign-page">
+        return <div className="public-sign-page upsert-page">
             <div className="header-page">
                 <div className="header">
                     <div className="left-icon">
@@ -499,18 +529,18 @@ export default class extends React.Component {
                             config={this.config}
                             model={this.state.model}
                             onModelChange={(model) => this.setState({model, contract_modify_status:translate("contract_modify")})} />
-                        { this.state.contract.status < 2 ? <div className="can-edit-text">
+                        { /*this.state.contract.status < 2 ? <div className="can-edit-text">
                             <div>{translate("now_edit_privilege_who", [can_edit_name])}</div>
-                        </div> : null }
-                        { this.state.contract.status < 2 && this.state.contract.can_edit_account_id == this.state.entity_id ? <div className="floating">
+                        </div> : null*/ }
+                        { /*this.state.contract.status < 2 && this.state.contract.can_edit_account_id == this.state.entity_id ? <div className="floating">
                             <div>
                                 <div className="circle" unselectable="on" onClick={()=>this.setState({toolbar_open:!this.state.toolbar_open})}>
                                     <i className={`far fa-plus ${this.state.toolbar_open ? "spin-start-anim" : "spin-end-anim"}`}></i>
                                 </div>
                             </div>
-                        </div>: null}
+                        </div>: null*/ }
 
-                        { this.state.contract.status < 2 && this.state.contract.can_edit_account_id == this.state.entity_id ? <div className={`tool-bar ${this.state.toolbar_open ? "fade-start-anim" : "fade-end-anim"}`}>
+                        { /*this.state.contract.status < 2 && this.state.contract.can_edit_account_id == this.state.entity_id ? <div className={`tool-bar ${this.state.toolbar_open ? "fade-start-anim" : "fade-end-anim"}`}>
                             <div>
                                 <div className="sign-title">{translate("sign_place_add_title")}</div>
                                 {this.state.infos.filter( e=>e.privilege == 1 ).map( (e, k) => {
@@ -519,7 +549,7 @@ export default class extends React.Component {
                                     </div>
                                 })}
                             </div>
-                        </div> : null}
+                        </div> : null*/ }
                     </div>
                     {!this.state.sign_mode ? <div className="info">
                         <div className="top">
@@ -543,6 +573,36 @@ export default class extends React.Component {
                         {this.render_sign_form()}
                     </div>}
                 </div>
+            </div>
+            <div className="bottom-container">
+                <div className="left">
+                    <div className="but" onClick={this.onClickPreview}>
+                        <i className="fal fa-eye"></i>
+                        {translate("contract_preview")}
+                    </div>
+                    { /*( this.state.contract.status < 2 && this.state.contract.can_edit_account_id == this.state.entity_id) ? [
+                        <div className="but" onClick={this.onClickMoveEditPrivilege} key={"edit_privilege"}>
+                            <i className="far fa-arrow-to-right"></i>
+                            {translate("move_edit_privilege")}
+                        </div>, <div className="but" onClick={this.onClickContractSave} key={"contract_save"}>
+                            <i className="far fa-save"></i>
+                            {translate("modify_content_save")}
+                        </div>]
+                    : null*/ }
+                </div>
+                {(()=>{
+                    if(meOrGroup.privilege == 2 || this.state.contract.status == 2) {
+                        return <div className="sign" onClick={(e)=>history.goBack()}>
+                            {translate("go_back")}
+                        </div>
+                    }
+
+                    return this.state.sign_mode ? <div className="sign" onClick={this.onToggleRegisterSignForm.bind(this, false)}>
+                        {translate("edit_mode")}
+                    </div> : <div className="sign" onClick={this.onClickRegisterSign}>
+                        {meOrGroup.signature ? translate("resign") : translate("go_sign")}
+                    </div>
+                })()}
             </div>
         </div>
     }

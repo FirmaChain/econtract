@@ -2458,6 +2458,287 @@ div.checkbox2-comp{
 
 .public-sign-page {
     
+    .t-sign {
+        display: inline-flex;
+        justify-content: center;
+        align-items:center;
+        text-align: center;
+        height: 100px;
+        width: 200px;
+        padding: 20px 10px;
+        box-sizing: border-box;
+        font-size: $font3;
+        margin:5px;
+        color:$middleblack;
+        border:1px dashed $gray;
+    }
+    
+
+    >.header-page .container {
+        >.info {
+            min-width:200px;
+            max-width:350px;
+            width:25%;
+
+            border-left: 1px solid $middlegray;
+
+            >.top {
+                display: flex;
+                flex-direction: row;
+
+                >.menu {
+                    text-align: center;
+                    border-bottom: 1px solid $middlegray;
+                    flex:1;
+
+                    cursor:pointer;
+
+                    >i {
+                        font-size: 20px;
+                        color: $gray;
+                        margin-top: 10px;
+                    }
+
+                    >.text {
+                        font-size: $font1;
+                        color: $gray;
+                        margin-top: 5px;
+                        margin-bottom: 10px;
+                    }
+                }
+
+                >.enable-menu {
+                    background-color:$blue;
+
+                    >i {
+                        color:white;
+                    }
+
+                    >.text {
+                        color:white;
+                    }
+                }
+            }
+
+            >.bottom {
+                box-sizing:border-box;
+                height: calc(100% - 80px);
+                overflow-y: auto;
+            }
+
+            >.signs {
+
+                >.title {
+                    font-size: $font1;
+                    font-weight: bold;
+                    color: $black;
+                    margin-top:20px;
+                    margin-bottom:10px;
+                    margin-left:10px;
+                    margin-right:10px;
+                }
+
+                >.user-container {
+
+                    >.user {
+                        display: flex;
+                        flex-direction:row;
+                        align-items: center;
+
+                        padding: 20px;
+                        cursor:pointer;
+
+                        >.icon {
+                            font-size: 20px;
+                            margin-right:10px;
+                        }
+
+                        >.user-info {
+                            flex:1;
+
+                            >.name {
+                                font-size:$font2;
+                                font-weight: bold;
+                                color:$black;
+
+                                >span {
+                                    font-size:$font0;
+                                    color:$gray;
+                                    margin-left:10px;
+                                }
+                            }
+
+                            >.email {
+                                font-size:$font0;
+                                color:$gray;
+                                margin-top:5px;
+                            }
+                        }
+
+                        >.arrow {
+                            font-size:15px;
+                        }
+
+                        &:hover {
+                            background-color:$lightgray;
+                        }
+                    }
+
+                    >.user-detail {
+                        border-top: 1px solid $lightgray;
+                        border-bottom: 1px solid $lightgray;
+                        background-color:$superlightgray;
+                        padding:10px;
+
+                        >.text-place {
+                            padding-left:10px;
+                            padding-right:20px;
+
+                            >.title {
+                                font-size: $font1;
+                                font-weight:bold;
+                                color:$black;
+                                word-break:break-all;
+                            }
+
+                            >.desc {
+                                font-size: $font1;
+                                color:$black;
+                                margin-top:5px;
+                                margin-bottom:20px;
+                                word-break:break-all;
+
+                                >img {
+                                    width:200px;
+                                    height: 100px;
+                                    border:1px solid $gray;
+                                }
+                            }
+                        }
+
+                        >.modify-button {
+                            font-size: $font2;
+                            font-weight: bold;
+                            cursor: pointer;
+                            padding:10px 20px;
+                            background-color: $blue;
+                            color:white;
+                            text-align: center;
+                        }
+                    }
+                }  
+
+                >.me {
+                    border-bottom: 1px solid $gray;
+                }
+            }
+
+            >.chat {
+                display: flex;
+                flex-direction: column;
+                height:calc(100% - 62px);
+            }
+
+            >.sign-form {
+
+                >.desc {
+                    margin-top:30px;
+                    padding:0 10px;
+
+                    >.title {
+                        font-size: $font2;
+                        color: $black;
+                    }
+
+                    >.text-box {
+                        margin-top: 10px;
+
+                        >input {
+                            font-size: $font2;
+                            color: $black;
+                        }
+
+                        >.common-select {
+                            .control {
+                                width:100% !important;
+                            }
+                        }
+                    }
+                }
+
+                >.button-save-sign-info {
+                    font-size: $font3;
+                    font-weight: bold;
+                    cursor: pointer;
+                    padding:10px 20px;
+                    background-color: $blue;
+                    color:white;
+                    text-align: center;
+
+                    margin-top:30px;
+                    margin-left:10px;
+                    margin-right:10px;
+                }
+            }
+        }
+    }
+
+    .bottom-container {
+        display: flex;
+        flex-direction:row;
+        justify-content: center;
+        align-items: center;
+        height:60px;
+        width:100%;
+
+        >.left {
+            flex:1;
+            height:100%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-top: 1px solid $middlegray;
+            background-color: white;
+
+            >.but {
+                flex:1;
+                height:100%;
+
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                border-right: 1px solid $middlegray;
+                cursor: pointer;
+
+                >i {
+                    font-size: 22px;
+                    margin-right: 10px;
+                }
+            }
+        }
+
+        >.sign {
+            min-width:200px;
+            max-width:350px;
+            width:25%;
+            height:100%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-top: 1px solid $middlegray;
+            background-color:$blue;
+            cursor: pointer;
+
+            font-weight: bold;
+            font-size: $font3;
+            color: white;
+        }
+    }
 }
 
 .upsert-page {

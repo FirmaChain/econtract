@@ -856,6 +856,7 @@
     "sign_object":["서명 대상","Signer","签署人"],
     "create":["생성","Create","生成"],
     "create_date":["생성일","Date of Creation","创建日期"],
+    "not_available_move_user":["수정 권한을 넘길수 있는 상대가 없습니다.","",""],
     "group_manage_change_delete_available":["해당 그룹에서 그룹 변경 및 삭제 처리하실 수 있습니다.","Remove or relocate members from group.","您可以更换及删除企业用户。"],
     "individual":["개인","Individual","个人"],
     "log_modify_msg":["{0}님이 계약서를 수정하셨습니다.","{0} has edited the contract.","{0}编辑了合同。"],

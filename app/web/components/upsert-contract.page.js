@@ -214,7 +214,7 @@ export default class extends React.Component {
     }
 
     onRefresh = async () => {
-        let contract_id = this.props.match.params.contract_id || 0
+        let contract_id = this.props.match.params.contract_id || window.CONST.PERSONAL_CORP_ID
         let groups = [];
         let _state = {}
         if(this.props.user_info.account_type != 0) {
@@ -552,7 +552,7 @@ export default class extends React.Component {
             return false
         }
 
-        let corp_id = this.props.user_info.corp_id || 0
+        let corp_id = this.props.user_info.corp_id || window.CONST.PERSONAL_CORP_ID
         let meOrGroup = select_subject(this.state.infos, this.state.groups, this.props.user_info.account_id, corp_id)
 
         let msg = {
@@ -698,7 +698,7 @@ export default class extends React.Component {
         let contract = this.state.contract;
         let user_infos = this.state.infos;
 
-        let corp_id = this.props.user_info.corp_id || 0
+        let corp_id = this.props.user_info.corp_id || window.CONST.PERSONAL_CORP_ID
         let meOrGroup = select_subject(user_infos, this.state.groups, this.props.user_info.account_id, corp_id).my_info
 
         return <div className="bottom signs">
@@ -720,7 +720,7 @@ export default class extends React.Component {
                     {(()=> {
                         let user_type = meOrGroup.user_info.user_type || 0
 
-                        if( meOrGroup.privilege != 1 ) return
+                        if( meOrGroup.privilege != 1 ) return;
 
                         let divs = []
                         if(user_type == 0) {
@@ -899,7 +899,7 @@ export default class extends React.Component {
                 can_edit_name = v.user_info.username
             }
         }
-        let corp_id = this.props.user_info.corp_id || 0
+        let corp_id = this.props.user_info.corp_id || window.CONST.PERSONAL_CORP_ID
         let meOrGroup = select_subject(this.state.infos, this.state.groups, this.props.user_info.account_id, corp_id).my_info
 
         return (<div className="upsert-page upsert-contract-page">
