@@ -420,7 +420,7 @@ export default class extends React.Component {
         if(me == null)
             return;
 
-        let sign_info_list
+        /*let sign_info_list
         if(this.props.user_info.account_type == 0) {
             sign_info_list = this.state.contract.necessary_info.individual
         } else {
@@ -433,7 +433,7 @@ export default class extends React.Component {
             if(!sign_info["#"+v] || sign_info["#"+v] == "") {
                 return alert(translate("input_all_sign_info"))
             }
-        }
+        }*/
 
         let signature_data = await new Promise(resolve=>window.openModal("DrawSign",{
             onFinish : async (signature)=>{
@@ -848,7 +848,7 @@ export default class extends React.Component {
             <Chatting 
                 contract={this.state.contract}
                 infos={this.state.infos}
-                user_info={this.state.user_info}
+                user_info={this.props.user_info}
                 groups={this.state.groups}
                 chat_list={this.state.chat_list}
                 onSend={this.onClickSendChat}

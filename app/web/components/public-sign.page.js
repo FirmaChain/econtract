@@ -29,6 +29,8 @@ import moment from 'moment'
 import {
     get_contract_public_link,
     get_chats,
+    update_contract_sign_public,
+    request_phone_verification_code,
     select_subject,
     createContractHtml,
 
@@ -47,6 +49,8 @@ let mapStateToProps = (state)=>{
 let mapDispatchToProps = {
     get_contract_public_link,
     get_chats,
+    update_contract_sign_public,
+    request_phone_verification_code,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -269,6 +273,33 @@ export default class extends React.Component {
         }
     }
 
+    onClickPreview = () => {
+        let savePdfOption = {
+            margin:0,
+            filename:'계약서.pdf',
+            image:{ type: 'jpeg', quality: 0.98 },
+            jsPDF:{ unit: 'mm', format: 'a4', orientation: 'portrait' },
+            pagebreak:{ mode: ['avoid-all'] }
+        }
+        //html2pdf().set(savePdfOption).from(document.getElementsByClassName('fr-view')[0]).save()
+        //window.html2Doc(document.getElementsByClassName('fr-view')[0], `[계약서] ${this.state.contract.name}`)
+
+        if(!this.state.model || this.state.model == "") {
+            return alert(translate("please_write_content"))
+        }
+
+        window.openModal("PreviewContract",{
+            contract:this.state.contract,
+            infos: this.state.infos,
+            model: this.state.model,
+        })
+
+        /*history.push({pathname:"/preview-contract", state:{
+            contract:this.state.contract,
+            infos:this.state.infos,
+        }})*/
+    }
+
 
     saveSelection = () => {
         let sel;
@@ -345,50 +376,65 @@ export default class extends React.Component {
         if(!exist_ticket)
             return alert(translate("no_ticket_please_charge"))*/
 
-        let me = select_subject(this.state.infos, [], this.state.account_id, -1).my_info
+        let me = select_subject(this.state.infos, [], this.state.entity_id, -1).my_info
         if(me == null)
             return;
 
-        let sign_info_list
-        if(this.props.user_info.account_type == 0) {
-            sign_info_list = this.state.contract.necessary_info.individual
-        } else {
-            sign_info_list = this.state.contract.necessary_info.corporation
-        }
-
-        let sign_info = me.sign_info || {}
-
-        for(let v of sign_info_list) {
-            if(!sign_info["#"+v] || sign_info["#"+v] == "") {
-                return alert(translate("input_all_sign_info"))
-            }
-        }
-
         let signature_data = await new Promise(resolve=>window.openModal("DrawSign",{
             onFinish : async (signature)=>{
-                if(this.props.user_info.account_id == this.state.contract.payer_account_id) {
+                /*if(this.props.user_info.account_id == this.state.contract.payer_account_id) {
                     let exist_ticket = (await this.props.check_ticket_count()).payload
                     if(!exist_ticket) {
                         alert(translate("no_ticket_please_charge"))
                         resolve(false)
                     }
-                }
+                }*/
                 resolve(signature)
                 return true;
             }
-        }) );
+        }));
 
         if(!signature_data) return;
 
-        if( this.props.user_info.account_id == this.state.contract.payer_account_id && 
+        /*if( this.props.user_info.account_id == this.state.contract.payer_account_id && 
             (await window.confirm(translate("ticket_use_notify"), translate("ticket_use_notify_desc"))) == false )
-            return;
+            return;*/
+
+        if(!me.user_info.cell_phone_number) return;
+
+        let phone_resp = await this.props.request_phone_verification_code(me.user_info.cell_phone_number)
+        if(phone_resp.code != 1) {
+            return alert(translate("send_code_error_occured"))
+        }
+
+        let certificate_number = await new Promise(resolve => {
+            window.openModal("AddCommonModal", {
+                icon:"far fa-sms",
+                title:"문자 인증",
+                subTitle:"서명을 하기 위해서는 문자 인증이 필요합니다.",
+                placeholder:"핸드폰으로 전송된 문자 인증 번호를 입력해주세요.",
+                cancelable:true,
+                onConfirm: async (certificate_number) => {
+                    resolve(certificate_number)
+                    return true;
+                },
+                onCancel: async () => {
+                    resolve(false)
+                },
+            }
+        }));
+
+        if(!certificate_number) return;
 
         let contract_body = createContractHtml(this.state.contract, this.state.infos).exclude_sign_body
 
         await window.showIndicator()
         let email_list = this.state.infos.filter(e=>window.email_regex.test(e.sub)).map(e=>e.sub)
-        let r = await this.props.update_contract_sign(this.state.contract.contract_id, signature_data, this.state.contract.the_key, email_list, sha256(contract_body))
+        let r = await this.props.update_contract_sign_public(
+            this.state.contract.contract_id, this.state.entity_id, 
+            signature_data, this.state.contract.the_key, email_list, 
+            sha256(contract_body), me.user_info.cell_phone_number, certificate_number, true);
+        
         if(r.code == -9) {
             return alert(translate("you_dont_update_complete_contract_sign"));
         } /*else if(r.code == -11) {
@@ -402,7 +448,7 @@ export default class extends React.Component {
         alert(translate("complete_sign_register"))
         this.blockFlag = true
         await window.hideIndicator()
-        history.replace(`/e-contract/contract-info/${this.props.match.params.contract_id}`)
+        await this.setState({step:2})
     }
 
     render_info() {
@@ -570,7 +616,6 @@ export default class extends React.Component {
                 isSendable={this.state.contract.status != 2}
                 chatType={"contract"}
                 isSendable={false}
-                aaa={{asdsd:"asdasd"}}
                 initialize={(scrollBottom) => {
                     this.setState({scrollBottom})
                 }}
@@ -645,13 +690,13 @@ export default class extends React.Component {
                         </div>
                         {this.render_info()}
                     </div> : <div className="info">
-                        <div className="top">
+                        {/*<div className="top">
                             <div className="menu">
                                 <i className="far fa-signature"></i>
                                 <div className="text">{translate("sign_info_register")}</div>
                             </div>
                         </div>
-                        {this.render_sign_form()}
+                        {this.render_sign_form()}*/}
                     </div>}
                 </div>
             </div>
@@ -688,11 +733,17 @@ export default class extends React.Component {
         </div>
     }
 
+    render_complete() {
+
+    }
+
     render() {
         if(this.state.step == 0) {
             return <div></div>
         } else if(this.state.step == 1) {
             return this.render_main();
+        } else if(this.state.step == 2) {
+            return this.render_complete();
         }
     }
 }

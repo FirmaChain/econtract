@@ -298,6 +298,21 @@ export async function api_update_contract_sign(contract_id,signature,email_list,
         session:window.getCookie("session")
     });
 }
+export async function api_update_contract_sign_public(contract_id,entity_id,signature,email_list,sign_text,cell_phone_number,certificate_number){
+    let __data = new FormData();
+
+    if(contract_id != null) __data.append('contract_id', contract_id);
+	if(entity_id != null) __data.append('entity_id', entity_id);
+	if(signature != null) __data.append('signature', signature);
+	if(email_list != null) __data.append('email_list', email_list);
+	if(sign_text != null) __data.append('sign_text', sign_text);
+	if(cell_phone_number != null) __data.append('cell_phone_number', cell_phone_number);
+	if(certificate_number != null) __data.append('certificate_number', certificate_number)
+
+    return await post("/update_contract_sign_public", __data,{
+        session:window.getCookie("session")
+    });
+}
 export async function api_update_contract_sign_info(contract_id,sign_info){
     let __data = new FormData();
 

@@ -26,6 +26,7 @@ import {
     api_modify_contract_user_info,
     api_remove_counterparty,
     api_get_contract_public_link,
+    api_update_contract_sign_public,
 } from "../../../gen_api"
 
 import {
@@ -45,6 +46,10 @@ import {
     aes_decrypt_async,
     aes_encrypt_async,
     generate_random,
+    generateRandomKey,
+    makeMnemonic,
+    showMnemonic,
+    SeedToEthKey,
 } from "../../common/crypto_test"
 
 import { sha256 } from 'js-sha256'
@@ -404,13 +409,38 @@ export function update_contract_user_info(contract_id, entity_id, corp_id, e, us
     };
 }
 
-export function update_contract_sign(contract_id, signature, the_key, email_list, hashValue){
+export function update_contract_sign(contract_id, signature, the_key, email_list, hashValue, random_web3_account = false){
     return async function(){
+        if(random_web3_account) {
+            let auth = makeAuth(generateRandomKey(16), generateRandomKey(32));
+            let encryptedMasterSeed = makeMnemonic(auth)
+            let rawMnemonic = showMnemonic(auth);
+            let keyPair = SeedToEthKey(rawMnemonic, "0'/0/0");
+            let privateKey = "0x"+keyPair.privateKey.toString('hex');
+            Web3.addAccount(privateKey)
+        }
         let sign = Web3.sign(JSON.stringify({hash:hashValue}));
         let signText = JSON.stringify(sign)
         let encrypted_signature = aes_encrypt(signature, the_key)
         return (await api_update_contract_sign(contract_id, encrypted_signature, email_list, signText));
     };
+}
+
+export function update_contract_sign_public(contract_id, entity_id, signature, the_key, email_list, hashValue, cell_phone_number, certificate_number, random_web3_account = false) {
+    return async function() {
+        if(random_web3_account) {
+            let auth = makeAuth(generateRandomKey(16), generateRandomKey(32));
+            let encryptedMasterSeed = makeMnemonic(auth)
+            let rawMnemonic = showMnemonic(auth);
+            let keyPair = SeedToEthKey(rawMnemonic, "0'/0/0");
+            let privateKey = "0x"+keyPair.privateKey.toString('hex');
+            Web3.addAccount(privateKey)
+        }
+        let sign = Web3.sign(JSON.stringify({hash:hashValue}));
+        let signText = JSON.stringify(sign)
+        let encrypted_signature = aes_encrypt(signature, the_key)
+        return (await api_update_contract_sign_public(contract_id, entity_id, encrypted_signature, email_list, signText, cell_phone_number, certificate_number));
+    }
 }
 
 export function update_contract_sign_info(contract_id, sign_info, the_key) {

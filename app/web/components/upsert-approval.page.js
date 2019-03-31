@@ -687,7 +687,7 @@ export default class extends React.Component {
             <Chatting 
                 approval={this.state.approval}
                 order_list={this.state.order_list}
-                user_info={this.state.user_info}
+                user_info={this.props.user_info}
                 chat_list={this.state.chat_list}
                 onSend={this.onClickSendChat}
                 onLoadMore={this.onChatLoadMore}

@@ -700,7 +700,7 @@ export default class extends React.Component {
                         {this.state.chat_list.length > 0 ? <Chatting 
                             contract={this.state.contract}
                             infos={this.state.infos}
-                            user_info={this.state.user_info}
+                            user_info={this.props.user_info}
                             groups={this.state.groups}
                             chat_list={this.state.chat_list}
                             onSend={this.onClickSendChat}

@@ -508,8 +508,12 @@ export default class extends React.Component {
             this.setState({
                 verificated_phone:true
             })
-        } else {
+        } else if(resp.code == -6) {
             alert(translate("wrong_code"))
+        } else if(resp.code == -7) {
+            alert(translate("fail_3_times"))
+        } else if(resp.code == -5) {
+            alert(translate("no_request_phone_check"))
         }
         await window.hideIndicator();
     }

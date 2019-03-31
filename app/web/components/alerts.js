@@ -26,12 +26,16 @@ class AddCommonModal extends React.Component {
         })
     }
 
-    closeSelf = () => {
+    closeSelf = async () => {
+        if(!!this.props.onCancel)
+            await this.props.onCancel()
+
         window.closeModal(this.props.modalId)
     }
 
-    onConfirm = () => {
-        this.props.onConfirm && this.props.onConfirm(this.state.text.trim())
+    onConfirm = async () => {
+        if(!!this.props.onConfirm)
+            await this.props.onConfirm(this.state.text.trim())
         this.closeSelf()
     }
 
