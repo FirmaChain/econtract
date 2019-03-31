@@ -412,7 +412,7 @@ export default class extends React.Component {
                             case -1:
                                 return <div className="desc">
                                     <div className="username">({translate("not_regist_user")}) {e.user_info.username}</div>
-                                    <div className="email">{e.user_info.email}</div>
+                                    <div className="email">{e.user_info.email} {e.user_info.contract_open_key}</div>
                                     <div className="cell-phone-number">{e.user_info.cell_phone_number}</div>
                                 </div>
                             case 0:

@@ -38,6 +38,7 @@ import InformationPage from "./components/information.page"
 import VerificationPage from "./components/verification.page"
 import CorpGroupInfoPage from "./components/corp-group-info.page"
 import GroupPage from "./components/group.page"
+import PublicSignPage from "./components/public-sign.page"
 
 import LegalAdviceLoginPage from "./components/legal-advice/legal-advice-login.page"
 
@@ -108,6 +109,7 @@ window.addEventListener("load",()=>{
 					<Route onEnter={resolver} exact path="/e-contract/edit-contract/:contract_id" component={UpsertContractPage} />
 					<Route onEnter={resolver} exact path="/e-contract/contract-info/:contract_id" component={ContractInfoPage} />
 					{/*<Route onEnter={resolver} exact path="/preview-contract" component={PreviewCOntractPage} />*/}
+					<Route onEnter={resolver} exact path="/e-contract/public-sign/:code" component={PublicSignPage} />
 
 					<Route onEnter={resolver} exact path="/legal-advice/login" component={LegalAdviceLoginPage} />
 

@@ -1670,9 +1670,16 @@ setInterval(()=>{
             '/recover',
             '/old-recover',
             '/e-contract/verification',
+            '/e-contract/public-sign',
         ]
-        if( exclude.indexOf(location.pathname) == -1 ){
-            location.href="/"
+        let home_flag = true
+        for(let v of exclude) {
+            if(v.indexOf(location.pathname) != -1) {
+                home_flag = false
+                break;
+            }
         }
+        if(home_flag)
+            location.href = "/";
     }
 },1000)

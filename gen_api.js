@@ -186,6 +186,15 @@ export async function api_remove_counterparty(contract_id,corp_id,entity_id){
         session:window.getCookie("session")
     });
 }
+export async function api_get_contract_public_link(link){
+    let __data = new FormData();
+
+    if(link != null) __data.append('link', link)
+
+    return await post("/get_contract_public_link", __data,{
+        session:window.getCookie("session")
+    });
+}
 export async function api_modify_contract_user_info(contract_id,entity_id,corp_id,user_info){
     let __data = new FormData();
 

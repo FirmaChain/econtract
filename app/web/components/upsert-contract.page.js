@@ -863,7 +863,7 @@ export default class extends React.Component {
                             for(let v of this.state.contract.necessary_info.individual) {
                                 divs.push(<div className="info" key={v}>
                                     <span className="first">{v}</span>&nbsp;:&nbsp;
-                                    <spann className="desc">{e.sign_info ? e.sign_info["#"+v] || translate("unregistered") : translate("unregistered")}</spann>
+                                    <span className="desc">{e.sign_info ? e.sign_info["#"+v] || translate("unregistered") : translate("unregistered")}</span>
                                 </div>)
                             }
                         } else {
