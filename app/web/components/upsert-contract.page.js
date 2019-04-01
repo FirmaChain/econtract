@@ -138,7 +138,7 @@ export default class extends React.Component {
             events : {
                 'froalaEditor.initialized' : (e, editor) => {
                     this.editor = editor;
-                    if( !!this.state.contract && this.props.user_info.account_id != this.state.contract.can_edit_account_id ) {
+                    if( !!this.state.contract && !this.isCanEdit(window.CONST.DUMMY_CORP_ID, this.props.user_info.account_id) ) {
                         this.editor.edit.off()
                     } else {
                         this.editor.edit.on()
@@ -298,8 +298,15 @@ export default class extends React.Component {
         }})*/
     }
 
+    isCanEdit = (corp_id, account_id) => {
+        if(this.state.contract.can_edit_corp_id == corp_id && account_id == this.state.contract.can_edit_account_id) {
+            return true;
+        }
+        return false
+    }
+
     onClickContractSave = async () => {
-        let model = this.state.model
+        let model = this.state.model;
 
         if(this.state.contract.html == this.state.model)
             return;
@@ -327,9 +334,12 @@ export default class extends React.Component {
             user_infos: this.state.infos,
             my_account_id: this.props.user_info.account_id,
             onConfirm : async (user)=>{
+                let can_edit_corp_id = 0
+                if(user.corp_id == -1)
+                    can_edit_corp_id = -1;
 
                 await window.showIndicator()
-                let result = await this.props.move_contract_can_edit_account_id(this.state.contract.contract_id, user.entity_id, user.sub)
+                let result = await this.props.move_contract_can_edit_account_id(this.state.contract.contract_id, can_edit_corp_id, user.entity_id, user.sub)
                 //await this.onRefresh()
                 await window.hideIndicator()
             }
@@ -347,7 +357,7 @@ export default class extends React.Component {
             wrapper.setAttribute('style', `max-height: 100%; overflow: auto; height: 100%;`) :
             wrapper.setAttribute('style', `max-height: 100%; overflow: auto; height: 100%; max-height: calc(100% - 34px) !important`);
 
-        if( !!this.state.contract && this.props.user_info.account_id == this.state.contract.can_edit_account_id ) {
+        if( !!this.state.contract && this.isCanEdit(window.CONST.DUMMY_CORP_ID, this.props.user_info.account_id) ) {
             this.state.sign_mode ? this.editor.edit.on() : this.editor.edit.off()
         }
 
@@ -913,7 +923,7 @@ export default class extends React.Component {
 
         let can_edit_name
         for(let v of this.state.infos) {
-            if(v.corp_id == 0 && v.entity_id == this.state.contract.can_edit_account_id) {
+            if(v.corp_id == 0 && this.isCanEdit(v.corp_id, v.entity_id)) {
                 can_edit_name = v.user_info.username
             }
         }
@@ -943,7 +953,7 @@ export default class extends React.Component {
                         { this.state.contract.status < 2 ? <div className="can-edit-text">
                             <div>{translate("now_edit_privilege_who", [can_edit_name])}</div>
                         </div> : null }
-                        { this.state.contract.status < 2 && this.state.contract.can_edit_account_id == this.props.user_info.account_id ? <div className="floating">
+                        { this.state.contract.status < 2 && this.isCanEdit(window.CONST.DUMMY_CORP_ID, this.props.user_info.account_id) ? <div className="floating">
                             <div>
                                 <div className="circle" unselectable="on" onClick={()=>this.setState({toolbar_open:!this.state.toolbar_open})}>
                                     <i className={`far fa-plus ${this.state.toolbar_open ? "spin-start-anim" : "spin-end-anim"}`}></i>
@@ -951,7 +961,7 @@ export default class extends React.Component {
                             </div>
                         </div>: null}
 
-                        { this.state.contract.status < 2 && this.state.contract.can_edit_account_id == this.props.user_info.account_id ? <div className={`tool-bar ${this.state.toolbar_open ? "fade-start-anim" : "fade-end-anim"}`}>
+                        { this.state.contract.status < 2 && this.isCanEdit(window.CONST.DUMMY_CORP_ID, this.props.user_info.account_id) ? <div className={`tool-bar ${this.state.toolbar_open ? "fade-start-anim" : "fade-end-anim"}`}>
                             <div>
                                 <div className="sign-title">{translate("sign_place_add_title")}</div>
                                 {this.state.infos.filter( e=>e.privilege == 1 ).map( (e, k) => {
@@ -991,7 +1001,7 @@ export default class extends React.Component {
                         <i className="fal fa-eye"></i>
                         {translate("contract_preview")}
                     </div>
-                    { ( this.state.contract.status < 2 && this.state.contract.can_edit_account_id == this.props.user_info.account_id) ? [
+                    { ( this.state.contract.status < 2 && this.isCanEdit(window.CONST.DUMMY_CORP_ID, this.props.user_info.account_id)) ? [
                         <div className="but" onClick={this.onClickMoveEditPrivilege} key={"edit_privilege"}>
                             <i className="far fa-arrow-to-right"></i>
                             {translate("move_edit_privilege")}

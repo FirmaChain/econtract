@@ -84,7 +84,7 @@ export default class extends React.Component {
             events : {
                 'froalaEditor.initialized' : (e, editor) => {
                     this.editor = editor;
-                    if( !!this.state.contract && this.state.entity_id != this.state.contract.can_edit_account_id ) {
+                    if( !!this.state.contract && !this.isCanEdit(-1, this.state.entity_id) ) {
                         this.editor.edit.off()
                     } else {
                         this.editor.edit.on()
@@ -211,7 +211,7 @@ export default class extends React.Component {
 
         _.model = _.contract.html;
         _.contract_open_key = contract_open_key;
-        if(move_step) _.step = 2;
+        if(move_step) _.step = 1;
 
         await this.setState(_)
 
@@ -316,6 +316,13 @@ export default class extends React.Component {
         }})*/
     }
 
+    isCanEdit = (corp_id, account_id) => {
+        if(this.state.contract.can_edit_corp_id == corp_id && account_id == this.state.contract.can_edit_account_id) {
+            return true;
+        }
+        return false;
+    }
+
 
     saveSelection = () => {
         let sel;
@@ -358,6 +365,48 @@ export default class extends React.Component {
         this.editor.undo.saveStep();
     }
 
+
+    onClickContractSave = async () => {
+        let model = this.state.model
+
+        if(this.state.contract.html == this.state.model)
+            return;
+        //encrypt model
+
+        let r = await this.props.update_contract_model(this.state.contract.contract_id, model, this.state.contract.the_key)
+        if(r.code == 1) {
+            this.setState({
+                contract_modify_status:translate("last_modify_contract_save") + " " + moment().format("YYYY-MM-DD HH:mm:ss")
+            })
+        } else if(r.code == -9) {
+            alert(translate("you_dont_update_already_complete_contract"))
+        }
+    }
+
+    onClickMoveEditPrivilege = async () => {
+
+        if((this.state.contract.html || "") != this.state.model)
+            if(window._confirm(translate("you_have_modify_content_save_and_pass_modify_verification")))
+                await this.onClickContractSave();
+            else
+                return;
+
+        window.openModal("MoveCanEditAccount",{
+            user_infos: this.state.infos,
+            my_account_id: this.props.user_info.account_id,
+            onConfirm : async (user)=>{
+
+                let can_edit_corp_id = 0
+                if(user.corp_id == -1)
+                    can_edit_corp_id = -1;
+
+                await window.showIndicator()
+                let result = await this.props.move_contract_can_edit_account_id(this.state.contract.contract_id, can_edit_corp_id, user.entity_id, user.sub)
+                //await this.onRefresh()
+                await window.hideIndicator()
+            }
+        })
+    }
 
     onToggleUser = (entity_id, corp_id, force_open) => {
         let _ = [...this.state.open_users]
@@ -656,7 +705,7 @@ export default class extends React.Component {
 
         let can_edit_name
         for(let v of this.state.infos) {
-            if(v.corp_id == 0 && v.entity_id == this.state.contract.can_edit_account_id) {
+            if(v.corp_id == 0 && this.isCanEdit(v.corp_id && v.entity_id)) {
                 can_edit_name = v.user_info.username
             }
         }
@@ -733,7 +782,7 @@ export default class extends React.Component {
                         <i className="fal fa-eye"></i>
                         {translate("contract_preview")}
                     </div>
-                    { /*( this.state.contract.status < 2 && this.state.contract.can_edit_account_id == this.state.entity_id) ? [
+                    { ( this.state.contract.status < 2 && this.isCanEdit(-1, this.state.entity_id)) ? [
                         <div className="but" onClick={this.onClickMoveEditPrivilege} key={"edit_privilege"}>
                             <i className="far fa-arrow-to-right"></i>
                             {translate("move_edit_privilege")}
@@ -741,7 +790,7 @@ export default class extends React.Component {
                             <i className="far fa-save"></i>
                             {translate("modify_content_save")}
                         </div>]
-                    : null*/ }
+                    : null }
                 </div>
                 {(()=>{
                     if(meOrGroup.privilege == 2 || this.state.contract.status == 2) {

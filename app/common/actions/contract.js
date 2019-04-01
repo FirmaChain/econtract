@@ -452,9 +452,9 @@ export function update_contract_sign_info(contract_id, sign_info, the_key) {
 }
 
 
-export function move_contract_can_edit_account_id(contract_id, move_account_id, move_email){
+export function move_contract_can_edit_account_id(contract_id, can_edit_corp_id, move_account_id, move_email){
     return async function(){
-        return (await api_move_contract_can_edit_account_id(contract_id, move_account_id, move_email));
+        return (await api_move_contract_can_edit_account_id(contract_id, can_edit_corp_id, move_account_id, move_email));
     };
 }
 
