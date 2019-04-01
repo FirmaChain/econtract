@@ -423,8 +423,19 @@ export default class extends React.Component {
             if(all_signs) {
                 for(let sign of all_signs) {
                     let result = regex.exec(sign);
-                    if(result && result.length > 1 && result[1] != translate("sign_user", [v.user_info.username])) {
-                        model = model.replace(new RegExp(`${result[0]}`, "gi"), "")
+                    let all_name = translate("sign_user", [v.user_info.username], true)
+
+                    if(result && result.length > 1) {
+                        let remove_flag = true;
+                        for(let w of all_name) {
+                            if(result[1] == w) {
+                                remove_flag = false;
+                            }
+                        }
+
+                        if(remove_flag) {
+                            model = model.replace(new RegExp(`${result[0]}`, "gi"), "")
+                        }
                     }
                 }
             }
@@ -649,7 +660,7 @@ export default class extends React.Component {
         this.restoreSelection(selRange)
         this.editor.events.focus(true);
 
-        this.editor.html.insert(`<span class="t-sign corp_${user.corp_id} entity_${user.entity_id}">${translate("sign_user", [user.user_info.username])}</span> &nbsp;`)
+        this.editor.html.insert(`<span class="t-sign corp_${user.corp_id} entity_${user.entity_id}">${translate("sign_user", [user.user_info.username])}</span> `)
 
         this.editor.undo.saveStep();
     }
