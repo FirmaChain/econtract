@@ -2049,12 +2049,13 @@ div.checkbox2-comp{
 
     >.content {
         margin: auto;
-        max-width:1000px;
+        max-width:1100px;
         width:100%;
-        padding:20px 10px;
+        padding:20px 20px;
         padding-top: 50px;
         margin-bottom:90px;
         min-height: calc(100% - 392px);
+        box-sizing: border-box;
 
         >.row {
             display: flex;
@@ -2225,6 +2226,30 @@ div.checkbox2-comp{
                                 color: $gray;
                                 font-size: $font1;
                             }
+
+                            >.contract-open-key {
+
+                                >span {
+                                    border: 1px solid $gray;
+                                    border-radius:20px;
+                                    padding:5px 10px;
+                                    font-size:$font1;
+                                    margin-top: 10px;
+                                    box-sizing: border-box;
+                                    display: inline-block;
+                                    cursor:pointer;
+
+                                    >.front {
+                                        color:$gray;
+                                    }
+
+                                    >.copy {
+                                        font-weight: bold;
+                                        cursor:pointer;
+                                    }
+
+                                }
+                            }
                         }
 
                         >.privilege {
@@ -2388,7 +2413,7 @@ div.checkbox2-comp{
                     display: flex;
                     position: relative;
                     flex-direction: row;
-                    max-width:400px;
+                    max-width:500px;
                     min-height: 39px;
 
                     >.btn-add-user {
@@ -2453,6 +2478,42 @@ div.checkbox2-comp{
                 text-align: center;
                 margin: auto;
             }
+        }
+    }
+}
+
+.public-sign-page-step-2 {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+
+    >.header-page .container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        height: 100%;
+        max-height: calc(100% - 131px);
+        overflow-y: auto;
+
+        box-sizing: border-box;
+        position: relative;
+
+
+        >.icon {
+            font-size: 40px;
+        }
+
+        >.title {
+            font-size: $font5;
+            font-weight: bold;
+            margin-top:30px;
+            margin-bottom:15px;
+        }
+
+        >.desc {
+            font-size: $font3;
         }
     }
 }
@@ -4670,6 +4731,30 @@ div.checkbox2-comp{
                                 >.cell-phone-number {
                                     color: $gray;
                                     font-size: $font0;
+                                }
+
+                                >.contract-open-key {
+
+                                    >span {
+                                        border: 1px solid $gray;
+                                        border-radius:20px;
+                                        padding:5px 10px;
+                                        font-size:$font1;
+                                        margin-top: 10px;
+                                        box-sizing: border-box;
+                                        display: inline-block;
+                                        cursor:pointer;
+
+                                        >.front {
+                                            color:$gray;
+                                        }
+
+                                        >.copy {
+                                            font-weight: bold;
+                                            cursor:pointer;
+                                        }
+
+                                    }
                                 }
                             }
 

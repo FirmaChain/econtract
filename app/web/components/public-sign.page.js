@@ -211,8 +211,8 @@ export default class extends React.Component {
 
         _.model = _.contract.html;
         _.contract_open_key = contract_open_key;
-        if(move_step) _.step = 1;
-        
+        if(move_step) _.step = 2;
+
         await this.setState(_)
 
         this.subscribeChannel()
@@ -756,8 +756,22 @@ export default class extends React.Component {
     }
 
     render_complete() {
-        return <div>
-            서명이 완료되었습니다.
+        return <div className="public-sign-page-step-2">
+            <div className="header-page">
+                <div className="header">
+                    <div className="left-logo">
+                        <img src="/static/logo_blue.png" onClick={()=>history.push("/")}/>
+                    </div>
+                    <div className="title">{translate("status_2")}</div>
+                </div>
+
+                <div className="container">
+                    <i className="icon fal fa-check-circle"></i>
+                    <div className="title">{translate("status_2")}</div>
+                    <div className="desc">{translate("no_register_sign_step_2_desc", [this.state.contract.name])}</div>
+                </div>
+            </div>
+            <Footer />
         </div>
     }
 

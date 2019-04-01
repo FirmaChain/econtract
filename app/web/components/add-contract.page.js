@@ -626,6 +626,15 @@ export default class extends React.Component {
         })
     }
 
+    copyContractOpenKey = (contract_open_key, e) => {
+        var dummy = document.createElement("textarea");
+        document.body.appendChild(dummy);
+        dummy.value = `${contract_open_key}`;
+        dummy.select();
+        document.execCommand("copy");
+        document.body.removeChild(dummy);
+    }
+
 
     keyPress = async (type, e) => {
         if(e.keyCode == 13){
@@ -877,6 +886,11 @@ export default class extends React.Component {
                                                         <div className="username">{e.username}</div>
                                                         <div className="email">{e.email}</div>
                                                         <div className="cell-phone-number">{e.cell_phone_number}</div>
+                                                        <div className="contract-open-key">
+                                                            <span onClick={this.copyContractOpenKey.bind(this, e.contract_open_key)}>
+                                                                <span className="front">{translate("unlock_contract_open_key")}</span> {`: ${e.contract_open_key}`} <span className="copy">{translate("copy")}</span>
+                                                            </span>
+                                                        </div>
                                                     </div>
                                                 case 0:
                                                     return <div className="desc">
