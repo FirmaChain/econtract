@@ -27,6 +27,7 @@ import {
     api_remove_counterparty,
     api_get_contract_public_link,
     api_update_contract_sign_public,
+    api_get_chats_public,
 } from "../../../gen_api"
 
 import {
@@ -462,6 +463,12 @@ export function get_chats(contract_id, page = 0, display_count = 20, last_chat_i
     return async function(){
         return (await api_get_chats(contract_id, page, display_count, last_chat_id));
     };
+}
+
+export function get_chats_public(contract_id, page = 0, display_count = 20, last_chat_id = 0) {
+    return async function() {
+        return (await api_get_chats_public(contract_id, page, display_count, last_chat_id))
+    }
 }
 
 export function send_chat(contract_id, entity_id, corp_id, message){

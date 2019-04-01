@@ -367,8 +367,6 @@ export default class extends React.Component {
                 email_enable: false,
                 onConfirm: async (data)=>{
 
-                    console.log(data)
-
                     for(let v of this.state.target_list) {
                         if( !!v.email && v.email == data.email ) {
                             return alert(translate("already_add_user"))

@@ -346,6 +346,18 @@ export async function api_get_chats(contract_id,page,display_count,last_chat_id)
         session:window.getCookie("session")
     });
 }
+export async function api_get_chats_public(contract_id,page,display_count,last_chat_id){
+    let __data = new FormData();
+
+    if(contract_id != null) __data.append('contract_id', contract_id);
+	if(page != null) __data.append('page', page);
+	if(display_count != null) __data.append('display_count', display_count);
+	if(last_chat_id != null) __data.append('last_chat_id', last_chat_id)
+
+    return await post("/get_chats_public", __data,{
+        session:window.getCookie("session")
+    });
+}
 export async function api_send_chat(contract_id,entity_id,corp_id,message){
     let __data = new FormData();
 

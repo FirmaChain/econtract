@@ -28,7 +28,7 @@ import moment from 'moment'
 
 import {
     get_contract_public_link,
-    get_chats,
+    get_chats_public,
     update_contract_sign_public,
     request_phone_verification_code,
     select_subject,
@@ -48,7 +48,7 @@ let mapStateToProps = (state)=>{
 
 let mapDispatchToProps = {
     get_contract_public_link,
-    get_chats,
+    get_chats_public,
     update_contract_sign_public,
     request_phone_verification_code,
 }
@@ -246,7 +246,7 @@ export default class extends React.Component {
         if(this.end_chat)
             return false
 
-        let chats = await this.props.get_chats(this.state.contract.contract_id, this.state.page_chat, 30, this.state.last_chat_id)
+        let chats = await this.props.get_chats_public(this.state.contract.contract_id, this.state.page_chat, 30, this.state.last_chat_id)
         if(chats.code == 1) {
             if(chats.payload.length == 0) {
                 this.end_chat = true
