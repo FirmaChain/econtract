@@ -28,6 +28,8 @@ import {
     api_get_contract_public_link,
     api_update_contract_sign_public,
     api_get_chats_public,
+    api_update_contract_model_public,
+    api_move_contract_can_edit_account_id_public,
 } from "../../../gen_api"
 
 import {
@@ -399,6 +401,13 @@ export function update_contract_model(contract_id, model, the_key){
     };
 }
 
+export function update_contract_model_public(contract_id, entity_id, link, cell_phone_number, model, the_key) {
+    return async function() {
+        let encrypted_model = aes_encrypt(model, the_key)
+        return (await api_update_contract_model_public(contract_id, entity_id, link, cell_phone_number, encrypted_model));
+    }
+}
+
 
 //unused
 export function update_contract_user_info(contract_id, entity_id, corp_id, e, user_info, isAccount, pin = "000000"){
@@ -455,6 +464,12 @@ export function update_contract_sign_info(contract_id, sign_info, the_key) {
 export function move_contract_can_edit_account_id(contract_id, can_edit_corp_id, move_account_id, move_email){
     return async function(){
         return (await api_move_contract_can_edit_account_id(contract_id, can_edit_corp_id, move_account_id, move_email));
+    };
+}
+
+export function move_contract_can_edit_account_id_public(contract_id, entity_id, link, cell_phone_number, can_edit_corp_id, move_account_id, move_email){
+    return async function(){
+        return (await api_move_contract_can_edit_account_id_public(contract_id, entity_id, link, cell_phone_number, can_edit_corp_id, move_account_id, move_email));
     };
 }
 

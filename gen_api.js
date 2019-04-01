@@ -274,6 +274,19 @@ export async function api_update_contract_model(contract_id,model){
         session:window.getCookie("session")
     });
 }
+export async function api_update_contract_model_public(contract_id,entity_id,link,cell_phone_number,model){
+    let __data = new FormData();
+
+    if(contract_id != null) __data.append('contract_id', contract_id);
+	if(entity_id != null) __data.append('entity_id', entity_id);
+	if(link != null) __data.append('link', link);
+	if(cell_phone_number != null) __data.append('cell_phone_number', cell_phone_number);
+	if(model != null) __data.append('model', model)
+
+    return await post("/update_contract_model_public", __data,{
+        session:window.getCookie("session")
+    });
+}
 export async function api_update_contract_user_info(contract_id,entity_id,corp_id,user_info){
     let __data = new FormData();
 
@@ -332,6 +345,21 @@ export async function api_move_contract_can_edit_account_id(contract_id,can_edit
 	if(move_email != null) __data.append('move_email', move_email)
 
     return await post("/move_contract_can_edit_account_id", __data,{
+        session:window.getCookie("session")
+    });
+}
+export async function api_move_contract_can_edit_account_id_public(contract_id,entity_id,link,cell_phone_number,can_edit_corp_id,move_account_id,move_email){
+    let __data = new FormData();
+
+    if(contract_id != null) __data.append('contract_id', contract_id);
+	if(entity_id != null) __data.append('entity_id', entity_id);
+	if(link != null) __data.append('link', link);
+	if(cell_phone_number != null) __data.append('cell_phone_number', cell_phone_number);
+	if(can_edit_corp_id != null) __data.append('can_edit_corp_id', can_edit_corp_id);
+	if(move_account_id != null) __data.append('move_account_id', move_account_id);
+	if(move_email != null) __data.append('move_email', move_email)
+
+    return await post("/move_contract_can_edit_account_id_public", __data,{
         session:window.getCookie("session")
     });
 }

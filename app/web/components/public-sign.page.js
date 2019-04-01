@@ -31,6 +31,7 @@ import {
     get_chats_public,
     update_contract_sign_public,
     request_phone_verification_code,
+    move_contract_can_edit_account_id,
     select_subject,
     createContractHtml,
 
@@ -51,6 +52,7 @@ let mapDispatchToProps = {
     get_chats_public,
     update_contract_sign_public,
     request_phone_verification_code,
+    move_contract_can_edit_account_id,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -371,9 +373,15 @@ export default class extends React.Component {
 
         if(this.state.contract.html == this.state.model)
             return;
-        //encrypt model
 
-        let r = await this.props.update_contract_model(this.state.contract.contract_id, model, this.state.contract.the_key)
+        let me = select_subject(this.state.infos, [], this.state.entity_id, -1).my_info
+        if(me == null)
+            return;
+        
+        let r = await this.props.update_contract_model_public(this.state.contract.contract_id, 
+            this.state.entity_id, this.props.match.params.code, me.user_info.cell_phone_number, 
+            model, this.state.contract.the_key);
+
         if(r.code == 1) {
             this.setState({
                 contract_modify_status:translate("last_modify_contract_save") + " " + moment().format("YYYY-MM-DD HH:mm:ss")
@@ -393,15 +401,22 @@ export default class extends React.Component {
 
         window.openModal("MoveCanEditAccount",{
             user_infos: this.state.infos,
-            my_account_id: this.props.user_info.account_id,
+            my_account_id: this.state.entity_id,
+            my_corp_id: -1,
             onConfirm : async (user)=>{
 
                 let can_edit_corp_id = 0
                 if(user.corp_id == -1)
                     can_edit_corp_id = -1;
 
+                let me = select_subject(this.state.infos, [], this.state.entity_id, -1).my_info
+                if(me == null)
+                    return;
+
                 await window.showIndicator()
-                let result = await this.props.move_contract_can_edit_account_id(this.state.contract.contract_id, can_edit_corp_id, user.entity_id, user.sub)
+                let result = await this.props.move_contract_can_edit_account_id_public(
+                    this.state.contract.contract_id, this.state.entity_id, 
+                    this.props.match.params.code, me.user_info.cell_phone_number, can_edit_corp_id, user.entity_id, user.sub)
                 //await this.onRefresh()
                 await window.hideIndicator()
             }

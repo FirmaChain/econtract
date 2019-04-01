@@ -810,7 +810,7 @@ class MoveCanEditAccount extends React.Component {
     }
 
     render() {
-        let availabe_user_infos = this.props.user_infos.filter(e=>e.privilege == 1 && this.props.my_account_id != e.entity_id)
+        let availabe_user_infos = this.props.user_infos.filter(e=>e.privilege == 1 && this.props.my_corp_id != e.corp_id && this.props.my_account_id != e.entity_id )
         return <div className="move-can-edit-account-modal default-modal-container">
             <div className="container">
                 <div className="icon"><i className="fas fa-arrow-alt-right"></i></div>

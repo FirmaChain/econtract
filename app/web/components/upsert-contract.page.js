@@ -333,6 +333,7 @@ export default class extends React.Component {
         window.openModal("MoveCanEditAccount",{
             user_infos: this.state.infos,
             my_account_id: this.props.user_info.account_id,
+            my_corp_id: window.CONST.DUMMY_CORP_ID,
             onConfirm : async (user)=>{
                 let can_edit_corp_id = 0
                 if(user.corp_id == -1)
