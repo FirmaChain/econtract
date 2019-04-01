@@ -346,10 +346,13 @@ export async function api_get_chats(contract_id,page,display_count,last_chat_id)
         session:window.getCookie("session")
     });
 }
-export async function api_get_chats_public(contract_id,page,display_count,last_chat_id){
+export async function api_get_chats_public(contract_id,entity_id,link,cell_phone_number,page,display_count,last_chat_id){
     let __data = new FormData();
 
     if(contract_id != null) __data.append('contract_id', contract_id);
+	if(entity_id != null) __data.append('entity_id', entity_id);
+	if(link != null) __data.append('link', link);
+	if(cell_phone_number != null) __data.append('cell_phone_number', cell_phone_number);
 	if(page != null) __data.append('page', page);
 	if(display_count != null) __data.append('display_count', display_count);
 	if(last_chat_id != null) __data.append('last_chat_id', last_chat_id)

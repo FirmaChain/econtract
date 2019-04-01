@@ -246,7 +246,12 @@ export default class extends React.Component {
         if(this.end_chat)
             return false
 
-        let chats = await this.props.get_chats_public(this.state.contract.contract_id, this.state.page_chat, 30, this.state.last_chat_id)
+        let me = select_subject(this.state.infos, [], this.state.entity_id, -1).my_info
+
+        let chats = await this.props.get_chats_public(
+            this.state.contract.contract_id, this.state.entity_id,
+            this.props.match.params.code, me.user_info.cell_phone_number,
+            this.state.page_chat, 30, this.state.last_chat_id)
         if(chats.code == 1) {
             if(chats.payload.length == 0) {
                 this.end_chat = true

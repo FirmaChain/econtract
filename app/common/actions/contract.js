@@ -465,9 +465,9 @@ export function get_chats(contract_id, page = 0, display_count = 20, last_chat_i
     };
 }
 
-export function get_chats_public(contract_id, page = 0, display_count = 20, last_chat_id = 0) {
+export function get_chats_public(contract_id, entity_id, link, cell_phone_number, page = 0, display_count = 20, last_chat_id = 0) {
     return async function() {
-        return (await api_get_chats_public(contract_id, page, display_count, last_chat_id))
+        return (await api_get_chats_public(contract_id, entity_id, link, cell_phone_number, page, display_count, last_chat_id))
     }
 }
 
