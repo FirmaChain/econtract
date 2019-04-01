@@ -172,8 +172,6 @@ export default class extends React.Component {
             })
             await this.unlock_contract(this.state.contract_open_key || "", false)
 
-            console.log("resp.payload", resp.payload)
-
             if( !!this.editor && !!resp.payload.contract && resp.payload.contract.can_edit_corp_id != -1 || this.state.entity_id != resp.payload.contract.can_edit_account_id ) {
                 this.editor.edit.off()
             } else {
