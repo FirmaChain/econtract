@@ -415,9 +415,31 @@ export default class extends React.Component {
         await window.hideIndicator()
     }
 
+    onModelChange = async (model) => {
+
+        for(let v of this.state.infos) {
+            let regex = new RegExp(`<\\s*span\\s*class="t-sign corp_${v.corp_id} entity_${v.entity_id}"[^>]*>(.*?)<\\s*\/\\s*span>`, "gi")
+            let all_signs = model.match(regex)
+            if(all_signs) {
+                for(let sign of all_signs) {
+                    let result = regex.exec(sign);
+                    if(result && result.length > 1 && result[1] != translate("sign_user", [v.user_info.username])) {
+                        model = model.replace(new RegExp(`${result[0]}`, "gi"), "")
+                    }
+                }
+            }
+        }
+
+        this.setState({
+            model,
+            contract_modify_status:translate("contract_modify")
+        })
+    }
+
     onClickRegisterSign = async () => {
-        if( (this.state.contract.html || "") != this.state.model)
+        if( (this.state.contract.html || "") != this.state.model) {
             return alert(translate("if_modify_content_not_sign"))
+        }
 
         if( this.state.contract.html == null || this.state.contract.html == "") {
             return alert(translate("if_no_model_you_dont_sign"))
@@ -627,7 +649,7 @@ export default class extends React.Component {
         this.restoreSelection(selRange)
         this.editor.events.focus(true);
 
-        this.editor.html.insert(`<span class="t-sign corp_${user.corp_id} entity_${user.entity_id}" contentEditable="false">${translate("sign_user", [user.user_info.username])}</span>`)
+        this.editor.html.insert(`<span class="t-sign corp_${user.corp_id} entity_${user.entity_id}">${translate("sign_user", [user.user_info.username])}</span> &nbsp;`)
 
         this.editor.undo.saveStep();
     }
@@ -950,7 +972,7 @@ export default class extends React.Component {
                             tag='textarea'
                             config={this.config}
                             model={this.state.model}
-                            onModelChange={(model) => this.setState({model, contract_modify_status:translate("contract_modify")})} />
+                            onModelChange={this.onModelChange} />
                         { this.state.contract.status < 2 ? <div className="can-edit-text">
                             <div>{translate("now_edit_privilege_who", [can_edit_name])}</div>
                         </div> : null }
