@@ -63,23 +63,7 @@ export default class extends React.Component {
         super();
 
         this.blockFlag = false;
-        this.disconnect = false
-        this.socket = socketIOClient(config.HOST)
-        this.socket.on('disconnect', async () => {
-            //console.log("disconnect socket")
-            this.disconnect = true
-            for(let i in [0,0,0,0,0]) {
-                await new Promise(r=>setTimeout(r, 2000))
-                try{
-                    let result = this.socket.open();
-                    this.socket.removeAllListeners()
-                    this.subscribeChannel()
-                    this.disconnect = false
-                }catch(err) {
-                    continue
-                }
-            }
-        })
+        
         //reconect
 
         this.config = {
@@ -225,12 +209,33 @@ export default class extends React.Component {
 
         _.model = _.contract.html;
         _.contract_open_key = contract_open_key;
-        if(move_step) _.step = 1;
-
+        if(move_step) {
+            _.step = 1;
+            this.disconnect = false
+            this.socket = socketIOClient(config.HOST)
+            this.socket.on('disconnect', async () => {
+                //console.log("disconnect socket")
+                this.disconnect = true
+                for(let i in [0,0,0,0,0]) {
+                    await new Promise(r=>setTimeout(r, 2000))
+                    try{
+                        let result = this.socket.open();
+                        this.socket.removeAllListeners()
+                        this.subscribeChannel()
+                        this.disconnect = false
+                    }catch(err) {
+                        continue
+                    }
+                }
+            })
+        }
         await this.setState(_)
 
-        this.subscribeChannel()
-        await this.onChatLoadMore()
+        if(move_step) {
+            await this.onRefresh();
+            await this.onChatLoadMore()
+            this.subscribeChannel()
+        }
 
         return true;
     }
