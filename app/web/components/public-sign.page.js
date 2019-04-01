@@ -737,7 +737,7 @@ export default class extends React.Component {
 
         let can_edit_name
         for(let v of this.state.infos) {
-            if(v.corp_id == 0 && this.isCanEdit(v.corp_id && v.entity_id)) {
+            if(this.state.contract.can_edit_corp_id == v.corp_id && this.state.contract.can_edit_account_id == v.entity_id) {
                 can_edit_name = v.user_info.username
             }
         }
