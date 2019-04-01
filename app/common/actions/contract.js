@@ -108,7 +108,7 @@ export function new_contract(subject, message, counterparties, set_pin, necessar
         let shared_key = generate_random(31);
         let the_key = getContractKey(pin, shared_key);
 
-        let no_sign_user_index = 1;
+        let no_sign_user_index = -1;
         let counterparties_mapped = counterparties.map(e=>{
             let temp_corp_id = e.user_type == 2 ? e.corp_id : DUMMY_CORP_ID
             if(e.user_type == -1)
@@ -117,7 +117,7 @@ export function new_contract(subject, message, counterparties, set_pin, necessar
             let temp_entity_id = e.user_type == 2 ? e.group_id : e.account_id
             if(e.user_type == -1) {
                 temp_entity_id = no_sign_user_index;
-                no_sign_user_index++;
+                no_sign_user_index--;
             }
 
             let mapped_data = {
