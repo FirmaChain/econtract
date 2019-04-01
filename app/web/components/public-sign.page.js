@@ -31,7 +31,8 @@ import {
     get_chats_public,
     update_contract_sign_public,
     request_phone_verification_code,
-    move_contract_can_edit_account_id,
+    move_contract_can_edit_account_id_public,
+    update_contract_model_public,
     select_subject,
     createContractHtml,
 
@@ -52,7 +53,8 @@ let mapDispatchToProps = {
     get_chats_public,
     update_contract_sign_public,
     request_phone_verification_code,
-    move_contract_can_edit_account_id,
+    move_contract_can_edit_account_id_public,
+    update_contract_model_public,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -164,16 +166,28 @@ export default class extends React.Component {
     onRefresh = async () => {
         let resp = await this.props.get_contract_public_link(this.props.match.params.code)
             
-            if(resp.code == 1) {
-                this.setState({
-                    ...resp.payload
-                })
-                await this.unlock_contract(this.state.contract_open_key || "", false)
+        if(resp.code == 1) {
+            this.setState({
+                ...resp.payload
+            })
+            await this.unlock_contract(this.state.contract_open_key || "", false)
+
+            console.log("resp.payload", resp.payload)
+
+            if( !!this.editor && !!resp.payload.contract && resp.payload.contract.can_edit_corp_id != -1 || this.state.entity_id != resp.payload.contract.can_edit_account_id ) {
+                this.editor.edit.off()
+            } else {
+                this.editor.edit.on()
             }
-            else if(resp.code == -6) {
-                alert(translate("invalidate_link"))
-                return history.goBack();
+
+            if(!!this.editor && !!resp.payload.contract && resp.payload.contract.status == 2) {
+                this.editor.edit.off()
             }
+        }
+        else if(resp.code == -6) {
+            alert(translate("invalidate_link"))
+            return history.goBack();
+        }
     }
 
     unlock_contract = async (contract_open_key, move_step = true) => {
@@ -377,7 +391,7 @@ export default class extends React.Component {
         let me = select_subject(this.state.infos, [], this.state.entity_id, -1).my_info
         if(me == null)
             return;
-        
+
         let r = await this.props.update_contract_model_public(this.state.contract.contract_id, 
             this.state.entity_id, this.props.match.params.code, me.user_info.cell_phone_number, 
             model, this.state.contract.the_key);

@@ -250,7 +250,7 @@ export default class extends React.Component {
             if(me && me.sign_info == null && me.privilege == 1)
                 await this.onClickRegiserSignInfo(true);
 
-            if( !!this.editor && !!contract.payload.contract && this.props.user_info.account_id != contract.payload.contract.can_edit_account_id ) {
+            if( !!this.editor && !!contract.payload.contract && contract.payload.contract.can_edit_corp_id != window.CONST.DUMMY_CORP_ID || this.props.user_info.account_id != contract.payload.contract.can_edit_account_id ) {
                 this.editor.edit.off()
             } else {
                 this.editor.edit.on()
