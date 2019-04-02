@@ -112,7 +112,7 @@ export default class extends React.Component {
                 //console.log ('do refresh when show');
             }
         })*/
-        $.FroalaEditor.DefineIcon('check', {NAME: 'check-square'});
+        /*$.FroalaEditor.DefineIcon('check', {NAME: 'check-square'});
         $.FroalaEditor.RegisterCommand('check', {
             title: 'CheckBox',
             focus: true,
@@ -122,7 +122,7 @@ export default class extends React.Component {
                 this.html.insert('<input class="fr-checkbox" type="checkbox"/>');
                 this.undo.saveStep();
             }
-        });
+        });*/
 
         this.blockFlag = false;
         this.disconnect = false;
