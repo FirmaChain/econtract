@@ -159,7 +159,7 @@ export default class extends React.Component {
             if( !!this.editor && !!resp.payload.contract && resp.payload.contract.can_edit_corp_id != -1 || this.state.entity_id != resp.payload.contract.can_edit_account_id ) {
                 this.editor.edit.off()
             } else {
-                this.editor.edit.on()
+                !!this.editor && this.editor.edit.on()
             }
 
             if(!!this.editor && !!resp.payload.contract && resp.payload.contract.status == 2) {

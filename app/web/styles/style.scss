@@ -161,6 +161,11 @@ a.fr-command {
     padding:10px;
 }
 
+.fr-checkbox {
+    height:25px;
+    width:25px;
+}
+
 
 
 .input-dropdown {
@@ -4943,6 +4948,7 @@ div.checkbox2-comp{
                 }
 
                 >.invitation-message {
+                    margin-bottom:80px;
                     
                     >.title {
                         font-size: $font4;

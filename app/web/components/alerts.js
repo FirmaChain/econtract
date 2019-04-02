@@ -998,24 +998,32 @@ class DrawSign extends React.Component{
     }
     
     onmousedown = (e)=>{
+        e.stopPropagation()
         if(this.isImage)
             return;
+
+        let clientX = e.clientX || e.touches[0].clientX
+        let clientY = e.clientY || e.touches[0].clientY
 
         let ctx = this.refs.canvas.getContext('2d');
 
         this.isDrawing = true;
-        ctx.moveTo(e.clientX - e.target.offsetLeft, e.clientY - e.target.offsetTop);
+        ctx.moveTo(clientX - e.target.offsetLeft, clientY - e.target.offsetTop);
         ctx.beginPath()
     }
 
     onmousemove = (e)=>{
+        e.stopPropagation()
         if(this.isImage)
             return;
+
+        let clientX = e.clientX || e.touches[0].clientX
+        let clientY = e.clientY || e.touches[0].clientY
 
         let ctx = this.refs.canvas.getContext('2d');
 
         if (this.isDrawing) {
-            ctx.lineTo(e.clientX - e.target.offsetLeft, e.clientY - e.target.offsetTop);
+            ctx.lineTo(clientX - e.target.offsetLeft, clientY - e.target.offsetTop);
             ctx.stroke();
         }
     }
@@ -1048,7 +1056,10 @@ class DrawSign extends React.Component{
                     height="250"
                     onMouseDown={this.onmousedown} 
                     onMouseMove={this.onmousemove}
-                    onMouseUp={this.onmouseup} />
+                    onMouseUp={this.onmouseup}
+                    onTouchStart={this.onmousedown}
+                    onTouchMove={this.onmousemove}
+                    onTouchEnd={this.onmouseup} />
 
                 <div className="image-upload">
                     <div className="button" onClick={()=>{

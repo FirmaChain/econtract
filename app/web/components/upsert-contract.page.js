@@ -112,8 +112,20 @@ export default class extends React.Component {
                 //console.log ('do refresh when show');
             }
         })*/
+        $.FroalaEditor.DefineIcon('check', {NAME: 'check-square'});
+        $.FroalaEditor.RegisterCommand('check', {
+            title: 'CheckBox',
+            focus: true,
+            undo: true,
+            refreshAfterCallback: true,
+            callback: function () {
+                this.html.insert('<input class="fr-checkbox" type="checkbox"/>');
+                this.undo.saveStep();
+            }
+        });
+
         this.blockFlag = false;
-        this.disconnect = false
+        this.disconnect = false;
         this.socket = socketIOClient(config.HOST)
         this.socket.on('disconnect', async () => {
             //console.log("disconnect socket")
@@ -253,7 +265,7 @@ export default class extends React.Component {
             if( !!this.editor && !!contract.payload.contract && contract.payload.contract.can_edit_corp_id != window.CONST.DUMMY_CORP_ID || this.props.user_info.account_id != contract.payload.contract.can_edit_account_id ) {
                 this.editor.edit.off()
             } else {
-                this.editor.edit.on()
+                !!this.editor && this.editor.edit.on()
             }
 
             if(!!this.editor && !!contract.payload.contract && contract.payload.contract.status == 2) {

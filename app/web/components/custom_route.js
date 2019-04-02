@@ -9,8 +9,10 @@ class MyRoute extends React.Component{
 		this.state={}
 	}
 	componentDidMount(){
+		console.log(navigator.userAgent)
 		if(window.location.pathname != "/"){
-			if(navigator.userAgent.indexOf("Chrome") != -1){
+			if(navigator.userAgent.toLowerCase().indexOf("chrome") != -1 ||
+			 	navigator.userAgent.toLowerCase().indexOf("ipad") != -1){
 				this.setState({ chrome:true })
 			}else{
 				this.setState({ chrome:false })
