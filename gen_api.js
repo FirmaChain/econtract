@@ -148,10 +148,11 @@ export async function api_convert_doc(file){
         session:window.getCookie("session")
     });
 }
-export async function api_new_contract(subject,counterparties,necessary_info_string,can_edit_account_id,payer_account_id,is_pin_used,model,message,decrypted_message){
+export async function api_new_contract(subject,creator_email,counterparties,necessary_info_string,can_edit_account_id,payer_account_id,is_pin_used,model,message,decrypted_message){
     let __data = new FormData();
 
     if(subject != null) __data.append('subject', subject);
+	if(creator_email != null) __data.append('creator_email', creator_email);
 	if(counterparties != null) __data.append('counterparties', counterparties);
 	if(necessary_info_string != null) __data.append('necessary_info_string', necessary_info_string);
 	if(can_edit_account_id != null) __data.append('can_edit_account_id', can_edit_account_id);

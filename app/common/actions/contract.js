@@ -100,7 +100,7 @@ export function getGroupKey(user_info, group_id) {
     }
 }
 
-export function new_contract(subject, message, counterparties, set_pin, necessary_info, can_edit_account_id, payer_account_id, is_pin_used = false, model = null) {
+export function new_contract(subject, creator_email, message, counterparties, set_pin, necessary_info, can_edit_account_id, payer_account_id, is_pin_used = false, model = null) {
     return async function(dispatch){
         let pin = set_pin ? set_pin : "000000";
         if(!set_pin)
@@ -134,6 +134,8 @@ export function new_contract(subject, message, counterparties, set_pin, necessar
             else {
                 mapped_data.encrypted_key = aes_encrypt(Buffer.from(the_key, 'hex').toString('hex'), Buffer.from(e.contract_open_key))
                 mapped_data.cell_phone_number = e.cell_phone_number;
+                mapped_data.contract_open_key = e.contract_open_key;
+                mapped_data.username = e.username;
             }
 
             return mapped_data
@@ -149,7 +151,7 @@ export function new_contract(subject, message, counterparties, set_pin, necessar
             encrypted_message = aes_encrypt(message, the_key)
         }
 
-        let resp = await api_new_contract(subject, JSON.stringify(counterparties_mapped), JSON.stringify(necessary_info), can_edit_account_id, payer_account_id, is_pin_used, encrypted_model, encrypted_message, message);
+        let resp = await api_new_contract(subject, creator_email, JSON.stringify(counterparties_mapped), JSON.stringify(necessary_info), can_edit_account_id, payer_account_id, is_pin_used, encrypted_model, encrypted_message, message);
         /*if(resp.code == 1) {
             sessionStorage.setItem(`contract:${resp.payload.contract_id}`, encryptPIN(pin));
         }*/

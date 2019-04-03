@@ -520,7 +520,7 @@ export default class extends React.Component {
 
             await window.showIndicator();
 
-            let resp =  await this.props.new_contract(contract_name, contract_message, counterparties, pin, necessary_info, this.state.can_edit_account_id, this.state.payer_account_id, !!is_pin_used ? 1 : 0, pre_model);
+            let resp =  await this.props.new_contract(contract_name, this.props.user_info.email, contract_message, counterparties, pin, necessary_info, this.state.can_edit_account_id, this.state.payer_account_id, !!is_pin_used ? 1 : 0, pre_model);
             console.log(resp)
             if(resp.code == 1) {
                 let contract_id = resp.payload.contract_id
