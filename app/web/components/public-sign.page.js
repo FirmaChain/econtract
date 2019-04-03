@@ -379,7 +379,7 @@ export default class extends React.Component {
         this.restoreSelection(selRange)
         this.editor.events.focus(true);
 
-        this.editor.html.insert(`<span class="t-sign corp_${user.corp_id} entity_${user.entity_id}" contentEditable="false">${translate("sign_user", [user.user_info.username])}</span>`)
+        this.editor.html.insert(`<span class="t-sign corp_${user.corp_id} entity_${user.entity_id}">${translate("sign_user", [user.user_info.username])}</span> `)
 
         this.editor.undo.saveStep();
     }
@@ -763,18 +763,18 @@ export default class extends React.Component {
                             config={this.config}
                             model={this.state.model}
                             onModelChange={(model) => this.setState({model, contract_modify_status:translate("contract_modify")})} />
-                        { /*this.state.contract.status < 2 ? <div className="can-edit-text">
+                        { this.state.contract.status < 2 ? <div className="can-edit-text">
                             <div>{translate("now_edit_privilege_who", [can_edit_name])}</div>
-                        </div> : null*/ }
-                        { /*this.state.contract.status < 2 && this.state.contract.can_edit_account_id == this.state.entity_id ? <div className="floating">
+                        </div> : null }
+                        { this.state.contract.status < 2 && this.state.contract.can_edit_account_id == this.state.entity_id ? <div className="floating">
                             <div>
                                 <div className="circle" unselectable="on" onClick={()=>this.setState({toolbar_open:!this.state.toolbar_open})}>
                                     <i className={`far fa-plus ${this.state.toolbar_open ? "spin-start-anim" : "spin-end-anim"}`}></i>
                                 </div>
                             </div>
-                        </div>: null*/ }
+                        </div>: null }
 
-                        { /*this.state.contract.status < 2 && this.state.contract.can_edit_account_id == this.state.entity_id ? <div className={`tool-bar ${this.state.toolbar_open ? "fade-start-anim" : "fade-end-anim"}`}>
+                        { this.state.contract.status < 2 && this.state.contract.can_edit_account_id == this.state.entity_id ? <div className={`tool-bar ${this.state.toolbar_open ? "fade-start-anim" : "fade-end-anim"}`}>
                             <div>
                                 <div className="sign-title">{translate("sign_place_add_title")}</div>
                                 {this.state.infos.filter( e=>e.privilege == 1 ).map( (e, k) => {
@@ -783,7 +783,7 @@ export default class extends React.Component {
                                     </div>
                                 })}
                             </div>
-                        </div> : null*/ }
+                        </div> : null }
                     </div>
                     {!this.state.sign_mode ? <div className="info">
                         <div className="top">
@@ -826,7 +826,7 @@ export default class extends React.Component {
                 </div>
                 {(()=>{
                     if(meOrGroup.privilege == 2 || this.state.contract.status == 2) {
-                        return <div className="sign" onClick={(e)=>history.goBack()}>
+                        return <div className="sign" onClick={(e)=>window.close()}>
                             {translate("go_back")}
                         </div>
                     }
