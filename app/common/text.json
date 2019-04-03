@@ -512,7 +512,7 @@
     "purcahse_onetime_ticket_desc":["건별 이용권 {0} 개를 구매합니다. 진행하시겠습니까?","Are you sure you want to purchase {0} charges?","购买{0}件单次付款。您确定继续进行吗？"],
     "recover_password_issue":["복구용 비밀번호 발급","Issue Recovery Password","发行修复密码"],
     "master_keyword_issue_desc":["발급받은 마스터 키워드는 접속하고 있는 브라우저에 자동으로 저장됩니다.","Your device will be authenticated using the master keyword saved to your device.","已发行的Master Keyword将自动保存到当前的浏览器。"],
-    "user_add_desc":["계약 서명 또는 보기 가능 사용자를 추가합니다.\n가입하지 않은 사용자도 이메일과 전화번호, 이름만 알면 추가할 수 있으며, 가입하지 않은 사용자는 카카오톡, 또는 문자로 계약 발신 알림이 전송됩니다.","",""],
+    "user_add_desc":["계약 서명 또는 보기 가능 사용자를 추가합니다.\u003cbr/\u003e\u003cbr/\u003e가입하지 않은 사용자도 이메일과 전화번호, 이름만 알면 추가할 수 있으며, 가입하지 않은 사용자는 카카오톡, 또는 문자로 계약 발신 알림이 전송됩니다.","",""],
     "please_input_modify_account_group_count":["변경할 그룹 계정 수를 입력해주세요.","Enter number of group accounts to add.","请输入要更换的企业用户数。"],
     "yearly_subscribe":["연간 정기 결제","Annual Subscription Plan","年支付"],
     "already_register_individual":["이미 개인 계정으로 가입되어 있습니다.","The email address is already registered under an individual account.","此邮箱已被注册个人用户。"],

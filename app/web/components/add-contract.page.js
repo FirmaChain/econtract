@@ -815,7 +815,7 @@ export default class extends React.Component {
                 <div className="row" style={{display:this.state.target_other ? "flex" : "none"}}>
                     <div className="left-desc">
                         <div className="desc-head">{translate("user_add")}</div>
-                        <div className="desc-content">{translate("user_add_desc")}</div>
+                        <div className="desc-content" dangerouslySetInnerHTML={{__html:translate("user_add_desc")}}></div>
                         {/*<div className="desc-link" onClick={this.openServiceNoRegisterModal}>{translate("unregister_user_enable_sign_?")}</div>*/}
                     </div>
                     <div className="right-form">
