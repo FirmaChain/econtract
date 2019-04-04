@@ -330,11 +330,15 @@ export default class extends React.Component {
             title:translate("user_add"),
             placeholder:translate("please_input_email"),
             onConfirm: async (email, add_role) => {
-                if(!email)
-                    return alert(translate("please_input_email"))
+                if(!email) {
+                    alert(translate("please_input_email"))
+                    return false;
+                }
 
-                if( !window.email_regex.test(email) )
-                    return alert(translate("incorrect_email_expression"))
+                if( !window.email_regex.test(email) ) {
+                    alert(translate("incorrect_email_expression"))
+                    return false;
+                }
 
                 let resp = await this.props.select_userinfo_with_email(email);
                 let info;
@@ -356,11 +360,13 @@ export default class extends React.Component {
 
                     let groups = await this.props.get_group_info(0)
                     let contract = this.state.contract;
-                    let res = await this.props.add_contract_user(contract.contract_id, info, groups, this.props.user_info, this.state.infos, contract.is_pin_used, contract.pin)
-                    if(res.code == 1) {
-                        return alert(translate("add_user_success"))
+                    let add_resp = await this.props.add_contract_user(contract.contract_id, info, groups, this.props.user_info, this.state.infos, contract.is_pin_used, contract.pin)
+                    if(add_resp.code == 1) {
+                        alert(translate("add_user_success"))
+                        return true;
                     } else {
-                        return alert(translate("fail_user_success", [resp.code]))
+                        alert(translate("fail_user_success", [add_resp.code]))
+                        return true;
                     }
                 } else {
                     window.openModal("NoSignUserAdd", {
@@ -391,6 +397,7 @@ export default class extends React.Component {
                         }
                     })
                 }
+                return true;
 
             }
         })

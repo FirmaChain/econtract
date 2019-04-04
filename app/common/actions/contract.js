@@ -427,9 +427,8 @@ export function add_contract_user(contract_id, counterparty, groups, user_info, 
             mapped_data.contract_open_key = counterparty.contract_open_key;
             mapped_data.username = counterparty.username;
         }
-
-
         let res = await api_add_contract_user( contract_id, JSON.stringify(mapped_data) )
+        return res;
     }
 }
 

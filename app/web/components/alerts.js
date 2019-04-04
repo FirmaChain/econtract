@@ -1520,9 +1520,10 @@ class AddContractUserModal extends React.Component {
         if(this.state.add_role == "" || this.state.text == "")
             return alert(translate("please_input_all"));
 
+        let res = true;
         if(!!this.props.onConfirm)
-            await this.props.onConfirm(this.state.text.trim(), this.state.add_role)
-        this.closeSelf()
+            res = await this.props.onConfirm(this.state.text.trim(), this.state.add_role)
+        if(res) this.closeSelf()
     }
 
     render() {
