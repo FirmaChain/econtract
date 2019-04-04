@@ -30,6 +30,7 @@ import {
     api_get_chats_public,
     api_update_contract_model_public,
     api_move_contract_can_edit_account_id_public,
+    api_add_contract_user,
 } from "../../../gen_api"
 
 import {
@@ -314,7 +315,7 @@ export function is_correct_pin(contract, pin_to_be_verified, infos, user_info, g
 
 export function add_counterparties(contract_id, counterparties, groups, user_info, infos, is_pin_used, real_pin = "000000") {
     return async function() {
-        let corp_id = user_info.corp_id || -1;
+        let corp_id = user_info.corp_id || CONST.DUMMY_CORP_ID;
         let subject = select_subject(infos, groups, user_info.account_id, corp_id);
         if (!subject.my_info) return null;
 
@@ -338,11 +339,11 @@ export function add_counterparties(contract_id, counterparties, groups, user_inf
 
         let no_sign_user_index = 1;
         let counterparties_mapped = counterparties.map(e=>{
-            let temp_corp_id = e.user_type == 2 ? e.corp_id : DUMMY_CORP_ID
+            let temp_corp_id = e.user_type == 2 ? e.corp_id : DUMMY_CORP_ID;
             if(e.user_type == -1)
                 temp_corp_id = -1;
 
-            let temp_entity_id = e.user_type == 2 ? e.group_id : e.account_id
+            let temp_entity_id = e.user_type == 2 ? e.group_id : e.account_id;
             if(e.user_type == -1) {
                 temp_entity_id = no_sign_user_index;
                 no_sign_user_index++;
@@ -360,11 +361,75 @@ export function add_counterparties(contract_id, counterparties, groups, user_inf
 
             if(e.user_type != -1)
                 mapped_data.eckai = sealContractAuxKey(e.public_key, shared_key);
+            else {
+                mapped_data.encrypted_key = aes_encrypt(Buffer.from(the_key, 'hex').toString('hex'), Buffer.from(e.contract_open_key))
+                mapped_data.cell_phone_number = e.cell_phone_number;
+                mapped_data.contract_open_key = e.contract_open_key;
+                mapped_data.username = e.username;
+            }
+
 
             return mapped_data;
         });
         let res = await api_add_counterparties( contract_id, JSON.stringify(counterparties_mapped) )
         return res
+    }
+}
+
+export function add_contract_user(contract_id, counterparty, groups, user_info, infos, is_pin_used, real_pin = "000000") {
+    return async function() {
+        let corp_id = user_info.corp_id || CONST.DUMMY_CORP_ID;
+        let subject = select_subject(infos, groups, user_info.account_id, corp_id);
+        if (!subject.my_info) return null;
+
+        let shared_key;
+        let pin = real_pin;
+        if(subject.isAccount) {
+            let entropy = localStorage.getItem("entropy");
+            if (!entropy) return null;
+            if (is_pin_used && pin == "000000") {
+                pin = decryptPIN(Buffer.from(subject.my_info.epin, 'hex').toString('hex'));
+            }
+            shared_key = unsealContractAuxKey(entropy, Buffer.from(subject.my_info.eckai, 'hex').toString('hex'));
+        } else {
+            console.log("privilege 2 not add user");
+            return;
+        }
+        let the_key = getContractKey(pin, shared_key);
+
+        let no_sign_user_index = 1;
+
+        let temp_corp_id = counterparty.user_type == 2 ? counterparty.corp_id : DUMMY_CORP_ID;
+        if(counterparty.user_type == -1)
+            temp_corp_id = -1;
+
+        let temp_entity_id = counterparty.user_type == 2 ? counterparty.group_id : counterparty.account_id;
+        if(counterparty.user_type == -1) {
+            temp_entity_id = no_sign_user_index;
+            no_sign_user_index++;
+        }
+
+        let mapped_data = {
+            user_type: counterparty.user_type,
+            entity_id: temp_entity_id,
+            corp_id: temp_corp_id,
+            role: counterparty.role,
+            user_info: aes_encrypt(JSON.stringify(counterparty), the_key),
+        };
+
+        if(!!counterparty.email) mapped_data.email = counterparty.email;
+
+        if(counterparty.user_type != -1)
+            mapped_data.eckai = sealContractAuxKey(counterparty.public_key, shared_key);
+        else {
+            mapped_data.encrypted_key = aes_encrypt(Buffer.from(the_key, 'hex').toString('hex'), Buffer.from(counterparty.contract_open_key))
+            mapped_data.cell_phone_number = counterparty.cell_phone_number;
+            mapped_data.contract_open_key = counterparty.contract_open_key;
+            mapped_data.username = counterparty.username;
+        }
+
+
+        let res = await api_add_contract_user( contract_id, JSON.stringify(mapped_data) )
     }
 }
 

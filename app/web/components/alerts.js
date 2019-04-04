@@ -1492,6 +1492,75 @@ class UnlockContractPublic extends React.Component {
     }
 }
 
+@modal
+class AddContractUserModal extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            text:"",
+            add_role:"",
+            add_role_label:"",
+        }
+    }
+
+    componentDidMount() {
+        this.setState({
+            text: this.props.text || ""
+        })
+    }
+
+    closeSelf = async () => {
+        if(!!this.props.onCancel)
+            await this.props.onCancel()
+
+        window.closeModal(this.props.modalId)
+    }
+
+    onConfirm = async () => {
+        if(this.state.add_role == "" || this.state.text == "")
+            return alert(translate("please_input_all"));
+
+        if(!!this.props.onConfirm)
+            await this.props.onConfirm(this.state.text.trim(), this.state.add_role)
+        this.closeSelf()
+    }
+
+    render() {
+        let _roles = [
+            {value:0, label: translate("creator")},
+            {value:1, label: translate("signer")},
+            {value:2, label: translate("viewer")}
+        ].filter( (e, k) => k != 0 );
+
+        return <div className="add-contract-user-modal default-modal-container">
+            <div className="container">
+                <div className="icon"><i className={this.props.icon}></i></div>
+                <div className="title">{this.props.title}</div>
+                <div className="text-box">
+                    <div className="sub-title">{translate("user_email")}</div>
+                    <input type="text" id="email" className="common-textbox"
+                        onChange={(e)=>this.setState({text:e.target.value})}
+                        value={this.state.text}
+                        placeholder={this.props.placeholder}/>
+                </div>
+                <div className="text-box">
+                    <div className="sub-title">{translate("user_role")}</div>
+                    <Dropdown className="common-select"
+                        controlClassName="control"
+                        menuClassName="item"
+                        options={_roles}
+                        onChange={e=>{this.setState({add_role:e.value, add_role_label:e.label})}}
+                        value={this.state.add_role_label} placeholder={translate("user_role")} />
+                </div>
+                <div className="button">
+                    <div className="confirm" onClick={this.onConfirm}>{translate("add")}</div>
+                    <div className="cancel" onClick={this.closeSelf}>{translate("cancel")}</div>
+                </div>
+            </div>
+        </div>
+    }
+}
+
 
 
 

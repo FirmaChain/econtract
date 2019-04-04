@@ -18,6 +18,7 @@ import Dropdown from "react-dropdown"
 import 'react-dropdown/style.css'
 import {
     decryptPIN,
+    generateRandomKey,
 } from "../../common/crypto_test"
 
 import {
@@ -31,6 +32,8 @@ import {
     add_counterparties,
     update_epin_group,
     remove_counterparty,
+    select_userinfo_with_email,
+    add_contract_user,
     getGroupKey,
     select_subject,
     createContractHtml,
@@ -54,6 +57,8 @@ let mapDispatchToProps = {
     add_counterparties,
     update_epin_group,
     remove_counterparty,
+    select_userinfo_with_email,
+    add_contract_user,
 }
 
 const LIST_DISPLAY_COUNT = 6
@@ -320,7 +325,75 @@ export default class extends React.Component {
     }
 
     addMember = async () => {
-        
+        window.openModal("AddContractUserModal", {
+            icon:"fas fa-users",
+            title:translate("user_add"),
+            placeholder:translate("please_input_email"),
+            onConfirm: async (email, add_role) => {
+                if(!email)
+                    return alert(translate("please_input_email"))
+
+                if( !window.email_regex.test(email) )
+                    return alert(translate("incorrect_email_expression"))
+
+                let resp = await this.props.select_userinfo_with_email(email);
+                let info;
+                if(resp){
+                    for(let v of this.state.infos) {
+                        if( v.is_exclude == 0 && v.corp_id == window.CONST.DUMMY_CORP_ID && v.entity_id == resp.account_id ) {
+                            return alert(translate("already_add_user"));
+                        }
+                    }
+
+                    info = {
+                        user_type:resp.account_type != 0 ? 1 : 0,
+                        username:resp.username,
+                        email:resp.email,
+                        account_id:resp.account_id,
+                        role:[add_role],
+                        public_key:resp.publickey_contract,
+                    }
+
+                    let groups = await this.props.get_group_info(0)
+                    let contract = this.state.contract;
+                    let res = await this.props.add_contract_user(contract.contract_id, info, groups, this.props.user_info, this.state.infos, contract.is_pin_used, contract.pin)
+                    if(res.code == 1) {
+                        return alert(translate("add_user_success"))
+                    } else {
+                        return alert(translate("fail_user_success", [resp.code]))
+                    }
+                } else {
+                    window.openModal("NoSignUserAdd", {
+                        email:email,
+                        email_enable: false,
+                        onConfirm: async (data)=>{
+
+                            for(let v of this.state.infos) {
+                                if( !!v.email && v.is_exclude == 0 && v.email == data.email ) {
+                                    return alert(translate("already_add_user"))
+                                }
+                            }
+
+                            info = {
+                                user_type:-1,
+                                username:data.name,
+                                email:data.email,
+                                cell_phone_number:data.cell_phone_number,
+                                role:[add_role],
+                                contract_open_key:generateRandomKey(16),
+                            }
+                            let res = await this.props.add_contract_user(contract.contract_id, info, groups, this.props.user_info, this.state.infos, contract.is_pin_used, contract.pin)
+                            if(res.code == 1) {
+                                return alert(translate("add_user_success"))
+                            } else {
+                                return alert(translate("fail_user_success", [resp.code]))
+                            }
+                        }
+                    })
+                }
+
+            }
+        })
     }
 
     addGroup = async () => {

@@ -176,6 +176,16 @@ export async function api_add_counterparties(contract_id,counterparties){
         session:window.getCookie("session")
     });
 }
+export async function api_add_contract_user(contract_id,counterparty){
+    let __data = new FormData();
+
+    if(contract_id != null) __data.append('contract_id', contract_id);
+	if(counterparty != null) __data.append('counterparty', counterparty)
+
+    return await post("/add_contract_user", __data,{
+        session:window.getCookie("session")
+    });
+}
 export async function api_remove_counterparty(contract_id,corp_id,entity_id){
     let __data = new FormData();
 
