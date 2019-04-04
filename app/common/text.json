@@ -518,6 +518,7 @@
     "already_register_individual":["이미 개인 계정으로 가입되어 있습니다.","The email address is already registered under an individual account.","此邮箱已被注册个人用户。"],
     "contract_hash_id":["계약 고유 식별 값","Hash Value","合同哈希值"],
     "YEARLY_PAYMENT_REGULAR":["연간 구독 결제","Purchase Annual Subscription","付款年度使用权"],
+    "real_remove_this_user_?":["정말로 해당 사용자를 삭제하시겠습니까?","",""],
     "please_input_corp_tel":["회사 전화번호를 입력해주세요.","Enter business phone number.","请输入企业电话号。"],
     "one_time_ticket":["건별 이용권","Contract Charges","单次付款"],
     "must_save_this_secret":["* 해당 시크릿 키를 자신만이 볼 수 있는 곳에 저장해주세요. 추후 OTP 기계를 분실하게 되면 재등록 할 때 필요합니다.","Save the OTP secret key somewhere safe so that only you can access it.","请将OTP Secret Key保存在安全的地方，以便只有您可以访问它。"],

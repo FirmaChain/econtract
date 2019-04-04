@@ -492,7 +492,7 @@ export default class extends React.Component {
             if(v.privilege == 1) {
                 let user_name = v.user_info.username ? v.user_info.username : v.user_info.title
                 if(v && v.is_exclude == 1) {
-                    user_name = translate("byebye_template", v.user_info.username)
+                    user_name = translate("byebye_template", [v.user_info.username])
                 }
                 users.push(user_name)
             }

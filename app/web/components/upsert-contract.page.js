@@ -815,7 +815,7 @@ export default class extends React.Component {
                     { /*(meOrGroup.privilege == 1 && this.state.contract.status != 2) ? <div className="modify-button" onClick={this.onToggleRegisterSignForm.bind(this, false)}> {translate("sign_info_modify")} </div> : null*/ }
                 </div> : null}
             </div>
-            {user_infos.map( (e, k) => {
+            {user_infos.filter(e=>e.is_exclude == 0).map( (e, k) => {
                 let info = e
                 if(e.user_info.user_type == 0 || e.user_info.user_type == 1) {
                     info.name = e.user_info.username;
