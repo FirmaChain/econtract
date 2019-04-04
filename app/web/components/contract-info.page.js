@@ -361,9 +361,14 @@ export default class extends React.Component {
     }
 
     onRemoveCounterparty = async (corp_id, entity_id) => {
-        let is_corp = this.props.user_info.account_type == 1 || this.props.user_info.account_type == 2
-        if(is_corp && this.state.infos.filter(e=>e.is_exclude == 0 && e.corp_id != 0 && e.corp_id == this.props.user_info.corp_id).length == 1) {
-            return alert(translate("at_least_one_group_in_contract"))
+        if(corp_id > 0) {
+            let is_corp = this.props.user_info.account_type == 1 || this.props.user_info.account_type == 2
+            if(is_corp && this.state.infos.filter(e=>e.is_exclude == 0 && e.corp_id != 0 && e.corp_id == this.props.user_info.corp_id).length == 1) {
+                return alert(translate("at_least_one_group_in_contract"))
+            }
+        }
+        if(!window._confirm(translate("real_remove_this_user_?"))) {
+            return;
         }
 
         await window.showIndicator();
@@ -399,6 +404,9 @@ export default class extends React.Component {
 
                 let removeable = false;
                 if(is_corp && e.corp_id == this.props.user_info.corp_id) {
+                    removeable = true;
+                }
+                else if(e.corp_id == -1) {
                     removeable = true;
                 }
 
