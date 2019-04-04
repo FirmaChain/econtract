@@ -1812,7 +1812,6 @@ setInterval(()=>{
                 onClose:()=>{
                     refesh_modal_idx = null
                 }
-
             })
         }
     }else{

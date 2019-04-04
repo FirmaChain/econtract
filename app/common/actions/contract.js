@@ -31,6 +31,7 @@ import {
     api_update_contract_model_public,
     api_move_contract_can_edit_account_id_public,
     api_add_contract_user,
+    api_remove_contract_self,
 } from "../../../gen_api"
 
 import {
@@ -373,6 +374,12 @@ export function add_counterparties(contract_id, counterparties, groups, user_inf
         });
         let res = await api_add_counterparties( contract_id, JSON.stringify(counterparties_mapped) )
         return res
+    }
+}
+
+export function remove_contract_self(contract_id) {
+    return async function() {
+        return (await api_remove_contract_self(contract_id));
     }
 }
 

@@ -186,6 +186,15 @@ export async function api_add_contract_user(contract_id,counterparty){
         session:window.getCookie("session")
     });
 }
+export async function api_remove_contract_self(contract_id){
+    let __data = new FormData();
+
+    if(contract_id != null) __data.append('contract_id', contract_id)
+
+    return await post("/remove_contract_self", __data,{
+        session:window.getCookie("session")
+    });
+}
 export async function api_remove_counterparty(contract_id,corp_id,entity_id){
     let __data = new FormData();
 

@@ -4563,7 +4563,7 @@ div.checkbox2-comp{
 
                     >.blue-button {
                         display: inline-block;
-                        font-size: $font1;
+                        font-size: $font2;
                         cursor: pointer;
                         padding:10px 10px;
                         background-color: $blue;
@@ -4577,12 +4577,26 @@ div.checkbox2-comp{
                         display: inline-block;
                         background-color: white;
                         border: 1px solid $blue;
-                        font-size: $font1;
+                        font-size: $font2;
                         color: $black;
                         cursor: pointer;
                         width:80px;
                         padding:10px 10px;
                         text-align: center;
+                    }
+
+                    >.red-button {
+                        display: inline-block;
+                        font-size: $font2;
+                        cursor: pointer;
+                        padding:10px 10px;
+                        background-color: $red;
+                        color:white;
+                        margin-right: 10px;
+                        width:100px;
+                        text-align: center;
+
+                        margin-left:40px;
                     }
                 }
 

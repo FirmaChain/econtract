@@ -34,6 +34,7 @@ import {
     remove_counterparty,
     select_userinfo_with_email,
     add_contract_user,
+    remove_contract_self,
     getGroupKey,
     select_subject,
     createContractHtml,
@@ -59,6 +60,7 @@ let mapDispatchToProps = {
     remove_counterparty,
     select_userinfo_with_email,
     add_contract_user,
+    remove_contract_self,
 }
 
 const LIST_DISPLAY_COUNT = 6
@@ -94,7 +96,7 @@ export default class extends React.Component {
         await window.showIndicator(translate("loading_contract"))
         await this.props.fetch_user_info();
 
-        let contract_id = this.props.match.params.contract_id || 0
+        let contract_id = this.props.match.params.contract_id || -1
         let resp, groups = []
         let params = queryString.parse(nextProps.location.search)
 
@@ -128,7 +130,7 @@ export default class extends React.Component {
                 let contract = resp.payload.contract
                 let infos = resp.payload.infos
 
-                let corp_id = this.props.user_info.corp_id || 0
+                let corp_id = this.props.user_info.corp_id || window.CONST.DUMMY_CORP_ID
                 let me = select_subject(infos, this.state.groups, this.props.user_info.account_id, corp_id, contract.is_pin_used).my_info
                 
                 if(me) {
@@ -241,7 +243,7 @@ export default class extends React.Component {
         let contract = this.state.contract
         let infos = this.state.infos
 
-        let corp_id = this.props.user_info.corp_id || 0
+        let corp_id = this.props.user_info.corp_id || window.CONST.DUMMY_CORP_ID
         let me = select_subject(infos, this.state.groups, this.props.user_info.account_id, corp_id, contract.is_pin_used).my_info
         if(status == 0) {
             return translate("status_0")
@@ -438,6 +440,19 @@ export default class extends React.Component {
                 await window.hideIndicator();
             }
         })
+    }
+
+    onRemoveContractSelf = async () => {
+        if(!window._confirm(translate("really_get_off_this_contract_?")))
+            return;
+
+        let resp = await this.props.remove_contract_self(this.state.contract.contract_id);
+        if(resp.code == 1) {
+            alert(translate("success_remove_contract_self"));
+            history.goBack();
+        } else {
+            alert(translate("fail_remove_contract_self", [resp.code]));
+        }
     }
 
     onRemoveCounterparty = async (corp_id, entity_id) => {
@@ -733,6 +748,13 @@ export default class extends React.Component {
         if(!this.props.user_info || !this.state.contract)
             return <div></div>
 
+        let contract = this.state.contract
+        let infos = this.state.infos
+
+        let corp_id = this.props.user_info.corp_id || window.CONST.DUMMY_CORP_ID
+        let me = select_subject(infos, this.state.groups, this.props.user_info.account_id, corp_id, contract.is_pin_used).my_info
+        console.log("me", me)
+
         return <div className="contract-info-page">
             <div className="header-page">
                 <div className="header">
@@ -757,6 +779,7 @@ export default class extends React.Component {
                                 {/*<div className="blue-button" onClick={(e)=>history.push({pathname:"/e-contract/add-contract", state:{contract_id:this.state.contract.contract_id}})}>{translate("modify_information")}</div>*/}
                                 <div className="blue-button" onClick={(e)=>history.push(`/e-contract/edit-contract/${this.state.contract.contract_id}`)}>{this.state.contract.status != 2 ? translate("edit"):translate("view_contract")}</div>
                                 <div className="blue-button" onClick={this.onClickDownload}>{translate("download")}</div>
+                                { (this.state.contract.status != 2 && me.privilege == 1 && me.corp_id == window.CONST.DUMMY_CORP_ID) ? <div className="red-button" onClick={this.onRemoveContractSelf}>{translate("get_off_this_contract")}</div> : null}
                                 {/*<div className="transparent-button">설정</div>*/}
                             </div>
                             <div className="indicator">
