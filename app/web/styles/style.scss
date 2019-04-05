@@ -659,9 +659,12 @@ div.checkbox2-comp{
     .terms-condition {
         width:90%;
         height: 200px;
-        border: 1px solid #E0E0E0;
+        border: 1px solid $gray;
+        overflow-y: auto;
         margin: 10px 0 20px 0;
+        padding: 10px;
         font-size: $font0;
+        color:$middleblack !important;
         outline:none;
         resize:none;
     }

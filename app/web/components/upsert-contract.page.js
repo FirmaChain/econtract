@@ -164,6 +164,18 @@ export default class extends React.Component {
                     $img[0].src = window.getImageBase64Uri($img[0])
                     return false;
                 },
+                'froalaEditor.blur' : async (e, editor) => {
+                    console.log("blur", e)
+                    //this.range = this.saveSelection();
+                },
+                'froalaEditor.touchstart' : async (e, editor, touchstartEvent) => {
+                    console.log("touchstart", e)
+                    this.range = this.saveSelection();
+                },
+                'froalaEditor.mousedown' : async (e, editor, mouseDownEvent) => {
+                    console.log("mousedown", e)
+                    this.range = this.saveSelection();
+                },
             }
         }
 
@@ -353,7 +365,6 @@ export default class extends React.Component {
                     can_edit_corp_id = -1;
 
                 await window.showIndicator()
-                console.log("asdasdasd")
                 let result = await this.props.move_contract_can_edit_account_id(this.state.contract.contract_id, can_edit_corp_id, user.entity_id, user.sub)
                 //await this.onRefresh()
                 await window.hideIndicator()
@@ -454,6 +465,7 @@ export default class extends React.Component {
                 }
             }
         }
+        this.range = this.saveSelection();
 
         this.setState({
             model,
@@ -644,7 +656,11 @@ export default class extends React.Component {
         let sel;
         if (window.getSelection) {
             sel = window.getSelection();
-            if (sel.getRangeAt && sel.rangeCount) {
+            console.log("saveSelection window.getSelection()", window.getSelection())
+            console.log("saveSelection sel.getRangeAt", sel.getRangeAt)
+            console.log("saveSelection sel.rangeCount", sel.rangeCount)
+            if (sel.getRangeAt && !!sel.rangeCount) {
+                console.log("sel.getRangeAt(0)", sel.getRangeAt(0   ))
                 return sel.getRangeAt(0);
             }
         } else if (document.selection && document.selection.createRange) {
@@ -654,6 +670,7 @@ export default class extends React.Component {
     }
 
     restoreSelection = (range) => {
+        console.log("restoreSelection range", range)
         if (range) {
             let sel;
             if (window.getSelection) {
@@ -670,9 +687,10 @@ export default class extends React.Component {
         /*e.stopPropagation();
         e.preventDefault();*/
 
-        let selRange = this.saveSelection()
-        this.restoreSelection(selRange)
+        //let temp = this.saveSelection()
+        /*if(temp != null) this.range = temp;*/
         this.editor.events.focus(true);
+        this.restoreSelection(this.range)
 
         this.editor.html.insert(`<span class="t-sign corp_${user.corp_id} entity_${user.entity_id}">${translate("sign_user", [user.user_info.username])}</span> `)
 

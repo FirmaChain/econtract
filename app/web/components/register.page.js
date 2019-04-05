@@ -304,6 +304,9 @@ export default class extends React.Component {
 -   경찰청 사이버안전국 (cyberbureau.police.go.kr / 국번없이 182)
 제11조 (개인정보 처리방침 변경) 
 이 개인정보 처리방침은 2018. 11. [1].부터 적용됩니다.`
+
+            this.info1 = this.info1.replace(/\n/gi, "<br/>")
+            this.info2 = this.info2.replace(/\n/gi, "<br/>")
         }
 	}
 
@@ -1019,10 +1022,10 @@ export default class extends React.Component {
     render_term(){
         return (<div className="content">
             <div className="service-title"> {translate("service_term")} </div>
-            <textarea className="terms-condition" defaultValue={this.info1} disabled />
+            <div className="terms-condition" dangerouslySetInnerHTML={{__html:this.info1}}></div>
             
             <div className="service-title"> {translate("privacy_statement")} </div>
-            <textarea className="terms-condition" defaultValue={this.info2} disabled />
+            <div className="terms-condition" dangerouslySetInnerHTML={{__html:this.info2}}></div>
 
             <div className="bottom-container">
                 <div className="confirm-button" onClick={this.next_term}>

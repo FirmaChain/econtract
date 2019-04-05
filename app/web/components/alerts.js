@@ -874,7 +874,7 @@ class TypingPin extends React.Component{
         this.closeSelf()
     }
 
-    keydown = (e)=>{
+    /*keydown = (e)=>{
         if(e.key == "Backspace") {
             this.setState({
                 value: this.state.value.slice(0,this.state.value.length-1)
@@ -890,23 +890,24 @@ class TypingPin extends React.Component{
                 })
             }
         }
-    }
+    }*/
 
     componentDidMount(){
-        document.addEventListener("keydown", this.keydown);
+        //document.addEventListener("keydown", this.keydown);
     }
 
     componentWillUnmount(){
-        document.removeEventListener("keydown", this.keydown);
+       //document.removeEventListener("keydown", this.keydown);
     }
 
     render(){
         return <div className="default-modal type-pin-modal default-modal-container">
             <div className="contents">
                 <div className="title">{translate("please_input_pin")}</div>
-                <div className="pin-box" contentEditable="true">
-                    {this.state.value}
-                </div>
+                <input className="pin-box"
+                    type="number" 
+                    value={this.state.value}
+                    onChange={(e)=>(this.setState({value:e.target.value}))}/>
             </div>
             <div className="buttons">
                 <button onClick={this.onClickOK}>{translate("confirm")}</button>
@@ -999,7 +1000,6 @@ class DrawSign extends React.Component{
     }
 
     onClear = (e) => {
-        e.stopPropagation()
         let ctx = this.refs.canvas.getContext('2d');
         ctx.save();
         ctx.setTransform(1, 0, 0, 1, 0, 0);
@@ -1012,6 +1012,7 @@ class DrawSign extends React.Component{
     
     onmousedown = (e)=>{
         e.stopPropagation()
+        e.preventDefault();
         if(this.isImage)
             return;
 
@@ -1027,6 +1028,7 @@ class DrawSign extends React.Component{
 
     onmousemove = (e)=>{
         e.stopPropagation()
+        e.preventDefault();
         if(this.isImage)
             return;
 
@@ -1041,7 +1043,9 @@ class DrawSign extends React.Component{
         }
     }
 
-    onmouseup = ()=>{
+    onmouseup = (e)=>{
+        e.stopPropagation();
+        e.preventDefault();
         if(this.isImage)
             return;
 
