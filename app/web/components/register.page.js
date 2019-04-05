@@ -559,24 +559,29 @@ export default class extends React.Component {
 
     onClickFindAddress = async (type)=>{
         await window.showIndicator()
-        let address = await new Promise(r=>daum.postcode.load(function(){
+        daum.postcode.load(() => {
             new daum.Postcode({
-                oncomplete: r,
-                onclose:r
+                oncomplete: async (data) => {
+                    let address = data;
+
+                    if(!!address && !!address.roadAddress) {
+                        if(type == 0) {
+                            this.setState({
+                                useraddress: address.roadAddress + " "
+                            })
+                        } else if(type == 1) {
+                            this.setState({
+                                company_address: address.roadAddress + " "
+                            })
+                        }
+                    }
+                    await window.hideIndicator()
+                },
+                onclose: async (data) => {
+                    await window.hideIndicator();
+                }
             }).open();
-        }));
-        if(!!address && !!address.roadAddress) {
-            if(type == 0) {
-                this.setState({
-                    useraddress: address.roadAddress + " "
-                })
-            } else if(type == 1) {
-                this.setState({
-                    company_address: address.roadAddress + " "
-                })
-            }
-        }
-        await window.hideIndicator()
+        })
     }
 
     onClickNextBtnUserInfo = async ()=>{

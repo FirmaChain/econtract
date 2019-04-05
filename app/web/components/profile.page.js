@@ -144,25 +144,29 @@ export default class extends React.Component {
 
     onClickFindAddress = async (type)=>{
         await window.showIndicator()
-        let address = await new Promise(r=>daum.postcode.load(function(){
+        daum.postcode.load(() => {
             new daum.Postcode({
-                oncomplete: r,
-                onclose:r
+                oncomplete: async (data) => {
+                    let address = data;
+
+                    if(!!address && !!address.roadAddress) {
+                        if(type == "personal") {
+                            this.setState({
+                                useraddress: address.roadAddress + " "
+                            })
+                        } else if(type == "company") {
+                            this.setState({
+                                company_address: address.roadAddress + " "
+                            })
+                        }
+                    }
+                    await window.hideIndicator()
+                },
+                onclose: async (data) => {
+                    await window.hideIndicator();
+                }
             }).open();
-        }));
-        if(!!address && !!address.roadAddress) {
-            console.log(address)
-            if(type == "personal") {
-                this.setState({
-                    useraddress: address.roadAddress + " "
-                })
-            } else if(type == "company") {
-                this.setState({
-                    company_address: address.roadAddress + " "
-                })
-            }
-        }
-        await window.hideIndicator()
+        })
     }
 
     onChangeInfoPhoneForm = async (name, e) => {
