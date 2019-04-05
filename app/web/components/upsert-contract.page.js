@@ -262,13 +262,13 @@ export default class extends React.Component {
             if(me && me.sign_info == null && me.privilege == 1)
                 await this.onClickRegiserSignInfo(true);
 
-            if( !!this.editor && !!contract.payload.contract && contract.payload.contract.can_edit_corp_id != window.CONST.DUMMY_CORP_ID || this.props.user_info.account_id != contract.payload.contract.can_edit_account_id ) {
+            if( !!this.editor && !!contract.payload && !!contract.payload.contract && contract.payload.contract.can_edit_corp_id != window.CONST.DUMMY_CORP_ID || this.props.user_info.account_id != contract.payload.contract.can_edit_account_id ) {
                 this.editor.edit.off()
             } else {
                 !!this.editor && this.editor.edit.on()
             }
 
-            if(!!this.editor && !!contract.payload.contract && contract.payload.contract.status == 2) {
+            if( !!this.editor && !!contract.payload && !!contract.payload.contract && contract.payload.contract.status == 2) {
                 this.editor.edit.off()
             }
         } else {
@@ -336,11 +336,12 @@ export default class extends React.Component {
 
     onClickMoveEditPrivilege = async () => {
 
-        if((this.state.contract.html || "") != this.state.model)
+        if((this.state.contract.html || "") != this.state.model) {
             if(window._confirm(translate("you_have_modify_content_save_and_pass_modify_verification")))
                 await this.onClickContractSave();
             else
                 return;
+        }
 
         window.openModal("MoveCanEditAccount",{
             user_infos: this.state.infos,
@@ -352,6 +353,7 @@ export default class extends React.Component {
                     can_edit_corp_id = -1;
 
                 await window.showIndicator()
+                console.log("asdasdasd")
                 let result = await this.props.move_contract_can_edit_account_id(this.state.contract.contract_id, can_edit_corp_id, user.entity_id, user.sub)
                 //await this.onRefresh()
                 await window.hideIndicator()

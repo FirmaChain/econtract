@@ -365,6 +365,7 @@ export default class extends React.Component {
                     let add_resp = await this.props.add_contract_user(contract.contract_id, info, groups, this.props.user_info, this.state.infos, contract.is_pin_used, contract.pin)
                     if(add_resp.code == 1) {
                         alert(translate("add_user_success"))
+                        await this.onRefresh()
                         return true;
                     } else {
                         alert(translate("fail_user_success", [add_resp.code]))
@@ -392,6 +393,7 @@ export default class extends React.Component {
                             }
                             let res = await this.props.add_contract_user(contract.contract_id, info, groups, this.props.user_info, this.state.infos, contract.is_pin_used, contract.pin)
                             if(res.code == 1) {
+                                await this.onRefresh()
                                 return alert(translate("add_user_success"))
                             } else {
                                 return alert(translate("fail_user_success", [resp.code]))
@@ -604,7 +606,7 @@ export default class extends React.Component {
 
         let creator_name = creator ? creator.user_info.username : translate("unknown")
         if(creator && creator.is_exclude == 1) {
-            creator_name = translate("byebye_template", creator.user_info.username)
+            creator_name = translate("byebye_template", [creator.user_info.username])
         }
 
         return <div className="deck informations">

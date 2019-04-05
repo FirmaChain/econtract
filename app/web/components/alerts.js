@@ -81,8 +81,9 @@ class TextareaModal extends React.Component {
         window.closeModal(this.props.modalId)
     }
 
-    onConfirm = () => {
-        this.props.onConfirm && this.props.onConfirm(this.state.text.trim())
+    onConfirm = async () => {
+        if(!!this.props.onConfirm)
+            await this.props.onConfirm(this.state.text.trim())
         this.closeSelf()
     }
 
@@ -120,8 +121,10 @@ class RemoveCommonModal extends React.Component {
         window.closeModal(this.props.modalId)
     }
 
-    onDelete = () => {
-        this.props.onDelete && this.props.onDelete()
+    onDelete = async () => {
+        if(!!this.props.onDelete)
+            await this.props.onDelete();
+
         this.closeSelf()
     }
 
@@ -155,13 +158,17 @@ class OneAddModal extends React.Component {
         window.closeModal(this.props.modalId)
     }
 
-    onConfirm = (e) => {
-        this.props.onConfirm && this.props.onConfirm(e)
+    onConfirm = async (e) => {
+        if(!!this.props.onConfirm)
+            await this.props.onConfirm(e);
+
         this.closeSelf();
     }
 
-    onCancel = () => {
-        this.props.onCancel && this.props.onCancel()
+    onCancel = async () => {
+        if(!!this.props.onCancel)
+            await this.props.onCancel();
+
         this.closeSelf()
     }
 
@@ -797,11 +804,13 @@ class MoveCanEditAccount extends React.Component {
         window.closeModal(this.props.modalId)
     }
 
-    onConfirm = () => {
+    onConfirm = async () => {
         if(!this.state.select)
             return alert(translate("select_edit_privilege_account"))
 
-        this.props.onConfirm && this.props.onConfirm(this.state.select)
+        if(!!this.props.onConfirm) 
+            await this.props.onConfirm(this.state.select);
+
         this.closeSelf();
     }
 
@@ -847,17 +856,21 @@ class TypingPin extends React.Component{
         window.closeModal(this.props.modalId)
     }
 
-    onClickOK = ()=>{
-        if(this.state.value.length == 6){
-            this.props.onFinish && this.props.onFinish(this.state.value)
+    onClickOK = async ()=>{
+        if(this.state.value.length == 6) {
+            if(!!this.props.onFinish)
+                await this.props.onFinish(this.state.value);
+
             this.closeSelf()
         } else {
             alert(translate("please_input_pin_6"))
         }
     }
 
-    onClickCancel = () => {
-        this.props.onFinish && this.props.onFinish(false)
+    onClickCancel = async () => {
+        if(!!this.props.onFinish)
+            await this.props.onFinish(false);
+
         this.closeSelf()
     }
 
@@ -891,7 +904,7 @@ class TypingPin extends React.Component{
         return <div className="default-modal type-pin-modal default-modal-container">
             <div className="contents">
                 <div className="title">{translate("please_input_pin")}</div>
-                <div className="pin-box">
+                <div className="pin-box" contentEditable="true">
                     {this.state.value}
                 </div>
             </div>
