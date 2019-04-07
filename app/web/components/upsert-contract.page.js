@@ -1,5 +1,6 @@
 import React from "react"
 import ReactDOM from "react-dom"
+import ReactDOMServer from 'react-dom/server';
 import config from "../../../config"
 
 import 'froala-editor/js/froala_editor.pkgd.min.js';
@@ -118,8 +119,11 @@ export default class extends React.Component {
             focus: true,
             undo: true,
             refreshAfterCallback: true,
-            callback: function () {
-                this.html.insert('<input class="fr-checkbox" type="checkbox"/>');
+            callback: () => {
+                let id = 
+                this.html.insert(ReactDOMServer.renderToStaticMarkup(<div>
+                    <input className="fr-checkbox" type="checkbox" onClick={e=>this.}/>
+                </div>));
                 this.undo.saveStep();
             }
         });*/
