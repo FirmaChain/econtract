@@ -123,7 +123,7 @@ export default class extends React.Component {
                 }
             } else if(!group_id) {
                 if(groups) {
-                    history.replace(`/e-contract/home/${groups[0].group_id}/recently`)
+                    history.replace(`/e-contract/home/${groups[0].group_id}/all_recently`)
                 }
             }
             await this.setState({groups})
@@ -149,8 +149,8 @@ export default class extends React.Component {
             history.replace("/e-contract/login")
         }
 
-        let prevMenu = nextProps.match.params.menu || "recently"
-        let menu = this.props.match.params.menu || "recently"
+        let prevMenu = nextProps.match.params.menu || "all_recently"
+        let menu = this.props.match.params.menu || "all_recently"
 
         let prev_group_id = nextProps.match.params.group_id || null
         let group_id = this.props.match.params.group_id || null
@@ -173,7 +173,7 @@ export default class extends React.Component {
     loadContracts = async (page, search_text, props) => {
         props = !!props ? props : this.props
 
-        let menu = props.match.params.menu || "recently"
+        let menu = props.match.params.menu || "all_recently"
         let group_id = props.match.params.group_id || -1
 
         let is_folder = false
@@ -185,8 +185,17 @@ export default class extends React.Component {
             groups = await this.props.get_group_info(0)
 
         await window.showIndicator()
-        let result
-        if(menu == "recently") {
+        let result;
+        if(menu == "all_recently") {
+            result = await this.props.get_contracts(0, -1, page, LIST_DISPLAY_COUNT, -1, -1, this.props.user_info, groups, search_text)
+        }
+        else if(menu == "all_ing") {
+            result = await this.props.get_contracts(0, 5, page, LIST_DISPLAY_COUNT, -1, -1, this.props.user_info, groups, search_text)
+        }
+        else if(menu == "all_completed") {
+            result = await this.props.get_contracts(0, 2, page, LIST_DISPLAY_COUNT, -1, -1, this.props.user_info, groups, search_text)
+        }
+        else if(menu == "recently") {
             result = await this.props.get_contracts(0, -1, page, LIST_DISPLAY_COUNT, -1, group_id, this.props.user_info, groups, search_text)
         }
         else if(menu == "lock") {
@@ -245,7 +254,7 @@ export default class extends React.Component {
 	getTitle(props) {
         props = !!props ? props : this.props
 
-        let menu = props.match.params.menu || "recently"
+        let menu = props.match.params.menu || "all_recently"
 		let group_id = props.match.params.group_id || null
 
         let is_folder = false
@@ -256,8 +265,17 @@ export default class extends React.Component {
 		if(menu == "lock") {
 			result = { id:"lock", title : this.props.user_info.account_type != 0 ? translate("unclassified_contract"):translate("locked")}
         }
-		else if(menu == "requested") {
-			result = { id:"requested", title : translate("requested")}
+        else if(menu == "requested") {
+            result = { id:"requested", title : translate("requested")}
+        }
+        else if(menu == "recently") {
+            result = { id:"recently", title : translate("recently_use")}
+        }
+        else if(menu == "all_ing") {
+            result = { id:"all_ing", title : translate("all_ing")}
+        }
+        else if(menu == "all_completed") {
+            result = { id:"all_completed", title : translate("all_completed")}
         }
 		else if(menu == "created") {
 			result = { id:"created", title : translate("created")}
@@ -281,7 +299,7 @@ export default class extends React.Component {
 			result = { id:"my-view", title : translate("individual_document_list")}
 		}
 		else
-            result = { id:"recently", title : translate("recently_use")}
+            result = { id:"all_recently", title : translate("all_recently")}
 
         if(is_folder) {
             if(menu == 0) {
@@ -706,16 +724,19 @@ export default class extends React.Component {
 				<div className="left-top-button" onClick={this.onClickAddContract}>{translate("create_contract")}</div>
 				<div className="menu-list">
                     <div className="list">
-                        <div className="title">{translate("individual")}</div>
+                        <div className="title">{translate("contract")}</div>
                         <div className={"item" + (this.getTitle().id == "lock" ? " selected" : "")} onClick={this.move.bind(this, "lock")}>
                             <i className="icon fas fa-lock-alt"></i> 
                             <div className="text">{this.props.user_info.account_type != 0 ? translate("unclassified_contract"):translate("locked")}</div>
                             {this.state.lock_count > 0 ? <div className="count">{this.state.lock_count}</div> : null}
                         </div>
-                        { account_type != 0 ? <div className={"item" + (this.getTitle().id == "my-view" ? " selected" : "")} onClick={this.move.bind(this, "my-view")}>
+                        <div className={"item" + (this.getTitle().id == "all_recently" ? " selected" : "")} onClick={this.move.bind(this, "all_recently")}><i className="icon fal fa-clock"></i> <div className="text">{translate("all_recently")}</div></div>
+                        <div className={"item" + (this.getTitle().id == "all_ing" ? " selected" : "")} onClick={this.move.bind(this, "all_ing")}><i className="icon fal fa-keyboard"></i> <div className="text">{translate("all_ing")}</div></div>
+                        <div className={"item" + (this.getTitle().id == "all_completed" ? " selected" : "")} onClick={this.move.bind(this, "all_completed")}><i className="icon fas fa-handshake-alt"></i> <div className="text">{translate("all_completed")}</div></div>
+                        { /*account_type != 0 ? <div className={"item" + (this.getTitle().id == "my-view" ? " selected" : "")} onClick={this.move.bind(this, "my-view")}>
                             <i className="icon far fa-eye"></i>
                             <div className="text">{translate("individual_document_list")}</div>
-                        </div> : null }
+                        </div> : null*/ }
                     </div>
                     { account_type != 0 ? (<div className="list">
                         <div className="title">{translate("group_select")}</div>
@@ -731,18 +752,18 @@ export default class extends React.Component {
                         })}
                     </div>) : null
                     }
-					<div className="list">
+					{/*<div className="list">
 						<div className="title">{translate("contract")}</div>
 						<div className={"item" + (this.getTitle().id == "recently" ? " selected" : "")} onClick={this.move.bind(this, "recently")}><i className="icon fal fa-clock"></i> <div className="text">{translate("recently_use")}</div></div>
 						<div className={"item" + (this.getTitle().id == "requested" ? " selected" : "")} onClick={this.move.bind(this, "requested")}><i className="icon fas fa-share-square"></i> <div className="text">{translate("requested")}</div></div>
-						<div className={"item" + (this.getTitle().id == "created" ? " selected" : "")} onClick={this.move.bind(this, "created")}><i className="icon fas fa-handshake-alt"></i> <div className="text">{translate("created")}</div></div>
-					</div>
+					</div>*/}
 					<div className="list">
 						<div className="title">{translate("classify_view")}</div>
 						<div className={"item" + (this.getTitle().id == "typing" ? " selected" : "")} onClick={this.move.bind(this, "typing")}><i className="icon fal fa-keyboard"></i> <div className="text">{translate("status_0")}</div></div>
 						<div className={"item" + (this.getTitle().id == "beforeMySign" ? " selected" : "")} onClick={this.move.bind(this, "beforeMySign")}><i className="icon far fa-file-import"></i> <div className="text">{translate("status_1")}</div></div>
 						{/*<div className={"item" + (this.getTitle().id == "beforeOtherSign" ? " selected" : "")} onClick={this.move.bind(this, "beforeOtherSign")}><i className="icon far fa-file-export"></i> <div className="text">상대방 서명 전</div></div>*/}
 						<div className={"item" + (this.getTitle().id == "completed" ? " selected" : "")} onClick={this.move.bind(this, "completed")}><i className="icon fal fa-check-circle"></i> <div className="text">{translate("status_2")}</div></div>
+                        <div className={"item" + (this.getTitle().id == "created" ? " selected" : "")} onClick={this.move.bind(this, "created")}><i className="icon fas fa-handshake-alt"></i> <div className="text">{translate("created")}</div></div>
                         {account_type != 0 ? <div className={"item" + (this.getTitle().id == "view-group" ? " selected" : "")} onClick={this.move.bind(this, "view-group")}><i className="icon fas fa-eye"></i> <div className="text">{translate("group_view_only")}</div></div> : null}
                         {account_type == 0 ? <div className={"item" + (this.getTitle().id == "my-view" ? " selected" : "")} onClick={this.move.bind(this, "my-view")}><i className="icon fas fa-eye"></i> <div className="text">{translate("viewer")}</div></div> : null}
 					</div>
