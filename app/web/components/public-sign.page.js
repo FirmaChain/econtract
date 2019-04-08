@@ -209,7 +209,7 @@ export default class extends React.Component {
 
         let model = _.contract.html != null ? _.contract.html : "";
         if(!this.state.model) {
-            _state.model = model;
+            _.model = model;
         }
         if(!!this.state.model && !!_.contract.html && _.contract.html != this.state.model && this.state.entity_id != _.contract.can_edit_account_id) {
             _.model = model;
