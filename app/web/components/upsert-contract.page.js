@@ -379,7 +379,7 @@ export default class extends React.Component {
                 await window.showIndicator()
                 console.log("user", user)
                 console.log("this.state.infos", this.state.infos)
-                let result = await this.props.move_contract_can_edit_account_id(this.state.contract.contract_id, can_edit_corp_id, user.entity_id, user.sub)
+                let result = await this.props.move_contract_can_edit_account_id(this.state.contract.contract_id, can_edit_corp_id, user.entity_id, user.user_info.email)
                 //await this.onRefresh()
                 await window.hideIndicator()
             }
@@ -543,7 +543,7 @@ export default class extends React.Component {
         let contract_body = createContractHtml(this.state.contract, this.state.infos).exclude_sign_body
 
         await window.showIndicator()
-        let email_list = this.state.infos.filter(e=>window.email_regex.test(e.sub)).map(e=>e.sub)
+        let email_list = this.state.infos.filter(e=>window.email_regex.test(e.user_info.email)).map(e=>e.user_info.email)
         let r = await this.props.update_contract_sign(this.state.contract.contract_id, signature_data, this.state.contract.the_key, email_list, sha256(contract_body))
         await window.hideIndicator()
         if(r.code == -9) {
