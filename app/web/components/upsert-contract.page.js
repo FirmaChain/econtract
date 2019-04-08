@@ -389,7 +389,8 @@ export default class extends React.Component {
         if(force_close)
             this.state.sign_mode = true;
 
-        this.state.sign_mode ? this.editor.toolbar.show() : this.editor.toolbar.hide()
+        if(!!this.editor && !!this.editor.toolbar)
+            this.state.sign_mode ? this.editor.toolbar.show() : this.editor.toolbar.hide()
 
         let wrapper = document.getElementsByClassName("fr-wrapper")[0]
         this.state.sign_mode ? 
