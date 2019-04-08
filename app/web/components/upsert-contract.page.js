@@ -113,7 +113,7 @@ export default class extends React.Component {
                 //console.log ('do refresh when show');
             }
         })*/
-        $.FroalaEditor.DefineIcon('check', {NAME: 'check-square'});
+        /*$.FroalaEditor.DefineIcon('check', {NAME: 'check-square'});
         $.FroalaEditor.RegisterCommand('check', {
             title: 'CheckBox',
             focus: true,
@@ -121,12 +121,12 @@ export default class extends React.Component {
             refreshAfterCallback: true,
             callback: () => {
                 let id = 
-                this.html.insert(ReactDOMServer.renderToStaticMarkup(<div>
+                this.editor.html.insert(ReactDOMServer.renderToStaticMarkup(<div>
                     <input className="fr-checkbox" type="checkbox"/>
                 </div>));
                 this.undo.saveStep();
             }
-        });
+        });*/
 
         this.blockFlag = false;
         this.disconnect = false;
@@ -273,7 +273,6 @@ export default class extends React.Component {
 
             let model = contract.payload.contract.html != null ? contract.payload.contract.html : "";
             if(!!this.state.model && !!contract.payload.contract.html && contract.payload.contract.html != this.state.model && this.props.user_info.account_id == contract.payload.contract.can_edit_account_id) {
-                let r = await this.props.update_contract_model(contract.payload.contract.contract_id, model, contract.payload.contract.the_key)
                 if(r.code != 1) {
                     _state.model = model;
                 }

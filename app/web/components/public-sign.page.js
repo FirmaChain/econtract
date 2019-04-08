@@ -209,7 +209,6 @@ export default class extends React.Component {
 
         let model = _.contract.html != null ? _.contract.html : "";
         if(!!this.state.model && !!_.contract.html && _.contract.html != this.state.model && this.state.entity_id == _.contract.can_edit_account_id) {
-            let r = await this.props.update_contract_model(_.contract.contract_id, model, _.contract.the_key)
             if(r.code != 1)
                 _.model = model;
         } else {
