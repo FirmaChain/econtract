@@ -86,6 +86,16 @@ export default class extends React.Component {
                     $img[0].src = window.getImageBase64Uri($img[0])
                     return false;
                 },
+                'froalaEditor.blur' : async (e, editor) => {
+                    console.log("blur", e)
+                    //this.range = this.saveSelection();
+                },
+                'froalaEditor.touchstart' : async (e, editor, touchstartEvent) => {
+                    setTimeout(e=>{this.range = this.saveSelection()}, 500);
+                },
+                'froalaEditor.mousedown' : async (e, editor, mouseDownEvent) => {
+                    setTimeout(e=>{this.range = this.saveSelection()}, 500);
+                },
             }
         }
 
