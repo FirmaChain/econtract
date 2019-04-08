@@ -394,7 +394,7 @@ export default class extends React.Component {
     onClickContractSave = async () => {
         let model = this.state.model
 
-        if(this.state.contract.html == this.state.model)
+        if(!this.state.contract || !this.state.contract.html || this.state.contract.html == this.state.model)
             return;
 
         let me = select_subject(this.state.infos, [], this.state.entity_id, -1).my_info
