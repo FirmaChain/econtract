@@ -151,9 +151,9 @@ export default class extends React.Component {
         let resp = await this.props.get_contract_public_link(this.props.match.params.code)
             
         if(resp.code == 1) {
-            this.setState({
+            await new Promise( resolve => this.setState({
                 ...resp.payload
-            })
+            }, ()=>resolve(true)) )
             await this.unlock_contract(this.state.contract_open_key || "", false)
 
             if( !!this.editor && !!resp.payload.contract && resp.payload.contract.can_edit_corp_id != -1 || this.state.entity_id != resp.payload.contract.can_edit_account_id ) {
@@ -207,7 +207,13 @@ export default class extends React.Component {
         _.contract.necessary_info = JSON.parse(_.contract.necessary_info)
         _.contract.the_key = the_key;
 
-        _.model = _.contract.html;
+        if(this.state.entity_id == _.contract.can_edit_account_id) {
+            await this.onClickContractSave();
+        } else {
+            let model = _.contract.html != null ? _.contract.html : "";
+            _.model = model;
+        }
+
         _.contract_open_key = contract_open_key;
         if(move_step) {
             _.step = 1;
@@ -223,7 +229,7 @@ export default class extends React.Component {
                         this.socket.removeAllListeners()
                         this.subscribeChannel()
                         this.disconnect = false
-                    }catch(err) {
+                    } catch(err) {
                         continue
                     }
                 }

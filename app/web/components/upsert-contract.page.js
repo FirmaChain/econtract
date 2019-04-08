@@ -257,7 +257,7 @@ export default class extends React.Component {
             return history.goBack()
         }
         
-        if(contract.payload.contract) {
+        if(contract.payload && contract.payload.contract) {
             let sign_info = {}
             let me = select_subject(contract.payload.infos, groups, this.props.user_info.account_id, -1).my_info
             if(me) {
@@ -265,13 +265,19 @@ export default class extends React.Component {
                 this.onToggleUser(me.entity_id, me.corp_id, true)
             }
 
-            let model = contract.payload.contract.html != null ? contract.payload.contract.html : ""
             _state = {
                 ..._state,
                 ...contract.payload,
-                model,
                 sign_info,
             }
+
+            if(this.props.user_info.account_id == contract.payload.contract.can_edit_account_id) {
+                await this.onClickContractSave();
+            } else {
+                let model = contract.payload.contract.html != null ? contract.payload.contract.html : "";
+                _state.model = model;
+            }
+            
 
             await this.setState(_state)
 
