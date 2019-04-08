@@ -377,6 +377,8 @@ export default class extends React.Component {
                     can_edit_corp_id = -1;
 
                 await window.showIndicator()
+                console.log("user", user)
+                console.log("this.state.infos", this.state.infos)
                 let result = await this.props.move_contract_can_edit_account_id(this.state.contract.contract_id, can_edit_corp_id, user.entity_id, user.sub)
                 //await this.onRefresh()
                 await window.hideIndicator()
