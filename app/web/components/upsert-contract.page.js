@@ -271,14 +271,13 @@ export default class extends React.Component {
                 sign_info,
             }
 
-            if(this.props.user_info.account_id == contract.payload.contract.can_edit_account_id) {
-                let result = await this.onClickContractSave();
-                if(!result) {
-                    let model = contract.payload.contract.html != null ? contract.payload.contract.html : "";
+            let model = contract.payload.contract.html != null ? contract.payload.contract.html : "";
+            if(contract.payload.contract.html != this.state.model && this.props.user_info.account_id == contract.payload.contract.can_edit_account_id) {
+                let r = await this.props.update_contract_model(contract.payload.contract.contract_id, model, contract.payload.contract.the_key)
+                if(r.code != 1) {
                     _state.model = model;
                 }
             } else {
-                let model = contract.payload.contract.html != null ? contract.payload.contract.html : "";
                 _state.model = model;
             }
             
@@ -345,8 +344,8 @@ export default class extends React.Component {
 
     onClickContractSave = async () => {
         let model = this.state.model;
-
-        if(!this.state.contract || !this.state.contract.html || this.state.contract.html == this.state.model)
+        console.log(this.stste)
+        if(!!this.state.contract && !!this.state.contract.html && this.state.contract.html == this.state.model)
             return false;
         //encrypt model
 
@@ -364,8 +363,10 @@ export default class extends React.Component {
     onClickMoveEditPrivilege = async () => {
 
         if((this.state.contract.html || "") != this.state.model) {
-            if(window._confirm(translate("you_have_modify_content_save_and_pass_modify_verification")))
-                await this.onClickContractSave();
+            if(window._confirm(translate("you_have_modify_content_save_and_pass_modify_verification"))) {
+                let result = await this.onClickContractSave();
+                console.log("result", result)
+            }
             else
                 return;
         }

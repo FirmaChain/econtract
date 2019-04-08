@@ -207,10 +207,12 @@ export default class extends React.Component {
         _.contract.necessary_info = JSON.parse(_.contract.necessary_info)
         _.contract.the_key = the_key;
 
-        if(this.state.entity_id == _.contract.can_edit_account_id) {
-            await this.onClickContractSave();
+        let model = _.contract.html != null ? _.contract.html : "";
+        if(_.contract.html != this.state.model && this.state.entity_id == _.contract.can_edit_account_id) {
+            let r = await this.props.update_contract_model(_.contract.contract_id, model, _.contract.the_key)
+            if(r.code != 1)
+                _.model = model;
         } else {
-            let model = _.contract.html != null ? _.contract.html : "";
             _.model = model;
         }
 
@@ -394,7 +396,7 @@ export default class extends React.Component {
     onClickContractSave = async () => {
         let model = this.state.model
 
-        if(!this.state.contract || !this.state.contract.html || this.state.contract.html == this.state.model)
+        if(!!this.state.contract && !!this.state.contract.html && this.state.contract.html == this.state.model)
             return;
 
         let me = select_subject(this.state.infos, [], this.state.entity_id, -1).my_info
