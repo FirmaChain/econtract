@@ -113,7 +113,7 @@ export default class extends React.Component {
                 //console.log ('do refresh when show');
             }
         })*/
-        /*$.FroalaEditor.DefineIcon('check', {NAME: 'check-square'});
+        $.FroalaEditor.DefineIcon('check', {NAME: 'check-square'});
         $.FroalaEditor.RegisterCommand('check', {
             title: 'CheckBox',
             focus: true,
@@ -122,11 +122,11 @@ export default class extends React.Component {
             callback: () => {
                 let id = 
                 this.html.insert(ReactDOMServer.renderToStaticMarkup(<div>
-                    <input className="fr-checkbox" type="checkbox" onClick={e=>this.}/>
+                    <input className="fr-checkbox" type="checkbox"/>
                 </div>));
                 this.undo.saveStep();
             }
-        });*/
+        });
 
         this.blockFlag = false;
         this.disconnect = false;
@@ -272,7 +272,7 @@ export default class extends React.Component {
             }
 
             let model = contract.payload.contract.html != null ? contract.payload.contract.html : "";
-            if(contract.payload.contract.html != this.state.model && this.props.user_info.account_id == contract.payload.contract.can_edit_account_id) {
+            if(!!this.state.model && !!contract.payload.contract.html && contract.payload.contract.html != this.state.model && this.props.user_info.account_id == contract.payload.contract.can_edit_account_id) {
                 let r = await this.props.update_contract_model(contract.payload.contract.contract_id, model, contract.payload.contract.the_key)
                 if(r.code != 1) {
                     _state.model = model;
@@ -344,7 +344,6 @@ export default class extends React.Component {
 
     onClickContractSave = async () => {
         let model = this.state.model;
-        console.log(this.stste)
         if(!!this.state.contract && !!this.state.contract.html && this.state.contract.html == this.state.model)
             return false;
         //encrypt model
@@ -365,7 +364,6 @@ export default class extends React.Component {
         if((this.state.contract.html || "") != this.state.model) {
             if(window._confirm(translate("you_have_modify_content_save_and_pass_modify_verification"))) {
                 let result = await this.onClickContractSave();
-                console.log("result", result)
             }
             else
                 return;
