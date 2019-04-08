@@ -272,7 +272,11 @@ export default class extends React.Component {
             }
 
             if(this.props.user_info.account_id == contract.payload.contract.can_edit_account_id) {
-                await this.onClickContractSave();
+                let result = await this.onClickContractSave();
+                if(!result) {
+                    let model = contract.payload.contract.html != null ? contract.payload.contract.html : "";
+                    _state.model = model;
+                }
             } else {
                 let model = contract.payload.contract.html != null ? contract.payload.contract.html : "";
                 _state.model = model;
@@ -342,8 +346,8 @@ export default class extends React.Component {
     onClickContractSave = async () => {
         let model = this.state.model;
 
-        if(this.state.contract.html == this.state.model)
-            return;
+        if(!!this.state.contract.html || this.state.contract.html == this.state.model)
+            return false;
         //encrypt model
 
         let r = await this.props.update_contract_model(this.state.contract.contract_id, model, this.state.contract.the_key)
@@ -354,6 +358,7 @@ export default class extends React.Component {
         } else if(r.code == -9) {
             alert(translate("you_dont_update_already_complete_contract"))
         }
+        return true;
     }
 
     onClickMoveEditPrivilege = async () => {
