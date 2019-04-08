@@ -275,7 +275,7 @@ export default class extends React.Component {
             if(!this.state.model) {
                 _state.model = model;
             }
-            else if(!!this.state.model && !!contract.payload.contract.html && contract.payload.contract.html == this.state.model && this.props.user_info.account_id != contract.payload.contract.can_edit_account_id) {
+            else if(!!this.state.model && !!contract.payload.contract.html && contract.payload.contract.html != this.state.model && this.props.user_info.account_id != contract.payload.contract.can_edit_account_id) {
                 _state.model = model;
             }
             
