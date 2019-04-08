@@ -174,11 +174,11 @@ export default class extends React.Component {
                 },
                 'froalaEditor.touchstart' : async (e, editor, touchstartEvent) => {
                     console.log("touchstart", e)
-                    this.range = this.saveSelection();
+                    setTimeout(e=>{this.range = this.saveSelection();}, 500);
                 },
                 'froalaEditor.mousedown' : async (e, editor, mouseDownEvent) => {
                     console.log("mousedown", e)
-                    this.range = this.saveSelection();
+                    setTimeout(e=>{this.range = this.saveSelection();}, 500);
                 },
             }
         }
