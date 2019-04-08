@@ -670,11 +670,7 @@ export default class extends React.Component {
         let sel;
         if (window.getSelection) {
             sel = window.getSelection();
-            console.log("saveSelection window.getSelection()", window.getSelection())
-            console.log("saveSelection sel.getRangeAt", sel.getRangeAt)
-            console.log("saveSelection sel.rangeCount", sel.rangeCount)
             if (sel.getRangeAt && !!sel.rangeCount) {
-                console.log("sel.getRangeAt(0)", sel.getRangeAt(0   ))
                 return sel.getRangeAt(0);
             }
         } else if (document.selection && document.selection.createRange) {
@@ -684,7 +680,6 @@ export default class extends React.Component {
     }
 
     restoreSelection = (range) => {
-        console.log("restoreSelection range", range)
         if (range) {
             let sel;
             if (window.getSelection) {
@@ -1007,8 +1002,18 @@ export default class extends React.Component {
                 can_edit_name = v.user_info.username
             }
         }
-        let corp_id = this.props.user_info.corp_id || window.CONST.PERSONAL_CORP_ID
-        let meOrGroup = select_subject(this.state.infos, this.state.groups, this.props.user_info.account_id, corp_id).my_info
+        let corp_id = this.props.user_info.corp_id || window.CONST.PERSONAL_CORP_ID;
+        let meOrGroup = select_subject(this.state.infos, this.state.groups, this.props.user_info.account_id, corp_id).my_info;
+
+        let model = this.state.model;
+        if(this.state.contract.status == 2) {
+            for(let v of this.state.infos) {
+                let regex = new RegExp(`<\\s*span\\s*class="t-sign corp_${v.corp_id} entity_${v.entity_id}"[^>]*>(.*?)<\\s*\/\\s*span>`, "gi")
+
+                if(v.signature)
+                    model = model.replace(regex, `<img src="${v.signature}" style="margin-left: 20px;height: 100px;"/>`)
+            }
+        }
 
         return (<div className="upsert-page upsert-contract-page">
             <div className="header-page">
@@ -1028,7 +1033,7 @@ export default class extends React.Component {
                         <FroalaEditor
                             tag='textarea'
                             config={this.config}
-                            model={this.state.model}
+                            model={model}
                             onModelChange={this.onModelChange} />
                         { this.state.contract.status < 2 ? <div className="can-edit-text">
                             <div>{translate("now_edit_privilege_who", [can_edit_name])}</div>
