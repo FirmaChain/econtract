@@ -272,11 +272,7 @@ export default class extends React.Component {
             }
 
             let model = contract.payload.contract.html != null ? contract.payload.contract.html : "";
-            if(!!this.state.model && !!contract.payload.contract.html && contract.payload.contract.html != this.state.model && this.props.user_info.account_id == contract.payload.contract.can_edit_account_id) {
-                if(r.code != 1) {
-                    _state.model = model;
-                }
-            } else {
+            if(!!this.state.model && !!contract.payload.contract.html && contract.payload.contract.html == this.state.model && this.props.user_info.account_id != contract.payload.contract.can_edit_account_id) {
                 _state.model = model;
             }
             
