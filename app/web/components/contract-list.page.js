@@ -435,6 +435,10 @@ export default class extends React.Component {
         })
     }
 
+    onRemoveContract = async () => {
+
+    }
+
     onClickGroupMenu = () => {
         this.setState({
             showGroupMenu: !this.state.showGroupMenu
@@ -702,6 +706,7 @@ export default class extends React.Component {
                             <div className="container">
                                 <div className="detail" onClick={this.openContract.bind(this, e, 0, 1)}>{translate("detail_info")}</div>
                                 <div className="move" onClick={this.onMoveContract.bind(this, [e.contract_id])}>{translate("move_folder")}</div>
+                                <div className="delete" onClick={this.onRemoveContract.bind(this, [e.contract_id])}>{translate("remove")}</div>
                             </div>
                         </div>
                     </div>
