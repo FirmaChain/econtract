@@ -33,6 +33,7 @@ import {
     add_folder_in_contract,
     remove_folder_contract,
     change_folder_contract,
+    remove_contract_self,
     get_lock_count,
     is_correct_pin,
 } from "../../common/actions"
@@ -61,6 +62,7 @@ let mapDispatchToProps = {
     add_folder_in_contract,
     remove_folder_contract,
     change_folder_contract,
+    remove_contract_self,
     get_lock_count,
     is_correct_pin,
 }
@@ -435,8 +437,17 @@ export default class extends React.Component {
         })
     }
 
-    onRemoveContract = async () => {
+    onRemoveContract = async (contract_ids, name) => {
+        if(!window._confirm(translate("really_get_off_this_name_of_contract_?", [name]))) return;
 
+        await window.showIndicator();
+        let resp = await this.props.remove_contract_self(contract_ids[0]);
+        if(resp.code == 1) {
+            alert(translate("success_remove_contract_self"))
+        } else {
+            alert(translate("fail_remove_contract_self", [resp.code]))
+        }
+        await window.hideIndicator();
     }
 
     onClickGroupMenu = () => {
@@ -706,7 +717,7 @@ export default class extends React.Component {
                             <div className="container">
                                 <div className="detail" onClick={this.openContract.bind(this, e, 0, 1)}>{translate("detail_info")}</div>
                                 <div className="move" onClick={this.onMoveContract.bind(this, [e.contract_id])}>{translate("move_folder")}</div>
-                                <div className="delete" onClick={this.onRemoveContract.bind(this, [e.contract_id])}>{translate("remove")}</div>
+                                <div className="delete" onClick={this.onRemoveContract.bind(this, [e.contract_id], e.name)}>{translate("delete")}</div>
                             </div>
                         </div>
                     </div>

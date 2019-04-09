@@ -1950,6 +1950,13 @@ div.checkbox2-comp{
                             cursor: pointer;
                         }
 
+                        >.delete {
+                            font-size: $font0;
+                            color: $black;
+                            padding:10px 15px;
+                            cursor: pointer;
+                        }
+
                         >div{
                             &:hover{
                                 background-color: $lightgray;
