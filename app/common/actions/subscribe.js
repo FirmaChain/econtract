@@ -15,6 +15,7 @@ import {
     api_get_current_subscription_payment,
     api_get_maximum_member_count,
     api_check_ticket_count,
+    api_get_next_subscription_payment,
     api_get_ticket_log,
 } from "../../../gen_api"
 
@@ -94,6 +95,12 @@ export function buy_onetime_ticket(plan_id, count) {
     return async function(){
         return (await api_buy_onetime_ticket(plan_id, count))
     };
+}
+
+export function get_next_subscription_payment() {
+    return async function() {
+        return (await api_get_next_subscription_payment())
+    }
 }
 
 export function increase_account(account_count){

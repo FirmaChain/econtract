@@ -38,6 +38,7 @@ import {
     increase_account,
     get_maximum_member_count,
     get_ticket_log,
+    get_next_subscription_payment,
 } from "../../common/actions"
 
 let mapStateToProps = (state)=>{
@@ -64,6 +65,7 @@ let mapDispatchToProps = {
     increase_account,
     get_maximum_member_count,
     get_ticket_log,
+    get_next_subscription_payment,
 }
 
 const IMP = window.IMP;
@@ -95,6 +97,7 @@ export default class extends React.Component {
         let current_subscription = (await this.props.get_current_subscription()).payload;
         let current_onetime_ticket = (await this.props.get_current_onetime_ticket()).payload;
         let payment_info = (await this.props.get_payment_info()).payload;
+        let get_next_subscription_payment = (await this.props.get_next_subscription_payment()).payload;
         let partial_payment_info = payment_info ? payment_info.preview_data : null;
         let current_subscription_payment = (await this.props.get_current_subscription_payment()).payload;
         let corp_member_count = 0;
@@ -108,6 +111,7 @@ export default class extends React.Component {
             subscription_plans,
             current_subscription,
             current_onetime_ticket,
+            get_next_subscription_payment,
             payment_info,
             partial_payment_info,
             current_subscription_payment,
@@ -131,6 +135,7 @@ export default class extends React.Component {
         console.log("subscription_plans", subscription_plans)
         console.log("current_subscription", current_subscription)
         console.log("current_onetime_ticket", current_onetime_ticket)
+        console.log("get_next_subscription_payment", get_next_subscription_payment)
         console.log("payment_info", payment_info)
         console.log("partial_payment_info", partial_payment_info)
         console.log("payment_logs", payment_logs);
@@ -179,9 +184,9 @@ export default class extends React.Component {
             planYearly: plan_yearly,
             planMonthlyOptions: plan_monthly_options,
             planYearlyOptions: plan_yearly_options,
-            selectedMonthlyIndex: this.state.current_subscription && this.state.current_subscription.type == window.CONST.PAYMENT_LOG_TYPE.MONTHLY_PAYMENT_AND_DISTRIBUTE ? this.state.current_subscription.plan_id : plan_monthly[0].plan_id,
-            selectedYearlyIndex: this.state.current_subscription && this.state.current_subscription.type == window.CONST.PAYMENT_LOG_TYPE.YEARLY_DISTRIBUTE_TICKET ? this.state.current_subscription.plan_id : plan_yearly[0].plan_id,
-            selectPeriod: 0,
+            //selectedMonthlyIndex: this.state.current_subscription && this.state.current_subscription.type == window.CONST.PAYMENT_LOG_TYPE.MONTHLY_PAYMENT_AND_DISTRIBUTE ? this.state.current_subscription.plan_id : plan_monthly[0].plan_id,
+            //selectedYearlyIndex: this.state.current_subscription && this.state.current_subscription.type == window.CONST.PAYMENT_LOG_TYPE.YEARLY_DISTRIBUTE_TICKET ? this.state.current_subscription.plan_id : plan_yearly[0].plan_id,
+            //selectPeriod: 0,
             account_type:this.props.user_info.account_type,
             is_current_subscription: !!this.state.current_subscription,
             current_subscription: this.state.current_subscription,
@@ -192,10 +197,14 @@ export default class extends React.Component {
                     !!this.state.current_subscription ? translate("change_subscribe_plan_desc") : translate("register_subscribe_plan_desc"))
 
                 if(!rr) return;
+                
+                if(!!this.state.get_next_subscription_payment && this.state.get_next_subscription_payment.plan_id == plan_id) {
+                    return alert(translate("same_plan_subscribe"))
+                }
 
                 await window.showIndicator()
                 let resp
-                if (period_type == 1) { // Yearly
+                /*if (period_type == 1) { // Yearly
                     if (!current) {
 
                         let select_plan = plan_yearly.find(e => e.plan_id == plan_id)
@@ -219,17 +228,22 @@ export default class extends React.Component {
                             return alert("error : "+resp.code)
                         }
                     }
-                } else {
+                } else*/ if(period_type == 0) {
                     if (current) {
-                        let resp = await this.props.terminate_monthly_commitment();
-                        await window.hideIndicator()
-                        if(resp.code != 1) {
-                            return alert(translate("purchase_fail_change_delete"));
+                        if(!!this.state.get_next_subscription_payment) {
+                            let resp = await this.props.terminate_monthly_commitment();
+                            await window.hideIndicator()
+                            if(resp.code != 1) {
+                                return alert(translate("purchase_fail_change_delete"));
+                            }
+                            await window.showIndicator()
                         }
                         let resp2 = await this.props.reserve_monthly_commitment(plan_id);
+                        await window.hideIndicator()
                         if(resp2.code != 1) {
                             return alert(translate("purchase_fail_change_resubmit"));
                         }
+                        await this.onRefresh()
                         return alert(translate("success_change_monthly_yearly"))
 
                     } else {
@@ -265,7 +279,10 @@ export default class extends React.Component {
 
         let resp = await this.props.terminate_monthly_commitment();
         if(resp.code == 1) {
+            await this.onRefresh()
             return alert(translate("success_subscribe_terminate"))
+        } else if(resp.code == -4) {
+            return alert(translate("already_terminate_subscribe"))
         } else {
             return alert(translate("fail_subscribe_terminate"))
         }
@@ -548,7 +565,7 @@ export default class extends React.Component {
                         {this.props.user_info.account_type == 2 ? null : 
                         <div className="button-container">
                             { is_current_subscription || is_not_yearly_plan ? <div className="button" onClick={this.onClickChangeRegularPayment}>{this.state.current_subscription ? translate("change") : translate("register")}</div> : null}
-                            { is_not_yearly_plan ? <div className="button" onClick={this.onClickTerminateSubscription}>{translate("terminate")}</div> : null}
+                            { is_not_yearly_plan && !!this.state.get_next_subscription_payment ? <div className="button" onClick={this.onClickTerminateSubscription}>{translate("terminate")}</div> : null}
                         </div>}
                     </div>
                     {this.props.user_info.account_type != 0 ? <div className="box gray-box">
@@ -666,12 +683,20 @@ export default class extends React.Component {
                                 status = translate("payment_refund");
                                 break;
                         }
+                        let money_amount
+                        if(e.money_amount >= 0)
+                            money_amount = translate("count_number_moeny_last", [e.money_amount.number_format()])
+                        else if(e.money_amount == -1)
+                            money_amount = translate("no_decide")
+                        else if(e.money_amount == -2)
+                            money_amount = translate("not_exist")
+
                         return <div className="item" key={e.log_id}>
                             <div className="list-body-item list-content">{type}</div>
                             {/*<div className="list-body-item list-purchase-type">신용카드</div>*/}
                             <div className="list-body-item list-price">{count}</div>
                             <div className="list-body-item list-price">{status}</div>
-                            <div className="list-body-item list-price">{translate("count_number_moeny_last", [e.money_amount.number_format()])}</div>
+                            <div className="list-body-item list-price">{money_amount}</div>
                             <div className="list-body-item list-date">{moment(e.start_date).format("YYYY-MM-DD HH:mm:ss")}</div>
                         </div>
                     }) : null}

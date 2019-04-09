@@ -543,14 +543,14 @@ class PurchaseRegularPayment extends React.Component {
     }
 
     componentDidMount() {
-        let select_monthly_plan = this.props.planMonthly.filter(e=>e.plan_id==this.props.selectedMonthlyIndex)[0];
+        /*let select_monthly_plan = this.props.planMonthly.filter(e=>e.plan_id==this.props.selectedMonthlyIndex)[0];
         let select_yearly_plan = this.props.planYearly.filter(e=>e.plan_id==this.props.selectedYearlyIndex)[0];
         let select_period = this.props.selectPeriod;
         this.setState({
             select_monthly_plan,
             select_yearly_plan,
             select_period,
-        });
+        });*/
     }
 
     closeSelf = ()=>{
@@ -618,7 +618,8 @@ class PurchaseRegularPayment extends React.Component {
                             {this.props.account_type == 0 ? null : translate("i_give_you_many_account", [monthly_master_account, monthly_sub_account])} 
                         </div>
                     </div>
-                    <div className={"btn" + (this.state.select_period == 1 ? " active" : "")} onClick={this.onClickType.bind(this, 1)}>
+                    {/*onClick={this.onClickType.bind(this, 1)}*/}
+                    {/*<div className={"btn" + (this.state.select_period == 1 ? " active" : "")} >
                         <div className="title">{translate("yearly_subscribe")}</div>
                         <div className="give-count">
                             <Dropdown className="common-select"
@@ -634,7 +635,7 @@ class PurchaseRegularPayment extends React.Component {
                             {(this.state.select_yearly_plan.total_price ? this.state.select_yearly_plan.total_price : 0) / (this.state.select_yearly_plan.ticket_count ? this.state.select_yearly_plan.ticket_count : 1) / (this.state.select_monthly_plan.data.total_month ? this.state.select_monthly_plan.data.total_month : 12)} {translate("price_by_one_time")}<br/>
                             {this.props.account_type == 0 ? null : translate("i_give_you_many_account", [yearly_master_account, yearly_sub_account])} 
                         </div>
-                    </div>
+                    </div>*/}
                 </div>
                 <div className="button">
                     <div className="submit" onClick={this.onResponse}>{this.props.is_current_subscription ? translate("change") : translate("register")}</div>
