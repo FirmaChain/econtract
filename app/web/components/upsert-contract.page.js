@@ -223,11 +223,23 @@ export default class extends React.Component {
                 history.block( () => true )
             return out_flag
         })
+
+        this.updateId = setInterval(function(){
+			$("input[checkbox]").each(function(){
+				if($(this)[0].checked){
+					$(this).attr("checked",true)
+				}else{
+					$(this).removeAttr("checked")
+				}
+			})
+		})
     }
 
     componentWillUnmount() {
         if(this.socket)
             this.socket.disconnect()
+
+        clearInterval(this.updateId);
     }
 
     subscribeChannel() {
