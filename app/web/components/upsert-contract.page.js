@@ -178,7 +178,6 @@ export default class extends React.Component {
                 },
                 'froalaEditor.touchstart' : async (e, editor, touchstartEvent) => {
                     setTimeout(v=>{this.range = this.saveSelection()}, 500);
-                    this.jqueryInputEvent();
                 },
                 'froalaEditor.touchend' : async (e, editor, touchendEvent) => {
                     setTimeout(v=>{this.range = this.saveSelection()}, 500);
@@ -186,7 +185,6 @@ export default class extends React.Component {
                 },
                 'froalaEditor.mousedown' : async (e, editor, mousedownEvent) => {
                     setTimeout(v=>{this.range = this.saveSelection()}, 500);
-                    this.jqueryInputEvent();
                 },
                 'froalaEditor.mouseup' : async (e, editor, mouseupEvent) => {
                     setTimeout(v=>{this.range = this.saveSelection()}, 500);
@@ -262,10 +260,8 @@ export default class extends React.Component {
     jqueryInputEvent() {
         $("input[type=checkbox]").each(function(){
             if($(this)[0].checked){
-                console.log("checked")
                 $(this).attr("checked",true)
             }else{
-                console.log("unchecked")
                 $(this).removeAttr("checked")
             }
         })
@@ -1045,6 +1041,8 @@ export default class extends React.Component {
                     model = model.replace(regex, `<img src="${v.signature}" style="margin-left: 20px;height: 100px;"/>`)
             }
         }
+
+        this.jqueryInputEvent();
 
         return (<div className="upsert-page upsert-contract-page">
             <div className="header-page">

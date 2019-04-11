@@ -53,6 +53,14 @@ export default class PreviewContract extends React.Component {
         }
 
         this.setState({model:model})
+
+    }
+
+    componentWillUnmount() {
+    }
+
+    jqueryInputEvent() {
+        $("input[type=checkbox]").attr("disabled", true)
     }
 
     closeSelf = () => {
