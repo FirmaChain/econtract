@@ -113,7 +113,7 @@ export default class extends React.Component {
                 //console.log ('do refresh when show');
             }
         })*/
-        /*$.FroalaEditor.DefineIcon('check', {NAME: 'check-square'});
+        $.FroalaEditor.DefineIcon('check', {NAME: 'check-square'});
         $.FroalaEditor.RegisterCommand('check', {
             title: 'CheckBox',
             focus: true,
@@ -124,9 +124,9 @@ export default class extends React.Component {
                 this.editor.html.insert(ReactDOMServer.renderToStaticMarkup(<div>
                     <input className="fr-checkbox" type="checkbox"/>
                 </div>));
-                this.undo.saveStep();
+                this.editor.undo.saveStep();
             }
-        });*/
+        });
 
         this.blockFlag = false;
         this.disconnect = false;
@@ -172,11 +172,25 @@ export default class extends React.Component {
                     console.log("blur", e)
                     //this.range = this.saveSelection();
                 },
-                'froalaEditor.touchstart' : async (e, editor, touchstartEvent) => {
-                    setTimeout(e=>{this.range = this.saveSelection()}, 500);
+                'froalaEditor.focus' : async (e, editor) => {
+                    console.log("focus", e)
+                    //this.range = this.saveSelection();
                 },
-                'froalaEditor.mousedown' : async (e, editor, mouseDownEvent) => {
-                    setTimeout(e=>{this.range = this.saveSelection()}, 500);
+                'froalaEditor.touchstart' : async (e, editor, touchstartEvent) => {
+                    setTimeout(v=>{this.range = this.saveSelection()}, 500);
+                    this.jqueryInputEvent();
+                },
+                'froalaEditor.touchend' : async (e, editor, touchendEvent) => {
+                    setTimeout(v=>{this.range = this.saveSelection()}, 500);
+                    this.jqueryInputEvent();
+                },
+                'froalaEditor.mousedown' : async (e, editor, mousedownEvent) => {
+                    setTimeout(v=>{this.range = this.saveSelection()}, 500);
+                    this.jqueryInputEvent();
+                },
+                'froalaEditor.mouseup' : async (e, editor, mouseupEvent) => {
+                    setTimeout(v=>{this.range = this.saveSelection()}, 500);
+                    this.jqueryInputEvent();
                 },
             }
         }
@@ -224,22 +238,16 @@ export default class extends React.Component {
             return out_flag
         })
 
-        this.updateId = setInterval(function(){
-			$("input[checkbox]").each(function(){
-				if($(this)[0].checked){
-					$(this).attr("checked",true)
-				}else{
-					$(this).removeAttr("checked")
-				}
-			})
-		})
+        this.updateId = setInterval(this.jqueryInputEvent, 500);
+
     }
 
     componentWillUnmount() {
         if(this.socket)
             this.socket.disconnect()
 
-        clearInterval(this.updateId);
+        if(this.updateId)
+            clearInterval(this.updateId);
     }
 
     subscribeChannel() {
@@ -249,6 +257,18 @@ export default class extends React.Component {
         this.socket.emit('subscribe_channel', this.state.contract.contract_id)
         this.socket.on("receive_chat_"+this.state.contract.contract_id, this.onReceiveChat)
         this.socket.on("refresh_contract_"+this.state.contract.contract_id, this.onRefresh)
+    }
+
+    jqueryInputEvent() {
+        $("input[type=checkbox]").each(function(){
+            if($(this)[0].checked){
+                console.log("checked")
+                $(this).attr("checked",true)
+            }else{
+                console.log("unchecked")
+                $(this).removeAttr("checked")
+            }
+        })
     }
 
     onRefresh = async () => {
