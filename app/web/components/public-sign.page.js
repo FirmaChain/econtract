@@ -141,12 +141,19 @@ export default class extends React.Component {
             }
             await window.hideIndicator()
         })
+
+        this.updateId = setInterval(this.jqueryInputEvent, 500);
+
     }
 
     componentWillUnmount() {
         if(this.socket)
             this.socket.disconnect()
+
+        if(this.updateId)
+            clearInterval(this.updateId);
     }
+
 
     subscribeChannel() {
         if(!this.state.contract)
@@ -155,6 +162,17 @@ export default class extends React.Component {
         this.socket.emit('subscribe_channel', this.state.contract.contract_id)
         this.socket.on("receive_chat_"+this.state.contract.contract_id, this.onReceiveChat)
         this.socket.on("refresh_contract_"+this.state.contract.contract_id, this.onRefresh)
+    }
+    
+
+    jqueryInputEvent() {
+        $("input[type=checkbox]").each(function(){
+            if($(this)[0].checked){
+                $(this).attr("checked",true)
+            }else{
+                $(this).removeAttr("checked")
+            }
+        })
     }
 
     onRefresh = async () => {
