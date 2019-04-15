@@ -5,7 +5,6 @@ import {
     api_get_current_total_ticket,
     api_input_payment_info,
     api_get_payment_info,
-    api_make_yearly_commitment,
     api_make_monthly_commitment,
     api_reserve_monthly_commitment,
     api_terminate_monthly_commitment,
@@ -65,12 +64,6 @@ export function get_ticket_log(page = 0, display_count = 6 ) {
     return async function() {
         return (await api_get_ticket_log(page, display_count))
     }
-}
-
-export function make_yearly_commitment(plan_id) {
-    return async function(){
-        return (await api_make_yearly_commitment(plan_id))
-    };
 }
 
 export function make_monthly_commitment(plan_id) {
