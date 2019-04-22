@@ -43,6 +43,7 @@ class MyRoute extends React.Component{
 					<img src="/static/logo_blue.png" onClick={()=>history.push("/")}/>
 				</div>
 				<div className="description">
+					{navigator.userAgent}<br/>
 					{translate("this_is_chrome_desc_1")}<br/>
 					{translate("this_is_chrome_desc_2")}
 					<br/><br/><br/><br/>
