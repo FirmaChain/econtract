@@ -877,9 +877,7 @@ export default class extends React.Component {
     }
 
     render_main_mobile() {
-        return <div>
-            qwfqwfqwfqwfqwfqwfqwfqwfqwfasfasfasfasf
-        </div>
+        return this.render_main();
     }
 
     render_complete() {
@@ -900,6 +898,10 @@ export default class extends React.Component {
             </div>
             <Footer />
         </div>
+    }
+
+    render_complete_mobile() {
+        return this.render_complete();
     }
 
     render() {
