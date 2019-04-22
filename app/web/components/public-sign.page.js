@@ -887,12 +887,12 @@ export default class extends React.Component {
                     <div className="left-logo">
                         <img src="/static/logo_blue.png" onClick={()=>history.push("/")}/>
                     </div>
-                    <div className="title">{translate("status_2")}</div>
+                    <div className="title">{translate("sign_all")}</div>
                 </div>
 
                 <div className="container">
                     <i className="icon fal fa-check-circle"></i>
-                    <div className="title">{translate("status_2")}</div>
+                    <div className="title">{translate("sign_all")}</div>
                     <div className="desc">{translate("no_register_sign_step_2_desc", [this.state.contract.name])}</div>
                 </div>
             </div>
