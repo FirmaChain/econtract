@@ -1812,15 +1812,24 @@ window.hideIndicator = ()=>{
 
 let refesh_modal_idx = null
 setInterval(()=>{
-    let t = window.getCookie("session_update");
+
+    let t, cookie;
+    if(location.pathname.indexOf("/e-contract")) {
+        t = window.getCookie("session_update");
+        cookie = "session"
+    } else if(location.pathname.indexOf("/legal-advice")) {
+        t = window.getCookie("legal_session_update");
+        cookie = "legal_session"
+    }
+
     if(t){
         let day = 60 * 60 * 3;
 
-        let left_time = day - ((Date.now()-t)/1000);
+        let left_time = day - ((Date.now() - t) / 1000);
 
         if(left_time < 0){
-            window.eraseCookie("session")
-            window.eraseCookie("session_update")
+            window.eraseCookie(cookie);
+            window.eraseCookie(`${cookie}_update`);
             
             location.reload(true)
         }
@@ -1832,24 +1841,35 @@ setInterval(()=>{
                 }
             })
         }
-    }else{
+    } else {
         let exclude = [
             "/",
-            '/e-contract/login',
-            '/legal-advice/login',
             '/register',
             '/recover',
             '/old-recover',
-            '/e-contract/verification',
-            '/e-contract/public-sign',
         ]
-        let home_flag = true
+        let home_flag = true;
+        if(location.pathname.indexOf("/e-contract")) {
+            exclude = [
+                '/e-contract/login',
+                '/e-contract/verification',
+                '/e-contract/public-sign',
+                ...exclude
+            ]
+        } else if(location.pathname.indexOf("/legal-advice")) {
+            exclude = [
+                '/legal-advice/login',
+                ...exclude
+            ]
+        } 
+
         for(let v of exclude) {
             if(location.pathname.indexOf(v) != -1) {
                 home_flag = false
                 break;
             }
         }
+
         if(home_flag) {
             location.href = "/";
         }
