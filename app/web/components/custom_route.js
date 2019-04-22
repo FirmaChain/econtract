@@ -12,6 +12,7 @@ class MyRoute extends React.Component{
 		console.log(navigator.userAgent)
 		if(window.location.pathname != "/"){
 			if(navigator.userAgent.toLowerCase().indexOf("chrome") != -1 ||
+				navigator.userAgent.toLowerCase().indexOf("crios") != -1 ||
 			 	navigator.userAgent.toLowerCase().indexOf("ipad") != -1){
 				this.setState({ chrome:true })
 			}else{
