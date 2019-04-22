@@ -138,7 +138,7 @@ textarea {
 
 .fr-wrapper {
     background-color: $gray !important;
-    max-height: calc(100% - 111px) !important;
+    height: calc(100% - 111px) !important;
     padding: 0 20px !important;
 }
 
@@ -1444,6 +1444,35 @@ div.checkbox2-comp{
 }
 
 .header-page {
+
+    >.mobile-header {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        height: 70px;
+
+        border-bottom:1px solid $middlegray;
+
+        >.multi-title {
+            margin-right: 20px;
+            padding-right: 20px;
+            margin-left: 20px;
+
+            >.title {
+                text-align: left;
+                font-size: $font2;
+                color: $black;
+                font-weight: bold;
+            }
+
+            >.sub-title {
+                text-align: left;
+                font-size: $font1;
+                color: $gray;
+                margin-top:5px;
+            }
+        }
+    }
 
     >.header {
         display: flex;
@@ -2816,6 +2845,24 @@ div.checkbox2-comp{
             font-weight: bold;
             font-size: $font3;
             color: white;
+        }
+
+        >.mobile-sign {
+            width:100%;
+            height:100%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-top: 1px solid $middlegray;
+            background-color:$blue;
+            cursor: pointer;
+
+            font-weight: bold;
+            font-size: $font3;
+            color: white;
+
         }
     }
 }

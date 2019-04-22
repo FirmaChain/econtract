@@ -1059,6 +1059,13 @@ class DrawSign extends React.Component{
     }
 
     render(){
+        let width = 500, height = 250;
+        if(window.isMobile()) {
+            width = window.innerWidth - 112;
+            height = width / 2;
+        }
+        console.log("window.innerWidth", window.innerWidth)
+
         return <div className="draw-sign-modal default-modal-container">
             <div className="container">
 
@@ -1070,8 +1077,8 @@ class DrawSign extends React.Component{
                     <div className="clear" onClick={this.onClear}>{translate("reset")}</div>
                 </div>
                 <canvas ref="canvas" 
-                    width="500"
-                    height="250"
+                    width={width}
+                    height={height}
                     onMouseDown={this.onmousedown} 
                     onMouseMove={this.onmousemove}
                     onMouseUp={this.onmouseup}

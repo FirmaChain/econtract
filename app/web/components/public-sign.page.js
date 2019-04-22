@@ -81,6 +81,11 @@ export default class extends React.Component {
                     if(!!this.editor && !!this.state.contract && this.state.contract.status == 2) {
                         this.editor.edit.off()
                     }
+
+                    if(window.isMobile()) {
+                        this.editor.toolbar.hide()
+                        $('.fr-wrapper').style("height", "100%", "important")
+                    }
                 },
                 'froalaEditor.image.inserted' : async (e, editor, $img, response) => {
                     $img[0].src = window.getImageBase64Uri($img[0])
@@ -877,7 +882,97 @@ export default class extends React.Component {
     }
 
     render_main_mobile() {
-        return this.render_main();
+        if(!this.state.contract)
+            return <div></div>
+
+        let can_edit_name
+        for(let v of this.state.infos) {
+            if(this.state.contract.can_edit_corp_id == v.corp_id && this.state.contract.can_edit_account_id == v.entity_id) {
+                can_edit_name = v.user_info.username
+            }
+        }
+        let corp_id = -1
+        let meOrGroup = select_subject(this.state.infos, [], this.state.entity_id, corp_id).my_info
+
+        let creator;
+        for(let v of this.state.infos) {
+            if(v.corp_id == 0 && v.entity_id == this.state.contract.account_id)
+                creator = v;
+        }
+
+        let creator_name = creator ? creator.user_info.username : translate("unknown")
+        if(creator && creator.is_exclude == 1) {
+            creator_name = translate("byebye_template", [creator.user_info.username])
+        }
+
+        return <div className="public-sign-page upsert-page">
+            <div className="header-page">
+                <div className="mobile-header">
+                    <div className="multi-title">
+                        <div className="title">{this.state.contract.name}</div>
+                        <div className="sub-title">{`${translate("creator")} : ${creator_name} (${creator.user_info.email})`}</div>
+                    </div>
+                </div>
+                <div className="container">
+                    <div className="editor">
+                        <FroalaEditor
+                            tag='textarea'
+                            config={this.config}
+                            model={this.state.model}
+                            onModelChange={(model) => this.setState({model, contract_modify_status:translate("contract_modify")})} />
+                        { this.state.contract.status < 2 ? <div className="can-edit-text">
+                            <div>{translate("now_edit_privilege_who", [can_edit_name])}</div>
+                        </div> : null }
+                        { this.state.contract.status < 2 && this.state.contract.can_edit_account_id == this.state.entity_id ? <div className="floating">
+                            <div>
+                                <div className="circle" unselectable="on" onClick={()=>this.setState({toolbar_open:!this.state.toolbar_open})}>
+                                    <i className={`far fa-plus ${this.state.toolbar_open ? "spin-start-anim" : "spin-end-anim"}`}></i>
+                                </div>
+                            </div>
+                        </div>: null }
+
+                        { this.state.contract.status < 2 && this.state.contract.can_edit_account_id == this.state.entity_id ? <div className={`tool-bar ${this.state.toolbar_open ? "fade-start-anim" : "fade-end-anim"}`}>
+                            <div>
+                                <div className="sign-title">{translate("sign_place_add_title")}</div>
+                                {this.state.infos.filter( e=>e.privilege == 1 ).map( (e, k) => {
+                                    return <div className="but" key={k} unselectable="on" onClick={this.onAddEditorSign.bind(this, e)}>
+                                        {translate("sign_user", [e.user_info.username])}
+                                    </div>
+                                })}
+                            </div>
+                        </div> : null }
+                    </div>
+                    {/*!this.state.sign_mode ? <div className="info">
+                        <div className="top">
+                            <div className={"menu" + (this.state.selected_menu == 0 ? " enable-menu" : "")} onClick={e=>this.setState({selected_menu:0})}>
+                                <i className="far fa-signature"></i>
+                                <div className="text">{translate("sign_info")}</div>
+                            </div>
+                            <div className={"menu" + (this.state.selected_menu == 1 ? " enable-menu" : "")} onClick={e=>this.setState({selected_menu:1})}>
+                                <i className="far fa-comments"></i>
+                                <div className="text">{translate("conversation")}</div>
+                            </div>
+                        </div>
+                        {this.render_info()}
+                    </div>*/}
+                </div>
+            </div>
+            <div className="bottom-container">
+                {(()=>{
+                    if(meOrGroup.privilege == 2 || this.state.contract.status == 2) {
+                        return <div className="mobile-sign" onClick={(e)=>window.close()}>
+                            {translate("go_back")}
+                        </div>
+                    }
+
+                    return this.state.sign_mode ? <div className="mobile-sign" onClick={this.onToggleRegisterSignForm.bind(this, false)}>
+                        {translate("edit_mode")}
+                    </div> : <div className="mobile-sign" onClick={this.onClickRegisterSign}>
+                        {meOrGroup.signature ? translate("resign") : translate("go_sign")}
+                    </div>
+                })()}
+            </div>
+        </div>
     }
 
     render_complete() {
