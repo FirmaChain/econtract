@@ -876,6 +876,12 @@ export default class extends React.Component {
         </div>
     }
 
+    render_main_mobile() {
+        return <div>
+            qwfqwfqwfqwfqwfqwfqwfqwfqwfasfasfasfasf
+        </div>
+    }
+
     render_complete() {
         return <div className="public-sign-page-step-2">
             <div className="header-page">
@@ -900,9 +906,15 @@ export default class extends React.Component {
         if(this.state.step == 0) {
             return <div></div>
         } else if(this.state.step == 1) {
-            return this.render_main();
+            if(window.isMobile())
+                return this.render_main_mobile();
+            else
+                return this.render_main();
         } else if(this.state.step == 2) {
-            return this.render_complete();
+            if(window.isMobile())
+                return this.render_complete_mobile();
+            else
+                return this.render_complete();
         }
     }
 }
