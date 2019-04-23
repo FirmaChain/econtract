@@ -49,7 +49,7 @@ export default class extends React.Component {
 
     componentWillReceiveProps(props){
         if(!!props.user_info){
-            return history.replace("/legal-advice/home")
+            //return history.replace("/legal-advice/home")
         }
     }
     
@@ -61,14 +61,14 @@ export default class extends React.Component {
                 <div className="text-place">
                     <div className="title">{translate("email")}</div>
                     <div className="text-box">
-                        <input type="text" value={this.state.email} onChange={(e)=>{this.setState({email:e.target.value})}}/>
+                        <input id="email" type="email" value={this.state.email} onChange={(e)=>{this.setState({email:e.target.value})}}/>
                     </div>
                 </div>
                 <br/>
                 <div className="text-place">
                     <div className="title">{translate("password")}</div>
                     <div className="text-box">
-                        <input type="password" value={this.state.password} onChange={(e)=>{this.setState({password:e.target.value})}}/>
+                        <input id="password" type="password" value={this.state.password} onChange={(e)=>{this.setState({password:e.target.value})}}/>
                     </div>
                 </div>
 

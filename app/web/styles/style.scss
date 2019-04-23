@@ -5671,6 +5671,10 @@ div.checkbox3-comp{
                 float:left;
                 color: $legalprimary;
                 cursor:pointer;
+
+                &:hover{
+                    text-decoration:underline;
+                }
             }
 
             >.forgot-password {
@@ -5679,6 +5683,10 @@ div.checkbox3-comp{
                 >span {
                     color: $legalprimary;
                     cursor:pointer;
+
+                    &:hover{
+                        text-decoration:underline;
+                    }
                 }
             }
         }
@@ -5691,6 +5699,10 @@ div.checkbox3-comp{
             >div >span {
                 cursor:pointer;
                 color: $legalprimary;
+                
+                &:hover{
+                    text-decoration:underline;
+                }
             }
         }
     }

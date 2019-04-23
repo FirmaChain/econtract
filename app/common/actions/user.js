@@ -130,6 +130,10 @@ export function fetch_user_info(){
                     await api_update_user_info(encryptedUserInfo)
                 }
 
+                Sentry.configureScope((scope) => {
+                    scope.setUser({"email": _.email, "account_id":_.account_id});
+                });
+
                 dispatch({
                     type:RELOAD_USERINFO,
                     payload:_
