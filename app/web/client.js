@@ -40,7 +40,15 @@ import CorpGroupInfoPage from "./components/corp-group-info.page"
 import GroupPage from "./components/group.page"
 import PublicSignPage from "./components/public-sign.page"
 
+import LegalAdviceHomePage from "./components/legal-advice/legal-advice-home.page"
 import LegalAdviceLoginPage from "./components/legal-advice/legal-advice-login.page"
+import LegalAdviceAskPage from "./components/legal-advice/legal-advice-ask.page"
+import LegalAdviceChangePasswordPage from "./components/legal-advice/legal-advice-change-password.page"
+import LegalAdviceInfoPage from "./components/legal-advice/legal-advice-info.page"
+import LegalAdviceProfilePage from "./components/legal-advice/legal-advice-profile.page"
+import LegalAdvicePaymentLogPage from "./components/legal-advice/legal-advice-payment-log.page"
+import LegalAdviceRegisterPage from "./components/legal-advice/legal-advice-register.page"
+import LegalAdviceWithdrawPage from "./components/legal-advice/legal-advice-withdraw.page"
 
 
 import { current_platform } from "../common/utils"
@@ -111,9 +119,17 @@ window.addEventListener("load",()=>{
 					{/*<Route onEnter={resolver} exact path="/preview-contract" component={PreviewCOntractPage} />*/}
 					<Route onEnter={resolver} exact path="/e-contract/public-sign/:code" component={PublicSignPage} />
 
+					<Route onEnter={resolver} exact path="/legal-advice" component={LegalAdviceHomePage} />
 					<Route onEnter={resolver} exact path="/legal-advice/login" component={LegalAdviceLoginPage} />
+					<Route onEnter={resolver} exact path="/legal-advice/home" component={LegalAdviceHomePage} />
+					<Route onEnter={resolver} exact path="/legal-advice/ask" component={LegalAdviceAskPage} />
+					<Route onEnter={resolver} exact path="/legal-advice/change-password" component={LegalAdviceChangePasswordPage} />
+					<Route onEnter={resolver} exact path="/legal-advice/info" component={LegalAdviceInfoPage} />
+					<Route onEnter={resolver} exact path="/legal-advice/profile" component={LegalAdviceProfilePage} />
+					<Route onEnter={resolver} exact path="/legal-advice/payment-log" component={LegalAdvicePaymentLogPage} />
+					<Route onEnter={resolver} exact path="/legal-advice/register" component={LegalAdviceRegisterPage} />
+					<Route onEnter={resolver} exact path="/legal-advice/withdraw" component={LegalAdviceWithdrawPage} />
 
-					<Route onEnter={resolver} exact path="/legal-advice" component={LoginPage} />
 
 				</Container>
 			</Provider>

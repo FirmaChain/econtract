@@ -5,13 +5,10 @@ import { Link } from 'react-router-dom'
 import history from '../../history'
 import translate from "../../../common/translate"
 import {
-    getNewBrowserKey,
 } from "../../../common/crypto_test"
 import {
-    login_account,
-    login_2fa_otp_auth,
     fetch_user_info
-} from "../../../common/actions"
+} from "../../../common/legal_actions"
 
 import Footer from "../footer.comp"
 import CheckBox3 from "../checkbox3"
@@ -23,8 +20,6 @@ let mapStateToProps = (state)=>{
 }
 
 let mapDispatchToProps = {
-    login_account,
-    login_2fa_otp_auth,
     fetch_user_info
 }
 
@@ -59,14 +54,14 @@ export default class extends React.Component {
                 <div className="logo"><img src="/static/anycase.png" /></div>
 
                 <div className="text-place">
-                    <div className="title">{translate("email")}</div>
+                    <div className="title">이메일</div>
                     <div className="text-box">
                         <input id="email" type="email" value={this.state.email} onChange={(e)=>{this.setState({email:e.target.value})}}/>
                     </div>
                 </div>
                 <br/>
                 <div className="text-place">
-                    <div className="title">{translate("password")}</div>
+                    <div className="title">비밀번호</div>
                     <div className="text-box">
                         <input id="password" type="password" value={this.state.password} onChange={(e)=>{this.setState({password:e.target.value})}}/>
                     </div>

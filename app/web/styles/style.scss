@@ -5589,7 +5589,7 @@ div.checkbox3-comp{
         margin:auto;
         max-width:800px;
         padding:0px 5px;
-        height:calc(100% - 60px);
+        min-height:calc(100% - 60px);
         overflow: auto;
 
     }
@@ -5625,11 +5625,11 @@ div.checkbox3-comp{
             >.text-box {
 
                 >input {
-                    padding:10px 15px;
-                    font-size: $font4;
+                    padding:20px 15px;
+                    font-size: $font2;
                     width: 100%;
                     border-radius: 5px;
-                    color: $black;
+                    color: $onlyblack;
                     background-color: $lightgray;
                     border-style: none;
 
@@ -5699,12 +5699,82 @@ div.checkbox3-comp{
             >div >span {
                 cursor:pointer;
                 color: $legalprimary;
-                
+
                 &:hover{
                     text-decoration:underline;
                 }
             }
         }
+    }
+}
+
+.legal-advice-change-password {
+
+    >.container {
+        max-width:300px;
+        width:100%;
+        text-align: center;
+
+        >.title {
+            font-size: $font4;
+            font-weight: bold;
+            color:$onlyblack;
+            margin-top:30px;
+            margin-bottom:60px;
+        }
+
+
+        >.text-place {
+            width:100%;
+            margin:10px 0;
+            text-align: left;
+
+            >.title {
+                font-size: $font1;
+                color:$onlyblack;
+                margin-bottom:5px;
+            }
+
+            >.text-box {
+
+                >input {
+                    padding:20px 15px;
+                    font-size: $font2;
+                    width: 100%;
+                    border-radius: 5px;
+                    color: $onlyblack;
+                    background-color: $lightgray;
+                    border-style: none;
+
+                    &:disabled {
+                        background-color: $middlegray;
+                    }
+                }
+            }
+        }
+
+        >.change-password-button {
+            margin-top:25px;
+
+            width:100%;
+            display: inline-block;
+            background-color: $legalprimary;
+            border-radius:5px;
+            font-size: $font3;
+            font-weight:bold;
+            cursor: pointer;
+            padding:20px 20px;
+            text-align: center;
+            color:white;
+            box-sizing: border-box;
+        }
+
+        >.sub {
+            font-size: $font1;
+            color:$gray;
+            margin-top:20px;
+        }
+
     }
 }
 
