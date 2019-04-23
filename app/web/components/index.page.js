@@ -66,7 +66,7 @@ export default class extends React.Component {
 							<div className="title">{translate("INDEX_TITLE_1")}</div>
 							<div className="sub-title"><b>{translate("INDEX_TITLE_2")}</b></div>
 							<div className="start-btn" onClick={()=>history.push("/e-contract/login")}>{translate("INDEX_TITLE_3")}</div>
-							{/*<div className="start-btn" onClick={()=>history.push("/legal-advice/login")}>{translate("go_legal_advice_title")}</div>*/}
+							<div className="start-btn" onClick={()=>history.push("/legal-advice/login")}>{translate("go_legal_advice_title")}</div>
 						</div>
 					</div>
 					{/*<div className="desc-container">

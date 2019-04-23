@@ -1709,9 +1709,20 @@ class Loading extends React.Component {
 
 @modal
 class RefreshSession extends React.Component {
-    constructor() {
-        super()
-        this.state = {}
+    constructor(props) {
+        super(props);
+        let t;
+        switch(this.props.type) {
+            case 0:
+                t = "session"
+            break;
+            case 1:
+                t = "legal_session"
+            break;
+        }
+        this.state = {
+            type_string : t
+        }
     }
 
     componentDidMount() {
@@ -1732,7 +1743,7 @@ class RefreshSession extends React.Component {
     }
 
     update = ()=>{
-        let t = window.getCookie("session_update");
+        let t = window.getCookie(`${this.state.type_string}_update`)
         if(t){
             let day = 60 * 60 * 3;
 
@@ -1750,10 +1761,10 @@ class RefreshSession extends React.Component {
     }
 
     onClickRenewal= ()=>{
-        let session = window.getCookie("session");
+        let session = window.getCookie(this.state.type_string);
         if(session){
-            window.setCookie("session", session, 0.125)
-            window.setCookie("session_update", Date.now(), 0.125)
+            window.setCookie(this.state.type_string, session, 0.125)
+            window.setCookie(`${this.state.type_string}_update`, Date.now(), 0.125)
         }
 
         window.closeModal(this.props.modalId)
@@ -1761,8 +1772,8 @@ class RefreshSession extends React.Component {
     }
     
     onClickLogout = ()=>{
-        window.eraseCookie("session")
-        window.eraseCookie("session_update")
+        window.eraseCookie(this.state.type_string)
+        window.eraseCookie(`${this.state.type_string}_update`)
         
         location.reload(true)
     }
@@ -1820,13 +1831,15 @@ window.hideIndicator = ()=>{
 let refesh_modal_idx = null
 setInterval(()=>{
 
-    let t, cookie;
+    let t, cookie, type;
     if(location.pathname.indexOf("/e-contract")) {
         t = window.getCookie("session_update");
         cookie = "session"
+        type = 0
     } else if(location.pathname.indexOf("/legal-advice")) {
         t = window.getCookie("legal_session_update");
         cookie = "legal_session"
+        type = 1
     }
 
     if(t){
@@ -1843,6 +1856,7 @@ setInterval(()=>{
 
         if(left_time < 60 * 5 && !refesh_modal_idx){
             refesh_modal_idx = window.openModal("RefreshSession",{
+                type:type,
                 onClose:()=>{
                     refesh_modal_idx = null
                 }
