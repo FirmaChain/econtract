@@ -1,0 +1,2 @@
+export const RELOAD_USERINFO = "RELOAD_USERINFO"
+export const SUCCESS_LOGIN = "SUCCESS_LOGIN"

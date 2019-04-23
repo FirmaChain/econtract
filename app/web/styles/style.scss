@@ -14,12 +14,14 @@ $font0: 11px;
 $blue : #324b5f;
 $blue_hover : #223647;
 $middleblack : #555555;
+$onlyblack : #000;
 $black : #181818;
 $gray : #a7a4a5;
 $lightgray : #f4f4f4;
 $superlightgray : #fcfcfc;
 $middlegray : #dadadc;
 $red : #cc0000;
+$legalprimary : #3857e4;
 
 $global-font : "Nanum Gothic", sans-serif;
 
@@ -376,6 +378,44 @@ div.checkbox2-comp{
         margin-left: 10px;
     }
 }
+
+div.checkbox3-comp{
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+
+    >.checkbox {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        cursor: pointer;
+        overflow: hidden;
+        text-align: center;
+        padding-top: 1px;
+        background-color: $lightgray;
+        
+        >i {
+            color: $legalprimary;
+        }
+    }
+
+    >.disabled {
+        background-color: $middlegray;
+        border: 1px solid $gray;
+
+        >i {
+            color: $gray;
+        }
+    }
+
+    >.check-label {
+        color: $black;
+        font-size: $font1;
+        margin-left: 10px;
+    }
+}
+
 
 .common-textbox {
     border:1px solid $gray;
@@ -3970,7 +4010,6 @@ div.checkbox2-comp{
     }
 }
 
-
 .security-page {
 
     >.info-container {
@@ -5539,6 +5578,124 @@ div.checkbox2-comp{
     }
 }
 
+.legal-advice-maintain {
+
+    >.container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        width:100%;
+        margin:auto;
+        max-width:800px;
+        padding:0px 5px;
+        height:calc(100% - 60px);
+        overflow: auto;
+
+    }
+}
+
+.legal-advice-login {
+
+    >.container {
+        max-width:300px;
+        width:100%;
+        text-align: center;
+
+        >.logo {
+            margin-top:50px;
+            margin-bottom:50px;
+
+            >img {
+                height:100px;
+            }
+        }
+
+        >.text-place {
+            width:100%;
+            margin:10px 0;
+            text-align: left;
+
+            >.title {
+                font-size: $font1;
+                color:$onlyblack;
+                margin-bottom:5px;
+            }
+
+            >.text-box {
+
+                >input {
+                    padding:10px 15px;
+                    font-size: $font4;
+                    width: 100%;
+                    border-radius: 5px;
+                    color: $black;
+                    background-color: $lightgray;
+                    border-style: none;
+
+                    &:disabled {
+                        background-color: $middlegray;
+                    }
+                }
+            }
+        }
+
+        >.continue-login {
+            width:100%;
+            margin-top: 40px;
+            text-align: left;
+        }
+
+        >.login-button {
+            margin-top:25px;
+
+            width:100%;
+            display: inline-block;
+            background-color: $legalprimary;
+            border-radius:5px;
+            font-size: $font3;
+            font-weight:bold;
+            cursor: pointer;
+            padding:20px 20px;
+            text-align: center;
+            color:white;
+            box-sizing: border-box;
+        }
+
+        >.sub {
+            width:100%;
+            margin-top:25px;
+            font-size: $font1;
+
+            >.register {
+                float:left;
+                color: $legalprimary;
+                cursor:pointer;
+            }
+
+            >.forgot-password {
+                float:right;
+                
+                >span {
+                    color: $legalprimary;
+                    cursor:pointer;
+                }
+            }
+        }
+
+        >.sub2 {
+            width:100%;
+            margin-top:40px;
+            font-size: $font1;
+
+            >div >span {
+                cursor:pointer;
+                color: $legalprimary;
+            }
+        }
+    }
+}
+
 
 
 
@@ -5866,6 +6023,7 @@ div.checkbox2-comp{
         }
     }
 }
+
 .add-common-modal {
     background-color: #fff;
     min-width: 200px;
