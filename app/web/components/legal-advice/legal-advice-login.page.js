@@ -77,12 +77,12 @@ export default class extends React.Component {
                 <div className="login-button">로그인</div>
 
                 <div className="sub">
-                    <div className="register">회원가입하기</div>
-                    <div className="forgot-password"><span>비밀번호</span>를 잊으셨나요?</div>
+                    <div className="register" onClick={e=>history.push("/legal-advice/register")}>회원가입하기</div>
+                    <div className="forgot-password" onClick={e=>history.push("/legal-advice/change-password")}><span>비밀번호</span>를 잊으셨나요?</div>
                 </div>
 
                 <div className="sub2">
-                    <div>전문가 이신가요? &nbsp;&nbsp;<span>전문가 회원가입하기</span></div>
+                    <div>전문가 이신가요? &nbsp;&nbsp;<span onClick={e=>history.push("/legal-advice/register?type='expert'")}>전문가 회원가입하기</span></div>
                 </div>
             </div>
             <Footer />
