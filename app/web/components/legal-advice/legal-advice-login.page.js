@@ -82,7 +82,7 @@ export default class extends React.Component {
                 </div>
 
                 <div className="sub2">
-                    <div>전문가 이신가요? &nbsp;&nbsp;<span onClick={e=>history.push({pathname:"/legal-advice/register", search:`?type="expert"`})}>전문가 회원가입하기</span></div>
+                    <div>전문가 이신가요? &nbsp;&nbsp;<span onClick={e=>history.push({pathname:"/legal-advice/register", search:`?type=expert`})}>전문가 회원가입하기</span></div>
                 </div>
             </div>
             <Footer />
