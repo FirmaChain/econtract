@@ -37,7 +37,7 @@ export default class extends React.Component {
         if(!!params.type && params.type == "expert") {
             _ = {
                 type:1,
-                step:1,
+                step:0,
                 email:"",
                 password:"",
                 phone_number:"",
