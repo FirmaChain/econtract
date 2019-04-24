@@ -48,9 +48,11 @@ export default class extends React.Component {
     
     render() {
         return <div className="legal-advice-change-password legal-advice-maintain">
-            <div className="container">
+            <div className="header">
+                <div className="logo-img" onClick={e=>history.push("/legal-advice/")}><img src="/static/duite_review.png"/></div>
                 <div className="title">비밀번호 변경</div>
-
+            </div>
+            <div className="container">
                 <div className="text-place">
                     <div className="title">기존 이메일</div>
                     <div className="text-box">

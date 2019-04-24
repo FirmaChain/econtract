@@ -5579,8 +5579,40 @@ div.checkbox3-comp{
 }
 
 .legal-advice-maintain {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+
+    >.header {
+        display: flex;
+        flex-direction: row;
+        align-items:center;
+
+        width:100%;
+        padding:20px 10px;
+        margin-bottom:30px;
+        border-bottom:1px solid $lightgray;
+
+        >.logo-img {
+            margin-left:10px;
+            >img {
+                width:50px;
+                cursor:pointer;
+            }
+        }
+
+        >.title {
+            flex:1;
+            font-size: $font4;
+            font-weight: bold;
+            color:$onlyblack;
+            text-align: center;
+            margin-right: 70px;
+        }
+    }
 
     >.container {
+        flex:1;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -5589,8 +5621,8 @@ div.checkbox3-comp{
         margin:auto;
         max-width:800px;
         padding:0px 5px;
-        min-height:calc(100% - 60px);
-        overflow: auto;
+        //min-height:calc(100% - 60px);
+        //overflow: auto;
 
     }
 }
@@ -5613,7 +5645,7 @@ div.checkbox3-comp{
 
         >.text-place {
             width:100%;
-            margin:10px 0;
+            margin:20px 0;
             text-align: left;
 
             >.title {
@@ -5623,8 +5655,10 @@ div.checkbox3-comp{
             }
 
             >.text-box {
+                display: flex;
 
                 >input {
+                    flex:1;
                     padding:20px 15px;
                     font-size: $font2;
                     width: 100%;
@@ -5715,18 +5749,10 @@ div.checkbox3-comp{
         width:100%;
         text-align: center;
 
-        >.title {
-            font-size: $font4;
-            font-weight: bold;
-            color:$onlyblack;
-            margin-top:30px;
-            margin-bottom:60px;
-        }
-
 
         >.text-place {
             width:100%;
-            margin:10px 0;
+            margin:20px 0;
             text-align: left;
 
             >.title {
@@ -5736,8 +5762,10 @@ div.checkbox3-comp{
             }
 
             >.text-box {
+                display: flex;
 
                 >input {
+                    flex:1;
                     padding:20px 15px;
                     font-size: $font2;
                     width: 100%;
@@ -5775,6 +5803,149 @@ div.checkbox3-comp{
             margin-top:20px;
         }
 
+    }
+}
+
+.legal-advice-register {
+
+    .container {
+        max-width:300px;
+        width:100%;
+        text-align: center;
+
+        >.text-place {
+            width:100%;
+            text-align: left;
+            margin-top:20px;
+
+            >.title {
+                font-size: $font1;
+                color:$onlyblack;
+                margin-bottom:5px;
+            }
+
+            >.text-box {
+                display: flex;
+                justify-content: center;
+
+                >input {
+                    flex:1;
+                    padding:20px 15px;
+                    font-size: $font2;
+                    border-radius: 5px;
+                    color: $onlyblack;
+                    background-color: $lightgray;
+                    border-style: none;
+                    margin-bottom: 20px;
+
+                    &:disabled {
+                        background-color: $middlegray;
+                    }
+                }
+
+                >.right-button {
+                    margin-left: 10px;
+                    padding:10px;
+                    display: inline-block;
+                    background-color: $legalprimary;
+                    border-radius:5px;
+                    font-size: $font3;
+                    font-weight:bold;
+                    cursor: pointer;
+                    padding:20px 20px;
+                    text-align: center;
+                    color:white;
+                    box-sizing: border-box;
+                    height: fit-content;
+                }
+            }
+        }
+
+        .common-button {
+            width:100%;
+            display: inline-block;
+            background-color: $legalprimary;
+            border-radius:5px;
+            font-size: $font3;
+            font-weight:bold;
+            cursor: pointer;
+            padding:20px 20px;
+            text-align: center;
+            color:white;
+            box-sizing: border-box;
+        }
+
+        >.search-button {
+        }
+
+        >.register-button {
+            margin-top:25px;
+        }
+
+        >.next-button {
+            margin-bottom:50px;
+        }
+
+        .deactive {
+            background-color:$middlegray !important;
+            cursor:initial !important;
+        }
+
+        >.sub {
+            font-size: $font1;
+            color:$gray;
+            margin-top:20px;
+            margin-bottom:50px;
+
+            >span {
+                color:$legalprimary;
+                cursor:pointer;
+
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+        }
+    }
+}
+
+.legal-advice-register-user {
+
+}
+
+
+.legal-advice-register-expert {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+    >.container {
+        >.title {
+            width:100%;
+            text-align: left;
+            font-size:$font3;
+            color:$onlyblack;
+            font-weight: bold;
+        }
+
+        >.subject {
+            margin-top:20px;
+            margin-bottom:40px;
+            color:$gray;
+            font-size: $font3;
+        }
+
+        >.enable-sub {
+            color:$legalprimary;
+            font-weight: bold;
+        }
+
+        >.go-back {
+            margin-top:40px;
+            color:$legalprimary;
+            font-size: $font2;
+            cursor:pointer;
+        }
     }
 }
 
