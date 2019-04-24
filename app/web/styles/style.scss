@@ -5827,6 +5827,7 @@ div.checkbox3-comp{
             >.text-box {
                 display: flex;
                 justify-content: center;
+                position: relative;
 
                 >input {
                     flex:1;
@@ -5840,6 +5841,35 @@ div.checkbox3-comp{
 
                     &:disabled {
                         background-color: $middlegray;
+                    }
+                }
+
+                >textarea {
+                    flex:1;
+                    padding:20px 15px;
+                    font-size: $font2;
+                    border-radius: 5px;
+                    color: $onlyblack;
+                    background-color: $lightgray;
+                    border-style: none;
+                    margin-bottom: 20px;
+                    resize:none;
+                    outline:none;
+
+                    &:disabled {
+                        background-color: $middlegray;
+                    }
+                }
+
+                >.text-counter {
+                    position:absolute;
+                    bottom:35px;
+                    right:15px;
+                    font-size:$font0;
+                    color:$onlyblack;
+
+                    >span {
+                        color:$gray;
                     }
                 }
 
@@ -5858,6 +5888,49 @@ div.checkbox3-comp{
                     box-sizing: border-box;
                     height: fit-content;
                 }
+            }
+        }
+
+        >.profile-pic {
+            width:100%;
+            text-align: left;
+            margin-top:20px;
+            
+            >.title {
+                font-size: $font1;
+                color:$onlyblack;
+                margin-bottom:5px;
+            }
+
+            >.upload-image {
+                display: flex;
+                flex-direction: row;
+                align-items:flex-start;
+                
+                >img {
+                    width:100px;
+                    height:100px;
+                    background-color:$lightgray;
+                    border-radius:5px;
+                    border:none;
+                }
+
+                >.blue-but {
+                    margin-left: 20px;
+                    padding:10px;
+                    display: inline-block;
+                    background-color: $legalprimary;
+                    border-radius:5px;
+                    font-size: $font3;
+                    font-weight:bold;
+                    cursor: pointer;
+                    padding:20px 20px;
+                    text-align: center;
+                    color:white;
+                    box-sizing: border-box;
+                    height: fit-content;
+                }
+
             }
         }
 
@@ -5920,6 +5993,29 @@ div.checkbox3-comp{
     justify-content: center;
 
     >.container {
+
+        >.expert-title {
+            margin-bottom:40px;
+
+            >.title {
+                font-size:$font3;
+                color:$onlyblack;
+                font-weight: bold;
+                float:left;
+            }
+
+            >.add-expert {
+                font-size:$font1;
+                color:$legalprimary;
+                float:right;
+                cursor:pointer;
+            }
+        }
+
+        >.add-list {
+            
+        }
+
         >.title {
             width:100%;
             text-align: left;
