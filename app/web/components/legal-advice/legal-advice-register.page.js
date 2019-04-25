@@ -16,6 +16,10 @@ import {
     legal_register,
 } from "../../../common/legal_actions"
 
+import {
+    request_phone_verification_code,
+} from "../../../common/actions"
+
 import Footer from "../footer.comp"
 import CheckBox3 from "../checkbox3"
 
@@ -28,6 +32,7 @@ let mapStateToProps = (state)=>{
 let mapDispatchToProps = {
     fetch_user_info,
     legal_register,
+    request_phone_verification_code,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -197,10 +202,10 @@ export default class extends React.Component {
     }
 
     onRegisterPersonal = async () => {
-        if(this.state.email)
+        if(this.state.email == "")
             return alert("이메일을 입력해주세요.")
 
-        if(this.state.password)
+        if(this.state.password == "")
             return alert("비밀번호를 입력해주세요.")
 
         if(this.state.validate_code == "")
@@ -222,13 +227,13 @@ export default class extends React.Component {
         let resp = await this.props.legal_register(this.state.email, this.state.password, this.state.phone_number, this.state.validate_code);
         if(resp.code == 1) {
             alert("가입에 성공하였습니다.")
+            return history.replace("/legal-advice/login")
         } else if(resp.code == -7) {
             alert("인증 번호가 틀립니다.")
         } else {
             alert("가입에 실패하였습니다.")
         }
         await window.hideIndicator();
-        console.log(result);
     }
 
     render_expert_step_0() {
@@ -526,7 +531,7 @@ export default class extends React.Component {
                         <input type="text" 
                             placeholder="010-1234-1234"
                             value={this.state.phone_number} onChange={this.onChangePhoneForm.bind(this, "phone_number")}/>
-                        <div className={`right-button ${phone_send_active ? "" : "deactive"}`}>전송</div>
+                        <div className={`right-button ${phone_send_active ? "" : "deactive"}`} onClick={this.onClickRequestPhone}>전송</div>
                     </div>
                 </div>
                 <div className="text-place">
