@@ -59,7 +59,7 @@ export default class extends React.Component {
         if(this.state.password == "")
             return alert("비밀번호를 입력해주세요.")
 
-        let resp = await this.props.login_account(this.state.email.trim(), this.state.password);
+        let resp = await this.props.login_account(this.state.email.trim(), this.state.password, this.state.continue_login);
         if(resp.code == 1) {
             return history.replace("/legal-advice/home")
         } else {
