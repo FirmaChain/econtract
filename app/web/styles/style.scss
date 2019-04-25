@@ -5620,7 +5620,7 @@ div.checkbox3-comp{
         width:100%;
         margin:auto;
         max-width:800px;
-        padding:0px 5px;
+        padding:0 10px;
         //min-height:calc(100% - 60px);
         //overflow: auto;
 
@@ -5630,9 +5630,10 @@ div.checkbox3-comp{
 .legal-advice-login {
 
     >.container {
-        max-width:300px;
+        max-width:400px;
         width:100%;
         text-align: center;
+        padding:0 10px;
 
         >.logo {
             margin-top:50px;
@@ -5745,9 +5746,10 @@ div.checkbox3-comp{
 .legal-advice-change-password {
 
     >.container {
-        max-width:300px;
+        max-width:400px;
         width:100%;
         text-align: center;
+        padding:0 10px;
 
 
         >.text-place {
@@ -5809,9 +5811,10 @@ div.checkbox3-comp{
 .legal-advice-register {
 
     .container {
-        max-width:300px;
+        max-width:400px;
         width:100%;
         text-align: center;
+        padding:0 10px;
 
         >.text-place {
             width:100%;
@@ -5993,8 +5996,10 @@ div.checkbox3-comp{
     justify-content: center;
 
     >.container {
+        padding:0 10px;
 
         >.expert-title {
+            margin-top:20px;
             margin-bottom:40px;
 
             >.title {
@@ -6013,7 +6018,181 @@ div.checkbox3-comp{
         }
 
         >.add-list {
-            
+
+            >.item {
+                display: flex;
+                flex-direction: column;
+                border: 1px solid $middlegray;
+                border-radius: 5px;
+                padding:15px;
+                margin-bottom:20px;
+
+                >.row {
+                    display: flex;
+                    flex-direction: column;
+
+                    >.box {
+                        display: flex;
+                        flex-direction: column;
+                        margin-bottom:10px;
+                        margin-top:10px;
+                        width:100%;
+
+                        &:last-child {
+                            margin-right:0;
+                        }
+
+                        >.title {
+                            font-size: $font1;
+                            color:$onlyblack;
+                            margin-bottom:5px;
+                            text-align: left;
+                        }
+
+                        .add-button {
+                            width:100%;
+                            display: inline-block;
+                            background-color: $legalprimary;
+                            border-radius:5px;
+                            font-size: $font3;
+                            font-weight:bold;
+                            cursor: pointer;
+                            padding:20px 20px;
+                            text-align: center;
+                            color:white;
+                            box-sizing: border-box;
+
+                            margin-top:20px;
+                        }
+
+                        >.desc {
+                            flex:1;
+                            display: flex;
+                            justify-content: center;
+                            position: relative;
+                            align-items: center;
+                            color:$onlyblack;
+                            font-size: $font1;
+
+                            .text-input {
+                                flex:1;
+                                padding:20px 15px;
+                                font-size: $font2;
+                                border-radius: 5px;
+                                color: $onlyblack;
+                                background-color: $lightgray;
+                                border-style: none;
+                                box-sizing:border-box;
+                                width:0;
+
+                                &:disabled {
+                                    background-color: $middlegray;
+                                }
+
+                                &:last-child {
+                                    margin-left: 10px;
+                                }
+
+                                &:first-child {
+                                    margin-left: 0 !important;
+                                }
+                            }
+
+                            .search-button {
+                                display: inline-block;
+                                background-color: $legalprimary;
+                                border-radius:5px;
+                                font-size: $font3;
+                                font-weight:bold;
+                                cursor: pointer;
+                                padding:20px 20px;
+                                text-align: center;
+                                color:white;
+                                box-sizing: border-box;
+                                margin-left:10px;
+                            }
+
+                            .legal-select {
+                                width:100%;
+
+                                .control {
+                                    border: none !important;
+                                    padding:10px 15px !important;
+                                    font-size: $font2 !important;
+                                    border-radius: 5px !important;
+                                    color: $onlyblack !important;
+                                    background-color: $lightgray !important;
+                                    height:39px;
+                                    cursor: pointer;
+                                    width:100% !important;
+                                    padding: 10px 15px;
+
+                                    &:disabled {
+                                        background-color: $middlegray !important;
+                                    }
+                                }
+                                .item {
+                                    >div {
+                                        font-size: $font1 !important;
+                                    }
+                                }
+                            }
+
+                            .half {
+                                flex:1;
+                                margin-right:10px;
+
+                                &:last-child {
+                                   margin-right:0; 
+                                }
+                            }
+                        }
+
+                    }
+
+                    >.delete-advisory {
+                        color:$gray;
+                        font-weight: bold;
+                        cursor:pointer;
+                        margin-top:20px;
+
+                        &:hover {
+                            text-decoration: underline;
+                        }
+                    }
+
+                    >.career-item {
+                        display: flex;
+                        flex-direction: row;
+                        align-items:center;
+
+                        margin-top:10px;
+                        margin-left: 5px;
+                        margin-right: 5px;
+                        word-break: break-all;
+
+                        >.text {
+                            flex:1;
+                            text-align: left;
+                            font-size:$font2;
+                        }
+
+                        >.delete-but {
+                            font-size:$font2;
+                            margin-left:10px;
+                            cursor:pointer;
+                            color:$gray;
+                            font-weight: bold;
+                        }
+                    }
+                }
+                
+
+                .flex1 {
+                    flex:1;
+                }
+
+            }
         }
 
         >.title {

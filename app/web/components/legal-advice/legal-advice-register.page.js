@@ -181,6 +181,10 @@ export default class extends React.Component {
         })
     }
 
+    onRegister = async () => {
+
+    }
+
     render_expert_step_0() {
         let phone_send_active = true;
         if(this.state.phone_number == null || this.state.phone_number.length != 13 || !/^0\d{2}-\d{4}-\d{4}$/.test(this.state.phone_number))
@@ -318,7 +322,7 @@ export default class extends React.Component {
 
                     <div className="expert-title">
                         <div className="title">전문 분야</div>
-                        <div className="add-expert">전문 분야 추가</div>
+                        <div className="add-expert" onClick={this.onClickAddAdvisory}>전문 분야 추가</div>
                     </div>
 
                     <div className="add-list">
@@ -328,7 +332,7 @@ export default class extends React.Component {
                                     <div className="box">
                                         <div className="title">{translate("field")}</div>
                                         <div className="desc">
-                                            <Dropdown className="common-select"
+                                            <Dropdown className="legal-select"
                                                 controlClassName="control"
                                                 menuClassName="item"
                                                 placeholder={translate("advisory_field_select")}
@@ -341,23 +345,18 @@ export default class extends React.Component {
                                                 }}
                                                 value={this.state.advisory_list[k].field_label} />
                                         </div>
-                                        <div className="button">
-                                            {this.state.advisory_list.length > 1 ? <div className="gray-but" onClick={this.onClickRemoveAdvisory.bind(this, k)}>{translate("delete")}</div> : null}
-                                        </div>
                                     </div>
                                 </div>
                                 <div className="row">
                                     <div className="box">
                                         <div className="title">{translate("certificate_pic")}</div>
                                         <div className="desc">
-                                            <input className="common-textbox" 
+                                            <input className="text-input" 
                                                 type="text"
                                                 placeholder={translate("no_certificate")}
                                                 value={this.state.advisory_list[k].certificate_pic_name} disabled />
                                             <input ref={`ceriticate_${k}`} className="hidden-file" type="file" accept="image/x-png,image/jpeg" onChange={this.onClickUploadCertificatePic.bind(this, k)}/>
-                                        </div>
-                                        <div className="button">
-                                            <div className="blue-but" onClick={()=>this.refs[`ceriticate_${k}`].click()}>{translate("upload")}</div>
+                                            <div className="search-button" onClick={()=>this.refs[`ceriticate_${k}`].click()}>{translate("upload")}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -365,7 +364,7 @@ export default class extends React.Component {
                                     <div className="box">
                                         <div className="title">{translate("career")}</div>
                                         <div className="desc">
-                                            <input className="common-textbox half" type="number"
+                                            <input className="text-input" type="number"
                                                 value={this.state.advisory_list[k].career_start_year || ""}
                                                 onChange={e=>{
                                                     let n = [...this.state.advisory_list]
@@ -373,7 +372,7 @@ export default class extends React.Component {
                                                     this.setState({advisory_list:n})
                                                 }}
                                                 placeholder={translate("begin_year")}/>
-                                            <input className="common-textbox half" type="number"
+                                            <input className="text-input" type="number"
                                                 value={this.state.advisory_list[k].career_end_year || ""}
                                                 onChange={e=>{
                                                     let n = [...this.state.advisory_list]
@@ -382,21 +381,11 @@ export default class extends React.Component {
                                                 }}
                                                 placeholder={translate("end_year")}/>
                                         </div>
-                                        <br/>
-                                        <div className="button">
-                                        </div>
                                     </div>
                                     <div className="box">
                                         <div className="title"></div>
                                         <div className="desc">
-                                            {translate("if_now_keep_going_you_dont_input")}<br/>
-                                            {translate("please_input_past_career_first")}
-                                        </div>
-                                    </div>
-                                    <div className="box">
-                                        <div className="title"></div>
-                                        <div className="desc">
-                                            <input className="common-textbox" type="text"
+                                            <input className="text-input" type="text"
                                                 value={this.state.advisory_list[k].career_text || ""}
                                                 onChange={e=>{
                                                     let n = [...this.state.advisory_list]
@@ -405,24 +394,33 @@ export default class extends React.Component {
                                                 }}
                                                 placeholder={translate("history_example")}/>
                                         </div>
-                                        <div className="button">
-                                            <div className="blue-but" onClick={this.onClickAddCareer.bind(this, k)}>{translate("career_add")}</div>
-                                        </div>
+                                        <div className="add-button" onClick={this.onClickAddCareer.bind(this, k)}>{translate("career_add")}</div>
                                     </div>
                                 </div>
                                 <div className="row">
                                     {this.state.advisory_list[k].career.map((e, career_index) => {
                                         return <div className="career-item" key={career_index}>
                                             <div className="text">{e.start_year} ~ {e.end_year || translate("now")} | {e.text}</div>
-                                            <div className="delete-but" onClick={this.onClickRemoveCareer.bind(this, k, career_index)}><i className="far fa-times"></i></div>
+                                            <div className="delete-but" onClick={this.onClickRemoveCareer.bind(this, k, career_index)}>{translate("delete")}</div>
                                         </div>
                                     })}
+                                </div>
+
+                                <div className="row">
+                                    {this.state.advisory_list.length > 1 ? <div className="delete-advisory" onClick={this.onClickRemoveAdvisory.bind(this, k)}>{translate("expert_part_delete")}</div> : null}
                                 </div>
                             </div>
                         }) : null}
                     </div>
 
-                    <div className="common-button next-button deactive" onClick={e=>{this.setState({step:1})}}>다음</div>
+                    <div className="common-button next-button deactive" onClick={this.onRegister}>회원 가입 신청</div>
+                    <div className="sub">
+                        회원가입 버튼을 클릭할 경우, 본 서비스의 <span>이용약관</span> 및 <br/>
+                        <span>개인정보 취급방침</span>에 동의하신걸로 간주합니다 <br/>
+                        <br/>
+                        전문가의 경우, 승인 후에 계정을 사용하실 수 있습니다 <br/>
+                        승인 알림은 입력하신 이메일로 알려드립니다
+                    </div>
                 </div>
                 <div className="container">
                 </div>
