@@ -7,7 +7,8 @@ import translate from "../../../common/translate"
 import {
 } from "../../../common/crypto_test"
 import {
-    fetch_user_info
+    get_my_info,
+    login_account
 } from "../../../common/legal_actions"
 
 import Footer from "../footer.comp"
@@ -20,7 +21,8 @@ let mapStateToProps = (state)=>{
 }
 
 let mapDispatchToProps = {
-    fetch_user_info
+    get_my_info,
+    login_account
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -37,14 +39,31 @@ export default class extends React.Component {
 	componentDidMount(){
         (async()=>{
             await window.showIndicator()
-            await this.props.fetch_user_info()
+            let resp = await this.props.get_my_info()
             await window.hideIndicator()
+            if(resp.code == 1)
+                return history.replace("/legal-advice/home")
         })()
     }
 
     componentWillReceiveProps(props){
         if(!!props.user_info){
-            //return history.replace("/legal-advice/home")
+            return history.replace("/legal-advice/home")
+        }
+    }
+
+    onLogin = async () => {
+        if(this.state.email == "")
+            return alert("이메일을 입력해주세요.")
+
+        if(this.state.password == "")
+            return alert("비밀번호를 입력해주세요.")
+
+        let resp = await this.props.login_account(this.state.email.trim(), this.state.password);
+        if(resp.code == 1) {
+            return history.replace("/legal-advice/home")
+        } else {
+            return alert("로그인에 실패하였습니다.")
         }
     }
     
@@ -74,7 +93,7 @@ export default class extends React.Component {
                         text="로그인 유지"/>
                 </div>
 
-                <div className="login-button">로그인</div>
+                <div className="login-button" onClick={this.onLogin}>로그인</div>
 
                 <div className="sub">
                     <div className="register" onClick={e=>history.push("/legal-advice/register")}>회원가입하기</div>

@@ -1,6 +1,6 @@
 import {
-    SUCCESS_LOGIN,
-    RELOAD_USERINFO
+    LEGAL_SUCCESS_LOGIN,
+    LEGAL_RELOAD_USERINFO
 } from '../actions';
 
 let _ = {
@@ -9,12 +9,12 @@ let _ = {
 
 export default function (state=_, action){
         switch (action.type) {
-            case SUCCESS_LOGIN:
+            case LEGAL_SUCCESS_LOGIN:
                 return {
                     ...state,
                     login: action.payload
                 }
-            case RELOAD_USERINFO:
+            case LEGAL_RELOAD_USERINFO:
                 return {
                     ...state,
                     info: action.payload

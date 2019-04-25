@@ -727,6 +727,25 @@ export async function api_legal_register(email,password,phone_number,verificatio
         session:window.getCookie("session")
     });
 }
+export async function api_legal_login(email,password){
+    let __data = new FormData();
+
+    if(email != null) __data.append('email', email);
+	if(password != null) __data.append('password', password)
+
+    return await post("/legal_login", __data,{
+        session:window.getCookie("session")
+    });
+}
+export async function api_legal_get_my_info(){
+    let __data = new FormData();
+
+    
+
+    return await post("/legal_get_my_info", __data,{
+        session:window.getCookie("session")
+    });
+}
 export async function api_get_subscribe_plan(){
     let __data = new FormData();
 
