@@ -1,10 +1,10 @@
 import {
     LEGAL_SUCCESS_LOGIN,
     LEGAL_RELOAD_USERINFO
-} from '../actions';
+} from '../legal_actions';
 
 let _ = {
-    info:null
+    info:false
 }
 
 export default function (state=_, action){

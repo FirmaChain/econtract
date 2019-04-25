@@ -4,7 +4,7 @@ import {
 } from '../actions';
 
 let _ = {
-    info:null
+    info:false
 }
 
 export default function (state=_, action){

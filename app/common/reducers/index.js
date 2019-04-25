@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
 import user from "./user"
+import legal_user from "./legal_user"
 import document from "./document"
 import contract from "./contract"
 import group from "./group"
@@ -14,6 +15,7 @@ export default function createStore(reducers){
         group,
         template,
         approval,
+        legal_user,
         ...reducers
     })
 }

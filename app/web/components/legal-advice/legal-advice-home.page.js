@@ -16,7 +16,7 @@ import CheckBox3 from "../checkbox3"
 
 let mapStateToProps = (state)=>{
 	return {
-        user_info: state.user.info
+        user_info: state.legal_user.info
 	}
 }
 
@@ -52,6 +52,7 @@ export default class extends React.Component {
 
     
     render() {
+        console.log("this.props.user_info", this.props.user_info)
         return <div className="legal-advice-home legal-advice-maintain">
             홈페이지
         </div>

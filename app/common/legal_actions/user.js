@@ -12,13 +12,22 @@ export function get_my_info() {
 	return async function(dispatch) {
 
 		let result = await api_legal_get_my_info();
-		
+
+        if(result.code == 1) {
+            dispatch({
+                type:LEGAL_RELOAD_USERINFO,
+                payload:result.payload
+            })
+
+            return result;
+        }
+
         dispatch({
             type:LEGAL_RELOAD_USERINFO,
-            payload:result.payload
+            payload:false
         })
 
-        return result;
+        return false;
 	}
 }
 

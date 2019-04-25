@@ -16,7 +16,7 @@ import CheckBox3 from "../checkbox3"
 
 let mapStateToProps = (state)=>{
 	return {
-        user_info: state.user.info
+        user_info: state.legal_user.info
 	}
 }
 
