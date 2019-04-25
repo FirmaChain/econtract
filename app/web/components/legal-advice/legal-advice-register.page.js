@@ -12,7 +12,8 @@ import {
 } from "../../../common/crypto_test"
 
 import {
-    fetch_user_info
+    fetch_user_info,
+    legal_register,
 } from "../../../common/legal_actions"
 
 import Footer from "../footer.comp"
@@ -25,7 +26,8 @@ let mapStateToProps = (state)=>{
 }
 
 let mapDispatchToProps = {
-    fetch_user_info
+    fetch_user_info,
+    legal_register,
 }
 
 @connect(mapStateToProps, mapDispatchToProps )
@@ -166,9 +168,22 @@ export default class extends React.Component {
     }
 
 
-    onClickRequestPhone = async () => {
+    onClickRequestPhone = async ()=>{
         if(this.state.phone_number == null || this.state.phone_number.length != 13 || !/^0\d{2}-\d{4}-\d{4}$/.test(this.state.phone_number))
             return alert(translate("please_input_correct_phone"))
+            
+        await window.showIndicator();
+        let resp = await this.props.request_phone_verification_code(this.state.phone_number)
+        if(resp.code == 1 && resp.payload == true){
+            alert(translate("code_was_sent"))
+            this.setState({
+                phone_verification_code_sent:true,
+                verificated_phone:false
+            })
+        }else{
+            alert(translate("send_code_error_occured"))
+        }
+        await window.hideIndicator();
     }
 
     onChangePhoneForm = async (name, e) => {
@@ -181,14 +196,49 @@ export default class extends React.Component {
         })
     }
 
-    onRegister = async () => {
+    onRegisterPersonal = async () => {
+        if(this.state.email)
+            return alert("이메일을 입력해주세요.")
 
+        if(this.state.password)
+            return alert("비밀번호를 입력해주세요.")
+
+        if(this.state.validate_code == "")
+            return alert("인증 번호를 입력해주세요")
+
+        if(this.state.phone_number == "")
+            return alert("핸드폰 번호를 입력해주세요")
+
+        if(this.state.password.length < 8)
+            return alert("비밀번호는 8자리 이상이여야 합니다.")
+
+        if(!window.email_regex.test(this.state.email))
+            return alert("이메일이 형식에 맞지 않습니다. 다시 입력홰주세요.")
+
+        if(this.state.phone_number == null || this.state.phone_number.length != 13 || !/^0\d{2}-\d{4}-\d{4}$/.test(this.state.phone_number))
+            return alert(translate("please_input_correct_phone"));
+
+        await window.showIndicator();
+        let resp = await this.props.legal_register(this.state.email, this.state.password, this.state.phone_number, this.state.validate_code);
+        if(resp.code == 1) {
+            alert("가입에 성공하였습니다.")
+        } else if(resp.code == -7) {
+            alert("인증 번호가 틀립니다.")
+        } else {
+            alert("가입에 실패하였습니다.")
+        }
+        await window.hideIndicator();
+        console.log(result);
     }
 
     render_expert_step_0() {
         let phone_send_active = true;
         if(this.state.phone_number == null || this.state.phone_number.length != 13 || !/^0\d{2}-\d{4}-\d{4}$/.test(this.state.phone_number))
             phone_send_active = false;
+
+        let next = false;
+        if(this.state.email != "" && this.state.password != "" && this.state.phone_number != "" && this.state.validate_code != "")
+            next = true;
 
         return <div className="legal-advice-register legal-advice-maintain">
             <div className="header">
@@ -265,7 +315,7 @@ export default class extends React.Component {
 
                     <div className="sub">전문사무소가 있을 경우, 사무실 주소를 입력해주세요</div>
 
-                    <div className="common-button next-button deactive" onClick={e=>{this.setState({step:1})}}>다음</div>
+                    <div className={`common-button next-button ${next?"":"deactive"}`} onClick={e=>{this.setState({step:1})}}>다음</div>
                 </div>
                 <div className="container" style={{textAlign: 'right' }}>
                     <div className="subject">다음 단계 : 전문가 정보, 전문 분야</div>
@@ -443,6 +493,10 @@ export default class extends React.Component {
         if(this.state.phone_number == null || this.state.phone_number.length != 13 || !/^0\d{2}-\d{4}-\d{4}$/.test(this.state.phone_number))
             phone_send_active = false;
 
+        let next = false;
+        if(this.state.email != "" && this.state.password != "" && this.state.phone_number != "" && this.state.validate_code != "")
+            next = true;
+
         return <div className="legal-advice-register legal-advice-maintain">
             <div className="header">
                 <div className="logo-img" onClick={e=>history.push("/legal-advice/")}><img src="/static/duite_review.png"/></div>
@@ -483,7 +537,7 @@ export default class extends React.Component {
                     </div>
                 </div>
 
-                <div className="common-button register-button deactive">회원가입</div>
+                <div className={`common-button register-button ${next?"":"deactive"}`} onClick={this.onRegisterPersonal}>회원가입</div>
 
                 <div className="sub">
                     회원가입 버튼을 클릭할 경우, 본 서비스의 <span>이용약관</span> 및 

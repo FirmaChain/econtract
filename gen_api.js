@@ -715,6 +715,18 @@ export async function api_remove_corp_member(account_id){
         session:window.getCookie("session")
     });
 }
+export async function api_legal_register(email,password,phone_number,verification_number){
+    let __data = new FormData();
+
+    if(email != null) __data.append('email', email);
+	if(password != null) __data.append('password', password);
+	if(phone_number != null) __data.append('phone_number', phone_number);
+	if(verification_number != null) __data.append('verification_number', verification_number)
+
+    return await post("/legal_register", __data,{
+        session:window.getCookie("session")
+    });
+}
 export async function api_get_subscribe_plan(){
     let __data = new FormData();
 
