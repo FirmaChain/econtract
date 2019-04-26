@@ -163,7 +163,7 @@ export default class extends React.Component {
 
     keyPress = async (e) => {
         if(e.keyCode == 13){
-            this.onClickLogin()
+            await this.onClickLogin()
         }
     }
 

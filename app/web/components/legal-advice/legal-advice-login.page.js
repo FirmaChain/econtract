@@ -66,6 +66,12 @@ export default class extends React.Component {
             return alert("로그인에 실패하였습니다.")
         }
     }
+
+    keyPress = async (e) => {
+        if(e.keyCode == 13){
+            await this.onLogin()
+        }
+    }
     
     render() {
         return <div className="legal-advice-login legal-advice-maintain">
@@ -75,14 +81,14 @@ export default class extends React.Component {
                 <div className="text-place">
                     <div className="title">이메일</div>
                     <div className="text-box">
-                        <input id="email" type="email" value={this.state.email} onChange={(e)=>{this.setState({email:e.target.value})}}/>
+                        <input id="email" type="email" value={this.state.email} onChange={(e)=>{this.setState({email:e.target.value})}} onKeyDown={this.keyPress} />
                     </div>
                 </div>
                 <br/>
                 <div className="text-place">
                     <div className="title">비밀번호</div>
                     <div className="text-box">
-                        <input id="password" type="password" value={this.state.password} onChange={(e)=>{this.setState({password:e.target.value})}}/>
+                        <input id="password" type="password" value={this.state.password} onChange={(e)=>{this.setState({password:e.target.value})}} onKeyDown={this.keyPress} />
                     </div>
                 </div>
 

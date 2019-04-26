@@ -39,8 +39,10 @@ export default class extends React.Component {
 	componentDidMount(){
         (async()=>{
             await window.showIndicator()
-            await this.props.get_my_info()
+            let user = await this.props.get_my_info()
             await window.hideIndicator()
+            if(user === false)
+                return history.replace("/legal-advice/login")
         })()
     }
 
