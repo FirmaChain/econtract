@@ -3,6 +3,7 @@ import ReactDOM from "react-dom"
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom'
 import history from '../history'
+import queryString from "query-string"
 import translate from "../../common/translate"
 import {
     getNewBrowserKey,
@@ -32,21 +33,30 @@ export default class extends React.Component {
 	constructor(){
 		super();
 		this.state={
-            go_to_login:false
+            go_to_login:false,
+            redirectUrl:"",
         };
 	}
 
 	componentDidMount(){
         (async()=>{
             await window.showIndicator()
-            await this.props.fetch_user_info()
+            let user = await this.props.fetch_user_info()
+            if(user == -2) {
+                window.logout()
+            } else if(user == -3) {
+                window.logout()
+            } else if(!!user) {
+                return history.replace("/e-contract/home")
+            }
+            let redirectUrl = queryString.parse(this.props.location.search).redirect || ""
+            this.setState({redirectUrl})
             await window.hideIndicator()
         })()
     }
 
     componentWillReceiveProps(props){
         if(!!props.user_info){
-            return history.replace("/e-contract/home")
         }
     }
     
@@ -90,7 +100,9 @@ export default class extends React.Component {
                         let resp = await this.props.login_2fa_otp_auth(this.state.email || "", this.state.password || "", token.trim());
                         if(resp.code == 1 && resp.eems) {
                             await this.props.fetch_user_info()
-                            return history.replace("/e-contract/home")
+                            if(this.state.redirectUrl != "")
+                                return history.replace(this.state.redirectUrl);
+                            return history.replace("/e-contract/home");
                         } else if(resp.code == -5) {
                             alert(translate("input_wrong_otp_token"))
                         } else {
@@ -101,7 +113,9 @@ export default class extends React.Component {
             } else if(resp.code == 1 && resp.eems){
                 //localStorage.setItem("browser_key_virgin", 0);
                 await this.props.fetch_user_info()
-                history.replace("/e-contract/home")
+                if(this.state.redirectUrl != "")
+                    return history.replace(this.state.redirectUrl);
+                return history.replace("/e-contract/home");
             } else{
                 alert("login error")
             }

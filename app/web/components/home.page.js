@@ -41,6 +41,7 @@ export default class extends React.Component {
 	}
 
     componentDidMount(){
+        console.log(this.props.user_info)
         if(!this.props.user_info){
             (async()=>{
                 await window.showIndicator()
@@ -52,6 +53,8 @@ export default class extends React.Component {
                 } else if(user == -3) {
                     window.logout()
                     alert(translate("no_group_account"))
+                    history.replace("/e-contract/login")
+                } else if(user == false) {
                     history.replace("/e-contract/login")
                 }
                 await window.hideIndicator()

@@ -113,10 +113,15 @@ export default class extends React.Component {
                 select_tab:this.props.location.state.select_tab
             })
         }
+        console.log("contract-info", resp)
 
         if(!resp) {
             alert(translate("contract_is_encrypt_so_dont_enter"))
-            return history.goBack()
+            return history.replace("/e-contract/home")
+        }
+
+        if(resp.code == -3 || !resp.payload) {
+            return history.push({pathname:"/e-contract/login", search:`?redirect=/e-contract/contract-info/${contract_id}`})
         }
 
         if(resp.payload.contract) {
@@ -166,7 +171,7 @@ export default class extends React.Component {
                 cur_log_page:Number(params.log_page) || 0,
                 groups,
             })
-            console.log(resp.payload)
+            console.log("payload", resp.payload)
         } else {
             alert(translate("not_exist_contract"))
             return history.goBack()

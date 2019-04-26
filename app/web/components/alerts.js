@@ -1848,8 +1848,9 @@ setInterval(()=>{
         let left_time = day - ((Date.now() - t) / 1000);
 
         if(left_time < 0){
-            window.eraseCookie(cookie);
-            window.eraseCookie(`${cookie}_update`);
+            window.logout();
+            //window.eraseCookie(cookie);
+            //window.eraseCookie(`${cookie}_update`);
             
             location.reload(true)
         }

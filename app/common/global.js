@@ -286,7 +286,17 @@ window.getCookie = function(name) {
 	return null;
 }
 window.eraseCookie = function(name) {   
-	document.cookie = name+'=; Max-Age=-99999999;';  
+	document.cookie = name+'=;expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';  
+}
+window.deleteAllCookies = function() {
+    var cookies = document.cookie.split(";");
+
+    for (var i = 0; i < cookies.length; i++) {
+        var cookie = cookies[i];
+        var eqPos = cookie.indexOf("=");
+        var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+        document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    }
 }
 
 window.getImageBase64Uri = function (img) {
@@ -371,6 +381,8 @@ else
 window.logout = async function() {
 	window.eraseCookie("session")
 	window.eraseCookie("session_update")
+	var cookies = document.cookie.split(";");
+
 	localStorage.removeItem("user_id");
 	localStorage.removeItem("entropy");
 	let keys = Object.keys(sessionStorage);
