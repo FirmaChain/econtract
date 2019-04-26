@@ -113,7 +113,6 @@ export default class extends React.Component {
                 select_tab:this.props.location.state.select_tab
             })
         }
-        console.log("contract-info", resp)
 
         if(!resp) {
             alert(translate("contract_is_encrypt_so_dont_enter"))
@@ -131,17 +130,18 @@ export default class extends React.Component {
 
             delete resp.payload.logs
 
-            if(resp.payload.contract.status != 2) {
+            //if(resp.payload.contract.status != 2) {
                 let contract = resp.payload.contract
                 let infos = resp.payload.infos
 
                 let corp_id = this.props.user_info.corp_id || window.CONST.DUMMY_CORP_ID
-                let me = select_subject(infos, this.state.groups, this.props.user_info.account_id, corp_id, contract.is_pin_used).my_info
+                let me = select_subject(infos, groups, this.props.user_info.account_id, corp_id, contract.is_pin_used).my_info
                 
                 if(me) {
                     let contract_user_info = {
                         ...me.user_info,
                         username:this.props.user_info.username,
+                        email:this.props.user_info.email,
                     };
                     if(this.props.user_info.account_type != 0) {
                         contract_user_info.company_name = this.props.user_info.company_name;
@@ -164,7 +164,7 @@ export default class extends React.Component {
                         let r = await this.props.modify_contract_user_info(contract.contract_id, this.props.user_info.account_id, 0, contract_user_info, contract.the_key)
                     }
                 }
-            }
+            //}
 
             this.setState({
                 ...resp.payload,
@@ -760,7 +760,6 @@ export default class extends React.Component {
 
         let corp_id = this.props.user_info.corp_id || window.CONST.DUMMY_CORP_ID
         let me = select_subject(infos, this.state.groups, this.props.user_info.account_id, corp_id, contract.is_pin_used).my_info
-        console.log("me", me)
 
         return <div className="contract-info-page">
             <div className="header-page">

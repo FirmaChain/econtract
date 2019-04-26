@@ -683,7 +683,7 @@ export default class extends React.Component {
 
         let usernames = ""
         if(typeof(e.user_infos) == "object") {
-            usernames = e.user_infos.map(ee => ee.username).filter( ee => !!ee)
+            usernames = e.user_infos.map(ee => ee.username).filter( ee => {return !!ee})
             usernames = usernames.join(", ")
         }
 
