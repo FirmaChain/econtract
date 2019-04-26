@@ -6,7 +6,17 @@ import {
 
 export const LEGAL_RELOAD_USERINFO = "LEGAL_RELOAD_USERINFO"
 export const LEGAL_SUCCESS_LOGIN = "LEGAL_SUCCESS_LOGIN"
+export const LEGAL_LOGOUT = "LEGAL_LOGOUT"
 
+
+export function logout() {
+    return async function(dispatch) {
+        dispatch({
+            type:LEGAL_LOGOUT,
+            payload:false
+        })
+    }
+}
 
 export function get_my_info() {
 	return async function(dispatch) {
@@ -45,11 +55,11 @@ export function login_account(email, password, continue_login = false){
 
         if(resp.code == 1){
             if(continue_login) {
-                window.setCookie("session", resp.payload.session, 60)
-                window.setCookie("session_update", Date.now(), 60)
+                window.setCookie("legal_session", resp.payload.session, 60)
+                window.setCookie("legal_session_update", Date.now(), 60)
             } else {
-                window.setCookie("session", resp.payload.session)
-                window.setCookie("session_update", Date.now())
+                window.setCookie("legal_session", resp.payload.session)
+                window.setCookie("legal_session_update", Date.now())
             }
             
 			let result = await api_legal_get_my_info();

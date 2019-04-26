@@ -381,7 +381,21 @@ else
 window.logout = async function() {
 	window.eraseCookie("session")
 	window.eraseCookie("session_update")
-	var cookies = document.cookie.split(";");
+
+	localStorage.removeItem("user_id");
+	localStorage.removeItem("entropy");
+	let keys = Object.keys(sessionStorage);
+	for (let i = 0; i < keys.length; i++) {
+		sessionStorage.removeItem(keys[i]);
+	}
+	keys = Object.keys(localStorage);
+	for (let i = 0; i < keys.length; i++) {
+		localStorage.removeItem(keys[i]);
+	}
+}
+window.legal_logout = async function() {
+	window.eraseCookie("legal_session")
+	window.eraseCookie("legal_session_update")
 
 	localStorage.removeItem("user_id");
 	localStorage.removeItem("entropy");

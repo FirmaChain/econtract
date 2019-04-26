@@ -5578,6 +5578,150 @@ div.checkbox3-comp{
     }
 }
 
+
+
+
+
+
+
+.legal-advice-user-information {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+
+    margin-right:20px;
+
+    >.profile {
+        display: inline-block;
+        text-align: right;
+        position: relative;
+
+        >.name {
+            font-size: $font2;
+            font-weight: bold;
+            color:$black;
+
+            >.company {
+                color: $gray;
+                font-size: $font0;
+                margin-right:10px;
+            }
+        }
+
+        >.email {
+            font-size: $font0;
+            color:$gray;
+        }
+
+        >.profile-dropdown {
+            display: none;
+            position: absolute;
+            z-index: 888;
+            right: 0;
+            padding-top:10px;
+            min-width:200px;
+
+            >.info-container {
+                background-color: white;
+                box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+
+                text-align: left;
+                border-radius:5px;
+
+                >.login-session {
+                    cursor: pointer;
+
+                    >.text {
+                        font-size: $font1;
+                        color: $black;
+                        padding: 10px 15px;
+                    }
+
+                    >.time {
+                        font-size: $font2;
+                        font-weight: bold;
+                        color: $black;
+                        padding:10px 15px;
+                        padding-top: 0;
+
+                        >.icon {
+                            width:30px;
+                            margin-right:5px;
+                        }
+                    }
+                }
+
+                >.price-status {
+                    cursor: pointer;
+
+                    >.text {
+                        font-size: $font1;
+                        color: $black;
+                        padding: 10px 15px;
+                    }
+
+                    >.status {
+                        font-size: $font2;
+                        font-weight: bold;
+                        color: $black;
+                        padding:10px 15px;
+                        padding-top: 0;
+
+                        >.small {
+                            font-size: $font0;
+                            font-weight: initial;
+                        }
+
+                        >.icon {
+                            width:30px;
+                            margin-right:5px;
+                        }
+                    }
+
+                    >.date {
+                        font-size: $font0;
+                        color: $gray;
+                        padding:10px 15px;
+                        padding-top: 0;
+                    }
+                }
+
+                >.line {
+                    background-color: $gray;
+                    height:1px;
+                }
+
+                >.my-info {
+                    font-size: $font1;
+                    color: $black;
+                    padding:10px 15px;
+                    cursor: pointer;
+                }
+
+                >.logout {
+                    font-size: $font1;
+                    color: $black;
+                    padding:10px 15px;
+                    cursor: pointer;
+                }
+
+                >div{
+                    &:hover{
+                        background-color: $lightgray;
+                    }
+                }
+            }
+        }
+
+        &:hover {
+            >.profile-dropdown {
+                display: block;
+            }
+        }
+    }
+}
+
 .legal-advice-maintain {
     display: flex;
     flex-direction: column;
@@ -5986,9 +6130,7 @@ div.checkbox3-comp{
 }
 
 .legal-advice-register-user {
-
 }
-
 
 .legal-advice-register-expert {
     display: flex;
@@ -6221,6 +6363,55 @@ div.checkbox3-comp{
             font-size: $font2;
             cursor:pointer;
         }
+    }
+}
+
+.legal-advice-user-home {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+
+    >.header {
+        display: flex;
+        flex-direction: row;
+        align-items:center;
+
+        width:100%;
+        padding:20px 10px;
+        margin-bottom:30px;
+        border-bottom:1px solid $lightgray;
+
+        >.logo-img {
+            margin-left:10px;
+            >img {
+                width:50px;
+                cursor:pointer;
+            }
+        }
+
+        >.right {
+            flex:1;
+            text-align: right;
+            margin-right: 30px;
+
+            >.ask-button {
+                padding:10px;
+                display: inline-block;
+                background-color: $legalprimary;
+                border-radius:5px;
+                font-size: $font2;
+                font-weight:bold;
+                cursor: pointer;
+                padding:20px 20px;
+                text-align: center;
+                color:white;
+                box-sizing: border-box;
+            }
+        }
+    }
+
+    >.container {
+
     }
 }
 

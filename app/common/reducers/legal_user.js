@@ -1,6 +1,7 @@
 import {
     LEGAL_SUCCESS_LOGIN,
-    LEGAL_RELOAD_USERINFO
+    LEGAL_RELOAD_USERINFO,
+    LEGAL_LOGOUT
 } from '../legal_actions';
 
 let _ = {
@@ -18,6 +19,11 @@ export default function (state=_, action){
                 return {
                     ...state,
                     info: action.payload
+                }
+            case LEGAL_LOGOUT:
+                return {
+                    ...state,
+                    info: false
                 }
           default:
               return state;

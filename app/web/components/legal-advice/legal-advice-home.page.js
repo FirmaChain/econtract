@@ -14,6 +14,10 @@ import {
 import Footer from "../footer.comp"
 import CheckBox3 from "../checkbox3"
 
+import LegalAdviceUserHomePage from "./legal-advice-user-home.page"
+import LegalAdviceExpertHomePage from "./legal-advice-expert-home.page"
+
+
 let mapStateToProps = (state)=>{
 	return {
         user_info: state.legal_user.info
@@ -30,9 +34,6 @@ export default class extends React.Component {
 	constructor(){
 		super();
 		this.state={
-            email:"",
-            password:"",
-            continue_login:true,
         };
 	}
 
@@ -54,9 +55,11 @@ export default class extends React.Component {
 
     
     render() {
-        console.log("this.props.user_info", this.props.user_info)
-        return <div className="legal-advice-home legal-advice-maintain">
-            홈페이지
+        if(!this.props.user_info)
+            return <div/>
+        
+        return <div className="legal-advice-home">
+            {this.props.user_info.account_type == 0 ? <LegalAdviceUserHomePage {...this.props}/> : <LegalAdviceExpertHomePage {...this.props}/>}
         </div>
     }
 }
