@@ -165,7 +165,6 @@ export default class extends React.Component {
                     }
                 }
             //}
-
             this.setState({
                 ...resp.payload,
                 cur_log_page:Number(params.log_page) || 0,
