@@ -1266,7 +1266,7 @@ export default class extends React.Component {
                         value={this.state.userphone || ""} 
                         onChange={this.onChangePhoneForm.bind(this,"userphone")}
                         disabled={this.state.verificated_phone}
-                        placeholder={translate("please_input_certification_number")}/>
+                        placeholder={translate("please_input_correct_phone")}/>
                 </div>
                 { this.state.verificated_phone ? null :
                     <div className="blue-but" onClick={this.onClickRequestPhone}>
