@@ -169,6 +169,9 @@ export function get_contracts(type, status, page, display_count = 10, sub_status
             for(let v of resp.payload.list) {
                 let infos = []
                 v.entities_id.split(",").map( (entity_id, k) => {
+                    if(!!infos.find(e=>e.entity_id == entity_id && e.corp_id == v.corps_id.split(",")[k]))
+                        return;
+                    
                     infos.push({
                         entity_id:Number(entity_id),
                         corp_id:Number(v.corps_id.split(",")[k]),
@@ -177,6 +180,7 @@ export function get_contracts(type, status, page, display_count = 10, sub_status
                         is_pin_null:Number(v.is_pin_nulls.split(",")[k])
                     })
                 })
+
 
                 let subject = select_subject(infos, groups, user_info.account_id, corp_id, v.is_pin_used);
                 if (!subject.my_info) continue;
