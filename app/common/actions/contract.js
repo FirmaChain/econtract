@@ -169,16 +169,16 @@ export function get_contracts(type, status, page, display_count = 10, sub_status
             for(let v of resp.payload.list) {
                 let infos = []
                 v.entities_id.split(",").map( (entity_id, k) => {
-                    if(!!infos.find(e=>e.entity_id == entity_id && e.corp_id == v.corps_id.split(",")[k]))
-                        return;
-                    
-                    infos.push({
-                        entity_id:Number(entity_id),
-                        corp_id:Number(v.corps_id.split(",")[k]),
-                        epin:Buffer.from(v.epins.split(window.SEPERATOR)[k], "hex"),
-                        eckai:Buffer.from(v.eckais.split(window.SEPERATOR)[k], "hex"),
-                        is_pin_null:Number(v.is_pin_nulls.split(",")[k])
-                    })
+                    let duplicate = infos.find(e=>e.entity_id == entity_id && e.corp_id == v.corps_id.split(",")[k]);
+                    if(!duplicate) {
+                        infos.push({
+                            entity_id:Number(entity_id),
+                            corp_id:Number(v.corps_id.split(",")[k]),
+                            epin:Buffer.from(v.epins.split(window.SEPERATOR)[k], "hex"),
+                            eckai:Buffer.from(v.eckais.split(window.SEPERATOR)[k], "hex"),
+                            is_pin_null:Number(v.is_pin_nulls.split(",")[k])
+                        })
+                    }
                 })
 
 
