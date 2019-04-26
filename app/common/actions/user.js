@@ -228,6 +228,7 @@ export function register_new_account(account, info, email, name, eth, account_ty
         if (account_type == window.CONST.ACCOUNT_TYPE.CORP_MASTER) {
             let auth = account.auth;
             let eems = Buffer.from(account.encryptedMasterSeed, 'hex').toString('base64');
+            console.log("setsession", resp)
             window.setCookie("session", resp.session, 0.125)
             window.setCookie("session_update", Date.now(), 0.125)
             let entropy = getUserEntropy(auth, eems)
