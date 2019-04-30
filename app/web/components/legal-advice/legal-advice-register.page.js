@@ -12,7 +12,7 @@ import {
 } from "../../../common/crypto_test"
 
 import {
-    fetch_user_info,
+    get_my_info,
     legal_register,
 } from "../../../common/legal_actions"
 
@@ -30,7 +30,7 @@ let mapStateToProps = (state)=>{
 }
 
 let mapDispatchToProps = {
-    fetch_user_info,
+    get_my_info,
     legal_register,
     request_phone_verification_code,
 }
@@ -82,7 +82,7 @@ export default class extends React.Component {
 	componentDidMount(){
         (async()=>{
             await window.showIndicator()
-            await this.props.fetch_user_info()
+            await this.props.get_my_info()
             await window.hideIndicator()
         })()
     }
