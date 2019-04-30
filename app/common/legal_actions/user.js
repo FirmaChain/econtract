@@ -61,6 +61,8 @@ export function login_account(email, password, continue_login = false){
                 window.setCookie("legal_session", resp.payload.session)
                 window.setCookie("legal_session_update", Date.now())
             }
+
+            console.log("legal_session", window.getCookie("legal_session"))
             
 			let result = await api_legal_get_my_info();
 			
