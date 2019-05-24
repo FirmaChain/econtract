@@ -3881,8 +3881,8 @@ div.checkbox3-comp{
     .right-desc {
         flex:1;
         height:100%;
-        max-height: calc(100% - 131px);
         overflow-y: auto;
+        max-height: calc(100vh - 35px);
 
         padding:20px;
         box-sizing: border-box;
