@@ -468,14 +468,15 @@ div.checkbox3-comp{
 }
 
 .maintain {
-    display: flex;
+    /*display: flex;
     flex-direction: column;
-    min-height: 100%;
+    min-height: 100%;*/
 }
 
 .register-common-page {
     background-color: white;
     flex:1;
+    min-height: calc(100% - 60px);
 
     >.left-logo {
         display: flex;
@@ -1486,6 +1487,7 @@ div.checkbox3-comp{
 }
 
 .header-page {
+    height: calc(100% - 60px);
 
     >.mobile-header {
         display: flex;
@@ -2571,8 +2573,8 @@ div.checkbox3-comp{
 }
 
 .public-sign-page-step-2 {
-    display: flex;
-    flex-direction: column;
+    /*display: flex;
+    flex-direction: column;*/
     min-height: 100%;
 
     >.header-page .container {
@@ -2582,7 +2584,7 @@ div.checkbox3-comp{
         align-items: center;
 
         height: 100%;
-        max-height: calc(100% - 131px);
+        max-height: calc(100% - 71px);
         overflow-y: auto;
 
         box-sizing: border-box;
@@ -2910,8 +2912,8 @@ div.checkbox3-comp{
 }
 
 .upsert-page {
-    display: flex;
-    flex-direction: column;
+    /*display: flex;
+    flex-direction: column;*/
     min-height: 100%;
 
     >.header-page .container {
@@ -2919,7 +2921,7 @@ div.checkbox3-comp{
         flex-direction: row;
 
         height: 100%;
-        max-height: calc(100% - 131px);
+        max-height: calc(100% - 71px);
         overflow-y: auto;
 
         box-sizing: border-box;
@@ -4593,8 +4595,8 @@ div.checkbox3-comp{
 }
 
 .contract-info-page {
-    display: flex;
-    flex-direction: column;
+    /*display: flex;
+    flex-direction: column;*/
     min-height: 100%;
 
     >.header-page .container {
@@ -4602,7 +4604,7 @@ div.checkbox3-comp{
         flex-direction: row;
 
         height: 100%;
-        max-height: calc(100% - 131px);
+        max-height: calc(100% - 71px);
         overflow-y: auto;
 
         box-sizing: border-box;
