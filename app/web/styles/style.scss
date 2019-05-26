@@ -439,26 +439,6 @@ div.checkbox3-comp{
         outline: none;
     }
 }
-/* -- */
-.common-textbox1 {
-    border:1px solid $gray;
-    padding:10px 15px;
-    font-size: $font1;
-    width: 100%;
-    border-radius: 0;
-    color: $black;
-    background-color: white;
-
-    &:disabled {
-        background-color: $middlegray;
-    }
-
-    &:focus {
-        border:1px solid $blue;
-        outline: none;
-    }
-}
-/* -- */
 
 .common-textarea {
     outline:none;
