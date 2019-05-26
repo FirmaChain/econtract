@@ -22,6 +22,8 @@ $superlightgray : #fcfcfc;
 $middlegray : #dadadc;
 $red : #cc0000;
 $legalprimary : #3857e4;
+$realblack: #000;
+$whiteblack: #aaa;
 
 
 
@@ -437,6 +439,26 @@ div.checkbox3-comp{
         outline: none;
     }
 }
+/* -- */
+.common-textbox1 {
+    border:1px solid $gray;
+    padding:10px 15px;
+    font-size: $font1;
+    width: 100%;
+    border-radius: 0;
+    color: $black;
+    background-color: white;
+
+    &:disabled {
+        background-color: $middlegray;
+    }
+
+    &:focus {
+        border:1px solid $blue;
+        outline: none;
+    }
+}
+/* -- */
 
 .common-textarea {
     outline:none;
