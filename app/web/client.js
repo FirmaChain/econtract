@@ -50,6 +50,7 @@ import LegalAdvicePaymentLogPage from "./components/legal-advice/legal-advice-pa
 import LegalAdviceRegisterPage from "./components/legal-advice/legal-advice-register.page"
 import LegalAdviceWithdrawPage from "./components/legal-advice/legal-advice-withdraw.page"
 
+import TestPage from "./components/asd-tests.page"
 
 import { current_platform } from "../common/utils"
 
@@ -75,7 +76,7 @@ window.addEventListener("load",()=>{
 			<Provider store={store}>
 				<Container>
 					<Route onEnter={resolver} exact path="/e-contract/verification" component={VerificationPage} />
-					{/*<Route onEnter={resolver} exact path="/login2/:id" component={LoginPage} />*/}
+					<Route onEnter={resolver} exact path="/asdasdtest" component={TestPage} />
 
 					<Route onEnter={resolver} exact path="/" component={IndexPage} />
 					<Route onEnter={resolver} exact path="/register" component={RegisterPage} />
