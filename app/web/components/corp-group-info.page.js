@@ -294,7 +294,7 @@ export default class extends React.Component {
     onCopyRegisterLink = async (invite) => {
         var dummy = document.createElement("textarea");
         document.body.appendChild(dummy);
-        dummy.value = `https://duite.io/register?registration_code=${invite.invite_code}&email_address=${invite.data_for_inviter.email}`;
+        dummy.value = `https://stabledocs.com/register?registration_code=${invite.invite_code}&email_address=${invite.data_for_inviter.email}`;
         dummy.select();
         document.execCommand("copy");
         document.body.removeChild(dummy);

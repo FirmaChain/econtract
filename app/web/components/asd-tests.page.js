@@ -12,6 +12,7 @@ import Route from "./custom_route"
 import moment from "moment"
 import queryString from "query-string"
 import translate from "../../common/translate"
+import Web3 from "../../common/Web3"
 
 import {
     decryptPIN,
@@ -40,7 +41,8 @@ export default class extends React.Component {
 	constructor(props) {
         super(props);
         this.state = {
-            asdasdas:""
+            asdasdas:"",
+            eth_key_start:[],
         };
 	}
 
@@ -54,15 +56,29 @@ export default class extends React.Component {
 
     click_asdasd = (e) => {
         let seed = mnemonicToSeed(this.state.asdasdas);
-        console.log(seed)
+
+        let arr = []
+        for(var i = 0 ; i < 310 ; i++) {
+            let keyPair = SeedToEthKey(seed, "0'/" + i)
+            let privateKey = "0x"+keyPair.privateKey.toString('hex');
+            let wallet = Web3.walletWithPK(privateKey)
+            arr.push(wallet.address)
+        }
+        this.setState({eth_key_start:arr});
     }
 
     render() {
-        return <div class="eth">
+        return <div className="eth" style={{padding:"20px"}}>
             <input type="text"
                 value={this.state.asdasdas}
                 onChange={this.asdasd}/>
-            <button onClick={this.click_asdasd}></button>
+            <button onClick={this.click_asdasd}>ㅂㅈㄹㅂㅈㄹㅂㅈㄹㅂ</button>
+
+            <div>
+                {this.state.eth_key_start.map((e, k) => {
+                    return <div>{k} : {e}</div>
+                })}
+            </div>
         </div>
 	}
 }
