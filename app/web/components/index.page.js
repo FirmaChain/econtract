@@ -44,8 +44,7 @@ export default class extends React.Component {
 				<div className="header-section">
 					<div className="top">
 						<div className="econtract-logo" onClick={()=>window.location.reload(true)}>
-							<img className="logo-img" src="/static/econtract_logo.png"/>
-							<div className="contract">CONTRACT</div>
+							<img className="logo-img" src="/static/stabledocs_logo.png"/>
 						</div>
 						<div className="nav-menu">
 							<div className="language-dropdown">
