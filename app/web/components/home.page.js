@@ -88,10 +88,10 @@ export default class extends React.Component {
                         <div className={(this.getStatus().includes("/e-contract/home") ? "selected-item" : "item")} onClick={() => history.push("/e-contract/home")}>
                             <div>{translate("contract")}</div>
                         </div>
-                        { ( !!this.props.user_info && (this.props.user_info.account_type != 0) ) ? 
+                        { /*( !!this.props.user_info && (this.props.user_info.account_type != 0) ) ? 
                             <div className={(this.getStatus().includes("/e-contract/approval") ? "selected-item" : "item")} onClick={() => history.push("/e-contract/approval")}>
                                 <div>{translate("approval")}</div>
-                            </div>: ""}
+                            </div>: ""*/ }
                         <div className={(this.getStatus().includes("/e-contract/template") ? "selected-item" : "item")} onClick={() => history.push("/e-contract/template")}>
                             <div>{translate("template")}</div>
                         </div>
