@@ -395,7 +395,9 @@ export default class extends React.Component {
                                 role:[add_role],
                                 contract_open_key:generateRandomKey(16),
                             }
-                            let res = await this.props.add_contract_user(this.state.contract.contract_id, info, groups, this.props.user_info, this.state.infos, contract.is_pin_used, contract.pin)
+                            let groups = await this.props.get_group_info(0)
+                            let contract = this.state.contract;
+                            let res = await this.props.add_contract_user(contract.contract_id, info, groups, this.props.user_info, this.state.infos, contract.is_pin_used, contract.pin)
                             if(res.code == 1) {
                                 await this.onRefresh()
                                 return alert(translate("add_user_success"))
