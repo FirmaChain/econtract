@@ -79,6 +79,7 @@ export default class extends React.Component {
             sort_test:[],
             email_verification: false,
             language: global.LANG,
+            useraddress:"",
         };
 
         {
@@ -592,8 +593,8 @@ export default class extends React.Component {
             return alert(translate("please_input_name"))
         if(!this.state.verificated_phone)
             return alert(translate("please_verify_phone"))
-        if(!this.state.useraddress)
-            return alert(translate("please_input_address"))
+        /*if(!this.state.useraddress)
+            return alert(translate("please_input_address"))*/
 
         let account = new_account(this.state.email, this.state.password);
         this.setState({
@@ -1145,7 +1146,7 @@ export default class extends React.Component {
                 }
             </div>
 
-            <div className="text-place">
+            {/*<div className="text-place">
                 <div className="name">{translate("individual_address")}</div>
                 <div className="textbox">
                     <input className="common-textbox" type="text"
@@ -1156,7 +1157,7 @@ export default class extends React.Component {
                 <div className="blue-but" onClick={this.onClickFindAddress.bind(this, 0)}>
                     {translate("search")}
                 </div>
-            </div>
+            </div>*/}
 
             <div className="bottom-container">
                 <div className="back-button" onClick={this.prev_term}>{translate("go_back")}</div>
