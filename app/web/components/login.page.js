@@ -197,7 +197,7 @@ export default class extends React.Component {
                             <div className="small">{translate("individual_use")}</div>
                         </div>
                     </button>
-                    <button className="new-already-button" onClick={()=>history.push({pathname:"/register", state:{type:1}})}>
+                    {/*<button className="new-already-button" onClick={()=>history.push({pathname:"/register", state:{type:1}})}>
                         <div className="icon"><i className="fas fa-user-tie"></i></div>
                         <div className="nohover">
                             {translate("new_corp_register")}
@@ -207,7 +207,7 @@ export default class extends React.Component {
                             <div className="big">{translate("new_corp_register")}</div>
                             <div className="small">{translate("team_manage_use")}</div>
                         </div>
-                    </button>
+                    </button>*/}
                     {/*<button className="new-already-button" onClick={()=>history.push({pathname:"/register", state:{type:3}})}>
                         <div className="icon"><i className="fas fa-tools"></i></div>
                         <div className="nohover">
