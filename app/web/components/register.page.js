@@ -488,8 +488,11 @@ export default class extends React.Component {
     }
 
     onClickRequestPhone = async ()=>{
-        if(this.state.userphone == null || this.state.userphone.length != 13 || !/^0\d{2}-\d{4}-\d{4}$/.test(this.state.userphone))
+        if(this.state.userphone == null || this.state.userphone.length != 13)
             return alert(translate("please_input_correct_phone"))
+
+        if(this.state.countryCode == "82" && this.state.userphone.slice(0, 1) != "0" )
+            await this.setState({userphone:"0"+this.state.userphone})
 
         if(this.state.countryCode == null || this.state.countryCode == "")
             return alert('please select country code')
