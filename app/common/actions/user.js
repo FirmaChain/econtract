@@ -186,16 +186,16 @@ export function check_email_verification_code(email, code){
     }
 }
 
-export function request_phone_verification_code(phone){
+export function request_phone_verification_code(phone, countryCode = 82){
     return async function(dispatch){
-        let resp = await api_request_phone_verification_code(phone)
+        let resp = await api_request_phone_verification_code(phone, countryCode)
         return resp;
     }
 }
 
-export function check_phone_verification_code(phone, code){
+export function check_phone_verification_code(phone, code, countryCode = 82){
     return async function(dispatch){
-        let resp = await api_check_phone_verification_code(phone, code)
+        let resp = await api_check_phone_verification_code(phone, code, countryCode)
         return resp;
     }
 }
