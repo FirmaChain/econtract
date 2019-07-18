@@ -1168,21 +1168,23 @@ export async function api_check_email_verification_code(email,code){
         session:window.getCookie("session")
     });
 }
-export async function api_request_phone_verification_code(phone){
+export async function api_request_phone_verification_code(phone,countryCode){
     let __data = new FormData();
 
-    if(phone != null) __data.append('phone', phone)
+    if(phone != null) __data.append('phone', phone);
+	if(countryCode != null) __data.append('countryCode', countryCode)
 
     return await post("/request_phone_verification_code", __data,{
         legal_session:window.getCookie("legal_session"),
         session:window.getCookie("session")
     });
 }
-export async function api_check_phone_verification_code(phone,code){
+export async function api_check_phone_verification_code(phone,code,countryCode){
     let __data = new FormData();
 
     if(phone != null) __data.append('phone', phone);
-	if(code != null) __data.append('code', code)
+	if(code != null) __data.append('code', code);
+	if(countryCode != null) __data.append('countryCode', countryCode)
 
     return await post("/check_phone_verification_code", __data,{
         legal_session:window.getCookie("legal_session"),

@@ -578,6 +578,7 @@
     "MIDDLE1_DESC_4":["모든 내용은 계약 당사자들만이 가지고 있는 마스터 키워드로만 복호화 할 수 있습니다.","Contracts can only be decrypted through the master keyword.","合同只能提供给缔约方的Master Keyword进行解密。"],
     "MIDDLE1_DESC_3":["그 외 모든 접근은 불허됩니다.","All other access is prohibited.","禁止所有其他访问。"],
     "please_select_approval_user":["결재자를 선택해주세요.","Select Approver","请选择裁决人。"],
+    "country_code":["국가 코드","",""],
     "personal_dont_use_approval":["개인 계정은 결재선을 이용할 수 없습니다.","Individual accounts cannot use the approval feature.","个人用户无法使用裁决。"],
     "month":["월","Month","月"],
     "input_message":["메세지를 입력해주세요","Enter message.","请发消息。"],

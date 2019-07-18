@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import history from '../history';
 import translate from "../../common/translate"
 import queryString from "query-string"
+import countryCode from "../countryCode.json"
 import Dropdown from "react-dropdown"
 import 'react-dropdown/style.css'
 import {
@@ -74,12 +75,15 @@ export default class extends React.Component {
 		super();
         this.isGoingFinish = false
 		this.state={
-            step:0,
+            step:2,
             step1:0,
             sort_test:[],
             email_verification: false,
             language: global.LANG,
             useraddress:"",
+            countryCode:"82",
+            countryCode_label:"Korea, Republic of (+82)",
+
         };
 
         {
@@ -486,9 +490,12 @@ export default class extends React.Component {
     onClickRequestPhone = async ()=>{
         if(this.state.userphone == null || this.state.userphone.length != 13 || !/^0\d{2}-\d{4}-\d{4}$/.test(this.state.userphone))
             return alert(translate("please_input_correct_phone"))
+
+        if(this.state.countryCode == null || this.state.countryCode == "")
+            return alert('please select country code')
             
         await window.showIndicator();
-        let resp = await this.props.request_phone_verification_code(this.state.userphone)
+        let resp = await this.props.request_phone_verification_code(this.state.userphone, this.state.countryCode)
         if(resp.code == 1 && resp.payload == true){
             alert(translate("code_was_sent"))
             this.setState({
@@ -506,7 +513,7 @@ export default class extends React.Component {
             return alert(translate("code_is_4"))
         }
         await window.showIndicator();
-        let resp = await this.props.check_phone_verification_code(this.state.userphone, this.state.phone_verification_code)
+        let resp = await this.props.check_phone_verification_code(this.state.userphone, this.state.phone_verification_code, this.state.countryCode)
         if(resp.code == 1 && resp.payload == true){
             alert(translate("success_verification"))
             this.setState({
@@ -525,7 +532,7 @@ export default class extends React.Component {
     onChangePhoneForm = async (name, e) => {
         let text = e.target.value;
         text = text.replace(/[^0-9]/g,"")
-        text = window.phoneFomatter(text)
+        //text = window.phoneFomatter(text)
         
         this.setState({
             [name]:text
@@ -799,6 +806,7 @@ export default class extends React.Component {
                 userphone: this.state.userphone,
                 useraddress: this.state.useraddress.trim(),
                 recover_password: this.state.account.recoverPassword,
+                countrycode:this.state.countryCode.trim(),
             }
         } else if(account_type == window.CONST.ACCOUNT_TYPE.CORP_MASTER) { // 기업 관리자 계정
             info = {
@@ -810,6 +818,7 @@ export default class extends React.Component {
                 department: department.trim(),
                 job: this.state.job.trim(),
                 userphone: this.state.userphone,
+                countrycode:this.state.countryCode.trim(),
             }
             corp_info = {
                 company_name: this.state.company_name.trim(),
@@ -831,6 +840,7 @@ export default class extends React.Component {
                 job: this.state.job.trim(),
                 department: department.trim(),
                 userphone: this.state.userphone.trim(),
+                countrycode:this.state.countryCode.trim(),
             }
         } else if(account_type == window.CONST.ACCOUNT_TYPE.EXPERT) { // 전문가 계정
             info = {
@@ -841,6 +851,7 @@ export default class extends React.Component {
                     email: this.state.email.trim(),
                     username: this.state.username.trim(),
                     userphone: this.state.userphone,
+                    countrycode:this.state.countryCode.trim(),
                     useraddress: this.state.useraddress.trim(),
                     introduce_article: this.state.introduce_article.trim(),
                 },
@@ -1103,6 +1114,7 @@ export default class extends React.Component {
     }
 
     render_personal(){
+        let _countryCode = countryCode.map(e=>{return {...e, label:e.name, value:e.code} })
         return (<div className="content">
             <div className="text-place">
                 <div className="name">{translate("name")}</div>
@@ -1116,8 +1128,18 @@ export default class extends React.Component {
 
             <div className="text-place">
                 <div className="name">{translate("individual_phone")}</div>
-                <div className="textbox">
-                    <input className="common-textbox" type="text"
+                <div className="textbox-left">
+                    <Dropdown className="common-select"
+                        controlClassName="control"
+                        menuClassName="item"
+                        options={_countryCode}
+                        placeholder={translate("country_code")}
+                        onChange={e=>{
+                            let ee = _countryCode.find(k=>e.label == k.name && e.value == k.code)
+                            this.setState({countryCode:ee.dial_code.replace(/(\s*)/g,"").replace(/\+/g,""), countryCode_label:ee.name+" (" + ee.dial_code + ")"})
+                        }}
+                        value={this.state.countryCode_label} />
+                    <input className="common-textbox textbox-half" type="text"
                         value={this.state.userphone || ""} 
                         onChange={this.onChangePhoneForm.bind(this,"userphone")}
                         disabled={this.state.verificated_phone}
@@ -1169,6 +1191,7 @@ export default class extends React.Component {
     }
 
     render_company() {
+        let _countryCode = countryCode.map(e=>{return {...e, label:e.name, value:e.code} })
         return (<div className="content">
             <div className="text-place">
                 <div className="name">{translate("corp_info")}</div>
@@ -1262,7 +1285,17 @@ export default class extends React.Component {
 
             <div className="text-place">
                 <div className="name">{translate("individual_phone")}</div>
-                <div className="textbox">
+                <div className="textbox-left">
+                    <Dropdown className="common-select"
+                        controlClassName="control"
+                        menuClassName="item"
+                        options={_countryCode}
+                        placeholder={translate("country_code")}
+                        onChange={e=>{
+                            let ee = _countryCode.find(k=>e.label == k.name && e.value == k.code)
+                            this.setState({countryCode:ee.dial_code.replace(/(\s*)/g,"").replace(/\+/g,""), countryCode_label:ee.name+" (" + ee.dial_code + ")"})
+                        }}
+                        value={this.state.countryCode_label} />
                     <input className="common-textbox" type="text"
                         value={this.state.userphone || ""} 
                         onChange={this.onChangePhoneForm.bind(this,"userphone")}
@@ -1302,6 +1335,7 @@ export default class extends React.Component {
     }
 
     render_expert() {
+        let _countryCode = countryCode.map(e=>{return {...e, label:e.name, value:e.code} })
         let list = [
             {value:"0", label: translate("expert_0")},
             {value:"1", label: translate("expert_1")},
@@ -1324,7 +1358,17 @@ export default class extends React.Component {
 
             <div className="text-place">
                 <div className="name">{translate("individual_phone")}</div>
-                <div className="textbox">
+                <div className="textbox-left">
+                    <Dropdown className="common-select"
+                        controlClassName="control"
+                        menuClassName="item"
+                        options={_countryCode}
+                        placeholder={translate("country_code")}
+                        onChange={e=>{
+                            let ee = _countryCode.find(k=>e.label == k.name && e.value == k.code)
+                            this.setState({countryCode:ee.dial_code.replace(/(\s*)/g,"").replace(/\+/g,""), countryCode_label:ee.name+" (" + ee.dial_code + ")"})
+                        }}
+                        value={this.state.countryCode_label} />
                     <input className="common-textbox" type="text"
                         value={this.state.userphone || ""} 
                         onChange={this.onChangePhoneForm.bind(this,"userphone")}

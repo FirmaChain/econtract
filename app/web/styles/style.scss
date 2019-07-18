@@ -732,6 +732,23 @@ div.checkbox3-comp{
             margin-left: 10px;
         }
 
+        >.textbox-left {
+            width:500px;
+            margin-left:10px;
+            display: inline-flex;
+            flex-direction: row;
+
+            >.common-select {
+                margin-right:10px;
+                width: 220px;
+
+                >.control {
+                    width: 220px !important;
+                }
+            }
+        }
+
+
         >.blue-but {
             display: inline-block;
             font-size: $font1;
