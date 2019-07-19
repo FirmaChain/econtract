@@ -75,7 +75,7 @@ export default class extends React.Component {
 		super();
         this.isGoingFinish = false
 		this.state={
-            step:0,
+            step:2,
             step1:0,
             sort_test:[],
             email_verification: false,
