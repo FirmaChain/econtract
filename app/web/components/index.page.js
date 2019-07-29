@@ -104,7 +104,7 @@ export default class extends React.Component {
 				</div>
 				<div className="bottom-section">
 					<div className="title-place">
-						<img src="/static/econtract_logo.png" />
+						{/*<img src="/static/econtract_logo.png" />*/}
 						<div>
 							{translate("BOTTOM_TITLE_1")}<br/>
 							<b>{translate("BOTTOM_TITLE_2")}</b>
