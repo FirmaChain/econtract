@@ -39,16 +39,28 @@ export default class extends React.Component {
         (async()=>{
             await window.showIndicator()
             let list = await this.props.get_daniel_list();
-            let count = await this.props.get_daniel_count();
+            let res = await this.props.get_daniel_count();
             console.log(list)
-            console.log(count)
+            console.log(res.count)
+            this.setState({
+                list,
+                res
+            })
             await window.hideIndicator()
         })()
     }
 
 	render() {
-        return <div>
-            
+        if(!this.state.res)
+            return <div></div>
+
+        console.log(this.state)
+
+        return <div style={{padding:"50px", textAlign:"center"}}>
+            <div style={{fontSize:"30px"}}>총 회원수 : {this.state.res.count}</div>
+            {this.state.list.map( (e, k) => {
+                return <div key={k}>{e.name}</div>
+            })}
         </div>
 	}
 }
