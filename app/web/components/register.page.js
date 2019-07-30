@@ -229,6 +229,9 @@ export default class extends React.Component {
 
         await window.showIndicator();
         let resp = await this.props.request_email_verification_code(this.state.email)
+        if(!resp.code)
+            alert(translate("send_verification_code_error_occured"))
+
         if(resp.code == 1){
             alert(translate("email_was_sent"))
             this.setState({
