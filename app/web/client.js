@@ -51,6 +51,7 @@ import LegalAdviceRegisterPage from "./components/legal-advice/legal-advice-regi
 import LegalAdviceWithdrawPage from "./components/legal-advice/legal-advice-withdraw.page"
 
 import TestPage from "./components/asd-tests.page"
+import DanielPage from "./components/daniel.page"
 
 import { current_platform } from "../common/utils"
 
@@ -77,11 +78,13 @@ window.addEventListener("load",()=>{
 				<Container>
 					<Route onEnter={resolver} exact path="/e-contract/verification" component={VerificationPage} />
 					<Route onEnter={resolver} exact path="/asdasdtest" component={TestPage} />
+					<Route onEnter={resolver} exact path="/sexdanielsex" component={DanielPage} />
 
 					<Route onEnter={resolver} exact path="/" component={IndexPage} />
 					<Route onEnter={resolver} exact path="/register" component={RegisterPage} />
 					<Route onEnter={resolver} exact path="/recover" component={RecoverPage} />
 					<Route onEnter={resolver} exact path="/old-recover" component={OldRecoverPage} />
+					<Route onEnter={resolver} exact path="/" component={OldRecoverPage} />
 
 
 					<Route onEnter={resolver} exact path="/e-contract/login" component={LoginPage} />

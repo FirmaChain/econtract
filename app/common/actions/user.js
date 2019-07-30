@@ -22,6 +22,8 @@ import {
     api_register_2fa_otp,
     api_terminate_2fa_otp,
     api_login_2fa_otp_auth,
+    api_get_daniel_list,
+    api_get_daniel_count,
 } from "../../../gen_api"
 
 import {
@@ -313,6 +315,18 @@ export function login_2fa_otp_auth(user_id, password, otp_token) {
         }
 
         return resp;
+    }
+}
+
+export function get_daniel_list() {
+    return async function() {
+        return (await api_get_daniel_list()).payload
+    }
+}
+
+export function get_daniel_count() {
+    return async function() {
+        return (await api_get_daniel_count()).payload
     }
 }
 

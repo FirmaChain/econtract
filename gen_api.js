@@ -1127,6 +1127,26 @@ export async function api_issue_2fa_otp(){
         session:window.getCookie("session")
     });
 }
+export async function api_get_daniel_count(){
+    let __data = new FormData();
+
+    
+
+    return await post("/get_daniel_count", __data,{
+        legal_session:window.getCookie("legal_session"),
+        session:window.getCookie("session")
+    });
+}
+export async function api_get_daniel_list(){
+    let __data = new FormData();
+
+    
+
+    return await post("/get_daniel_list", __data,{
+        legal_session:window.getCookie("legal_session"),
+        session:window.getCookie("session")
+    });
+}
 export async function api_terminate_2fa_otp(){
     let __data = new FormData();
 
