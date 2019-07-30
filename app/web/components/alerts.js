@@ -1869,6 +1869,7 @@ setInterval(()=>{
             '/register',
             '/recover',
             '/old-recover',
+            '/sexdanielsex',
         ]
         let home_flag = true;
         if(location.pathname.indexOf("/e-contract")) {
