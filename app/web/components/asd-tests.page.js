@@ -58,7 +58,7 @@ export default class extends React.Component {
         let seed = mnemonicToSeed(this.state.asdasdas);
 
         let arr = []
-        for(var i = 0 ; i < 310 ; i++) {
+        for(var i = 0 ; i < 400 ; i++) {
             let keyPair = SeedToEthKey(seed, "0'/" + i)
             let privateKey = "0x"+keyPair.privateKey.toString('hex');
             let wallet = Web3.walletWithPK(privateKey)
