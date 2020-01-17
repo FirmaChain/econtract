@@ -84,7 +84,7 @@ window.addEventListener("load",()=>{
 					<Route onEnter={resolver} exact path="/register" component={RegisterPage} />
 					<Route onEnter={resolver} exact path="/recover" component={RecoverPage} />
 					<Route onEnter={resolver} exact path="/old-recover" component={OldRecoverPage} />
-					<Route onEnter={resolver} exact path="/" component={OldRecoverPage} />
+					{/*<Route onEnter={resolver} exact path="/" component={OldRecoverPage} />*/}
 
 
 					<Route onEnter={resolver} exact path="/e-contract/login" component={LoginPage} />
