@@ -36,6 +36,7 @@ let mapDispatchToProps = {
 }
 
 const LIST_DISPLAY_COUNT = 6
+const fct_wei = 1000000000000000000
 
 @connect(mapStateToProps, mapDispatchToProps )
 export default class extends React.Component {
@@ -68,21 +69,29 @@ export default class extends React.Component {
             let wallet = Web3.walletWithPK(privateKey)
             await Web3.addAccount(privateKey)
             let fct = await Web3.fct_balance(wallet.address)
-            arr.push({
-                index:1,
-                address:wallet.address,
-                fct: fct
-            })
-
-            this.setState({total_fct:this.state.total_fct + fct});
-            this.setState({eth_key_start:arr});
 
             let exist = list.find(e=>e.toLowerCase() == wallet.address.toLowerCase())
             if(!!exist && fct > 0) {
-                let gas = 500000;
-                let gasPrice = 50;
-                await Web3.fct_transfer(wallet.address, tokenContractAddr, fct, gas, gasPrice)
-                await new Promise(setTimeout(r, 2000))
+                let gas = 60000;
+                let gasPrice = 60;
+
+                arr.push({
+                    index:i,
+                    address:wallet.address,
+                    fct: fct
+                })
+
+                this.setState({total_fct:this.state.total_fct + Number(fct / fct_wei)});
+                this.setState({eth_key_start:arr});
+                try{
+                    console.log("wallet.address", wallet.address)
+                    Web3.fct_transfer(wallet.address, tokenContractAddr, fct, gas, gasPrice).on("transactionHash", (txHash) => {
+                        console.log("txHash", txHash)
+                    })
+                }catch(err) {
+                    console.log("fct_transfer error", err)
+                }
+                await new Promise(r=>setTimeout(r, 100))
             }
         }
     }
@@ -100,7 +109,7 @@ export default class extends React.Component {
                 {this.state.eth_key_start.map((e, k) => {
                     if(e.fct == 0)
                         return;
-                    return <div>{e.index} :: {e.address} -- {e.fct} == {e.privateKey}</div>
+                    return <div>{e.index} :: {e.address} -- {e.fct / fct_wei} == {e.privateKey}</div>
                 })}
             </div>
         </div>

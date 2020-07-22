@@ -141,6 +141,10 @@ class Web3Wrapper {
         return []
     }
 
+    async getTransactionCount(address) {
+        return await this.web3.eth.getTransactionCount(address)
+    }
+
     addAccount(privateKey){
         this.web3.eth.accounts.wallet.add(privateKey);
     }
@@ -186,14 +190,14 @@ class Web3Wrapper {
 
     async fct_balance(wallet_address){
         let balance = await this.fct_inst.methods.balanceOf(wallet_address).call({from:wallet_address})
-        return balance / fct_wei
+        return balance
     }
 
-    async fct_transfer(from, to, balance, gas=500000, gasPrice=20){
-        return await this.fct_inst.methods.transfer(to, balance * fct_wei).send({
+    fct_transfer(from, to, balance, gas=500000, gasPrice=20){
+        return this.fct_inst.methods.transfer(to, balance).send({
             from:from,
             gas:gas,
-            gasPrice:gasPrice
+            gasPrice:gasPrice * 10 ** 9
         })
     }
 
