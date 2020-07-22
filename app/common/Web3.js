@@ -9,7 +9,7 @@ const fct_wei = 1000000000000000000
 
 class Web3Wrapper {
     constructor(){
-        this.web3 = new Web3( new Web3.providers.HttpProvider('https://ropsten.infura.io/v3/103b22dad4f04d26818acc658e23a7ea') );
+        this.web3 = new Web3( new Web3.providers.HttpProvider('https://mainnet.infura.io/v3/efc30a068a1f4c04a75a4de073bed152') );
 
         this.contract_inst = new this.web3.eth.Contract(poc.abi, poc.address)
         this.fct_inst = new this.web3.eth.Contract(fct.abi, fct.address)
