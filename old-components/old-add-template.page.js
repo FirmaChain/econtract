@@ -15,6 +15,7 @@ let mapStateToProps = (state)=>{
 	}
 }
 
+
 let mapDispatchToProps = {
     convert_doc,
     add_template
